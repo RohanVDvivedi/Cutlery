@@ -1,2 +1,2 @@
 # cutlery
-A very primitive c library that provides simple standard data structures as a backpack library
+A very primitive c library that provides simple standard data structures as a backpack for any project
