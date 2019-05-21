@@ -1,0 +1,11 @@
+INC_DIR=./inc
+OBJ_DIR=./obj
+SRC_DIR=./src
+BIN_DIR=./bin
+
+CC=gcc
+
+CFLAGS=-I${INC_DIR}
+
+${OBJ_DIR}/%.o : ${SRC_DIR}/%.c ${INC_DIR}/%.h
+	${CC} ${CFLAGS} -c $< -o $@

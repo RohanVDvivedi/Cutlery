@@ -3,11 +3,13 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 // the array will maintain all of its memory on its own
 // you manage your memory, array will manage its own memory on heap
 // you may pass pointers, but that will be just to read your object, promise
 
+typedef struct array array;
 struct array
 {
 	// can be zero
