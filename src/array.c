@@ -30,11 +30,11 @@ void delete_array(array* array_p)
 	}
 }
 
-void* get_element(array* array_p, unsigned long long int i)
+void* get_element(array* array_p, unsigned long long int index)
 {
-	if(array_p->max_size > i)
+	if(array_p->max_size > index)
 	{
-		return ((void*)(((char*)array_p->data_p_p)[i]));
+		return ((void*)(((char*)array_p->data_p_p)[index]));
 	}
 	else
 	{
@@ -88,4 +88,19 @@ void append_element(array* array_p, const void* data_p)
 		// assign a new data there and then increment the current size of the array
 		array_p->data_p_p[array_p->size++] = new_data_p;
 	}
+}
+
+void print_array(array* array_p, void (*print_element)(void*))
+{
+	printf("\narray:")
+	printf("\n\tsize : %lld", array_p->size);
+	printf("\n\tmax_size : %lld", array_p->max_size);
+	printf("\n\tsize_of_data_element : %lld", array_p->size_of_data_element);
+	for(unsigned long long int i = 0; i<array_p->size; i++)
+	{
+		printf("\n\telement_index %lld -> ", i);
+		print_element(((char*)array_p->data)[i]);
+	}
+	printf("\n\tincrement_factor : %lld", array_p->increment_factor);
+	printf("\n\tincrement_offset : %lld", array_p->increment_offset);
 }
