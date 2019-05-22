@@ -30,6 +30,8 @@ int main()
 	print_array(array_p, print_ts);
 	append_element(array_p, &((ts){22, "22"}));
 	print_array(array_p, print_ts);
+	append_element(array_p, NULL);
+	print_array(array_p, print_ts);
 	append_element(array_p, &((ts){33, "33"}));
 	print_array(array_p, print_ts);
 	append_element(array_p, &((ts){400, "400"}));

@@ -71,17 +71,21 @@ void append_element(array* array_p, const void* data_p)
 		array_p->data_p_p = new_data_p_p;
 		array_p->max_size = new_max_size;
 	}
+
+	// this is the pointer that will hold the new element data memory allocated by this array
+	void* new_data_p = NULL;
+
 	if(data_p != NULL)
 	{
-		// get pointer to to new data memory required
-		void* new_data_p = calloc(1, array_p->size_of_data_element);
+		// assign by allocating memory using malloc
+		new_data_p = malloc(array_p->size_of_data_element);
 
-		// copy data from user's pointer to array's memory that we requested above
+		// copy data from user's pointer to array's element memory that we requested above
 		memcpy(new_data_p, data_p, array_p->size_of_data_element);
-
-		// assign a new data there and then increment the current size of the array
-		array_p->data_p_p[array_p->size++] = new_data_p;
 	}
+
+	// assign a new data there and then increment the current size of the array
+	array_p->data_p_p[array_p->size++] = new_data_p;
 }
 
 void print_array(array* array_p, void (*print_element)(void*))
@@ -90,10 +94,18 @@ void print_array(array* array_p, void (*print_element)(void*))
 	printf("\n\tsize : %lld", array_p->size);
 	printf("\n\tmax_size : %lld", array_p->max_size);
 	printf("\n\tsize_of_data_element : %lld", array_p->size_of_data_element);
-	for(unsigned long long int i = 0; i<array_p->size; i++)
+	for(unsigned long long int i = 0; i < array_p->size; i++)
 	{
 		printf("\n\telement_index %lld -> ", i);
-		print_element(get_element(array_p, i));
+		void* element = get_element(array_p, i);
+		if(element != NULL)
+		{
+			print_element(get_element(array_p, i));
+		}
+		else
+		{
+			printf("NULL");
+		}
 	}
 	printf("\n\tincrement_factor : %lld", array_p->increment_factor);
 	printf("\n\tincrement_offset : %lld\n\n", array_p->increment_offset);
