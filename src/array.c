@@ -59,7 +59,7 @@ void append_element(array* array_p, const void* data_p)
 		new_max_size = new_max_size == array_p->size ? new_max_size + 1 : new_max_size;
 
 		// request memory for the new computed size
-		void** new_data_p_p = ((void**)calloc(array_p->max_size, sizeof(void*)));
+		void** new_data_p_p = ((void**)calloc(new_max_size, sizeof(void*)));
 
 		// copy all pointers from the old pointers array
 		memcpy(new_data_p_p, array_p->data_p_p, array_p->size * sizeof(void**));
@@ -93,10 +93,10 @@ void print_array(array* array_p, void (*print_element)(void*))
 	for(unsigned long long int i = 0; i<array_p->size; i++)
 	{
 		printf("\n\telement_index %lld -> ", i);
-		print_element(array_p->data_p_p[i]);
+		print_element(get_element(array_p, i));
 	}
 	printf("\n\tincrement_factor : %lld", array_p->increment_factor);
-	printf("\n\tincrement_offset : %lld", array_p->increment_offset);
+	printf("\n\tincrement_offset : %lld\n\n", array_p->increment_offset);
 }
 
 void sort_array(array* array_p, int (*comparator_function)(void*, void*)){}
