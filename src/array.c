@@ -98,3 +98,5 @@ void print_array(array* array_p, void (*print_element)(void*))
 	printf("\n\tincrement_factor : %lld", array_p->increment_factor);
 	printf("\n\tincrement_offset : %lld", array_p->increment_offset);
 }
+
+void sort_array(array* array_p, int (*comparator_function)(void*, void*)){}

@@ -37,7 +37,7 @@ array* get_array(unsigned long long int min_size, unsigned long long int size_of
 
 void delete_array(array* array_p);
 
-void* get_element(array* array_p,unsigned long long int i);
+void* get_element(array* array_p, unsigned long long int index);
 
 void append_element(array* array_p, const void* data_p);
 
