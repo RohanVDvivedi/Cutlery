@@ -12,28 +12,32 @@
 typedef struct array array;
 struct array
 {
-	// can be zero
-	unsigned long long int size;
+	// this many elements exist in array, presently
+	unsigned long long int occupied_size;
 
-	// total number of buckets, can not be 0, at least 1
-	unsigned long long int max_size;
+	// this many elements can be accomodated in array, without resizing data_p_p
+	// which involves copying pointers, and
+	// requesting larger pointer array size then previously we had
+	// this could get expensive and is non productive computation
+	unsigned long long int total_size;
 
 	// we maintain array of pointers each of which point to actual data
 	void** data_p_p;
 
-	// size of data
+	// size of data, stored in each element of the array
+	// array is homogenous ofc, because its array
 	unsigned long long int size_of_data_element;
 
-	// this is the factor, by which the previous size be incremented
+	// this is the factor, by which the previous size of data_p_p be incremented
 	unsigned long long int increment_factor;
 
-	// this is the increment amount
+	// this is the constant increment amount, over the increment factor
 	unsigned long long int increment_offset;
 
-	// new_size = old_size * increment_factor + increment_offset
+	// new_total_size of data_p_p = old_total_size of data_p_p * increment_factor + increment_offset
 };
 
-array* get_array(unsigned long long int min_size, unsigned long long int size_of_data_element);
+array* get_array(unsigned long long int initial_size, unsigned long long int size_of_data_element);
 
 void delete_array(array* array_p);
 
