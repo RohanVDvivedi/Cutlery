@@ -14,19 +14,19 @@ array* get_array(unsigned long long int initial_size, unsigned long long int siz
 
 void delete_array(array* array_p)
 {
-	for(unsigned long long int i = 0; i < array_p->occupied_size; i++)
-	{
-		if(array_p->data_p_p[i] != NULL)
-		{
-			free(array_p->data_p_p[i]);
-		}
-	}
-	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
-	{
-		free(array_p->data_p_p);
-	}
 	if(array_p != NULL)
 	{
+		if(array_p->total_size > 0 && array_p->data_p_p != NULL)
+		{
+			for(unsigned long long int i = 0; i < array_p->occupied_size; i++)
+			{
+				if(array_p->data_p_p[i] != NULL)
+				{
+					free(array_p->data_p_p[i]);
+				}
+			}
+			free(array_p->data_p_p);
+		}
 		free(array_p);
 	}
 }
