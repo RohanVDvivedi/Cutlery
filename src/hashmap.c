@@ -87,17 +87,23 @@ int remove_bucket(hashmap* hashmap_p, void* key, unsigned long long int size_of_
 	// this will be set if the bucket with corresponding key is found
 	int found = 0;
 
-	do
+	while( ( bucket_p != NULL && (! (size_of_key == bucket_p->size_of_key && (!memcmp(key, bucket_p->key, size_of_key))) ) ) || (bucket_p != NULL && (found = 1) && 0))
 	{
 		prev_bucket_p = bucket_p;
 		bucket_p = bucket_p->next_bucket;
 	}
-	while(bucket_p != NULL && size_of_key == bucket_p->size_of_key && memcmp( key, bucket_p->key, size_of_key) && (found = 1));
 
 	// if the bucket with the same key is found, we remove it
 	if(found)
 	{
-		prev_bucket_p->next_bucket = bucket_p->next_bucket;
+		if(prev_bucket_p != NULL)
+		{
+			prev_bucket_p->next_bucket = bucket_p->next_bucket;
+		}
+		else
+		{
+			hashmap_p->buckets[index] = bucket_p->next_bucket;
+		}
 		delete_bucket(bucket_p);
 		hashmap_p->occupancy--;
 	}
@@ -129,6 +135,15 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 	hashmap_p->buckets = new_hashmap_properties.buckets;
 }
 
+void print_bucket(bucket* bucket_p, void (*print_key)(void* key), void (*print_value)(void* value))
+{
+	printf("\t");
+	print_key(bucket_p->key);
+	printf(" => ");
+	print_value(bucket_p->value);
+	printf("\n");
+}
+
 void print_hashmap(hashmap* hashmap_p, void (*print_key)(void* key), void (*print_value)(void* value))
 {
 	// iterate over all the elements in the hashmap_p
@@ -140,14 +155,11 @@ void print_hashmap(hashmap* hashmap_p, void (*print_key)(void* key), void (*prin
 		bucket* bucket_p = hashmap_p->buckets[index];
 		while(bucket_p != NULL)
 		{
-			printf("\t");
-			print_key(bucket_p->key);
-			printf(" => ");
-			print_value(bucket_p->value);
-			printf("\n");
+			print_bucket(bucket_p, print_key, print_value);
+			bucket_p = bucket_p->next_bucket;
 		}
-		printf("\n");
 	}
+	printf("\n\n");
 }
 
 void delete_hashmap(hashmap* hashmap_p)

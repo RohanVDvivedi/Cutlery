@@ -61,6 +61,10 @@ int remove_bucket(hashmap* hashmap_p, void* key, unsigned long long int size_of_
 
 void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size);
 
+void print_bucket(bucket* bucket_p, void (*print_key)(void* key), void (*print_value)(void* value));
+
+void print_hashmap(hashmap* hashmap_p, void (*print_key)(void* key), void (*print_value)(void* value));
+
 void delete_hashmap(hashmap* hashmap_p);
 
 void delete_bucket(bucket* bucket_p);
