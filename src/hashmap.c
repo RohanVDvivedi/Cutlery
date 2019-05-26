@@ -118,11 +118,12 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 
 	// iterate over all the elements in the hashmap_p
 	// and add them to the newly statically maintained hashmap
-	for(unsigned long long int i = 0; i < hashmap_p->bucket_count; i++)
+	for(unsigned long long int index = 0; index < hashmap_p->bucket_count; index++)
 	{
-		bucket* bucket_p = hashmap_p->buckets[i];
-		while(bucket_p != NULL)
+		while(hashmap_p->buckets[index] != NULL)
 		{
+			bucket* bucket_p = hashmap_p->buckets[index];
+			hashmap_p->buckets[index] = hashmap_p->buckets[index]->next_bucket;
 			put(&new_hashmap_properties, bucket_p);
 		}
 	}
