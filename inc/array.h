@@ -45,8 +45,16 @@ void* get_element(array* array_p, unsigned long long int index);
 
 void append_element(array* array_p, const void* data_p);
 
+void remove_element(array* array_p, unsigned long long int index);
+
 void print_array(array* array_p, void (*print_element)(void*));
 
 void sort_array(array* array_p, int (*comparator_function)(void*, void*));
+
+void map(array* array_p, void (*map_function)(void* result,void* data_p), unsigned long long int size_of_new_data_element);
+
+void* reduce(array* array_p, void (*reduce_function)(void* result, void* data_p1);
+
+void for_each(array* array_p, void (*for_each_function)(void* data_p));
 
 #endif

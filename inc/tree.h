@@ -45,6 +45,13 @@ struct tree
 	// this is the increment amount, by which the size of node children increases, over the factor
 	unsigned long long int increment_amount;
 
+	// total number of nodes on the tree 
+	unsigned long long int node_count;
+
+	// height of tree, number of nodes between root_node and farthest node, including both nodes
+	// helps one know deviation 
+	unsigned long long int height_of_tree;
+
 	// this is the root node of the tree
 	node* root_node;
 
@@ -79,5 +86,14 @@ int is_root(node* node_p);
 
 // tells us if the node is a root node
 int is_binary(node* node_p);
+
+// bfs, takes find_function, exists when find_function returns anything != 0
+void* bfs(tree* tree_p, int (*find_function)(const void* node_data_p));
+
+// dfs, takes find_function, exists when find_function returns anything != 0
+void* dfs(tree* tree_p, int (*find_function)(const void* node_data_p));
+
+// print tree
+void print_tree(tree* tree_p);
 
 #endif
