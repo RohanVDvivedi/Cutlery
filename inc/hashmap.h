@@ -59,14 +59,20 @@ void* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key);
 // returns 1 if the bucket is found and removed from hashmap and deleted
 int remove_bucket(hashmap* hashmap_p, void* key, unsigned long long int size_of_key);
 
+// the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
+// used to expand hashmap once the load factor is greater than 0.7 
 void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size);
 
+// prints individual bucket
 void print_bucket(bucket* bucket_p, void (*print_key)(void* key), void (*print_value)(void* value));
 
+// print complete hashmap
 void print_hashmap(hashmap* hashmap_p, void (*print_key)(void* key), void (*print_value)(void* value));
 
+// deletes all the data allocated by the hashmap and the hashmap itself
 void delete_hashmap(hashmap* hashmap_p);
 
+// delete the bucket
 void delete_bucket(bucket* bucket_p);
 
 #endif
