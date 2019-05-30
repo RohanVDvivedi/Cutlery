@@ -62,21 +62,21 @@ struct tree
 // builds a tree with no nodes
 tree* get_tree(unsigned long long int children_default_size, unsigned long long int size_of_data_element_on_node);
 
-// gives a node with data, copied to itself from data_p
-node* get_node(tree* tree, const void* data_p);
+// gets you a new node for the specified tree
+node* get_node(tree* tree_p, const void* data_p);
 
 // adds a child to parent node, as per the description of the characteristics of tree_p
-void add_child(tree* tree, node* parent_p, const void* data_p);
+void add_child(tree* tree_p, node* parent_p, const void* data_p);
 
 // builds a bond between parent and a child
-void connect(tree* tree, node* parent_p, node* child_p);
+void connect(tree* tree_p, node* parent_p, node* child_p);
 
 // deletes all of the tree
-void delete_tree(tree* tree);
+void delete_tree(tree* tree_p);
 
 // deletes all its children aswell
 // recursive
-void delete_node(node* node);
+void delete_nodes_from(node* node_p);
 
 // tells us if the node is a leaf node
 int is_leaf(node* node_p);
@@ -84,16 +84,15 @@ int is_leaf(node* node_p);
 // tells us if the node is a root node
 int is_root(node* node_p);
 
-// tells us if the node is a root node
-int is_binary(node* node_p);
-
 // bfs, takes find_function, exists when find_function returns anything != 0
+// i.e. if found bfs will return with the node
 void* bfs(tree* tree_p, int (*find_function)(const void* node_data_p));
 
 // dfs, takes find_function, exists when find_function returns anything != 0
+// i.e. if found dfs will return with node
 void* dfs(tree* tree_p, int (*find_function)(const void* node_data_p));
 
 // print tree
-void print_tree(tree* tree_p);
+void print_tree(tree* tree_p, void (*print_node)(const void* node_p));
 
 #endif

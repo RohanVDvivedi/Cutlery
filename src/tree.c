@@ -69,16 +69,16 @@ void delete_tree(tree* tree_p)
 {
 	if(tree_p != NULL)
 	{
-		delete_node(tree_p->root_node);
+		delete_nodes_from(tree_p->root_node);
 		free(tree_p);
 	}
 }
 
-void delete_node(node* node_p)
+void delete_nodes_from(node* node_p)
 {
 	for(unsigned long long int i = 0; i < node_p->children_occupied_size; i++)
 	{
-		delete_node(node_p->children[i]);
+		delete_nodes_from(node_p->children[i]);
 	}
 	if(node_p->data_p != NULL)
 	{
