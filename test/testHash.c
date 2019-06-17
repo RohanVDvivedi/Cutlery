@@ -140,12 +140,20 @@ int main()
 		}
 	}
 
-	printf("\n\nBefore rehashing\n");
+	printf("\n\nBefore rehashing - 16\n");
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	rehash_to_size(hashmap_p, 17);
+	rehash_to_size(hashmap_p, 16);
 
-	printf("\n\nAfter rehashing\n");
+	printf("\n\nAfter rehashing - 16\n");
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	printf("\n\nBefore rehashing - 20\n");
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	rehash_to_size(hashmap_p, 20);
+
+	printf("\n\nAfter rehashing - 20\n");
 	print_hashmap(hashmap_p, print_key, print_ts);
 
 	delete_hashmap(hashmap_p);
