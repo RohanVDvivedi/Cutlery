@@ -45,15 +45,7 @@ int main()
 
 	print_array(array_p, print_ts);
 
-	ts* tsn = (ts*) malloc(sizeof(ts));
-	*tsn = ((ts){10101, "new"});
-	array_p->data_p_p[20] = tsn;
-	print_ts(array_p->data_p_p[20]);
-
-	print_array(array_p, print_ts);
-
 	delete_array(array_p);
 
-	print_array(array_p, print_ts);
 	return 0;
 }
