@@ -12,12 +12,9 @@
 typedef struct array array;
 struct array
 {
-	// this many elements exist in array, presently
-	unsigned long long int occupied_size;
-
-	// this many elements can be accomodated in array, without resizing data_p_p
-	// which involves copying pointers, and
-	// requesting larger pointer array size then previously we had
+	// this many elements can be accomodated in array, without expanding
+	// expanding which involves copying pointers, and
+	// requesting larger pointer array size than previously we had
 	// this could get expensive and is non productive computation
 	unsigned long long int total_size;
 
@@ -25,10 +22,10 @@ struct array
 	void** data_p_p;
 
 	// size of data, stored in each element of the array
-	// array is homogenous ofc, because its array
+	// array is homogenous ofcourse, because its array
 	unsigned long long int size_of_data_element;
 
-	// this is the factor, by which the previous size of data_p_p be incremented
+	// this is the factor, by which the previous size of data_p_p will be incremented
 	unsigned long long int increment_factor;
 
 	// this is the constant increment amount, over the increment factor
@@ -45,27 +42,18 @@ array* get_array(unsigned long long int initial_size, unsigned long long int siz
 void delete_array(array* array_p);
 
 // returns pointer to the data at index = index
-void* get_element(array* array_p, unsigned long long int index);
+const void* get_element(array* array_p, unsigned long long int index);
 
-// adds the lement at the end of the array, as the last element
-void append_element(array* array_p, const void* data_p);
+// if index element is NULL, allocates new memory sets new element there 
+// and deletes old data permanently
+// if not null, old data memory is rewritten, with new data
+// returns 0 for success
+int set_element(array* array_p, const void* data_p, unsigned long long int index);
 
-// removes the element at the index index
-void remove_element(array* array_p, unsigned long long int index);
+// it expands array, as per the array rules
+void expand_array(array* array_p);
 
 // prints the array
-void print_array(array* array_p, void (*print_element)(void*));
-
-// sorts the array, in place
-void sort_array(array* array_p, int (*comparator_function)(void*, void*));
-
-// returns new array consisting of data elements, which is returned after passing the each of the data element through map_function
-array* map(array* array_p, void (*map_function)(void* result,void* data_p), unsigned long long int size_of_new_data_element);
-
-// reduce all the elements of the array, to produce one output, which is of the same type as the array_element, and is returned
-void* reduce(array* array_p, void (*reduce_function)(void* result, void* data_p1));
-
-// applies a function on all the elements of the array, and does not produce any output
-void for_each(array* array_p, void (*for_each_function)(void* data_p));
+void print_array(array* array_p, void (*print_element)(const void* data_p));
 
 #endif
