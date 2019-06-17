@@ -42,14 +42,13 @@ void put(hashmap* hashmap_p, bucket* bucket_p)
 	// get index
 	unsigned long long int index = get_index(hashmap_p, bucket_p->key);
 
-	// find the bucket index group the bucket_p belongs to
+	// find the bucket in the hashmap, which has the same key as this bucket
 	bucket* found_bucket_p = get(hashmap_p, bucket_p->key, bucket_p->size_of_key);
 
 	// if bucket with that key exists, remove and delete existing bucket and add new bucket
 	if(found_bucket_p != NULL)
 	{
 		remove_bucket(hashmap_p, bucket_p->key, bucket_p->size_of_key);
-		hashmap_p->occupancy--;
 	}
 
 	// new bucket geta added before the first bucket, in the linked list
@@ -58,7 +57,7 @@ void put(hashmap* hashmap_p, bucket* bucket_p)
 	hashmap_p->occupancy++;
 }
 
-void* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key)
+bucket* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key)
 {
 	// get index
 	unsigned long long int index = get_index(hashmap_p, key);
@@ -67,7 +66,9 @@ void* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key)
 	bucket* bucket_p = hashmap_p->buckets[index];
 
 	// linear search through the linked list :(
-	while(bucket_p != NULL && size_of_key == bucket_p->size_of_key && memcmp( key, bucket_p->key, size_of_key))
+	// conditions to keep looping in the search loop : bucket is not null && bucket not found
+	// bucket not found = size of key does not match || key contents does not match
+	while(bucket_p != NULL && (size_of_key != bucket_p->size_of_key || memcmp( key, bucket_p->key, size_of_key)))
 	{
 		bucket_p = bucket_p->next_bucket;
 	}

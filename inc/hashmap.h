@@ -52,9 +52,11 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 // build a bucket with key and value
 bucket* get_bucket(void* key, unsigned long long int size_of_key, void* value, unsigned long long int size_of_value);
 
+// place the bucket in the hashmap
 void put(hashmap* hashmap_p, bucket* bucket_p);
 
-void* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key);
+// get the bucket from the hashmap
+bucket* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key);
 
 // returns 1 if the bucket is found and removed from hashmap and deleted
 int remove_bucket(hashmap* hashmap_p, void* key, unsigned long long int size_of_key);
