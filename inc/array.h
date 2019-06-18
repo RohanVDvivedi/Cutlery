@@ -42,7 +42,7 @@ array* get_array(unsigned long long int initial_size, unsigned long long int siz
 void delete_array(array* array_p);
 
 // returns pointer to the data at index = index
-const void* get_element(array* array_p, unsigned long long int index);
+const void* get_element(const array* array_p, unsigned long long int index);
 
 // if index element is NULL, allocates new memory sets new element there 
 // and deletes old data permanently

@@ -24,7 +24,7 @@ void delete_array(array* array_p)
 	free(array_p);
 }
 
-const void* get_element(array* array_p, unsigned long long int index)
+const void* get_element(const array* array_p, unsigned long long int index)
 {
 	if(array_p->total_size > index)
 	{
