@@ -7,17 +7,17 @@ struct teststruct
 	char* s;
 };
 
-unsigned long long int hash_function(void* key)
+unsigned long long int hash_function(const void* key)
 {
 	return (*((unsigned long long int *)key))-1;
 }
 
-void print_ts(void* tsv)
+void print_ts(const void* tsv)
 {
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-void print_key(void* key)
+void print_key(const void* key)
 {
 	printf("%lld", (*((unsigned long long int*)key)));
 }
@@ -133,7 +133,7 @@ int main()
 
 	for(unsigned long long int i = 1; i <= 100; i++)
 	{
-		bucket* bucket_p = get(hashmap_p, &i, sizeof(unsigned long long int));
+		const bucket* bucket_p = get(hashmap_p, &i, sizeof(unsigned long long int));
 		if(bucket_p != NULL)
 		{
 			print_bucket(get(hashmap_p, &i, sizeof(unsigned long long int)), print_key, print_ts);

@@ -1,6 +1,6 @@
 #include<hashmap.h>
 
-hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(void* key))
+hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key))
 {
 	hashmap* hashmap_p = ((hashmap*) calloc(1, sizeof(hashmap)));
 	hashmap_p->bucket_count = bucket_count;
@@ -9,7 +9,7 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 	return hashmap_p;
 }
 
-bucket* get_bucket(void* key, unsigned long long int size_of_key, void* value, unsigned long long int size_of_value)
+bucket* get_bucket(const void* key, unsigned long long int size_of_key, const void* value, unsigned long long int size_of_value)
 {
 	bucket* bucket_p = ((bucket*) malloc(sizeof(bucket)));
 
@@ -26,7 +26,7 @@ bucket* get_bucket(void* key, unsigned long long int size_of_key, void* value, u
 	return bucket_p;
 }
 
-unsigned long long int get_index(hashmap* hashmap_p, void* key)
+unsigned long long int get_index(const hashmap* hashmap_p, const void* key)
 {
 	// calculate hash
 	unsigned long long int hash = hashmap_p->hash_function(key);
@@ -43,7 +43,7 @@ void put(hashmap* hashmap_p, bucket* bucket_p)
 	unsigned long long int index = get_index(hashmap_p, bucket_p->key);
 
 	// find the bucket in the hashmap, which has the same key as this bucket
-	bucket* found_bucket_p = get(hashmap_p, bucket_p->key, bucket_p->size_of_key);
+	const bucket* found_bucket_p = get(hashmap_p, bucket_p->key, bucket_p->size_of_key);
 
 	// if bucket with that key exists, remove and delete existing bucket and add new bucket
 	if(found_bucket_p != NULL)
@@ -57,7 +57,7 @@ void put(hashmap* hashmap_p, bucket* bucket_p)
 	hashmap_p->occupancy++;
 }
 
-bucket* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key)
+const bucket* get(const hashmap* hashmap_p, const void* key, unsigned long long int size_of_key)
 {
 	// get index
 	unsigned long long int index = get_index(hashmap_p, key);
@@ -76,7 +76,7 @@ bucket* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key)
 	return bucket_p;
 }
 
-int remove_bucket(hashmap* hashmap_p, void* key, unsigned long long int size_of_key)
+int remove_bucket(hashmap* hashmap_p, const void* key, unsigned long long int size_of_key)
 {
 	// get index
 	unsigned long long int index = get_index(hashmap_p, key);
@@ -137,7 +137,7 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 	hashmap_p->buckets = new_hashmap_properties.buckets;
 }
 
-void print_bucket(bucket* bucket_p, void (*print_key)(void* key), void (*print_value)(void* value))
+void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	printf("\t");
 	print_key(bucket_p->key);
@@ -146,7 +146,7 @@ void print_bucket(bucket* bucket_p, void (*print_key)(void* key), void (*print_v
 	printf("\n");
 }
 
-void print_hashmap(hashmap* hashmap_p, void (*print_key)(void* key), void (*print_value)(void* value))
+void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	// iterate over all the elements in the hashmap_p
 	printf("bucket_count %lld\n", hashmap_p->bucket_count);

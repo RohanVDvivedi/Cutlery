@@ -74,25 +74,13 @@ void connect(tree* tree_p, node* parent_p, node* child_p);
 // deletes all of the tree
 void delete_tree(tree* tree_p);
 
-// deletes all its children aswell
-// recursive
+// deletes the node and all its children aswell recursively
 void delete_nodes_from(node* node_p);
 
-// tells us if the node is a leaf node
-int is_leaf(node* node_p);
-
-// tells us if the node is a root node
-int is_root(node* node_p);
-
-// bfs, takes find_function, exists when find_function returns anything != 0
-// i.e. if found bfs will return with the node
-void* bfs(tree* tree_p, int (*find_function)(const void* node_data_p));
-
-// dfs, takes find_function, exists when find_function returns anything != 0
-// i.e. if found dfs will return with node
-void* dfs(tree* tree_p, int (*find_function)(const void* node_data_p));
+// print tree
+void print_node(node* node_p);
 
 // print tree
-void print_tree(tree* tree_p, void (*print_node)(const void* node_p));
+void print_tree(tree* tree_p, void (*print_data)(const void* node_p));
 
 #endif

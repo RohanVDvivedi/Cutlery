@@ -39,7 +39,7 @@ struct hashmap
 	unsigned long long int occupancy;
 
 	// hash function ( <3 my love )
-	unsigned long long int (*hash_function)(void* key);
+	unsigned long long int (*hash_function)(const void* key);
 
 	// pinter to the array of buckets
 	bucket** buckets;
@@ -47,29 +47,29 @@ struct hashmap
 
 // build and get hashmap with a fixed bucket count,
 // bucket count remains the same unless rehash is called with a new size
-hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(void* key));
+hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key));
 
 // build a bucket with key and value
-bucket* get_bucket(void* key, unsigned long long int size_of_key, void* value, unsigned long long int size_of_value);
+bucket* get_bucket(const void* key, unsigned long long int size_of_key, const void* value, unsigned long long int size_of_value);
 
 // place the bucket in the hashmap
 void put(hashmap* hashmap_p, bucket* bucket_p);
 
 // get the bucket from the hashmap
-bucket* get(hashmap* hashmap_p, void* key, unsigned long long int size_of_key);
+const bucket* get(const hashmap* hashmap_p, const void* key, unsigned long long int size_of_key);
 
 // returns 1 if the bucket is found and removed from hashmap and deleted
-int remove_bucket(hashmap* hashmap_p, void* key, unsigned long long int size_of_key);
+int remove_bucket(hashmap* hashmap_p, const void* key, unsigned long long int size_of_key);
 
 // the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
 // used to expand hashmap once the load factor is greater than 0.7 
 void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size);
 
 // prints individual bucket
-void print_bucket(bucket* bucket_p, void (*print_key)(void* key), void (*print_value)(void* value));
+void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 // print complete hashmap
-void print_hashmap(hashmap* hashmap_p, void (*print_key)(void* key), void (*print_value)(void* value));
+void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 // deletes all the data allocated by the hashmap and the hashmap itself
 void delete_hashmap(hashmap* hashmap_p);

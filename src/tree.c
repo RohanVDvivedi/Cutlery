@@ -86,13 +86,3 @@ void delete_nodes_from(node* node_p)
 	}
 	free(node_p);
 }
-
-int is_leaf(node* node_p)
-{
-	return node_p->children_occupied_size == 0;
-}
-
-int is_root(node* node_p)
-{
-	return node_p->parent == NULL;
-}
