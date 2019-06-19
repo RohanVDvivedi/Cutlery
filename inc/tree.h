@@ -6,6 +6,8 @@
 #include<string.h>
 
 // each tree branches on nodes
+// tree maintains its own nodes
+// you manage your data, tree will manage  its own data
 
 typedef struct node node;
 struct node
@@ -63,7 +65,7 @@ struct tree
 tree* get_tree(unsigned long long int children_default_size, unsigned long long int size_of_data_element_on_node);
 
 // gets you a new node for the specified tree
-node* get_node(tree* tree_p, const void* data_p);
+node* get_node(const tree* tree_p, const void* data_p);
 
 // adds a child to parent node, as per the description of the characteristics of tree_p
 void add_child(tree* tree_p, node* parent_p, const void* data_p);
@@ -74,10 +76,13 @@ void connect(tree* tree_p, node* parent_p, node* child_p);
 // deletes all of the tree
 void delete_tree(tree* tree_p);
 
+// deletes only the node pointed to by node_p
+void delete_node(node* node_p);
+
 // deletes the node and all its children aswell recursively
 void delete_nodes_from(node* node_p);
 
-// print tree
+// prints node
 void print_node(node* node_p);
 
 // print tree
