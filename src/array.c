@@ -110,7 +110,7 @@ void expand_array(array* array_p)
 	array_p->total_size = new_total_size;
 }
 
-void print_array(array* array_p, void (*print_element)(const void* data_p))
+void print_array(const array* array_p, void (*print_element)(const void* data_p))
 {
 	printf("\narray:");
 	printf("\n\ttotal size : %lld", array_p->total_size);

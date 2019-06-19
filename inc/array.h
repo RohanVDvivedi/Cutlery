@@ -54,6 +54,6 @@ int set_element(array* array_p, const void* data_p, unsigned long long int index
 void expand_array(array* array_p);
 
 // prints the array
-void print_array(array* array_p, void (*print_element)(const void* data_p));
+void print_array(const array* array_p, void (*print_element)(const void* data_p));
 
 #endif
