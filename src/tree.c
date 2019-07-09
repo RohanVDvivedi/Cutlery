@@ -15,6 +15,7 @@ node* get_node(const tree* tree_p, const void* data_p)
 	node_p->parent = NULL;
 	if(data_p != NULL)
 	{
+		node_p->data_p = ((void*)malloc(tree_p->size_of_data_on_node));
 		memcpy(node_p->data_p, data_p, tree_p->size_of_data_on_node);
 	}
 	node_p->children = (node**) calloc(tree_p->children_default_size ,sizeof(node*));
@@ -90,7 +91,8 @@ void print_tree(const tree* tree_p, void (*print_data)(const void* node_p))
 	{
 		printf("size_of_data_on_node : %llu\n", tree_p->size_of_data_on_node);
 		printf("children_default_size : %llu\n", tree_p->children_default_size);
-		printf("nodes_from_root : "); print_nodes_from(tree_p, tree_p->root_node, print_data, 1);
+		printf("nodes_from_root : "); printf("\n");
+		print_nodes_from(tree_p, tree_p->root_node, print_data, 1);
 	}
 	else
 	{
@@ -103,7 +105,7 @@ void print_node(const node* node_p, void (*print_data)(const void* node_p), unsi
 {
 	if(node_p != NULL)
 	{
-		print_tabs(tabs_count); printf("data : "); print_data(node_p); printf("\n");
+		print_tabs(tabs_count); printf("data : "); print_data(node_p->data_p); printf("\n");
 	}
 	else
 	{
@@ -117,9 +119,9 @@ void print_nodes_from(const tree* tree_p, const node* node_p, void (*print_data)
 	if(node_p != NULL)
 	{
 		print_node(node_p, print_data, tabs_count);
-		printf("child_nodes : \n");
 		for(unsigned long long int i = 0; i < tree_p->children_default_size; i++)
 		{
+			print_tabs(tabs_count); printf("child_node : %llu\n", i);
 			print_nodes_from(tree_p, node_p->children[i], print_data, tabs_count + 1);
 		}
 	}
