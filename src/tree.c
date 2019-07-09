@@ -5,33 +5,29 @@ tree* get_tree(unsigned long long int children_default_size, unsigned long long 
 	tree* tree_p = ((tree*)calloc(1, sizeof(tree)));
 	tree_p->size_of_data_on_node = size_of_data_element_on_node;
 	tree_p->children_default_size = children_default_size;
-	tree_p->increment_factor = 2;
-	tree_p->increment_amount = 1;
 	tree_p->root_node = NULL;
 	return tree_p;
 }
 
-node* get_node(tree* tree_p, const void* data_p)
+node* get_node(const tree* tree_p, const void* data_p)
 {
 	node* node_p = ((node*)calloc(1, sizeof(node)));
 	node_p->parent = NULL;
-	node_p->children_occupied_size = 0;
 	if(data_p != NULL)
 	{
 		memcpy(node_p->data_p, data_p, tree_p->size_of_data_on_node);
 	}
-	node_p->children_total_size = tree_p->children_default_size;
 	node_p->children = (node**) calloc(tree_p->children_default_size ,sizeof(node*));
 	return node_p;
 }
 
-void add_child(tree* tree_p ,node* parent_p, const void* data_p)
+void add_child(const tree* tree_p ,node* parent_p, const void* data_p, unsigned long long int child_index)
 {
 	node* child_p = get_node(tree_p, data_p);
-	connect(tree_p, parent_p, child_p);
+	connect(tree_p, parent_p, child_p, child_index);
 }
 
-void connect(tree* tree_p, node* parent_p, node* child_p)
+void connect(const tree* tree_p, node* parent_p, node* child_p, unsigned long long int child_index)
 {
 	// set the parent in the child node
 	if(child_p != NULL)
@@ -42,47 +38,92 @@ void connect(tree* tree_p, node* parent_p, node* child_p)
 	// add child in the list of parent node
 	if(parent_p != NULL)
 	{
-		if(parent_p->children_occupied_size == parent_p->children_total_size)
-		{
-			// compute the new size required for this purpose
-			unsigned long long int new_children_total_size = parent_p->children_total_size * tree_p->increment_factor + tree_p->increment_amount;
-		
-			// allocate a new node pointer array to hold data
-			node** new_children = ((node**)calloc(new_children_total_size, sizeof(node*)));
-
-			// copy pointers from old array to new expanded array
-			memcpy(new_children, parent_p->children, parent_p->children_occupied_size);
-
-			// free the older smaller node* array
-			free(parent_p->children);
-
-			// update children and children total_size attributed in parent node
-			parent_p->children = new_children;
-			parent_p->children_total_size = new_children_total_size;
-		}
 		// add child_p as a child in the parent's list of children
-		parent_p->children[parent_p->children_occupied_size++] = child_p;
+		parent_p->children[child_index] = child_p;
 	}
 }
 
 void delete_tree(tree* tree_p)
 {
-	if(tree_p != NULL)
+	if(tree_p->root_node != NULL)
 	{
-		delete_nodes_from(tree_p->root_node);
-		free(tree_p);
+		delete_nodes_from(tree_p ,tree_p->root_node);
 	}
+	free(tree_p);
 }
 
-void delete_nodes_from(node* node_p)
+void delete_node(node* node_p)
 {
-	for(unsigned long long int i = 0; i < node_p->children_occupied_size; i++)
-	{
-		delete_nodes_from(node_p->children[i]);
-	}
 	if(node_p->data_p != NULL)
 	{
 		free(node_p->data_p);
 	}
 	free(node_p);
+}
+
+void delete_nodes_from(const tree* tree_p, node* node_p)
+{
+	for(unsigned long long int i = 0; i < tree_p->children_default_size; i++)
+	{
+		if(node_p->children[i] != NULL)
+		{
+			delete_nodes_from(tree_p, node_p->children[i]);
+		}
+	}
+	delete_node(node_p);
+}
+
+// prints n tabs
+void print_tabs(unsigned long long int tabs_count)
+{
+	for(unsigned long long int i = 0; i < tabs_count; i++)
+	{
+		printf("\t");
+	}
+}
+
+// print tree
+void print_tree(const tree* tree_p, void (*print_data)(const void* node_p))
+{
+	printf("printing tree : ");
+	if(tree_p != NULL)
+	{
+		printf("size_of_data_on_node : %llu", tree_p->size_of_data_on_node);
+		printf("children_default_size : %llu", tree_p->children_default_size);
+		printf("nodes_from_root : "); print_nodes_from(tree_p, tree_p->root_node, print_data, 1);
+	}
+	else
+	{
+		printf("NULL TREE");
+	}
+}
+
+// prints only the node pointed to by node_p
+void print_node(const node* node_p, void (*print_data)(const void* node_p), unsigned long long int tabs_count)
+{
+	if(node_p != NULL)
+	{
+		print_tabs(tabs_count); printf("data : "); print_data(node_p);
+	}
+	else
+	{
+		print_tabs(tabs_count); printf("NULL NODE");
+	}
+}
+
+// prints node and all of its children aswell recursively
+void print_nodes_from(const tree* tree_p, const node* node_p, void (*print_data)(const void* node_p), unsigned long long int tabs_count)
+{
+	if(node_p != NULL)
+	{
+		print_node(node_p, print_data, tabs_count);
+		for(unsigned long long int i = 0; i < tree_p->children_default_size; i++)
+		{
+			print_nodes_from(tree_p, node_p->children[i], print_data, tabs_count + 1);
+		}
+	}
+	else
+	{
+		print_tabs(tabs_count); printf("NULL NODE");
+	}
 }
