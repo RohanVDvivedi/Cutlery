@@ -22,10 +22,25 @@ node* get_node(const tree* tree_p, const void* data_p)
 	return node_p;
 }
 
-void add_child(const tree* tree_p ,node* parent_p, const void* data_p, unsigned long long int child_index)
+void set_child(const tree* tree_p ,node* parent_p, const void* data_p, unsigned long long int child_index)
 {
-	node* child_p = get_node(tree_p, data_p);
-	connect(tree_p, parent_p, child_p, child_index);
+	if(parent_p->children[child_index] == NULL)
+	{
+		node* child_p = get_node(tree_p, data_p);
+		connect(tree_p, parent_p, child_p, child_index);
+	}
+	else
+	{
+		if(data_p != NULL)
+		{
+			memcpy(parent_p->children[child_index]->data_p, data_p, tree_p->size_of_data_on_node);
+		}
+		else
+		{
+			free(parent_p->children[child_index]->data_p);
+			parent_p->children[child_index]->data_p = NULL;
+		}
+	}
 }
 
 void connect(const tree* tree_p, node* parent_p, node* child_p, unsigned long long int child_index)
@@ -44,6 +59,15 @@ void connect(const tree* tree_p, node* parent_p, node* child_p, unsigned long lo
 	}
 }
 
+void remove_child(const tree* tree_p ,node* parent, unsigned long long int child_index)
+{
+	if(parent->children[child_index] != NULL)
+	{
+		delete_nodes_from(tree_p, parent->children[child_index]);
+	}
+	parent->children[child_index] = NULL;
+}
+
 void delete_tree(tree* tree_p)
 {
 	if(tree_p->root_node != NULL)
@@ -59,16 +83,24 @@ void delete_node(node* node_p)
 	{
 		free(node_p->data_p);
 	}
+	if(node_p->children != NULL)
+	{
+		free(node_p->children);
+	}
 	free(node_p);
 }
 
 void delete_nodes_from(const tree* tree_p, node* node_p)
 {
-	for(unsigned long long int i = 0; i < tree_p->children_default_size; i++)
-	{
-		if(node_p->children[i] != NULL)
+	if(node_p->children != NULL && tree_p->children_default_size > 0)
+	{	
+		for(unsigned long long int i = 0; i < tree_p->children_default_size; i++)
 		{
-			delete_nodes_from(tree_p, node_p->children[i]);
+			if(node_p->children[i] != NULL)
+			{
+				delete_nodes_from(tree_p, node_p->children[i]);
+				node_p->children[i] = NULL;
+			}
 		}
 	}
 	delete_node(node_p);
@@ -86,7 +118,7 @@ void print_tabs(unsigned long long int tabs_count)
 // print tree
 void print_tree(const tree* tree_p, void (*print_data)(const void* node_p))
 {
-	printf("printing tree : ");
+	printf("printing tree : \n");
 	if(tree_p != NULL)
 	{
 		printf("size_of_data_on_node : %llu\n", tree_p->size_of_data_on_node);
@@ -98,6 +130,7 @@ void print_tree(const tree* tree_p, void (*print_data)(const void* node_p))
 	{
 		printf("NULL TREE"); printf("\n");
 	}
+	printf("\n");
 }
 
 // prints only the node pointed to by node_p

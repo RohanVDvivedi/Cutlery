@@ -46,10 +46,13 @@ tree* get_tree(unsigned long long int children_default_size, unsigned long long 
 node* get_node(const tree* tree_p, const void* data_p);
 
 // adds a child to parent node, as per the description of the characteristics of tree_p at index child_index of the parent node of the tree
-void add_child(const tree* tree_p, node* parent_p, const void* data_p, unsigned long long int child_index);
+void set_child(const tree* tree_p, node* parent_p, const void* data_p, unsigned long long int child_index);
 
 // builds a bond between parent node and a child node, placing the child at index child_index of the parent node of the tree
 void connect(const tree* tree_p, node* parent_p, node* child_p, unsigned long long int child_index);
+
+// deletes the child node, frees its node and data memory and deltes all of its children aswell
+void remove_child(const tree* tree_p, node* parent, unsigned long long int child_index);
 
 // deletes all of the tree
 void delete_tree(tree* tree_p);
