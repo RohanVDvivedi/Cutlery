@@ -40,7 +40,7 @@ struct tree
 };
 
 // builds a tree with no nodes
-tree* get_tree(unsigned long long int children_default_size, unsigned long long int size_of_data_element_on_node);
+tree* get_tree(unsigned long long int children_default_size, unsigned long long int size_of_data_element_on_node, const void* root_data_p);
 
 // gets you a new node for the specified tree
 node* get_node(const tree* tree_p, const void* data_p);

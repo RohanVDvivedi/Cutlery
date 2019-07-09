@@ -1,11 +1,11 @@
 #include<tree.h>
 
-tree* get_tree(unsigned long long int children_default_size, unsigned long long int size_of_data_element_on_node)
+tree* get_tree(unsigned long long int children_default_size, unsigned long long int size_of_data_element_on_node, const void* root_data_p)
 {
 	tree* tree_p = ((tree*)calloc(1, sizeof(tree)));
 	tree_p->size_of_data_on_node = size_of_data_element_on_node;
 	tree_p->children_default_size = children_default_size;
-	tree_p->root_node = NULL;
+	tree_p->root_node = get_node(tree_p, root_data_p);
 	return tree_p;
 }
 
@@ -88,13 +88,13 @@ void print_tree(const tree* tree_p, void (*print_data)(const void* node_p))
 	printf("printing tree : ");
 	if(tree_p != NULL)
 	{
-		printf("size_of_data_on_node : %llu", tree_p->size_of_data_on_node);
-		printf("children_default_size : %llu", tree_p->children_default_size);
+		printf("size_of_data_on_node : %llu\n", tree_p->size_of_data_on_node);
+		printf("children_default_size : %llu\n", tree_p->children_default_size);
 		printf("nodes_from_root : "); print_nodes_from(tree_p, tree_p->root_node, print_data, 1);
 	}
 	else
 	{
-		printf("NULL TREE");
+		printf("NULL TREE"); printf("\n");
 	}
 }
 
@@ -103,11 +103,11 @@ void print_node(const node* node_p, void (*print_data)(const void* node_p), unsi
 {
 	if(node_p != NULL)
 	{
-		print_tabs(tabs_count); printf("data : "); print_data(node_p);
+		print_tabs(tabs_count); printf("data : "); print_data(node_p); printf("\n");
 	}
 	else
 	{
-		print_tabs(tabs_count); printf("NULL NODE");
+		print_tabs(tabs_count); printf("NULL NODE"); printf("\n");
 	}
 }
 
@@ -117,6 +117,7 @@ void print_nodes_from(const tree* tree_p, const node* node_p, void (*print_data)
 	if(node_p != NULL)
 	{
 		print_node(node_p, print_data, tabs_count);
+		printf("child_nodes : \n");
 		for(unsigned long long int i = 0; i < tree_p->children_default_size; i++)
 		{
 			print_nodes_from(tree_p, node_p->children[i], print_data, tabs_count + 1);
@@ -124,6 +125,6 @@ void print_nodes_from(const tree* tree_p, const node* node_p, void (*print_data)
 	}
 	else
 	{
-		print_tabs(tabs_count); printf("NULL NODE");
+		print_tabs(tabs_count); printf("NULL NODE"); printf("\n");
 	}
 }

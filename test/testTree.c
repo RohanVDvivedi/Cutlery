@@ -14,8 +14,11 @@ void print_ts(const void* tsv)
 
 int main()
 {
-	tree* tree_p = get_tree(3, sizeof(teststruct));
+	tree* tree_p = get_tree(3, sizeof(ts));
 
-	delete_tree();
+	
+	print_tree(tree_p, print_ts);
+
+	delete_tree(tree_p);
 	return 0;
 }
