@@ -7,9 +7,20 @@ struct teststruct
 	char* s;
 };
 
+typedef struct key ke;
+struct key
+{
+	int k;
+};
+
 unsigned long long int hash_function(const void* key)
 {
 	return (*((unsigned long long int *)key))-1;
+}
+
+int key_cmp(const void* key1, const void* key2)
+{
+	return (((ke*)key1)->k) - (((ke*)key2)->k);
 }
 
 void print_ts(const void* tsv)
@@ -19,126 +30,90 @@ void print_ts(const void* tsv)
 
 void print_key(const void* key)
 {
-	printf("%lld", (*((unsigned long long int*)key)));
+	printf("%d", (*((int*)key)));
 }
 
 int main()
 {
-	hashmap* hashmap_p = get_hashmap(4, hash_function);
+	hashmap* hashmap_p = get_hashmap(4, hash_function, key_cmp);
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	unsigned long long int key = 1;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){100, "one"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){1}), &((ts){100, "one"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 2;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){200, "two"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){2}), &((ts){200, "two"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 3;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){300, "there"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){3}), &((ts){300, "there"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 4;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){400, "four"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){4}), &((ts){400, "four"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 5;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){500, "five"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){5}), &((ts){500, "five"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 6;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){600, "six"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){6}), &((ts){600, "six"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 7;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){700, "seven"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){7}), &((ts){700, "seven"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 8;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){800, "eight"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){8}), &((ts){800, "eight"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 9;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){900, "nine"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){9}), &((ts){900, "nine"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	printf("\n\nprinting by using get methods\n\n");
+	remove_bucket(hashmap_p, &((ke){2}));
 
-	for(unsigned long long int i = 1; i <= 9; i++)
-	{
-		print_bucket(get(hashmap_p, &i, sizeof(unsigned long long int)), print_key, print_ts);
-	}
+	remove_bucket(hashmap_p, &((ke){6}));
 
-	key = 2;
-	remove_bucket(hashmap_p, &key, sizeof(unsigned long long int));
-
-	key = 6;
-	remove_bucket(hashmap_p, &key, sizeof(unsigned long long int));
-
-	key = 4;
-	remove_bucket(hashmap_p, &key, sizeof(unsigned long long int));
+	remove_bucket(hashmap_p, &((ke){4}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 7;
-	remove_bucket(hashmap_p, &key, sizeof(unsigned long long int));
+	remove_bucket(hashmap_p, &((ke){7}));
 
-	key = 8;
-	remove_bucket(hashmap_p, &key, sizeof(unsigned long long int));
+	remove_bucket(hashmap_p, &((ke){8}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 2;
-	remove_bucket(hashmap_p, &key, sizeof(unsigned long long int));
+	remove_bucket(hashmap_p, &((ke){9}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 60;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){6000, "sixty"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){60}), &((ts){6000, "sixty"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 70;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){7000, "seventy"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){70}), &((ts){7000, "seventy"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 80;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){8000, "eighty"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){70}), &((ts){70000, "seven hundred"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 20;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){2000, "twenty"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){80}), &((ts){8000, "eighty"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	key = 40;
-	put(hashmap_p, get_bucket(&key, sizeof(unsigned long long int), &((ts){4000, "forty"}), sizeof(ts)));
+	put_entry(hashmap_p, &((ke){20}), &((ts){2000, "twenty"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	printf("\n\nprinting by using get methods\n\n");
-
-	for(unsigned long long int i = 1; i <= 100; i++)
-	{
-		const bucket* bucket_p = get(hashmap_p, &i, sizeof(unsigned long long int));
-		if(bucket_p != NULL)
-		{
-			print_bucket(get(hashmap_p, &i, sizeof(unsigned long long int)), print_key, print_ts);
-		}
-	}
+	put_entry(hashmap_p, &((ke){40}), &((ts){4000, "forty"}));
 
 	printf("\n\nBefore rehashing - 16\n");
 	print_hashmap(hashmap_p, print_key, print_ts);

@@ -1,28 +1,23 @@
 #include<hashmap.h>
 
-hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key))
+hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2))
 {
 	hashmap* hashmap_p = ((hashmap*) calloc(1, sizeof(hashmap)));
 	hashmap_p->bucket_count = bucket_count;
 	hashmap_p->hash_function = hash_function;
+	hashmap_p->key_compare = key_compare;
 	hashmap_p->buckets = ((bucket**) calloc(hashmap_p->bucket_count, sizeof(bucket*)));
 	return hashmap_p;
 }
 
-bucket* get_bucket(const void* key, unsigned long long int size_of_key, const void* value, unsigned long long int size_of_value)
+bucket* get_new_bucket(const void* key, const void* value)
 {
 	bucket* bucket_p = ((bucket*) malloc(sizeof(bucket)));
-
 	// setup key for the bucket
-	bucket_p->size_of_key = size_of_key;
-	bucket_p->key = malloc(bucket_p->size_of_key);
-	memcpy(bucket_p->key, key, bucket_p->size_of_key);
-
+	bucket_p->key = key;
 	// setup value for the bucket
-	bucket_p->size_of_value = size_of_value;
-	bucket_p->value = malloc(bucket_p->size_of_value);
-	memcpy(bucket_p->value, value, bucket_p->size_of_value);
-
+	bucket_p->value = value;
+	bucket_p->next_bucket = NULL;
 	return bucket_p;
 }
 
@@ -37,27 +32,7 @@ unsigned long long int get_index(const hashmap* hashmap_p, const void* key)
 	return index;
 }
 
-void put(hashmap* hashmap_p, bucket* bucket_p)
-{
-	// get index
-	unsigned long long int index = get_index(hashmap_p, bucket_p->key);
-
-	// find the bucket in the hashmap, which has the same key as this bucket
-	const bucket* found_bucket_p = get(hashmap_p, bucket_p->key, bucket_p->size_of_key);
-
-	// if bucket with that key exists, remove and delete existing bucket and add new bucket
-	if(found_bucket_p != NULL)
-	{
-		remove_bucket(hashmap_p, bucket_p->key, bucket_p->size_of_key);
-	}
-
-	// new bucket geta added before the first bucket, in the linked list
-	bucket_p->next_bucket = hashmap_p->buckets[index];
-	hashmap_p->buckets[index] = bucket_p;
-	hashmap_p->occupancy++;
-}
-
-const bucket* get(const hashmap* hashmap_p, const void* key, unsigned long long int size_of_key)
+bucket* get_bucket(const hashmap* hashmap_p, const void* key)
 {
 	// get index
 	unsigned long long int index = get_index(hashmap_p, key);
@@ -66,9 +41,9 @@ const bucket* get(const hashmap* hashmap_p, const void* key, unsigned long long 
 	bucket* bucket_p = hashmap_p->buckets[index];
 
 	// linear search through the linked list :(
-	// conditions to keep looping in the search loop : bucket is not null && bucket not found
-	// bucket not found = size of key does not match || key contents does not match
-	while(bucket_p != NULL && (size_of_key != bucket_p->size_of_key || memcmp( key, bucket_p->key, size_of_key)))
+	// conditions to keep looping in the search loop : bucket is not null
+	// && bucket's key_compare fails (i.e.non zero compare result)
+	while(bucket_p != NULL && hashmap_p->key_compare(key, bucket_p->key) != 0)
 	{
 		bucket_p = bucket_p->next_bucket;
 	}
@@ -76,7 +51,54 @@ const bucket* get(const hashmap* hashmap_p, const void* key, unsigned long long 
 	return bucket_p;
 }
 
-int remove_bucket(hashmap* hashmap_p, const void* key, unsigned long long int size_of_key)
+void put_entry(hashmap* hashmap_p, const void* key, const void* value)
+{
+	// get index
+	unsigned long long int index = get_index(hashmap_p, key);
+
+	// find the bucket in the hashmap, which has the same key as this bucket
+	bucket* found_bucket_p = get_bucket(hashmap_p, key);
+
+	// if bucket with that key exists, then update its value pointer
+	if(found_bucket_p != NULL)
+	{
+		found_bucket_p->value = value;
+	}
+	else
+	{
+		// new bucket gets added before the first bucket, in the linked list
+		bucket* new_bucket_p = get_new_bucket(key, value);
+		new_bucket_p->next_bucket = hashmap_p->buckets[index];
+		hashmap_p->buckets[index] = new_bucket_p;
+	}
+}
+
+void put_bucket(hashmap* hashmap_p, bucket* bucket_p)
+{
+	// get index
+	unsigned long long int index = get_index(hashmap_p, bucket_p->key);
+
+	// find the bucket in the hashmap, which has the same key as this bucket
+	bucket* found_bucket_p = get_bucket(hashmap_p, bucket_p->key);
+
+	// if bucket with that key exists, then update its value pointer
+	if(found_bucket_p != NULL)
+	{
+		remove_bucket(hashmap_p, bucket_p->key);
+	}
+
+	// new bucket gets added before the first bucket, in the linked list
+	bucket_p->next_bucket = hashmap_p->buckets[index];
+	hashmap_p->buckets[index] = bucket_p;
+}
+
+const void* get_value(const hashmap* hashmap_p, const void* key)
+{
+	const bucket* bucket_p = get_bucket(hashmap_p, key);
+	return bucket_p == NULL ? NULL : bucket_p->value;
+}
+
+int remove_bucket(hashmap* hashmap_p, const void* key)
 {
 	// get index
 	unsigned long long int index = get_index(hashmap_p, key);
@@ -88,7 +110,7 @@ int remove_bucket(hashmap* hashmap_p, const void* key, unsigned long long int si
 	// this will be set if the bucket with corresponding key is found
 	int found = 0;
 
-	while( ( bucket_p != NULL && (! (size_of_key == bucket_p->size_of_key && (!memcmp(key, bucket_p->key, size_of_key))) ) ) || (bucket_p != NULL && (found = 1) && 0))
+	while( ( bucket_p != NULL && ( hashmap_p->key_compare( key, bucket_p->key) != 0 ) ) || (bucket_p != NULL && (found = 1) && 0))
 	{
 		prev_bucket_p = bucket_p;
 		bucket_p = bucket_p->next_bucket;
@@ -105,8 +127,7 @@ int remove_bucket(hashmap* hashmap_p, const void* key, unsigned long long int si
 		{
 			hashmap_p->buckets[index] = bucket_p->next_bucket;
 		}
-		delete_bucket(bucket_p);
-		hashmap_p->occupancy--;
+		free(bucket_p);
 	}
 
 	return found;
@@ -115,7 +136,7 @@ int remove_bucket(hashmap* hashmap_p, const void* key, unsigned long long int si
 void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 {
 	// make a local new hashmap properties holder
-	hashmap new_hashmap_properties = { .bucket_count = new_bucket_size, .hash_function = hashmap_p->hash_function, .buckets = ((bucket**) calloc(new_bucket_size, sizeof(bucket*)))};
+	hashmap new_hashmap_properties = { .bucket_count = new_bucket_size, .hash_function = hashmap_p->hash_function, .key_compare = hashmap_p->key_compare, .buckets = ((bucket**) calloc(new_bucket_size, sizeof(bucket*)))};
 
 	// iterate over all the elements in the hashmap_p
 	// and add them to the newly statically maintained hashmap
@@ -125,7 +146,7 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 		{
 			bucket* bucket_p = hashmap_p->buckets[index];
 			hashmap_p->buckets[index] = hashmap_p->buckets[index]->next_bucket;
-			put(&new_hashmap_properties, bucket_p);
+			put_bucket(&new_hashmap_properties, bucket_p);
 		}
 	}
 
@@ -150,7 +171,6 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 {
 	// iterate over all the elements in the hashmap_p
 	printf("bucket_count %lld\n", hashmap_p->bucket_count);
-	printf("occupancy %lld\n", hashmap_p->occupancy);
 	for(unsigned long long int index = 0; index < hashmap_p->bucket_count; index++)
 	{
 		printf("index = %lld\n", index);
@@ -174,24 +194,11 @@ void delete_hashmap(hashmap* hashmap_p)
 			while(bucket_p != NULL)
 			{
 				bucket* next_bucket = bucket_p->next_bucket;
-				delete_bucket(bucket_p);
+				free(bucket_p);
 				bucket_p = next_bucket;
 			}
 		}
 		free(hashmap_p->buckets);
 	}
 	free(hashmap_p);
-}
-
-void delete_bucket(bucket* bucket_p)
-{
-	if(bucket_p->key != NULL)
-	{
-		free(bucket_p->key);
-	}
-	if(bucket_p->value != NULL)
-	{
-		free(bucket_p->value);
-	}
-	free(bucket_p);
 }

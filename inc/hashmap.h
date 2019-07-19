@@ -8,25 +8,15 @@
 typedef struct bucket bucket;
 struct bucket
 {
-	// this is size in bytes for the key
-	unsigned long long int size_of_key;
-
-	// pointer to the key, without storing key we cant effectively get exact data
-	// considering our hash function as deterministic but not unique
-	void* key;
-
-	// this is the size in bytes for the data value
-	unsigned long long int size_of_value;
+	// pointer to the key, for this bucket
+	const void* key;
 
 	// pointer to the data, that is bucket holds
-	void* value;
+	const void* value;
 
 	// for collision handling mechanism 
 	bucket* next_bucket;
 };
-
-// hashmap manages its own data
-// if hashmap takes a pointer from you, it will be to copy your data
 
 typedef struct hashmap hashmap;
 struct hashmap
@@ -34,12 +24,11 @@ struct hashmap
 	// the number of buckets this hashmap holds
 	unsigned long long int bucket_count;
 
-	// occupancy is the number of elements in hashmap
-	// ocupancy <= 0.7 * bucket_count
-	unsigned long long int occupancy;
-
 	// hash function ( <3 my love )
 	unsigned long long int (*hash_function)(const void* key);
+
+	// compare keys and returns 0 if they are same, else non-zero
+	int (*key_compare)(const void* key1, const void* key2);
 
 	// pinter to the array of buckets
 	bucket** buckets;
@@ -47,19 +36,16 @@ struct hashmap
 
 // build and get hashmap with a fixed bucket count,
 // bucket count remains the same unless rehash is called with a new size
-hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key));
-
-// build a bucket with key and value
-bucket* get_bucket(const void* key, unsigned long long int size_of_key, const void* value, unsigned long long int size_of_value);
+hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2));
 
 // place the bucket in the hashmap
-void put(hashmap* hashmap_p, bucket* bucket_p);
+void put_entry(hashmap* hashmap_p, const void* key, const void* value);
 
-// get the bucket from the hashmap
-const bucket* get(const hashmap* hashmap_p, const void* key, unsigned long long int size_of_key);
+// get the value from the hashmap, stored at a particular key
+const void* get_value(const hashmap* hashmap_p, const void* key);
 
 // returns 1 if the bucket is found and removed from hashmap and deleted
-int remove_bucket(hashmap* hashmap_p, const void* key, unsigned long long int size_of_key);
+int remove_bucket(hashmap* hashmap_p, const void* key);
 
 // the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
 // used to expand hashmap once the load factor is greater than 0.7 
@@ -73,8 +59,5 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 
 // deletes all the data allocated by the hashmap and the hashmap itself
 void delete_hashmap(hashmap* hashmap_p);
-
-// delete the bucket
-void delete_bucket(bucket* bucket_p);
 
 #endif
