@@ -14,7 +14,7 @@ void print_ts(const void* tsv)
 
 int main()
 {
-	array* array_p = get_array(3, sizeof(ts));
+	array* array_p = get_array(3);
 
 	print_array(array_p, print_ts);
 

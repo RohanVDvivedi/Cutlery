@@ -6,8 +6,8 @@
 #include<string.h>
 
 // the array will maintain all of its memory on its own
-// you manage your memory, array will manage its own memory on heap
-// you may pass pointers, but that will be just to read your object, promise
+// you manage your memory,
+// you may pass pointers
 
 typedef struct array array;
 struct array
@@ -19,11 +19,7 @@ struct array
 	unsigned long long int total_size;
 
 	// we maintain array of pointers each of which point to actual data
-	void** data_p_p;
-
-	// size of data, stored in each element of the array
-	// array is homogenous ofcourse, because its array
-	unsigned long long int size_of_data_element;
+	const void** data_p_p;
 
 	// this is the factor, by which the previous size of data_p_p will be incremented
 	unsigned long long int increment_factor;
@@ -36,7 +32,7 @@ struct array
 
 // returns a new array with total_size as the initial size, with no elements inside,
 // the size of each element could be size_of_data_element
-array* get_array(unsigned long long int initial_size, unsigned long long int size_of_data_element);
+array* get_array(unsigned long long int initial_size);
 
 // deletes all the memory allocated by the array and its ownself
 void delete_array(array* array_p);
