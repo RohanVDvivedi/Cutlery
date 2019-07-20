@@ -14,7 +14,7 @@ void print_ts(const void* tsv)
 
 int main()
 {
-	tree* tree_p = get_tree(3, sizeof(ts), &((ts){0, "zero"}));
+	tree* tree_p = get_tree(3, &((ts){0, "zero"}));
 	print_tree(tree_p, print_ts);
 
 	set_child(tree_p, tree_p->root_node, &((ts){1, "one"}), 0);
