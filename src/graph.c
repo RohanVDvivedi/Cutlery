@@ -35,7 +35,7 @@ void join_nodes(graph* graph_p, unsigned long long int node0, unsigned long long
 
 void delete_graph(graph* graph_p)
 {
-	for(unsigned long long int i = 0; i < graph_p->node_list->total_size; i++)
+	for(unsigned long long int i = 0; i < graph_p->node_count; i++)
 	{
 		const node* deletion_node = get_mmarray_element(graph_p->node_list, i);
 		delete_array(deletion_node->edges);
@@ -43,6 +43,16 @@ void delete_graph(graph* graph_p)
 	delete_mmarray(graph_p->node_list);
 	delete_mmarray(graph_p->edge_list);
 	free(graph_p);
+}
+
+void print_node(const void* node_p, void (*print_node_data_element)(const void* data_p))
+{
+
+}
+
+void print_edge(const void* edge_p, void (*print_edge_data_element)(const void* data_p))
+{
+
 }
 
 void print_graph(const graph* graph_p, void (*print_node_data_element)(const void* data_p), void (*print_edge_data_element)(const void* data_p))
