@@ -23,6 +23,15 @@ unsigned long long int add_node(graph* graph_p, const void* node_data_p)
 	return index_of_new_node;
 }
 
+void add_reference_of_edge_to_node(node* node_p, const edge* edge_p)
+{
+	if(node_p->edges->total_size <= node_p->edge_count_of_node)
+	{
+		expand_array(node_p->edges);
+	}
+	set_element(node_p->edges, edge_p, ((node*)node_p)->edge_count_of_node++);
+}
+
 void join_nodes(graph* graph_p, unsigned long long int node0, unsigned long long int node1, const void* edge_data_p)
 {
 	const node* node0_p = get_mmarray_element(graph_p->node_list, node0);
@@ -35,8 +44,8 @@ void join_nodes(graph* graph_p, unsigned long long int node0, unsigned long long
 	unsigned long long int index_of_new_edge = graph_p->edge_count;
 	set_mmarray_element(graph_p->edge_list, &new_edge, graph_p->edge_count++);
 	const edge* new_edge_p = get_mmarray_element(graph_p->edge_list, index_of_new_edge);
-	set_element(node0_p->edges, new_edge_p, ((node*)node0_p)->edge_count_of_node++);
-	set_element(node1_p->edges, new_edge_p, ((node*)node1_p)->edge_count_of_node++);
+	add_reference_of_edge_to_node(((node*)node0_p), new_edge_p);
+	add_reference_of_edge_to_node(((node*)node1_p), new_edge_p);
 }
 
 void delete_graph(graph* graph_p)

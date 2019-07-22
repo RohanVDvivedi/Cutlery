@@ -47,6 +47,13 @@ int main()
 	join_nodes(graph_p, 3, 4, &((tse){6, 3, 4, "six"}));
 	join_nodes(graph_p, 0, 5, &((tse){7, 0, 5, "seven"}));
 	print_graph(graph_p, print_tsn, print_tse);
+	add_node(graph_p, &((tsn){6, "six"}));
+	add_node(graph_p, &((tsn){7, "seven"}));
+	join_nodes(graph_p, 6, 7, &((tse){8, 6, 7, "eight"}));
+	join_nodes(graph_p, 5, 6, &((tse){9, 5, 6, "nine"}));
+	join_nodes(graph_p, 2, 2, &((tse){10, 2, 2, "ten"}));
+	join_nodes(graph_p, 7, 5, &((tse){11, 7, 5, "eleven"}));
+	print_graph(graph_p, print_tsn, print_tse);
 	delete_graph(graph_p);
 	return 0;
 }
