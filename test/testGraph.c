@@ -18,12 +18,14 @@ struct testedgestruct
 
 void print_tsn(const void* tsv)
 {
-	printf(" %d, %s", ((tsn*)tsv)->index, ((tsn*)tsv)->s);
+	printf(" %d, %s", ((tsn*)((node*)tsv)->node_data)->index, ((tsn*)((node*)tsv)->node_data)->s);
+	print_node_connections(((node*)tsv));
 }
 
 void print_tse(const void* tsv)
 {
-	printf(" %d, %d, %d, %s", ((tse*)tsv)->index, ((tse*)tsv)->a, ((tse*)tsv)->b, ((tse*)tsv)->s);
+	printf(" %d, %d, %d, %s", ((tse*)((edge*)tsv)->edge_data)->index, ((tse*)((edge*)tsv)->edge_data)->a, ((tse*)((edge*)tsv)->edge_data)->b, ((tse*)((edge*)tsv)->edge_data)->s);
+	print_edge_connections(((edge*)tsv));
 }
 
 int main()
@@ -39,12 +41,12 @@ int main()
 	join_nodes(graph_p, 0, 2, &((tse){1, 0, 2, "one"}));
 	join_nodes(graph_p, 1, 3, &((tse){2, 1, 3, "two"}));
 	join_nodes(graph_p, 2, 3, &((tse){3, 2, 3, "three"}));
-	//print_graph(graph_p, print_tsn, print_tse);
+	print_graph(graph_p, print_tsn, print_tse);
 	join_nodes(graph_p, 1, 4, &((tse){4, 1, 4, "four"}));
 	join_nodes(graph_p, 2, 4, &((tse){5, 2, 4, "five"}));
 	join_nodes(graph_p, 3, 4, &((tse){6, 3, 4, "six"}));
 	join_nodes(graph_p, 0, 5, &((tse){7, 0, 5, "seven"}));
-	//print_graph(graph_p, print_tsn, print_tse);
+	print_graph(graph_p, print_tsn, print_tse);
 	delete_graph(graph_p);
 	return 0;
 }

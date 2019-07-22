@@ -15,6 +15,9 @@ struct node
 	// every node will hold some data
 	const void* node_data;
 
+	// the edges that we are holding in the edges array for this node
+	unsigned long long int edge_count_of_node;
+
 	// list of edges that make us in or out of the node
 	array* edges;
 };
@@ -63,5 +66,11 @@ void delete_graph(graph* graph_p);
 
 // prints the graph
 void print_graph(const graph* graph_p, void (*print_node_data_element)(const void* data_p), void (*print_edge_data_element)(const void* data_p));
+
+// prints pointers to all the edges of the node
+void print_node_connections(const node* node_p);
+
+// prints pointers to both the nodes that the edge connects
+void print_edge_connections(const edge* edge_p);
 
 #endif
