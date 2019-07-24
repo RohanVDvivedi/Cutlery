@@ -5,6 +5,14 @@
 #include<stdlib.h>
 #include<string.h>
 
+// hashmap only manages (create and free) the buckets
+// you are responsible for managing key and value pointers, passed to hashmap
+// collisions are resolved by managing buckets as a linked list
+// hashmap will not clone/touch/modify/free the memory pointed to by the pointer passed for key and value referencing
+// and definately not create any new look alikes of key,value,
+// hashmap will just store them directly in bucket and use the memory pointed by them when required
+
+
 typedef struct bucket bucket;
 struct bucket
 {

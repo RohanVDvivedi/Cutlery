@@ -7,7 +7,7 @@
 #include<array.h>
 
 // the graph will manage the data of the nodes and edges
-// but not your data, the data hanging by the nodes and edges
+// but not your data, the data that hangs by the nodes and edges (namely node_data_p and edge_data_p)
 
 typedef struct node node;
 struct node
@@ -40,25 +40,31 @@ struct graph
 	unsigned long long int node_count;
 
 	// list of nodes in this graph
+	// we use mmarray here, since we dont want to do memory management for our nodes
+	// even here mmarray only stores a shallow clone of the node,
+	// hence we effectively still can reference node_data_p but not own it
 	mmarray* node_list;
 
 	// number of edges in the graph
 	unsigned long long int edge_count;
 
 	// list of edges in this graph
+	// we use mmarray here, since we dont want to do memory management for our nodes
+	// even here mmarray only stores a shallow clone of the edge,
+	// hence we effectively still can reference edge_data_p but not own it
 	mmarray* edge_list;
 
 	// value of expected edges per node
 	unsigned long long int expected_median_edge_count_per_node;
 };
 
-// builds a new graph
+// builds a new graph, which has initial capacity of expected_nodes and expected_edges
 graph* get_graph(unsigned long long int expected_nodes, unsigned long long int expected_edges);
 
 // adds a node to the graph which will hold the node_data_p 
 unsigned long long int add_node(graph* graph_p, const void* node_data_p);
 
-// joins 2 nodes creating an edge between them, which will hold data p
+// joins 2 nodes creating an edge between them, which will hold edge_data_p
 void join_nodes(graph* graph_p, unsigned long long int node0, unsigned long long int node1, const void* edge_data_p);
 
 // deletes all the nodes and edges and the graph itself

@@ -8,7 +8,9 @@
 // each tree branches on nodes
 // tree maintains its own nodes
 // you manage your data
-// tree will manage  its own data
+// tree will manage its own data (the node structure)
+// tree will not manage your data (the data pointed to by data_p in set_child)
+// tree will not clone/touch/modify/free the memory pointed to by the pointer passed for referencing your data
 
 typedef struct node node;
 struct node

@@ -5,10 +5,11 @@
 #include<stdlib.h>
 #include<string.h>
 
-// mmarray is memory managed
+// mmarray is memory managed array
 // the mm array will maintain all of its memory on its own
-// you manage your memory, array will manage its own memory on heap
+// you manage your memory, ,,array will manage its own memory on heap
 // you may pass pointers, but that will be just to read your object
+// mmarray shallow clones your objects (so, for any pointer, mmarray only copies pointer value and not create its corresponding data)
 
 typedef struct mmarray mmarray;
 struct mmarray

@@ -6,8 +6,10 @@
 #include<string.h>
 
 // the array will maintain all of its memory on its own
-// you manage your memory,
-// you may pass pointers
+// you manage your memory, you manage (create and free) the memory pointed to by data_p pointers (passed in array by set_element)
+// the pointer you pass will be stored internally and managed by the array
+// array does not touch/clone/modify your data, array just stores your pointers in a dynamic array
+// array is just an implementation to dynamic array of all of your pointers
 
 typedef struct array array;
 struct array
