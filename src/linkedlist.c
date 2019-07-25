@@ -11,6 +11,7 @@ linkedlist* get_linkedlist()
 node* get_new_node(const void* data_p)
 {
 	node* node_p = (node*) calloc(1, sizeof(node));
+	node_p->data_p = data_p;
 	return node_p;
 }
 
@@ -212,15 +213,15 @@ void delete_linkedlist(linkedlist* ll)
 
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 {
-	printf("linkedlist : ");
+	printf("linkedlist : \n");
 	printf("head : %d\n", ((int)ll->head));
 	printf("tail : %d\n", ((int)ll->tail));
 	node* node_p = ll->head;
 	while(node_p != NULL)
 	{
-		printf("\tnode => %d\n", ((int)node_p));
 		printf("\tprev => %d\n", ((int)node_p->prev));
-		printf("\tdata => ");print_element(node_p->data_p);printf("\n");
+		printf("\t\tnode => %d\n", ((int)node_p));
+		printf("\t\tdata => ");print_element(node_p->data_p);printf("\n");
 		printf("\tnext => %d\n", ((int)node_p->next));
 		printf("\n");
 		node_p = node_p->next;
