@@ -48,12 +48,68 @@ void insert_tail(linkedlist* ll, const void* data_p)
 
 void insert_node_before(linkedlist* ll, node* node_p, const void* data_p)
 {
+	node* new_node = get_new_node(data_p);
+	
+	// if there is no node before node_p
+	// we are basically adding a node to the head
+	if(node_p->prev == NULL)
+	{
+		// the prev of new node is NULL
+		// and its next is node_p
+		// since it is going to be the last
+		new_node->prev = NULL;
+		new_node->next = node_p;
 
+		// the new node is before node_p (next of the new_node)
+		new_node->next->prev = new_node;
+
+		// since this is the new head node
+		// we update the reference to the head node in the linkedlist struct
+		ll->head = new_node;
+	}
+	else
+	{
+		// first update the new_node's prev and next references
+		new_node->prev = node_p->prev;
+		new_node->next = node_p;
+
+		// then update the next of prev of new_node to itself and the prev of next of new_node to itself
+		new_node->prev->next = new_node;
+		new_node->next->prev = new_node;
+	}
 }
 
 void insert_node_after(linkedlist* ll, node* node_p, const void* data_p)
 {
+	node* new_node = get_new_node(data_p);
 
+	// if there is no node after node_p
+	// we are basically adding a node to the tail
+	if(node_p->next == NULL)
+	{
+		// the prev of new node is node_p
+		// and its next is NULL
+		// since it is going to be the last
+		new_node->prev = node_p;
+		new_node->next = NULL;
+
+		// the new node is after node_p (prev of new_node)
+		new_node->prev->next = new_node;
+
+		// since this is the new tail node
+		// we update the reference to the tail node in the linkedlist struct
+		ll->tail = new_node;
+	}
+	else
+	{
+		// first update the new_node's prev and next references
+		new_node->prev = node_p;
+		new_node->next = node_p->next;
+
+		// then update the next of prev of new_node to itself and the prev of next of new_node to itself
+		new_node->prev->next = new_node;
+		new_node->next->prev = new_node;
+	}
 }
 
 void remove_head(linkedlist* ll)
