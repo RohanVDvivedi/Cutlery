@@ -24,6 +24,16 @@ void insert_tail(linkedlist* ll, const void* data_p)
 
 }
 
+void intert_node_before(node* node_p, const void* data_p)
+{
+
+}
+
+void intert_node_after(node* node_p, const void* data_p)
+{
+
+}
+
 void remove_head(linkedlist* ll)
 {
 	node* old_head = ll->head;
@@ -50,6 +60,11 @@ void remove_tail(linkedlist* ll)
 		}
 		delete_node(old_tail);
 	}
+}
+
+void remove_node(node* node_p)
+{
+	
 }
 
 const void* get_head_data(linkedlist* ll)
