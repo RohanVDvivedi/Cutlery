@@ -24,47 +24,51 @@ void insert_tail(linkedlist* ll, const void* data_p)
 
 }
 
-void intert_node_before(node* node_p, const void* data_p)
+void insert_node_before(node* node_p, const void* data_p)
 {
 
 }
 
-void intert_node_after(node* node_p, const void* data_p)
+void insert_node_after(node* node_p, const void* data_p)
 {
 
 }
 
 void remove_head(linkedlist* ll)
 {
-	node* old_head = ll->head;
-	if(old_head != NULL)
+	if(ll->head != NULL)
 	{
-		ll->head = old_head->next;
-		if(ll->head != NULL)
-		{
-			ll->head->prev = NULL;
-		}
-		delete_node(old_head);
+		remove_node(ll, ll->head);
 	}
 }
 
 void remove_tail(linkedlist* ll)
 {
-	node* old_tail = ll->tail;
-	if(old_tail != NULL)
+	if(ll->tail != NULL)
 	{
-		ll->tail = old_tail->prev;
-		if(ll->tail != NULL)
-		{
-			ll->tail->next = NULL;
-		}
-		delete_node(old_tail);
+		remove_node(ll, ll->tail);
 	}
 }
 
-void remove_node(node* node_p)
+void remove_node(linkedlist* ll, node* node_p)
 {
-	
+	if(node_p->next != NULL)
+	{
+		node_p->next->prev = node_p->prev;
+	}
+	if(node_p->prev != NULL)
+	{
+		node_p->prev->next = node_p->next;
+	}
+	if(node_p == ll->head)
+	{
+		ll->head = node_p->next;
+	}
+	if(node_p == ll->tail)
+	{
+		ll->tail = node_p->prev;
+	}
+	delete_node(node_p);
 }
 
 const void* get_head_data(linkedlist* ll)

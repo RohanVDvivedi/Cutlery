@@ -44,10 +44,10 @@ void insert_head(linkedlist* ll,const void* data_p);
 void insert_tail(linkedlist* ll,const void* data_p);
 
 // create a node and insert it in linkedlist before node_p
-void intert_node_before(node* node_p, const void* data_p);
+void insert_node_before(node* node_p, const void* data_p);
 
 // create a node and insert it in linkedlist after node_p
-void intert_node_after(node* node_p, const void* data_p);
+void insert_node_after(node* node_p, const void* data_p);
 
 // removes the head, now the new head is next of the previous head
 void remove_head(linkedlist* ll);
@@ -56,7 +56,7 @@ void remove_head(linkedlist* ll);
 void remove_tail(linkedlist* ll);
 
 // remove the given node from the linked list
-void remove_node(node* node_p);
+void remove_node(linkedlist*ll, node* node_p);
 
 // simply gets head data
 const void* get_head_data(linkedlist* ll);
