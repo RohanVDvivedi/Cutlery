@@ -14,6 +14,11 @@ node* get_new_node(const void* data_p)
 	return node_p;
 }
 
+void delete_node(node* node_p)
+{
+	free(node_p);
+}
+
 void insert_head(linkedlist* ll, const void* data_p)
 {
 	// case when the linkedlist is empty
@@ -194,11 +199,6 @@ const node* get_nth_node_from_tail(linkedlist* ll, unsigned long long int n)
 		node_p = node_p->prev;
 	}
 	return node_p;
-}
-
-void delete_node(node* node_p)
-{
-	free(node_p);
 }
 
 void delete_linkedlist(linkedlist* ll)

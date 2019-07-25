@@ -38,18 +38,18 @@ struct linkedlist
 linkedlist* get_linkedlist();
 
 // inserts a new head, the previous head is now next to the new head
-void insert_head(linkedlist* ll,const void* data_p);
+void insert_head(linkedlist* ll, const void* data_p);
 
 // inserts a new tail, the previous tail is now prev to the new tail
-void insert_tail(linkedlist* ll,const void* data_p);
+void insert_tail(linkedlist* ll, const void* data_p);
 
 // create a node and insert it in linkedlist before node_p
 // here node_p may not be null
-void insert_node_before(node* node_p, const void* data_p);
+void insert_node_before(linkedlist* ll, node* node_p, const void* data_p);
 
 // create a node and insert it in linkedlist after node_p
 // here node_p may not be null
-void insert_node_after(node* node_p, const void* data_p);
+void insert_node_after(linkedlist* ll, node* node_p, const void* data_p);
 
 // removes the head, now the new head is next of the previous head
 void remove_head(linkedlist* ll);
