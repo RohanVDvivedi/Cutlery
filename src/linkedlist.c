@@ -23,6 +23,7 @@ void insert_head(linkedlist* ll, const void* data_p)
 		ll->tail = ll->head;
 	}
 	// incase when there is atleast 1 node
+	// we place the new node before the current head node
 	else
 	{
 		insert_node_before(ll, ll->head, data_p);
@@ -38,6 +39,7 @@ void insert_tail(linkedlist* ll, const void* data_p)
 		ll->head = ll->tail;
 	}
 	// incase when there is atleast 1 node
+	// we place the new node after the current tail node
 	else
 	{
 		insert_node_after(ll, ll->tail, data_p);
@@ -56,6 +58,7 @@ void insert_node_after(linkedlist* ll, node* node_p, const void* data_p)
 
 void remove_head(linkedlist* ll)
 {
+	// if there is a head node remove the head node
 	if(ll->head != NULL)
 	{
 		remove_node(ll, ll->head);
@@ -64,6 +67,7 @@ void remove_head(linkedlist* ll)
 
 void remove_tail(linkedlist* ll)
 {
+	// if there is a tail node remove the tail node
 	if(ll->tail != NULL)
 	{
 		remove_node(ll, ll->tail);
@@ -72,22 +76,35 @@ void remove_tail(linkedlist* ll)
 
 void remove_node(linkedlist* ll, node* node_p)
 {
+	// if the node to be removed is not the last node
+	// we have to update the prev pointer of "the node next to node_p" to the "previous node of node_p" 
 	if(node_p->next != NULL)
 	{
 		node_p->next->prev = node_p->prev;
 	}
+
+	// if the node to be removed is not the first node
+	// we have to update the next pointer of "the node previous to node_p" to the "next node of node_p" 
 	if(node_p->prev != NULL)
 	{
 		node_p->prev->next = node_p->next;
 	}
+
+	// if node_p is the head node
+	// update the head reference of the linkedlist to next of the node_p before deletion
 	if(node_p == ll->head)
 	{
 		ll->head = node_p->next;
 	}
+
+	// if node_p is the head node
+	// update the tail reference of the linkedlist to prev of the node_p before deletion
 	if(node_p == ll->tail)
 	{
 		ll->tail = node_p->prev;
 	}
+
+	// delete node_p
 	delete_node(node_p);
 }
 
