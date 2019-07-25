@@ -118,6 +118,28 @@ const void* get_tail_data(linkedlist* ll)
 	return ll == NULL ? NULL : (ll->tail == NULL ? NULL : ll->tail->data_p) ;
 }
 
+const node* get_nth_node_from_head(linkedlist* ll, unsigned long long int n)
+{
+	node* node_p = ll->head;
+	while(node_p != NULL && n > 0)
+	{
+		n--;
+		node_p = node_p->next;
+	}
+	return node_p;
+}
+
+const node* get_nth_node_from_tail(linkedlist* ll, unsigned long long int n)
+{
+	node* node_p = ll->tail;
+	while(node_p != NULL && n > 0)
+	{
+		n--;
+		node_p = node_p->prev;
+	}
+	return node_p;
+}
+
 void delete_node(node* node_p)
 {
 	free(node_p);
@@ -130,4 +152,22 @@ void delete_linkedlist(linkedlist* ll)
 		remove_head(ll);
 	}
 	free(ll);
+}
+
+void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
+{
+	printf("linkedlist : ");
+	printf("head : %d\n", ((int)ll->head));
+	printf("tail : %d\n", ((int)ll->tail));
+	node* node_p = ll->head;
+	while(node_p != NULL)
+	{
+		printf("\tnode => %d\n", ((int)node_p));
+		printf("\tprev => %d\n", ((int)node_p->prev));
+		printf("\tdata => ");print_element(node_p->data_p);printf("\n");
+		printf("\tnext => %d\n", ((int)node_p->next));
+		printf("\n");
+		node_p = node_p->next;
+	}
+	printf("\n");
 }

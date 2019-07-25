@@ -66,7 +66,16 @@ const void* get_head_data(linkedlist* ll);
 // simply gets tail
 const void* get_tail_data(linkedlist* ll);
 
+// get pointer to nth element from head by doing next next
+const node* get_nth_node_from_head(linkedlist* ll, unsigned long long int n);
+
+// get pointer to nth element from tail by doing next next
+const node* get_nth_node_from_tail(linkedlist* ll, unsigned long long int n);
+
 // deletes the linked list and all of its nodes
 void delete_linkedlist(linkedlist* ll);
+
+// prints complete linked list
+void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));
 
 #endif
