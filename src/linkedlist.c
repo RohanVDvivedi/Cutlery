@@ -16,20 +16,40 @@ node* get_new_node(const void* data_p)
 
 void insert_head(linkedlist* ll, const void* data_p)
 {
-
+	// case when the linkedlist is empty
+	if(ll->head == NULL)
+	{
+		ll->head = get_new_node(data_p);
+		ll->tail = ll->head;
+	}
+	// incase when there is atleast 1 node
+	else
+	{
+		insert_node_before(ll, ll->head, data_p);
+	}
 }
 
 void insert_tail(linkedlist* ll, const void* data_p)
 {
-
+	// case when the linkedlist is empty
+	if(ll->tail == NULL)
+	{
+		ll->tail = get_new_node(data_p);
+		ll->head = ll->tail;
+	}
+	// incase when there is atleast 1 node
+	else
+	{
+		insert_node_after(ll, ll->tail, data_p);
+	}
 }
 
-void insert_node_before(node* node_p, const void* data_p)
+void insert_node_before(linkedlist* ll, node* node_p, const void* data_p)
 {
 
 }
 
-void insert_node_after(node* node_p, const void* data_p)
+void insert_node_after(linkedlist* ll, node* node_p, const void* data_p)
 {
 
 }
