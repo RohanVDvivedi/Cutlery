@@ -8,15 +8,17 @@
 
 // the below is a array based stack implementation of stack
 
+#include<array.h>
+
 typedef struct stack stack;
 struct stack
 {
 	array* stackHolder;
-	unsigned long long int lastElementIndex;
+	unsigned long long int stackSize;
 };
 
 // build and get a new stack
-stack* get_stack();
+stack* get_stack(unsigned long long int expected_size);
 
 // push a new element to the stack
 void push(stack* stack_p, const void* data_p);

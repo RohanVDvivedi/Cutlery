@@ -8,16 +8,18 @@
 
 // the below is a array based ring buffer implementation of queue
 
+#include<array.h>
+
 typedef struct queue queue;
 struct queue
 {
 	array* queueHolder;
-	unsigned long long int firstElementIndex;
-	unsigned long long int lastElementIndex;
+	unsigned long long int earliestElementIndex;
+	unsigned long long int latestElementIndex;
 };
 
 // build and get a new queue
-queue* get_queue();
+queue* get_queue(unsigned long long int expected_size);
 
 // push a new element to the queue
 void push(queue* queue_p, const void* data_p);
@@ -30,5 +32,11 @@ const void* get_top(queue* queue_p);
 
 // delete queue and queueHolder array
 void delete_queue(queue* queue_p);
+
+// if the queue is empty
+int isQueueEmpty(queue* queue_p);
+
+// if the queueHolder is full and needs expansion
+int isQueueHolderFull(queue* queue_p);
 
 #endif
