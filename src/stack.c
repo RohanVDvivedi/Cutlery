@@ -10,7 +10,7 @@ stack* get_stack(unsigned long long int expected_size)
 
 void push(stack* stack_p, const void* data_p)
 {
-	if(stack_p->stackSize <= stack_p->stackHolder->total_size)
+	if(stack_p->stackSize >= stack_p->stackHolder->total_size)
 	{
 		expand_array(stack_p->stackHolder);
 	}
@@ -42,5 +42,15 @@ void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
 {
 	printf("stack : \n");
 	printf("\tstackSize : %llu\n", stack_p->stackSize);
-	print_array(stack_p->stackHolder, print_element);
+	printf("\tstack array : ");print_array(stack_p->stackHolder, print_element);printf("\n");
+	printf("\tthe top element : ");
+	if(get_top(stack_p)!=NULL)
+	{
+		print_element(get_top(stack_p));
+	}
+	else
+	{
+		printf("NULL");
+	}
+	printf("\n");
 }
