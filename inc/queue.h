@@ -39,4 +39,7 @@ int isQueueEmpty(queue* queue_p);
 // if the queueHolder is full and needs expansion
 int isQueueHolderFull(queue* queue_p);
 
+// prints the queue
+void print_queue(queue* queue_p, void (*print_element)(const void* data_p));
+
 #endif

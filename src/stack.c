@@ -37,3 +37,10 @@ void delete_stack(stack* stack_p)
 	stack_p->stackSize = 0;
 	free(stack_p);
 }
+
+void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
+{
+	printf("stack : \n");
+	printf("\tstackSize : %llu\n", stack_p->stackSize);
+	print_array(stack_p->stackHolder, print_element);
+}

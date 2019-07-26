@@ -32,4 +32,7 @@ const void* get_top(stack* stack_p);
 // delete stack and stackHolder array
 void delete_stack(stack* stack_p);
 
+// prints the stack
+void print_stack(stack* stack_p, void (*print_element)(const void* data_p));
+
 #endif

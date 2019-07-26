@@ -69,3 +69,11 @@ int isQueueHolderFull(queue* queue_p)
 {
 	return revolveToNextIndex(queue_p, queue_p->latestElementIndex) == queue_p->earliestElementIndex && get_element(queue_p->queueHolder, queue_p->earliestElementIndex) != NULL;
 }
+
+void print_queue(queue* queue_p, void (*print_element)(const void* data_p))
+{
+	printf("queue : \n");
+	printf("\tearliestElementIndex : %llu\n", queue_p->earliestElementIndex);
+	printf("\tlatestElementIndex : %llu\n", queue_p->latestElementIndex);
+	print_array(queue_p->queueHolder, print_element);
+}
