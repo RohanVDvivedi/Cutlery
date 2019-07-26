@@ -18,13 +18,16 @@ void push(queue* queue_p, const void* data_p)
 {
 	if(isQueueHolderFull(queue_p))
 	{
-		queue queue_test = *queue_p;
+		queue queue_test = (*queue_p);
 		unsigned long long int prev_total_size = queue_p->queueHolder->total_size;
 		expand_array(queue_p->queueHolder);
+		unsigned long long int curr_total_size = queue_p->queueHolder->total_size;
 		for(unsigned long long int i = 0; i < prev_total_size; i++)
 		{
+			queue_p->queueHolder->total_size = prev_total_size;
 			const void* data_p = get_top(&queue_test);
 			pop(&queue_test);
+			queue_p->queueHolder->total_size = curr_total_size;
 			push(queue_p, data_p);
 		}
 	}
@@ -75,5 +78,5 @@ void print_queue(queue* queue_p, void (*print_element)(const void* data_p))
 	printf("queue : \n");
 	printf("\tearliestElementIndex : %llu\n", queue_p->earliestElementIndex);
 	printf("\tlatestElementIndex : %llu\n", queue_p->latestElementIndex);
-	print_array(queue_p->queueHolder, print_element);
+	print_array(queue_p->queueHolder, print_element);printf("\n\n");
 }
