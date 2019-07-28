@@ -126,7 +126,7 @@ void print_tabs(unsigned long long int tabs_count)
 }
 
 // prints only the node pointed to by node_p
-void print_node(const node* node_p, void (*print_data)(const void* node_p), unsigned long long int tabs_count)
+void print_node(const node* node_p, void (*print_data)(const void* data_p), unsigned long long int tabs_count)
 {
 	if(node_p != NULL)
 	{
@@ -139,7 +139,7 @@ void print_node(const node* node_p, void (*print_data)(const void* node_p), unsi
 }
 
 // prints node and all of its children aswell recursively
-void print_nodes_from(const tree* tree_p, const node* node_p, void (*print_data)(const void* node_p), unsigned long long int tabs_count)
+void print_nodes_from(const tree* tree_p, const node* node_p, void (*print_data)(const void* data_p), unsigned long long int tabs_count)
 {
 	if(node_p != NULL)
 	{
@@ -157,7 +157,7 @@ void print_nodes_from(const tree* tree_p, const node* node_p, void (*print_data)
 }
 
 // print tree
-void print_tree(const tree* tree_p, void (*print_data)(const void* node_p))
+void print_tree(const tree* tree_p, void (*print_data)(const void* data_p))
 {
 	printf("printing tree : \n");
 	if(tree_p != NULL)

@@ -62,6 +62,6 @@ void remove_child(const tree* tree_p, node* parent, unsigned long long int child
 void delete_tree(tree* tree_p);
 
 // print tree
-void print_tree(const tree* tree_p, void (*print_data)(const void* node_p));
+void print_tree(const tree* tree_p, void (*print_data)(const void* data_p));
 
 #endif
