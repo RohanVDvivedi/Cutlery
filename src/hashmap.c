@@ -5,6 +5,8 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 	hashmap* hashmap_p = ((hashmap*) calloc(1, sizeof(hashmap)));
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->key_compare = key_compare;
+
+	// initialize array of the hashmap, it is a buckets_holder
 	hashmap_p->buckets_holder = get_array(bucket_count);
 	return hashmap_p;
 }
@@ -50,12 +52,6 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 	// get index
 	unsigned long long int index = get_index(hashmap_p, key);
 
-	// if the index is pointing to NULL it has to be initialized to a linkedlist
-	if(get_element(hashmap_p->buckets_holder, index) == NULL)
-	{
-		set_element(hashmap_p->buckets_holder, get_linkedlist(), index);
-	}
-
 	// find the bucket in the hashmap, which has the same key as this bucket
 	node* found_node_p = find_node(hashmap_p, key);
 	bucket* found_bucket_p = ((found_node_p == NULL) ? NULL : ((bucket*)found_node_p->data_p));
@@ -67,10 +63,16 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 	}
 	else
 	{
-		// new bucket gets added before the first bucket, in the linked list
-		const bucket* new_bucket_p = get_bucket(key, value);
+		// if the index is pointing to NULL linedlist, it has to be initialized first
 		linkedlist* linkedlist_p = ((linkedlist*)get_element(hashmap_p->buckets_holder, index));
-		insert_head(linkedlist_p, new_bucket_p);
+		if(linkedlist_p == NULL)
+		{
+			set_element(hashmap_p->buckets_holder, get_linkedlist(), index);
+		}
+
+		// new bucket gets added before the first bucket, in the linked list
+		linkedlist_p = ((linkedlist*)get_element(hashmap_p->buckets_holder, index));
+		insert_head(linkedlist_p, get_bucket(key, value));
 	}
 }
 
@@ -78,12 +80,6 @@ void put_bucket(hashmap* hashmap_p, bucket* bucket_p)
 {
 	// get index
 	unsigned long long int index = get_index(hashmap_p, bucket_p->key);
-
-	// if the index is pointing to NULL it has to be initialized to a linkedlist
-	if(get_element(hashmap_p->buckets_holder, index) == NULL)
-	{
-		set_element(hashmap_p->buckets_holder, get_linkedlist(), index);
-	}
 
 	// find the bucket in the hashmap, which has the same key as this bucket
 	node* found_node_p = find_node(hashmap_p, bucket_p->key);
@@ -95,8 +91,15 @@ void put_bucket(hashmap* hashmap_p, bucket* bucket_p)
 		remove_value(hashmap_p, found_bucket_p->key);
 	}
 
-	// new bucket gets added before the first bucket, in the linked list
+	// if the linkedlist is pointing to NULL, it has to be initialized first
 	linkedlist* linkedlist_p = ((linkedlist*)get_element(hashmap_p->buckets_holder, index));
+	if(linkedlist_p == NULL)
+	{
+		set_element(hashmap_p->buckets_holder, get_linkedlist(), index);
+	}
+
+	// new bucket gets added before the first bucket, in the linked list
+	linkedlist_p = ((linkedlist*)get_element(hashmap_p->buckets_holder, index));
 	insert_head(linkedlist_p, bucket_p);
 }
 
@@ -117,12 +120,16 @@ int remove_value(hashmap* hashmap_p, const void* key)
 
 	// find the bucket index group the bucket_p belongs to
 	node* found_node_p = find_node(hashmap_p, key);
+	bucket* found_bucket_p = ((found_node_p == NULL) ? NULL : (bucket*)found_node_p->data_p);
 
-	int return_val = ((found_node_p == NULL) ? 0 : 1);
-
-	// remove the node of the particular bucket
-	delete_bucket(((bucket*)found_node_p->data_p));
-	remove_node(linkedlist_p, found_node_p);
+	// remove the node of the particular bucket, if such a bucket exists
+	int return_val = 0;
+	if(found_bucket_p != NULL)
+	{
+		return_val = 1;
+		delete_bucket(found_bucket_p);
+		remove_node(linkedlist_p, found_node_p);
+	}
 
 	return return_val;
 }
@@ -139,25 +146,32 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 		linkedlist* linkedlist_p = ((linkedlist*)get_element(hashmap_p->buckets_holder, index));
 		if(linkedlist_p != NULL)
 		{
+			// iterate over all the elements of the linkedlist
 			node* node_p = linkedlist_p->head;
 			while(node_p != NULL)
 			{
 				put_bucket(&new_hashmap_properties, ((bucket*)node_p->data_p));
 				node_p = node_p->next;
 			}
+
+			// delete linkedlist
 			delete_linkedlist(linkedlist_p);
+
+			// since the hashmap is deleted, we set the pointer of linkedlist to NULL, in the array
 			set_element(hashmap_p->buckets_holder, NULL, index);
 		}
 	}
+
+	// delete bucket array and assign a new one to it
 	delete_array(hashmap_p->buckets_holder);
 
-	// reassign the values to it from the new hash map
+	// by reassign the values to it from the new hash map
 	(*hashmap_p) = new_hashmap_properties;
 }
 
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
-	// iterate over all the elements in the hashmap_p
+	// iterate over all the elements (linkedlists) in the hashmap_p
 	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
 	{
 		printf("index = %lld\n", index);
@@ -185,7 +199,8 @@ void delete_hashmap(hashmap* hashmap_p)
 			node* node_p = linkedlist_p->head;
 			while(node_p != NULL)
 			{
-				delete_bucket(((bucket*)node_p->data_p));
+				bucket* bucket_p = ((bucket*)node_p->data_p);
+				delete_bucket(bucket_p);
 				node_p = node_p->next;
 			}
 			delete_linkedlist(linkedlist_p);
