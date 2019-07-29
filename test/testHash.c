@@ -75,21 +75,21 @@ int main()
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	remove_bucket(hashmap_p, &((ke){2}));
+	remove_value(hashmap_p, &((ke){2}));
 
-	remove_bucket(hashmap_p, &((ke){6}));
+	remove_value(hashmap_p, &((ke){6}));
 
-	remove_bucket(hashmap_p, &((ke){4}));
-
-	print_hashmap(hashmap_p, print_key, print_ts);
-
-	remove_bucket(hashmap_p, &((ke){7}));
-
-	remove_bucket(hashmap_p, &((ke){8}));
+	remove_value(hashmap_p, &((ke){4}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	remove_bucket(hashmap_p, &((ke){9}));
+	remove_value(hashmap_p, &((ke){7}));
+
+	remove_value(hashmap_p, &((ke){8}));
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	remove_value(hashmap_p, &((ke){9}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 

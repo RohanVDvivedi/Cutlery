@@ -4,6 +4,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<array.h>
+#include<linkedlist.h>
+#include<bucket.h>
 
 // hashmap only manages (create and free) the buckets
 // you are responsible for managing key and value pointers, passed to hashmap
@@ -12,26 +15,9 @@
 // and definately not create any new look alikes of key,value,
 // hashmap will just store them directly in bucket and use the memory pointed by them when required
 
-
-typedef struct bucket bucket;
-struct bucket
-{
-	// pointer to the key, for this bucket
-	const void* key;
-
-	// pointer to the data, that is bucket holds
-	const void* value;
-
-	// for collision handling mechanism 
-	bucket* next_bucket;
-};
-
 typedef struct hashmap hashmap;
 struct hashmap
 {
-	// the number of buckets this hashmap holds
-	unsigned long long int bucket_count;
-
 	// hash function ( <3 my love )
 	unsigned long long int (*hash_function)(const void* key);
 
@@ -39,7 +25,7 @@ struct hashmap
 	int (*key_compare)(const void* key1, const void* key2);
 
 	// pinter to the array of buckets
-	bucket** buckets;
+	array* buckets_holder;
 };
 
 // build and get hashmap with a fixed bucket count,
@@ -50,10 +36,10 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 void put_entry(hashmap* hashmap_p, const void* key, const void* value);
 
 // get the value from the hashmap, stored at a particular key
-const void* get_value(const hashmap* hashmap_p, const void* key);
+const void* find_value(const hashmap* hashmap_p, const void* key);
 
 // returns 1 if the bucket is found and removed from hashmap and deleted
-int remove_bucket(hashmap* hashmap_p, const void* key);
+int remove_value(hashmap* hashmap_p, const void* key);
 
 // the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
 // used to expand hashmap once the load factor is greater than 0.7 
@@ -64,6 +50,9 @@ void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), vo
 
 // print complete hashmap
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
+
+// call funct on all the buckets of the hashmap
+void foreach_bucket(const hashmap* hashmap_p, void (*funct)(const bucket* bucket_p));
 
 // deletes all the data allocated by the hashmap and the hashmap itself
 void delete_hashmap(hashmap* hashmap_p);
