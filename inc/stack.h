@@ -13,8 +13,8 @@
 typedef struct stack stack;
 struct stack
 {
-	array* stackHolder;
-	unsigned long long int stackSize;
+	array* stack_holder;
+	unsigned long long int stack_size;
 };
 
 // build and get a new stack
@@ -29,7 +29,7 @@ void pop(stack* stack_p);
 // returns pointer to the top element data pointer, (i.e. data pointer to the last inserted element) 
 const void* get_top(stack* stack_p);
 
-// delete stack and stackHolder array
+// delete stack and stack_holder array
 void delete_stack(stack* stack_p);
 
 // prints the stack

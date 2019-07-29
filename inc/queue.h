@@ -13,9 +13,9 @@
 typedef struct queue queue;
 struct queue
 {
-	array* queueHolder;
-	unsigned long long int earliestElementIndex;
-	unsigned long long int latestElementIndex;
+	array* queue_holder;
+	unsigned long long int earliest_element_index;
+	unsigned long long int latest_element_index;
 };
 
 // build and get a new queue
@@ -30,13 +30,13 @@ void pop(queue* queue_p);
 // returns pointer to the top element data pointer, (i.e. data pointer to the earliest inserted element) 
 const void* get_top(queue* queue_p);
 
-// delete queue and queueHolder array
+// delete queue and queue_holder array
 void delete_queue(queue* queue_p);
 
 // if the queue is empty
 int isQueueEmpty(queue* queue_p);
 
-// if the queueHolder is full and needs expansion
+// if the queue_holder is full and needs expansion
 int isQueueHolderFull(queue* queue_p);
 
 // prints the queue
