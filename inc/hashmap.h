@@ -51,9 +51,6 @@ void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), vo
 // print complete hashmap
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
-// call funct on all the buckets of the hashmap
-void foreach_bucket(const hashmap* hashmap_p, void (*funct)(const bucket* bucket_p));
-
 // deletes all the data allocated by the hashmap and the hashmap itself
 void delete_hashmap(hashmap* hashmap_p);
 
