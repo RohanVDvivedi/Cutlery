@@ -3,6 +3,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<bucket.h>
 
 // the tree manages all of its data on its own
 // you manage your own data
@@ -14,6 +15,7 @@
 typedef enum tree_type tree_type;
 enum tree_type
 {
+	NON_SELF_BALANCING,
 	AVL_TREE,
 	RED_BLACK_TREE
 };
@@ -25,9 +27,12 @@ struct node
 	node* parent;
 
 	// the data to store
-	const void* data_p;
+	const void* bucket_p;
 
 	// the property of the node that will be used to help balance the tree
+	// if balanced_tree_type == NON_SELF_BALANCING then node property is ignored
+	// else if balanced_tree_type == AVL_TREE then node_property = left tree height - right tree height
+	// else if balanced_tree_type == AVL_TREE then node_property = is_red_node? ? 1 : 0; (0 is black node) 
 	unsigned long long int node_property;
 
 	// all <= nodes									// all > nodes
@@ -41,8 +46,8 @@ struct balancedbst
 	tree_type balanced_tree_type;
 
 	// compare data pointers that we stored
-	// it returns 0 if they are same, >0 if data0 is greater than data1 else it must return <0 value
-	int (*data_compare)(const void* data0_p, const void* data1_p);
+	// it returns 0 if they are same, >0 if key0 is greater than key1 else it must return <0 value
+	int (*key_compare)(const void* key0, const void* key1);
 
 	// the root node of the tree
 	node* root;
@@ -51,14 +56,17 @@ struct balancedbst
 // get a new balancedbst
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*data_compare)(const void* data0_p, const void* data1_p));
 
-// inserts a node in the tree whose data is data_p
-void insert(balancedbst* blanacedbst_p, const void* data_p);
+// inserts or updates a node in the tree whose data is a bucket with key as key_p and value as value_p
+void put_entry(balancedbst* blanacedbst_p, const void* key_p, const void* value_p);
 
-// find a data_p in tree
-const void* find(balancedbst* blanacedbst_p, const void* data_p);
+// find a value_p in tree, whose key is key_p
+const void* find_value(balancedbst* blanacedbst_p, const void* key_p);
 
 // remove the node if found, returns a list of nodes that match
-void remove_node(balancedbst* blanacedbst_p, const void* data_p);
+void remove_value(balancedbst* blanacedbst_p, const void* key_p);
+
+// print complete binary search tree
+void print_balancedbst(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 // delete the balancedbst and all its nodes
 void delete_balancedbst(balancedbst* balancedbst_p);

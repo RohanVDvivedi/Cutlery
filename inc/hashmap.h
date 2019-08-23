@@ -22,6 +22,7 @@ struct hashmap
 	unsigned long long int (*hash_function)(const void* key);
 
 	// compare keys and returns 0 if they are same, else non-zero
+	// it returns 0 if they are same, >0 if key0 is greater than key1 else it must return <0 value
 	int (*key_compare)(const void* key1, const void* key2);
 
 	// pinter to the array of buckets
@@ -44,9 +45,6 @@ int remove_value(hashmap* hashmap_p, const void* key);
 // the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
 // used to expand hashmap once the load factor is greater than 0.7 
 void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size);
-
-// prints individual bucket
-void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 // print complete hashmap
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));

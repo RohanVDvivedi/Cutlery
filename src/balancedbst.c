@@ -1,6 +1,6 @@
 #include<balancedbst.h>
 
-balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*data_compare)(const void* data0_p, const void* data1_p))
+balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*data_compare)(const void* key0, const void* key1))
 {
 	balancedbst* balancedbst_p = (balancedbst*) calloc(1, sizeof(balancedbst));
 	balancedbst_p->balanced_tree_type = balanced_tree_type;
@@ -9,44 +9,24 @@ balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*data_compare)(c
 	return balancedbst_p;
 }
 
-void insert_in_red_black_tree(balancedbst* blanacedbst_p, const void* data_p)
+node* get_node(const void* key, const void* value)
 {
-
+	node* node_p = (node*) calloc(1, sizeof(node));
+	node_p->bucket_p = get_bucket(const void* key, const void* value);
+	return node_p;
 }
 
-void insert_in_avl_tree(balancedbst* blanacedbst_p, const void* data_p)
+const node* find_node(balancedbst* blanacedbst_p, const node* root, const void* key_p)
 {
-
-}
-
-void insert(balancedbst* blanacedbst_p, const void* data_p)
-{
-	switch(blanacedbst_p->balanced_tree_type)
+	if(blanacedbst_p->data_compare(key_p, root->bucket_p->key) == 0)
 	{
-		case RED_BLACK_TREE :
-		{
-			insert_in_red_black_tree(blanacedbst_p, data_p);
-			break;
-		}
-		case AVL_TREE :
-		{
-			insert_in_avl_tree(blanacedbst_p, data_p);
-			break;
-		}
+		return root;
 	}
-}
-
-const void* find_node(balancedbst* blanacedbst_p, const node* root, const void* data_p)
-{
-	if(blanacedbst_p->data_compare(data_p, root->data_p) == 0)
-	{
-		return root->data_p;
-	}
-	else if(root->left_sub_tree != NULL && blanacedbst_p->data_compare(data_p, root->data_p) < 0)
+	else if(root->left_sub_tree != NULL && blanacedbst_p->data_compare(key_p, root->bucket_p->key) < 0)
 	{
 		return find_node(blanacedbst_p, root->left_sub_tree, data_p);
 	}
-	else if(root->right_sub_tree != NULL && blanacedbst_p->data_compare(data_p, root->data_p) > 0)
+	else if(root->right_sub_tree != NULL && blanacedbst_p->data_compare(key_p, root->bucket_p->key) > 0)
 	{
 		return find_node(blanacedbst_p, root->right_sub_tree, data_p);
 	}
@@ -56,7 +36,53 @@ const void* find_node(balancedbst* blanacedbst_p, const node* root, const void* 
 	}
 }
 
-const void* find(balancedbst* blanacedbst_p, const void* data_p)
+void insert_node_in_non_self_balancing_tree(balancedbst* blanacedbst_p, const node* node_p)
+{
+
+}
+
+void insert_node_in_red_black_tree(balancedbst* blanacedbst_p, const node* node_p)
+{
+
+}
+
+void insert_node_in_avl_tree(balancedbst* blanacedbst_p, const node* node_p)
+{
+
+}
+
+void put_entry(balancedbst* blanacedbst_p, const void* key_p, const void* value_p)
+{
+	node* node_p = find_node(blanacedbst_p, balancedbst_p->root, key_p);
+	if(node_p == NULL)
+	{
+		node_p = get_node(const void* key, const void* value);
+		switch(blanacedbst_p->balanced_tree_type)
+		{
+			case NON_SELF_BALANCING:
+			{
+				insert_node_in_non_self_balancing_tree(blanacedbst_p, node_p);
+				break;
+			}
+			case RED_BLACK_TREE :
+			{
+				insert_node_in_red_black_tree(blanacedbst_p, node_p);
+				break;
+			}
+			case AVL_TREE :
+			{
+				insert_node_in_avl_tree(blanacedbst_p, node_p);
+				break;
+			}
+		}
+	}
+	else
+	{
+		node_p->bucket_p->value = value_p;
+	}
+}
+
+const void* find_value(balancedbst* blanacedbst_p, const void* data_p)
 {
 	if(blanacedbst_p->root == NULL)
 	{
@@ -64,39 +90,57 @@ const void* find(balancedbst* blanacedbst_p, const void* data_p)
 	}
 	else
 	{
-		return find_node(blanacedbst_p, blanacedbst_p->root, data_p);
+		node* node_p = find_node(blanacedbst_p, blanacedbst_p->root, data_p);
+		return node_p != NULL ? node_p->bucket_p->value : NULL;
 	}
 }
 
-void remove_from_red_black_tree(balancedbst* blanacedbst_p, const void* data_p)
+void remove_node_from_non_self_balancing_tree(balancedbst* blanacedbst_p, const node* node_p)
 {
 
 }
 
-void remove_from_avl_tree(balancedbst* blanacedbst_p, const void* data_p)
+void remove_node_from_red_black_tree(balancedbst* blanacedbst_p, const node* node_p)
 {
 
 }
 
-void remove_node(balancedbst* blanacedbst_p, const void* data_p)
+void remove_node_from_avl_tree(balancedbst* blanacedbst_p, const node* node_p)
 {
-	switch(blanacedbst_p->balanced_tree_type)
+
+}
+
+int remove_value(balancedbst* blanacedbst_p, const void* key_p)
+{
+	int deleted_nodes_count = 0;
+	node* node_p = find_node(blanacedbst_p, balancedbst_p->root, key_p);
+	if(node_p != NULL)
 	{
-		case RED_BLACK_TREE :
+		switch(blanacedbst_p->balanced_tree_type)
 		{
-			remove_from_red_black_tree(blanacedbst_p, data_p);
-			break;
-		}
-		case AVL_TREE :
-		{
-			remove_from_avl_tree(blanacedbst_p, data_p);
-			break;
+			case NON_SELF_BALANCING:
+			{
+				deleted_nodes_count = remove_node_from_non_self_balancing_tree(blanacedbst_p, node_p);
+				break;
+			}
+			case RED_BLACK_TREE :
+			{
+				deleted_nodes_count = remove_node_from_red_black_tree(blanacedbst_p, node_p);
+				break;
+			}
+			case AVL_TREE :
+			{
+				deleted_nodes_count = remove_node_from_avl_tree(blanacedbst_p, node_p);
+				break;
+			}
 		}
 	}
+	return deleted_nodes_count;
 }
 
 void delete_node(node* node_p)
 {
+	delete_bucket(node_p->bucket_p);
 	free(node_p);
 }
 
