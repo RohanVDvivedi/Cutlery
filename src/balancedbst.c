@@ -36,17 +36,40 @@ const node* find_node(balancedbst* blanacedbst_p, const node* root, const void* 
 	}
 }
 
-void insert_node_in_non_self_balancing_tree(balancedbst* blanacedbst_p, const node* node_p)
+void insert_node_in_non_self_balancing_tree(balancedbst* blanacedbst_p, node* root, const node* node_p)
+{
+	if( balanacedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) <= 0 )
+	{
+		if( root->left_sub_tree == NULL )
+		{
+			root->left_sub_tree = node_p;
+			node_p->parent = root;
+		}
+		else
+		{
+			insert_node_in_non_self_balancing_tree(balanacedbst_p, root->left_sub_tree, node_p);
+		}
+	}
+	else if( balanacedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) > 0 )
+	{
+		if( root->right_sub_tree == NULL )
+		{
+			root->right_sub_tree = node_p;
+			node_p->parent = root;
+		}
+		else
+		{
+			insert_node_in_non_self_balancing_tree(balanacedbst_p, root->right_sub_tree, node_p);
+		}
+	}
+}
+
+void insert_node_in_red_black_tree(balancedbst* blanacedbst_p, node* root, const node* node_p)
 {
 
 }
 
-void insert_node_in_red_black_tree(balancedbst* blanacedbst_p, const node* node_p)
-{
-
-}
-
-void insert_node_in_avl_tree(balancedbst* blanacedbst_p, const node* node_p)
+void insert_node_in_avl_tree(balancedbst* blanacedbst_p, node* root, const node* node_p)
 {
 
 }
@@ -61,17 +84,17 @@ void put_entry(balancedbst* blanacedbst_p, const void* key_p, const void* value_
 		{
 			case NON_SELF_BALANCING:
 			{
-				insert_node_in_non_self_balancing_tree(blanacedbst_p, node_p);
+				insert_node_in_non_self_balancing_tree(blanacedbst_p, blanacedbst_p->root, node_p);
 				break;
 			}
 			case RED_BLACK_TREE :
 			{
-				insert_node_in_red_black_tree(blanacedbst_p, node_p);
+				insert_node_in_red_black_tree(blanacedbst_p, blanacedbst_p->root, node_p);
 				break;
 			}
 			case AVL_TREE :
 			{
-				insert_node_in_avl_tree(blanacedbst_p, node_p);
+				insert_node_in_avl_tree(blanacedbst_p, blanacedbst_p->root, node_p);
 				break;
 			}
 		}
@@ -134,6 +157,7 @@ int remove_value(balancedbst* blanacedbst_p, const void* key_p)
 				break;
 			}
 		}
+		delete_node(node_p);
 	}
 	return deleted_nodes_count;
 }
