@@ -127,11 +127,6 @@ const void* find_value(balancedbst* blancedbst_p, const void* key_p)
 
 int remove_node_from_non_self_balancing_tree(balancedbst* balanacedbst_p, node* node_p)
 {
-	if(node_p == NULL)
-	{
-		return 0;
-	}
-
 	node* left_tree = node_p->left_sub_tree;
 	node* right_tree = node_p->right_sub_tree;
 	node* parent_node = node_p->parent;
@@ -184,6 +179,10 @@ void delete_node(node* node_p)
 int remove_value(balancedbst* balancedbst_p, const void* key_p)
 {
 	int deleted_nodes_count = 0;
+	if(balancedbst_p->root == NULL)
+	{
+		return deleted_nodes_count;
+	}
 	node* node_p = find_node(balancedbst_p, balancedbst_p->root, key_p);
 	if(node_p != NULL)
 	{
@@ -220,6 +219,7 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 	else
 	{
 		printf("\tparent => %d\n", ((int)node_p->parent));
+		printf("\tself => %d\n", ((int)node_p));
 		printf("\tbucket => ");print_bucket(node_p->bucket_p, print_key, print_value);
 		printf("\tleft  => %d\n", ((int)node_p->left_sub_tree));
 		printf("\tright => %d\n", ((int)node_p->right_sub_tree));
@@ -228,11 +228,14 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 
 void print_tree(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
+	if(node_p != NULL)
+	{
+		print_tree(node_p->left_sub_tree, print_key, print_value);
+	}
 	print_node(node_p, print_key, print_value);
 	printf("\n");
 	if(node_p != NULL)
 	{
-		print_tree(node_p->left_sub_tree, print_key, print_value);
 		print_tree(node_p->right_sub_tree, print_key, print_value);
 	}
 }

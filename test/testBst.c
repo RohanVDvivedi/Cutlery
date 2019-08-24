@@ -38,7 +38,19 @@ int main()
 	balancedbst* balancedbst_p = get_balancedbst(NON_SELF_BALANCING, key_cmp);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry(balancedbst_p, &((ke){1}), &((ts){100, "one"}));
+	put_entry(balancedbst_p, &((ke){5}), &((ts){500, "one"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){3}), &((ts){300, "three"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){7}), &((ts){700, "seven"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){2}), &((ts){200, "two"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){4}), &((ts){400, "four"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	delete_balancedbst(balancedbst_p);
