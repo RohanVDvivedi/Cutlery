@@ -218,11 +218,35 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 	}
 	else
 	{
-		printf("\tparent => %d\n", ((int)node_p->parent));
-		printf("\tself => %d\n", ((int)node_p));
-		printf("\tbucket => ");print_bucket(node_p->bucket_p, print_key, print_value);
-		printf("\tleft  => %d\n", ((int)node_p->left_sub_tree));
-		printf("\tright => %d\n", ((int)node_p->right_sub_tree));
+		printf("\tparent => %d", ((int)node_p->parent));
+		if(node_p->parent != NULL)
+		{	
+			printf("\tdata => ");print_bucket(node_p->parent->bucket_p, print_key, print_value);
+		}
+		else
+		{
+			printf("\n");
+		}
+		printf("\tself => %d", ((int)node_p));
+		printf("\tdata => ");print_bucket(node_p->bucket_p, print_key, print_value);
+		printf("\tleft  => %d", ((int)node_p->left_sub_tree));
+		if(node_p->left_sub_tree != NULL)
+		{
+			printf("\tdata => ");print_bucket(node_p->left_sub_tree->bucket_p, print_key, print_value);
+		}
+		else
+		{
+			printf("\n");
+		}
+		printf("\tright => %d", ((int)node_p->right_sub_tree)); 
+		if(node_p->right_sub_tree != NULL)
+		{
+			printf("\tdata => ");print_bucket(node_p->right_sub_tree->bucket_p, print_key, print_value);
+		}
+		else
+		{
+			printf("\n");
+		}
 	}
 }
 
