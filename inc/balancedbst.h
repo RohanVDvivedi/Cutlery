@@ -27,7 +27,7 @@ struct node
 	node* parent;
 
 	// the data to store
-	const void* bucket_p;
+	const bucket* bucket_p;
 
 	// the property of the node that will be used to help balance the tree
 	// if balanced_tree_type == NON_SELF_BALANCING then node property is ignored
@@ -54,7 +54,7 @@ struct balancedbst
 };
 
 // get a new balancedbst
-balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*data_compare)(const void* data0_p, const void* data1_p));
+balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1));
 
 // inserts or updates a node in the tree whose data is a bucket with key as key_p and value as value_p
 void put_entry(balancedbst* blanacedbst_p, const void* key_p, const void* value_p);
@@ -63,10 +63,10 @@ void put_entry(balancedbst* blanacedbst_p, const void* key_p, const void* value_
 const void* find_value(balancedbst* blanacedbst_p, const void* key_p);
 
 // remove the node if found, returns a list of nodes that match
-void remove_value(balancedbst* blanacedbst_p, const void* key_p);
+int remove_value(balancedbst* blanacedbst_p, const void* key_p);
 
 // print complete binary search tree
-void print_balancedbst(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
+void print_balancedbst(const balancedbst* blanacedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 // delete the balancedbst and all its nodes
 void delete_balancedbst(balancedbst* balancedbst_p);
