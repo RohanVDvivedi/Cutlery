@@ -204,9 +204,45 @@ int remove_value(balancedbst* balancedbst_p, const void* key_p)
 	return deleted_nodes_count;
 }
 
-void print_balancedbst(const balancedbst* balanacedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+void print_node(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
+	printf("\tparent => %d\n", ((int)node_p->parent));
+	printf("\tbucket => ");print_bucket(node_p->bucket_p, print_key, print_value);
+	printf("\tleft  => %d\n", ((int)node_p->left_sub_tree));
+	printf("\tright => %d\n", ((int)node_p->right_sub_tree));
+}
 
+void print_tree(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+{
+	print_node(node_p, print_key, print_value);
+	printf("\n");
+	print_tree(node_p->left_sub_tree, print_key, print_value);
+	print_tree(node_p->right_sub_tree, print_key, print_value);
+}
+
+void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+{
+	printf("TREE : ");
+	switch(balancedbst_p->balanced_tree_type)
+	{
+		case NON_SELF_BALANCING :
+		{
+			printf("NON_SELF_BALANCING\n");
+			break;
+		}
+		case AVL_TREE :
+		{
+			printf("AVL_TREE\n");
+			break;
+		}
+		case RED_BLACK_TREE :
+		{
+			printf("RED_BLACK_TREE\n");
+			break;
+		}
+	}
+	print_tree(balancedbst_p->root, print_key, print_value);
+	printf("--\n\n");
 }
 
 void delete_nodes_from(node* node_p)
