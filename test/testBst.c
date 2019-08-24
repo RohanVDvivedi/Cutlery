@@ -35,8 +35,14 @@ void print_key(const void* key)
 
 int main()
 {
+	printf("INITIALIZING BALANCED BINARY SEARCH TREE\n");
+
 	balancedbst* balancedbst_p = get_balancedbst(NON_SELF_BALANCING, key_cmp);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	printf("COMPLETED INITIALIZING BALANCED BINARY SEARCH TREE\n");
+
+	printf("STARTING TO INSERT NODES\n");
 
 	put_entry(balancedbst_p, &((ke){10}), &((ts){500, "five"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
@@ -77,9 +83,22 @@ int main()
 	put_entry(balancedbst_p, &((ke){13}), &((ts){650, "six and half"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	printf("COMPLETED INSERTING NODES\n");
+
+	printf("STARTING TO REMOVE NODES\n");
+
 	remove_value(balancedbst_p, &((ke){14}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	remove_value(balancedbst_p, &((ke){10}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	printf("COMPLETED REMOVING NODES\n");
+
+	printf("STARTING TO DELETE BINARY SEARCH TREE\n");
+
 	delete_balancedbst(balancedbst_p);
+
+	printf("COMPLETED DELETING BINARY SEARCH TREE\n");
 	return 0;
 }

@@ -84,6 +84,7 @@ void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 	if( balancedbst_p->root == NULL )
 	{
 		balancedbst_p->root = node_p;
+		node_p->parent = NULL;
 		return;
 	}
 
@@ -152,21 +153,32 @@ int remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* n
 	node* right_tree = node_p->right_sub_tree;
 	node* parent_node = node_p->parent;
 
-	node_p->parent = NULL;
 	node_p->left_sub_tree = NULL;
-	node_p->right_sub_tree = NULL;
 	left_tree->parent = NULL;
+
+	node_p->right_sub_tree = NULL;
 	right_tree->parent = NULL;
 
-	// if the node_p is the left node of its parent
-	if(node_p == parent_node->left_sub_tree)
+	node_p->parent = NULL;
+	// if the node_p has parents we need to update the correcponding parent reference to NULL
+	if(parent_node != NULL)
 	{
-		parent_node->left_sub_tree = NULL;
+		// if the node_p is the left node of its parent
+		if(node_p == parent_node->left_sub_tree)
+		{
+			parent_node->left_sub_tree = NULL;
+		}
+		// if the node_p is the right node of its parent
+		else if(node_p == parent_node->right_sub_tree)
+		{
+			parent_node->right_sub_tree = NULL;
+		}
 	}
-	// if the node_p is the right node of its parent
-	else if(node_p == parent_node->right_sub_tree)
+	// if node_p does not have parents, then node_p is the root,
+	// and hence root of the tree has to be updated
+	else
 	{
-		parent_node->right_sub_tree = NULL;
+		balancedbst_p->root = NULL;
 	}
 
 	if(left_tree != NULL)
@@ -177,7 +189,7 @@ int remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* n
 		}
 		else
 		{
-			balancedbst_p->root = left_tree;
+			insert_node_in_tree(balancedbst_p, left_tree);
 		}
 	}
 	if(right_tree != NULL)
@@ -188,7 +200,7 @@ int remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* n
 		}
 		else
 		{
-			balancedbst_p->root = left_tree;
+			insert_node_in_tree(balancedbst_p, right_tree);
 		}
 	}
 
@@ -248,7 +260,6 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 {
 	if(node_p == NULL)
 	{
-		printf("\tNULL_NODE\n");
 		return;
 	}
 	else
@@ -256,27 +267,34 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 		printf("\tparent => %d", ((int)node_p->parent));
 		if(node_p->parent != NULL)
 		{	
-			printf("\tdata => ");print_bucket(node_p->parent->bucket_p, print_key, print_value);
+			printf("\tdata => ");
+			print_bucket(node_p->parent->bucket_p, print_key, print_value);
 		}
 		else
 		{
 			printf("\n");
 		}
+
 		printf("\tself => %d", ((int)node_p));
-		printf("\tdata => ");print_bucket(node_p->bucket_p, print_key, print_value);
+		printf("\tdata => ");
+		print_bucket(node_p->bucket_p, print_key, print_value);
+
 		printf("\tleft  => %d", ((int)node_p->left_sub_tree));
 		if(node_p->left_sub_tree != NULL)
 		{
-			printf("\tdata => ");print_bucket(node_p->left_sub_tree->bucket_p, print_key, print_value);
+			printf("\tdata => ");
+			print_bucket(node_p->left_sub_tree->bucket_p, print_key, print_value);
 		}
 		else
 		{
 			printf("\n");
 		}
+
 		printf("\tright => %d", ((int)node_p->right_sub_tree)); 
 		if(node_p->right_sub_tree != NULL)
 		{
-			printf("\tdata => ");print_bucket(node_p->right_sub_tree->bucket_p, print_key, print_value);
+			printf("\tdata => ");
+			print_bucket(node_p->right_sub_tree->bucket_p, print_key, print_value);
 		}
 		else
 		{
