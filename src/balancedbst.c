@@ -76,6 +76,12 @@ void insert_node_in_avl_tree(balancedbst* balanacedbst_p, node* root, node* node
 
 void put_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p)
 {
+	if( balancedbst_p->root == NULL )
+	{
+		balancedbst_p->root = get_node(key_p, value_p);
+		return;
+	}
+
 	node* node_p = find_node(balancedbst_p, balancedbst_p->root, key_p);
 	if(node_p == NULL)
 	{
@@ -206,18 +212,29 @@ int remove_value(balancedbst* balancedbst_p, const void* key_p)
 
 void print_node(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
-	printf("\tparent => %d\n", ((int)node_p->parent));
-	printf("\tbucket => ");print_bucket(node_p->bucket_p, print_key, print_value);
-	printf("\tleft  => %d\n", ((int)node_p->left_sub_tree));
-	printf("\tright => %d\n", ((int)node_p->right_sub_tree));
+	if(node_p == NULL)
+	{
+		printf("\tNULL_NODE\n");
+		return;
+	}
+	else
+	{
+		printf("\tparent => %d\n", ((int)node_p->parent));
+		printf("\tbucket => ");print_bucket(node_p->bucket_p, print_key, print_value);
+		printf("\tleft  => %d\n", ((int)node_p->left_sub_tree));
+		printf("\tright => %d\n", ((int)node_p->right_sub_tree));
+	}
 }
 
 void print_tree(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	print_node(node_p, print_key, print_value);
 	printf("\n");
-	print_tree(node_p->left_sub_tree, print_key, print_value);
-	print_tree(node_p->right_sub_tree, print_key, print_value);
+	if(node_p != NULL)
+	{
+		print_tree(node_p->left_sub_tree, print_key, print_value);
+		print_tree(node_p->right_sub_tree, print_key, print_value);
+	}
 }
 
 void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
