@@ -77,6 +77,9 @@ int main()
 	put_entry(balancedbst_p, &((ke){13}), &((ts){650, "six and half"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	remove_value(balancedbst_p, &((ke){14}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
 	delete_balancedbst(balancedbst_p);
 	return 0;
 }
