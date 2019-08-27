@@ -196,54 +196,44 @@ int remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* n
 	node* right_tree = node_p->right_sub_tree;
 	node* parent_node = node_p->parent;
 
-	node_p->left_sub_tree = NULL;
+	// do not update any references of node_p/we are anyway deleting it
+
+	// remove references of the node_p from its children
 	left_tree->parent = NULL;
-
-	node_p->right_sub_tree = NULL;
 	right_tree->parent = NULL;
-
-	node_p->parent = NULL;
-	// if the node_p has parents we need to update the corresponding parent reference to NULL
-	if(parent_node != NULL)
+	// if the node_p has parent we need to update the corresponding child reference of its parent to NULL
+	// if the node_p is the left node of its parent
+	if( is_left_of_its_parent(node_p) )
 	{
-		// if the node_p is the left node of its parent
-		if(node_p == parent_node->left_sub_tree)
-		{
-			parent_node->left_sub_tree = NULL;
-		}
-		// if the node_p is the right node of its parent
-		else if(node_p == parent_node->right_sub_tree)
-		{
-			parent_node->right_sub_tree = NULL;
-		}
+		parent_node->left_sub_tree = NULL;
 	}
+	// if the node_p is the right node of its parent
+	else if( is_right_of_its_parent(node_p) )
+	{
+		parent_node->right_sub_tree = NULL;
+	}
+	
 	// if node_p does not have parents, then node_p is the root,
 	// and hence root of the tree has to be updated
+	if( is_root_node(node_p) )
+	{
+		balancedbst_p->root = left_tree;
+		if(right_tree != NULL)
+		{
+			insert_node_in_tree(balancedbst_p, right_tree);
+		}
+	}
 	else
 	{
-		balancedbst_p->root = NULL;
-	}
-
-	if(left_tree != NULL)
-	{
-		if(parent_node != NULL)
+		// insert the left tree of the node_p back into the tree
+		if(left_tree != NULL)
 		{
 			insert_node_in_non_self_balancing_tree(balancedbst_p, parent_node, left_tree);
 		}
-		else
-		{
-			insert_node_in_tree(balancedbst_p, left_tree);
-		}
-	}
-	if(right_tree != NULL)
-	{
-		if(parent_node != NULL)
+		// insert the right tree of the node_p back into the tree
+		if(right_tree != NULL)
 		{
 			insert_node_in_non_self_balancing_tree(balancedbst_p, parent_node, right_tree);
-		}
-		else
-		{
-			insert_node_in_tree(balancedbst_p, right_tree);
 		}
 	}
 
