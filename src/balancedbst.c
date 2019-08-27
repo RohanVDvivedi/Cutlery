@@ -16,6 +16,37 @@ node* get_node(const void* key, const void* value)
 	return node_p;
 }
 
+/* functions to get node types -- start */
+
+int is_leaf_node(node* node_p)
+{
+	// if the node does not have a left child and it does not have a right child, it is a leaf node
+	return node_p->left_sub_tree == NULL && node_p->right_sub_tree == NULL;
+}
+
+int is_root_node(node* node_p)
+{
+	// if the node does not have a parent node, it is root node of the tree
+	return node_p->parent == NULL;
+}
+
+int is_internal_node(node* node_p)
+{
+	// a node which is not leaf node or a root node is an internal node
+	return !(is_leaf_node(node_p) || is_root_node(node_p));
+}
+
+/* functions to get node types -- end   */
+
+/* utility functions for tree -- start */
+
+int is_balancedbst_empty(balancedbst* blanacedbst_p)
+{
+	return blanacedbst_p->root == NULL;
+}
+
+/* utility functions for tree -- end   */
+
 node* find_node(balancedbst* blanacedbst_p, node* root, const void* key_p)
 {
 	if(blanacedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
@@ -160,7 +191,7 @@ int remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* n
 	right_tree->parent = NULL;
 
 	node_p->parent = NULL;
-	// if the node_p has parents we need to update the correcponding parent reference to NULL
+	// if the node_p has parents we need to update the corresponding parent reference to NULL
 	if(parent_node != NULL)
 	{
 		// if the node_p is the left node of its parent
