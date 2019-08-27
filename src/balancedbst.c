@@ -36,6 +36,18 @@ int is_internal_node(node* node_p)
 	return !(is_leaf_node(node_p) || is_root_node(node_p));
 }
 
+// returns true if the node_p is the left node of its parent
+int is_left_of_its_parent(node* node_p)
+{
+	return (!(is_root_node(node_p))) && (node_p->parent->left_sub_tree == node_p);
+}
+
+// returns true if the node_p is the right node of its parent
+int is_right_of_its_parent(node* node_p)
+{
+	return (!(is_root_node(node_p))) && (node_p->parent->right_sub_tree == node_p);
+}
+
 /* functions to get node types -- end   */
 
 /* utility functions for tree -- start */
@@ -47,23 +59,36 @@ int is_balancedbst_empty(balancedbst* blanacedbst_p)
 
 /* utility functions for tree -- end   */
 
-node* find_node(balancedbst* blanacedbst_p, node* root, const void* key_p)
+node* find_node_recursively(balancedbst* balancedbst_p, node* root, const void* key_p)
 {
-	if(blanacedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
+	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
 	{
 		return root;
 	}
-	else if(root->left_sub_tree != NULL && blanacedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
+	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
 	{
-		return find_node(blanacedbst_p, root->left_sub_tree, key_p);
+		return find_node_recursively(balancedbst_p, root->left_sub_tree, key_p);
 	}
-	else if(root->right_sub_tree != NULL && blanacedbst_p->key_compare(key_p, root->bucket_p->key) > 0)
+	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) > 0)
 	{
-		return find_node(blanacedbst_p, root->right_sub_tree, key_p);
+		return find_node_recursively(balancedbst_p, root->right_sub_tree, key_p);
 	}
 	else
 	{
 		return NULL;
+	}
+}
+
+node* find_node(balancedbst* balancedbst_p, const void* key_p)
+{
+	// if the tree is empty, just return NULL
+	if( is_balancedbst_empty(balancedbst_p) )
+	{
+		return NULL;
+	}
+	else
+	{
+		return find_node_recursively(balancedbst_p, balancedbst_p->root, key_p);
 	}
 }
 
@@ -112,7 +137,7 @@ void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_
 void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 {
 	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
-	if( balancedbst_p->root == NULL )
+	if( is_balancedbst_empty(balancedbst_p) )
 	{
 		balancedbst_p->root = node_p;
 		node_p->parent = NULL;
@@ -142,14 +167,8 @@ void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 
 void put_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p)
 {
-	// the node that we are going to be inserting
-	node* node_p = NULL;
-
 	// find a node in the tree that has key_p as its key (we do not want duplicate keys)
-	if(balancedbst_p->root != NULL)
-	{
-		node_p = find_node(balancedbst_p, balancedbst_p->root, key_p);
-	}
+	node* node_p = find_node(balancedbst_p, key_p);
 
 	// if we can not find such a node, create a new node and insert it in tree
 	if(node_p == NULL)
@@ -167,15 +186,8 @@ void put_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_
 
 const void* find_value(balancedbst* blancedbst_p, const void* key_p)
 {
-	if(blancedbst_p->root == NULL)
-	{
-		return NULL;
-	}
-	else
-	{
-		node* node_p = find_node(blancedbst_p, blancedbst_p->root, key_p);
-		return node_p != NULL ? node_p->bucket_p->value : NULL;
-	}
+	node* node_p = find_node(blancedbst_p, key_p);
+	return node_p != NULL ? node_p->bucket_p->value : NULL;
 }
 
 int remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
@@ -257,11 +269,7 @@ void delete_node(node* node_p)
 int remove_value(balancedbst* balancedbst_p, const void* key_p)
 {
 	int deleted_nodes_count = 0;
-	if(balancedbst_p->root == NULL)
-	{
-		return deleted_nodes_count;
-	}
-	node* node_p = find_node(balancedbst_p, balancedbst_p->root, key_p);
+	node* node_p = find_node(balancedbst_p, key_p);
 	if(node_p != NULL)
 	{
 		switch(balancedbst_p->balanced_tree_type)
@@ -289,48 +297,56 @@ int remove_value(balancedbst* balancedbst_p, const void* key_p)
 
 void print_node(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
-	if(node_p == NULL)
+	if(node_p != NULL)
 	{
-		return;
-	}
-	else
-	{
-		printf("\tparent => %d", ((int)node_p->parent));
-		if(node_p->parent != NULL)
-		{	
-			printf("\tdata => ");
-			print_bucket(node_p->parent->bucket_p, print_key, print_value);
-		}
-		else
+		if( is_leaf_node(node_p) )
 		{
-			printf("\n");
+			printf("\tLEAF NODE     :");
+		}
+		else if( is_root_node(node_p) )
+		{
+			printf("\tROOT NODE     :");
+		}
+		else if( is_internal_node(node_p) )
+		{
+			printf("\tINTERNAL NODE :");
 		}
 
-		printf("\tself => %d", ((int)node_p));
+		printf("\taddress => %d", ((int)node_p));
 		printf("\tdata => ");
 		print_bucket(node_p->bucket_p, print_key, print_value);
 
-		printf("\tleft  => %d", ((int)node_p->left_sub_tree));
-		if(node_p->left_sub_tree != NULL)
+		if( !is_root_node(node_p) )
 		{
+			if(is_left_of_its_parent(node_p))
+			{
+				printf("\t\tis LEFT of  : \n");
+			}
+			else if(is_right_of_its_parent(node_p))
+			{
+				printf("\t\tis RIGHT of : \n");
+			}
+			printf("\t\t\taddress => %d", ((int)node_p->parent));
 			printf("\tdata => ");
-			print_bucket(node_p->left_sub_tree->bucket_p, print_key, print_value);
-		}
-		else
-		{
-			printf("\n");
+			print_bucket(node_p->parent->bucket_p, print_key, print_value);
 		}
 
-		printf("\tright => %d", ((int)node_p->right_sub_tree)); 
-		if(node_p->right_sub_tree != NULL)
+		if( (!is_leaf_node(node_p)) )
 		{
-			printf("\tdata => ");
-			print_bucket(node_p->right_sub_tree->bucket_p, print_key, print_value);
+			if(node_p->left_sub_tree != NULL)
+			{
+				printf("\t\thas a LEFT\n\t\t\tchild  => %d", ((int)node_p->left_sub_tree));
+				printf("\tdata => ");
+				print_bucket(node_p->left_sub_tree->bucket_p, print_key, print_value);
+			}
+			if(node_p->right_sub_tree != NULL)
+			{
+				printf("\t\thas a RIGHT\n\t\t\tchild => %d", ((int)node_p->right_sub_tree)); 
+				printf("\tdata => ");
+				print_bucket(node_p->right_sub_tree->bucket_p, print_key, print_value);
+			}
 		}
-		else
-		{
-			printf("\n");
-		}
+		printf("\n");
 	}
 }
 
