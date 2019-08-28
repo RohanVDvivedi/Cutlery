@@ -57,34 +57,100 @@ int is_balancedbst_empty(balancedbst* blanacedbst_p)
 	return blanacedbst_p->root == NULL;
 }
 
-//  W, X, Y, Z are either leaf nodes or are absent from the tree
-//  root = A
-//           A                                 _B_
-//         /   \                              /   \
-//       B      W       left rotation        C     A
-//     /   \             --------->>        / \   /  \
-//   C      X                              Z   Y  X   W
-//  / \
-// Z   Y
-
-int left_rotate_tree(balancedbst* blanacedbst_p, node* root)
-{
-
-}
-
-//  W, X, Y, Z are either leaf nodes or are absent from the tree
-//  root = A
 //      A                                _B_
 //     /  \                             /   \
-//    W    B       right rotation      A     C
+//    W    B        left rotation      A     C
 //        /  \        --------->>     / \   /  \
 //       X    C                      W   X  Y  Z
 //           / \
 //          Y   Z
+// returns true if rotation was successfull
+int left_rotate_tree(balancedbst* blanacedbst_p, node* A)
+{
+	node* parent = A->parent;
+	node* B = A->right_sub_tree;
+	if( B == NULL )
+	{
+		return 0;
+	}
+	else
+	{
+		node* X = B->left_sub_tree;
 
+		if(parent == NULL)
+		{
+			balancedbst_p->root = B;
+			B->parent = NULL;
+		}
+		else
+		{
+			if( is_right_of_its_parent(A) )
+			{
+				parent->right_sub_tree = B;
+				B->parent = parent;
+			}
+			else if( is_left_of_its_parent(A) )
+			{
+				parent->left_sub_tree = B;
+				B->parent = parent;
+			}
+		}
+
+		A->right_sub_tree = X;
+		X->parent = A;
+
+		B->left_sub_tree = A;
+		A->parent = B;
+		return 1;
+	}
+}
+
+//           A                                 _B_
+//         /   \                              /   \
+//       B      W      right rotation        C     A
+//     /   \             --------->>        / \   /  \
+//   C      X                              Z   Y  X   W
+//  / \
+// Z   Y
+// returns true if rotation was successfull
 int right_rotate_tree(balancedbst* blanacedbst_p, node* root)
 {
-	
+	node* parent = A->parent;
+	node* B = A->left_sub_tree;
+	if( B == NULL )
+	{
+		return 0;
+	}
+	else
+	{
+		node* X = B->right_sub_tree;
+
+		if(parent == NULL)
+		{
+			balancedbst_p->root = B;
+			B->parent = NULL;
+		}
+		else
+		{
+			if( is_right_of_its_parent(A) )
+			{
+				parent->right_sub_tree = B;
+				B->parent = parent;
+			}
+			else if( is_left_of_its_parent(A) )
+			{
+				parent->left_sub_tree = B;
+				B->parent = parent;
+			}
+		}
+
+		A->left_sub_tree = X;
+		X->parent = A;
+
+		B->right_sub_tree = A;
+		A->parent = B;
+		return 1;
+	}
 }
 
 /* utility functions for tree -- end   */
