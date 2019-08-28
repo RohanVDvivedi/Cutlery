@@ -32,7 +32,7 @@ struct node
 	// the property of the node that will be used to help balance the tree
 	// if balanced_tree_type == NON_SELF_BALANCING then node property is ignored
 	// else if balanced_tree_type == AVL_TREE then node_property = left tree height - right tree height
-	// else if balanced_tree_type == AVL_TREE then node_property = is_red_node? ? 1 : 0; (0 is black node) 
+	// else if balanced_tree_type == AVL_TREE then node_property = is_red_node? ? 0 : 1; (1 is black node) 
 	unsigned long long int node_property;
 
 	// all <= nodes									// all > nodes
