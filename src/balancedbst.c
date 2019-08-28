@@ -57,6 +57,36 @@ int is_balancedbst_empty(balancedbst* blanacedbst_p)
 	return blanacedbst_p->root == NULL;
 }
 
+//  W, X, Y, Z are either leaf nodes or are absent from the tree
+//  root = A
+//           A                                 _B_
+//         /   \                              /   \
+//       B      W       left rotation        C     A
+//     /   \             --------->>        / \   /  \
+//   C      X                              Z   Y  X   W
+//  / \
+// Z   Y
+
+int left_rotate_tree(balancedbst* blanacedbst_p, node* root)
+{
+
+}
+
+//  W, X, Y, Z are either leaf nodes or are absent from the tree
+//  root = A
+//      A                                _B_
+//     /  \                             /   \
+//    W    B       right rotation      A     C
+//        /  \        --------->>     / \   /  \
+//       X    C                      W   X  Y  Z
+//           / \
+//          Y   Z
+
+int right_rotate_tree(balancedbst* blanacedbst_p, node* root)
+{
+	
+}
+
 /* utility functions for tree -- end   */
 
 node* find_node_recursively(balancedbst* balancedbst_p, node* root, const void* key_p)
