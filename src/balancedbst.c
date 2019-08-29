@@ -65,7 +65,7 @@ int is_balancedbst_empty(balancedbst* blanacedbst_p)
 //           / \
 //          Y   Z
 // returns true if rotation was successfull
-int left_rotate_tree(balancedbst* blanacedbst_p, node* A)
+int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
 	node* parent = A->parent;
 	node* B = A->right_sub_tree;
@@ -113,7 +113,7 @@ int left_rotate_tree(balancedbst* blanacedbst_p, node* A)
 //  / \
 // Z   Y
 // returns true if rotation was successfull
-int right_rotate_tree(balancedbst* blanacedbst_p, node* root)
+int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
 	node* parent = A->parent;
 	node* B = A->left_sub_tree;
@@ -228,7 +228,7 @@ void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p
 	}
 	else
 	{
-		if(node_p->parent_node->node_property == 0) // the parent of the node is red
+		if(node_p->parent->node_property == 0) // the parent of the node is red
 		{
 			node* parent_node = node_p->parent;
 			node* grand_parent_node = parent_node->parent;
@@ -278,7 +278,7 @@ void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p
 void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
 	// this is a red node
-	node->node_property = 0;
+	node_p->node_property = 0;
 
 	// insert this node as if it is getting inserted in a non self balancing tree
 	insert_node_in_non_self_balancing_tree(balancedbst_p, root, node_p);
