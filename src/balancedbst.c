@@ -217,10 +217,74 @@ void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* ro
 	}
 }
 
+// handle imbalance occuring in red black tree
+// only a red node can be imbalanced in a red black tree
+// i.e. the parameter node_p->node_property == 0, we dont check that in the function
+void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p)
+{
+	if(is_root_node(node_p))
+	{
+		node_p->node_property = 1; //root node is always black
+	}
+	else
+	{
+		if(node_p->parent_node->node_property == 0) // the parent of the node is red
+		{
+			node* parent_node = node_p->parent;
+			node* grand_parent_node = parent_node->parent;
+			// node_p's uncle is red, remember NULL nodes are black nodes in red black tree
+			if ( (is_right_of_its_parent(parent_node) && grand_parent_node->left_sub_tree!=NULL && grand_parent_node->left_sub_tree->node_property == 0) ||
+			(is_left_of_its_parent(parent_node) && grand_parent_node->right_sub_tree!=NULL && grand_parent_node->right_sub_tree->node_property == 0) )
+			{
+				grand_parent_node->node_property = 0;
+				grand_parent_node->left_sub_tree->node_property = 1;
+				grand_parent_node->right_sub_tree->node_property = 1;
+			}
+			// when node_p's uncle in black
+			else
+			{
+				// i.e. if this is a right right case
+				if( is_right_of_its_parent(node_p) && is_right_of_its_parent(parent_node) )
+				{
+					left_rotate_tree(balancedbst_p, grand_parent_node);
+					grand_parent_node->node_property = 0;
+					parent_node->node_property = 1;
+				}
+				// i.e. if this is a left left case
+				else if( is_left_of_its_parent(node_p) && is_left_of_its_parent(parent_node) )
+				{
+					right_rotate_tree(balancedbst_p, grand_parent_node);
+					grand_parent_node->node_property = 0;
+					parent_node->node_property = 1;
+				}
+				// i.e. if this is right left case
+				else if( is_right_of_its_parent(node_p) && is_left_of_its_parent(parent_node) )
+				{
+					left_rotate_tree(balancedbst_p, parent_node);
+					handle_imbalance_in_red_black_tree(balancedbst_p, parent_node);
+				}
+				// i.e. if this is left right case
+				else if( is_left_of_its_parent(node_p) && is_right_of_its_parent(parent_node) )
+				{
+					right_rotate_tree(balancedbst_p, parent_node);
+					handle_imbalance_in_red_black_tree(balancedbst_p, parent_node);
+				}
+			}
+		}
+	}
+}
+
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
+	// this is a red node
+	node->node_property = 0;
 
+	// insert this node as if it is getting inserted in a non self balancing tree
+	insert_node_in_non_self_balancing_tree(balancedbst_p, root, node_p);
+
+	// handle the imbalance in the red balck tree introduced by inserting the node
+	handle_imbalance_in_red_black_tree(balancedbst_p, node_p);
 }
 
 // neither root nor node_p params are suppossed to be NULL in the function below
@@ -401,6 +465,7 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 		printf("\taddress => %d", ((int)node_p));
 		printf("\tdata => ");
 		print_bucket(node_p->bucket_p, print_key, print_value);
+		printf("\t\twith property = %llu\n", node_p->node_property);
 
 		if( !is_root_node(node_p) )
 		{
