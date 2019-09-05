@@ -36,6 +36,18 @@ int is_internal_node(node* node_p)
 	return !(is_leaf_node(node_p) || is_root_node(node_p));
 }
 
+// used to check if the node is red, in a red black tree
+int is_red_node(node* node_p)
+{
+	return node_p != NULL && node_p->node_property == 0;
+}
+
+// used to check if the node is black, in a red black tree
+int is_black_node(node* node_p)
+{
+	return node_p == NULL || node_p->node_property == 1;
+}
+
 // returns true if the node_p is the left node of its parent
 int is_left_of_its_parent(node* node_p)
 {
@@ -46,6 +58,23 @@ int is_left_of_its_parent(node* node_p)
 int is_right_of_its_parent(node* node_p)
 {
 	return (!(is_root_node(node_p))) && (node_p->parent->right_sub_tree == node_p);
+}
+
+// gets max nodes from itself to any NULL, including itself, in an avl tree
+unsigned long long int get_max_height(node* node_p)
+{
+	if(node_p == NULL)
+	{
+		return 0;
+	}
+	if(node_p->node_property > 0)
+	{
+		return node_p->node_property;
+	}
+	unsigned long long int left_tree_max_height = get_max_height(node_p->left_sub_tree);
+	unsigned long long int right_tree_max_height = get_max_height(node_p->right_sub_tree);
+	node_p->node_property = (left_tree_max_height > right_tree_max_height ? left_tree_max_height : right_tree_max_height) + 1;
+	return node_p->node_property;
 }
 
 /* functions to get node types -- end   */
@@ -61,7 +90,7 @@ int is_balancedbst_empty(balancedbst* blanacedbst_p)
 //     /  \                             /   \
 //    W    B        left rotation      A     C
 //        /  \        --------->>     / \   /  \
-//       X    C                      W   X  Y  Z
+//       X    C                      W   X Y    Z
 //           / \
 //          Y   Z
 // returns true if rotation was successfull
@@ -228,19 +257,22 @@ void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p
 	}
 	else
 	{
-		if(node_p->parent->node_property == 0) // the parent of the node is red
+		if( is_red_node(node_p->parent) ) // the parent of the node is red
 		{
+			// get references to its parent and grand parent nodes
 			node* parent_node = node_p->parent;
 			node* grand_parent_node = parent_node->parent;
-			// node_p's uncle is red, remember NULL nodes are black nodes in red black tree
-			if ( (is_right_of_its_parent(parent_node) && grand_parent_node->left_sub_tree!=NULL && grand_parent_node->left_sub_tree->node_property == 0) ||
-			(is_left_of_its_parent(parent_node) && grand_parent_node->right_sub_tree!=NULL && grand_parent_node->right_sub_tree->node_property == 0) )
+
+			// node_p's uncle is red
+			if ( (is_right_of_its_parent(parent_node) && is_red_node(grand_parent_node->left_sub_tree)) ||
+			(is_left_of_its_parent(parent_node) && is_red_node(grand_parent_node->right_sub_tree)) )
 			{
 				grand_parent_node->node_property = 0;
 				grand_parent_node->left_sub_tree->node_property = 1;
 				grand_parent_node->right_sub_tree->node_property = 1;
+				handle_imbalance_in_red_black_tree(balancedbst_p, grand_parent_node);
 			}
-			// when node_p's uncle in black
+			// when node_p's uncle is black
 			else
 			{
 				// i.e. if this is a right right case
@@ -287,10 +319,36 @@ void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node*
 	handle_imbalance_in_red_black_tree(balancedbst_p, node_p);
 }
 
+// handle imbalance occuring in avl tree
+void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* node_p)
+{
+
+}
+
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
+	// the new node is suppossed to be inserted at the leaf initially
+	// so right_sub_tree == left_sub_tree == NULL hence difference = 0
+	node_p->node_property = 0;
 
+	// insert this node as if it is getting inserted in a non self balancing tree
+	insert_node_in_non_self_balancing_tree(balancedbst_p, root, node_p);
+
+	// update max heights of the nodes
+	// first make them 0
+	node* any_parent = node_p;
+	do
+	{
+		any_parent->node_property = 0;
+		any_parent = any_parent->parent;
+	}
+	while(!is_root_node(any_parent));
+	// reinstate their heights recursively
+	get_max_height(balancedbst_p->root);
+
+	// handle the imbalance in the red balck tree introduced by inserting the node
+	handle_imbalance_in_avl_tree(balancedbst_p, node_p);
 }
 
 // node_p param is not suppossed to be NULL in the function below
