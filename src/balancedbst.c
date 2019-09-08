@@ -322,7 +322,42 @@ void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node*
 // handle imbalance occuring in avl tree
 void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* node_p)
 {
-
+	unsigned long long int imbalance_found = 0;
+	while( !is_root_node(node_p) && imbalance_found == 0)
+	{
+		unsigned long long int max_left_height = get_max_height(node_p->left_sub_tree);
+		unsigned long long int max_right_height = get_max_height(node_p->left_sub_tree);
+		if(max_right_height - max_left_height >= 2)
+		{
+			node* parent_node = node_p->parent;
+			node_p->node_property = 0;
+			node_p->right_sub_tree->node_property = 0;
+			right_rotate_tree(balancedbst_p, node_p);
+			get_max_height(node_p->parent);
+			if(parent_node != NULL)
+			{
+				handle_imbalance_in_avl_tree(balancedbst_p, parent_node);
+			}
+			break;
+		}
+		else if(max_left_height - max_right_height >= 2)
+		{
+			node* parent_node = node_p->parent;
+			node_p->node_property = 0;
+			node_p->left_sub_tree->node_property = 0;
+			left_rotate_tree(balancedbst_p, node_p);
+			get_max_height(node_p->parent);
+			if(parent_node != NULL)
+			{
+				handle_imbalance_in_avl_tree(balancedbst_p, parent_node);
+			}
+			break;
+		}
+		else
+		{
+			node_p = node_p->parent;
+		}
+	}
 }
 
 // neither root nor node_p params are suppossed to be NULL in the function below
@@ -343,7 +378,7 @@ void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_
 		any_parent->node_property = 0;
 		any_parent = any_parent->parent;
 	}
-	while(!is_root_node(any_parent));
+	while(any_parent != NULL);
 	// reinstate their heights recursively
 	get_max_height(balancedbst_p->root);
 
