@@ -86,6 +86,16 @@ int is_balancedbst_empty(balancedbst* blanacedbst_p)
 	return blanacedbst_p->root == NULL;
 }
 
+node* get_smallest_node(node* node_p)
+{
+	return node_p->left_sub_tree == NULL ? node_p : node_p->left_sub_tree;
+}
+
+node* get_largest_node(node* node_p)
+{
+	return node_p->right_sub_tree == NULL ? node_p : node_p->right_sub_tree;
+}
+
 //      A                                _B_
 //     /  \                             /   \
 //    W    B        left rotation      A     C
