@@ -77,6 +77,19 @@ unsigned long long int get_max_height(node* node_p)
 	return node_p->node_property;
 }
 
+// updates max height of the node, in an avl tree
+void update_max_height(node* node_p)
+{
+	node_p->node_property = 0;
+	get_max_height(node_p);
+}
+
+// gives max height difference effectively right_sub_tree_max_height = left_sub_tree_max_height
+long long int get_max_height_imbalance(node* node_p)
+{
+	return ((long long int)(get_max_height(node_p->right_sub_tree) - get_max_height(node_p->left_sub_tree))) - (node_p->right_sub_tree == NULL ? 1 : 0) + (node_p->left_sub_tree == NULL ? 1 : 0);
+}
+
 /* functions to get node types -- end   */
 
 /* utility functions for tree -- start */
@@ -342,41 +355,22 @@ void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node*
 // handle imbalance occuring in avl tree
 void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* node_p)
 {
-	unsigned long long int imbalance_found = 0;
-	while( !is_root_node(node_p) && imbalance_found == 0)
+	while(node_p != NULL)
 	{
-		unsigned long long int max_left_height = get_max_height(node_p->left_sub_tree);
-		unsigned long long int max_right_height = get_max_height(node_p->left_sub_tree);
-		if(max_right_height - max_left_height >= 2)
+		long long int height_imbalance = get_max_height_imbalance(node_p);
+		if(height_imbalance >= 2)
 		{
-			node* parent_node = node_p->parent;
 			node_p->node_property = 0;
-			node_p->right_sub_tree->node_property = 0;
 			right_rotate_tree(balancedbst_p, node_p);
-			get_max_height(node_p->parent);
-			if(parent_node != NULL)
-			{
-				handle_imbalance_in_avl_tree(balancedbst_p, parent_node);
-			}
-			break;
+			update_max_height(node_p->parent);
 		}
-		else if(max_left_height - max_right_height >= 2)
+		else if(height_imbalance <= -2)
 		{
-			node* parent_node = node_p->parent;
 			node_p->node_property = 0;
-			node_p->left_sub_tree->node_property = 0;
 			left_rotate_tree(balancedbst_p, node_p);
-			get_max_height(node_p->parent);
-			if(parent_node != NULL)
-			{
-				handle_imbalance_in_avl_tree(balancedbst_p, parent_node);
-			}
-			break;
+			update_max_height(node_p->parent);
 		}
-		else
-		{
-			node_p = node_p->parent;
-		}
+		node_p = node_p->parent;
 	}
 }
 
@@ -390,17 +384,14 @@ void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_
 	// insert this node as if it is getting inserted in a non self balancing tree
 	insert_node_in_non_self_balancing_tree(balancedbst_p, root, node_p);
 
-	// update max heights of the nodes
-	// first make them 0
+	// update max heights of all the parent nodes of node_p
 	node* any_parent = node_p;
 	do
 	{
-		any_parent->node_property = 0;
+		update_max_height(any_parent);
 		any_parent = any_parent->parent;
 	}
 	while(any_parent != NULL);
-	// reinstate their heights recursively
-	get_max_height(balancedbst_p->root);
 
 	// handle the imbalance in the red balck tree introduced by inserting the node
 	handle_imbalance_in_avl_tree(balancedbst_p, node_p);
