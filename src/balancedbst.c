@@ -530,7 +530,17 @@ node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 // node_p can not be null in the parameters of the function
 node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
 {
-	return NULL;
+	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted
+	node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
+
+	// the imbalance is always in the parent node of the node currently going to be deleted
+	node* imbalance_node_p = node_p->parent;
+
+	// remove the imbalance and remove it
+	handle_imbalance_in_avl_tree(balancedbst_p, imbalance_node_p);
+
+	// return the node that needs to be deleted
+	return node_p;
 }
 
 void delete_node(node* node_p)
