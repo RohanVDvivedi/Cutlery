@@ -464,68 +464,45 @@ const void* find_value(balancedbst* blancedbst_p, const void* key_p)
 // node_p can not be null in the parameters of the function
 node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
 {
-	if(is_leaf_node(node_p))
+	// if atleast one of its children are NULL, the node itself can be removed easily
+	if(node_p->left_sub_tree == NULL || node_p->right_sub_tree == NULL)
 	{
-		if(!is_root_node(node_p))
+		// find the parent reference of the node
+		node* parent_node = node_p->parent;
+
+		// the child will have one or no child nodes
+		// find any one existing node else if it has no child nodes, either left or right are fine
+		node* child_sub_tree = has_only_right_sub_tree(node_p) ? node_p->right_sub_tree : node_p->left_sub_tree;
+
+		// since we are removing node_p we update the child references kept by parents 
+		// parents = (parent_node if node_p is internal or leaf node, root pointer if node_p is root node)
+		// of node_p to the one and only (or none) child of node_p
+		if(is_left_of_its_parent(node_p))
 		{
-			if(is_left_of_its_parent(node_p))
-			{
-				node_p->parent->left_sub_tree = NULL;
-			}
-			else if(is_right_of_its_parent(node_p))
-			{
-				node_p->parent->right_sub_tree = NULL;
-			}
+			parent_node->left_sub_tree = child_sub_tree;
+		}
+		else if(is_right_of_its_parent(node_p))
+		{
+			parent_node->right_sub_tree = child_sub_tree;
 		}
 		else
 		{
-			balancedbst_p->root = NULL;
+			balancedbst_p->root = child_sub_tree;
 		}
-	}
-	else if(has_only_left_sub_tree(node_p))
-	{
-		if(!is_root_node(node_p))
+
+		// since the node_p is removed, and that is has any children
+		// the new parent of child of node_p is the parent node of node_p
+		if(!is_leaf_node(node_p)) // just to ensure that child_sub_tree is not NULL
 		{
-			if(is_left_of_its_parent(node_p))
-			{
-				node_p->parent->left_sub_tree = node_p->left_sub_tree;
-				node_p->left_sub_tree->parent = node_p->parent;
-			}
-			else if(is_right_of_its_parent(node_p))
-			{
-				node_p->parent->right_sub_tree = node_p->left_sub_tree;
-				node_p->left_sub_tree->parent = node_p->parent;
-			}
+			child_sub_tree->parent = parent_node;
 		}
-		else
-		{
-			balancedbst_p->root = node_p->left_sub_tree;
-			node_p->left_sub_tree->parent = NULL;
-		}
-	}
-	else if(has_only_right_sub_tree(node_p))
-	{
-		if(!is_root_node(node_p))
-		{
-			if(is_left_of_its_parent(node_p))
-			{
-				node_p->parent->left_sub_tree = node_p->right_sub_tree;
-				node_p->right_sub_tree->parent = node_p->parent;
-			}
-			else if(is_right_of_its_parent(node_p))
-			{
-				node_p->parent->right_sub_tree = node_p->right_sub_tree;
-				node_p->right_sub_tree->parent = node_p->parent;
-			}
-		}
-		else
-		{
-			balancedbst_p->root = node_p->right_sub_tree;
-			node_p->right_sub_tree->parent = NULL;
-		}
+
+		// this new node can not be safely deleted
+		return node_p;
 	}
 	else
 	{
+		// find a smallest node that is grester than node_p
 		node* smallest_node_greater_than_node_p = get_smallest_node_from_node(node_p->right_sub_tree);
 
 		// interchange their data, to bring the removal to any of previously seen easy cases
@@ -533,9 +510,10 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 		node_p->bucket_p = smallest_node_greater_than_node_p->bucket_p;
 		smallest_node_greater_than_node_p->bucket_p = bucket_p;
 
+		// since we did not remove any node, and now we have duplicate nodes
+		// we ask to recursively remove, the duplicate node
 		return remove_node_from_non_self_balancing_tree(balancedbst_p, smallest_node_greater_than_node_p);
 	}
-	return node_p;
 }
 
 // the below function only detaches the node thatr has to be deleted
