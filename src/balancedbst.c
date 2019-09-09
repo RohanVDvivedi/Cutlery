@@ -36,6 +36,18 @@ int is_internal_node(node* node_p)
 	return !(is_leaf_node(node_p) || is_root_node(node_p));
 }
 
+int has_only_right_sub_tree(node* node_p)
+{
+	// a node which does not have a left_sub_tree, and has only right_sub_tree
+	return node_p->left_sub_tree == NULL && node_p->right_sub_tree != NULL;
+}
+
+int has_only_left_sub_tree(node* node_p)
+{
+	// a node which does not have a right_sub_tree, and has only left_sub_tree
+	return node_p->left_sub_tree != NULL && node_p->right_sub_tree == NULL;
+}
+
 // used to check if the node is red, in a red black tree
 int is_red_node(node* node_p)
 {
@@ -98,19 +110,9 @@ node* get_smallest_node_from_node(node* node_p)
 	return node_p->left_sub_tree == NULL ? node_p : node_p->left_sub_tree;
 }
 
-node* get_smallest_node_smaller_than_node(node* node_p)
-{
-	return node_p->left_sub_tree == NULL ? NULL : get_smallest_node_from_node(node_p->left_sub_tree);
-}
-
 node* get_largest_node_from_node(node* node_p)
 {
 	return node_p->right_sub_tree == NULL ? node_p : node_p->right_sub_tree;
-}
-
-node* get_largest_node_larger_than_node(node* node_p)
-{
-	return node_p->right_sub_tree == NULL ? NULL : get_largest_node_from_node(node_p->right_sub_tree);
 }
 
 //      A                                _B_
@@ -457,64 +459,99 @@ const void* find_value(balancedbst* blancedbst_p, const void* key_p)
 	return node_p != NULL ? node_p->bucket_p->value : NULL;
 }
 
-int remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
+// the below function only detaches the node thatr has to be deleted
+// returns pointer of the node that has to be deleted
+// node_p can not be null in the parameters of the function
+node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
 {
-	node* left_tree = node_p->left_sub_tree;
-	node* right_tree = node_p->right_sub_tree;
-	node* parent_node = node_p->parent;
-
-	// do not update any references of node_p/we are anyway deleting it
-
-	// remove references of the node_p from its children
-	left_tree->parent = NULL;
-	right_tree->parent = NULL;
-	// if the node_p has parent we need to update the corresponding child reference of its parent to NULL
-	// if the node_p is the left node of its parent
-	if( is_left_of_its_parent(node_p) )
+	if(is_leaf_node(node_p))
 	{
-		parent_node->left_sub_tree = NULL;
-	}
-	// if the node_p is the right node of its parent
-	else if( is_right_of_its_parent(node_p) )
-	{
-		parent_node->right_sub_tree = NULL;
-	}
-	
-	// if node_p does not have parents, then node_p is the root,
-	// and hence root of the tree has to be updated
-	if( is_root_node(node_p) )
-	{
-		balancedbst_p->root = left_tree;
-		if(right_tree != NULL)
+		if(!is_root_node(node_p))
 		{
-			insert_node_in_tree(balancedbst_p, right_tree);
+			if(is_left_of_its_parent(node_p))
+			{
+				node_p->parent->left_sub_tree = NULL;
+			}
+			else if(is_right_of_its_parent(node_p))
+			{
+				node_p->parent->right_sub_tree = NULL;
+			}
+		}
+		else
+		{
+			balancedbst_p->root = NULL;
+		}
+	}
+	else if(has_only_left_sub_tree(node_p))
+	{
+		if(!is_root_node(node_p))
+		{
+			if(is_left_of_its_parent(node_p))
+			{
+				node_p->parent->left_sub_tree = node_p->left_sub_tree;
+				node_p->left_sub_tree->parent = node_p->parent;
+			}
+			else if(is_right_of_its_parent(node_p))
+			{
+				node_p->parent->right_sub_tree = node_p->left_sub_tree;
+				node_p->left_sub_tree->parent = node_p->parent;
+			}
+		}
+		else
+		{
+			balancedbst_p->root = node_p->left_sub_tree;
+			node_p->left_sub_tree->parent = NULL;
+		}
+	}
+	else if(has_only_right_sub_tree(node_p))
+	{
+		if(!is_root_node(node_p))
+		{
+			if(is_left_of_its_parent(node_p))
+			{
+				node_p->parent->left_sub_tree = node_p->right_sub_tree;
+				node_p->right_sub_tree->parent = node_p->parent;
+			}
+			else if(is_right_of_its_parent(node_p))
+			{
+				node_p->parent->right_sub_tree = node_p->right_sub_tree;
+				node_p->right_sub_tree->parent = node_p->parent;
+			}
+		}
+		else
+		{
+			balancedbst_p->root = node_p->right_sub_tree;
+			node_p->right_sub_tree->parent = NULL;
 		}
 	}
 	else
 	{
-		// insert the left tree of the node_p back into the tree
-		if(left_tree != NULL)
-		{
-			insert_node_in_non_self_balancing_tree(balancedbst_p, parent_node, left_tree);
-		}
-		// insert the right tree of the node_p back into the tree
-		if(right_tree != NULL)
-		{
-			insert_node_in_non_self_balancing_tree(balancedbst_p, parent_node, right_tree);
-		}
+		node* smallest_node_greater_than_node_p = get_smallest_node_from_node(node_p->right_sub_tree);
+
+		// interchange their data, to bring the removal to any of previously seen easy cases
+		const bucket* bucket_p = node_p->bucket_p;
+		node_p->bucket_p = smallest_node_greater_than_node_p->bucket_p;
+		smallest_node_greater_than_node_p->bucket_p = bucket_p;
+
+		return remove_node_from_non_self_balancing_tree(balancedbst_p, smallest_node_greater_than_node_p);
 	}
-
-	return 1;
+	return node_p;
 }
 
-int remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
+// the below function only detaches the node thatr has to be deleted
+// returns pointer of the node that has to be deleted
+// node_p can not be null in the parameters of the function
+node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 {
-	return 0;
+	return NULL;
 }
 
-int remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
+// the below function only detaches the node thatr has to be deleted
+// returns pointer of the node that has to be deleted
+// node_p can not be null in the parameters of the function
+node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
 {
-	return 0;
+	return NULL;
 }
 
 void delete_node(node* node_p)
@@ -533,21 +570,25 @@ int remove_value(balancedbst* balancedbst_p, const void* key_p)
 		{
 			case NON_SELF_BALANCING:
 			{
-				deleted_nodes_count = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
+				node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
 				break;
 			}
 			case RED_BLACK_TREE :
 			{
-				deleted_nodes_count = remove_node_from_red_black_tree(balancedbst_p, node_p);
+				node_p = remove_node_from_red_black_tree(balancedbst_p, node_p);
 				break;
 			}
 			case AVL_TREE :
 			{
-				deleted_nodes_count = remove_node_from_avl_tree(balancedbst_p, node_p);
+				node_p = remove_node_from_avl_tree(balancedbst_p, node_p);
 				break;
 			}
 		}
-		delete_node(node_p);
+		if(node_p != NULL)
+		{
+			delete_node(node_p);
+			deleted_nodes_count++;
+		}
 	}
 	return deleted_nodes_count;
 }

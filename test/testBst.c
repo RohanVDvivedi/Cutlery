@@ -87,7 +87,16 @@ int main()
 
 	printf("STARTING TO REMOVE NODES\n");
 
-	remove_value(balancedbst_p, &((ke){14}));
+	remove_value(balancedbst_p, &((ke){11}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	remove_value(balancedbst_p, &((ke){12}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	remove_value(balancedbst_p, &((ke){6}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	remove_value(balancedbst_p, &((ke){13}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	remove_value(balancedbst_p, &((ke){10}));
