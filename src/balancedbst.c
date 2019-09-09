@@ -485,6 +485,7 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 		{
 			parent_node->right_sub_tree = child_sub_tree;
 		}
+		// if a node is neither left or right of its parent, it does not have a parent, hence is a root node 
 		else
 		{
 			balancedbst_p->root = child_sub_tree;
