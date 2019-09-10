@@ -125,7 +125,7 @@ node* get_largest_node_from_node(node* node_p)
 // returns true if rotation was successfull
 int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
-	node* parent = A->parent;
+	node* parent_of_tree = A->parent;
 	node* B = A->right_sub_tree;
 	if( B == NULL )
 	{
@@ -135,27 +135,29 @@ int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 	{
 		node* X = B->left_sub_tree;
 
-		if(parent == NULL)
+		if( is_root_node(A) )
 		{
 			balancedbst_p->root = B;
-			B->parent = NULL;
 		}
 		else
 		{
 			if( is_right_of_its_parent(A) )
 			{
-				parent->right_sub_tree = B;
-				B->parent = parent;
+				parent_of_tree->right_sub_tree = B;
 			}
 			else if( is_left_of_its_parent(A) )
 			{
-				parent->left_sub_tree = B;
-				B->parent = parent;
+				parent_of_tree->left_sub_tree = B;
+				
 			}
 		}
+		B->parent = parent_of_tree;
 
 		A->right_sub_tree = X;
-		X->parent = A;
+		if(X != NULL)
+		{
+			X->parent = A;
+		}
 
 		B->left_sub_tree = A;
 		A->parent = B;
@@ -173,7 +175,7 @@ int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 // returns true if rotation was successfull
 int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
-	node* parent = A->parent;
+	node* parent_of_tree = A->parent;
 	node* B = A->left_sub_tree;
 	if( B == NULL )
 	{
@@ -183,27 +185,28 @@ int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 	{
 		node* X = B->right_sub_tree;
 
-		if(parent == NULL)
+		if( is_root_node(A) )
 		{
 			balancedbst_p->root = B;
-			B->parent = NULL;
 		}
 		else
 		{
 			if( is_right_of_its_parent(A) )
 			{
-				parent->right_sub_tree = B;
-				B->parent = parent;
+				parent_of_tree->right_sub_tree = B;
 			}
 			else if( is_left_of_its_parent(A) )
 			{
-				parent->left_sub_tree = B;
-				B->parent = parent;
+				parent_of_tree->left_sub_tree = B;
 			}
 		}
+		B->parent = parent_of_tree;
 
 		A->left_sub_tree = X;
-		X->parent = A;
+		if(X != NULL)
+		{
+			X->parent = A;
+		}
 
 		B->right_sub_tree = A;
 		A->parent = B;
