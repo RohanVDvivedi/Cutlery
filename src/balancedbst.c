@@ -358,7 +358,7 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* node_p)
 		unsigned long long int right_tree_max_height = get_max_height(node_p->right_sub_tree);
 
 		// if left tree height is more, do right rotate
-		if(left_tree_max_height - right_tree_max_height >= 2)
+		if(left_tree_max_height >= 2 + right_tree_max_height)
 		{
 			right_rotate_tree(balancedbst_p, node_p);
 
@@ -367,7 +367,7 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* node_p)
 			node_p->node_property = 0;
 		}
 		// if right tree height is more, do left rotate
-		else if(right_tree_max_height - left_tree_max_height >= 2)
+		else if(right_tree_max_height >= 2 + left_tree_max_height)
 		{
 			left_rotate_tree(balancedbst_p, node_p);
 
