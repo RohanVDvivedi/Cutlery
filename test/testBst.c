@@ -44,43 +44,61 @@ int main()
 
 	printf("STARTING TO INSERT NODES\n");
 
-	put_entry(balancedbst_p, &((ke){10}), &((ts){10, "ten"}));
+	put_entry(balancedbst_p, &((ke){0}), &((ts){0, "zero"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry(balancedbst_p, &((ke){6}), &((ts){6, "six"}));
+	put_entry(balancedbst_p, &((ke){1}), &((ts){1, "one"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry(balancedbst_p, &((ke){14}), &((ts){14, "fourteen"}));
+	put_entry(balancedbst_p, &((ke){2}), &((ts){2, "two"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){3}), &((ts){3, "three"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	put_entry(balancedbst_p, &((ke){4}), &((ts){4, "four"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry(balancedbst_p, &((ke){8}), &((ts){8, "eight"}));
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	put_entry(balancedbst_p, &((ke){12}), &((ts){12, "twelve"}));
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	put_entry(balancedbst_p, &((ke){16}), &((ts){16, "sixteen"}));
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	put_entry(balancedbst_p, &((ke){0}), &((ts){0, "zero"}));
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	put_entry(balancedbst_p, &((ke){18}), &((ts){18, "eighteen"}));
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
 	put_entry(balancedbst_p, &((ke){5}), &((ts){5, "five"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){6}), &((ts){6, "six"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	put_entry(balancedbst_p, &((ke){7}), &((ts){7, "seven"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	put_entry(balancedbst_p, &((ke){8}), &((ts){8, "eight"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){9}), &((ts){9, "nine"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){10}), &((ts){10, "ten"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
 	put_entry(balancedbst_p, &((ke){11}), &((ts){11, "eleven"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	put_entry(balancedbst_p, &((ke){12}), &((ts){12, "twelve"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
 	put_entry(balancedbst_p, &((ke){13}), &((ts){13, "thirteen"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){14}), &((ts){14, "fourteen"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){15}), &((ts){15, "fifteen"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){16}), &((ts){16, "sixteen"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){17}), &((ts){17, "seventeen"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry(balancedbst_p, &((ke){18}), &((ts){18, "eighteen"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	printf("COMPLETED INSERTING NODES\n");
