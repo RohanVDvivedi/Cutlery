@@ -57,7 +57,10 @@ int is_red_node(node* node_p)
 // makes a given node red coloured
 void make_node_red(node* node_p)
 {
-	node_p->node_property = 0;
+	if(node_p != NULL)
+	{
+		node_p->node_property = 0;
+	}
 }
 
 // used to check if the node is black, in a red black tree
@@ -300,7 +303,7 @@ void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p
 {
 	if(is_root_node(node_p))
 	{
-		node_p->node_property = 1; //root node is always black
+		make_node_black(node_p); //root node is always black
 	}
 	else
 	{
@@ -314,9 +317,9 @@ void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p
 			if ( (is_right_of_its_parent(parent_node) && is_red_node(grand_parent_node->left_sub_tree)) ||
 			(is_left_of_its_parent(parent_node) && is_red_node(grand_parent_node->right_sub_tree)) )
 			{
-				grand_parent_node->node_property = 0;
-				grand_parent_node->left_sub_tree->node_property = 1;
-				grand_parent_node->right_sub_tree->node_property = 1;
+				make_node_red(grand_parent_node);
+				make_node_black(grand_parent_node->left_sub_tree);
+				make_node_black(grand_parent_node->right_sub_tree);
 				handle_imbalance_in_red_black_tree(balancedbst_p, grand_parent_node);
 			}
 			// when node_p's uncle is black
@@ -326,15 +329,15 @@ void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p
 				if( is_right_of_its_parent(node_p) && is_right_of_its_parent(parent_node) )
 				{
 					left_rotate_tree(balancedbst_p, grand_parent_node);
-					grand_parent_node->node_property = 0;
-					parent_node->node_property = 1;
+					make_node_red(grand_parent_node);
+					make_node_black(parent_node);
 				}
 				// i.e. if this is a left left case
 				else if( is_left_of_its_parent(node_p) && is_left_of_its_parent(parent_node) )
 				{
 					right_rotate_tree(balancedbst_p, grand_parent_node);
-					grand_parent_node->node_property = 0;
-					parent_node->node_property = 1;
+					make_node_red(grand_parent_node);
+					make_node_black(parent_node);
 				}
 				// i.e. if this is right left case
 				else if( is_right_of_its_parent(node_p) && is_left_of_its_parent(parent_node) )
