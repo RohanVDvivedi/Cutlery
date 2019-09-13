@@ -372,54 +372,75 @@ void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node*
 }
 
 // handle imbalance occuring in avl tree
-void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* node_p)
+void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p)
 {
-	while(node_p != NULL)
+	// maintain a reference that traces
+	// all the nodes from  node_p to root
+	node* unbalanced_node = input_node_p;
+
+	// loop untill you reach the root
+	while(unbalanced_node != NULL)
 	{
-		update_max_height(node_p);
-		unsigned long long int left_tree_max_height = get_max_height(node_p->left_sub_tree);
-		unsigned long long int right_tree_max_height = get_max_height(node_p->right_sub_tree);
+		update_max_height(unbalanced_node);
+		unsigned long long int left_tree_max_height = get_max_height(unbalanced_node->left_sub_tree);
+		unsigned long long int right_tree_max_height = get_max_height(unbalanced_node->right_sub_tree);
 
 		// if left tree height is more, do right rotate
 		if(left_tree_max_height >= 2 + right_tree_max_height)
 		{
-			right_rotate_tree(balancedbst_p, node_p);
+			// if it is not a left left case, make it a left left case
+			if(balancedbst_p->key_compare(input_node_p->bucket_p->key, unbalanced_node->left_sub_tree->bucket_p->key) > 0)
+			{
+				left_rotate_tree(balancedbst_p, unbalanced_node->left_sub_tree);
 
-			// after rotation the height of the node_p or
+				// after above rotation, left left sub tree height can not be trusted
+				unbalanced_node->left_sub_tree->node_property = 0;
+				unbalanced_node->left_sub_tree->left_sub_tree->node_property = 0;
+			}
+
+			// for a left left case, just right rotate
+			right_rotate_tree(balancedbst_p, unbalanced_node);
+
+			// after rotation the height of the unbalanced_node or
 			// any of its new current parent can not be trusted
-			node_p->node_property = 0;
+			unbalanced_node->node_property = 0;
+			unbalanced_node->parent->node_property = 0;
 		}
 		// if right tree height is more, do left rotate
 		else if(right_tree_max_height >= 2 + left_tree_max_height)
 		{
-			left_rotate_tree(balancedbst_p, node_p);
+			// if it is not a right right case, make it a right right case
+			if(balancedbst_p->key_compare(input_node_p->bucket_p->key, unbalanced_node->right_sub_tree->bucket_p->key) > 0)
+			{
+				right_rotate_tree(balancedbst_p, unbalanced_node->right_sub_tree);
 
-			// after rotation the height of the node_p or
+				// after above rotation, right right sub tree height can not be trusted
+				unbalanced_node->right_sub_tree->node_property = 0;
+				unbalanced_node->right_sub_tree->right_sub_tree->node_property = 0;
+			}
+
+			// for a right right case, just right rotate
+			left_rotate_tree(balancedbst_p, unbalanced_node);
+
+			// after rotation the height of the unbalanced_node or
 			// any of its new current parent can not be trusted
-			node_p->node_property = 0;
+			unbalanced_node->node_property = 0;
+			unbalanced_node->parent->node_property = 0;
 		}
-		node_p = node_p->parent;
+
+		// update the references
+		unbalanced_node = unbalanced_node->parent;
 	}
 }
 
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
-	// the new node is suppossed to be inserted at the leaf initially
-	// so right_sub_tree == left_sub_tree == NULL hence difference = 0
+	// the new node will be inserted any where, hence we mark it's node_property for recalculation
 	node_p->node_property = 0;
 
 	// insert this node as if it is getting inserted in a non self balancing tree
 	insert_node_in_non_self_balancing_tree(balancedbst_p, root, node_p);
-
-	// update max heights of all the parent nodes of node_p
-	node* any_parent = node_p;
-	do
-	{
-		update_max_height(any_parent);
-		any_parent = any_parent->parent;
-	}
-	while(any_parent != NULL);
 
 	// handle the imbalance in the red balck tree introduced by inserting the node
 	handle_imbalance_in_avl_tree(balancedbst_p, node_p);
