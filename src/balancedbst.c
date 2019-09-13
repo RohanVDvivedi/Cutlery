@@ -78,12 +78,14 @@ void make_node_black(node* node_p)
 	}
 }
 
+// node_p must not be null
 // returns true if the node_p is the left node of its parent
 int is_left_of_its_parent(node* node_p)
 {
 	return (!(is_root_node(node_p))) && (node_p->parent->left_sub_tree == node_p);
 }
 
+// node_p must not be null
 // returns true if the node_p is the right node of its parent
 int is_right_of_its_parent(node* node_p)
 {
@@ -118,9 +120,9 @@ void update_max_height(node* node_p)
 
 /* utility functions for tree -- start */
 
-int is_balancedbst_empty(balancedbst* blanacedbst_p)
+int is_balancedbst_empty(balancedbst* balancedbst_p)
 {
-	return blanacedbst_p->root == NULL;
+	return balancedbst_p->root == NULL;
 }
 
 node* get_smallest_node_from_node(node* node_p)
@@ -546,6 +548,14 @@ node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted
 	node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
 
+	// we can not balance an empty tree
+	// hence return if the tree is empty after deletion
+	if(is_balancedbst_empty(balancedbst_p))
+	{
+		// return the node that needs to be deleted
+		return node_p;
+	}
+
 	// only if the node that is to be deleted is a black node
 	// the black height of the tree reduces in one of its branch and we need imbalance handling
 	if(is_black_node(node_p))
@@ -558,23 +568,72 @@ node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 		{
 			make_node_black(node_p->right_sub_tree);
 		}
-		else if(!is_leaf_node(node_p))
+		else
 		{
 			node* any_child = (node_p->left_sub_tree != NULL ? node_p->left_sub_tree : node_p->right_sub_tree);
 			node* imbalanced_node = any_child;
-			while(!is_root_node(imbalanced_node))
+			node* imbalanced_node_parent = node_p->parent;
+
+	LOOP:	if(imbalanced_node != NULL && is_root_node(imbalanced_node))
 			{
-				node* parent_of_imbalanced_node = imbalanced_node->parent;
-				if(is_red_node(parent_of_imbalanced_node))
-				{
-					make_node_black(parent_of_imbalanced_node);
-					make_node_red(parent_of_imbalanced_node->left_sub_tree);
-					make_node_red(parent_of_imbalanced_node->right_sub_tree);
-				}
+				make_node_black(imbalanced_node);
 			}
-			if(is_root_node(imbalanced_node))
+			else
 			{
-				imbalanced_node->node_property = 1;
+				node* imbalanced_node_sibling = imbalanced_node_parent->left_sub_tree == imbalanced_node ? imbalanced_node_parent->right_sub_tree : imbalanced_node_parent->left_sub_tree;
+				// if atleast one of sibling's children is black 
+				if(is_black_node(imbalanced_node_sibling) && (is_red_node(imbalanced_node_sibling->left_sub_tree) || is_red_node(imbalanced_node_sibling->right_sub_tree)))
+				{
+					if(is_left_of_its_parent(imbalanced_node_sibling))
+					{
+						if(!is_red_node(imbalanced_node_sibling->left_sub_tree))
+						{
+							left_rotate_tree(balancedbst_p, imbalanced_node_sibling);
+							imbalanced_node_sibling = imbalanced_node_sibling->parent;
+							make_node_black(imbalanced_node_sibling);
+							make_node_red(imbalanced_node_sibling->left_sub_tree);
+						}
+						right_rotate_tree(balancedbst_p, imbalanced_node_parent);
+						make_node_black(imbalanced_node_sibling->left_sub_tree);
+						imbalanced_node_parent = imbalanced_node_parent->parent;
+					}
+					else if(is_right_of_its_parent(imbalanced_node_sibling))
+					{
+						if(!is_red_node(imbalanced_node_sibling->right_sub_tree))
+						{
+							right_rotate_tree(balancedbst_p, imbalanced_node_sibling);
+							imbalanced_node_sibling = imbalanced_node_sibling->parent;
+							make_node_black(imbalanced_node_sibling);
+							make_node_red(imbalanced_node_sibling->right_sub_tree);
+						}
+						left_rotate_tree(balancedbst_p, imbalanced_node_parent);
+						make_node_black(imbalanced_node_sibling->right_sub_tree);
+						imbalanced_node_parent = imbalanced_node_parent->parent;
+					}
+				}
+				// if none of sibling's children is black 
+				else if(is_black_node(imbalanced_node_sibling) && is_black_node(imbalanced_node_sibling->left_sub_tree) && is_black_node(imbalanced_node_sibling->right_sub_tree))
+				{
+					make_node_red(imbalanced_node_sibling);
+					imbalanced_node = imbalanced_node_parent;
+					imbalanced_node_parent = imbalanced_node->parent;
+					goto LOOP;
+				}
+				// if the sibling is a red node
+				else if(is_red_node(imbalanced_node_sibling))
+				{
+					if(is_left_of_its_parent(imbalanced_node_sibling))
+					{
+						right_rotate_tree(balancedbst_p, imbalanced_node_parent);
+					}
+					else if(is_right_of_its_parent(imbalanced_node_sibling))
+					{
+						left_rotate_tree(balancedbst_p, imbalanced_node_parent);
+					}
+					make_node_red(imbalanced_node_parent);
+					make_node_black(imbalanced_node_sibling);
+					goto LOOP;
+				}
 			}
 		}
 	}
@@ -591,11 +650,15 @@ node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
 	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted
 	node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
 
-	// the imbalance is always in the parent node of the node currently going to be deleted
-	node* imbalance_node_p = node_p->parent;
+	// we can not balance an empty tree
+	if(!is_balancedbst_empty(balancedbst_p))
+	{
+		// the imbalance is always in the parent node of the node currently going to be deleted
+		node* imbalance_node_p = node_p->parent;
 
-	// remove the imbalance and remove it
-	handle_imbalance_in_avl_tree(balancedbst_p, imbalance_node_p);
+		// remove the imbalance and remove it
+		handle_imbalance_in_avl_tree(balancedbst_p, imbalance_node_p);
+	}
 
 	// return the node that needs to be deleted
 	return node_p;
