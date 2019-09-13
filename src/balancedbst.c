@@ -54,10 +54,25 @@ int is_red_node(node* node_p)
 	return node_p != NULL && node_p->node_property == 0;
 }
 
+// makes a given node red coloured
+void make_node_red(node* node_p)
+{
+	node_p->node_property = 0;
+}
+
 // used to check if the node is black, in a red black tree
 int is_black_node(node* node_p)
 {
 	return node_p == NULL || node_p->node_property == 1;
+}
+
+// makes a given node black coloured
+void make_node_black(node* node_p)
+{
+	if(node_p != NULL)
+	{
+		node_p->node_property = 1;
+	}
 }
 
 // returns true if the node_p is the left node of its parent
@@ -107,12 +122,12 @@ int is_balancedbst_empty(balancedbst* blanacedbst_p)
 
 node* get_smallest_node_from_node(node* node_p)
 {
-	return node_p->left_sub_tree == NULL ? node_p : node_p->left_sub_tree;
+	return node_p->left_sub_tree == NULL ? node_p : get_smallest_node_from_node(node_p->left_sub_tree);
 }
 
 node* get_largest_node_from_node(node* node_p)
 {
-	return node_p->right_sub_tree == NULL ? node_p : node_p->right_sub_tree;
+	return node_p->right_sub_tree == NULL ? node_p : get_largest_node_from_node(node_p->right_sub_tree);
 }
 
 //      A                                _B_
@@ -525,7 +540,44 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 // node_p can not be null in the parameters of the function
 node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 {
-	return NULL;
+	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted
+	node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
+
+	// only if the node that is to be deleted is a black node
+	// the black height of the tree reduces in one of its branch and we need imbalance handling
+	if(is_black_node(node_p))
+	{
+		if(is_red_node(node_p->left_sub_tree))
+		{
+			node_p->left_sub_tree->node_property = 1;
+		}
+		else if(is_red_node(node_p->right_sub_tree))
+		{
+			node_p->right_sub_tree->node_property = 1;
+		}
+		else if(!is_leaf_node(node_p))
+		{
+			node* any_child = (node_p->left_sub_tree != NULL ? node_p->left_sub_tree : node_p->right_sub_tree);
+			node* imbalanced_node = any_child;
+			while(!is_root_node(imbalanced_node))
+			{
+				node* parent_of_imbalanced_node = imbalanced_node->parent;
+				if(is_red_node(parent_of_imbalanced_node))
+				{
+					make_node_black(parent_of_imbalanced_node);
+					make_node_red(parent_of_imbalanced_node->left_sub_tree);
+					make_node_red(parent_of_imbalanced_node->right_sub_tree);
+				}
+			}
+			if(is_root_node(imbalanced_node))
+			{
+				imbalanced_node->node_property = 1;
+			}
+		}
+	}
+
+	// return the node that needs to be deleted
+	return node_p;
 }
 
 // the below function only detaches the node thatr has to be deleted

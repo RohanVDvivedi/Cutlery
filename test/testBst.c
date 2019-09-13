@@ -108,16 +108,16 @@ int main()
 	remove_value(balancedbst_p, &((ke){11}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	remove_value(balancedbst_p, &((ke){12}));
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	remove_value(balancedbst_p, &((ke){6}));
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
 	remove_value(balancedbst_p, &((ke){13}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	remove_value(balancedbst_p, &((ke){10}));
+	remove_value(balancedbst_p, &((ke){14}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	remove_value(balancedbst_p, &((ke){15}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	remove_value(balancedbst_p, &((ke){7}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	printf("COMPLETED REMOVING NODES\n");
