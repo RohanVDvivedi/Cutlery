@@ -107,87 +107,87 @@ int main()
 
 	int error = 0;
 
-	error = remove_value(balancedbst_p, &((ke){-1}));
+	error = remove_value(balancedbst_p, &((ke){-1}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){0}));
+	error = remove_value(balancedbst_p, &((ke){0}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){1}));
+	error = remove_value(balancedbst_p, &((ke){1}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){2}));
+	error = remove_value(balancedbst_p, &((ke){2}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){3}));
+	error = remove_value(balancedbst_p, &((ke){3}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){4}));
+	error = remove_value(balancedbst_p, &((ke){4}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){5}));
+	error = remove_value(balancedbst_p, &((ke){5}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){6}));
+	error = remove_value(balancedbst_p, &((ke){6}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){7}));
+	error = remove_value(balancedbst_p, &((ke){7}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){8}));
+	error = remove_value(balancedbst_p, &((ke){8}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){9}));
+	error = remove_value(balancedbst_p, &((ke){9}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){10}));
+	error = remove_value(balancedbst_p, &((ke){10}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){11}));
+	error = remove_value(balancedbst_p, &((ke){11}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){12}));
+	error = remove_value(balancedbst_p, &((ke){12}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){13}));
+	error = remove_value(balancedbst_p, &((ke){13}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){14}));
+	error = remove_value(balancedbst_p, &((ke){14}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){15}));
+	error = remove_value(balancedbst_p, &((ke){15}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){16}));
+	error = remove_value(balancedbst_p, &((ke){16}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){17}));
+	error = remove_value(balancedbst_p, &((ke){17}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){18}));
+	error = remove_value(balancedbst_p, &((ke){18}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = remove_value(balancedbst_p, &((ke){19}));
+	error = remove_value(balancedbst_p, &((ke){19}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 

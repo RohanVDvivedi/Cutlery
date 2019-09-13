@@ -691,7 +691,7 @@ void delete_node(node* node_p)
 	free(node_p);
 }
 
-int remove_value(balancedbst* balancedbst_p, const void* key_p)
+int remove_value(balancedbst* balancedbst_p, const void* key_p,const void** return_key,const void** return_value)
 {
 	int deleted_nodes_count = 0;
 	node* node_p = find_node(balancedbst_p, key_p);
@@ -717,6 +717,14 @@ int remove_value(balancedbst* balancedbst_p, const void* key_p)
 		}
 		if(node_p != NULL)
 		{
+			if(return_key != NULL)
+			{
+				(*(return_key)) = node_p->bucket_p->key;
+			}
+			if(return_value != NULL)
+			{
+				(*(return_value)) = node_p->bucket_p->value;
+			}
 			delete_node(node_p);
 			deleted_nodes_count++;
 		}
