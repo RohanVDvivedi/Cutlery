@@ -552,11 +552,11 @@ node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 	{
 		if(is_red_node(node_p->left_sub_tree))
 		{
-			node_p->left_sub_tree->node_property = 1;
+			make_node_black(node_p->left_sub_tree);
 		}
 		else if(is_red_node(node_p->right_sub_tree))
 		{
-			node_p->right_sub_tree->node_property = 1;
+			make_node_black(node_p->right_sub_tree);
 		}
 		else if(!is_leaf_node(node_p))
 		{
