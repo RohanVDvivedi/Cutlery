@@ -813,6 +813,9 @@ void delete_nodes_from(node* node_p)
 
 void delete_balancedbst(balancedbst* balancedbst_p)
 {
-	delete_nodes_from(balancedbst_p->root);
+	if(!is_balancedbst_empty(balancedbst_p))
+	{
+		delete_nodes_from(balancedbst_p->root);
+	}
 	free(balancedbst_p);
 }
