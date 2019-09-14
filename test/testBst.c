@@ -101,6 +101,9 @@ int main()
 	put_entry(balancedbst_p, &((ke){7}), &((ts){7, "seven"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	put_entry(balancedbst_p, &((ke){19}), &((ts){19, "nineteen"}));
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
 	printf("COMPLETED INSERTING NODES\n");
 
 	printf("STARTING TO REMOVE NODES\n");

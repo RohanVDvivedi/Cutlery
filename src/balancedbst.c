@@ -377,6 +377,8 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p
 	// maintain a reference that traces
 	// all the nodes from  node_p to root
 	node* unbalanced_node = input_node_p;
+	node* prev_unbalanced_node = input_node_p;
+	node* prev_prev_unbalanced_node = input_node_p;
 
 	// loop untill you reach the root
 	while(unbalanced_node != NULL)
@@ -389,13 +391,14 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p
 		if(left_tree_max_height >= 2 + right_tree_max_height)
 		{
 			// if it is not a left left case, make it a left left case
-			if(balancedbst_p->key_compare(input_node_p->bucket_p->key, unbalanced_node->left_sub_tree->bucket_p->key) > 0)
+			// below logic resolves the left right case with one more rotation in the child of unbalanced node
+			if(is_right_of_its_parent(prev_prev_unbalanced_node))
 			{
-				left_rotate_tree(balancedbst_p, unbalanced_node->left_sub_tree);
+				left_rotate_tree(balancedbst_p, prev_unbalanced_node);
 
 				// after above rotation, left left sub tree height can not be trusted
-				unbalanced_node->left_sub_tree->node_property = 0;
-				unbalanced_node->left_sub_tree->left_sub_tree->node_property = 0;
+				prev_unbalanced_node->node_property = 0;
+				prev_prev_unbalanced_node->node_property = 0;
 			}
 
 			// for a left left case, just right rotate
@@ -410,13 +413,14 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p
 		else if(right_tree_max_height >= 2 + left_tree_max_height)
 		{
 			// if it is not a right right case, make it a right right case
-			if(balancedbst_p->key_compare(input_node_p->bucket_p->key, unbalanced_node->right_sub_tree->bucket_p->key) > 0)
+			// below logic resolves the right left case with one more rotation in the child of unbalanced node
+			if(is_left_of_its_parent(prev_prev_unbalanced_node))
 			{
-				right_rotate_tree(balancedbst_p, unbalanced_node->right_sub_tree);
+				right_rotate_tree(balancedbst_p, prev_unbalanced_node);
 
 				// after above rotation, right right sub tree height can not be trusted
-				unbalanced_node->right_sub_tree->node_property = 0;
-				unbalanced_node->right_sub_tree->right_sub_tree->node_property = 0;
+				prev_unbalanced_node->node_property = 0;
+				prev_prev_unbalanced_node->node_property = 0;
 			}
 
 			// for a right right case, just right rotate
@@ -429,6 +433,8 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p
 		}
 
 		// update the references
+		prev_prev_unbalanced_node = prev_unbalanced_node;
+		prev_unbalanced_node = unbalanced_node;
 		unbalanced_node = unbalanced_node->parent;
 	}
 }
