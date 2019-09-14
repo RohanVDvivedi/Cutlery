@@ -577,13 +577,9 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 // here it is mandatory to pass both the imbalanced node and its parent
 void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_black_node, node* double_blacks_parent)
 {
-	printf("Recursing double black node    : %d, color : %d\n", ((double_black_node == NULL) ? 0 : *((int*)(double_black_node->bucket_p->key))), is_black_node(double_black_node));
-	printf("Recursing double blacks parent : %d, color : %d\n", ((double_blacks_parent == NULL) ? 0 : *((int*)(double_blacks_parent->bucket_p->key))), is_black_node(double_blacks_parent));
-
 	CASE1 :;
 	if(double_black_node != NULL && is_root_node(double_black_node))
 	{
-		printf("\tCASE 1\n");
 		make_node_black(double_black_node);
 		goto EXIT;// terminal case 1
 	}
@@ -596,12 +592,10 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_blac
 	{
 		if(is_right_of_its_parent(double_blacks_sibling))
 		{
-			printf("\tCASE 2 - 1\n");
 			left_rotate_tree(balancedbst_p, double_blacks_parent);
 		}
 		else if(is_left_of_its_parent(double_blacks_sibling))
 		{
-			printf("\tCASE 2 - 2\n");
 			right_rotate_tree(balancedbst_p, double_blacks_parent);
 		}
 		else
@@ -620,7 +614,6 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_blac
 	CASE3 :;
 	if(is_black_node(double_blacks_parent) && is_black_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
 	{
-		printf("\tCASE 3\n");
 		make_node_red(double_blacks_sibling);
 		handle_black_height_imbalance(balancedbst_p, double_blacks_parent, double_blacks_parent->parent);
 		goto EXIT;
@@ -630,7 +623,6 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_blac
 	CASE4 :;
 	if(is_red_node(double_blacks_parent) && is_black_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
 	{
-		printf("\tCASE 4\n");
 		make_node_red(double_blacks_sibling);
 		make_node_black(double_blacks_parent);
 		goto EXIT;// terminal case 4
@@ -642,13 +634,11 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_blac
 		node* red_child = NULL;
 		if(is_right_of_its_parent(double_blacks_sibling) && is_black_node(double_blacks_sibling->right_sub_tree))
 		{
-			printf("\tCASE 5 - 1\n");
 			red_child = double_blacks_sibling->left_sub_tree;
 			right_rotate_tree(balancedbst_p, double_blacks_sibling);
 		}
 		else if(is_left_of_its_parent(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree))
 		{
-			printf("\tCASE 5 - 2\n");
 			red_child = double_blacks_sibling->right_sub_tree;
 			left_rotate_tree(balancedbst_p, double_blacks_sibling);
 		}
@@ -670,19 +660,16 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_blac
 		node* red_child = NULL;
 		if(is_right_of_its_parent(double_blacks_sibling) && is_red_node(double_blacks_sibling->right_sub_tree))
 		{
-			printf("\tCASE 6 - 1\n");
 			red_child = double_blacks_sibling->right_sub_tree;
 			left_rotate_tree(balancedbst_p, double_blacks_parent);
 		}
 		else if(is_left_of_its_parent(double_blacks_sibling) && is_red_node(double_blacks_sibling->left_sub_tree))
 		{
-			printf("\tCASE 6 - 2\n");
 			red_child = double_blacks_sibling->left_sub_tree;
 			right_rotate_tree(balancedbst_p, double_blacks_parent);
 		}
 		else
 		{
-			printf("None of the case was applicable :: Error");
 			goto EXIT; // could not identify, if it was case 6, this is Error, but still exit
 		}
 		exchange_colours(double_blacks_parent, double_blacks_sibling);
