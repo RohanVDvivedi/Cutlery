@@ -577,7 +577,6 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 // here it is mandatory to pass both the imbalanced node and its parent
 void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_black_node, node* double_blacks_parent)
 {
-	node* double_blacks_sibling = ((double_black_node == double_blacks_parent->right_sub_tree) ? double_blacks_parent->left_sub_tree : double_blacks_parent->right_sub_tree);
 	printf("Recursing double black node    : %d, color : %d\n", ((double_black_node == NULL) ? 0 : *((int*)(double_black_node->bucket_p->key))), is_black_node(double_black_node));
 	printf("Recursing double blacks parent : %d, color : %d\n", ((double_blacks_parent == NULL) ? 0 : *((int*)(double_blacks_parent->bucket_p->key))), is_black_node(double_blacks_parent));
 
@@ -588,6 +587,9 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_blac
 		make_node_black(double_black_node);
 		goto EXIT;// terminal case 1
 	}
+
+	// we calculate the sibling node's reference pointer here becauase, if the double black node is a root node (as in case 1), it will not have a sibling node
+	node* double_blacks_sibling = ((double_black_node == double_blacks_parent->right_sub_tree) ? double_blacks_parent->left_sub_tree : double_blacks_parent->right_sub_tree);
 
 	CASE2 :;
 	if(is_black_node(double_blacks_parent) && is_red_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
