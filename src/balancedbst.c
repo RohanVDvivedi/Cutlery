@@ -577,73 +577,121 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 // here it is mandatory to pass both the imbalanced node and its parent
 void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_black_node, node* double_blacks_parent)
 {
-	node* double_blacks_sibling = double_black_node == double_blacks_parent->right_sub_tree ? double_blacks_parent->left_sub_tree : double_blacks_parent->right_sub_tree;
+	node* double_blacks_sibling = ((double_black_node == double_blacks_parent->right_sub_tree) ? double_blacks_parent->left_sub_tree : double_blacks_parent->right_sub_tree);
+	printf("Recursing double black node    : %d, color : %d\n", ((double_black_node == NULL) ? 0 : *((int*)(double_black_node->bucket_p->key))), is_black_node(double_black_node));
+	printf("Recursing double blacks parent : %d, color : %d\n", ((double_blacks_parent == NULL) ? 0 : *((int*)(double_blacks_parent->bucket_p->key))), is_black_node(double_blacks_parent));
+
+	CASE1 :;
 	if(double_black_node != NULL && is_root_node(double_black_node))
 	{
+		printf("\tCASE 1\n");
 		make_node_black(double_black_node);
-		// terminal case 1
+		goto EXIT;// terminal case 1
 	}
-	else if(is_red_node(double_blacks_parent) && is_black_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
+
+	CASE2 :;
+	if(is_black_node(double_blacks_parent) && is_red_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
 	{
-		make_node_red(double_blacks_sibling);
-		make_node_black(double_blacks_parent);
-		// terminal case 4
-	}
-	else if(is_black_node(double_blacks_parent))
-	{
-		if(is_red_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
+		if(is_right_of_its_parent(double_blacks_sibling))
 		{
-			if(is_right_of_its_parent(double_blacks_sibling))
-			{
-				left_rotate_tree(balancedbst_p, double_blacks_parent);
-			}
-			else if(is_left_of_its_parent(double_blacks_sibling))
-			{
-				right_rotate_tree(balancedbst_p, double_blacks_parent);
-			}
-			make_node_red(double_blacks_parent);
-			make_node_black(double_blacks_sibling);
-			handle_black_height_imbalance(balancedbst_p, double_black_node, double_blacks_parent);
-			// case 2
-		}
-		else if(is_black_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
-		{
-			make_node_red(double_blacks_sibling);
-			handle_black_height_imbalance(balancedbst_p, double_blacks_parent, double_blacks_parent->parent);
-			// case 3
-		}
-		// same as above case but any one of siblings child is red
-		else if(is_black_node(double_blacks_sibling))
-		{
-			node* red_child = is_red_node(double_blacks_sibling->left_sub_tree) ? double_blacks_sibling->left_sub_tree : double_blacks_sibling->right_sub_tree;
-			if(is_right_of_its_parent(double_blacks_sibling) && is_left_of_its_parent(red_child))
-			{
-				right_rotate_tree(balancedbst_p, double_blacks_sibling);
-			}
-			else if(is_left_of_its_parent(double_blacks_sibling) && is_right_of_its_parent(red_child))
-			{
-				left_rotate_tree(balancedbst_p, double_blacks_sibling);
-			}
-			exchange_colours(double_blacks_sibling, red_child);
-			handle_black_height_imbalance(balancedbst_p, double_black_node, double_blacks_parent);
-			// case 5
-		}
-	}
-	else if(is_black_node(double_blacks_sibling) && (is_red_node(double_blacks_sibling->left_sub_tree) || is_red_node(double_blacks_sibling->right_sub_tree)))
-	{
-		node* red_child = is_red_node(double_blacks_sibling->left_sub_tree) ? double_blacks_sibling->left_sub_tree : double_blacks_sibling->right_sub_tree;
-		if(is_right_of_its_parent(double_blacks_sibling) && is_right_of_its_parent(red_child))
-		{
+			printf("\tCASE 2 - 1\n");
 			left_rotate_tree(balancedbst_p, double_blacks_parent);
 		}
-		else if(is_left_of_its_parent(double_blacks_sibling) && is_left_of_its_parent(red_child))
+		else if(is_left_of_its_parent(double_blacks_sibling))
 		{
+			printf("\tCASE 2 - 2\n");
 			right_rotate_tree(balancedbst_p, double_blacks_parent);
+		}
+		else
+		{
+			goto CASE3; // could not identify, if it was case 2, check next case
+		}
+		make_node_red(double_blacks_parent);
+		make_node_black(double_blacks_sibling);
+
+		// update the sibline node, that changed because of rotation
+		double_blacks_sibling = ((double_black_node == double_blacks_parent->right_sub_tree) ? double_blacks_parent->left_sub_tree : double_blacks_parent->right_sub_tree);
+		goto CASE4;
+		// case 2
+	}
+
+	CASE3 :;
+	if(is_black_node(double_blacks_parent) && is_black_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
+	{
+		printf("\tCASE 3\n");
+		make_node_red(double_blacks_sibling);
+		handle_black_height_imbalance(balancedbst_p, double_blacks_parent, double_blacks_parent->parent);
+		goto EXIT;
+		// case 3
+	}
+
+	CASE4 :;
+	if(is_red_node(double_blacks_parent) && is_black_node(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree) && is_black_node(double_blacks_sibling->right_sub_tree))
+	{
+		printf("\tCASE 4\n");
+		make_node_red(double_blacks_sibling);
+		make_node_black(double_blacks_parent);
+		goto EXIT;// terminal case 4
+	}
+
+	CASE5 :;
+	if(is_black_node(double_blacks_sibling) && (is_red_node(double_blacks_sibling->left_sub_tree) || is_red_node(double_blacks_sibling->right_sub_tree)))
+	{
+		node* red_child = NULL;
+		if(is_right_of_its_parent(double_blacks_sibling) && is_black_node(double_blacks_sibling->right_sub_tree))
+		{
+			printf("\tCASE 5 - 1\n");
+			red_child = double_blacks_sibling->left_sub_tree;
+			right_rotate_tree(balancedbst_p, double_blacks_sibling);
+		}
+		else if(is_left_of_its_parent(double_blacks_sibling) && is_black_node(double_blacks_sibling->left_sub_tree))
+		{
+			printf("\tCASE 5 - 2\n");
+			red_child = double_blacks_sibling->right_sub_tree;
+			left_rotate_tree(balancedbst_p, double_blacks_sibling);
+		}
+		else
+		{
+			goto CASE6; // could not identify, if it was case 5, check next case
+		}
+		exchange_colours(double_blacks_sibling, red_child);
+
+		// update the sibline node, that changed because of rotation
+		double_blacks_sibling = ((double_black_node == double_blacks_parent->right_sub_tree) ? double_blacks_parent->left_sub_tree : double_blacks_parent->right_sub_tree);
+		goto CASE6;
+		// case 5
+	}
+
+	CASE6 :;
+	if(is_black_node(double_blacks_sibling) && (is_red_node(double_blacks_sibling->left_sub_tree) || is_red_node(double_blacks_sibling->right_sub_tree)))
+	{
+		node* red_child = NULL;
+		if(is_right_of_its_parent(double_blacks_sibling) && is_red_node(double_blacks_sibling->right_sub_tree))
+		{
+			printf("\tCASE 6 - 1\n");
+			red_child = double_blacks_sibling->right_sub_tree;
+			left_rotate_tree(balancedbst_p, double_blacks_parent);
+		}
+		else if(is_left_of_its_parent(double_blacks_sibling) && is_red_node(double_blacks_sibling->left_sub_tree))
+		{
+			printf("\tCASE 6 - 2\n");
+			red_child = double_blacks_sibling->left_sub_tree;
+			right_rotate_tree(balancedbst_p, double_blacks_parent);
+		}
+		else
+		{
+			printf("None of the case was applicable :: Error");
+			goto EXIT; // could not identify, if it was case 6, this is Error, but still exit
 		}
 		exchange_colours(double_blacks_parent, double_blacks_sibling);
 		make_node_black(red_child);
-		// terminal case 6
+
+		// update the sibline node, that changed because of rotation
+		double_blacks_sibling = ((double_black_node == double_blacks_parent->right_sub_tree) ? double_blacks_parent->left_sub_tree : double_blacks_parent->right_sub_tree);
+		goto EXIT;// terminal case 6
 	}
+
+	EXIT: return;
 }
 
 // the below function only detaches the node thatr has to be deleted
@@ -667,7 +715,7 @@ node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 	if(is_black_node(node_p))
 	{
 		// handle height imbalance
-		node* imbalance_node = node_p->right_sub_tree != NULL ? node_p->left_sub_tree : node_p->right_sub_tree;
+		node* imbalance_node = node_p->right_sub_tree != NULL ? node_p->right_sub_tree : node_p->left_sub_tree;
 		node* imbalance_parent = node_p->parent;
 		if(is_red_node(imbalance_node))
 		{
