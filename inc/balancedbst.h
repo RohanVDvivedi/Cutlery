@@ -65,10 +65,13 @@ const void* find_value(balancedbst* blanacedbst_p, const void* key_p);
 // remove the node if found, returns a list of nodes that match
 int remove_value(balancedbst* blanacedbst_p, const void* key_p, const void** return_key, const void** return_value);
 
-// print complete binary search tree
-void print_balancedbst(const balancedbst* blanacedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
-
 // delete the balancedbst and all its nodes
 void delete_balancedbst(balancedbst* balancedbst_p);
+
+// perform operation on all the elements of the binary search tree
+void for_each_entry_in_tree(const balancedbst* blanacedbst_p, void (*operation)(const void* key, void* value));
+
+// print complete binary search tree
+void print_balancedbst(const balancedbst* blanacedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #endif

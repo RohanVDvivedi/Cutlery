@@ -52,4 +52,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 // deletes all the data allocated by the hashmap and the hashmap itself
 void delete_hashmap(hashmap* hashmap_p);
 
+// perform operation on all the elements of the hashmap
+void for_each_entry_in_hash(const hashmap* hashmap_p, void (*operation)(const void* key, void* value));
+
 #endif
