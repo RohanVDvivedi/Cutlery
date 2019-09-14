@@ -88,7 +88,7 @@ void put_bucket(hashmap* hashmap_p, bucket* bucket_p)
 	// if bucket with that key exists, then remove it
 	if(found_bucket_p != NULL)
 	{
-		remove_value(hashmap_p, found_bucket_p->key);
+		remove_value(hashmap_p, found_bucket_p->key, NULL, NULL);
 	}
 
 	// if the linkedlist is pointing to NULL, it has to be initialized first
@@ -110,7 +110,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 	return ((found_bucket_p == NULL) ? NULL : found_bucket_p->value);
 }
 
-int remove_value(hashmap* hashmap_p, const void* key)
+int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value)
 {
 	// get index
 	unsigned long long int index = get_index(hashmap_p, key);
@@ -127,6 +127,17 @@ int remove_value(hashmap* hashmap_p, const void* key)
 	if(found_bucket_p != NULL)
 	{
 		return_val = 1;
+
+		// return the key and value for the client program to handle their data and delete them
+		if(return_key != NULL)
+		{
+			(*(return_key)) = found_bucket_p->key;
+		}
+		if(return_value != NULL)
+		{
+			(*(return_value)) = found_bucket_p->value;
+		}
+
 		delete_bucket(found_bucket_p);
 		remove_node(linkedlist_p, found_node_p);
 	}

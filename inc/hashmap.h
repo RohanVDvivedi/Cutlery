@@ -40,7 +40,7 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value);
 const void* find_value(const hashmap* hashmap_p, const void* key);
 
 // returns 1 if the bucket is found and removed from hashmap and deleted
-int remove_value(hashmap* hashmap_p, const void* key);
+int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value);
 
 // the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
 // used to expand hashmap once the load factor is greater than 0.7 
