@@ -221,7 +221,7 @@ void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p, cons
 	}
 }
 
-const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params)
+node* find_first_node_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params)
 {
 	node* node_p = ll->head;
 	while(node_p != NULL)
@@ -235,9 +235,15 @@ const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare
 	return NULL;
 }
 
+const void* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params)
+{
+	node* node_p = find_first_node_in_list(ll, data_p, compare, additional_params);
+	return node_p == NULL ? NULL : node_p->data_p;
+}
+
 int remove_from_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params, const void** return_data)
 {
-	node* node_to_be_deleted = (node*)find_first_in_list(ll, data_p, compare, additional_params);
+	node* node_to_be_deleted = find_first_node_in_list(ll, data_p, compare, additional_params);
 	if(node_to_be_deleted == NULL)
 	{
 		return 0;

@@ -79,6 +79,7 @@ int main()
 
 	int nodes_deleted = 0;
 
+	nodes_deleted += remove_value(hashmap_p, &((ke){6}), NULL, NULL);
 	nodes_deleted += remove_value(hashmap_p, &((ke){2}), NULL, NULL);
 	nodes_deleted += remove_value(hashmap_p, &((ke){6}), NULL, NULL);
 	nodes_deleted += remove_value(hashmap_p, &((ke){4}), NULL, NULL);
@@ -87,6 +88,7 @@ int main()
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
+	nodes_deleted += remove_value(hashmap_p, &((ke){6}), NULL, NULL);
 	nodes_deleted += remove_value(hashmap_p, &((ke){7}), NULL, NULL);
 	nodes_deleted += remove_value(hashmap_p, &((ke){5}), NULL, NULL);
 	nodes_deleted += remove_value(hashmap_p, &((ke){8}), NULL, NULL);

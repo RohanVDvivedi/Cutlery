@@ -53,20 +53,13 @@ int bucket_compare(const void* bucket_p1, const void* bucket_p2, const void* has
 	return ((hashmap*)hashmap_p)->key_compare(((bucket*)bucket_p1)->key, ((bucket*)bucket_p2)->key);
 }
 
-// find node by the given key
-node* find_node(const hashmap* hashmap_p, const void* key)
+bucket* find_bucket(const hashmap* hashmap_p, const void* key)
 {
 	// get the linkedlist at that index
 	linkedlist* linkedlist_p = (linkedlist*)get_data_structure_for_key(hashmap_p, key);
 
 	// linear search through the linked list :(
-	return (node*)(find_first_in_list(linkedlist_p, &((bucket){key,NULL}), bucket_compare, hashmap_p));
-}
-
-bucket* find_bucket(const hashmap* hashmap_p, const void* key)
-{
-	node* found_node_p = find_node(hashmap_p, key);
-	return ((found_node_p == NULL) ? NULL : ((bucket*)found_node_p->data_p));
+	return (bucket*)(find_first_in_list(linkedlist_p, &((bucket){key,NULL}), bucket_compare, hashmap_p));
 }
 
 const void* find_value(const hashmap* hashmap_p, const void* key)
