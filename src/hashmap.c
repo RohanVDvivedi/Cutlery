@@ -100,15 +100,15 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 	// get the linked list for the given key
 	linkedlist* linkedlist_p = (linkedlist*)get_data_structure_for_key(hashmap_p, key);
 
-	// find the bucket index group the bucket_p belongs to
-	node* found_node_p = find_node(hashmap_p, key);
+	bucket* found_bucket_p = NULL;
 
-	// remove the node of the particular bucket, if such a bucket exists
-	if(found_node_p != NULL)
+	// offloading the find and delete task to the linkedlist itself
+	int has_been_deleted = remove_from_list(linkedlist_p, &((bucket){key,NULL}), bucket_compare, hashmap_p, ((const void**)(&found_bucket_p)));
+
+	// if a bucket was ther in the liunkedlist, we have to set the return keys and values so that the client can delete them
+	// also delete the bucket itself
+	if(found_bucket_p != NULL)
 	{
-		bucket* found_bucket_p = (bucket*)(found_node_p->data_p);
-
-		// return the key and value for the client program to handle their data and delete them
 		if(return_key != NULL)
 		{
 			(*(return_key)) = found_bucket_p->key;
@@ -117,14 +117,10 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 		{
 			(*(return_value)) = found_bucket_p->value;
 		}
-
 		delete_bucket(found_bucket_p);
-		remove_node(linkedlist_p, found_node_p);
-
-		return 1;
 	}
 
-	return 0;
+	return has_been_deleted;
 }
 
 void put_bucket_wrapper(void* bucket_p_v, const void* hashmap_p_v)

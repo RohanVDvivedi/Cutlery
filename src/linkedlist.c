@@ -235,6 +235,24 @@ const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare
 	return NULL;
 }
 
+int remove_from_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params, const void** return_data)
+{
+	node* node_to_be_deleted = (node*)find_first_in_list(ll, data_p, compare, additional_params);
+	if(node_to_be_deleted == NULL)
+	{
+		return 0;
+	}
+	else
+	{
+		if(return_data != NULL)
+		{
+			(*(return_data)) = node_to_be_deleted->data_p;
+		}
+		remove_node((linkedlist*)ll, node_to_be_deleted);
+		return 1;
+	}
+}
+
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 {
 	printf("linkedlist : \n");
