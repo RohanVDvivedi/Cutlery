@@ -56,7 +56,7 @@ unsigned long long int find_first_in_array(const array* array_p, void* data_p, i
 {
 	for(unsigned long long int i = 0; i < array_p->total_size; i++)
 	{
-		if(compare(get_element(array_p, i), data_p))
+		if(compare(get_element(array_p, i), data_p) == 0)
 		{
 			return i;
 		}

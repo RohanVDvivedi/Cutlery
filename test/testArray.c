@@ -9,7 +9,24 @@ struct teststruct
 
 void print_ts(const void* tsv)
 {
+	if(tsv == NULL)
+	{
+		printf(" NULL");
+		return;
+	}
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
+int test_compare(const void* a, const void* b)
+{
+	if(a==NULL || b==NULL)
+	{
+		return 0;
+	}
+	else
+	{
+		return ((ts*)a)->a - ((ts*)b)->a;
+	}
 }
 
 int main()
@@ -44,6 +61,11 @@ int main()
 	set_element(array_p, &((ts){666, "stu"}), 6);
 
 	print_array(array_p, print_ts);
+
+	ts to_find = {444, "lol"};
+	printf("Finding data where a = %d\n", to_find.a);
+	print_ts(get_element(array_p, find_first_in_array(array_p, ((void*)(&to_find)), test_compare)));
+	printf("\n");
 
 	delete_array(array_p);
 
