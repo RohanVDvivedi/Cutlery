@@ -76,10 +76,10 @@ const node* get_nth_node_from_tail(linkedlist* ll, unsigned long long int n);
 void delete_linkedlist(linkedlist* ll);
 
 // perform operation on all the elements of the linked list
-void for_each_in_list(const linkedlist* ll, void (*operation)(void* source));
+void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p));
 
 // returns pointer to node of the element found in ll, if compare between the element and data_p returns 1
-const node* find_first_in_list(const linkedlist* ll, void* data_p, void (*compare)(void* data_p1, void* data_p2));
+const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2));
 
 // prints complete linked list
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));

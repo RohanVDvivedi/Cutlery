@@ -211,6 +211,30 @@ void delete_linkedlist(linkedlist* ll)
 	free(ll);
 }
 
+void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p))
+{
+	node* node_p = ll->head;
+	while(node_p != NULL)
+	{
+		operation(((void*)node_p->data_p));
+		node_p = node_p->next;
+	}
+}
+
+const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2))
+{
+	node* node_p = ll->head;
+	while(node_p != NULL)
+	{
+		if(compare(node_p->data_p, data_p))
+		{
+			return node_p;
+		}
+		node_p = node_p->next;
+	}
+	return NULL;
+}
+
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 {
 	printf("linkedlist : \n");
