@@ -75,23 +75,33 @@ int main()
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	remove_value(hashmap_p, &((ke){2}), NULL, NULL);
+	printf("\nStarting to remove few entries\n\n");
 
-	remove_value(hashmap_p, &((ke){6}), NULL, NULL);
+	int nodes_deleted = 0;
 
-	remove_value(hashmap_p, &((ke){4}), NULL, NULL);
+	nodes_deleted += remove_value(hashmap_p, &((ke){2}), NULL, NULL);
+	nodes_deleted += remove_value(hashmap_p, &((ke){6}), NULL, NULL);
+	nodes_deleted += remove_value(hashmap_p, &((ke){4}), NULL, NULL);
 
-	print_hashmap(hashmap_p, print_key, print_ts);
-
-	remove_value(hashmap_p, &((ke){7}), NULL, NULL);
-
-	remove_value(hashmap_p, &((ke){8}), NULL, NULL);
+	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	remove_value(hashmap_p, &((ke){9}), NULL, NULL);
+	nodes_deleted += remove_value(hashmap_p, &((ke){7}), NULL, NULL);
+	nodes_deleted += remove_value(hashmap_p, &((ke){5}), NULL, NULL);
+	nodes_deleted += remove_value(hashmap_p, &((ke){8}), NULL, NULL);
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
+
+	print_hashmap(hashmap_p, print_key, print_ts);nodes_deleted = 0;
+
+	nodes_deleted += remove_value(hashmap_p, &((ke){9}), NULL, NULL);
+
+	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
+
+	print_hashmap(hashmap_p, print_key, print_ts);nodes_deleted = 0;
+
+	printf("\nCompleted removing entries\n\n");
 
 	put_entry(hashmap_p, &((ke){60}), &((ts){6000, "sixty"}));
 

@@ -211,22 +211,22 @@ void delete_linkedlist(linkedlist* ll)
 	free(ll);
 }
 
-void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p))
+void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p, const void* additional_params), const void* additional_params)
 {
 	node* node_p = ll->head;
 	while(node_p != NULL)
 	{
-		operation(((void*)node_p->data_p));
+		operation(((void*)node_p->data_p), additional_params);
 		node_p = node_p->next;
 	}
 }
 
-const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2))
+const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params)
 {
 	node* node_p = ll->head;
 	while(node_p != NULL)
 	{
-		if(compare(node_p->data_p, data_p) == 0)
+		if(compare(node_p->data_p, data_p, additional_params) == 0)
 		{
 			return node_p;
 		}

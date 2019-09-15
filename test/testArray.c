@@ -21,7 +21,7 @@ int test_compare(const void* a, const void* b)
 {
 	if(a==NULL || b==NULL)
 	{
-		return 0;
+		return -1;
 	}
 	else
 	{

@@ -17,11 +17,11 @@ void print_ts(const void* tsv)
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-int test_compare(const void* a, const void* b)
+int test_compare(const void* a, const void* b, const void* additional_params)
 {
 	if(a==NULL || b==NULL)
 	{
-		return 0;
+		return -1;
 	}
 	else
 	{
@@ -62,7 +62,7 @@ int main()
 	print_linkedlist(ll, print_ts);
 
 	ts to_find = {-1, "lol"};
-	const node* found = find_first_in_list(ll, ((void*)&to_find), test_compare);
+	const node* found = find_first_in_list(ll, ((void*)&to_find), test_compare, NULL);
 	print_ts(found == NULL ? NULL : ((void*)found->data_p));
 	printf("\n");
 
