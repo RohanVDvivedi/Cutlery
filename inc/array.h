@@ -49,10 +49,10 @@ const void* get_element(const array* array_p, unsigned long long int index);
 int set_element(array* array_p, const void* data_p, unsigned long long int index);
 
 // perform operation on all the elements of the array
-void for_each_in_array(const array* array_p, void (*operation)(void* source));
+void for_each_in_array(const array* array_p, void (*operation)(void* data_p));
 
 // returns index of the element found in array_p, if compare between the element and data_p returns 1
-unsigned long long int find_first_in_array(const array* array_p, void* data_p, void (*compare)(void* data_p1, void* data_p2));
+unsigned long long int find_first_in_array(const array* array_p, void* data_p, int (*compare)(const void* data_p1, const void* data_p2));
 
 // it expands array, as per the array rules
 void expand_array(array* array_p);

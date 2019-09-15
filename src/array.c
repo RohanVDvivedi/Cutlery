@@ -44,6 +44,26 @@ int set_element(array* array_p, const void* data_p, unsigned long long int index
 	}
 }
 
+void for_each_in_array(const array* array_p, void (*operation)(void* data_p))
+{
+	for(unsigned long long int i = 0; i < array_p->total_size; i++)
+	{
+		operation(((void*)get_element(array_p, i)));
+	}
+}
+
+unsigned long long int find_first_in_array(const array* array_p, void* data_p, int (*compare)(const void* data_p1, const void* data_p2))
+{
+	for(unsigned long long int i = 0; i < array_p->total_size; i++)
+	{
+		if(compare(get_element(array_p, i), data_p))
+		{
+			return i;
+		}
+	}
+	return array_p->total_size + 1;
+}
+
 void expand_array(array* array_p)
 {
 	// compute new_size
