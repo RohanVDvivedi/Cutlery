@@ -9,7 +9,24 @@ struct teststruct
 
 void print_ts(const void* tsv)
 {
+	if(tsv == NULL)
+	{
+		printf(" NULL");
+		return;
+	}
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
+int test_compare(const void* a, const void* b)
+{
+	if(a==NULL || b==NULL)
+	{
+		return 0;
+	}
+	else
+	{
+		return ((ts*)a)->a - ((ts*)b)->a;
+	}
 }
 
 int main()
@@ -44,7 +61,12 @@ int main()
 	remove_tail(ll);
 	print_linkedlist(ll, print_ts);
 
-	remove_node(ll, ((node*)get_nth_node_from_tail(ll, 2)));
+	ts to_find = {-1, "lol"};
+	const node* found = find_first_in_list(ll, ((void*)&to_find), test_compare);
+	print_ts(found == NULL ? NULL : ((void*)found->data_p));
+	printf("\n");
+
+	remove_node(ll, ((node*)get_nth_node_from_head(ll, 2)));
 	print_linkedlist(ll, print_ts);
 
 	delete_linkedlist(ll);

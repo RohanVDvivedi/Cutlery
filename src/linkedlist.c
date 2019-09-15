@@ -226,7 +226,7 @@ const node* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare
 	node* node_p = ll->head;
 	while(node_p != NULL)
 	{
-		if(compare(node_p->data_p, data_p))
+		if(compare(node_p->data_p, data_p) == 0)
 		{
 			return node_p;
 		}
