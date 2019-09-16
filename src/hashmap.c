@@ -158,8 +158,16 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 	(*hashmap_p) = new_hashmap_properties;
 }
 
+void print_bucket_wrapper(void* bucket_p_to_print, const void* bucket_p_functions)
+{
+	bucket* bucket_p_to_print_t = ((bucket*)bucket_p_to_print);
+	bucket* bucket_p_functions_t = ((bucket*)bucket_p_functions);
+	print_bucket(bucket_p_to_print_t, bucket_p_functions_t->key, bucket_p_functions_t->value);
+}
+
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
+	bucket print_functions = {.key = print_key, .value = print_value};
 	// iterate over all the elements (linkedlists) in the hashmap_p
 	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
 	{
@@ -167,12 +175,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 		linkedlist* linkedlist_p = ((linkedlist*)get_element(hashmap_p->buckets_holder, index));
 		if(linkedlist_p != NULL)
 		{
-			node* node_p = linkedlist_p->head;
-			while(node_p != NULL)
-			{
-				print_bucket(((bucket*)node_p->data_p), print_key, print_value);
-				node_p = node_p->next;
-			}
+			for_each_in_list(linkedlist_p, print_bucket_wrapper, ((const void*)(&print_functions)));
 		}
 	}
 	printf("\n\n");
