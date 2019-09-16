@@ -12,6 +12,8 @@
 // all the nodes on the right sub tree of the node are greater than the node itself,
 // when compare using the data_compare function
 
+#define node bstnode
+
 typedef enum tree_type tree_type;
 enum tree_type
 {
@@ -73,5 +75,7 @@ void for_each_entry_in_tree(const balancedbst* blanacedbst_p, void (*operation)(
 
 // print complete binary search tree
 void print_balancedbst(const balancedbst* blanacedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
+
+#undef node
 
 #endif

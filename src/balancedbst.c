@@ -1,5 +1,7 @@
 #include<balancedbst.h>
 
+#define node bstnode
+
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
 {
 	balancedbst* balancedbst_p = (balancedbst*) calloc(1, sizeof(balancedbst));
@@ -905,3 +907,5 @@ void delete_balancedbst(balancedbst* balancedbst_p)
 	}
 	free(balancedbst_p);
 }
+
+#undef node
