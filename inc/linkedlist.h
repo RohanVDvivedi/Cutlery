@@ -4,6 +4,8 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+#define node llnode
+
 // the datastructure of the linkedlist manages its data on its own
 // you manage your own data
 // the pointer you give will be directly stored internally
@@ -107,5 +109,7 @@ int remove_from_list(const linkedlist* ll, void* data_p, int (*compare)(const vo
 
 // prints complete linked list
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));
+
+#undef node
 
 #endif

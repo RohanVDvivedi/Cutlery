@@ -46,13 +46,13 @@ int main()
 	insert_tail(ll, &((ts){6, "six"}));
 	print_linkedlist(ll, print_ts);
 
-	insert_node_after(ll, ((node*)get_nth_node_from_head(ll, 1)), &((ts){3, "three"}));
+	insert_node_after(ll, ((llnode*)get_nth_node_from_head(ll, 1)), &((ts){3, "three"}));
 	print_linkedlist(ll, print_ts);
 
-	insert_node_before(ll, ((node*)get_nth_node_from_tail(ll, 1)), &((ts){4, "four"}));
+	insert_node_before(ll, ((llnode*)get_nth_node_from_tail(ll, 1)), &((ts){4, "four"}));
 	print_linkedlist(ll, print_ts);
 
-	insert_node_before(ll, ((node*)get_nth_node_from_tail(ll, 2)), &((ts){-1, "minus one"}));
+	insert_node_before(ll, ((llnode*)get_nth_node_from_tail(ll, 2)), &((ts){-1, "minus one"}));
 	print_linkedlist(ll, print_ts);
 
 	remove_head(ll);
@@ -62,11 +62,11 @@ int main()
 	print_linkedlist(ll, print_ts);
 
 	ts to_find = {-1, "lol"};
-	const node* found = find_first_in_list(ll, ((void*)&to_find), test_compare, NULL);
-	print_ts(found == NULL ? NULL : ((void*)found->data_p));
+	const void* found = find_first_in_list(ll, ((void*)&to_find), test_compare, NULL);
+	print_ts(found == NULL ? NULL : found);
 	printf("\n");
 
-	remove_node(ll, ((node*)get_nth_node_from_head(ll, 2)));
+	remove_node(ll, ((llnode*)get_nth_node_from_head(ll, 2)));
 	print_linkedlist(ll, print_ts);
 
 	delete_linkedlist(ll);

@@ -1,5 +1,7 @@
 #include<linkedlist.h>
 
+#define node llnode
+
 linkedlist* get_linkedlist()
 {
 	linkedlist* ll = (linkedlist*) calloc(1, sizeof(linkedlist));
@@ -276,3 +278,5 @@ void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 	}
 	printf("\n");
 }
+
+#undef node
