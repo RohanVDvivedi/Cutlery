@@ -44,11 +44,11 @@ int set_element(array* array_p, const void* data_p, unsigned long long int index
 	}
 }
 
-void for_each_in_array(const array* array_p, void (*operation)(void* data_p))
+void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
 {
 	for(unsigned long long int i = 0; i < array_p->total_size; i++)
 	{
-		operation(((void*)get_element(array_p, i)));
+		operation(((void*)get_element(array_p, i)), i, additional_params);
 	}
 }
 
@@ -86,24 +86,26 @@ void expand_array(array* array_p)
 	array_p->total_size = new_total_size;
 }
 
+void print_array_element_wrapper(void* element, unsigned long long int index, const void* print_element)
+{
+	printf("\telement_index %lld -> ", index);
+	const void* element_p = element;
+	if(element != NULL)
+	{
+		((void (*)(const void* data_p))print_element)(element);
+	}
+	else
+	{
+		printf("NULL");
+	}
+	printf("\n");
+}
+
 void print_array(const array* array_p, void (*print_element)(const void* data_p))
 {
 	printf("\narray:");
 	printf("\n\tincrement_factor : %lld", array_p->increment_factor);
 	printf("\n\tincrement_offset : %lld", array_p->increment_offset);
 	printf("\n\ttotal size : %lld\n", array_p->total_size);
-	for(unsigned long long int i = 0; i < array_p->total_size; i++)
-	{
-		printf("\telement_index %lld -> ", i);
-		const void* element = get_element(array_p, i);
-		if(element != NULL)
-		{
-			print_element(get_element(array_p, i));
-		}
-		else
-		{
-			printf("NULL");
-		}
-		printf("\n");
-	}
+	for_each_in_array(array_p, print_array_element_wrapper, print_element);
 }

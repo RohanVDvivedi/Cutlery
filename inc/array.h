@@ -48,8 +48,8 @@ const void* get_element(const array* array_p, unsigned long long int index);
 // returns 0 for success
 int set_element(array* array_p, const void* data_p, unsigned long long int index);
 
-// perform operation on all the elements of the array
-void for_each_in_array(const array* array_p, void (*operation)(void* data_p));
+// perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
+void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params);
 
 // returns index of the element found in array_p, if compare between the element and data_p returns 0
 // compare > 0, if data_p1 > data_p2 else compare < 0
