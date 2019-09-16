@@ -213,6 +213,16 @@ void delete_linkedlist(linkedlist* ll)
 	free(ll);
 }
 
+void for_each_node_in_list(const linkedlist* ll, void (*operation)(node* node_p, const void* additional_params), const void* additional_params)
+{
+	node* node_p = ll->head;
+	while(node_p != NULL)
+	{
+		operation(node_p, additional_params);
+		node_p = node_p->next;
+	}
+}
+
 void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p, const void* additional_params), const void* additional_params)
 {
 	node* node_p = ll->head;
@@ -261,21 +271,21 @@ int remove_from_list(const linkedlist* ll, void* data_p, int (*compare)(const vo
 	}
 }
 
+void print_linkedlist_element_wrapper(node* node_p, const void* print_element)
+{
+	printf("\tprev => %d\n", ((int)node_p->prev));
+	printf("\t\tnode => %d\n", ((int)node_p));
+	printf("\t\tdata => ");((void (*)(const void* data_p))print_element)(node_p->data_p);printf("\n");
+	printf("\tnext => %d\n", ((int)node_p->next));
+	printf("\n");
+}
+
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 {
 	printf("linkedlist : \n");
 	printf("head : %d\n", ((int)ll->head));
 	printf("tail : %d\n", ((int)ll->tail));
-	node* node_p = ll->head;
-	while(node_p != NULL)
-	{
-		printf("\tprev => %d\n", ((int)node_p->prev));
-		printf("\t\tnode => %d\n", ((int)node_p));
-		printf("\t\tdata => ");print_element(node_p->data_p);printf("\n");
-		printf("\tnext => %d\n", ((int)node_p->next));
-		printf("\n");
-		node_p = node_p->next;
-	}
+	for_each_node_in_list(ll, print_linkedlist_element_wrapper, print_element);
 	printf("\n");
 }
 
