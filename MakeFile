@@ -1,11 +1,24 @@
 INC_DIR=./inc
 OBJ_DIR=./obj
+LIB_DIR=./lib
 SRC_DIR=./src
 BIN_DIR=./bin
 
 CC=gcc
+RM=rm -f
+
+TARGET=libcutlerylib.a
+
 
 CFLAGS=-I${INC_DIR}
 
 ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c ${INC_DIR}/%.h
 	${CC} ${CFLAGS} -c $< -o $@
+
+${BIN_DIR}/$(TARGET) : ${OBJ_DIR}/array.o ${OBJ_DIR}/balancedbst.o ${OBJ_DIR}/bucket.o ${OBJ_DIR}/hashmap.o ${OBJ_DIR}/linkedlist.o ${OBJ_DIR}/mmarray.o ${OBJ_DIR}/queue.o ${OBJ_DIR}/stack.o
+	ar rcs $@ ${OBJ_DIR}/*.o
+
+all: ${BIN_DIR}/$(TARGET)
+
+clean :
+	$(RM) $(BIN_DIR)/* $(OBJ_DIR)/*
