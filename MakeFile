@@ -7,7 +7,7 @@ BIN_DIR=./bin
 CC=gcc
 RM=rm -f
 
-TARGET=libcutlerylib.a
+TARGET=libcutlery.a
 
 
 CFLAGS=-I${INC_DIR}
