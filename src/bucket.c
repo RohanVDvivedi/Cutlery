@@ -21,3 +21,8 @@ void delete_bucket(bucket* bucket_p)
 {
 	free(bucket_p);
 }
+
+int bucket_compare(const bucket* bucket_p1, const bucket* bucket_p2, int (*key_compare)(const void* key_1, const void* key_2))
+{
+	return key_compare(bucket_p1->key, bucket_p2->key);
+}

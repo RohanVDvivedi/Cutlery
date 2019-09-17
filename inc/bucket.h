@@ -23,4 +23,9 @@ void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), vo
 // delete a bucket pointed to by bucket_p
 void delete_bucket(bucket* bucket_p);
 
+// compare bucket function
+// since a bucket is unique by its key
+// we compare buckets, by their keys
+int bucket_compare(const bucket* bucket_p1, const bucket* bucket_p2, int (*key_compare)(const void* key_1, const void* key_2));
+
 #endif

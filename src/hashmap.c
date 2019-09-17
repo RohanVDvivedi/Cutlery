@@ -46,20 +46,13 @@ const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key
 	return ll;
 }
 
-// utility
-// compares buckets, by their keys
-int bucket_compare(const void* bucket_p1, const void* bucket_p2, const void* hashmap_p)
-{
-	return ((hashmap*)hashmap_p)->key_compare(((bucket*)bucket_p1)->key, ((bucket*)bucket_p2)->key);
-}
-
 bucket* find_bucket(const hashmap* hashmap_p, const void* key)
 {
 	// get the linkedlist at that index
 	linkedlist* linkedlist_p = (linkedlist*)get_data_structure_for_key(hashmap_p, key);
 
 	// linear search through the linked list :(
-	return (bucket*)(find_first_in_list(linkedlist_p, &((bucket){key,NULL}), bucket_compare, hashmap_p));
+	return (bucket*)(find_first_in_list(linkedlist_p, &((bucket){key,NULL}), ((int (*)(const void*, const void*, const void*))(bucket_compare)), hashmap_p->key_compare));
 }
 
 const void* find_value(const hashmap* hashmap_p, const void* key)
@@ -96,7 +89,7 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 	bucket* found_bucket_p = NULL;
 
 	// offloading the find and delete task to the linkedlist itself
-	int has_been_deleted = remove_from_list(linkedlist_p, &((bucket){key,NULL}), bucket_compare, hashmap_p, ((const void**)(&found_bucket_p)));
+	int has_been_deleted = remove_from_list(linkedlist_p, &((bucket){key,NULL}), ((int (*)(const void*, const void*, const void*))(bucket_compare)), hashmap_p->key_compare, ((const void**)(&found_bucket_p)));
 
 	// if a bucket was ther in the liunkedlist, we have to set the return keys and values so that the client can delete them
 	// also delete the bucket itself
