@@ -12,7 +12,14 @@
 // all the nodes on the right sub tree of the node are greater than the node itself,
 // when compare using the data_compare function
 
+// to avoid name collision with node of linkedlist
 #define node bstnode
+
+// to avoid name collision with functions of hashmap
+#define put_entry		put_entry_in_bst
+#define find_value 		find_value_from_bst 
+#define remove_value 	remove_value_from_bst
+#define for_each_entry 	for_each_entry_in_bst
 
 typedef enum tree_type tree_type;
 enum tree_type
@@ -71,11 +78,15 @@ int remove_value(balancedbst* blanacedbst_p, const void* key_p, const void** ret
 void delete_balancedbst(balancedbst* balancedbst_p);
 
 // perform operation on all the elements of the binary search tree
-void for_each_entry_in_tree(const balancedbst* blanacedbst_p, void (*operation)(const void* key, void* value));
+void for_each_entry(const balancedbst* blanacedbst_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params);
 
 // print complete binary search tree
 void print_balancedbst(const balancedbst* blanacedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #undef node
+#undef put_entry
+#undef find_value
+#undef remove_value
+#undef for_each_entry
 
 #endif

@@ -1,5 +1,6 @@
 #include<linkedlist.h>
 
+// to avoid name collision with node of balancedbst
 #define node llnode
 
 linkedlist* get_linkedlist()

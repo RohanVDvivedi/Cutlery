@@ -1,6 +1,13 @@
 #include<balancedbst.h>
 
+// to avoid name collision with node of linkedlist
 #define node bstnode
+
+// to avoid name collision with functions of hashmap
+#define put_entry		put_entry_in_bst
+#define find_value 		find_value_from_bst 
+#define remove_value 	remove_value_from_bst
+#define for_each_entry 	for_each_entry_in_bst
 
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
 {
@@ -909,3 +916,7 @@ void delete_balancedbst(balancedbst* balancedbst_p)
 }
 
 #undef node
+#undef put_entry
+#undef find_value
+#undef remove_value
+#undef for_each_entry

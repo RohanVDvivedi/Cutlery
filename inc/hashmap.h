@@ -16,6 +16,12 @@
 // and definately not create any new look alikes of key,value,
 // hashmap will just store them directly in bucket and use the memory pointed by them when required
 
+// to avoid name collision with functions of balancedbst
+#define put_entry		put_entry_in_hash
+#define find_value 		find_value_from_hash
+#define remove_value 	remove_value_from_hash
+#define for_each_entry 	for_each_entry_in_hash
+
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
 {
@@ -78,6 +84,11 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 void delete_hashmap(hashmap* hashmap_p);
 
 // perform operation on all the elements of the hashmap
-void for_each_entry_in_hash(const hashmap* hashmap_p, void (*operation)(const void* key, void* value));
+void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params);
+
+#undef put_entry
+#undef find_value
+#undef remove_value
+#undef for_each_entry
 
 #endif

@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+// to avoid name collision with node of balancedbst
 #define node llnode
 
 // the datastructure of the linkedlist manages its data on its own
