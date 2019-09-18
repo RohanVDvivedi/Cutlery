@@ -92,7 +92,7 @@ const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key
 	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
-bucket* find_bucket(const hashmap* hashmap_p, const void* key)
+bucket* find_bucket_for_no_policy_or_linkedlist_policy(const hashmap* hashmap_p, const void* key)
 {
 	// to store pointer to the bucket once it is found
 	bucket* found_bucket_p = NULL;
@@ -120,9 +120,7 @@ bucket* find_bucket(const hashmap* hashmap_p, const void* key)
 			}
 			case ELEMENTS_AS_AVL_BST :
 			case ELEMENTS_AS_RED_BLACK_BST :
-			{
-				// find it in a bst
-				found_bucket_p = ((bucket*)(find_value_from_bst(((balancedbst*)(ds_p)), key)));
+			{// bst data structures can only give you values, let found_bukcet_p = NULL
 				break;
 			}
 		}
@@ -134,22 +132,40 @@ bucket* find_bucket(const hashmap* hashmap_p, const void* key)
 
 const void* find_value(const hashmap* hashmap_p, const void* key)
 {
-	bucket* found_bucket_p = find_bucket(hashmap_p, key);
-	return ((found_bucket_p == NULL) ? NULL : found_bucket_p->value);
+	switch(hashmap_p->hashmap_policy)
+	{
+		case NO_POLICY :
+		case ELEMENTS_AS_LINKEDLIST :
+		{
+			bucket* found_bucket_p = find_bucket_for_no_policy_or_linkedlist_policy(hashmap_p, key);
+			return ((found_bucket_p == NULL) ? NULL : found_bucket_p->value);
+		}
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			// get the bst data structure for that key, without any new creation
+			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
+
+			// find value in a bst
+			return ((bucket*)(find_value_from_bst(((balancedbst*)(ds_p)), key)));
+		}
+	}
 }
 
 void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 {
 	// find the bucket in the hashmap, which has the same key as this bucket
-	bucket* found_bucket_p = find_bucket(hashmap_p, key);
+	bucket* found_bucket_p = find_bucket_for_no_policy_or_linkedlist_policy(hashmap_p, key);
 
-	// if bucket with that key exists, then update its value pointer, and key as well if it is NO_POLICY hashmap
+	// if bucket with that key exists, then update its value pointer
 	if(found_bucket_p != NULL)
 	{
 		// update the value of the bucket, if it is found 
 		found_bucket_p->value = value;
 	}
 	// we insert a new bucket
+	// else case works for bsts (because they have their own way of memory managing buckets), so we dont put dupka there
+	// or if it is NO_POLICY or linked_list, where the buckets are maemory managed by hashmap only
 	else
 	{
 		// retrieve data structure for that key
@@ -193,7 +209,7 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 	{
 		case NO_POLICY :
 		{
-			found_bucket_p = find_bucket(hashmap_p, key);
+			found_bucket_p = find_bucket_for_no_policy_or_linkedlist_policy(hashmap_p, key);
 			// if no policy, ds_p is only the bucket
 			if(found_bucket_p != NULL)
 			{
