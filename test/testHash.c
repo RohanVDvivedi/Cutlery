@@ -36,7 +36,7 @@ void print_key(const void* key)
 int main()
 {
 	hashmap* hashmap_p = get_hashmap(4, hash_function, key_cmp,
-		/*NO_POLICY*/ /*ELEMENTS_AS_LINKEDLIST*/ ELEMENTS_AS_RED_BLACK_BST /*ELEMENTS_AS_AVL_BST*/);
+		/*NO_POLICY*/ /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ ELEMENTS_AS_AVL_BST);
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
@@ -49,6 +49,10 @@ int main()
 	print_hashmap(hashmap_p, print_key, print_ts);
 
 	put_entry_in_hash(hashmap_p, &((ke){3}), &((ts){300, "there"}));
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	put_entry_in_hash(hashmap_p, &((ke){3}), &((ts){300, "three"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 

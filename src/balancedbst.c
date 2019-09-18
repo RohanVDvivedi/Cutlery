@@ -476,6 +476,7 @@ void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 	if( is_balancedbst_empty(balancedbst_p) )
 	{
 		balancedbst_p->root = node_p;
+		node_p->node_property = 1; // if avl => 1 node to reach NULL, if reb-black => root is always black
 		node_p->parent = NULL;
 		return;
 	}
@@ -821,13 +822,13 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 {
 	if(node_p != NULL)
 	{
-		if( is_leaf_node(node_p) )
-		{
-			printf("\tLEAF NODE     :");
-		}
-		else if( is_root_node(node_p) )
+		if( is_root_node(node_p) )
 		{
 			printf("\tROOT NODE     :");
+		}
+		else if( is_leaf_node(node_p) )
+		{
+			printf("\tLEAF NODE     :");
 		}
 		else if( is_internal_node(node_p) )
 		{
