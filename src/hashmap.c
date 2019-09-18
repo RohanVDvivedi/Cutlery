@@ -110,6 +110,7 @@ bucket* find_bucket(const hashmap* hashmap_p, const void* key)
 				// if no policy ther is no middle ware data structure handling collision just bucket
 				// hence compare key and return
 				found_bucket_p = hashmap_p->key_compare(key, ((bucket*)ds_p)->key) == 0 ? ((bucket*)(ds_p)) : NULL;
+				break;
 			}
 			case ELEMENTS_AS_LINKEDLIST :
 			{
@@ -140,7 +141,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 {
 	// find the bucket in the hashmap, which has the same key as this bucket
-	bucket* found_bucket_p = find_bucket(hashmap_p, key);
+	bucket* found_bucket_p = find_bucket(hashmap_p, key);printf("LOL %d\n", (int)found_bucket_p);
 
 	// if bucket with that key exists, then update its value pointer, and key as well if it is NO_POLICY hashmap
 	if(found_bucket_p != NULL)
@@ -161,6 +162,7 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 				// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
 				((bucket*)ds_p)->key = key;
 				((bucket*)ds_p)->value = value;
+				break;
 			}
 			case ELEMENTS_AS_LINKEDLIST :
 			{
@@ -199,6 +201,7 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 				set_element(hashmap_p->buckets_holder, NULL, get_index_for_key(hashmap_p, key));
 				has_been_deleted += 1;
 			}
+			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
