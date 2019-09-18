@@ -35,43 +35,44 @@ void print_key(const void* key)
 
 int main()
 {
-	hashmap* hashmap_p = get_hashmap(4, hash_function, key_cmp);
+	hashmap* hashmap_p = get_hashmap(4, hash_function, key_cmp,
+		/*NO_POLICY*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/);
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){1}), &((ts){100, "one"}));
+	put_entry_in_hash(hashmap_p, &((ke){1}), &((ts){100, "one"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){2}), &((ts){200, "two"}));
+	put_entry_in_hash(hashmap_p, &((ke){2}), &((ts){200, "two"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){3}), &((ts){300, "there"}));
+	put_entry_in_hash(hashmap_p, &((ke){3}), &((ts){300, "there"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){4}), &((ts){400, "four"}));
+	put_entry_in_hash(hashmap_p, &((ke){4}), &((ts){400, "four"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){5}), &((ts){500, "five"}));
+	put_entry_in_hash(hashmap_p, &((ke){5}), &((ts){500, "five"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){6}), &((ts){600, "six"}));
+	put_entry_in_hash(hashmap_p, &((ke){6}), &((ts){600, "six"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){7}), &((ts){700, "seven"}));
+	put_entry_in_hash(hashmap_p, &((ke){7}), &((ts){700, "seven"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){8}), &((ts){800, "eight"}));
+	put_entry_in_hash(hashmap_p, &((ke){8}), &((ts){800, "eight"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){9}), &((ts){900, "nine"}));
+	put_entry_in_hash(hashmap_p, &((ke){9}), &((ts){900, "nine"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
@@ -79,25 +80,25 @@ int main()
 
 	int nodes_deleted = 0;
 
-	nodes_deleted += remove_value(hashmap_p, &((ke){6}), NULL, NULL);
-	nodes_deleted += remove_value(hashmap_p, &((ke){2}), NULL, NULL);
-	nodes_deleted += remove_value(hashmap_p, &((ke){6}), NULL, NULL);
-	nodes_deleted += remove_value(hashmap_p, &((ke){4}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){6}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){2}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){6}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){4}), NULL, NULL);
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	nodes_deleted += remove_value(hashmap_p, &((ke){6}), NULL, NULL);
-	nodes_deleted += remove_value(hashmap_p, &((ke){7}), NULL, NULL);
-	nodes_deleted += remove_value(hashmap_p, &((ke){5}), NULL, NULL);
-	nodes_deleted += remove_value(hashmap_p, &((ke){8}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){6}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){7}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){5}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){8}), NULL, NULL);
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
 	print_hashmap(hashmap_p, print_key, print_ts);nodes_deleted = 0;
 
-	nodes_deleted += remove_value(hashmap_p, &((ke){9}), NULL, NULL);
+	nodes_deleted += remove_value_from_hash(hashmap_p, &((ke){9}), NULL, NULL);
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
@@ -105,27 +106,27 @@ int main()
 
 	printf("\nCompleted removing entries\n\n");
 
-	put_entry(hashmap_p, &((ke){60}), &((ts){6000, "sixty"}));
+	put_entry_in_hash(hashmap_p, &((ke){60}), &((ts){6000, "sixty"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){70}), &((ts){7000, "seventy"}));
+	put_entry_in_hash(hashmap_p, &((ke){70}), &((ts){7000, "seventy"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){70}), &((ts){70000, "seven hundred"}));
+	put_entry_in_hash(hashmap_p, &((ke){70}), &((ts){70000, "seven hundred"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){80}), &((ts){8000, "eighty"}));
+	put_entry_in_hash(hashmap_p, &((ke){80}), &((ts){8000, "eighty"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){20}), &((ts){2000, "twenty"}));
+	put_entry_in_hash(hashmap_p, &((ke){20}), &((ts){2000, "twenty"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	put_entry(hashmap_p, &((ke){40}), &((ts){4000, "forty"}));
+	put_entry_in_hash(hashmap_p, &((ke){40}), &((ts){4000, "forty"}));
 
 	printf("\n\nBefore rehashing - 16\n");
 	print_hashmap(hashmap_p, print_key, print_ts);

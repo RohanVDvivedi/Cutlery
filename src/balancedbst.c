@@ -798,6 +798,24 @@ int remove_value(balancedbst* balancedbst_p, const void* key_p,const void** retu
 	return deleted_nodes_count;
 }
 
+void for_each_node(const node* node_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
+{
+	if(node_p != NULL)
+	{
+		for_each_node(node_p->left_sub_tree, operation, additional_params);
+		operation(node_p->bucket_p->key, node_p->bucket_p->value, additional_params);
+		for_each_node(node_p->right_sub_tree, operation, additional_params);
+	}
+}
+
+void for_each_entry(const balancedbst* balancedbst_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
+{
+	if(!is_balancedbst_empty((balancedbst*)balancedbst_p))
+	{
+		for_each_node(balancedbst_p->root, operation, additional_params);
+	}
+}
+
 void print_node(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	if(node_p != NULL)
