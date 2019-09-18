@@ -476,7 +476,7 @@ void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 	if( is_balancedbst_empty(balancedbst_p) )
 	{
 		balancedbst_p->root = node_p;
-		node_p->node_property = 1; // if avl => 1 node to reach NULL, if reb-black => root is always black
+		node_p->node_property = balancedbst_p->balanced_tree_type == NON_SELF_BALANCING ? 0 : 1; // if avl => 1 node to reach NULL, if reb-black => root is always black
 		node_p->parent = NULL;
 		return;
 	}

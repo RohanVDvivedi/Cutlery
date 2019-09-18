@@ -37,7 +37,7 @@ int main()
 {
 	printf("INITIALIZING BALANCED BINARY SEARCH TREE\n");
 
-	balancedbst* balancedbst_p = get_balancedbst(NON_SELF_BALANCING /*AVL_TREE*/ /*RED_BLACK_TREE*/, key_cmp);
+	balancedbst* balancedbst_p = get_balancedbst(/*NON_SELF_BALANCING*/ /*AVL_TREE*/ RED_BLACK_TREE, key_cmp);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	printf("COMPLETED INITIALIZING BALANCED BINARY SEARCH TREE\n");
