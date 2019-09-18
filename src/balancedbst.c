@@ -28,38 +28,38 @@ node* get_node(const void* key, const void* value)
 
 /* functions to get node types -- start */
 
-int is_leaf_node(node* node_p)
+int is_leaf_node(const node* node_p)
 {
 	// if the node does not have a left child and it does not have a right child, it is a leaf node
 	return node_p->left_sub_tree == NULL && node_p->right_sub_tree == NULL;
 }
 
-int is_root_node(node* node_p)
+int is_root_node(const node* node_p)
 {
 	// if the node does not have a parent node, it is root node of the tree
 	return node_p->parent == NULL;
 }
 
-int is_internal_node(node* node_p)
+int is_internal_node(const node* node_p)
 {
 	// a node which is not leaf node or a root node is an internal node
 	return !(is_leaf_node(node_p) || is_root_node(node_p));
 }
 
-int has_only_right_sub_tree(node* node_p)
+int has_only_right_sub_tree(const node* node_p)
 {
 	// a node which does not have a left_sub_tree, and has only right_sub_tree
 	return node_p->left_sub_tree == NULL && node_p->right_sub_tree != NULL;
 }
 
-int has_only_left_sub_tree(node* node_p)
+int has_only_left_sub_tree(const node* node_p)
 {
 	// a node which does not have a right_sub_tree, and has only left_sub_tree
 	return node_p->left_sub_tree != NULL && node_p->right_sub_tree == NULL;
 }
 
 // used to check if the node is red, in a red black tree
-int is_red_node(node* node_p)
+int is_red_node(const node* node_p)
 {
 	return node_p != NULL && node_p->node_property == 0;
 }
@@ -74,7 +74,7 @@ void make_node_red(node* node_p)
 }
 
 // used to check if the node is black, in a red black tree
-int is_black_node(node* node_p)
+int is_black_node(const node* node_p)
 {
 	return node_p == NULL || node_p->node_property == 1;
 }
@@ -97,14 +97,14 @@ void exchange_colours(node* node_p1, node* node_p2)
 
 // node_p must not be null
 // returns true if the node_p is the left node of its parent
-int is_left_of_its_parent(node* node_p)
+int is_left_of_its_parent(const node* node_p)
 {
 	return (!(is_root_node(node_p))) && (node_p->parent->left_sub_tree == node_p);
 }
 
 // node_p must not be null
 // returns true if the node_p is the right node of its parent
-int is_right_of_its_parent(node* node_p)
+int is_right_of_its_parent(const node* node_p)
 {
 	return (!(is_root_node(node_p))) && (node_p->parent->right_sub_tree == node_p);
 }
@@ -137,19 +137,19 @@ void update_max_height(node* node_p)
 
 /* utility functions for tree -- start */
 
-int is_balancedbst_empty(balancedbst* balancedbst_p)
+int is_balancedbst_empty(const balancedbst* balancedbst_p)
 {
 	return balancedbst_p->root == NULL;
 }
 
-node* get_smallest_node_from_node(node* node_p)
+node* get_smallest_node_from_node(const node* node_p)
 {
-	return node_p->left_sub_tree == NULL ? node_p : get_smallest_node_from_node(node_p->left_sub_tree);
+	return node_p->left_sub_tree == NULL ? ((node*)node_p) : get_smallest_node_from_node(node_p->left_sub_tree);
 }
 
-node* get_largest_node_from_node(node* node_p)
+node* get_largest_node_from_node(const node* node_p)
 {
-	return node_p->right_sub_tree == NULL ? node_p : get_largest_node_from_node(node_p->right_sub_tree);
+	return node_p->right_sub_tree == NULL ? ((node*)node_p) : get_largest_node_from_node(node_p->right_sub_tree);
 }
 
 //      A                                _B_
@@ -253,11 +253,11 @@ int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 
 /* utility functions for tree -- end   */
 
-node* find_node_recursively(balancedbst* balancedbst_p, node* root, const void* key_p)
+node* find_node_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
 {
 	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
 	{
-		return root;
+		return ((node*)root);
 	}
 	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
 	{
@@ -273,7 +273,7 @@ node* find_node_recursively(balancedbst* balancedbst_p, node* root, const void* 
 	}
 }
 
-node* find_node(balancedbst* balancedbst_p, const void* key_p)
+node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 {
 	// if the tree is empty, just return NULL
 	if( is_balancedbst_empty(balancedbst_p) )
@@ -521,7 +521,7 @@ void put_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_
 	}
 }
 
-const void* find_value(balancedbst* blancedbst_p, const void* key_p)
+const void* find_value(const balancedbst* blancedbst_p, const void* key_p)
 {
 	node* node_p = find_node(blancedbst_p, key_p);
 	return node_p != NULL ? node_p->bucket_p->value : NULL;

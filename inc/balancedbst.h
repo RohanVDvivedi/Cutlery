@@ -69,7 +69,7 @@ balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(co
 void put_entry(balancedbst* blancedbst_p, const void* key_p, const void* value_p);
 
 // find a value_p in tree, whose key is key_p
-const void* find_value(balancedbst* blancedbst_p, const void* key_p);
+const void* find_value(const balancedbst* blancedbst_p, const void* key_p);
 
 // remove the node if found, returns a list of nodes that match
 int remove_value(balancedbst* blancedbst_p, const void* key_p, const void** return_key, const void** return_value);
