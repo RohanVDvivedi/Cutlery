@@ -2,6 +2,7 @@
 
 // to avoid name collision with node of balancedbst
 #define node llnode
+#define delete_node delete_llnode
 
 linkedlist* get_linkedlist()
 {
@@ -291,3 +292,4 @@ void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 }
 
 #undef node
+#undef delete_node

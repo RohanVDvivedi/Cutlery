@@ -2,6 +2,7 @@
 
 // to avoid name collision with node of linkedlist
 #define node bstnode
+#define delete_node delete_bstnode
 
 // to avoid name collision with functions of hashmap
 #define put_entry		put_entry_in_bst
@@ -934,6 +935,7 @@ void delete_balancedbst(balancedbst* balancedbst_p)
 }
 
 #undef node
+#undef delete_node
 #undef put_entry
 #undef find_value
 #undef remove_value
