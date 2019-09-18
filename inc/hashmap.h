@@ -15,9 +15,33 @@
 // and definately not create any new look alikes of key,value,
 // hashmap will just store them directly in bucket and use the memory pointed by them when required
 
+typedef enum collision_resolution_policy collision_resolution_policy;
+enum collision_resolution_policy
+{
+	// each element of the hashmap, is itself a bucket
+	// no collision is handled, if there is colision is happening, key and value of that hash index are replaced
+	// true hashtable, truely O(1)
+	NO_POLICY,
+
+	// each element if the hashmap is a linkedlist of buckets
+	// worst case search is O(n)
+	ELEMENTS_AS_LINKEDLIST,
+
+	// each element of the hashmap is a red black binary search tree of buckets
+	// worst case search is O(log(n))
+	ELEMENTS_AS_RED_BLACK_BST,
+
+	// each element of the hashmap is a avl binary search tree of buckets
+	// worst case search is O(log(n))
+	ELEMENTS_AS_AVL_BST
+};
+
 typedef struct hashmap hashmap;
 struct hashmap
 {
+	// attribute defines how the collision is handled in the hashmap
+	collision_resolution_policy hashmap_policy;
+
 	// hash function ( <3 my love )
 	unsigned long long int (*hash_function)(const void* key);
 
@@ -31,7 +55,7 @@ struct hashmap
 
 // build and get hashmap with a fixed bucket count,
 // bucket count remains the same unless rehash is called with a new size
-hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2));
+hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy);
 
 // place the bucket in the hashmap
 void put_entry(hashmap* hashmap_p, const void* key, const void* value);

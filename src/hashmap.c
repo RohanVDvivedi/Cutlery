@@ -1,8 +1,9 @@
 #include<hashmap.h>
 
-hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2))
+hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy)
 {
 	hashmap* hashmap_p = ((hashmap*) calloc(1, sizeof(hashmap)));
+	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->key_compare = key_compare;
 
