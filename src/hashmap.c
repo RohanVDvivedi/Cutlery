@@ -141,7 +141,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 {
 	// find the bucket in the hashmap, which has the same key as this bucket
-	bucket* found_bucket_p = find_bucket(hashmap_p, key);printf("LOL %d\n", (int)found_bucket_p);
+	bucket* found_bucket_p = find_bucket(hashmap_p, key);
 
 	// if bucket with that key exists, then update its value pointer, and key as well if it is NO_POLICY hashmap
 	if(found_bucket_p != NULL)
