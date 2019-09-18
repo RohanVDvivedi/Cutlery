@@ -6,6 +6,7 @@
 #include<string.h>
 #include<array.h>
 #include<linkedlist.h>
+#include<balancedbst.h>
 #include<bucket.h>
 
 // hashmap only manages (create and free) the buckets
@@ -21,19 +22,19 @@ enum collision_resolution_policy
 	// each element of the hashmap, is itself a bucket
 	// no collision is handled, if there is colision is happening, key and value of that hash index are replaced
 	// true hashtable, truely O(1)
-	NO_POLICY,
+	NO_POLICY = 0,
 
 	// each element if the hashmap is a linkedlist of buckets
 	// worst case search is O(n)
-	ELEMENTS_AS_LINKEDLIST,
+	ELEMENTS_AS_LINKEDLIST = 1,
 
 	// each element of the hashmap is a red black binary search tree of buckets
 	// worst case search is O(log(n))
-	ELEMENTS_AS_RED_BLACK_BST,
+	ELEMENTS_AS_RED_BLACK_BST = 10,
 
 	// each element of the hashmap is a avl binary search tree of buckets
 	// worst case search is O(log(n))
-	ELEMENTS_AS_AVL_BST
+	ELEMENTS_AS_AVL_BST = 11
 };
 
 typedef struct hashmap hashmap;
