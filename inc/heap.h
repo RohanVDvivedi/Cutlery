@@ -5,6 +5,7 @@
 #include<stdlib.h>
 
 #include<array.h>
+#include<bucket.h>
 
 typedef enum heap_type heap_type;
 enum heap_type
