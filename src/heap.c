@@ -208,7 +208,7 @@ void print_bucket_wrapper(void* bucket_p_to_print, unsigned long long int index,
 	bucket* bucket_p_functions_t = ((bucket*)bucket_p_functions);
 	printf("\tindex : %llu\n", index);
 	printf("\t\t");
-	if(bucket_p_to_print_t == NULL)
+	if(bucket_p_to_print_t != NULL)
 	{
 		print_bucket(bucket_p_to_print_t, bucket_p_functions_t->key, bucket_p_functions_t->value);
 	}
@@ -235,7 +235,7 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 		}
 	}
 	printf("\theap_size : %llu\n", heap_p->heap_size);
-	bucket print_functions = {.key = print_key,.value = print_value};
+	bucket print_functions = {.key = print_key, .value = print_value};
 	printf("\theap array : \n");
 	for_each_in_array(heap_p->heap_holder, print_bucket_wrapper, &print_functions);
 	printf("\n");
