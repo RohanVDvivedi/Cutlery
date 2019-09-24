@@ -50,6 +50,12 @@ int is_reordering_required(const heap* heap_p, unsigned long long int parent_ind
 	bucket* parent = ((bucket*)get_element(heap_p->heap_holder, parent_index));
 	bucket* child  = ((bucket*)get_element(heap_p->heap_holder, child_index));
 
+	// if the child or parent is NULL, you can not reorder 
+	if(child == NULL || parent == NULL)
+	{
+		return 0;
+	}
+
 	int reordering_required = 0;
 
 	switch(heap_p->type)
