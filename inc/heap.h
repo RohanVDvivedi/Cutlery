@@ -41,11 +41,11 @@ void push(heap* heap_p, const void* key, const void* value);
 
 // returns pointer to the value of the bucket, whose key is either minimum for MIN_HEAP (or maxinum if it is a MAX_HEAP)
 // O(1) operation
-const void* get_top(const heap* heap_p);
+const void* get_top(const heap* heap_p, const void** returned_key);
 
 // pop the top bucket from the heap
 // O(log(N)) operation
-void pop(heap* heap_p, void** returned_key);
+void pop(heap* heap_p);
 
 // delete heap and heap_holder array, along with all its buckets
 void delete_heap(heap* heap_p);

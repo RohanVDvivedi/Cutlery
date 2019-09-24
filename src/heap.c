@@ -120,7 +120,7 @@ void push(heap* heap_p, const void* key, const void* value)
 	bubble_up(heap_p, heap_p->heap_size-1);
 }
 
-const void* get_top(const heap* heap_p, void** returned_key)
+const void* get_top(const heap* heap_p, const void** returned_key)
 {
 	// ther is no top bucket value, if there are no buckets in the heap
 	if(heap_p->heap_size == 0)
@@ -255,9 +255,9 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 	for_each_in_array(heap_p->heap_holder, print_bucket_wrapper, &print_functions);
 	printf("\n");
 	printf("\tthe top element : ");
-	if(get_top(heap_p) != NULL)
+	if(get_top(heap_p, NULL) != NULL)
 	{
-		print_value(get_top(heap_p));
+		print_value(get_top(heap_p, NULL));
 	}
 	else
 	{
