@@ -36,12 +36,15 @@ struct heap
 void* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1));
 
 // push a new bucket to the heap
+// O(log(N)) operation
 void push(heap* heap_p, void* key, void* value);
 
 // returns pointer to the value of the bucket, whose key is either minimum for MIN_HEAP (or maxinum if it is a MAX_HEAP)
+// O(1) operation
 const void* get_top(heap* heap_p);
 
 // pop the top bucket from the heap
+// O(log(N)) operation
 void pop(heap* heap_p);
 
 // delete heap and heap_holder array, along with all its buckets
