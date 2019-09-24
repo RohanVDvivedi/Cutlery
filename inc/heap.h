@@ -45,7 +45,7 @@ const void* get_top(const heap* heap_p);
 
 // pop the top bucket from the heap
 // O(log(N)) operation
-void pop(heap* heap_p);
+void pop(heap* heap_p, void** returned_key);
 
 // delete heap and heap_holder array, along with all its buckets
 void delete_heap(heap* heap_p);

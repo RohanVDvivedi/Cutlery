@@ -120,7 +120,7 @@ void push(heap* heap_p, const void* key, const void* value)
 	bubble_up(heap_p, heap_p->heap_size-1);
 }
 
-const void* get_top(const heap* heap_p)
+const void* get_top(const heap* heap_p, void** returned_key)
 {
 	// ther is no top bucket value, if there are no buckets in the heap
 	if(heap_p->heap_size == 0)
@@ -128,8 +128,17 @@ const void* get_top(const heap* heap_p)
 		return NULL;
 	}
 
+	// first bucket is the top bucket
+	bucket* top_bucket_p = (bucket*)get_element(heap_p->heap_holder, 0);
+
+	// return the key to the client
+	if(returned_key != NULL)
+	{
+		(*returned_key) = top_bucket_p->key;
+	}
+
 	// return the value of the first bucket, from the heap holder
-	return ((bucket*)get_element(heap_p->heap_holder, 0))->value;
+	return top_bucket_p->value;
 }
 
 void bubble_down(heap* heap_p, unsigned long long int index)
