@@ -27,7 +27,10 @@ void pop(heap* heap_p)
 
 void delete_bucket_wrapper(void* data_p, unsigned long long int index, const void* additional_params)
 {
-	delete_bucket(data_p);
+	if(data_p != NULL)
+	{
+		delete_bucket(data_p);
+	}
 }
 
 void delete_heap(heap* heap_p)
