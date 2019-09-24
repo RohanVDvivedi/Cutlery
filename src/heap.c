@@ -246,7 +246,7 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 	}
 	else
 	{
-		printf("NULL");
+		printf("\tNULL");
 	}
 	printf("\n");
 }
