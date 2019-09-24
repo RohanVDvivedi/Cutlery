@@ -53,7 +53,7 @@ struct hashmap
 	unsigned long long int (*hash_function)(const void* key);
 
 	// compare keys and returns 0 if they are same, else non-zero
-	// it returns 0 if they are same, >0 if key0 is greater than key1 else it must return <0 value
+	// it returns 0 if they are same, >0 if key1 is greater than key2 else it must return <0 value
 	int (*key_compare)(const void* key1, const void* key2);
 
 	// pinter to the array of buckets
