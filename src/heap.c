@@ -43,6 +43,7 @@ int is_reordering_required(heap* heap_p, unsigned long long int parent_index, un
 	if( parent_index != get_parent_index(child_index) || child_index >= heap_p->heap_holder->total_size)
 	{
 		// we dont allow reordering if, parent index and child index are not immediately related 
+		// or if child_index is out of heap_holder bounds
 		return 0;
 	}
 
@@ -124,7 +125,41 @@ const void* get_top(heap* heap_p)
 
 void bubble_down(heap* heap_p, unsigned long long int index)
 {
+	// we can not bubble down the last node
+	if(index >= heap_p->heap_holder->total_size)
+	{
+		return;
+	}
 
+	unsigned long long int left_child_index = get_left_child_index(index);
+	unsigned long long int right_child_index = get_right_child_index(index);
+
+	unsigned long long int new_parent_index = -1;
+
+	// simple logic, if reordering is required for left child and index, left child would become the new parent
+	if(is_reordering_required(heap_p, index, left_child_index))
+	{
+		new_parent_index = left_child_index;
+
+		// if index and right child also require reordering, we have to contest whether right child or left child would become the new parent
+		// here we try to make the parent, which does not require further reordering, given the new parent is left_child_index
+		if(is_reordering_required(heap_p, index, right_child_index) && 
+			is_reordering_required(heap_p, new_parent_index, right_child_index))
+		{
+			new_parent_index = right_child_index;
+		}	
+	}
+	// simple logic, if reordering is required for right child and index, right child would become the new parent
+	else if(is_reordering_required(heap_p, index, right_child_index))
+	{
+		new_parent_index = right_child_index;
+	}
+
+	if(new_parent_index != -1)
+	{
+		inter_change_buckets_for_indexes(heap_p, new_parent_index, index);
+		bubble_up(heap_p, new_parent_index);
+	}
 }
 
 void pop(heap* heap_p)
