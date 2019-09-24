@@ -38,6 +38,8 @@ void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, u
 }
 
 // returns true (1) if, the reordering is required, else 0
+// we do not check if parent index is actually the parent of the child
+// hence, this function can be user to test if the order could be made correct
 int is_reordering_required(const heap* heap_p, unsigned long long int parent_index, unsigned long long int child_index)
 {
 	if(parent_index >= heap_p->heap_holder->total_size || child_index >= heap_p->heap_holder->total_size)
