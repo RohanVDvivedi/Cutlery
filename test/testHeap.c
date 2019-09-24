@@ -20,7 +20,7 @@ unsigned long long int hash_function(const void* key)
 
 int key_cmp(const void* key1, const void* key2)
 {
-	return -( (((ke*)key1)->k) - (((ke*)key2)->k) );
+	return ( (((ke*)key1)->k) - (((ke*)key2)->k) );
 }
 
 void print_ts(const void* tsv)
@@ -97,6 +97,9 @@ int main()
 	print_heap(heap_p, print_key, print_ts);
 
 	push(heap_p, &((ke){14}), &((ts){14, "fourteen"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push(heap_p, &((ke){9}), &((ts){9, "LOL"}));
 	print_heap(heap_p, print_key, print_ts);
 
 	pop(heap_p);
