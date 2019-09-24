@@ -37,11 +37,11 @@ void* get_heap(unsigned long long int expected_size, heap_type type, int (*key_c
 
 // push a new bucket to the heap
 // O(log(N)) operation
-void push(heap* heap_p, void* key, void* value);
+void push(heap* heap_p, const void* key, const void* value);
 
 // returns pointer to the value of the bucket, whose key is either minimum for MIN_HEAP (or maxinum if it is a MAX_HEAP)
 // O(1) operation
-const void* get_top(heap* heap_p);
+const void* get_top(const heap* heap_p);
 
 // pop the top bucket from the heap
 // O(log(N)) operation
@@ -49,5 +49,8 @@ void pop(heap* heap_p);
 
 // delete heap and heap_holder array, along with all its buckets
 void delete_heap(heap* heap_p);
+
+// print, heap and all the elements of the heap
+void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #endif

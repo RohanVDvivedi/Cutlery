@@ -38,7 +38,7 @@ void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, u
 }
 
 // returns true (1) if, the reordering is required, else 0
-int is_reordering_required(heap* heap_p, unsigned long long int parent_index, unsigned long long int child_index)
+int is_reordering_required(const heap* heap_p, unsigned long long int parent_index, unsigned long long int child_index)
 {
 	if( parent_index != get_parent_index(child_index) || child_index >= heap_p->heap_holder->total_size)
 	{
@@ -99,7 +99,7 @@ void bubble_up(heap* heap_p, unsigned long long int index)
 	}
 }
 
-void push(heap* heap_p, void* key, void* value)
+void push(heap* heap_p, const void* key, const void* value)
 {
 	// expand heap_holder if necessary
 	if(heap_p->heap_size >= heap_p->heap_holder->total_size)
@@ -114,7 +114,7 @@ void push(heap* heap_p, void* key, void* value)
 	bubble_up(heap_p, heap_p->heap_size-1);
 }
 
-const void* get_top(heap* heap_p)
+const void* get_top(const heap* heap_p)
 {
 	// ther is no top bucket value, if there are no buckets in the heap
 	if(heap_p->heap_size == 0)
@@ -200,4 +200,46 @@ void delete_heap(heap* heap_p)
 	for_each_in_array(heap_p->heap_holder, delete_bucket_wrapper, NULL);
 	delete_array(heap_p->heap_holder);
 	free(heap_p);
+}
+
+void print_bucket_wrapper(void* bucket_p_to_print, unsigned long long int index, const void* bucket_p_functions)
+{
+	bucket* bucket_p_to_print_t = ((bucket*)bucket_p_to_print);
+	bucket* bucket_p_functions_t = ((bucket*)bucket_p_functions);
+	printf("index : %llu\n", index);
+	printf("\t");
+	print_bucket(bucket_p_to_print_t, bucket_p_functions_t->key, bucket_p_functions_t->value);
+	printf("\n");
+}
+
+void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+{
+	switch(heap_p->type)
+	{
+		case MIN_HEAP :
+		{
+			printf("heap : MIN_HEAP\n");
+			break;
+		}
+		case MAX_HEAP :
+		{
+			printf("heap : MAX_HEAP\n");
+			break;
+		}
+	}
+	printf("\theap_size : %llu\n", heap_p->heap_size);
+	bucket print_functions = {.key = print_key,.value = print_value};
+	printf("\theap array : ");
+	for_each_in_array(heap_p->heap_holder, print_bucket_wrapper, &print_functions);
+	printf("\n");
+	printf("\tthe top element : ");
+	if(get_top(heap_p)!=NULL)
+	{
+		print_value(get_top(heap_p));
+	}
+	else
+	{
+		printf("NULL");
+	}
+	printf("\n");
 }
