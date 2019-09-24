@@ -214,7 +214,7 @@ void print_bucket_wrapper(void* bucket_p_to_print, unsigned long long int index,
 	}
 	else
 	{
-		printf("NULL");
+		printf("\tNULL");
 	}
 	printf("\n");
 }
@@ -240,13 +240,13 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 	for_each_in_array(heap_p->heap_holder, print_bucket_wrapper, &print_functions);
 	printf("\n");
 	printf("\tthe top element : ");
-	if(get_top(heap_p)!=NULL)
+	if(get_top(heap_p) != NULL)
 	{
 		print_value(get_top(heap_p));
 	}
 	else
 	{
-		printf("\tNULL");
+		printf("NULL");
 	}
 	printf("\n");
 }
