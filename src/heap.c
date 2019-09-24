@@ -10,6 +10,24 @@ void* get_heap(unsigned long long int expected_size, heap_type type, int (*key_c
 	return heap_p;
 }
 
+// utility : gets index of the bucket, that is the parent to the given bucket at index = child
+unsigned long long int get_parent_index(unsigned long long int child)
+{
+	return (child-1)/2;
+}
+
+// utility : gets index of the bucket, that is the left child to the given parent bucket at index = child
+unsigned long long int get_left_child_index(unsigned long long int parent)
+{
+	return (2 * parent) + 1;
+}
+
+// utility : gets index of the bucket, that is the right child to the given parent bucket at index = child
+unsigned long long int get_right_child_index(unsigned long long int parent)
+{
+	return (2 * parent) + 2;
+}
+
 void push(heap* heap_p, void* key, void* value)
 {
 
@@ -17,7 +35,11 @@ void push(heap* heap_p, void* key, void* value)
 
 const void* get_top(heap* heap_p)
 {
-	return NULL;
+	if(heap_p->heap_size == 0)
+	{
+		return NULL;
+	}
+	return ((bucket*)get_element(heap_p->heap_holder, 0))->value;
 }
 
 void pop(heap* heap_p)
