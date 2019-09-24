@@ -208,7 +208,14 @@ void print_bucket_wrapper(void* bucket_p_to_print, unsigned long long int index,
 	bucket* bucket_p_functions_t = ((bucket*)bucket_p_functions);
 	printf("\tindex : %llu\n", index);
 	printf("\t\t");
-	print_bucket(bucket_p_to_print_t, bucket_p_functions_t->key, bucket_p_functions_t->value);
+	if(bucket_p_to_print_t == NULL)
+	{
+		print_bucket(bucket_p_to_print_t, bucket_p_functions_t->key, bucket_p_functions_t->value);
+	}
+	else
+	{
+		printf("NULL");
+	}
 	printf("\n");
 }
 
