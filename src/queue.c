@@ -1,5 +1,9 @@
 #include<queue.h>
 
+#define push    push_queue
+#define pop     pop_queue
+#define get_top get_top_queue
+
 queue* get_queue(unsigned long long int expected_size)
 {
 	queue* queue_p = (queue*) calloc(1, sizeof(queue));
@@ -80,3 +84,7 @@ void print_queue(queue* queue_p, void (*print_element)(const void* data_p))
 	printf("\tlatest_element_index : %llu\n", queue_p->latest_element_index);
 	print_array(queue_p->queue_holder, print_element);printf("\n\n");
 }
+
+#undef push
+#undef pop
+#undef get_top

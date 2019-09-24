@@ -10,6 +10,10 @@
 
 #include<array.h>
 
+#define push    push_stack
+#define pop     pop_stack
+#define get_top get_top_stack
+
 typedef struct stack stack;
 struct stack
 {
@@ -34,5 +38,9 @@ void delete_stack(stack* stack_p);
 
 // prints the stack
 void print_stack(stack* stack_p, void (*print_element)(const void* data_p));
+
+#undef push
+#undef pop
+#undef get_top
 
 #endif

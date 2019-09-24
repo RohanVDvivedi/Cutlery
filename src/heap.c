@@ -1,5 +1,9 @@
 #include<heap.h>
 
+#define push    push_heap
+#define pop     pop_heap
+#define get_top get_top_heap
+
 void* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1))
 {
 	heap* heap_p = ((heap*)(malloc(sizeof(heap))));
@@ -267,3 +271,7 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 	}
 	printf("\n");
 }
+
+#undef push
+#undef pop
+#undef get_top

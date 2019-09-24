@@ -7,6 +7,10 @@
 #include<array.h>
 #include<bucket.h>
 
+#define push    push_heap
+#define pop     pop_heap
+#define get_top get_top_heap
+
 typedef enum heap_type heap_type;
 enum heap_type
 {
@@ -52,5 +56,9 @@ void delete_heap(heap* heap_p);
 
 // print, heap and all the elements of the heap
 void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
+
+#undef push
+#undef pop
+#undef get_top
 
 #endif

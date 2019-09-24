@@ -10,6 +10,10 @@
 
 #include<array.h>
 
+#define push    push_queue
+#define pop     pop_queue
+#define get_top get_top_queue
+
 typedef struct queue queue;
 struct queue
 {
@@ -41,5 +45,9 @@ int isQueueHolderFull(queue* queue_p);
 
 // prints the queue
 void print_queue(queue* queue_p, void (*print_element)(const void* data_p));
+
+#undef push
+#undef pop
+#undef get_top
 
 #endif

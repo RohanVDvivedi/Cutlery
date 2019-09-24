@@ -1,5 +1,9 @@
 #include<stack.h>
 
+#define push    push_stack
+#define pop     pop_stack
+#define get_top get_top_stack
+
 stack* get_stack(unsigned long long int expected_size)
 {
 	stack* stack_p = (stack*) calloc(1, sizeof(stack));
@@ -60,3 +64,7 @@ void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
 	}
 	printf("\n");
 }
+
+#undef push
+#undef pop
+#undef get_top
