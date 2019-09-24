@@ -40,9 +40,9 @@ void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, u
 // returns true (1) if, the reordering is required, else 0
 int is_reordering_required(const heap* heap_p, unsigned long long int parent_index, unsigned long long int child_index)
 {
-	if( parent_index != get_parent_index(child_index) || child_index >= heap_p->heap_holder->total_size)
+	if(parent_index >= heap_p->heap_holder->total_size || child_index >= heap_p->heap_holder->total_size)
 	{
-		// we dont allow reordering if, parent index and child index are not immediately related 
+		// we dont allow reordering if, parent index or child index are out of bounds 
 		// or if child_index is out of heap_holder bounds
 		return 0;
 	}
