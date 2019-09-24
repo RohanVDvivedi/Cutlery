@@ -91,7 +91,10 @@ void bubble_up(heap* heap_p, unsigned long long int index)
 	// if a reordering is required, we interchange the parent and child bucket
 	if(is_reordering_required(heap_p, parent_index, index))
 	{
+		// we would have to interchange for reordering
 		inter_change_buckets_for_indexes(heap_p, parent_index, index);
+
+		// and we bubble up with the parent_index
 		bubble_up(heap_p, parent_index);
 	}
 }
@@ -157,8 +160,11 @@ void bubble_down(heap* heap_p, unsigned long long int index)
 
 	if(new_parent_index != -1)
 	{
+		// if new_parent_index has to come, we make the new_parent_index
 		inter_change_buckets_for_indexes(heap_p, new_parent_index, index);
-		bubble_up(heap_p, new_parent_index);
+
+		// and bubble down from. there
+		bubble_down(heap_p, new_parent_index);
 	}
 }
 
