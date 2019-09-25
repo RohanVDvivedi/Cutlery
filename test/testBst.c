@@ -44,64 +44,67 @@ int main()
 
 	printf("STARTING TO INSERT NODES\n");
 
-	put_entry_in_bst(balancedbst_p, &((ke){18}), &((ts){18, "eighteen"}));
+	put_entry_in_bst(balancedbst_p, &((ke){18}), &((ts){18, "eighteen"}), PUT_IF_EXISTS|PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){17}), &((ts){17, "seventeen"}));
+	put_entry_in_bst(balancedbst_p, &((ke){17}), &((ts){17, "seventeen"}), PUT_IF_EXISTS|PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){16}), &((ts){16, "sixteen"}));
+	put_entry_in_bst(balancedbst_p, &((ke){16}), &((ts){16, "sixteen"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){15}), &((ts){15, "fifteen"}));
+	put_entry_in_bst(balancedbst_p, &((ke){15}), &((ts){15, "fifteen"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){14}), &((ts){14, "fourteen"}));
+	put_entry_in_bst(balancedbst_p, &((ke){14}), &((ts){14, "fourteen"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){13}), &((ts){13, "thirteen"}));
+	put_entry_in_bst(balancedbst_p, &((ke){13}), &((ts){13, "thirteen"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){12}), &((ts){12, "twelve"}));
+	put_entry_in_bst(balancedbst_p, &((ke){12}), &((ts){12, "twelve"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){11}), &((ts){11, "eleven"}));
+	put_entry_in_bst(balancedbst_p, &((ke){11}), &((ts){11, "eleven"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){10}), &((ts){10, "ten"}));
+	put_entry_in_bst(balancedbst_p, &((ke){10}), &((ts){10, "ten"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){9}), &((ts){9, "nine"}));
+	put_entry_in_bst(balancedbst_p, &((ke){9}), &((ts){9, "nine"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){8}), &((ts){8, "eight"}));
+	put_entry_in_bst(balancedbst_p, &((ke){8}), &((ts){8, "eight"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){0}), &((ts){0, "zero"}));
+	put_entry_in_bst(balancedbst_p, &((ke){0}), &((ts){0, "zero"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){1}), &((ts){1, "one"}));
+	put_entry_in_bst(balancedbst_p, &((ke){1}), &((ts){1, "one"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){2}), &((ts){2, "two"}));
+	put_entry_in_bst(balancedbst_p, &((ke){2}), &((ts){2, "two"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){3}), &((ts){3, "three"}));
+	put_entry_in_bst(balancedbst_p, &((ke){3}), &((ts){3, "three"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){4}), &((ts){4, "four"}));
+	put_entry_in_bst(balancedbst_p, &((ke){4}), &((ts){4, "four"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){5}), &((ts){5, "five"}));
+	put_entry_in_bst(balancedbst_p, &((ke){5}), &((ts){5, "five"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){6}), &((ts){6, "six"}));
+	put_entry_in_bst(balancedbst_p, &((ke){6}), &((ts){6, "six"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){7}), &((ts){7, "seven"}));
+	put_entry_in_bst(balancedbst_p, &((ke){7}), &((ts){7, "seven"}), PUT_IF_NOT_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	put_entry_in_bst(balancedbst_p, &((ke){19}), &((ts){19, "nineteen"}));
+	put_entry_in_bst(balancedbst_p, &((ke){19}), &((ts){19, "nineteen"}), PUT_IF_EXISTS);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	put_entry_in_bst(balancedbst_p, &((ke){19}), &((ts){19, "LOL"}), PUT_IF_NOT_EXISTS|PUT_IF_EXISTS);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	printf("COMPLETED INSERTING NODES\n");

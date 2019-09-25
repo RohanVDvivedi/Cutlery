@@ -190,7 +190,7 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 			case ELEMENTS_AS_RED_BLACK_BST :
 			{
 				// insert the new bucket in the bst
-				put_entry_in_bst(((balancedbst*)(ds_p)), key, value);
+				put_entry_in_bst(((balancedbst*)(ds_p)), key, value, PUT_IF_EXISTS|PUT_IF_NOT_EXISTS);
 				break;
 			}
 		}

@@ -21,6 +21,13 @@
 #define remove_value 	remove_value_from_bst
 #define for_each_entry 	for_each_entry_in_bst
 
+typedef enum put_type put_type;
+enum put_type
+{
+	PUT_IF_EXISTS 		= 0x01,	// update = 01 decimal
+	PUT_IF_NOT_EXISTS 	= 0x10	// insert = 16 decimal
+};
+
 typedef enum tree_type tree_type;
 enum tree_type
 {
@@ -66,7 +73,7 @@ struct balancedbst
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1));
 
 // inserts or updates a node in the tree whose data is a bucket with key as key_p and value as value_p
-void put_entry(balancedbst* blancedbst_p, const void* key_p, const void* value_p);
+void put_entry(balancedbst* blancedbst_p, const void* key_p, const void* value_p, put_type p_type);
 
 // find a value_p in tree, whose key is key_p
 const void* find_value(const balancedbst* blancedbst_p, const void* key_p);

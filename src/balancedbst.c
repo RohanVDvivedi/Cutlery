@@ -502,19 +502,19 @@ void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 	}
 }
 
-void put_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p)
+void put_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p, put_type p_type)
 {
 	// find a node in the tree that has key_p as its key (we do not want duplicate keys)
 	node* node_p = find_node(balancedbst_p, key_p);
 
 	// if we can not find such a node, create a new node and insert it in tree
-	if(node_p == NULL)
+	if(node_p == NULL && (p_type & PUT_IF_NOT_EXISTS) )
 	{
 		node_p = get_node(key_p, value_p);
 		insert_node_in_tree(balancedbst_p, node_p);
 	}
 	// else update the value for the node found
-	else
+	else if(node_p != NULL && (p_type & PUT_IF_EXISTS))
 	{
 		bucket* bucket_p = ((bucket*)node_p->bucket_p);
 		bucket_p->value = value_p;
