@@ -29,18 +29,22 @@ void push(queue* queue_p, const void* data_p)
 
 		// expand the queue, below 2 lines always go hand in hand
 		expand_array(queue_p->queue_holder);
-		queue_p->queue_size = 0;
 		queue_p->array_size = queue_p->queue_holder->total_size;
 
 		// if the earliest element and the latest element are the edges, we technically do not need the rotation
 		if(queue_p->earliest_element_index != 0)
 		{
+			queue_p->queue_size = 0;
 			while(!isQueueEmpty(&queue_old_temp))
 			{
 				const void* data_p = get_top(&queue_old_temp);
 				pop(&queue_old_temp);
 				push(queue_p, data_p);
 			}
+		}
+		else
+		{
+			queue_p->queue_size = queue_old_temp.queue_size;
 		}
 	}
 	queue_p->latest_element_index = revolveToNextIndex(queue_p, queue_p->latest_element_index);
