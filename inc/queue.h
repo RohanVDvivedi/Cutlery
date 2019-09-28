@@ -19,6 +19,7 @@ struct queue
 {
 	array* queue_holder;
 	unsigned long long int queue_size;
+	unsigned long long int array_size;
 	unsigned long long int earliest_element_index;
 	unsigned long long int latest_element_index;
 };

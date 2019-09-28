@@ -92,6 +92,69 @@ int main()
 	pop_queue(queue_p);
 	print_queue(queue_p, print_ts);
 
+	push_queue(queue_p, &((ts){15, "fifteen"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){16, "sixteen"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){17, "seventeen"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){18, "eighteen"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){19, "nineteen"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){20, "twenty"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){21, "twenty one"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){22, "twenty two"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){23, "twenty three"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){24, "twenty four"}));
+	print_queue(queue_p, print_ts);
+
+	push_queue(queue_p, &((ts){25, "twenty five"}));
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
+	pop_queue(queue_p);
+	print_queue(queue_p, print_ts);
+
 	pop_queue(queue_p);
 	print_queue(queue_p, print_ts);
 
