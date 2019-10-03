@@ -25,6 +25,16 @@ struct node
 	node* next;
 };
 
+typedef enum linkedlisttype linkedlisttype;
+enum linkedlisttype
+{
+	// a SIMPLE linked list is a double linked list, that stores and maintains pointers to your data
+	SIMPLE,
+
+	// a BUCKETTED linked list, maintaine buckets on its node's data_p, you can put entries, and search using the key
+	BUCKETTED
+};
+
 typedef struct linkedlist linkedlist;
 struct linkedlist
 {
@@ -35,6 +45,11 @@ struct linkedlist
 	// tail->prev->...->prev = head
 	// always tail->next = NULL
 	node* tail;
+
+	// compare data and returns 0 if they are same, else non-zero
+	// it returns 0 if they are same, >0 if key_or_data11 is greater than key_or_data12 else it must return <0 value
+	// if SIMPLE, we compare data_p else we consider data_p as a bucket, and compare their keys
+	int (*compare)(const void* key_or_data1, const void* key_or_data2);
 };
 
 // returns a new linked list
@@ -102,14 +117,32 @@ void delete_linkedlist(linkedlist* ll);
 // perform operation on all the elements of the linked list
 void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p, const void* additional_params), const void* additional_params);
 
-// returns pointer to data_p of the element found in ll, if compare between the element and data_p returns 1
-const void* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params);
-
-// returns 1 if a node with data_p was found and was deleted, else returns 0
-int remove_from_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params, const void** return_data);
-
 // prints complete linked list
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));
+
+/*
+	BELOW ARE THE FUNCTIONS FOR BUCKETTED LINKEDLIST
+*/
+
+// place the bucket at the head of the linkedlist
+// O(1) operation
+void put_entry_to_head(linkedlist* ll, const void* key, const void* value);
+
+// place the bucket at the tail of the linkedlist
+// O(1) operation
+void put_entry_to_tail(linkedlist* ll, const void* key, const void* value);
+
+// get the value from the linkedlist, stored at a particular key
+// O(n) operation
+const void* find_value(const linkedlist* ll, const void* key);
+
+// returns 1 if the bucket is found for the givemn key and removed from linkedlist and deleted
+// since you would have to first search the bucket
+int remove_value(linkedlist* ll, const void* key, const void** return_key, const void** return_value);
+
+/*
+	ABOVE ARE THE FUNCTIONS FOR BUCKETTED LINKEDLIST
+*/
 
 #undef node
 
