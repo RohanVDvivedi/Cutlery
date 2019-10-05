@@ -1,15 +1,15 @@
 #include<linkedlist.h>
 
 // to avoid name collision with node of balancedbst
-#define node llnode
+#define node 			llnode
+#define delete_node 	delete_llnode
+#define find_node		find_llnode
 
 // to avoid name collision with functions of hashmap
 #define put_entry_to_head	put_entry_in_ll
 #define find_value 			find_value_from_ll
 #define remove_value 		remove_value_from_ll
 #define for_each_entry 		for_each_entry_in_ll
-
-#define delete_node 	delete_llnode
 
 linkedlist* get_linkedlist(linkedlisttype type, int (*key_compare)(const void* key1, const void* key2))
 {
@@ -400,4 +400,5 @@ void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* ke
 #undef find_value
 #undef remove_value
 #undef for_each_entry
-#undef delete_node 
+#undef delete_node
+#undef find_node
