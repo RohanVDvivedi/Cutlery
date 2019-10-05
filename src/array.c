@@ -3,19 +3,29 @@
 array* get_array(unsigned long long int initial_size)
 {
 	array* array_p = (array*) calloc(1, sizeof(array));
+	initialize_array(array_p, initial_size);
+	return array_p;
+}
+
+void initialize_array(array* array_p, unsigned long long int initial_size)
+{
 	array_p->increment_offset = 1;
 	array_p->increment_factor = 2;
 	array_p->data_p_p = initial_size > 0 ? ((const void**)calloc(initial_size, sizeof(void*))): NULL;
 	array_p->total_size = initial_size;
-	return array_p;
 }
 
-void delete_array(array* array_p)
+void destroy_array(array* array_p)
 {
 	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
 	{
 		free(array_p->data_p_p);
 	}
+}
+
+void delete_array(array* array_p)
+{
+	destroy_array(array_p);
 	free(array_p);
 }
 

@@ -36,6 +36,12 @@ struct array
 // the size of each element could be size_of_data_element
 array* get_array(unsigned long long int initial_size);
 
+// initializes and givens necessary memory to asrrays internal element contents, it will not and does not create new memory for the error
+void initialize_array(array* array_p, unsigned long long int initial_size);
+
+// frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
+void destroy_array(array* array_p);
+
 // deletes all the memory allocated by the array and its ownself
 void delete_array(array* array_p);
 
