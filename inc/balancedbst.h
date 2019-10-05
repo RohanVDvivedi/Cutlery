@@ -21,13 +21,6 @@
 #define remove_value 	remove_value_from_bst
 #define for_each_entry 	for_each_entry_in_bst
 
-typedef enum put_type put_type;
-enum put_type
-{
-	PUT_IF_EXISTS 		= 0x01,	// update = 01 decimal
-	PUT_IF_NOT_EXISTS 	= 0x10	// insert = 16 decimal
-};
-
 typedef enum tree_type tree_type;
 enum tree_type
 {

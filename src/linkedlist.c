@@ -2,25 +2,38 @@
 
 // to avoid name collision with node of balancedbst
 #define node llnode
-#define delete_node delete_llnode
 
-linkedlist* get_linkedlist()
+// to avoid name collision with functions of hashmap
+#define put_entry_to_head	put_entry_in_ll
+#define find_value 			find_value_from_ll
+#define remove_value 		remove_value_from_ll
+#define for_each_entry 		for_each_entry_in_ll
+
+#define delete_node 	delete_llnode
+
+linkedlist* get_linkedlist(linkedlisttype type, int (*key_compare)(const void* key1, const void* key2))
 {
 	linkedlist* ll = (linkedlist*) calloc(1, sizeof(linkedlist));
 	ll->head = NULL;
 	ll->tail = NULL;
+	ll->type = type;
+	ll->key_compare = key_compare;
 	return ll;
 }
 
-node* get_new_node(const void* data_p)
+node* get_new_simple_node(const void* data_p)
 {
 	node* node_p = (node*) calloc(1, sizeof(node));
 	node_p->data_p = data_p;
 	return node_p;
 }
 
-void delete_node(node* node_p)
+void delete_node(linkedlist* ll, node* node_p)
 {
+	if(ll->type == BUCKETTED && node_p->data_p != NULL)
+	{
+		delete_bucket(((bucket*)(node_p->data_p)));
+	}
 	free(node_p);
 }
 
@@ -29,7 +42,7 @@ void insert_head(linkedlist* ll, const void* data_p)
 	// case when the linkedlist is empty
 	if(ll->head == NULL)
 	{
-		ll->head = get_new_node(data_p);
+		ll->head = get_new_simple_node(data_p);
 		ll->tail = ll->head;
 	}
 	// incase when there is atleast 1 node
@@ -45,7 +58,7 @@ void insert_tail(linkedlist* ll, const void* data_p)
 	// case when the linkedlist is empty
 	if(ll->tail == NULL)
 	{
-		ll->tail = get_new_node(data_p);
+		ll->tail = get_new_simple_node(data_p);
 		ll->head = ll->tail;
 	}
 	// incase when there is atleast 1 node
@@ -58,7 +71,7 @@ void insert_tail(linkedlist* ll, const void* data_p)
 
 void insert_node_before(linkedlist* ll, node* node_p, const void* data_p)
 {
-	node* new_node = get_new_node(data_p);
+	node* new_node = get_new_simple_node(data_p);
 	
 	// if there is no node before node_p
 	// we are basically adding a node to the head
@@ -91,7 +104,7 @@ void insert_node_before(linkedlist* ll, node* node_p, const void* data_p)
 
 void insert_node_after(linkedlist* ll, node* node_p, const void* data_p)
 {
-	node* new_node = get_new_node(data_p);
+	node* new_node = get_new_simple_node(data_p);
 
 	// if there is no node after node_p
 	// we are basically adding a node to the tail
@@ -171,7 +184,7 @@ void remove_node(linkedlist* ll, node* node_p)
 	}
 
 	// delete node_p
-	delete_node(node_p);
+	delete_node(ll, node_p);
 }
 
 const void* get_head_data(linkedlist* ll)
@@ -225,22 +238,23 @@ void for_each_node_in_list(const linkedlist* ll, void (*operation)(node* node_p,
 	}
 }
 
-void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p, const void* additional_params), const void* additional_params)
+void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
 	node* node_p = ll->head;
 	while(node_p != NULL)
 	{
-		operation(((void*)node_p->data_p), additional_params);
+		operation(node_p->data_p, additional_params);
 		node_p = node_p->next;
 	}
 }
 
-node* find_first_node_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params)
+const node* find_node(const linkedlist* ll, const void* key)
 {
 	node* node_p = ll->head;
 	while(node_p != NULL)
 	{
-		if(compare(node_p->data_p, data_p, additional_params) == 0)
+		bucket* bucket_p = (bucket*)(node_p->data_p);
+		if(bucket_p != NULL && (ll->key_compare(key, bucket_p->key) == 0))
 		{
 			return node_p;
 		}
@@ -249,27 +263,74 @@ node* find_first_node_in_list(const linkedlist* ll, void* data_p, int (*compare)
 	return NULL;
 }
 
-const void* find_first_in_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params)
+const bucket* find_bucket(const linkedlist* ll, const void* key)
 {
-	node* node_p = find_first_node_in_list(ll, data_p, compare, additional_params);
-	return node_p == NULL ? NULL : node_p->data_p;
+	const node* found_node_p = find_node(ll, key);
+	return found_node_p != NULL ? ((bucket*)found_node_p->data_p) : NULL;
 }
 
-int remove_from_list(const linkedlist* ll, void* data_p, int (*compare)(const void* data_p1, const void* data_p2, const void* additional_params), const void* additional_params, const void** return_data)
+void put_entry_to_head(linkedlist* ll, const void* key, const void* value, put_type p_type)
 {
-	node* node_to_be_deleted = find_first_node_in_list(ll, data_p, compare, additional_params);
-	if(node_to_be_deleted == NULL)
+	bucket* found_bucket_p = (bucket*)find_bucket(ll, key);
+	if(found_bucket_p != NULL && (p_type & PUT_IF_EXISTS) )
 	{
-		return 0;
+		found_bucket_p->value = value;
 	}
-	else
+	else if(found_bucket_p == NULL && (p_type & PUT_IF_NOT_EXISTS) )
 	{
-		if(return_data != NULL)
+		const bucket* new_bucket_p = get_bucket(key, value);
+		insert_head(ll, new_bucket_p);
+	}
+}
+
+void put_entry_to_tail(linkedlist* ll, const void* key, const void* value, put_type p_type)
+{
+	bucket* found_bucket_p = (bucket*)find_bucket(ll, key);
+	if(found_bucket_p != NULL && (p_type & PUT_IF_EXISTS) )
+	{
+		found_bucket_p->value = value;
+	}
+	else if(found_bucket_p == NULL && (p_type & PUT_IF_NOT_EXISTS) )
+	{
+		const bucket* new_bucket_p = get_bucket(key, value);
+		insert_tail(ll, new_bucket_p);
+	}
+}
+
+const void* find_value(const linkedlist* ll, const void* key)
+{
+	const bucket* found_bucket_p = find_bucket(ll, key);
+	return found_bucket_p != NULL ? found_bucket_p->value : NULL;
+}
+
+int remove_value(linkedlist* ll, const void* key, const void** return_key, const void** return_value)
+{
+	node* found_node_p = ((node*) find_node(ll, key));
+	if(found_node_p != NULL)
+	{
+		const bucket* found_bucket_p = found_node_p->data_p;
+		if(return_key != NULL)
 		{
-			(*(return_data)) = node_to_be_deleted->data_p;
+			(*return_key) = found_bucket_p->key;
 		}
-		remove_node((linkedlist*)ll, node_to_be_deleted);
+		if(return_value != NULL)
+		{
+			(*return_value) = found_bucket_p->value;
+		}
+		remove_node(ll, ((node*)found_node_p));
 		return 1;
+	}
+	return 0;
+}
+
+void for_each_entry_in_list(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params)
+{
+	node* node_p = ll->head;
+	while(node_p != NULL)
+	{
+		bucket* bucket_p = ((bucket*)(node_p->data_p));
+		operation(bucket_p->key, bucket_p->value, additional_params);
+		node_p = node_p->next;
 	}
 }
 
@@ -282,14 +343,61 @@ void print_linkedlist_element_wrapper(node* node_p, const void* print_element)
 	printf("\n");
 }
 
+void print_linkedlist_bucket_wrapper(node* node_p, const void* prbucket_p)
+{
+	printf("\tprev => %d\n", ((int)node_p->prev));
+	printf("\t\tnode => %d\n", ((int)node_p));
+	bucket* bucket_p = ((bucket*)(node_p->data_p));
+	bucket* prbucket = ((bucket*)prbucket_p);
+	printf("\t\tdata => ");
+	print_bucket(node_p->data_p, ((void (*)(const void*))(prbucket->key)), ((void (*)(const void*))(prbucket->value)));
+	printf("\n");
+	printf("\tnext => %d\n", ((int)node_p->next));
+	printf("\n");
+}
+
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 {
-	printf("linkedlist : \n");
+	if(ll->type == SIMPLE)
+	{
+		printf("linkedlist : SIMPLE\n");
+	}
+	else if(ll->type == BUCKETTED)
+	{
+		printf("linkedlist : BUCKETTED\n");
+	}
 	printf("head : %d\n", ((int)ll->head));
 	printf("tail : %d\n", ((int)ll->tail));
-	for_each_node_in_list(ll, print_linkedlist_element_wrapper, print_element);
+	if(ll->type == SIMPLE)
+	{
+		for_each_node_in_list(ll, print_linkedlist_element_wrapper, print_element);
+	}
+	printf("\n");
+}
+
+void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* key_p), void (*print_value)(const void* value_p))
+{
+	if(ll->type == SIMPLE)
+	{
+		printf("linkedlist : SIMPLE\n");
+	}
+	else if(ll->type == BUCKETTED)
+	{
+		printf("linkedlist : BUCKETTED\n");
+	}
+	printf("head : %d\n", ((int)ll->head));
+	printf("tail : %d\n", ((int)ll->tail));
+	if(ll->type == BUCKETTED)
+	{
+		bucket prbucket = {.key = print_key,.value = print_value};
+		for_each_node_in_list(ll, print_linkedlist_bucket_wrapper, &prbucket);
+	}
 	printf("\n");
 }
 
 #undef node
-#undef delete_node
+#undef put_entry
+#undef find_value
+#undef remove_value
+#undef for_each_entry
+#undef delete_node 

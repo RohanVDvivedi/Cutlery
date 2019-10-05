@@ -57,7 +57,7 @@ const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long
 			case ELEMENTS_AS_LINKEDLIST :
 			{
 				// create a new linked list
-				ds_p = get_linkedlist();
+				ds_p = get_linkedlist(BUCKETTED, hashmap_p->key_compare);
 				break;
 			}
 			case ELEMENTS_AS_RED_BLACK_BST :
@@ -92,7 +92,7 @@ const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key
 	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
-bucket* find_bucket_for_no_policy_or_linkedlist_policy(const hashmap* hashmap_p, const void* key)
+bucket* find_bucket_for_no_policy(const hashmap* hashmap_p, const void* key)
 {
 	// to store pointer to the bucket once it is found
 	bucket* found_bucket_p = NULL;
@@ -113,11 +113,6 @@ bucket* find_bucket_for_no_policy_or_linkedlist_policy(const hashmap* hashmap_p,
 				break;
 			}
 			case ELEMENTS_AS_LINKEDLIST :
-			{
-				// find in linked list
-				found_bucket_p = (bucket*)(find_first_in_list(((linkedlist*)(ds_p)), &((bucket){key,NULL}), ((int (*)(const void*, const void*, const void*))(bucket_compare)), hashmap_p->key_compare));
-				break;
-			}
 			case ELEMENTS_AS_AVL_BST :
 			case ELEMENTS_AS_RED_BLACK_BST :
 			{// bst data structures can only give you values, let found_bukcet_p = NULL
@@ -135,10 +130,17 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 	switch(hashmap_p->hashmap_policy)
 	{
 		case NO_POLICY :
+		{
+			bucket* found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
+			return ((found_bucket_p == NULL) ? NULL : found_bucket_p->value);
+		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
-			bucket* found_bucket_p = find_bucket_for_no_policy_or_linkedlist_policy(hashmap_p, key);
-			return ((found_bucket_p == NULL) ? NULL : found_bucket_p->value);
+			// get the bst data structure for that key, without any new creation
+			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
+
+			// find value in a linkedlist
+			return find_value_from_ll(((linkedlist*)(ds_p)), key);
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
@@ -147,7 +149,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
 			// find value in a bst
-			return ((bucket*)(find_value_from_bst(((balancedbst*)(ds_p)), key)));
+			return find_value_from_bst(((balancedbst*)(ds_p)), key);
 		}
 	}
 }
@@ -155,7 +157,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 {
 	// find the bucket in the hashmap, which has the same key as this bucket
-	bucket* found_bucket_p = find_bucket_for_no_policy_or_linkedlist_policy(hashmap_p, key);
+	bucket* found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
 
 	// if bucket with that key exists, then update its value pointer
 	if(found_bucket_p != NULL)
@@ -164,8 +166,8 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 		found_bucket_p->value = value;
 	}
 	// we insert a new bucket
-	// else case works for bsts (because they have their own way of memory managing buckets), so we dont put dupka there
-	// or if it is NO_POLICY or linked_list, where the buckets are maemory managed by hashmap only
+	// else case works for bsts and linkedlists (because they have their own way of memory managing buckets), so we dont put dupka there
+	// or if it is NO_POLICY, where the buckets are maemory managed by hashmap only
 	else
 	{
 		// retrieve data structure for that key
@@ -182,8 +184,8 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 			}
 			case ELEMENTS_AS_LINKEDLIST :
 			{
-				// insert the new bucket at its head of the linked list
-				insert_head(((linkedlist*)(ds_p)), get_bucket(key, value));
+				// insert the new bucket in the linkedlist
+				put_entry_in_ll(((linkedlist*)(ds_p)), key, value, PUT_IF_EXISTS|PUT_IF_NOT_EXISTS);
 				break;
 			}
 			case ELEMENTS_AS_AVL_BST :
@@ -209,13 +211,23 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 	{
 		case NO_POLICY :
 		{
-			found_bucket_p = find_bucket_for_no_policy_or_linkedlist_policy(hashmap_p, key);
+			found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
 			// if no policy, ds_p is only the bucket
 			if(found_bucket_p != NULL)
 			{
 				// set element at index in array of buckets in the hashmap to NULL
 				set_element(hashmap_p->buckets_holder, NULL, get_index_for_key(hashmap_p, key));
 				has_been_deleted += 1;
+
+				if(return_key != NULL)
+				{
+					(*(return_key)) = found_bucket_p->key;
+				}
+				if(return_value != NULL)
+				{
+					(*(return_value)) = found_bucket_p->value;
+				}
+				delete_bucket(found_bucket_p);
 			}
 			break;
 		}
@@ -224,10 +236,11 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 			// get the data structure for the given key
 			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
-			// offloading the find and delete task to the linkedlist itself
+			// if there is a linkedlist remove value from that tree
+			// here keep the found_bucket_p as NULL, because if you see linkedlist implementation, it handles memory allocation for buckets on its own 
 			if(ds_p != NULL)
 			{
-				has_been_deleted += remove_from_list(((linkedlist*)(ds_p)), &((bucket){key,NULL}), ((int (*)(const void*, const void*, const void*))(bucket_compare)), hashmap_p->key_compare, ((const void**)(&found_bucket_p)));
+				has_been_deleted += remove_value_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value);
 			}
 			break;
 		}
@@ -247,39 +260,11 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 		}
 	}
 
-	// in case of NO_POLICY and ELEMENTS_AS_LINKEDLIST, hashmap is responsible for deleting, creating the bucket, hence the memory management part :p
-	// the bucket has been detached from the hashmap here, so delete the bucket,
-	// and return the key, value pointers to the client so he can delete the data
-	if(found_bucket_p != NULL)
-	{
-		if(return_key != NULL)
-		{
-			(*(return_key)) = found_bucket_p->key;
-		}
-		if(return_value != NULL)
-		{
-			(*(return_value)) = found_bucket_p->value;
-		}
-		delete_bucket(found_bucket_p);
-	}
-
 	// return the number of buckets we deleted => eeither 1 or 0
 	return has_been_deleted;
 }
 
-void put_bucket_in_linkedlist_wrapper(void* bucket_p_v, const void* hashmap_p_v)
-{
-	bucket* bucket_p = ((bucket*)(bucket_p_v));
-	hashmap* hashmap_p = ((hashmap*)(hashmap_p_v));
-
-	// if the index is pointing to NULL linedlist, it has to be initialized first
-	linkedlist* ll = (linkedlist*)get_data_structure_for_key(hashmap_p, bucket_p->key, 1);
-
-	// insert the new bucket at its head
-	insert_head(ll, bucket_p);
-}
-
-void put_entry_in_bst_wrapper(const void* key, const void* value, const void* new_hashmap_p)
+void put_entry_in_bst_or_ll_wrapper(const void* key, const void* value, const void* new_hashmap_p)
 {
 	// insert this entry in the new hashmap
 	put_entry_in_hash( ((hashmap*)(new_hashmap_p)), key, value);
@@ -312,8 +297,8 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					// iterate over all the elements of the linkedlist and insert the bucket
-					for_each_in_list(((linkedlist*)(ds_p)), put_bucket_in_linkedlist_wrapper, &new_hashmap_properties);
+					// iterate over all the elements of the linkedlist and insert all the key value entries
+					for_each_entry_in_list(((linkedlist*)(ds_p)), put_entry_in_bst_or_ll_wrapper, &new_hashmap_properties);
 
 					// delete linkedlist
 					delete_linkedlist(((linkedlist*)(ds_p)));
@@ -323,7 +308,7 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
 					// iterate over all the elements of the bst and insert all the key value entries
-					for_each_entry_in_bst(((balancedbst*)(ds_p)), put_entry_in_bst_wrapper, &new_hashmap_properties);
+					for_each_entry_in_bst(((balancedbst*)(ds_p)), put_entry_in_bst_or_ll_wrapper, &new_hashmap_properties);
 
 					// delete complete old bst
 					delete_balancedbst(((balancedbst*)(ds_p)));
@@ -372,7 +357,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					for_each_in_list((((linkedlist*)(ds_p))), print_bucket_wrapper, ((const void*)(&print_functions)));
+					print_linkedlist_bucketted(((linkedlist*)(ds_p)), print_key, print_value);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
@@ -392,11 +377,6 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 	printf("\n\n");
 }
 
-void delete_bucket_wrapper(void* bucket_p, const void* additional_params)
-{
-	delete_bucket(((bucket*)(bucket_p)));
-}
-
 void delete_hashmap(hashmap* hashmap_p)
 {
 	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
@@ -413,7 +393,6 @@ void delete_hashmap(hashmap* hashmap_p)
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					for_each_in_list(((linkedlist*)(ds_p)), delete_bucket_wrapper, NULL);
 					delete_linkedlist(((linkedlist*)(ds_p)));
 					break;
 				}

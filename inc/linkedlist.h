@@ -3,9 +3,16 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<bucket.h>
 
 // to avoid name collision with node of balancedbst
 #define node llnode
+
+// to avoid name collision with functions of hashmap
+#define put_entry_to_head	put_entry_in_ll
+#define find_value 			find_value_from_ll
+#define remove_value 		remove_value_from_ll
+#define for_each_entry 		for_each_entry_in_ll
 
 // the datastructure of the linkedlist manages its data on its own
 // you manage your own data
@@ -46,14 +53,16 @@ struct linkedlist
 	// always tail->next = NULL
 	node* tail;
 
-	// compare data and returns 0 if they are same, else non-zero
-	// it returns 0 if they are same, >0 if key_or_data11 is greater than key_or_data12 else it must return <0 value
-	// if SIMPLE, we compare data_p else we consider data_p as a bucket, and compare their keys
-	int (*compare)(const void* key_or_data1, const void* key_or_data2);
+	// the type of the linkedlist
+	linkedlisttype type;
+
+	// compare keys for bucketted linkedlist and returns 0 if they are same, else non-zero
+	// it returns 0 if they are same, >0 if key1 is greater than key2 else it must return <0 value
+	int (*key_compare)(const void* key1, const void* key2);
 };
 
 // returns a new linked list
-linkedlist* get_linkedlist();
+linkedlist* get_linkedlist(linkedlisttype type, int (*compare)(const void* key1, const void* key2));
 
 /*
 	BELOW LINKEDLIST FUNCTIONS CAN BE USED TO IMPLEMENT QUEUES, STACKS AND DOUBLE ENDED QUEUES
@@ -110,27 +119,27 @@ const node* get_nth_node_from_tail(linkedlist* ll, unsigned long long int n);
 	TRY NOT TO USE THEM
 */
 
-
-// deletes the linked list and all of its nodes
-void delete_linkedlist(linkedlist* ll);
-
 // perform operation on all the elements of the linked list
-void for_each_in_list(const linkedlist* ll, void (*operation)(void* data_p, const void* additional_params), const void* additional_params);
+void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
 // prints complete linked list
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));
 
+// prints complete linkedlist
+void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* key_p), void (*print_value)(const void* value_p));
+
 /*
-	BELOW ARE THE FUNCTIONS FOR BUCKETTED LINKEDLIST
+	BELOW ARE THE ONLY FUNCTIONS FOR BUCKETTED LINKEDLIST
+	DONOT INVOKE SIMPLE LINKEDLIST FUNCTIONS DIRECTLY ON BUCKETTED LINKEDLIST
 */
 
 // place the bucket at the head of the linkedlist
 // O(1) operation
-void put_entry_to_head(linkedlist* ll, const void* key, const void* value);
+void put_entry_to_head(linkedlist* ll, const void* key, const void* value, put_type p_type);
 
 // place the bucket at the tail of the linkedlist
 // O(1) operation
-void put_entry_to_tail(linkedlist* ll, const void* key, const void* value);
+void put_entry_to_tail(linkedlist* ll, const void* key, const void* value, put_type p_type);
 
 // get the value from the linkedlist, stored at a particular key
 // O(n) operation
@@ -140,10 +149,20 @@ const void* find_value(const linkedlist* ll, const void* key);
 // since you would have to first search the bucket
 int remove_value(linkedlist* ll, const void* key, const void** return_key, const void** return_value);
 
+// perform operation on all the buckets of the linked list
+void for_each_entry_in_list(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params);
+
 /*
 	ABOVE ARE THE FUNCTIONS FOR BUCKETTED LINKEDLIST
 */
 
+// deletes the linked list and all of its nodes
+void delete_linkedlist(linkedlist* ll);
+
 #undef node
+#undef put_entry
+#undef find_value
+#undef remove_value
+#undef for_each_entry
 
 #endif
