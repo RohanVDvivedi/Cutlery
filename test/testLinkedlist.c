@@ -17,7 +17,7 @@ void print_ts(const void* tsv)
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-int test_compare(const void* a, const void* b, const void* additional_params)
+int test_compare(const void* a, const void* b)
 {
 	if(a==NULL || b==NULL)
 	{
@@ -31,7 +31,7 @@ int test_compare(const void* a, const void* b, const void* additional_params)
 
 int main()
 {
-	linkedlist* ll = get_linkedlist();
+	linkedlist* ll = get_linkedlist(SIMPLE, test_compare);
 	print_linkedlist(ll, print_ts);
 
 	insert_head(ll, &((ts){2, "two"}));
@@ -60,11 +60,6 @@ int main()
 
 	remove_tail(ll);
 	print_linkedlist(ll, print_ts);
-
-	ts to_find = {-1, "lol"};
-	const void* found = find_first_in_list(ll, ((void*)&to_find), test_compare, NULL);
-	print_ts(found == NULL ? NULL : found);
-	printf("\n");
 
 	remove_node(ll, ((llnode*)get_nth_node_from_head(ll, 2)));
 	print_linkedlist(ll, print_ts);
