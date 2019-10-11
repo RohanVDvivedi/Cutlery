@@ -4,15 +4,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// this is bucketted datastructures specific enum
-// for the put_entry operation
-typedef enum put_type put_type;
-enum put_type
-{
-	PUT_IF_EXISTS 		= 0x01,	// update = 01 decimal
-	PUT_IF_NOT_EXISTS 	= 0x10	// insert = 16 decimal
-};
-
 typedef struct bucket bucket;
 struct bucket
 {
