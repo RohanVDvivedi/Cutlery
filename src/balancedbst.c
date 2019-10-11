@@ -291,7 +291,7 @@ node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
-	if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) <= 0 )
+	if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) < 0 )
 	{
 		if( root->left_sub_tree == NULL )
 		{
@@ -303,7 +303,7 @@ void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* ro
 			insert_node_in_non_self_balancing_tree(balancedbst_p, root->left_sub_tree, node_p);
 		}
 	}
-	else if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) > 0 )
+	else if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) >= 0 )
 	{
 		if( root->right_sub_tree == NULL )
 		{
