@@ -170,7 +170,7 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 	}
 }
 
-int update_entry(hashmap* hashmap_p, const void* key, const void* value, const void** return_value)
+int update_value(hashmap* hashmap_p, const void* key, const void* value, const void** return_value)
 {
 	int update_made = 0;
 
