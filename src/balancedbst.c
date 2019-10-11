@@ -6,9 +6,10 @@
 #define find_node 	find_bstnode
 
 // to avoid name collision with functions of hashmap
-#define put_entry		put_entry_in_bst
-#define find_value 		find_value_from_bst 
-#define remove_value 	remove_value_from_bst
+#define insert_entry	insert_entry_in_bst
+#define find_value		find_value_from_bst 
+#define update_value	update_value_in_bst
+#define delete_entry 	delete_entry_from_bst
 #define for_each_entry 	for_each_entry_in_bst
 
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
@@ -290,7 +291,7 @@ node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
-	if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) <= 0 )
+	if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) < 0 )
 	{
 		if( root->left_sub_tree == NULL )
 		{
@@ -302,7 +303,7 @@ void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* ro
 			insert_node_in_non_self_balancing_tree(balancedbst_p, root->left_sub_tree, node_p);
 		}
 	}
-	else if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) > 0 )
+	else if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) >= 0 )
 	{
 		if( root->right_sub_tree == NULL )
 		{
@@ -503,29 +504,42 @@ void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 	}
 }
 
-void put_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p, put_type p_type)
+void insert_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p)
 {
-	// find a node in the tree that has key_p as its key (we do not want duplicate keys)
-	node* node_p = find_node(balancedbst_p, key_p);
+	// create a new node for the entry to be inserted
+	node* node_p = get_node(key_p, value_p);
 
-	// if we can not find such a node, create a new node and insert it in tree
-	if(node_p == NULL && (p_type & PUT_IF_NOT_EXISTS) )
-	{
-		node_p = get_node(key_p, value_p);
-		insert_node_in_tree(balancedbst_p, node_p);
-	}
-	// else update the value for the node found
-	else if(node_p != NULL && (p_type & PUT_IF_EXISTS))
-	{
-		bucket* bucket_p = ((bucket*)node_p->bucket_p);
-		bucket_p->value = value_p;
-	}
+	// insert that node in the tree
+	insert_node_in_tree(balancedbst_p, node_p);
 }
 
 const void* find_value(const balancedbst* blancedbst_p, const void* key_p)
 {
 	node* node_p = find_node(blancedbst_p, key_p);
 	return node_p != NULL ? node_p->bucket_p->value : NULL;
+}
+
+int update_value(balancedbst* balancedbst_p, const void* key_p, const void* value_p, const void** return_value)
+{
+	// find a node in the tree that has key_p as its key
+	node* node_p = find_node(balancedbst_p, key_p);
+
+	// if we can not find such a node, return 0
+	if(node_p == NULL)
+	{
+		return 0;
+	}
+	// else update the value for the node found
+	else
+	{
+		bucket* bucket_p = ((bucket*)node_p->bucket_p);
+		if(return_value != NULL)
+		{
+			(*return_value) = bucket_p->value;
+		}
+		bucket_p->value = value_p;
+		return 1;
+	}
 }
 
 // the below function only detaches the node thatr has to be deleted
@@ -760,7 +774,7 @@ void delete_node(node* node_p)
 	free(node_p);
 }
 
-int remove_value(balancedbst* balancedbst_p, const void* key_p,const void** return_key,const void** return_value)
+int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** return_key,const void** return_value)
 {
 	int deleted_nodes_count = 0;
 	node* node_p = find_node(balancedbst_p, key_p);
@@ -937,10 +951,10 @@ void delete_balancedbst(balancedbst* balancedbst_p)
 }
 
 #undef node
-#undef delete_node
-#undef put_entry
+#undef insert_entry
 #undef find_value
-#undef remove_value
+#undef update_value
+#undef delete_entry
 #undef for_each_entry
 #undef delete_node
 #undef find_node

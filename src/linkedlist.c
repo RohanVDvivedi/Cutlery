@@ -6,10 +6,11 @@
 #define find_node		find_llnode
 
 // to avoid name collision with functions of hashmap
-#define put_entry_to_head	put_entry_in_ll
-#define find_value 			find_value_from_ll
-#define remove_value 		remove_value_from_ll
-#define for_each_entry 		for_each_entry_in_ll
+#define insert_entry 			insert_entry_in_ll
+#define find_value				find_value_from_ll 
+#define update_value			update_value_in_ll
+#define delete_entry 			delete_entry_from_ll
+#define for_each_entry 			for_each_entry_in_ll
 
 linkedlist* get_linkedlist(linkedlisttype type, int (*key_compare)(const void* key1, const void* key2))
 {
@@ -269,32 +270,10 @@ const bucket* find_bucket(const linkedlist* ll, const void* key)
 	return found_node_p != NULL ? ((bucket*)found_node_p->data_p) : NULL;
 }
 
-void put_entry_to_head(linkedlist* ll, const void* key, const void* value, put_type p_type)
+void insert_entry(linkedlist* ll, const void* key, const void* value)
 {
-	bucket* found_bucket_p = (bucket*)find_bucket(ll, key);
-	if(found_bucket_p != NULL && (p_type & PUT_IF_EXISTS) )
-	{
-		found_bucket_p->value = value;
-	}
-	else if(found_bucket_p == NULL && (p_type & PUT_IF_NOT_EXISTS) )
-	{
-		const bucket* new_bucket_p = get_bucket(key, value);
-		insert_head(ll, new_bucket_p);
-	}
-}
-
-void put_entry_to_tail(linkedlist* ll, const void* key, const void* value, put_type p_type)
-{
-	bucket* found_bucket_p = (bucket*)find_bucket(ll, key);
-	if(found_bucket_p != NULL && (p_type & PUT_IF_EXISTS) )
-	{
-		found_bucket_p->value = value;
-	}
-	else if(found_bucket_p == NULL && (p_type & PUT_IF_NOT_EXISTS) )
-	{
-		const bucket* new_bucket_p = get_bucket(key, value);
-		insert_tail(ll, new_bucket_p);
-	}
+	const bucket* new_bucket_p = get_bucket(key, value);
+	insert_head(ll, new_bucket_p);
 }
 
 const void* find_value(const linkedlist* ll, const void* key)
@@ -303,7 +282,22 @@ const void* find_value(const linkedlist* ll, const void* key)
 	return found_bucket_p != NULL ? found_bucket_p->value : NULL;
 }
 
-int remove_value(linkedlist* ll, const void* key, const void** return_key, const void** return_value)
+int update_value(linkedlist* ll, const void* key, const void* value, const void** return_value)
+{
+	bucket* found_bucket_p = (bucket*)find_bucket(ll, key);
+	if(found_bucket_p == NULL)
+	{
+		return 0;
+	}
+	if(return_value != NULL)
+	{
+		(*return_value) = found_bucket_p->value;
+	}
+	found_bucket_p->value = value;
+	return 1;
+}
+
+int delete_entry(linkedlist* ll, const void* key, const void** return_key, const void** return_value)
 {
 	node* found_node_p = ((node*) find_node(ll, key));
 	if(found_node_p != NULL)
@@ -396,9 +390,10 @@ void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* ke
 }
 
 #undef node
-#undef put_entry
+#undef insert_entry
 #undef find_value
-#undef remove_value
+#undef update_value
+#undef delete_entry
 #undef for_each_entry
 #undef delete_node
 #undef find_node

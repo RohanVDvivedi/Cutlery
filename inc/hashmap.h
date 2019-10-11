@@ -17,10 +17,10 @@
 // hashmap will just store them directly in bucket and use the memory pointed by them when required
 
 // to avoid name collision with functions of balancedbst
-#define put_entry		put_entry_in_hash
-#define find_value 		find_value_from_hash
-#define remove_value 	remove_value_from_hash
-#define for_each_entry 	for_each_entry_in_hash
+#define insert_entry	insert_entry_in_hash
+#define find_value		find_value_from_hash
+#define update_value	update_value_in_hash
+#define delete_entry 	delete_entry_from_hash
 
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
@@ -64,14 +64,17 @@ struct hashmap
 // bucket count remains the same unless rehash is called with a new size
 hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy);
 
-// place the bucket in the hashmap
-void put_entry(hashmap* hashmap_p, const void* key, const void* value);
+// place a new bucket in the hashmap, with key as key and value as value
+void insert_entry(hashmap* hashmap_p, const void* key, const void* value);
 
 // get the value from the hashmap, stored at a particular key
 const void* find_value(const hashmap* hashmap_p, const void* key);
 
+// find a bucket in hashmap, whose key is key_p, and update it to hold value_p, returns 1 if operation completed successfully
+int update_value(hashmap* hashmap_p, const void* key_p, const void* value_p, const void** return_value);
+
 // returns 1 if the bucket is found and removed from hashmap and deleted
-int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value);
+int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value);
 
 // the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
 // used to expand hashmap once the load factor is greater than 0.7 
@@ -86,9 +89,9 @@ void delete_hashmap(hashmap* hashmap_p);
 // perform operation on all the elements of the hashmap
 void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params);
 
-#undef put_entry
+#undef insert_entry
 #undef find_value
-#undef remove_value
-#undef for_each_entry
+#undef update_value
+#undef delete_entry
 
 #endif
