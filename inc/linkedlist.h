@@ -9,10 +9,11 @@
 #define node llnode
 
 // to avoid name collision with functions of hashmap
-#define put_entry_to_head	put_entry_in_ll
-#define find_value 			find_value_from_ll
-#define remove_value 		remove_value_from_ll
-#define for_each_entry 		for_each_entry_in_ll
+#define insert_entry_to_head	insert_entry_in_ll
+#define find_value				find_value_from_ll 
+#define update_value			update_value_in_ll
+#define delete_entry 			delete_entry_from_ll
+#define for_each_entry 			for_each_entry_in_ll
 
 // the datastructure of the linkedlist manages its data on its own
 // you manage your own data
@@ -133,21 +134,21 @@ void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* ke
 	DONOT INVOKE SIMPLE LINKEDLIST FUNCTIONS DIRECTLY ON BUCKETTED LINKEDLIST
 */
 
-// place the bucket at the head of the linkedlist
+// place a new bucket with given key and value at the head of the linkedlist
 // O(1) operation
-void put_entry_to_head(linkedlist* ll, const void* key, const void* value, put_type p_type);
-
-// place the bucket at the tail of the linkedlist
-// O(1) operation
-void put_entry_to_tail(linkedlist* ll, const void* key, const void* value, put_type p_type);
+void insert_entry(linkedlist* ll, const void* key, const void* value);
 
 // get the value from the linkedlist, stored at a particular key
 // O(n) operation
 const void* find_value(const linkedlist* ll, const void* key);
 
-// returns 1 if the bucket is found for the givemn key and removed from linkedlist and deleted
-// since you would have to first search the bucket
-int remove_value(linkedlist* ll, const void* key, const void** return_key, const void** return_value);
+// returns 1 if the bucket is found for the given key and updated
+// since you would have to first search the bucket, it is O(n) operation
+int update_value(linkedlist* ll, const void* key, const void* value, const void** return_value);
+
+// returns 1 if the bucket is found for the given key and removed from linkedlist and deleted
+// since you would have to first search the bucket, it is O(n) operation
+int delete_entry(linkedlist* ll, const void* key, const void** return_key, const void** return_value);
 
 // perform operation on all the buckets of the linked list
 void for_each_entry_in_list(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params);
@@ -160,9 +161,10 @@ void for_each_entry_in_list(const linkedlist* ll, void (*operation)(const void* 
 void delete_linkedlist(linkedlist* ll);
 
 #undef node
-#undef put_entry
+#undef insert_entry
 #undef find_value
-#undef remove_value
+#undef update_value
+#undef delete_entry
 #undef for_each_entry
 
 #endif
