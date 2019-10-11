@@ -1,10 +1,10 @@
 #include<hashmap.h>
 
 // to avoid name collision with functions of balancedbst
-#define put_entry		put_entry_in_hash
-#define find_value 		find_value_from_hash
-#define remove_value 	remove_value_from_hash
-#define for_each_entry 	for_each_entry_in_hash
+#define insert_entry	insert_entry_in_hash
+#define find_value		find_value_from_hash
+#define update_value	update_value_in_hash
+#define delete_entry 	delete_entry_from_hash
 
 hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy)
 {
@@ -101,24 +101,10 @@ bucket* find_bucket_for_no_policy(const hashmap* hashmap_p, const void* key)
 	const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
 	// if we found the under lying data struture, which infact han`dles collision, we find our bucket inside it
-	if(ds_p != NULL)
+	if(ds_p != NULL && hashmap_p->hashmap_policy == NO_POLICY)
 	{
-		switch(hashmap_p->hashmap_policy)
-		{
-			case NO_POLICY :
-			{
-				// if no policy ther is no middle ware data structure handling collision just bucket
-				// hence compare key and return
-				found_bucket_p = hashmap_p->key_compare(key, ((bucket*)ds_p)->key) == 0 ? ((bucket*)(ds_p)) : NULL;
-				break;
-			}
-			case ELEMENTS_AS_LINKEDLIST :
-			case ELEMENTS_AS_AVL_BST :
-			case ELEMENTS_AS_RED_BLACK_BST :
-			{// bst data structures can only give you values, let found_bukcet_p = NULL
-				break;
-			}
-		}
+		// if no policy ther is no middle ware data structure handling collision just bucket
+		found_bucket_p = hashmap_p->key_compare(key, ((bucket*)ds_p)->key) == 0 ? ((bucket*)(ds_p)) : NULL;
 	}
 
 	// return the bucket that we found
@@ -154,7 +140,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 	}
 }
 
-void put_entry(hashmap* hashmap_p, const void* key, const void* value)
+void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 {
 	// find the bucket in the hashmap, which has the same key as this bucket
 	bucket* found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
@@ -192,14 +178,67 @@ void put_entry(hashmap* hashmap_p, const void* key, const void* value)
 			case ELEMENTS_AS_RED_BLACK_BST :
 			{
 				// insert the new bucket in the bst
-				put_entry_in_bst(((balancedbst*)(ds_p)), key, value, PUT_IF_EXISTS|PUT_IF_NOT_EXISTS);
+				insert_entry_in_bst(((balancedbst*)(ds_p)), key, value);
 				break;
 			}
 		}
 	}
 }
 
-int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value)
+int update_entry(hashmap* hashmap_p, const void* key, const void* value, const void** return_value)
+{
+	int update_made = 0;
+
+	switch(hashmap_p->hashmap_policy)
+	{
+		case NO_POLICY :
+		{
+			// find the bucket in the hashmap, which has the same key as this bucket
+			bucket* found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
+
+			if(found_bucket_p != NULL)
+			{
+				// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
+				if(return_value != NULL)
+				{
+					(*return_value) = ((bucket*)ds_p)->value;
+				}
+				((bucket*)ds_p)->value = value;
+				update_made = 1;
+			}
+			break;
+		}
+		case ELEMENTS_AS_LINKEDLIST :
+		{
+			// retrieve data structure for that key
+			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 0);
+
+			// insert the new bucket in the linkedlist
+			if(ds_p != NULL)
+			{
+				update_made = update_value_in_ll(((linkedlist*)(ds_p)), key, value);
+			}
+			break;
+		}
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			// retrieve data structure for that key
+			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 0);
+
+			// insert the new bucket in the bst
+			if(ds_p != NULL)
+			{
+				update_made = update_value_in_bst(((balancedbst*)(ds_p)), key, value);
+			}
+			break;
+		}
+	}
+
+	return update_made;
+}
+
+int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value)
 {
 	// this is where the bucket to be deleted gets stored
 	bucket* found_bucket_p = NULL;
@@ -240,7 +279,7 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 			// here keep the found_bucket_p as NULL, because if you see linkedlist implementation, it handles memory allocation for buckets on its own 
 			if(ds_p != NULL)
 			{
-				has_been_deleted += remove_value_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value);
+				has_been_deleted += delete_entry_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value);
 			}
 			break;
 		}
@@ -254,7 +293,7 @@ int remove_value(hashmap* hashmap_p, const void* key, const void** return_key, c
 			// here keep the found_bucket_p as NULL, because if you see balancedbst implementation, it handles memory allocation for buckets on its own 
 			if(ds_p != NULL)
 			{
-				has_been_deleted += remove_value_from_bst(((balancedbst*)(ds_p)), key, return_key, return_value);
+				has_been_deleted += delete_entry_from_bst(((balancedbst*)(ds_p)), key, return_key, return_value);
 			}
 			break;
 		}
@@ -410,7 +449,7 @@ void delete_hashmap(hashmap* hashmap_p)
 	free(hashmap_p);
 }
 
-#undef put_entry
+#undef insert_entry
 #undef find_value
-#undef remove_value
-#undef for_each_entry
+#undef update_value
+#undef delete_entry

@@ -16,9 +16,10 @@
 #define node bstnode
 
 // to avoid name collision with functions of hashmap
-#define put_entry		put_entry_in_bst
-#define find_value 		find_value_from_bst 
-#define remove_value 	remove_value_from_bst
+#define insert_entry	insert_entry_in_bst
+#define find_value		find_value_from_bst 
+#define update_value	update_value_in_bst
+#define delete_entry 	delete_entry_from_bst
 #define for_each_entry 	for_each_entry_in_bst
 
 typedef enum tree_type tree_type;
@@ -87,9 +88,10 @@ void for_each_entry(const balancedbst* blancedbst_p, void (*operation)(const voi
 void print_balancedbst(const balancedbst* blancedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #undef node
-#undef put_entry
+#undef insert_entry
 #undef find_value
-#undef remove_value
+#undef update_value
+#undef delete_entry
 #undef for_each_entry
 
 #endif
