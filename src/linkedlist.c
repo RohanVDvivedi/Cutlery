@@ -6,7 +6,7 @@
 #define find_node		find_llnode
 
 // to avoid name collision with functions of hashmap
-#define insert_entry_to_head	insert_entry_in_ll
+#define insert_entry 			insert_entry_in_ll
 #define find_value				find_value_from_ll 
 #define update_value			update_value_in_ll
 #define delete_entry 			delete_entry_from_ll
@@ -390,7 +390,7 @@ void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* ke
 }
 
 #undef node
-#undef insert_entry_to_head
+#undef insert_entry
 #undef find_value
 #undef update_value
 #undef delete_entry

@@ -142,45 +142,30 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 
 void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 {
-	// find the bucket in the hashmap, which has the same key as this bucket
-	bucket* found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
+	// retrieve data structure for that key
+	void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
 
-	// if bucket with that key exists, then update its value pointer
-	if(found_bucket_p != NULL)
+	switch(hashmap_p->hashmap_policy)
 	{
-		// update the value of the bucket, if it is found 
-		found_bucket_p->value = value;
-	}
-	// we insert a new bucket
-	// else case works for bsts and linkedlists (because they have their own way of memory managing buckets), so we dont put dupka there
-	// or if it is NO_POLICY, where the buckets are maemory managed by hashmap only
-	else
-	{
-		// retrieve data structure for that key
-		void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
-
-		switch(hashmap_p->hashmap_policy)
+		case NO_POLICY :
 		{
-			case NO_POLICY :
-			{
-				// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
-				((bucket*)ds_p)->key = key;
-				((bucket*)ds_p)->value = value;
-				break;
-			}
-			case ELEMENTS_AS_LINKEDLIST :
-			{
-				// insert the new bucket in the linkedlist
-				put_entry_in_ll(((linkedlist*)(ds_p)), key, value, PUT_IF_EXISTS|PUT_IF_NOT_EXISTS);
-				break;
-			}
-			case ELEMENTS_AS_AVL_BST :
-			case ELEMENTS_AS_RED_BLACK_BST :
-			{
-				// insert the new bucket in the bst
-				insert_entry_in_bst(((balancedbst*)(ds_p)), key, value);
-				break;
-			}
+			// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
+			((bucket*)ds_p)->key = key;
+			((bucket*)ds_p)->value = value;
+			break;
+		}
+		case ELEMENTS_AS_LINKEDLIST :
+		{
+			// insert the new bucket in the linkedlist
+			insert_entry_in_ll(((linkedlist*)(ds_p)), key, value);
+			break;
+		}
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			// insert the new bucket in the bst
+			insert_entry_in_bst(((balancedbst*)(ds_p)), key, value);
+			break;
 		}
 	}
 }
@@ -201,9 +186,9 @@ int update_entry(hashmap* hashmap_p, const void* key, const void* value, const v
 				// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
 				if(return_value != NULL)
 				{
-					(*return_value) = ((bucket*)ds_p)->value;
+					(*return_value) = found_bucket_p->value;
 				}
-				((bucket*)ds_p)->value = value;
+				found_bucket_p->value = value;
 				update_made = 1;
 			}
 			break;
@@ -216,7 +201,7 @@ int update_entry(hashmap* hashmap_p, const void* key, const void* value, const v
 			// insert the new bucket in the linkedlist
 			if(ds_p != NULL)
 			{
-				update_made = update_value_in_ll(((linkedlist*)(ds_p)), key, value);
+				update_made = update_value_in_ll(((linkedlist*)(ds_p)), key, value, return_value);
 			}
 			break;
 		}
@@ -229,7 +214,7 @@ int update_entry(hashmap* hashmap_p, const void* key, const void* value, const v
 			// insert the new bucket in the bst
 			if(ds_p != NULL)
 			{
-				update_made = update_value_in_bst(((balancedbst*)(ds_p)), key, value);
+				update_made = update_value_in_bst(((balancedbst*)(ds_p)), key, value, return_value);
 			}
 			break;
 		}
@@ -256,7 +241,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 			{
 				// set element at index in array of buckets in the hashmap to NULL
 				set_element(hashmap_p->buckets_holder, NULL, get_index_for_key(hashmap_p, key));
-				has_been_deleted += 1;
+				has_been_deleted = 1;
 
 				if(return_key != NULL)
 				{
@@ -279,7 +264,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 			// here keep the found_bucket_p as NULL, because if you see linkedlist implementation, it handles memory allocation for buckets on its own 
 			if(ds_p != NULL)
 			{
-				has_been_deleted += delete_entry_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value);
+				has_been_deleted = delete_entry_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value);
 			}
 			break;
 		}
@@ -293,7 +278,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 			// here keep the found_bucket_p as NULL, because if you see balancedbst implementation, it handles memory allocation for buckets on its own 
 			if(ds_p != NULL)
 			{
-				has_been_deleted += delete_entry_from_bst(((balancedbst*)(ds_p)), key, return_key, return_value);
+				has_been_deleted = delete_entry_from_bst(((balancedbst*)(ds_p)), key, return_key, return_value);
 			}
 			break;
 		}
@@ -306,7 +291,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 void put_entry_in_bst_or_ll_wrapper(const void* key, const void* value, const void* new_hashmap_p)
 {
 	// insert this entry in the new hashmap
-	put_entry_in_hash( ((hashmap*)(new_hashmap_p)), key, value);
+	insert_entry( ((hashmap*)(new_hashmap_p)), key, value);
 }
 
 void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
@@ -328,7 +313,7 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 				case NO_POLICY :
 				{
 					// ds_p = bucket, when No pilicy is used
-					put_entry(&new_hashmap_properties, ((bucket*)(ds_p))->key, ((bucket*)(ds_p))->value);
+					insert_entry(&new_hashmap_properties, ((bucket*)(ds_p))->key, ((bucket*)(ds_p))->value);
 
 					// delete the old bucket
 					delete_bucket(((bucket*)(ds_p)));
