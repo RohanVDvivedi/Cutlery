@@ -15,7 +15,7 @@ CFLAGS=-I${INC_DIR}
 ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c ${INC_DIR}/%.h
 	${CC} ${CFLAGS} -c $< -o $@
 
-${BIN_DIR}/$(TARGET) : ${OBJ_DIR}/array.o ${OBJ_DIR}/balancedbst.o ${OBJ_DIR}/bucket.o ${OBJ_DIR}/hashmap.o ${OBJ_DIR}/heap.o ${OBJ_DIR}/linkedlist.o ${OBJ_DIR}/mmarray.o ${OBJ_DIR}/queue.o ${OBJ_DIR}/stack.o
+${BIN_DIR}/$(TARGET) : ${OBJ_DIR}/datastructure.o ${OBJ_DIR}/array.o ${OBJ_DIR}/balancedbst.o ${OBJ_DIR}/bucket.o ${OBJ_DIR}/hashmap.o ${OBJ_DIR}/heap.o ${OBJ_DIR}/linkedlist.o ${OBJ_DIR}/mmarray.o ${OBJ_DIR}/queue.o ${OBJ_DIR}/stack.o
 	ar rcs $@ ${OBJ_DIR}/*.o
 
 all : ${BIN_DIR}/$(TARGET)
