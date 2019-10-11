@@ -65,14 +65,17 @@ struct balancedbst
 // get a new balancedbst
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1));
 
-// inserts or updates a node in the tree whose data is a bucket with key as key_p and value as value_p
-void put_entry(balancedbst* blancedbst_p, const void* key_p, const void* value_p, put_type p_type);
+// inserts a node in the tree whose data is a bucket with key as key_p and value as value_p
+void insert_entry(balancedbst* blancedbst_p, const void* key_p, const void* value_p);
 
 // find a value_p in tree, whose key is key_p
 const void* find_value(const balancedbst* blancedbst_p, const void* key_p);
 
-// remove the node if found, returns a list of nodes that match
-int remove_value(balancedbst* blancedbst_p, const void* key_p, const void** return_key, const void** return_value);
+// find a bucket in tree, whose key is key_p, and update it to hold value_p, returns 1 if operation completed successfully
+int update_value(balancedbst* blancedbst_p, const void* key_p, const void* value_p, const void** return_value);
+
+// remove the node if found, returns a list of nodes that match, returns 1 if operation completed successfully
+int delete_entry(balancedbst* blancedbst_p, const void* key_p, const void** return_key, const void** return_value);
 
 // delete the balancedbst and all its nodes
 void delete_balancedbst(balancedbst* balancedbst_p);
