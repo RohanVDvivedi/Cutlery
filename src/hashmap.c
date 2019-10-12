@@ -126,7 +126,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
 			// find value in a linkedlist
-			return find_value_from_ll(((linkedlist*)(ds_p)), key);
+			return ds_p == NULL ? NULL : find_value_from_ll(((linkedlist*)(ds_p)), key);
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
@@ -135,7 +135,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
 			// find value in a bst
-			return find_value_from_bst(((balancedbst*)(ds_p)), key);
+			return ds_p == NULL ? NULL : find_value_from_bst(((balancedbst*)(ds_p)), key);
 		}
 	}
 }
@@ -199,10 +199,7 @@ int update_value(hashmap* hashmap_p, const void* key, const void* value, const v
 			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 0);
 
 			// insert the new bucket in the linkedlist
-			if(ds_p != NULL)
-			{
-				update_made = update_value_in_ll(((linkedlist*)(ds_p)), key, value, return_value);
-			}
+			update_made = ((ds_p == NULL) ? 0 : update_value_in_ll(((linkedlist*)(ds_p)), key, value, return_value));
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -212,10 +209,7 @@ int update_value(hashmap* hashmap_p, const void* key, const void* value, const v
 			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 0);
 
 			// insert the new bucket in the bst
-			if(ds_p != NULL)
-			{
-				update_made = update_value_in_bst(((balancedbst*)(ds_p)), key, value, return_value);
-			}
+			update_made = ((ds_p == NULL) ? 0 : update_value_in_bst(((balancedbst*)(ds_p)), key, value, return_value));
 			break;
 		}
 	}
@@ -262,10 +256,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 
 			// if there is a linkedlist remove value from that tree
 			// here keep the found_bucket_p as NULL, because if you see linkedlist implementation, it handles memory allocation for buckets on its own 
-			if(ds_p != NULL)
-			{
-				has_been_deleted = delete_entry_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value);
-			}
+			has_been_deleted = ((ds_p == NULL) ? 0 : delete_entry_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value));
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -276,10 +267,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 
 			// if there is a binary search tree remove value from that tree
 			// here keep the found_bucket_p as NULL, because if you see balancedbst implementation, it handles memory allocation for buckets on its own 
-			if(ds_p != NULL)
-			{
-				has_been_deleted = delete_entry_from_bst(((balancedbst*)(ds_p)), key, return_key, return_value);
-			}
+			has_been_deleted = ((ds_p == NULL) ? 0 : delete_entry_from_bst(((balancedbst*)(ds_p)), key, return_key, return_value));
 			break;
 		}
 	}
