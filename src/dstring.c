@@ -14,24 +14,31 @@ dstring* get_dstring(const char* cstr_p, unsigned long long int additional_alloc
 	return str_p;
 }
 
-int compare(const dstring* str_p1, const dstring* str_p2)
+dstring* make_dstring_empty(dstring* str_p)
+{
+	str_p->cstring[0] = '\0';
+	str_p->bytes_occupied = 1;
+	return str_p;
+}
+
+int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
 	return strcmp(str_p1->cstring, str_p2->cstring);
 }
 
-dstring* expand(dstring* str_p, unsigned long long int additional_allocation)
+dstring* expand_dstring(dstring* str_p, unsigned long long int additional_allocation)
 {
 	dstring* expanded_dstring = get_dstring(str_p->cstring, additional_allocation);
 	delete_dstring(str_p);
 	return expanded_dstring;
 }
 
-dstring* append(dstring* str_p, char* cstr_p)
+dstring* append_to_dstring(dstring* str_p, char* cstr_p)
 {
 	int occ = cstr_p == NULL ? 1 : (strlen(cstr_p) + 1);
 	if( occ + str_p->bytes_occupied - 1 > str_p->bytes_allocated)
 	{
-		str_p = expand(str_p, (2 * occ) + 2);
+		str_p = expand_dstring(str_p, (2 * occ) + 2);
 	}
 	if(cstr_p != NULL)
 	{
@@ -41,14 +48,14 @@ dstring* append(dstring* str_p, char* cstr_p)
 	return str_p;
 }
 
-dstring* concatenate(dstring* str_p1, dstring* str_p2)
+dstring* concatenate_dstring(dstring* str_p1, dstring* str_p2)
 {
-	str_p1 = append(str_p1, str_p2->cstring);
+	str_p1 = append_to_dstring(str_p1, str_p2->cstring);
 	delete_dstring(str_p2);
 	return str_p1;
 }
 
-void display(dstring* str_p)
+void display_dstring(dstring* str_p)
 {
 	printf("%s", str_p->cstring);
 }
