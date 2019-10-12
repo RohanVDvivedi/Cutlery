@@ -51,7 +51,6 @@ dstring* append_to_dstring(dstring* str_p, char* cstr_p)
 dstring* concatenate_dstring(dstring* str_p1, dstring* str_p2)
 {
 	str_p1 = append_to_dstring(str_p1, str_p2->cstring);
-	delete_dstring(str_p2);
 	return str_p1;
 }
 
