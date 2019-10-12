@@ -19,7 +19,7 @@ ${BIN_DIR}/$(TARGET) : ${OBJ_DIR}/array.o ${OBJ_DIR}/balancedbst.o ${OBJ_DIR}/bu
 	ar rcs $@ ${OBJ_DIR}/*.o
 
 path : 
-	@echo "CUTLERY_PATH=\`pwd\`"
+	@echo "export CUTLERY_PATH=\`pwd\`"
 
 all : ${BIN_DIR}/$(TARGET)
 
