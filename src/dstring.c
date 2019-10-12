@@ -28,7 +28,7 @@ dstring* expand(dstring* str_p, unsigned long long int additional_allocation)
 
 dstring* append(dstring* str_p, char* cstr_p)
 {
-	int occ = cstr_p == NULL ? 1 : strlen(cstr_p);
+	int occ = cstr_p == NULL ? 1 : (strlen(cstr_p) + 1);
 	if( occ + str_p->bytes_occupied - 1 > str_p->bytes_allocated)
 	{
 		str_p = expand(str_p, (2 * occ) + 2);
@@ -36,6 +36,7 @@ dstring* append(dstring* str_p, char* cstr_p)
 	if(cstr_p != NULL)
 	{
 		memcpy(str_p->cstring + str_p->bytes_occupied - 1, cstr_p, occ);
+		str_p->bytes_occupied += (occ - 1);
 	}
 	return str_p;
 }
@@ -45,6 +46,11 @@ dstring* concatenate(dstring* str_p1, dstring* str_p2)
 	str_p1 = append(str_p1, str_p2->cstring);
 	delete_dstring(str_p2);
 	return str_p1;
+}
+
+void display(dstring* str_p)
+{
+	printf("%s", str_p->cstring);
 }
 
 void delete_dstring(dstring* str_p)

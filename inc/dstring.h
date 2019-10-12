@@ -8,9 +8,14 @@
 typedef struct dstring dstring;
 struct dstring
 {
+	// actual c string with \0 at the end
 	char* cstring;
+
+	// number of bytes the string cstring occupies, 
 	unsigned long long int bytes_occupied;
 	unsigned long long int bytes_allocated;
+
+	unsigned long long int state_level;
 };
 
 dstring* get_dstring(const char* cstr_p, unsigned long long int additional_allocation);
@@ -24,6 +29,8 @@ dstring* expand(dstring* str_p, unsigned long long int additional_allocation);
 dstring* append(dstring* str_p, char* cstr_p);
 
 dstring* concatenate(dstring* str_p1, dstring* str_p2);
+
+void display(dstring* str_p);
 
 void delete_dstring(dstring* str_p);
 
