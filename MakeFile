@@ -18,6 +18,9 @@ ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c ${INC_DIR}/%.h
 ${BIN_DIR}/$(TARGET) : ${OBJ_DIR}/array.o ${OBJ_DIR}/balancedbst.o ${OBJ_DIR}/bucket.o ${OBJ_DIR}/hashmap.o ${OBJ_DIR}/heap.o ${OBJ_DIR}/linkedlist.o ${OBJ_DIR}/mmarray.o ${OBJ_DIR}/queue.o ${OBJ_DIR}/stack.o ${OBJ_DIR}/dstring.o
 	ar rcs $@ ${OBJ_DIR}/*.o
 
+path : 
+	@echo "CUTLERY_PATH=\`pwd\`"
+
 all : ${BIN_DIR}/$(TARGET)
 
 clean :
