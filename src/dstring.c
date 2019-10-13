@@ -34,7 +34,6 @@ void expand_dstring(dstring* str_p, unsigned long long int additional_allocation
 {
 	dstring expanded_dstring;
 	init_dstring(&expanded_dstring, str_p->cstring, additional_allocation);
-	strcpy(expanded_dstring.cstring, str_p->cstring);
 	if(str_p->cstring != NULL)
 	{
 		free(str_p->cstring);
@@ -45,15 +44,15 @@ void expand_dstring(dstring* str_p, unsigned long long int additional_allocation
 void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned long long int occ)
 {
 	// we consider that the client has not considered counting '\0' in string
-	occ++;
-	if( occ + str_p->bytes_occupied - 1 > str_p->bytes_allocated)
+	if( occ + str_p->bytes_occupied > str_p->bytes_allocated)
 	{
 		expand_dstring(str_p, (2 * occ) + 2);
 	}
 	if(cstr_p != NULL)
 	{
 		memcpy(str_p->cstring + str_p->bytes_occupied - 1, cstr_p, occ);
-		str_p->bytes_occupied += (occ - 1);
+		str_p->bytes_occupied += occ;
+		str_p->cstring[str_p->bytes_occupied - 1] = '\0';
 	}
 }
 
