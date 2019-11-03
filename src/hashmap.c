@@ -311,7 +311,7 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 				case ELEMENTS_AS_LINKEDLIST :
 				{
 					// iterate over all the elements of the linkedlist and insert all the key value entries
-					for_each_entry_in_list(((linkedlist*)(ds_p)), put_entry_in_bst_or_ll_wrapper, &new_hashmap_properties);
+					for_each_entry_in_ll(((linkedlist*)(ds_p)), put_entry_in_bst_or_ll_wrapper, &new_hashmap_properties);
 
 					// delete linkedlist
 					delete_linkedlist(((linkedlist*)(ds_p)));
@@ -350,13 +350,41 @@ void print_bucket_wrapper(void* bucket_p_to_print, const void* bucket_p_function
 
 void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
 {
-	
+	// iterate over all the buckets in the hashmap_p
+	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
+	{
+		// get the datastructure to be print for that index
+		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
+
+		if(ds_p != NULL)
+		{
+			switch(hashmap_p->hashmap_policy)
+			{
+				case NO_POLICY :
+				{
+					operation(((bucket*)(ds_p))->key, ((bucket*)(ds_p))->value, additional_params);
+					break;
+				}
+				case ELEMENTS_AS_LINKEDLIST :
+				{
+					for_each_entry_in_ll(((linkedlist*)(ds_p)), operation, additional_params);
+					break;
+				}
+				case ELEMENTS_AS_AVL_BST :
+				case ELEMENTS_AS_RED_BLACK_BST :
+				{
+					for_each_entry_in_bst(((balancedbst*)(ds_p)), operation, additional_params);
+					break;
+				}
+			}
+		}
+	}
 }
 
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	bucket print_functions = {.key = print_key, .value = print_value};
-	// iterate over all the elements (linkedlists) in the hashmap_p
+	// iterate over all the buckets in the hashmap_p
 	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
 	{
 		printf("index = %lld\n", index);

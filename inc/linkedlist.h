@@ -151,7 +151,7 @@ int update_value(linkedlist* ll, const void* key, const void* value, const void*
 int delete_entry(linkedlist* ll, const void* key, const void** return_key, const void** return_value);
 
 // perform operation on all the buckets of the linked list
-void for_each_entry_in_list(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params);
+void for_each_entry(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params);
 
 /*
 	ABOVE ARE THE FUNCTIONS FOR BUCKETTED LINKEDLIST

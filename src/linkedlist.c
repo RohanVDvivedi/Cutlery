@@ -317,7 +317,7 @@ int delete_entry(linkedlist* ll, const void* key, const void** return_key, const
 	return 0;
 }
 
-void for_each_entry_in_list(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params)
+void for_each_entry(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params)
 {
 	node* node_p = ll->head;
 	while(node_p != NULL)
