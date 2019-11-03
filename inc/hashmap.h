@@ -21,6 +21,7 @@
 #define find_value		find_value_from_hash
 #define update_value	update_value_in_hash
 #define delete_entry 	delete_entry_from_hash
+#define for_each_entry 	for_each_entry_in_hash
 
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
@@ -93,5 +94,6 @@ void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key,
 #undef find_value
 #undef update_value
 #undef delete_entry
+#undef for_each_entry
 
 #endif

@@ -5,6 +5,7 @@
 #define find_value		find_value_from_hash
 #define update_value	update_value_in_hash
 #define delete_entry 	delete_entry_from_hash
+#define for_each_entry 	for_each_entry_in_hash
 
 hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy)
 {
@@ -347,6 +348,11 @@ void print_bucket_wrapper(void* bucket_p_to_print, const void* bucket_p_function
 	print_bucket(bucket_p_to_print_t, bucket_p_functions_t->key, bucket_p_functions_t->value);
 }
 
+void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
+{
+	
+}
+
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	bucket print_functions = {.key = print_key, .value = print_value};
@@ -426,3 +432,4 @@ void delete_hashmap(hashmap* hashmap_p)
 #undef find_value
 #undef update_value
 #undef delete_entry
+#undef for_each_entry
