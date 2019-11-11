@@ -3,6 +3,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<ctype.h>
 #include<string.h>
 
 typedef struct dstring dstring;
@@ -37,6 +38,10 @@ void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned long long int occ
 void append_to_dstring(dstring* str_p, char* cstr_p);
 
 void concatenate_dstring(dstring* str_p1, dstring* str_p2);
+
+// modifying the dstring case
+void toLowercase(dstring* str_p);
+void toUppercase(dstring* str_p);
 
 void display_dstring(dstring* str_p);
 

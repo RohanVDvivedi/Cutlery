@@ -66,6 +66,26 @@ void concatenate_dstring(dstring* str_p1, dstring* str_p2)
 	append_to_dstring(str_p1, str_p2->cstring);
 }
 
+void toLowercase(dstring* str_p)
+{
+	char* stemp = str_p->cstring;
+	while(stemp != '\0')
+	{
+		*stemp = tolower(*stemp);
+		stemp++;
+	}
+}
+
+void toUppercase(dstring* str_p)
+{
+	char* stemp = str_p->cstring;
+	while(stemp != '\0')
+	{
+		*stemp = toupper(*stemp);
+		stemp++;
+	}
+}
+
 void display_dstring(dstring* str_p)
 {
 	printf("%s", str_p->cstring);
