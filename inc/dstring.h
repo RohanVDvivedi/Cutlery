@@ -33,6 +33,7 @@ int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 // takes a dstring as parameter, and returns a new dstring, that is of approximately double the size 
 void expand_dstring(dstring* str_p, unsigned long long int additional_allocation);
 
+// here occ is the number of bytes to be copied and appended from the cstr_p to str_p, without '\0' at the end
 void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned long long int occ);
 
 void append_to_dstring(dstring* str_p, char* cstr_p);

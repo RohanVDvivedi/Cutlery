@@ -43,13 +43,16 @@ void expand_dstring(dstring* str_p, unsigned long long int additional_allocation
 
 void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned long long int occ)
 {
-	// we consider that the client has not considered counting '\0' in string
-	if( occ + str_p->bytes_occupied > str_p->bytes_allocated)
+	// we appenmd only if cstr_p is not pointing to NULL pointer, or we are asked to copy 0 bytes
+	if(cstr_p != NULL && occ > 0)
 	{
-		expand_dstring(str_p, (2 * occ) + 2);
-	}
-	if(cstr_p != NULL)
-	{
+		// we consider that the client has not considered counting '\0' in string
+		// we must expand the dstring, if it is smaller than the size we expect it to be
+		if( occ + str_p->bytes_occupied > str_p->bytes_allocated)
+		{
+			expand_dstring(str_p, (2 * occ) + 2);
+		}
+
 		memcpy(str_p->cstring + str_p->bytes_occupied - 1, cstr_p, occ);
 		str_p->bytes_occupied += occ;
 		str_p->cstring[str_p->bytes_occupied - 1] = '\0';
@@ -63,7 +66,8 @@ void append_to_dstring(dstring* str_p, char* cstr_p)
 
 void concatenate_dstring(dstring* str_p1, dstring* str_p2)
 {
-	append_to_dstring(str_p1, str_p2->cstring);
+	// we shall send the length of the dstring without the '\0'
+	appendn_to_dstring(str_p1, str_p2->cstring, str_p2->bytes_occupied-1);
 }
 
 void toLowercase(dstring* str_p)

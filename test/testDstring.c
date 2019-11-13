@@ -5,13 +5,13 @@
 int main()
 {
 	dstring* str = get_dstring("", 1);
-	display(str);
+	display_dstring(str);printf("\n");
 
-	str = append(str, "Hello ");
-	display(str);
+	append_to_dstring(str, "Hello ");
+	display_dstring(str);printf("\n");
 
-	str = concatenate(str, get_dstring("World, as said by Rohan\n", 2));
-	display(str);
+	concatenate_dstring(str, get_dstring("World, as said by Rohan\n", 2));
+	display_dstring(str);printf("\n");
 
 	delete_dstring(str);
 }
