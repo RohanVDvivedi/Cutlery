@@ -33,7 +33,10 @@ int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 void expand_dstring(dstring* str_p, unsigned long long int additional_allocation)
 {
 	dstring expanded_dstring;
-	init_dstring(&expanded_dstring, str_p->cstring, additional_allocation);
+	expanded_dstring.bytes_occupied = str_p->bytes_occupied;
+	expanded_dstring.bytes_allocated = (2 * (expanded_dstring.bytes_occupied + 1)) + 2 + additional_allocation;
+	expanded_dstring.cstring = (char*)malloc(expanded_dstring.bytes_allocated);
+	memcpy(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
 	if(str_p->cstring != NULL)
 	{
 		free(str_p->cstring);
