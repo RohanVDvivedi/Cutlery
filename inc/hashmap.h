@@ -59,6 +59,12 @@ struct hashmap
 
 	// pinter to the array of buckets
 	array* buckets_holder;
+
+	// this is the number of buckets, which are occupied in the hashmap
+	unsigned long long int bucket_occupancy;
+
+	// this is the number of total buckets in the hashmap
+	unsigned long long int bucket_count;
 };
 
 // build and get hashmap with a fixed bucket count,

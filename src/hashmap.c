@@ -16,6 +16,9 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 
 	// initialize array of the hashmap, it is a buckets_holder
 	hashmap_p->buckets_holder = get_array(bucket_count);
+
+	hashmap_p->bucket_count = bucket_count;
+	hashmap_p->bucket_occupancy = 0;
 	return hashmap_p;
 }
 
@@ -151,6 +154,10 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 		case NO_POLICY :
 		{
 			// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
+			if(((bucket*)ds_p)->key == NULL)
+			{
+				hashmap_p->bucket_occupancy++;
+			}
 			((bucket*)ds_p)->key = key;
 			((bucket*)ds_p)->value = value;
 			break;
@@ -159,6 +166,7 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 		{
 			// insert the new bucket in the linkedlist
 			insert_entry_in_ll(((linkedlist*)(ds_p)), key, value);
+			hashmap_p->bucket_occupancy++;
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -166,6 +174,7 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 		{
 			// insert the new bucket in the bst
 			insert_entry_in_bst(((balancedbst*)(ds_p)), key, value);
+			hashmap_p->bucket_occupancy++;
 			break;
 		}
 	}
@@ -273,6 +282,11 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 		}
 	}
 
+	if(has_been_deleted)
+	{
+		hashmap_p->bucket_occupancy--;
+	}
+
 	// return the number of buckets we deleted => eeither 1 or 0
 	return has_been_deleted;
 }
@@ -286,7 +300,7 @@ void put_entry_in_bst_or_ll_wrapper(const void* key, const void* value, const vo
 void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 {
 	// make a local new hashmap properties holder
-	hashmap new_hashmap_properties = {.hashmap_policy = hashmap_p->hashmap_policy, .hash_function = hashmap_p->hash_function, .key_compare = hashmap_p->key_compare, .buckets_holder = get_array(new_bucket_size)};
+	hashmap new_hashmap_properties = {.hashmap_policy = hashmap_p->hashmap_policy, .hash_function = hashmap_p->hash_function, .key_compare = hashmap_p->key_compare, .buckets_holder = get_array(new_bucket_size), .bucket_count = new_bucket_size, .bucket_occupancy = 0};
 
 	// iterate over all the elements in the hashmap_p
 	// and add them to the newly statically maintained hashmap
@@ -384,6 +398,32 @@ void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key,
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	bucket print_functions = {.key = print_key, .value = print_value};
+	printf("HASHMAP : ");
+	switch(hashmap_p->hashmap_policy)
+	{
+		case NO_POLICY :
+		{
+			printf("NO_POLICY\n");
+			break;
+		}
+		case ELEMENTS_AS_LINKEDLIST :
+		{
+			printf("ELEMENTS_AS_LINKEDLIST\n");
+			break;
+		}
+		case ELEMENTS_AS_AVL_BST :
+		{
+			printf("ELEMENTS_AS_AVL_BST\n");
+			break;
+		}
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			printf("ELEMENTS_AS_RED_BLACK_BST\n");
+			break;
+		}
+	}
+	printf("bucket_occupancy : %llu\n", hashmap_p->bucket_occupancy);
+	printf("bucket_count : %llu\n", hashmap_p->bucket_count);
 	// iterate over all the buckets in the hashmap_p
 	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
 	{
