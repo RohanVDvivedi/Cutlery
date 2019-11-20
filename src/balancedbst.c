@@ -18,6 +18,7 @@ balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(co
 	balancedbst_p->balanced_tree_type = balanced_tree_type;
 	balancedbst_p->root = NULL;
 	balancedbst_p->key_compare = key_compare;
+	balancedbst_p->bucket_count = 0;
 	return balancedbst_p;
 }
 
@@ -141,7 +142,7 @@ void update_max_height(node* node_p)
 
 int is_balancedbst_empty(const balancedbst* balancedbst_p)
 {
-	return balancedbst_p->root == NULL;
+	return balancedbst_p->root == NULL && balancedbst_p->bucket_count == 0;
 }
 
 node* get_smallest_node_from_node(const node* node_p)
@@ -297,6 +298,7 @@ void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* ro
 		{
 			root->left_sub_tree = node_p;
 			node_p->parent = root;
+			balancedbst_p->bucket_count++;
 		}
 		else
 		{
@@ -309,6 +311,7 @@ void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* ro
 		{
 			root->right_sub_tree = node_p;
 			node_p->parent = root;
+			balancedbst_p->bucket_count++;
 		}
 		else
 		{
@@ -480,6 +483,7 @@ void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 		balancedbst_p->root = node_p;
 		node_p->node_property = balancedbst_p->balanced_tree_type == NON_SELF_BALANCING ? 0 : 1; // if avl => 1 node to reach NULL, if reb-black => root is always black
 		node_p->parent = NULL;
+		balancedbst_p->bucket_count = 1;
 		return;
 	}
 
@@ -542,7 +546,7 @@ int update_value(balancedbst* balancedbst_p, const void* key_p, const void* valu
 	}
 }
 
-// the below function only detaches the node thatr has to be deleted
+// the below function only detaches the node that has to be deleted
 // returns pointer of the node that has to be deleted
 // node_p can not be null in the parameters of the function
 node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
@@ -580,6 +584,9 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 		{
 			child_sub_tree->parent = parent_node;
 		}
+
+		// decrement the bucket count for the tree
+		balancedbst_p->bucket_count--;
 
 		// this new node can not be safely deleted
 		return node_p;
@@ -924,6 +931,7 @@ void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const
 			break;
 		}
 	}
+	printf("bucket_count : %llu\n", balancedbst_p->bucket_count);
 	print_tree(balancedbst_p->root, print_key, print_value);
 	printf("--\n\n");
 }

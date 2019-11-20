@@ -61,6 +61,9 @@ struct balancedbst
 
 	// the root node of the tree
 	node* root;
+
+	// this is number of buckets in the tree
+	unsigned long long int bucket_count;
 };
 
 // get a new balancedbst
