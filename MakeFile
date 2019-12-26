@@ -15,7 +15,7 @@ OBJECTS:=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,${SOURCES})
 # the traget library
 TARGET:=${BIN_DIR}/libcutlery.a
 
-# place yout include flags here
+# place your include flags here
 CFLAGS=-I${INC_DIR}
 
 # rule to make the object directory
