@@ -1,3 +1,4 @@
+#list of all the directories, in the project
 INC_DIR=./inc
 OBJ_DIR=./obj
 LIB_DIR=./lib
@@ -7,22 +8,39 @@ BIN_DIR=./bin
 CC=gcc
 RM=rm -f
 
+# figure out all the sources in the project
 SOURCES:=${shell find $(SRC_DIR) -name '*.c'}
+# and the required objects ot be built
 OBJECTS:=$(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,${SOURCES})
+# the traget library
 TARGET:=${BIN_DIR}/libcutlery.a
 
+# place yout include flags here
 CFLAGS=-I${INC_DIR}
 
-${OBJ_DIR}/%.o : ${SRC_DIR}/%.c ${INC_DIR}/%.h
+# rule to make the object directory
+${OBJ_DIR} :
+	mkdir -p $@
+
+# generic rule to build any object files
+${OBJ_DIR}/%.o : ${SRC_DIR}/%.c ${INC_DIR}/%.h | ${OBJ_DIR}
 	${CC} ${CFLAGS} -c $< -o $@
 
-$(TARGET) : ${OBJECTS}
+# rule to make the banaries directory
+${BIN_DIR} :
+	mkdir -p $@
+
+# generic rule to make a 
+$(TARGET) : ${OBJECTS} | ${BIN_DIR}
 	ar rcs $@ ${OBJECTS}
 
-all : ${BIN_DIR}/$(TARGET)
+# just build the target
+all : $(TARGET)
 
+# clean all the build
 clean :
-	$(RM) $(BIN_DIR)/* $(OBJ_DIR)/*
+	$(RM) -r $(BIN_DIR) $(OBJ_DIR)
 
+# path to the library
 path : 
 	@echo "export CUTLERY_PATH=\`pwd\`"
