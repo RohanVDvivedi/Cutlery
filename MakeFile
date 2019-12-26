@@ -30,7 +30,7 @@ ${OBJ_DIR}/%.o : ${SRC_DIR}/%.c ${INC_DIR}/%.h | ${OBJ_DIR}
 ${BIN_DIR} :
 	mkdir -p $@
 
-# generic rule to make a 
+# generic rule to make a library target
 $(TARGET) : ${OBJECTS} | ${BIN_DIR}
 	ar rcs $@ ${OBJECTS}
 
