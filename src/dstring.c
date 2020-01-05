@@ -95,7 +95,14 @@ void toUppercase(dstring* str_p)
 
 void display_dstring(dstring* str_p)
 {
-	printf("%s", str_p->cstring);
+	if(str_p == NULL)
+	{
+		printf("NULL");
+	}
+	else
+	{
+		printf("%s", str_p->cstring);
+	}
 }
 
 void delete_dstring(dstring* str_p)
