@@ -289,6 +289,50 @@ node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 	}
 }
 
+node* find_node_with_smallest_key(const balancedbst* balancedbst_p)
+{
+	// if the tree is empty, just return NULL
+	if( is_balancedbst_empty(balancedbst_p) )
+	{
+		return NULL;
+	}
+	else
+	{
+		return get_smallest_node_from_node(balancedbst_p->root);
+	}
+}
+
+node* find_node_with_largest_key(const balancedbst* balancedbst_p)
+{
+	// if the tree is empty, just return NULL
+	if( is_balancedbst_empty(balancedbst_p) )
+	{
+		return NULL;
+	}
+	else
+	{
+		return get_largest_node_from_node(balancedbst_p->root);
+	}
+}
+
+const void* find_value(const balancedbst* balancedbst_p, const void* key_p)
+{
+	node* node_p = find_node(balancedbst_p, key_p);
+	return node_p != NULL ? node_p->bucket_p->value : NULL;
+}
+
+const void* find_value_with_smallest_key(const balancedbst* balancedbst_p)
+{
+	node* node_p = find_node_with_smallest_key(balancedbst_p);
+	return node_p != NULL ? node_p->bucket_p->value : NULL;
+}
+
+const void* find_value_with_largest_key(const balancedbst* balancedbst_p)
+{
+	node* node_p = find_node_with_largest_key(balancedbst_p);
+	return node_p != NULL ? node_p->bucket_p->value : NULL;
+}
+
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
@@ -515,12 +559,6 @@ void insert_entry(balancedbst* balancedbst_p, const void* key_p, const void* val
 
 	// insert that node in the tree
 	insert_node_in_tree(balancedbst_p, node_p);
-}
-
-const void* find_value(const balancedbst* blancedbst_p, const void* key_p)
-{
-	node* node_p = find_node(blancedbst_p, key_p);
-	return node_p != NULL ? node_p->bucket_p->value : NULL;
 }
 
 int update_value(balancedbst* balancedbst_p, const void* key_p, const void* value_p, const void** return_value)

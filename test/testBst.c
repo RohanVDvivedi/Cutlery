@@ -33,6 +33,36 @@ void print_key(const void* key)
 	printf("%d", (*((int*)key)));
 }
 
+void print_smallest(const balancedbst* balancedbst_p)
+{
+	printf("the value for the smallest key is : ");
+	const void* smallest = find_value_with_smallest_key(balancedbst_p);
+	if(smallest != NULL)
+	{
+		print_ts(find_value_with_smallest_key(balancedbst_p));
+	}
+	else
+	{
+		printf("NULL");
+	}
+	printf("\n");
+}
+
+void print_largest(const balancedbst* balancedbst_p)
+{
+	printf("the value for the largest key is : ");
+	const void* smallest = find_value_with_largest_key(balancedbst_p);
+	if(smallest != NULL)
+	{
+		print_ts(find_value_with_largest_key(balancedbst_p));
+	}
+	else
+	{
+		printf("NULL");
+	}
+	printf("\n");
+}
+
 int main()
 {
 	printf("INITIALIZING BALANCED BINARY SEARCH TREE\n");
@@ -41,6 +71,9 @@ int main()
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	printf("COMPLETED INITIALIZING BALANCED BINARY SEARCH TREE\n");
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
 
 	printf("STARTING TO INSERT NODES\n");
 
@@ -65,6 +98,9 @@ int main()
 	insert_entry_in_bst(balancedbst_p, &((ke){12}), &((ts){12, "twelve"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
 	insert_entry_in_bst(balancedbst_p, &((ke){11}), &((ts){11, "eleven"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
@@ -88,6 +124,9 @@ int main()
 
 	insert_entry_in_bst(balancedbst_p, &((ke){3}), &((ts){3, "three"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
 
 	insert_entry_in_bst(balancedbst_p, &((ke){4}), &((ts){4, "four"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
@@ -144,6 +183,9 @@ int main()
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
 	error = delete_entry_from_bst(balancedbst_p, &((ke){6}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
@@ -176,6 +218,9 @@ int main()
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
 	error = delete_entry_from_bst(balancedbst_p, &((ke){14}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
@@ -200,9 +245,15 @@ int main()
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
 	error = delete_entry_from_bst(balancedbst_p, &((ke){9}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
 
 	printf("COMPLETED REMOVING NODES\n");
 

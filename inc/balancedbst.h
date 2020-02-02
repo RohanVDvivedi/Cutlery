@@ -70,25 +70,39 @@ struct balancedbst
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1));
 
 // inserts a node in the tree whose data is a bucket with key as key_p and value as value_p
-void insert_entry(balancedbst* blancedbst_p, const void* key_p, const void* value_p);
+void insert_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p);
 
 // find a value_p in tree, whose key is key_p
-const void* find_value(const balancedbst* blancedbst_p, const void* key_p);
+const void* find_value(const balancedbst* balancedbst_p, const void* key_p);
+
+// find a value_p in tree, with the biggest key which is smaller than or equal to key_p
+// returns NULL, if key_p is smaller than the smallest key
+const void* find_value_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p);
+
+// find a value_p in tree, with the smallest key which is bigger than or equal to key_p
+// returns NULL, if key_p is bigger than the biggest key
+const void* find_value_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p);
+
+// find a value_p in tree, with the smallest key
+const void* find_value_with_smallest_key(const balancedbst* balancedbst_p);
+
+// find a value_p in tree, with the biggest key
+const void* find_value_with_largest_key(const balancedbst* balancedbst_p);
 
 // find a bucket in tree, whose key is key_p, and update it to hold value_p, returns 1 if operation completed successfully
-int update_value(balancedbst* blancedbst_p, const void* key_p, const void* value_p, const void** return_value);
+int update_value(balancedbst* balancedbst_p, const void* key_p, const void* value_p, const void** return_value);
 
 // remove the node if found, returns a list of nodes that match, returns 1 if operation completed successfully
-int delete_entry(balancedbst* blancedbst_p, const void* key_p, const void** return_key, const void** return_value);
+int delete_entry(balancedbst* balancedbst_p, const void* key_p, const void** return_key, const void** return_value);
 
 // delete the balancedbst and all its nodes
 void delete_balancedbst(balancedbst* balancedbst_p);
 
 // perform operation on all the elements of the binary search tree
-void for_each_entry(const balancedbst* blancedbst_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params);
+void for_each_entry(const balancedbst* balancedbst_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params);
 
 // print complete binary search tree
-void print_balancedbst(const balancedbst* blancedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
+void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #undef node
 #undef insert_entry
