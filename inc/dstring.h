@@ -29,6 +29,7 @@ void make_dstring_empty(dstring* str_p);
 
 // returns 1, if str_p1 > str_p2, returns 0 if they are equal else returns -1
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
+int compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 
 // takes a dstring as parameter, and returns a new dstring, that is of approximately double the size 
 void expand_dstring(dstring* str_p, unsigned long long int additional_allocation);

@@ -30,6 +30,11 @@ int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 	return strcmp(str_p1->cstring, str_p2->cstring);
 }
 
+int compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
+{
+	return strcmp(str_p1->cstring, str_p2);
+}
+
 void expand_dstring(dstring* str_p, unsigned long long int additional_allocation)
 {
 	dstring expanded_dstring;
