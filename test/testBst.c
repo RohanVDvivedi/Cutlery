@@ -36,10 +36,10 @@ void print_key(const void* key)
 void print_smallest(const balancedbst* balancedbst_p)
 {
 	printf("the value for the smallest key is : ");
-	const void* smallest = find_value_with_smallest_key(balancedbst_p);
-	if(smallest != NULL)
+	const void* result = find_value_with_smallest_key(balancedbst_p);
+	if(result != NULL)
 	{
-		print_ts(find_value_with_smallest_key(balancedbst_p));
+		print_ts(result);
 	}
 	else
 	{
@@ -51,10 +51,40 @@ void print_smallest(const balancedbst* balancedbst_p)
 void print_largest(const balancedbst* balancedbst_p)
 {
 	printf("the value for the largest key is : ");
-	const void* smallest = find_value_with_largest_key(balancedbst_p);
-	if(smallest != NULL)
+	const void* result = find_value_with_largest_key(balancedbst_p);
+	if(result != NULL)
 	{
-		print_ts(find_value_with_largest_key(balancedbst_p));
+		print_ts(result);
+	}
+	else
+	{
+		printf("NULL");
+	}
+	printf("\n");
+}
+
+void print_succeeding_equals(const balancedbst* balancedbst_p, int k)
+{
+	printf("the value succeeding %d is : ", k);
+	const void* result = find_value_succeeding_or_equals(balancedbst_p, &((ke){k}));
+	if(result != NULL)
+	{
+		print_ts(result);
+	}
+	else
+	{
+		printf("NULL");
+	}
+	printf("\n");
+}
+
+void print_preceding_equals(const balancedbst* balancedbst_p, int k)
+{
+	printf("the value preceding %d is : ", k);
+	const void* result = find_value_preceding_or_equals(balancedbst_p, &((ke){k}));
+	if(result != NULL)
+	{
+		print_ts(result);
 	}
 	else
 	{
@@ -136,6 +166,9 @@ int main()
 
 	insert_entry_in_bst(balancedbst_p, &((ke){6}), &((ts){6, "six"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_preceding_equals(balancedbst_p, 7);
+	print_succeeding_equals(balancedbst_p, 7);
 
 	insert_entry_in_bst(balancedbst_p, &((ke){7}), &((ts){7, "seven"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);

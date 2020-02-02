@@ -289,6 +289,82 @@ node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 	}
 }
 
+node* find_node_preceding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
+{
+	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
+	{
+		return ((node*)root);
+	}
+	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
+	{
+		return find_node_preceding_or_equals_recursively(balancedbst_p, root->left_sub_tree, key_p);
+	}
+	else if(balancedbst_p->key_compare(key_p, root->bucket_p->key) > 0)
+	{
+		node* result = NULL;
+		if(root->right_sub_tree != NULL)
+		{
+			result = find_node_preceding_or_equals_recursively(balancedbst_p, root->right_sub_tree, key_p);
+		}
+		return result == NULL ? ((node*)root) : result;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+node* find_node_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
+{
+	// if the tree is empty, just return NULL
+	if( is_balancedbst_empty(balancedbst_p) )
+	{
+		return NULL;
+	}
+	else
+	{
+		return find_node_preceding_or_equals_recursively(balancedbst_p, balancedbst_p->root, key_p);
+	}
+}
+
+node* find_node_succeeding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
+{
+	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
+	{
+		return ((node*)root);
+	}
+	else if(balancedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
+	{
+		node* result = NULL;
+		if(root->left_sub_tree != NULL)
+		{
+			result = find_node_succeeding_or_equals_recursively(balancedbst_p, root->left_sub_tree, key_p);
+		}
+		return result == NULL ? ((node*)root) : result;
+	}
+	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) > 0)
+	{
+		return find_node_succeeding_or_equals_recursively(balancedbst_p, root->right_sub_tree, key_p);
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+node* find_node_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
+{
+	// if the tree is empty, just return NULL
+	if( is_balancedbst_empty(balancedbst_p) )
+	{
+		return NULL;
+	}
+	else
+	{
+		return find_node_succeeding_or_equals_recursively(balancedbst_p, balancedbst_p->root, key_p);
+	}
+}
+
 node* find_node_with_smallest_key(const balancedbst* balancedbst_p)
 {
 	// if the tree is empty, just return NULL
@@ -332,6 +408,19 @@ const void* find_value_with_largest_key(const balancedbst* balancedbst_p)
 	node* node_p = find_node_with_largest_key(balancedbst_p);
 	return node_p != NULL ? node_p->bucket_p->value : NULL;
 }
+
+const void* find_value_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
+{
+	node* node_p = find_node_preceding_or_equals(balancedbst_p, key_p);
+	return node_p != NULL ? node_p->bucket_p->value : NULL;
+}
+
+const void* find_value_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
+{
+	node* node_p = find_node_succeeding_or_equals(balancedbst_p, key_p);
+	return node_p != NULL ? node_p->bucket_p->value : NULL;
+}
+
 
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
