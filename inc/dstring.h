@@ -31,6 +31,9 @@ void make_dstring_empty(dstring* str_p);
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 
+// checks if str_p2 is prefix of str_p1, returns non-zero if str_p2 is prefix of str_p1, else 0
+int is_prefix(const dstring* str_p1, const char* str_p2);
+
 // takes a dstring as parameter, and returns a new dstring, that is of approximately double the size 
 void expand_dstring(dstring* str_p, unsigned long long int additional_allocation);
 

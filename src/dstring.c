@@ -35,6 +35,17 @@ int compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 	return strcmp(str_p1->cstring, str_p2);
 }
 
+int is_prefix(const dstring* str_p1, const char* str_p2)
+{
+	size_t prefix_length = strlen(str_p2);
+	// prefix length must be smaller than or equal to dstring provided
+	if(prefix_length > str_p1->bytes_occupied - 1)
+	{
+		return 0;
+	}
+	return (strncmp(str_p1->cstring, str_p2, prefix_length) == 0);
+}
+
 void expand_dstring(dstring* str_p, unsigned long long int additional_allocation)
 {
 	dstring expanded_dstring;

@@ -13,5 +13,25 @@ int main()
 	concatenate_dstring(str, get_dstring("World, as said by Rohan\n", 2));
 	display_dstring(str);printf("\n");
 
+	display_dstring(str);printf("\n");
+	char* temp = NULL;
+
+	temp = "";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+	temp = "H";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+	temp = "Helt";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+	temp = "Hell";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+	temp = "Hello World";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+	temp = "Hello Worlds";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+	temp = "Hello World, as said by Rohan\n";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+	temp = "Hello World, as said by Rohan\n, Hello World";
+	printf("prefix %s %d\n", temp, is_prefix(str, temp));
+
 	delete_dstring(str);
 }
