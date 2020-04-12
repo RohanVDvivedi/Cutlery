@@ -4,7 +4,7 @@
 #define pop     pop_heap
 #define get_top get_top_heap
 
-void* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1))
+heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1))
 {
 	heap* heap_p = ((heap*)(malloc(sizeof(heap))));
 	heap_p->type = type;

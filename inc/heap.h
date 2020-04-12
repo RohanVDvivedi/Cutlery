@@ -26,7 +26,7 @@ struct heap
 	heap_type type;
 
 	// compare keys and returns 0 if they are same, else non-zero
-	// it returns 0 if they are same, >0 if key0 is greater than key1 else it must return <0 value
+	// it returns 0 if they are same, >0 if key1 is greater than key2 else it must return <0 value
 	int (*key_compare)(const void* key1, const void* key2);
 
 	// number of buckets in the heap
@@ -37,7 +37,7 @@ struct heap
 };
 
 // build and get a new heap, with expected size, and of the given heap type (either MIN_HEAP or MAX_HEAP)
-void* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1));
+heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1));
 
 // push a new bucket to the heap
 // O(log(N)) operation

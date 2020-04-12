@@ -36,7 +36,7 @@ void print_key(const void* key)
 
 int main()
 {
-	heap* heap_p = get_heap(5, MIN_HEAP, key_cmp);
+	heap* heap_p = get_heap(5, MAX_HEAP, key_cmp);
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){1}), &((ts){1, "one"}));
