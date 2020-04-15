@@ -15,6 +15,12 @@ void initialize_array(array* array_p, unsigned long long int initial_size)
 	array_p->total_size = initial_size;
 }
 
+// the below function will calculate the next size (on expansion) for the given array, if it's current size is current_size
+static unsigned long long int next_expansion_size(array* array_p, unsigned long long int current_size)
+{
+	return ( current_size * array_p->increment_factor ) + array_p->increment_offset;
+}
+
 void destroy_array(array* array_p)
 {
 	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
@@ -77,7 +83,7 @@ unsigned long long int find_first_in_array(const array* array_p, void* data_p, i
 void expand_array(array* array_p)
 {
 	// compute new_size
-	unsigned long long int new_total_size = ( array_p->total_size * array_p->increment_factor ) + array_p->increment_offset;
+	unsigned long long int new_total_size = next_expansion_size(array_p, array_p->total_size);
 
 	// request memory for the new computed size
 	const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
@@ -86,7 +92,7 @@ void expand_array(array* array_p)
 	// larger the array larger is this task, O(n) for single expansion of array
 	// think of doing it multiple times, and you are done, in case you have a increment_factor 0,
 	// and increment_amount = 1
-	memcpy(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void**));
+	memcpy(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
 
 	// free the old pointers array
 	free(array_p->data_p_p);
@@ -94,6 +100,34 @@ void expand_array(array* array_p)
 	// new assignment to data_p_p and the total_size
 	array_p->data_p_p = new_data_p_p;
 	array_p->total_size = new_total_size;
+}
+
+int shrink_array(array* array_p, unsigned long long int start_index, unsigned long long int end_index)
+{
+	unsigned long long int minimum_size = end_index - start_index + 1;
+
+	unsigned long long int maximum_size = next_expansion_size(array_p, next_expansion_size(array_p, minimum_size));
+
+	if(array_p->total_size > maximum_size)
+	{
+		unsigned long long int new_total_size = next_expansion_size(array_p, minimum_size);
+
+		// request memory for the new computed size
+		const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
+
+		memcpy(new_data_p_p, array_p->data_p_p + start_index, minimum_size * sizeof(void*));
+
+		// free the old pointers array
+		free(array_p->data_p_p);
+
+		// new assignment to data_p_p and the total_size
+		array_p->data_p_p = new_data_p_p;
+		array_p->total_size = new_total_size;
+
+		return 1;
+	}
+
+	return 0;
 }
 
 void print_array_element_wrapper(void* element, unsigned long long int index, const void* print_element)

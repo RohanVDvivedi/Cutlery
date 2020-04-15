@@ -62,6 +62,40 @@ int main()
 
 	print_array(array_p, print_ts);
 
+	expand_array(array_p);
+
+	print_array(array_p, print_ts);
+
+	set_element(array_p, &((ts){777, "7 th"}), 7);
+	set_element(array_p, &((ts){888, "8 th"}), 8);
+
+	print_array(array_p, print_ts);
+
+	expand_array(array_p);
+
+	print_array(array_p, print_ts);
+
+	expand_array(array_p);
+
+	print_array(array_p, print_ts);
+
+	expand_array(array_p);
+
+	print_array(array_p, print_ts);
+
+	expand_array(array_p);
+
+	print_array(array_p, print_ts);
+
+	expand_array(array_p);
+
+	print_array(array_p, print_ts);
+
+	shrink_array(array_p, 3, 7);
+
+	print_array(array_p, print_ts);
+
+
 	ts to_find = {444, "lol"};
 	printf("Finding data where a = %d\n", to_find.a);
 	print_ts(get_element(array_p, find_first_in_array(array_p, ((void*)(&to_find)), test_compare)));

@@ -64,6 +64,10 @@ unsigned long long int find_first_in_array(const array* array_p, void* data_p, i
 // it expands array, as per the array rules
 void expand_array(array* array_p);
 
+// shrinks the array, if the array is considerably larger than the minimum size ( = end_index - start_index + 1) that was required
+// it returns 1 if the array was shrunk
+int shrink_array(array* array_p, unsigned long long int start_index, unsigned long long int end_index);
+
 // prints the array
 void print_array(const array* array_p, void (*print_element)(const void* data_p));
 
