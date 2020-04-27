@@ -36,7 +36,7 @@ void print_key(const void* key)
 
 int main()
 {
-	heap* heap_p = get_heap(5, MAX_HEAP, key_cmp);
+	heap* heap_p = get_heap(5, MIN_HEAP, key_cmp);
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){1}), &((ts){1, "one"}));
@@ -55,6 +55,18 @@ int main()
 	print_heap(heap_p, print_key, print_ts);
 
 	pop_heap(heap_p);
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){4}), &((ts){4, "four-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){3}), &((ts){3, "three-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){2}), &((ts){2, "two-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){1}), &((ts){1, "one-x"}));
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){5}), &((ts){5, "five"}));
@@ -78,28 +90,70 @@ int main()
 	push_heap(heap_p, &((ke){8}), &((ts){8, "eight"}));
 	print_heap(heap_p, print_key, print_ts);
 
+	push_heap(heap_p, &((ke){14}), &((ts){14, "fourteen"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){13}), &((ts){13, "thirteen"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){12}), &((ts){12, "twelve"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){11}), &((ts){11, "eleven"}));
+	print_heap(heap_p, print_key, print_ts);
+
 	push_heap(heap_p, &((ke){9}), &((ts){9, "nine"}));
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){10}), &((ts){10, "ten"}));
 	print_heap(heap_p, print_key, print_ts);
 
-	push_heap(heap_p, &((ke){11}), &((ts){11, "eleven"}));
+	pop_heap(heap_p);
 	print_heap(heap_p, print_key, print_ts);
 
 	pop_heap(heap_p);
 	print_heap(heap_p, print_key, print_ts);
 
-	push_heap(heap_p, &((ke){12}), &((ts){12, "twelve"}));
+	pop_heap(heap_p);
 	print_heap(heap_p, print_key, print_ts);
 
-	push_heap(heap_p, &((ke){13}), &((ts){13, "thirteen"}));
+	pop_heap(heap_p);
 	print_heap(heap_p, print_key, print_ts);
 
-	push_heap(heap_p, &((ke){14}), &((ts){14, "fourteen"}));
+	push_heap(heap_p, &((ke){2}), &((ts){2, "two-xx"}));
 	print_heap(heap_p, print_key, print_ts);
 
-	push_heap(heap_p, &((ke){9}), &((ts){9, "LOL"}));
+	push_heap(heap_p, &((ke){1}), &((ts){1, "one-xx"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){5}), &((ts){5, "five-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){6}), &((ts){6, "six-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){11}), &((ts){11, "eleven-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){5}), &((ts){5, "five-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){6}), &((ts){6, "six-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	pop_heap(heap_p);
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){12}), &((ts){12, "twelve-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){13}), &((ts){13, "thirteen-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){14}), &((ts){14, "fourteen-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	push_heap(heap_p, &((ke){9}), &((ts){9, "nine-x"}));
 	print_heap(heap_p, print_key, print_ts);
 
 	pop_heap(heap_p);
