@@ -208,6 +208,11 @@ void pop(heap* heap_p)
 	}
 }
 
+void heapify_at(heap* heap_p, unsigned long long int index)
+{
+	
+}
+
 void delete_bucket_wrapper(void* data_p, unsigned long long int index, const void* additional_params)
 {
 	if(data_p != NULL)

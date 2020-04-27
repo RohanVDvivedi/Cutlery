@@ -51,6 +51,10 @@ const void* get_top(const heap* heap_p, const void** returned_key);
 // O(log(N)) operation
 void pop(heap* heap_p);
 
+// the below function is to be called when you doubt if the heap properties are being maintained at the given index
+// if your doubt turns out to be true and the heap property is being violated, the heap property would be restored at that place
+void heapify_at(heap* heap_p, unsigned long long int index);
+
 // delete heap and heap_holder array, along with all its buckets
 void delete_heap(heap* heap_p);
 
