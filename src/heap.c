@@ -68,7 +68,7 @@ int is_reordering_required(const heap* heap_p, unsigned long long int parent_ind
 	{
 		case MIN_HEAP :
 		{
-			// in min heap, parent has to be smaller than child, we have an issue if parent is greater than child 
+			// in min heap, parent has to be smaller than or equal to the child, we have an issue if parent is greater than child 
 			if(heap_p->key_compare(parent->key, child->key) > 0)
 			{
 				reordering_required = 1;
@@ -77,7 +77,7 @@ int is_reordering_required(const heap* heap_p, unsigned long long int parent_ind
 		}
 		case MAX_HEAP :
 		{
-			// in min heap, parent has to be greater than child, we have an issue if parent is smaller than child 
+			// in min heap, parent has to be greater than or equal to the child, we have an issue if parent is smaller than child 
 			if(heap_p->key_compare(parent->key, child->key) < 0)
 			{
 				reordering_required = 1;
@@ -210,7 +210,27 @@ void pop(heap* heap_p)
 
 void heapify_at(heap* heap_p, unsigned long long int index)
 {
-	
+	if(index > heap_p->heap_size-1)
+	{
+		return;
+	}
+
+	// pre-evaluate parent, left child and right child indexes for the corresponding index
+	unsigned long long int parent_index = get_parent_index(index);
+	unsigned long long int left_child_index = get_left_child_index(index);
+	unsigned long long int right_child_index = get_right_child_index(index);
+
+	// if re-ordering is required at the parent side, we bubble up
+	if(reordering_required(heap_p, parent_index, index))
+	{
+		bubble_up(heap_p, index);
+	}
+	// else if the re ordering is required at any of the children's side we bubble down
+	else if(reordering_required(heap_p, index, left_child_index) || 
+		reordering_required(heap_p, index, right_child_index))
+	{
+		bubble_down(heap_p, index);
+	}
 }
 
 void delete_bucket_wrapper(void* data_p, unsigned long long int index, const void* additional_params)
