@@ -130,7 +130,7 @@ int shrink_array(array* array_p, unsigned long long int start_index, unsigned lo
 	return 0;
 }
 
-void print_array_element_wrapper(void* element, unsigned long long int index, const void* print_element)
+static void print_array_element_wrapper(void* element, unsigned long long int index, const void* print_element)
 {
 	printf("\telement_index %lld -> ", index);
 	const void* element_p = element;

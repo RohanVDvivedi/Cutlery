@@ -24,7 +24,7 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 
 // utility :-> gets index after hashing and mod of the hash
 // utility, O(1) operation
-unsigned long long int get_index_for_key(const hashmap* hashmap_p, const void* key)
+static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const void* key)
 {
 	// calculate hash
 	unsigned long long int hash = hashmap_p->hash_function(key);
@@ -36,7 +36,7 @@ unsigned long long int get_index_for_key(const hashmap* hashmap_p, const void* k
 }
 
 // utility, O(1) operation
-const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
+static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
 {
 	// if you try accessing hashtable, index greater than its size
 	if(index >= hashmap_p->buckets_holder->total_size)
@@ -87,7 +87,7 @@ const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long
 }
 
 // utility, O(1) operation
-const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key, int new_if_empty)
+static const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key, int new_if_empty)
 {
 	// get index for that key
 	unsigned long long int index = get_index_for_key(hashmap_p, key);
@@ -96,7 +96,7 @@ const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key
 	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
-bucket* find_bucket_for_no_policy(const hashmap* hashmap_p, const void* key)
+static bucket* find_bucket_for_no_policy(const hashmap* hashmap_p, const void* key)
 {
 	// to store pointer to the bucket once it is found
 	bucket* found_bucket_p = NULL;
@@ -291,7 +291,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 	return has_been_deleted;
 }
 
-void put_entry_in_bst_or_ll_wrapper(const void* key, const void* value, const void* new_hashmap_p)
+static void put_entry_in_bst_or_ll_wrapper(const void* key, const void* value, const void* new_hashmap_p)
 {
 	// insert this entry in the new hashmap
 	insert_entry( ((hashmap*)(new_hashmap_p)), key, value);
@@ -355,7 +355,7 @@ void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
 	(*hashmap_p) = new_hashmap_properties;
 }
 
-void print_bucket_wrapper(void* bucket_p_to_print, const void* bucket_p_functions)
+static void print_bucket_wrapper(void* bucket_p_to_print, const void* bucket_p_functions)
 {
 	bucket* bucket_p_to_print_t = ((bucket*)bucket_p_to_print);
 	bucket* bucket_p_functions_t = ((bucket*)bucket_p_functions);

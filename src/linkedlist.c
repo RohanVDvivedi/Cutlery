@@ -229,7 +229,7 @@ void delete_linkedlist(linkedlist* ll)
 	free(ll);
 }
 
-void for_each_node_in_list(const linkedlist* ll, void (*operation)(node* node_p, const void* additional_params), const void* additional_params)
+static void for_each_node_in_list(const linkedlist* ll, void (*operation)(node* node_p, const void* additional_params), const void* additional_params)
 {
 	node* node_p = ll->head;
 	while(node_p != NULL)
@@ -328,7 +328,7 @@ void for_each_entry(const linkedlist* ll, void (*operation)(const void* key_p, c
 	}
 }
 
-void print_linkedlist_element_wrapper(node* node_p, const void* print_element)
+static void print_linkedlist_element_wrapper(node* node_p, const void* print_element)
 {
 	printf("\tprev => %d\n", ((int)node_p->prev));
 	printf("\t\tnode => %d\n", ((int)node_p));
@@ -337,7 +337,7 @@ void print_linkedlist_element_wrapper(node* node_p, const void* print_element)
 	printf("\n");
 }
 
-void print_linkedlist_bucket_wrapper(node* node_p, const void* prbucket_p)
+static void print_linkedlist_bucket_wrapper(node* node_p, const void* prbucket_p)
 {
 	printf("\tprev => %d\n", ((int)node_p->prev));
 	printf("\t\tnode => %d\n", ((int)node_p));

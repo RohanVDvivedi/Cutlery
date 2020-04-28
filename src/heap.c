@@ -15,25 +15,25 @@ heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_c
 }
 
 // utility : gets index of the bucket, that is the parent to the given bucket at index = child
-unsigned long long int get_parent_index(unsigned long long int child)
+static unsigned long long int get_parent_index(unsigned long long int child)
 {
 	return (child-1)/2;
 }
 
 // utility : gets index of the bucket, that is the left child to the given parent bucket at index = child
-unsigned long long int get_left_child_index(unsigned long long int parent)
+static unsigned long long int get_left_child_index(unsigned long long int parent)
 {
 	return (2 * parent) + 1;
 }
 
 // utility : gets index of the bucket, that is the right child to the given parent bucket at index = child
-unsigned long long int get_right_child_index(unsigned long long int parent)
+static unsigned long long int get_right_child_index(unsigned long long int parent)
 {
 	return (2 * parent) + 2;
 }
 
 // utility : interchanges bucket at indices i1 and i2
-void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, unsigned long long int i2)
+static void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, unsigned long long int i2)
 {
 	bucket* bucket_p_i1 = ((bucket*)get_element(heap_p->heap_holder, i1));
 	bucket* bucket_p_i2 = ((bucket*)get_element(heap_p->heap_holder, i2));
@@ -44,7 +44,7 @@ void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, u
 // returns true (1) if, the reordering is required, else 0
 // we do not check if parent index is actually the parent of the child
 // hence, this function can be user to test if the order could be made correct
-int is_reordering_required(const heap* heap_p, unsigned long long int parent_index, unsigned long long int child_index)
+static int is_reordering_required(const heap* heap_p, unsigned long long int parent_index, unsigned long long int child_index)
 {
 	if(parent_index >= heap_p->heap_holder->total_size || child_index >= heap_p->heap_holder->total_size)
 	{
@@ -89,7 +89,7 @@ int is_reordering_required(const heap* heap_p, unsigned long long int parent_ind
 	return reordering_required;
 }
 
-void bubble_up(heap* heap_p, unsigned long long int index)
+static void bubble_up(heap* heap_p, unsigned long long int index)
 {
 	// an element at index 0, or thew index is out of range, can not be bubbled up
 	if(index == 0 || index >= heap_p->heap_holder->total_size)
@@ -147,7 +147,7 @@ const void* get_top(const heap* heap_p, const void** returned_key)
 	return top_bucket_p->value;
 }
 
-void bubble_down(heap* heap_p, unsigned long long int index)
+static void bubble_down(heap* heap_p, unsigned long long int index)
 {
 	// we can not bubble down the last node
 	if(index >= heap_p->heap_holder->total_size)
@@ -234,7 +234,7 @@ void heapify_at(heap* heap_p, unsigned long long int index)
 	}
 }
 
-void delete_bucket_wrapper(void* data_p, unsigned long long int index, const void* additional_params)
+static void delete_bucket_wrapper(void* data_p, unsigned long long int index, const void* additional_params)
 {
 	if(data_p != NULL)
 	{
@@ -249,7 +249,7 @@ void delete_heap(heap* heap_p)
 	free(heap_p);
 }
 
-void print_bucket_wrapper(void* bucket_p_to_print, unsigned long long int index, const void* bucket_p_functions)
+static void print_bucket_wrapper(void* bucket_p_to_print, unsigned long long int index, const void* bucket_p_functions)
 {
 	bucket* bucket_p_to_print_t = ((bucket*)bucket_p_to_print);
 	bucket* bucket_p_functions_t = ((bucket*)bucket_p_functions);

@@ -31,44 +31,44 @@ node* get_node(const void* key, const void* value)
 
 /* functions to get node types -- start */
 
-int is_leaf_node(const node* node_p)
+static int is_leaf_node(const node* node_p)
 {
 	// if the node does not have a left child and it does not have a right child, it is a leaf node
 	return node_p->left_sub_tree == NULL && node_p->right_sub_tree == NULL;
 }
 
-int is_root_node(const node* node_p)
+static int is_root_node(const node* node_p)
 {
 	// if the node does not have a parent node, it is root node of the tree
 	return node_p->parent == NULL;
 }
 
-int is_internal_node(const node* node_p)
+static int is_internal_node(const node* node_p)
 {
 	// a node which is not leaf node or a root node is an internal node
 	return !(is_leaf_node(node_p) || is_root_node(node_p));
 }
 
-int has_only_right_sub_tree(const node* node_p)
+static int has_only_right_sub_tree(const node* node_p)
 {
 	// a node which does not have a left_sub_tree, and has only right_sub_tree
 	return node_p->left_sub_tree == NULL && node_p->right_sub_tree != NULL;
 }
 
-int has_only_left_sub_tree(const node* node_p)
+static int has_only_left_sub_tree(const node* node_p)
 {
 	// a node which does not have a right_sub_tree, and has only left_sub_tree
 	return node_p->left_sub_tree != NULL && node_p->right_sub_tree == NULL;
 }
 
 // used to check if the node is red, in a red black tree
-int is_red_node(const node* node_p)
+static int is_red_node(const node* node_p)
 {
 	return node_p != NULL && node_p->node_property == 0;
 }
 
 // makes a given node red coloured
-void make_node_red(node* node_p)
+static void make_node_red(node* node_p)
 {
 	if(node_p != NULL)
 	{
@@ -77,13 +77,13 @@ void make_node_red(node* node_p)
 }
 
 // used to check if the node is black, in a red black tree
-int is_black_node(const node* node_p)
+static int is_black_node(const node* node_p)
 {
 	return node_p == NULL || node_p->node_property == 1;
 }
 
 // makes a given node black coloured
-void make_node_black(node* node_p)
+static void make_node_black(node* node_p)
 {
 	if(node_p != NULL)
 	{
@@ -91,7 +91,7 @@ void make_node_black(node* node_p)
 	}
 }
 
-void exchange_colours(node* node_p1, node* node_p2)
+static void exchange_colours(node* node_p1, node* node_p2)
 {
 	unsigned long long int temp_color = node_p1->node_property;
 	node_p1->node_property = node_p2->node_property;
@@ -100,20 +100,20 @@ void exchange_colours(node* node_p1, node* node_p2)
 
 // node_p must not be null
 // returns true if the node_p is the left node of its parent
-int is_left_of_its_parent(const node* node_p)
+static int is_left_of_its_parent(const node* node_p)
 {
 	return (!(is_root_node(node_p))) && (node_p->parent->left_sub_tree == node_p);
 }
 
 // node_p must not be null
 // returns true if the node_p is the right node of its parent
-int is_right_of_its_parent(const node* node_p)
+static int is_right_of_its_parent(const node* node_p)
 {
 	return (!(is_root_node(node_p))) && (node_p->parent->right_sub_tree == node_p);
 }
 
 // gets max nodes from itself to any NULL, including itself, in an avl tree
-unsigned long long int get_max_height(node* node_p)
+static unsigned long long int get_max_height(node* node_p)
 {
 	if(node_p == NULL)
 	{
@@ -130,7 +130,7 @@ unsigned long long int get_max_height(node* node_p)
 }
 
 // updates max height of the node, in an avl tree
-void update_max_height(node* node_p)
+static void update_max_height(node* node_p)
 {
 	node_p->node_property = 0;
 	get_max_height(node_p);
@@ -140,17 +140,17 @@ void update_max_height(node* node_p)
 
 /* utility functions for tree -- start */
 
-int is_balancedbst_empty(const balancedbst* balancedbst_p)
+static int is_balancedbst_empty(const balancedbst* balancedbst_p)
 {
 	return balancedbst_p->root == NULL && balancedbst_p->bucket_count == 0;
 }
 
-node* get_smallest_node_from_node(const node* node_p)
+static node* get_smallest_node_from_node(const node* node_p)
 {
 	return node_p->left_sub_tree == NULL ? ((node*)node_p) : get_smallest_node_from_node(node_p->left_sub_tree);
 }
 
-node* get_largest_node_from_node(const node* node_p)
+static node* get_largest_node_from_node(const node* node_p)
 {
 	return node_p->right_sub_tree == NULL ? ((node*)node_p) : get_largest_node_from_node(node_p->right_sub_tree);
 }
@@ -163,7 +163,7 @@ node* get_largest_node_from_node(const node* node_p)
 //           / \
 //          Y   Z
 // returns true if rotation was successfull
-int left_rotate_tree(balancedbst* balancedbst_p, node* A)
+static int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
 	node* parent_of_tree = A->parent;
 	node* B = A->right_sub_tree;
@@ -213,7 +213,7 @@ int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 //  / \
 // Z   Y
 // returns true if rotation was successfull
-int right_rotate_tree(balancedbst* balancedbst_p, node* A)
+static int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
 	node* parent_of_tree = A->parent;
 	node* B = A->left_sub_tree;
@@ -256,7 +256,7 @@ int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 
 /* utility functions for tree -- end   */
 
-node* find_node_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
+static node* find_node_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
 {
 	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
 	{
@@ -276,7 +276,7 @@ node* find_node_recursively(const balancedbst* balancedbst_p, const node* root, 
 	}
 }
 
-node* find_node(const balancedbst* balancedbst_p, const void* key_p)
+static node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 {
 	// if the tree is empty, just return NULL
 	if( is_balancedbst_empty(balancedbst_p) )
@@ -289,7 +289,7 @@ node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 	}
 }
 
-node* find_node_preceding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
+static node* find_node_preceding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
 {
 	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
 	{
@@ -314,7 +314,7 @@ node* find_node_preceding_or_equals_recursively(const balancedbst* balancedbst_p
 	}
 }
 
-node* find_node_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
+static node* find_node_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
 {
 	// if the tree is empty, just return NULL
 	if( is_balancedbst_empty(balancedbst_p) )
@@ -327,7 +327,7 @@ node* find_node_preceding_or_equals(const balancedbst* balancedbst_p, const void
 	}
 }
 
-node* find_node_succeeding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
+static node* find_node_succeeding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
 {
 	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
 	{
@@ -352,7 +352,7 @@ node* find_node_succeeding_or_equals_recursively(const balancedbst* balancedbst_
 	}
 }
 
-node* find_node_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
+static node* find_node_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
 {
 	// if the tree is empty, just return NULL
 	if( is_balancedbst_empty(balancedbst_p) )
@@ -365,7 +365,7 @@ node* find_node_succeeding_or_equals(const balancedbst* balancedbst_p, const voi
 	}
 }
 
-node* find_node_with_smallest_key(const balancedbst* balancedbst_p)
+static node* find_node_with_smallest_key(const balancedbst* balancedbst_p)
 {
 	// if the tree is empty, just return NULL
 	if( is_balancedbst_empty(balancedbst_p) )
@@ -378,7 +378,7 @@ node* find_node_with_smallest_key(const balancedbst* balancedbst_p)
 	}
 }
 
-node* find_node_with_largest_key(const balancedbst* balancedbst_p)
+static node* find_node_with_largest_key(const balancedbst* balancedbst_p)
 {
 	// if the tree is empty, just return NULL
 	if( is_balancedbst_empty(balancedbst_p) )
@@ -423,7 +423,7 @@ const void* find_value_succeeding_or_equals(const balancedbst* balancedbst_p, co
 
 
 // neither root nor node_p params are suppossed to be NULL in the function below
-void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
+static void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
 	if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) < 0 )
 	{
@@ -456,7 +456,7 @@ void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* ro
 // handle imbalance occuring in red black tree
 // only a red node can be imbalanced in a red black tree
 // i.e. the parameter node_p->node_property == 0, we dont check that in the function
-void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p)
+static void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 {
 	if(is_root_node(node_p))
 	{
@@ -514,7 +514,7 @@ void handle_imbalance_in_red_black_tree(balancedbst* balancedbst_p, node* node_p
 }
 
 // neither root nor node_p params are suppossed to be NULL in the function below
-void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node* node_p)
+static void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
 	// this is a red node
 	node_p->node_property = 0;
@@ -527,7 +527,7 @@ void insert_node_in_red_black_tree(balancedbst* balancedbst_p, node* root, node*
 }
 
 // handle imbalance occuring in avl tree
-void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p)
+static void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p)
 {
 	// maintain a reference that traces
 	// all the nodes from  node_p to root
@@ -595,7 +595,7 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p
 }
 
 // neither root nor node_p params are suppossed to be NULL in the function below
-void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_p)
+static void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
 	// the new node will be inserted any where, hence we mark it's node_property for recalculation
 	node_p->node_property = 0;
@@ -608,7 +608,7 @@ void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_
 }
 
 // node_p param is not suppossed to be NULL in the function below
-void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
+static void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 {
 	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
 	if( is_balancedbst_empty(balancedbst_p) )
@@ -676,7 +676,7 @@ int update_value(balancedbst* balancedbst_p, const void* key_p, const void* valu
 // the below function only detaches the node that has to be deleted
 // returns pointer of the node that has to be deleted
 // node_p can not be null in the parameters of the function
-node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
+static node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
 {
 	// if atleast one of its children are NULL, the node itself can be removed easily
 	if(node_p->left_sub_tree == NULL || node_p->right_sub_tree == NULL)
@@ -735,7 +735,7 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 }
 
 // here it is mandatory to pass both the imbalanced node and its parent
-void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_black_node, node* double_blacks_parent)
+static void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_black_node, node* double_blacks_parent)
 {
 	CASE1 :;
 	if(double_black_node != NULL && is_root_node(double_black_node))
@@ -846,7 +846,7 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, node* double_blac
 // the below function only detaches the node thatr has to be deleted
 // returns pointer of the node that has to be deleted
 // node_p can not be null in the parameters of the function
-node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
+static node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 {
 	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted
 	node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
@@ -883,7 +883,7 @@ node* remove_node_from_red_black_tree(balancedbst* balancedbst_p, node* node_p)
 // the below function only detaches the node thatr has to be deleted
 // returns pointer of the node that has to be deleted
 // node_p can not be null in the parameters of the function
-node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
+static node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
 {
 	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted
 	node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
@@ -949,7 +949,7 @@ int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** retu
 	return deleted_nodes_count;
 }
 
-void for_each_node(const node* node_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
+static void for_each_node(const node* node_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
 {
 	if(node_p != NULL)
 	{
@@ -967,7 +967,7 @@ void for_each_entry(const balancedbst* balancedbst_p, void (*operation)(const vo
 	}
 }
 
-void print_node(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+static void print_node(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	if(node_p != NULL)
 	{
@@ -1023,7 +1023,7 @@ void print_node(node* node_p, void (*print_key)(const void* key), void (*print_v
 	}
 }
 
-void print_tree(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+static void print_tree(node* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	if(node_p != NULL)
 	{
@@ -1063,7 +1063,7 @@ void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const
 	printf("--\n\n");
 }
 
-void delete_nodes_from(node* node_p)
+static void delete_nodes_from(node* node_p)
 {
 	if(node_p->left_sub_tree != NULL)
 	{

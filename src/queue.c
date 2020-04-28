@@ -15,7 +15,7 @@ queue* get_queue(unsigned long long int expected_size)
 	return queue_p;
 }
 
-unsigned long long int revolveToNextIndex(queue* queue_p, unsigned long long int index)
+static unsigned long long int revolveToNextIndex(queue* queue_p, unsigned long long int index)
 {
 	return ((index + 1) % (queue_p->array_size));
 }
