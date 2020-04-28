@@ -60,6 +60,17 @@ int set_element(array* array_p, const void* data_p, unsigned long long int index
 	}
 }
 
+void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
+{
+	for(unsigned long long int i = 0; i < array_p->total_size; i++)
+	{
+		if(get_element(array_p, i) != NULL)
+		{
+			operation(((void*)get_element(array_p, i)), i, additional_params);
+		}
+	}
+}
+
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
 {
 	for(unsigned long long int i = 0; i < array_p->total_size; i++)
