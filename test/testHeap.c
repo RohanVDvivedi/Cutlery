@@ -33,6 +33,14 @@ void print_key(const void* key)
 	printf("%d", (*((int*)key)));
 }
 
+void change_key(heap* heap_p, unsigned long long int index, int new_key)
+{
+	if(index <= heap_p->heap_size - 1)
+	{
+		*((int*)(((bucket*)get_element(heap_p->heap_holder, index))->key)) = new_key;
+		heapify_at(heap_p, index);
+	}
+}
 
 int main()
 {
@@ -73,6 +81,12 @@ int main()
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){6}), &((ts){6, "six"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	change_key(heap_p, heap_p->heap_size/2, -2000);
+	print_heap(heap_p, print_key, print_ts);
+
+	change_key(heap_p, heap_p->heap_size/2, +2000);
 	print_heap(heap_p, print_key, print_ts);
 
 	pop_heap(heap_p);
@@ -151,6 +165,15 @@ int main()
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){14}), &((ts){14, "fourteen-x"}));
+	print_heap(heap_p, print_key, print_ts);
+
+	change_key(heap_p, 12, 3);
+	print_heap(heap_p, print_key, print_ts);
+
+	change_key(heap_p, 1, 8);
+	print_heap(heap_p, print_key, print_ts);
+
+	change_key(heap_p, 5, 2);
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){9}), &((ts){9, "nine-x"}));

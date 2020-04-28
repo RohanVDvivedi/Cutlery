@@ -210,7 +210,8 @@ void pop(heap* heap_p)
 
 void heapify_at(heap* heap_p, unsigned long long int index)
 {
-	if(index > heap_p->heap_size-1)
+	// do not provide out of heap-bound index
+	if(index >= heap_p->heap_size)
 	{
 		return;
 	}
