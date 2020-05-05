@@ -37,7 +37,7 @@ void change_key(heap* heap_p, unsigned long long int index, int new_key)
 {
 	if(index <= heap_p->heap_size - 1)
 	{
-		*((int*)(((bucket*)get_element(heap_p->heap_holder, index))->key)) = new_key;
+		*((int*)(((bucket*)get_element(&(heap_p->heap_holder), index))->key)) = new_key;
 		heapify_at(heap_p, index);
 	}
 }
