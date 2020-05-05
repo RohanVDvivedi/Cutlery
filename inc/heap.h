@@ -29,11 +29,11 @@ struct heap
 	// it returns 0 if they are same, >0 if key1 is greater than key2 else it must return <0 value
 	int (*key_compare)(const void* key1, const void* key2);
 
+	// array of buckets in heap
+	array heap_holder;
+	
 	// number of buckets in the heap
 	unsigned long long int heap_size;
-
-	// array of buckets in heap
-	array* heap_holder;
 };
 
 // build and get a new heap, with expected size, and of the given heap type (either MIN_HEAP or MAX_HEAP)

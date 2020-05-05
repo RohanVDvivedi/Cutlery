@@ -10,7 +10,10 @@
 typedef struct stack stack;
 struct stack
 {
+	// array to store stack elements
 	array stack_holder;
+
+	// number of elements currently in stack
 	unsigned long long int stack_size;
 };
 
