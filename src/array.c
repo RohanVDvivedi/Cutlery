@@ -11,7 +11,7 @@ void initialize_array(array* array_p, unsigned long long int initial_size)
 {
 	array_p->increment_offset = 1;
 	array_p->increment_factor = 2;
-	array_p->data_p_p = initial_size > 0 ? ((const void**)calloc(initial_size, sizeof(void*))): NULL;
+	array_p->data_p_p = initial_size > 0 ? ((const void**)calloc(initial_size, sizeof(void*))) : NULL;
 	array_p->total_size = initial_size;
 }
 
@@ -117,6 +117,11 @@ void expand_array(array* array_p)
 
 int shrink_array(array* array_p, unsigned long long int start_index, unsigned long long int end_index)
 {
+	if(end_index < start_index)
+	{
+		return 0;
+	}
+
 	unsigned long long int minimum_size = end_index - start_index + 1;
 
 	unsigned long long int maximum_size = next_expansion_size(array_p, next_expansion_size(array_p, minimum_size));

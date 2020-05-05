@@ -1,13 +1,6 @@
 #ifndef STACK_H
 #define STACK_H
 
-// stack will only hold your pointer as it is,
-// stack does not create/clone/update/mutate your data
-// stack does not shallow or deep clone it
-// you manage(create delete) your own data,
-
-// the below is a array based stack implementation of stack
-
 #include<array.h>
 
 #define push    push_stack
@@ -17,7 +10,7 @@
 typedef struct stack stack;
 struct stack
 {
-	array* stack_holder;
+	array stack_holder;
 	unsigned long long int stack_size;
 };
 

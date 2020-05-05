@@ -7,21 +7,21 @@
 stack* get_stack(unsigned long long int expected_size)
 {
 	stack* stack_p = (stack*) calloc(1, sizeof(stack));
-	stack_p->stack_holder = get_array(expected_size + 1);
+	initialize_array(&(stack_p->stack_holder), expected_size + 1);
 	stack_p->stack_size = 0;
 	return stack_p;
 }
 
 void push(stack* stack_p, const void* data_p)
 {
-	// exopand stack holder if necessary
-	if(stack_p->stack_size >= stack_p->stack_holder->total_size)
+	// expand stack holder if necessary
+	if(stack_p->stack_size >= stack_p->stack_holder.total_size)
 	{
-		expand_array(stack_p->stack_holder);
+		expand_array(&(stack_p->stack_holder));
 	}
 
 	// set the element to the last index and increment its size
-	set_element(stack_p->stack_holder, data_p, stack_p->stack_size++);
+	set_element(&(stack_p->stack_holder), data_p, stack_p->stack_size++);
 }
 
 void pop(stack* stack_p)
@@ -30,20 +30,22 @@ void pop(stack* stack_p)
 	if(stack_p->stack_size > 0)
 	{
 		// set the last element to null
-		set_element(stack_p->stack_holder, NULL, --stack_p->stack_size);
+		set_element(&(stack_p->stack_holder), NULL, --stack_p->stack_size);
 	}
+
+	// let the array be shrunk if it is required
+	shrink_array(&(stack_p->stack_holder), 0, stack_p->stack_size - 1);
 }
 
 const void* get_top(stack* stack_p)
 {
 	// return the last element from the stack holder
-	return get_element(stack_p->stack_holder, (stack_p->stack_size)-1);
+	return stack_p->stack_size > 0 ? get_element(&(stack_p->stack_holder), stack_p->stack_size - 1) : NULL;
 }
 
 void delete_stack(stack* stack_p)
 {
-	delete_array(stack_p->stack_holder);
-	stack_p->stack_holder = NULL;
+	delete_array(&(stack_p->stack_holder));
 	stack_p->stack_size = 0;
 	free(stack_p);
 }
@@ -52,7 +54,7 @@ void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
 {
 	printf("stack : \n");
 	printf("\tstack_size : %llu\n", stack_p->stack_size);
-	printf("\tstack array : ");print_array(stack_p->stack_holder, print_element);printf("\n");
+	printf("\tstack array : ");print_array(&(stack_p->stack_holder), print_element);printf("\n");
 	printf("\tthe top element : ");
 	if(get_top(stack_p)!=NULL)
 	{

@@ -5,12 +5,6 @@
 #include<stdlib.h>
 #include<string.h>
 
-// the array will maintain all of its memory on its own
-// you manage your memory, you manage (create and free) the memory pointed to by data_p pointers (passed in array by set_element)
-// the pointer you pass will be stored internally and managed by the array
-// array does not touch/clone/modify your data, array just stores your pointers in a dynamic array
-// array is just an implementation to dynamic array of all of your pointers
-
 typedef struct array array;
 struct array
 {
@@ -33,17 +27,16 @@ struct array
 };
 
 // returns a new array with total_size as the initial size, with no elements inside,
-// the size of each element could be size_of_data_element
 array* get_array(unsigned long long int initial_size);
 
-// initializes and givens necessary memory to asrrays internal element contents, it will not and does not create new memory for the error
+// initializes and gives necessary memory to manage internal element contents
 void initialize_array(array* array_p, unsigned long long int initial_size);
 
 // frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
-// the same array can be reused by calling initialize_array function, after it is destroyed
+// the same array can be reused by calling initialize_array function, after it is deinitialized
 void deinitialize_array(array* array_p);
 
-// deletes all the memory allocated by the array and its ownself
+// deletes all the memory allocated by the array and itself
 void delete_array(array* array_p);
 
 // returns pointer to the data at index = index
@@ -68,6 +61,7 @@ unsigned long long int find_first_in_array(const array* array_p, void* data_p, i
 void expand_array(array* array_p);
 
 // shrinks the array, if the array is considerably larger than the minimum size ( = end_index - start_index + 1) that was required
+// element at the start_index comes to 0, and element at end_index comes to end_index - start_index
 // it returns 1 if the array was shrunk
 int shrink_array(array* array_p, unsigned long long int start_index, unsigned long long int end_index);
 
