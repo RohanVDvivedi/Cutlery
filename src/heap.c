@@ -207,6 +207,7 @@ void pop(heap* heap_p)
 
 		// let the array be shrunk if it is required
 		shrink_array(&(heap_p->heap_holder), 0, heap_p->heap_size - 1);
+		// Note: we shrink the holder, only if we sucessfully pop the element
 	}
 }
 

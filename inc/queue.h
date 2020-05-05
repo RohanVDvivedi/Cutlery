@@ -1,13 +1,6 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-// queue will only hold your pointer as it is,
-// queue does not create/clone/update/mutate your data
-// queue does not shallow or deep clone it
-// you manage(create delete) your own data,
-
-// the below is a array based ring buffer implementation of queue
-
 #include<array.h>
 
 #define push    push_queue
@@ -17,10 +10,16 @@
 typedef struct queue queue;
 struct queue
 {
-	array* queue_holder;
+	// array to store queue elements
+	array queue_holder;
+
+	// size of queue
 	unsigned long long int queue_size;
-	unsigned long long int array_size;
+
+	// index, where the oldest element was inserted, the element at this index is popped
 	unsigned long long int earliest_element_index;
+
+	// index, after which a new element will be inserted, this is the index where the latest element was inserted
 	unsigned long long int latest_element_index;
 };
 

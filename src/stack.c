@@ -31,10 +31,11 @@ void pop(stack* stack_p)
 	{
 		// set the last element to null
 		set_element(&(stack_p->stack_holder), NULL, --stack_p->stack_size);
-	}
 
-	// let the array be shrunk if it is required
-	shrink_array(&(stack_p->stack_holder), 0, stack_p->stack_size - 1);
+		// let the array be shrunk if it is required
+		shrink_array(&(stack_p->stack_holder), 0, stack_p->stack_size - 1);
+		// Note: we shrink the holder, only if we sucessfully pop the element
+	}
 }
 
 const void* get_top(stack* stack_p)
