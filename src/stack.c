@@ -45,7 +45,7 @@ const void* get_top(stack* stack_p)
 
 void delete_stack(stack* stack_p)
 {
-	delete_array(&(stack_p->stack_holder));
+	deinitialize_array(&(stack_p->stack_holder));
 	stack_p->stack_size = 0;
 	free(stack_p);
 }
