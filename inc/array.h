@@ -40,7 +40,8 @@ array* get_array(unsigned long long int initial_size);
 void initialize_array(array* array_p, unsigned long long int initial_size);
 
 // frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
-void destroy_array(array* array_p);
+// the same array can be reused by calling initialize_array function, after it is destroyed
+void deinitialize_array(array* array_p);
 
 // deletes all the memory allocated by the array and its ownself
 void delete_array(array* array_p);

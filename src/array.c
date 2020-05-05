@@ -21,17 +21,19 @@ static unsigned long long int next_expansion_size(array* array_p, unsigned long 
 	return ( current_size * array_p->increment_factor ) + array_p->increment_offset;
 }
 
-void destroy_array(array* array_p)
+void deinitialize_array(array* array_p)
 {
 	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
 	{
 		free(array_p->data_p_p);
 	}
+	array_p->total_size = 0;
+	array_p->data_p_p = NULL;
 }
 
 void delete_array(array* array_p)
 {
-	destroy_array(array_p);
+	deinitialize_array(array_p);
 	free(array_p);
 }
 
