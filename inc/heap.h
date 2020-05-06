@@ -7,9 +7,10 @@
 #include<array.h>
 #include<bucket.h>
 
-#define push    push_heap
-#define pop     pop_heap
-#define get_top get_top_heap
+#define push 			push_heap
+#define pop 			pop_heap
+#define get_top 		get_top_heap
+#define for_each_entry 	for_each_entry_in_heap
 
 typedef enum heap_type heap_type;
 enum heap_type
@@ -58,11 +59,15 @@ void heapify_at(heap* heap_p, unsigned long long int index);
 // delete heap and heap_holder array, along with all its buckets
 void delete_heap(heap* heap_p);
 
+// perform an operation on all the key value pairs for the heap
+void for_each_entry(const heap* heap_p, void (*operation)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params);
+
 // print, heap and all the elements of the heap
 void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #undef push
 #undef pop
 #undef get_top
+#undef for_each_entry
 
 #endif

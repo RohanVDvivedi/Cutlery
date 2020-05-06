@@ -1,8 +1,9 @@
 #include<stack.h>
 
-#define push    push_stack
-#define pop     pop_stack
-#define get_top get_top_stack
+#define push		push_stack
+#define pop			pop_stack
+#define get_top		get_top_stack
+#define for_each 	for_each_in_stack
 
 stack* get_stack(unsigned long long int expected_size)
 {
@@ -51,6 +52,11 @@ void delete_stack(stack* stack_p)
 	free(stack_p);
 }
 
+void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
+{
+	for_each_non_null_in_array(&(stack_p->stack_holder), operation, additional_params);
+}
+
 void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
 {
 	printf("stack : \n");
@@ -71,3 +77,4 @@ void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
 #undef push
 #undef pop
 #undef get_top
+#undef for_each

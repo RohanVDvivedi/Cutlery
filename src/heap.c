@@ -1,8 +1,9 @@
 #include<heap.h>
 
-#define push    push_heap
-#define pop     pop_heap
-#define get_top get_top_heap
+#define push 			push_heap
+#define pop 			pop_heap
+#define get_top 		get_top_heap
+#define for_each_entry 	for_each_entry_in_heap
 
 heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1))
 {
@@ -245,6 +246,23 @@ void delete_heap(heap* heap_p)
 	free(heap_p);
 }
 
+void for_each_bucket_wrapper_for_heap(void* data_p, unsigned long long int index, const void* additional_params)
+{
+	bucket* operation_details = (bucket*)additional_params;
+	void (*operation)(const void*, const void*, unsigned long long int, const void*) = operation_details->key;
+	// additional params is a pointer on the stack frame of this function, it belongs to this function, so we can assign it as we like
+	additional_params = operation_details->value;
+
+	bucket* bucket_p = (bucket*) data_p;
+	operation(bucket_p->key, bucket_p->value, index, additional_params);
+}
+
+void for_each_entry(const heap* heap_p, void (*operation)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
+{
+	bucket operation_details = {.key = operation, .value = additional_params};
+	for_each_non_null_in_array(&(heap_p->heap_holder), for_each_bucket_wrapper_for_heap, &operation_details);
+}
+
 void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	switch(heap_p->type)
@@ -280,3 +298,4 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 #undef push
 #undef pop
 #undef get_top
+#undef for_each_entry

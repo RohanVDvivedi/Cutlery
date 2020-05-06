@@ -3,9 +3,10 @@
 
 #include<array.h>
 
-#define push    push_stack
-#define pop     pop_stack
-#define get_top get_top_stack
+#define push		push_stack
+#define pop			pop_stack
+#define get_top		get_top_stack
+#define for_each	for_each_in_stack
 
 typedef struct stack stack;
 struct stack
@@ -32,11 +33,15 @@ const void* get_top(stack* stack_p);
 // delete stack and stack_holder array
 void delete_stack(stack* stack_p);
 
+// for each element of the stack, perform the given operation
+void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params);
+
 // prints the stack
 void print_stack(stack* stack_p, void (*print_element)(const void* data_p));
 
 #undef push
 #undef pop
 #undef get_top
+#undef for_each
 
 #endif
