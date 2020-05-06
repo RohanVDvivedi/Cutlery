@@ -151,26 +151,86 @@ int main()
 	pop_queue(queue_p);
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 44
 
-	pop_queue(queue_p);
+	push_queue(queue_p, &((ts){25, "twenty five"}));
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 45
 
-	pop_queue(queue_p);
+	push_queue(queue_p, &((ts){26, "twenty six"}));
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 46
 
-	pop_queue(queue_p);
+	push_queue(queue_p, &((ts){27, "twenty seven"}));
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 47
 
-	pop_queue(queue_p);
+	push_queue(queue_p, &((ts){28, "twenty eight"}));
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 48
 
-	pop_queue(queue_p);
+	push_queue(queue_p, &((ts){29, "twenty nine"}));
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 49
 
-	pop_queue(queue_p);
+	push_queue(queue_p, &((ts){30, "thirty"}));
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 50
 
-	pop_queue(queue_p);
+	push_queue(queue_p, &((ts){31, "thirty one"}));
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 51
+
+	push_queue(queue_p, &((ts){32, "thirty two"}));
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 52
+
+	push_queue(queue_p, &((ts){33, "thirty three"}));
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 53
+
+	push_queue(queue_p, &((ts){34, "thirty four"}));
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 54
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 55
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 56
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 57
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 58
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 59
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 60
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 61
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 62
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 63
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 64
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 65
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 66
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 67
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 68
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 69
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 70
+
+	pop_queue(queue_p);
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 71
 
 	delete_queue(queue_p);
 	return 0;
