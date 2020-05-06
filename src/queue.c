@@ -19,6 +19,28 @@ static unsigned long long int revolveToNextIndex(queue* queue_p, unsigned long l
 	return ((index + 1) % (queue_p->queue_holder.total_size));
 }
 
+static void push_no_expand(queue* queue_p, const void* data_p)
+{
+	if(isQueueHolderFull(queue_p))
+	{
+		return;
+	}
+	queue_p->latest_element_index = revolveToNextIndex(queue_p, queue_p->latest_element_index);
+	set_element(&(queue_p->queue_holder), data_p, queue_p->latest_element_index);
+	queue_p->queue_size++;
+}
+
+static void pop_no_shrink(queue* queue_p)
+{
+	if(isQueueEmpty(queue_p))
+	{
+		return;
+	}
+	set_element(&(queue_p->queue_holder), NULL, queue_p->earliest_element_index);
+	queue_p->earliest_element_index = revolveToNextIndex(queue_p, queue_p->earliest_element_index);
+	queue_p->queue_size--;
+}
+
 void push(queue* queue_p, const void* data_p)
 {
 	if(isQueueHolderFull(queue_p))
@@ -41,25 +63,30 @@ void push(queue* queue_p, const void* data_p)
 			while(!isQueueEmpty(&queue_old_temp))
 			{
 				const void* data_p = get_top(&queue_old_temp);
-				pop(&queue_old_temp);
-				push(queue_p, data_p);
+				pop_no_shrink(&queue_old_temp);
+				push_no_expand(queue_p, data_p);
 			}
 		}
 	}
-	queue_p->latest_element_index = revolveToNextIndex(queue_p, queue_p->latest_element_index);
-	set_element(&(queue_p->queue_holder), data_p, queue_p->latest_element_index);
-	queue_p->queue_size++;
+	
+	push_no_expand(queue_p, data_p);
 }
 
 void pop(queue* queue_p)
 {
-	if(isQueueEmpty(queue_p))
+	pop_no_shrink(queue_p);
+
+	// we go forward to shrink the queue holder only if it is not empty -> if the queue_holder is already empty, it is small enough to not have allocated much memory to shrink it significantly
+	// we also check that the earliest element_index is lesser or equal to latest element index, this allow us to avoid undesired rotations required in the ring buffer
+	if(!isQueueEmpty(queue_p) && (queue_p->earliest_element_index <= queue_p->latest_element_index))
 	{
-		return;
+		int was_queue_array_shrunk = shrink_array(&(queue_p->queue_holder), queue_p->earliest_element_index, queue_p->latest_element_index);
+		if(was_queue_array_shrunk)
+		{
+			queue_p->earliest_element_index = 0;
+			queue_p->latest_element_index = queue_p->queue_size-1;
+		}
 	}
-	set_element(&(queue_p->queue_holder), NULL, queue_p->earliest_element_index);
-	queue_p->earliest_element_index = revolveToNextIndex(queue_p, queue_p->earliest_element_index);
-	queue_p->queue_size--;
 }
 
 const void* get_top(queue* queue_p)
