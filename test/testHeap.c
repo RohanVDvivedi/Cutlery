@@ -37,7 +37,7 @@ void change_key(heap* heap_p, unsigned long long int index, int new_key)
 {
 	if(index <= heap_p->heap_size - 1)
 	{
-		*((int*)(((bucket*)get_element(&(heap_p->heap_holder), index))->key)) = new_key;
+		insert_in_bucket_array(&(heap_p->heap_holder), &new_key, get_value_bucket_array(&(heap_p->heap_holder), index), index);
 		heapify_at(heap_p, index);
 	}
 }
@@ -47,10 +47,11 @@ int main()
 	heap* heap_p = get_heap(5, MIN_HEAP, key_cmp);
 	print_heap(heap_p, print_key, print_ts);
 
-	push_heap(heap_p, &((ke){1}), &((ts){1, "one"}));
-	print_heap(heap_p, print_key, print_ts);
+	printf("LOL\n");
+	push_heap(heap_p, &((ke){1}), &((ts){1, "one"}));printf("LOL\n");print_array(&(heap_p->heap_holder), print_key);printf("LOL\n");
+	//print_heap(heap_p, print_key, print_ts);
 
-	push_heap(heap_p, &((ke){2}), &((ts){2, "two"}));
+	push_heap(heap_p, &((ke){2}), &((ts){2, "two"}));print_array(&(heap_p->heap_holder), print_key);
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){3}), &((ts){3, "three"}));
