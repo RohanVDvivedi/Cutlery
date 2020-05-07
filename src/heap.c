@@ -117,19 +117,17 @@ static void bubble_up(heap* heap_p, unsigned long long int index)
 
 void push(heap* heap_p, const void* key, const void* value)
 {
-printf("QQQ\n");
 	// expand heap_holder if necessary
 	if(heap_p->heap_size >= get_capacity_bucket_array((&(heap_p->heap_holder))))
 	{
 		expand_array(&(heap_p->heap_holder));
 	}
-printf("RRR %llu\n", heap_p->heap_size);
+
 	// insert a new bucket to the holder at the last index and increment heap size
 	insert_in_bucket_array(&(heap_p->heap_holder), key, value, heap_p->heap_size++);
-printf("SSS %llu\n", heap_p->heap_size);
+
 	// bubble up the newly added element at index heap_p->heap_size-1, to its desired place
 	bubble_up(heap_p, heap_p->heap_size-1);
-printf("TTT\n");
 }
 
 const void* get_top(const heap* heap_p, const void** returned_key)

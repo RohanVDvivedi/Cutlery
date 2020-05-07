@@ -39,7 +39,6 @@ void delete_array(array* array_p)
 
 const void* get_element(const array* array_p, unsigned long long int index)
 {
-	printf("get -> %llu\n", index);
 	if(array_p->total_size > index)
 	{
 		return array_p->data_p_p[index];
@@ -52,7 +51,6 @@ const void* get_element(const array* array_p, unsigned long long int index)
 
 int set_element(array* array_p, const void* data_p, unsigned long long int index)
 {
-	printf("set -> %llu\n", index);
 	if(array_p->total_size > index)
 	{
 		array_p->data_p_p[index] = data_p;
