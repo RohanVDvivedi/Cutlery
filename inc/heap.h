@@ -4,8 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#include<array.h>
-#include<bucket.h>
+#include<bucket_array.h>
 
 #define push 			push_heap
 #define pop 			pop_heap
@@ -30,7 +29,7 @@ struct heap
 	// it returns 0 if they are same, >0 if key1 is greater than key2 else it must return <0 value
 	int (*key_compare)(const void* key1, const void* key2);
 
-	// array of buckets in heap
+	// bucket_array
 	array heap_holder;
 	
 	// number of buckets in the heap

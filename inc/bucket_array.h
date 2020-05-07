@@ -31,6 +31,8 @@
 // it returns 1 if the array was shrunk
 #define shrink_bucket_array(array_p, start_index, end_index) shrink_array(array_p, KEY_INDEX(start_index), VALUE_INDEX(end_index))
 
-void for_each_in_bucket_array(array* array_p, void (*operation)(void* key, void* value, unsigned long long int index, void* additional_params), void* additional_params);
+void for_each_in_bucket_array(const array* array_p, void (*operation)(const void* key, const void* value, unsigned long long int index, const void* additional_params), const void* additional_params);
+
+void print_bucket_array(const array* array_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #endif

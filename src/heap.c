@@ -10,7 +10,7 @@ heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_c
 	heap* heap_p = ((heap*)(malloc(sizeof(heap))));
 	heap_p->type = type;
 	heap_p->key_compare = key_compare;
-	initialize_array(&(heap_p->heap_holder), expected_size + 1);
+	initialize_bucket_array(&(heap_p->heap_holder), expected_size + 1);
 	heap_p->heap_size = 0;
 	return heap_p;
 }
@@ -36,10 +36,14 @@ static unsigned long long int get_right_child_index(unsigned long long int paren
 // utility : interchanges bucket at indices i1 and i2
 static void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, unsigned long long int i2)
 {
-	bucket* bucket_p_i1 = ((bucket*)get_element(&(heap_p->heap_holder), i1));
-	bucket* bucket_p_i2 = ((bucket*)get_element(&(heap_p->heap_holder), i2));
-	set_element(&(heap_p->heap_holder), bucket_p_i1, i2);
-	set_element(&(heap_p->heap_holder), bucket_p_i2, i1);
+	void* key_p_i1 = ((void*)get_key_bucket_array(&(heap_p->heap_holder), i1));
+	void* value_p_i1 = ((void*)get_value_bucket_array(&(heap_p->heap_holder), i1));
+
+	void* key_p_i2 = ((void*)get_key_bucket_array(&(heap_p->heap_holder), i2));
+	void* value_p_i2 = ((void*)get_value_bucket_array(&(heap_p->heap_holder), i2));
+
+	insert_in_bucket_array(&(heap_p->heap_holder), key_p_i1, value_p_i1, i2);
+	insert_in_bucket_array(&(heap_p->heap_holder), key_p_i2, value_p_i2, i1);
 }
 
 // returns true (1) if, the reordering is required, else 0
@@ -53,11 +57,11 @@ static int is_reordering_required(const heap* heap_p, unsigned long long int par
 		return 0;
 	}
 
-	bucket* parent = ((bucket*)get_element(&(heap_p->heap_holder), parent_index));
-	bucket* child  = ((bucket*)get_element(&(heap_p->heap_holder), child_index));
+	void* parent_key = ((void*)get_key_bucket_array(&(heap_p->heap_holder), parent_index));
+	void* child_key  = ((void*)get_key_bucket_array(&(heap_p->heap_holder), child_index));
 
 	// if the child or parent is NULL, you can not reorder 
-	if(child == NULL || parent == NULL)
+	if(child_key == NULL || parent_key == NULL)
 	{
 		return 0;
 	}
@@ -69,7 +73,7 @@ static int is_reordering_required(const heap* heap_p, unsigned long long int par
 		case MIN_HEAP :
 		{
 			// in min heap, parent has to be smaller than or equal to the child, we have an issue if parent is greater than child 
-			if(heap_p->key_compare(parent->key, child->key) > 0)
+			if(heap_p->key_compare(parent_key, child_key) > 0)
 			{
 				reordering_required = 1;
 			}
@@ -78,7 +82,7 @@ static int is_reordering_required(const heap* heap_p, unsigned long long int par
 		case MAX_HEAP :
 		{
 			// in min heap, parent has to be greater than or equal to the child, we have an issue if parent is smaller than child 
-			if(heap_p->key_compare(parent->key, child->key) < 0)
+			if(heap_p->key_compare(parent_key, child_key) < 0)
 			{
 				reordering_required = 1;
 			}
@@ -114,13 +118,13 @@ static void bubble_up(heap* heap_p, unsigned long long int index)
 void push(heap* heap_p, const void* key, const void* value)
 {
 	// expand heap_holder if necessary
-	if(heap_p->heap_size >= heap_p->heap_holder.total_size)
+	if(heap_p->heap_size >= get_capacity_bucket_array((&(heap_p->heap_holder))))
 	{
 		expand_array(&(heap_p->heap_holder));
 	}
 
-	// set the element to the last index and increment its size
-	set_element(&(heap_p->heap_holder), get_bucket(key, value), heap_p->heap_size++);
+	// insert a new bucket to the holder at the last index and increment heap size
+	insert_in_bucket_array(&(heap_p->heap_holder), key, value, heap_p->heap_size++);
 
 	// bubble up the newly added element at index heap_p->heap_size-1, to its desired place
 	bubble_up(heap_p, heap_p->heap_size-1);
@@ -131,20 +135,23 @@ const void* get_top(const heap* heap_p, const void** returned_key)
 	// ther is no top bucket value, if there are no buckets in the heap
 	if(heap_p->heap_size == 0)
 	{
+		if(returned_key != NULL)
+		{
+			(*returned_key) = NULL;
+		}
 		return NULL;
 	}
 
-	// first bucket is the top bucket
-	bucket* top_bucket_p = (bucket*)get_element(&(heap_p->heap_holder), 0);
+	// first bucket is the top bucket, we fetch its value
+	void* top_value_p = (void*)get_value_bucket_array(&(heap_p->heap_holder), 0);
 
 	// return the key to the client
 	if(returned_key != NULL)
 	{
-		(*returned_key) = top_bucket_p->key;
+		(*returned_key) = (void*)get_key_bucket_array(&(heap_p->heap_holder), 0);
 	}
 
-	// return the value of the first bucket, from the heap holder
-	return top_bucket_p->value;
+	return top_value_p;
 }
 
 static void bubble_down(heap* heap_p, unsigned long long int index)
@@ -197,17 +204,14 @@ void pop(heap* heap_p)
 		// put the first bucket at last and last bucket to first
 		inter_change_buckets_for_indexes(heap_p, 0, heap_p->heap_size-1);
 
-		// get the last bucket and delete it
-		delete_bucket((bucket*)get_element(&(heap_p->heap_holder), heap_p->heap_size-1));
-
-		// and set the last element to null
-		set_element(&(heap_p->heap_holder), NULL, --heap_p->heap_size);
+		// and set the last bucket to key and value NULLs, and decrementing the heap size
+		insert_in_bucket_array(&(heap_p->heap_holder), NULL, NULL, --heap_p->heap_size);
 
 		// bubble down the element at index 0
 		bubble_down(heap_p, 0);
 
 		// let the array be shrunk if it is required
-		shrink_array(&(heap_p->heap_holder), 0, heap_p->heap_size - 1);
+		shrink_bucket_array(&(heap_p->heap_holder), 0, heap_p->heap_size - 1);
 		// Note: we shrink the holder, only if we sucessfully pop the element
 	}
 }
@@ -240,27 +244,14 @@ void heapify_at(heap* heap_p, unsigned long long int index)
 
 void delete_heap(heap* heap_p)
 {
-	for_each_in_array(&(heap_p->heap_holder), delete_bucket_wrapper_for_array, NULL);
 	deinitialize_array(&(heap_p->heap_holder));
 	heap_p->heap_size = 0;
 	free(heap_p);
 }
 
-void for_each_bucket_wrapper_for_heap(void* data_p, unsigned long long int index, const void* additional_params)
-{
-	bucket* operation_details = (bucket*)additional_params;
-	void (*operation)(const void*, const void*, unsigned long long int, const void*) = operation_details->key;
-	// additional params is a pointer on the stack frame of this function, it belongs to this function, so we can assign it as we like
-	additional_params = operation_details->value;
-
-	bucket* bucket_p = (bucket*) data_p;
-	operation(bucket_p->key, bucket_p->value, index, additional_params);
-}
-
 void for_each_entry(const heap* heap_p, void (*operation)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
 {
-	bucket operation_details = {.key = operation, .value = additional_params};
-	for_each_non_null_in_array(&(heap_p->heap_holder), for_each_bucket_wrapper_for_heap, &operation_details);
+	for_each_in_bucket_array(&(heap_p->heap_holder), operation, additional_params);
 }
 
 void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
@@ -279,9 +270,8 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 		}
 	}
 	printf("\theap_size : %llu\n", heap_p->heap_size);
-	bucket print_functions = {.key = print_key, .value = print_value};
 	printf("\theap array : \n");
-	for_each_in_array(&(heap_p->heap_holder), print_bucket_wrapper_for_array, &print_functions);
+	print_bucket_array(&(heap_p->heap_holder), print_key, print_value);
 	printf("\n");
 	printf("\tthe top element : ");
 	if(get_top(heap_p, NULL) != NULL)
