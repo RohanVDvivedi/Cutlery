@@ -10,7 +10,7 @@ void initialize_bucket_array(array* array_p, unsigned long long int initial_size
 	initialize_array(array_p, initial_size * BUCKET_SIZE);
 }
 
-unsigned long long int get_capacity_bucket_array(array* array_p)
+unsigned long long int get_capacity_bucket_array(const array* array_p)
 {
 	return array_p->total_size / BUCKET_SIZE;
 }

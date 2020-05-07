@@ -14,7 +14,7 @@ array* get_bucket_array(unsigned long long int initial_size);
 void initialize_bucket_array(array* array_p, unsigned long long int initial_size);
 
 // returns the maximum number of buckets that can be stored
-unsigned long long int get_capacity_bucket_array(array* array_p);
+unsigned long long int get_capacity_bucket_array(const array* array_p);
 
 // returns pointer to the key for a bucket at index = index
 const void* get_key_bucket_array(const array* array_p, unsigned long long int index);
