@@ -72,7 +72,7 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 			}
 			case ELEMENTS_AS_AVL_BST :
 			{
-				// create a new svl tree
+				// create a new avl tree
 				ds_p = get_balancedbst(AVL_TREE, hashmap_p->key_compare);
 				break;
 			}
@@ -104,7 +104,7 @@ static bucket* find_bucket_for_no_policy(const hashmap* hashmap_p, const void* k
 	// get the data structure for that key, without any new creation
 	const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
-	// if we found the under lying data struture, which infact han`dles collision, we find our bucket inside it
+	// if we found the under lying data struture, which infact handles collision, we find our bucket inside it
 	if(ds_p != NULL && hashmap_p->hashmap_policy == NO_POLICY)
 	{
 		// if no policy ther is no middle ware data structure handling collision just bucket
@@ -126,7 +126,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
-			// get the bst data structure for that key, without any new creation
+			// get the data structure for that key, without any new creation
 			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
 			// find value in a linkedlist
@@ -135,7 +135,7 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			// get the bst data structure for that key, without any new creation
+			// get the data structure for that key, without any new creation
 			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
 
 			// find value in a bst
@@ -146,17 +146,19 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 
 void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 {
-	// retrieve data structure for that key
-	void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
+	int inserted_entry = 0;
 
 	switch(hashmap_p->hashmap_policy)
 	{
 		case NO_POLICY :
 		{
+			// retrieve data structure for that key
+			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
+
 			// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
 			if(((bucket*)ds_p)->key == NULL)
 			{
-				hashmap_p->bucket_occupancy++;
+				inserted_entry = 1;
 			}
 			((bucket*)ds_p)->key = key;
 			((bucket*)ds_p)->value = value;
@@ -164,20 +166,30 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
+			// retrieve data structure for that key
+			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
+
 			// insert the new bucket in the linkedlist
 			insert_entry_in_ll(((linkedlist*)(ds_p)), key, value);
-			hashmap_p->bucket_occupancy++;
+			
+			inserted_entry = 1;
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
+			// retrieve data structure for that key
+			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
+
 			// insert the new bucket in the bst
 			insert_entry_in_bst(((balancedbst*)(ds_p)), key, value);
-			hashmap_p->bucket_occupancy++;
+
+			inserted_entry = 1;
 			break;
 		}
 	}
+
+	hashmap_p->bucket_occupancy += inserted_entry;
 }
 
 int update_value(hashmap* hashmap_p, const void* key, const void* value, const void** return_value)
