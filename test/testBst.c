@@ -119,6 +119,14 @@ int main()
 	insert_entry_in_bst(balancedbst_p, &((ke){15}), &((ts){15, "fifteen"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	print_preceding_equals(balancedbst_p, 12);
+	print_succeeding_equals(balancedbst_p, 12);
+	print_preceding_equals(balancedbst_p, 19);
+	print_succeeding_equals(balancedbst_p, 19);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
 	insert_entry_in_bst(balancedbst_p, &((ke){14}), &((ts){14, "fourteen"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
@@ -127,6 +135,15 @@ int main()
 
 	insert_entry_in_bst(balancedbst_p, &((ke){12}), &((ts){12, "twelve"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_preceding_equals(balancedbst_p, 11);
+	print_succeeding_equals(balancedbst_p, 11);
+	print_preceding_equals(balancedbst_p, 12);
+	print_succeeding_equals(balancedbst_p, 12);
+	print_preceding_equals(balancedbst_p, 15);
+	print_succeeding_equals(balancedbst_p, 15);
+	print_preceding_equals(balancedbst_p, 19);
+	print_succeeding_equals(balancedbst_p, 19);
 
 	print_smallest(balancedbst_p);
 	print_largest(balancedbst_p);
@@ -145,6 +162,16 @@ int main()
 
 	insert_entry_in_bst(balancedbst_p, &((ke){0}), &((ts){0, "zero"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_preceding_equals(balancedbst_p, 0);
+	print_succeeding_equals(balancedbst_p, 0);
+	print_preceding_equals(balancedbst_p, 2);
+	print_succeeding_equals(balancedbst_p, 2);
+	print_preceding_equals(balancedbst_p, 3);
+	print_succeeding_equals(balancedbst_p, 3);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
 
 	insert_entry_in_bst(balancedbst_p, &((ke){1}), &((ts){1, "one"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
@@ -176,8 +203,14 @@ int main()
 	insert_entry_in_bst(balancedbst_p, &((ke){19}), &((ts){19, "nineteen"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
 	update_value_in_bst(balancedbst_p, &((ke){19}), &((ts){19, "LOL"}), NULL);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_preceding_equals(balancedbst_p, 19);
+	print_succeeding_equals(balancedbst_p, 19);
 
 	insert_entry_in_bst(balancedbst_p, &((ke){9}), &((ts){9, "nine-lol"}));
 	print_balancedbst(balancedbst_p, print_key, print_ts);
@@ -204,55 +237,12 @@ int main()
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
-	error = delete_entry_from_bst(balancedbst_p, &((ke){3}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){4}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){5}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
 	print_smallest(balancedbst_p);
 	print_largest(balancedbst_p);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){6}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
 
 	error = delete_entry_from_bst(balancedbst_p, &((ke){7}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){8}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){9}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){10}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){11}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){12}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	error = delete_entry_from_bst(balancedbst_p, &((ke){13}), NULL, NULL);
-	printf("nodes deleted = %d\n", error);
-	print_balancedbst(balancedbst_p, print_key, print_ts);
-
-	print_smallest(balancedbst_p);
-	print_largest(balancedbst_p);
 
 	error = delete_entry_from_bst(balancedbst_p, &((ke){14}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
@@ -262,9 +252,77 @@ int main()
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
 
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
 	error = delete_entry_from_bst(balancedbst_p, &((ke){16}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
 	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){13}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){10}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){9}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){8}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){11}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){12}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){3}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_preceding_equals(balancedbst_p, 0);
+	print_succeeding_equals(balancedbst_p, 0);
+	print_preceding_equals(balancedbst_p, 3);
+	print_succeeding_equals(balancedbst_p, 3);
+	print_preceding_equals(balancedbst_p, 6);
+	print_succeeding_equals(balancedbst_p, 6);
+	print_preceding_equals(balancedbst_p, 9);
+	print_succeeding_equals(balancedbst_p, 9);
+	print_preceding_equals(balancedbst_p, 15);
+	print_succeeding_equals(balancedbst_p, 15);
+	print_preceding_equals(balancedbst_p, 19);
+	print_succeeding_equals(balancedbst_p, 19);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){4}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){5}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	error = delete_entry_from_bst(balancedbst_p, &((ke){6}), NULL, NULL);
+	printf("nodes deleted = %d\n", error);
+	print_balancedbst(balancedbst_p, print_key, print_ts);
+
+	print_smallest(balancedbst_p);
+	print_largest(balancedbst_p);
 
 	error = delete_entry_from_bst(balancedbst_p, &((ke){17}), NULL, NULL);
 	printf("nodes deleted = %d\n", error);
