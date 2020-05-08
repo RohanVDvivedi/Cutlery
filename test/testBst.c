@@ -65,7 +65,7 @@ void print_largest(const balancedbst* balancedbst_p)
 
 void print_succeeding_equals(const balancedbst* balancedbst_p, int k)
 {
-	printf("the value succeeding %d is : ", k);
+	printf("the value succeeding or equals %d is : ", k);
 	const void* result = find_value_succeeding_or_equals(balancedbst_p, &((ke){k}));
 	if(result != NULL)
 	{
@@ -80,7 +80,7 @@ void print_succeeding_equals(const balancedbst* balancedbst_p, int k)
 
 void print_preceding_equals(const balancedbst* balancedbst_p, int k)
 {
-	printf("the value preceding %d is : ", k);
+	printf("the value preceding or equals %d is : ", k);
 	const void* result = find_value_preceding_or_equals(balancedbst_p, &((ke){k}));
 	if(result != NULL)
 	{
