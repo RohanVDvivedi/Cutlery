@@ -258,15 +258,15 @@ static int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 
 static node* find_node_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
 {
-	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
+	if(balancedbst_p->key_compare(key_p, root->data_entry.key) == 0)
 	{
 		return ((node*)root);
 	}
-	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
+	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) < 0)
 	{
 		return find_node_recursively(balancedbst_p, root->left_sub_tree, key_p);
 	}
-	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) > 0)
+	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) > 0)
 	{
 		return find_node_recursively(balancedbst_p, root->right_sub_tree, key_p);
 	}
@@ -291,15 +291,15 @@ static node* find_node(const balancedbst* balancedbst_p, const void* key_p)
 
 static node* find_node_preceding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
 {
-	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
+	if(balancedbst_p->key_compare(key_p, root->data_entry.key) == 0)
 	{
 		return ((node*)root);
 	}
-	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
+	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) < 0)
 	{
 		return find_node_preceding_or_equals_recursively(balancedbst_p, root->left_sub_tree, key_p);
 	}
-	else if(balancedbst_p->key_compare(key_p, root->bucket_p->key) > 0)
+	else if(balancedbst_p->key_compare(key_p, root->data_entry.key) > 0)
 	{
 		node* result = NULL;
 		if(root->right_sub_tree != NULL)
@@ -329,11 +329,11 @@ static node* find_node_preceding_or_equals(const balancedbst* balancedbst_p, con
 
 static node* find_node_succeeding_or_equals_recursively(const balancedbst* balancedbst_p, const node* root, const void* key_p)
 {
-	if(balancedbst_p->key_compare(key_p, root->bucket_p->key) == 0)
+	if(balancedbst_p->key_compare(key_p, root->data_entry.key) == 0)
 	{
 		return ((node*)root);
 	}
-	else if(balancedbst_p->key_compare(key_p, root->bucket_p->key) < 0)
+	else if(balancedbst_p->key_compare(key_p, root->data_entry.key) < 0)
 	{
 		node* result = NULL;
 		if(root->left_sub_tree != NULL)
@@ -342,7 +342,7 @@ static node* find_node_succeeding_or_equals_recursively(const balancedbst* balan
 		}
 		return result == NULL ? ((node*)root) : result;
 	}
-	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->bucket_p->key) > 0)
+	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) > 0)
 	{
 		return find_node_succeeding_or_equals_recursively(balancedbst_p, root->right_sub_tree, key_p);
 	}
@@ -394,38 +394,38 @@ static node* find_node_with_largest_key(const balancedbst* balancedbst_p)
 const void* find_value(const balancedbst* balancedbst_p, const void* key_p)
 {
 	node* node_p = find_node(balancedbst_p, key_p);
-	return node_p != NULL ? node_p->bucket_p->value : NULL;
+	return node_p != NULL ? node_p->data_entry.value : NULL;
 }
 
 const void* find_value_with_smallest_key(const balancedbst* balancedbst_p)
 {
 	node* node_p = find_node_with_smallest_key(balancedbst_p);
-	return node_p != NULL ? node_p->bucket_p->value : NULL;
+	return node_p != NULL ? node_p->data_entry.value : NULL;
 }
 
 const void* find_value_with_largest_key(const balancedbst* balancedbst_p)
 {
 	node* node_p = find_node_with_largest_key(balancedbst_p);
-	return node_p != NULL ? node_p->bucket_p->value : NULL;
+	return node_p != NULL ? node_p->data_entry.value : NULL;
 }
 
 const void* find_value_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
 {
 	node* node_p = find_node_preceding_or_equals(balancedbst_p, key_p);
-	return node_p != NULL ? node_p->bucket_p->value : NULL;
+	return node_p != NULL ? node_p->data_entry.value : NULL;
 }
 
 const void* find_value_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
 {
 	node* node_p = find_node_succeeding_or_equals(balancedbst_p, key_p);
-	return node_p != NULL ? node_p->bucket_p->value : NULL;
+	return node_p != NULL ? node_p->data_entry.value : NULL;
 }
 
 
 // neither root nor node_p params are suppossed to be NULL in the function below
 static void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
 {
-	if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) < 0 )
+	if( balancedbst_p->key_compare(node_p->data_entry.key, root->data_entry.key) < 0 )
 	{
 		if( root->left_sub_tree == NULL )
 		{
@@ -438,7 +438,7 @@ static void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, n
 			insert_node_in_non_self_balancing_tree(balancedbst_p, root->left_sub_tree, node_p);
 		}
 	}
-	else if( balancedbst_p->key_compare(node_p->bucket_p->key, root->bucket_p->key) >= 0 )
+	else if( balancedbst_p->key_compare(node_p->data_entry.key, root->data_entry.key) >= 0 )
 	{
 		if( root->right_sub_tree == NULL )
 		{
@@ -614,7 +614,7 @@ static void insert_node_in_tree(balancedbst* balancedbst_p, node* node_p)
 	if( is_balancedbst_empty(balancedbst_p) )
 	{
 		balancedbst_p->root = node_p;
-		node_p->node_property = balancedbst_p->balanced_tree_type == NON_SELF_BALANCING ? 0 : 1; // if avl => 1 node to reach NULL, if reb-black => root is always black
+		node_p->node_property = balancedbst_p->balanced_tree_type == NON_SELF_BALANCING ? 0 : 1; // if avl => 1 : number of nodes to reach NULL node, if red-black => root is always black
 		node_p->parent = NULL;
 		balancedbst_p->bucket_count = 1;
 		return;
@@ -663,12 +663,11 @@ int update_value(balancedbst* balancedbst_p, const void* key_p, const void* valu
 	// else update the value for the node found
 	else
 	{
-		bucket* bucket_p = ((bucket*)node_p->bucket_p);
 		if(return_value != NULL)
 		{
-			(*return_value) = bucket_p->value;
+			(*return_value) = node_p->data_entry.value;
 		}
-		bucket_p->value = value_p;
+		node_p->data_entry.value = value_p;
 		return 1;
 	}
 }
@@ -724,9 +723,9 @@ static node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p
 		node* smallest_node_greater_than_node_p = get_smallest_node_from_node(node_p->right_sub_tree);
 
 		// interchange their data, to bring the removal to any of previously seen easy cases
-		const bucket* bucket_p = node_p->bucket_p;
-		node_p->bucket_p = smallest_node_greater_than_node_p->bucket_p;
-		smallest_node_greater_than_node_p->bucket_p = bucket_p;
+		bucket bucket_p = node_p->data_entry;
+		node_p->data_entry = smallest_node_greater_than_node_p->data_entry;
+		smallest_node_greater_than_node_p->data_entry = bucket_p;
 
 		// since we did not remove any node, and now we have duplicate nodes
 		// we ask to recursively remove, the duplicate node
@@ -935,11 +934,11 @@ int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** retu
 		{
 			if(return_key != NULL)
 			{
-				(*(return_key)) = node_p->bucket_p->key;
+				(*(return_key)) = node_p->data_entry.key;
 			}
 			if(return_value != NULL)
 			{
-				(*(return_value)) = node_p->bucket_p->value;
+				(*(return_value)) = node_p->data_entry.value;
 			}
 			delete_node(node_p);
 			deleted_nodes_count++;
@@ -953,7 +952,7 @@ static void for_each_node(const node* node_p, void (*operation)(const void* key,
 	if(node_p != NULL)
 	{
 		for_each_node(node_p->left_sub_tree, operation, additional_params);
-		operation(node_p->bucket_p->key, node_p->bucket_p->value, additional_params);
+		operation(node_p->data_entry.key, node_p->data_entry.value, additional_params);
 		for_each_node(node_p->right_sub_tree, operation, additional_params);
 	}
 }
@@ -985,7 +984,7 @@ static void print_node(node* node_p, void (*print_key)(const void* key), void (*
 
 		printf("\taddress => %d", ((int)node_p));
 		printf("\tdata => ");
-		print_bucket(node_p->bucket_p, print_key, print_value);
+		print_bucket(&(node_p->data_entry), print_key, print_value);
 		printf("\t\twith property = %llu\n", node_p->node_property);
 
 		if( !is_root_node(node_p) )
@@ -1000,7 +999,7 @@ static void print_node(node* node_p, void (*print_key)(const void* key), void (*
 			}
 			printf("\t\t\taddress => %d", ((int)node_p->parent));
 			printf("\tdata => ");
-			print_bucket(node_p->parent->bucket_p, print_key, print_value);
+			print_bucket(&(node_p->parent->data_entry), print_key, print_value);
 		}
 
 		if( (!is_leaf_node(node_p)) )
@@ -1009,13 +1008,13 @@ static void print_node(node* node_p, void (*print_key)(const void* key), void (*
 			{
 				printf("\t\thas a LEFT\n\t\t\tchild  => %d", ((int)node_p->left_sub_tree));
 				printf("\tdata => ");
-				print_bucket(node_p->left_sub_tree->bucket_p, print_key, print_value);
+				print_bucket(&(node_p->left_sub_tree->data_entry), print_key, print_value);
 			}
 			if(node_p->right_sub_tree != NULL)
 			{
 				printf("\t\thas a RIGHT\n\t\t\tchild => %d", ((int)node_p->right_sub_tree)); 
 				printf("\tdata => ");
-				print_bucket(node_p->right_sub_tree->bucket_p, print_key, print_value);
+				print_bucket(&(node_p->right_sub_tree->data_entry), print_key, print_value);
 			}
 		}
 		printf("\n");
