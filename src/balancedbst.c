@@ -982,7 +982,7 @@ static void print_node(node* node_p, void (*print_key)(const void* key), void (*
 			printf("\tINTERNAL NODE :");
 		}
 
-		printf("\taddress => %d", ((int)node_p));
+		printf("\taddress => %p", node_p);
 		printf("\tdata => ");
 		print_bucket(&(node_p->data_entry), print_key, print_value);
 		printf("\t\twith property = %llu\n", node_p->node_property);
@@ -997,7 +997,7 @@ static void print_node(node* node_p, void (*print_key)(const void* key), void (*
 			{
 				printf("\t\tis RIGHT of : \n");
 			}
-			printf("\t\t\taddress => %d", ((int)node_p->parent));
+			printf("\t\t\taddress => %p", node_p->parent);
 			printf("\tdata => ");
 			print_bucket(&(node_p->parent->data_entry), print_key, print_value);
 		}
@@ -1006,13 +1006,13 @@ static void print_node(node* node_p, void (*print_key)(const void* key), void (*
 		{
 			if(node_p->left_sub_tree != NULL)
 			{
-				printf("\t\thas a LEFT\n\t\t\tchild  => %d", ((int)node_p->left_sub_tree));
+				printf("\t\thas a LEFT\n\t\t\tchild  => %p", node_p->left_sub_tree);
 				printf("\tdata => ");
 				print_bucket(&(node_p->left_sub_tree->data_entry), print_key, print_value);
 			}
 			if(node_p->right_sub_tree != NULL)
 			{
-				printf("\t\thas a RIGHT\n\t\t\tchild => %d", ((int)node_p->right_sub_tree)); 
+				printf("\t\thas a RIGHT\n\t\t\tchild => %p", node_p->right_sub_tree); 
 				printf("\tdata => ");
 				print_bucket(&(node_p->right_sub_tree->data_entry), print_key, print_value);
 			}

@@ -330,23 +330,23 @@ void for_each_entry(const linkedlist* ll, void (*operation)(const void* key_p, c
 
 static void print_linkedlist_element_wrapper(node* node_p, const void* print_element)
 {
-	printf("\tprev => %d\n", ((int)node_p->prev));
-	printf("\t\tnode => %d\n", ((int)node_p));
+	printf("\tprev => %p\n", node_p->prev);
+	printf("\t\tnode => %p\n", node_p);
 	printf("\t\tdata => ");((void (*)(const void* data_p))print_element)(node_p->data_p);printf("\n");
-	printf("\tnext => %d\n", ((int)node_p->next));
+	printf("\tnext => %p\n", node_p->next);
 	printf("\n");
 }
 
 static void print_linkedlist_bucket_wrapper(node* node_p, const void* prbucket_p)
 {
-	printf("\tprev => %d\n", ((int)node_p->prev));
-	printf("\t\tnode => %d\n", ((int)node_p));
+	printf("\tprev => %p\n", node_p->prev);
+	printf("\t\tnode => %p\n", node_p);
 	bucket* bucket_p = ((bucket*)(node_p->data_p));
 	bucket* prbucket = ((bucket*)prbucket_p);
 	printf("\t\tdata => ");
 	print_bucket(node_p->data_p, ((void (*)(const void*))(prbucket->key)), ((void (*)(const void*))(prbucket->value)));
 	printf("\n");
-	printf("\tnext => %d\n", ((int)node_p->next));
+	printf("\tnext => %p\n", node_p->next);
 	printf("\n");
 }
 
@@ -360,8 +360,8 @@ void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 	{
 		printf("linkedlist : BUCKETTED\n");
 	}
-	printf("head : %d\n", ((int)ll->head));
-	printf("tail : %d\n", ((int)ll->tail));
+	printf("head : %p\n", ll->head);
+	printf("tail : %p\n", ll->tail);
 	if(ll->type == SIMPLE)
 	{
 		for_each_node_in_list(ll, print_linkedlist_element_wrapper, print_element);
@@ -379,8 +379,8 @@ void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* ke
 	{
 		printf("linkedlist : BUCKETTED\n");
 	}
-	printf("head : %d\n", ((int)ll->head));
-	printf("tail : %d\n", ((int)ll->tail));
+	printf("head : %p\n", ll->head);
+	printf("tail : %p\n", ll->tail);
 	if(ll->type == BUCKETTED)
 	{
 		bucket prbucket = {.key = print_key,.value = print_value};
