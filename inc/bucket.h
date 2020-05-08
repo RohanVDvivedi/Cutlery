@@ -17,6 +17,9 @@ struct bucket
 // get a new bucket
 const bucket* get_bucket(const void* key, const void* value);
 
+// initialize_bucket
+void initialize_bucket(bucket* bucket_p, const void* key, const void* value);
+
 // print the bucket
 void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 

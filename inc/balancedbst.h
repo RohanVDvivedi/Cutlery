@@ -37,7 +37,7 @@ struct node
 	node* parent;
 
 	// the data to store
-	const bucket* bucket_p;
+	bucket data_entry;
 
 	// the property of the node that will be used to help balance the tree
 	// if balanced_tree_type == NON_SELF_BALANCING then node property is ignored

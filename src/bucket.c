@@ -8,6 +8,12 @@ const bucket* get_bucket(const void* key, const void* value)
 	return bucket_p;
 }
 
+void initialize_bucket(bucket* bucket_p, const void* key, const void* value)
+{
+	bucket_p->key = key;
+	bucket_p->value = value;
+}
+
 void print_bucket(const bucket* bucket_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
 	printf("\t");

@@ -25,7 +25,7 @@ balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(co
 node* get_node(const void* key, const void* value)
 {
 	node* node_p = (node*) calloc(1, sizeof(node));
-	node_p->bucket_p = get_bucket(key, value);
+	initialize_bucket(&(node_p->data_entry), key, value);
 	return node_p;
 }
 
@@ -904,7 +904,6 @@ static node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
 
 void delete_node(node* node_p)
 {
-	delete_bucket(((bucket*)node_p->bucket_p));
 	free(node_p);
 }
 
