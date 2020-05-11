@@ -4,10 +4,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+
 #include<array.h>
+#include<bucket_array.h>
+
 #include<linkedlist.h>
 #include<balancedbst.h>
-#include<bucket.h>
 
 // hashmap only manages (create and free) the buckets
 // you are responsible for managing key and value pointers, passed to hashmap
@@ -27,7 +29,7 @@ typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
 {
 	// each element of the hashmap, is itself a bucket
-	// no collision is handled, if there is colision is happening, key and value of that hash index are replaced
+	// no collision is handled, if there is colision is happening, key and value of that bucket on that hash index are replaced
 	// true hashtable, truely O(1)
 	NO_POLICY = 0,
 

@@ -33,6 +33,8 @@ int shrink_bucket_array(array* array_p, unsigned long long int start_index, unsi
 
 void for_each_in_bucket_array(const array* array_p, void (*operation)(const void* key, const void* value, unsigned long long int index, const void* additional_params), const void* additional_params);
 
+void for_each_entry_in_bucket_array(const array* array_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params);
+
 void print_bucket_array(const array* array_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
 #endif

@@ -15,7 +15,14 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 	hashmap_p->key_compare = key_compare;
 
 	// initialize array of the hashmap, it is a buckets_holder
-	initialize_array(&(hashmap_p->buckets_holder), bucket_count);
+	if(hashmap_p->hashmap_policy == NO_POLICY)
+	{
+		initialize_bucket_array(&(hashmap_p->buckets_holder), bucket_count);
+	}
+	else
+	{
+		initialize_array(&(hashmap_p->buckets_holder), bucket_count);
+	}
 
 	hashmap_p->bucket_count = bucket_count;
 	hashmap_p->bucket_occupancy = 0;
@@ -36,6 +43,7 @@ static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const 
 }
 
 // utility, O(1) operation
+// call the below function only if every hashmap bucket is a separate datastructure i.e. closed addressing / open hashing hashmap
 static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
 {
 	// if you try accessing hashtable, index greater than its size
@@ -52,12 +60,6 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 	{
 		switch(hashmap_p->hashmap_policy)
 		{
-			case NO_POLICY :
-			{
-				// create a new bucket with key = NULL, value = NULL
-				ds_p = get_bucket(NULL, NULL);
-				break;
-			}
 			case ELEMENTS_AS_LINKEDLIST :
 			{
 				// create a new linked list
@@ -74,6 +76,10 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 			{
 				// create a new avl tree
 				ds_p = get_balancedbst(AVL_TREE, hashmap_p->key_compare);
+				break;
+			}
+			default :
+			{
 				break;
 			}
 		}
@@ -96,33 +102,18 @@ static const void* get_data_structure_for_key(const hashmap* hashmap_p, const vo
 	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
-static bucket* find_bucket_for_no_policy(const hashmap* hashmap_p, const void* key)
-{
-	// to store pointer to the bucket once it is found
-	bucket* found_bucket_p = NULL;
-
-	// get the data structure for that key, without any new creation
-	const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
-
-	// if we found the under lying data struture, which infact handles collision, we find our bucket inside it
-	if(ds_p != NULL && hashmap_p->hashmap_policy == NO_POLICY)
-	{
-		// if no policy ther is no middle ware data structure handling collision just bucket
-		found_bucket_p = hashmap_p->key_compare(key, ((bucket*)ds_p)->key) == 0 ? ((bucket*)(ds_p)) : NULL;
-	}
-
-	// return the bucket that we found
-	return found_bucket_p;
-}
-
 const void* find_value(const hashmap* hashmap_p, const void* key)
 {
 	switch(hashmap_p->hashmap_policy)
 	{
 		case NO_POLICY :
 		{
-			bucket* found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
-			return ((found_bucket_p == NULL) ? NULL : found_bucket_p->value);
+			unsigned long long int index = get_index_for_key(hashmap_p, key);
+
+			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+			const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+
+			return ((key_at_index != NULL && (hashmap_p->key_compare(key, key_at_index) == 0)) ? value_at_index : NULL);
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
@@ -152,16 +143,17 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 	{
 		case NO_POLICY :
 		{
-			// retrieve data structure for that key
-			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
+			unsigned long long int index = get_index_for_key(hashmap_p, key);
 
-			// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
-			if(((bucket*)ds_p)->key == NULL)
+			// to check and make sure, if we are inserting a new entry
+			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+			if(key_at_index == NULL)
 			{
 				inserted_entry = 1;
 			}
-			((bucket*)ds_p)->key = key;
-			((bucket*)ds_p)->value = value;
+
+			insert_in_bucket_array(&(hashmap_p->buckets_holder), key, value, index);
+
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
@@ -200,19 +192,23 @@ int update_value(hashmap* hashmap_p, const void* key, const void* value, const v
 	{
 		case NO_POLICY :
 		{
-			// find the bucket in the hashmap, which has the same key as this bucket
-			bucket* found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
+			unsigned long long int index = get_index_for_key(hashmap_p, key);
 
-			if(found_bucket_p != NULL)
+			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+			const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+
+			if(key_at_index != NULL && (hashmap_p->key_compare(key, key_at_index) == 0))
 			{
-				// if no policy ther is no middle ware data structure handling collision just bucket, so update its key and value
 				if(return_value != NULL)
 				{
-					(*return_value) = found_bucket_p->value;
+					(*(return_value)) = value_at_index;
 				}
-				found_bucket_p->value = value;
+
+				insert_in_bucket_array(&(hashmap_p->buckets_holder), key, value, index);
+
 				update_made = 1;
 			}
+
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
@@ -251,24 +247,27 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 	{
 		case NO_POLICY :
 		{
-			found_bucket_p = find_bucket_for_no_policy(hashmap_p, key);
-			// if no policy, ds_p is only the bucket
-			if(found_bucket_p != NULL)
-			{
-				// set element at index in array of buckets in the hashmap to NULL
-				set_element(&(hashmap_p->buckets_holder), NULL, get_index_for_key(hashmap_p, key));
-				has_been_deleted = 1;
+			unsigned long long int index = get_index_for_key(hashmap_p, key);
 
+			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+			const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+
+			if(key_at_index != NULL && (hashmap_p->key_compare(key, key_at_index) == 0))
+			{
 				if(return_key != NULL)
 				{
-					(*(return_key)) = found_bucket_p->key;
+					(*(return_key)) = key_at_index;
 				}
 				if(return_value != NULL)
 				{
-					(*(return_value)) = found_bucket_p->value;
+					(*(return_value)) = value_at_index;
 				}
-				delete_bucket(found_bucket_p);
+
+				insert_in_bucket_array(&(hashmap_p->buckets_holder), NULL, NULL, index);
+
+				has_been_deleted = 1;
 			}
+
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
@@ -305,6 +304,12 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 
 void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
 {
+	if(hashmap_p->hashmap_policy == NO_POLICY)
+	{
+		for_each_entry_in_bucket_array(&(hashmap_p->buckets_holder), operation, additional_params);
+		return;
+	}
+
 	// iterate over all the buckets in the hashmap_p
 	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
 	{
@@ -315,11 +320,6 @@ void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key,
 		{
 			switch(hashmap_p->hashmap_policy)
 			{
-				case NO_POLICY :
-				{
-					operation(((bucket*)(ds_p))->key, ((bucket*)(ds_p))->value, additional_params);
-					break;
-				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
 					for_each_entry_in_ll(((linkedlist*)(ds_p)), operation, additional_params);
@@ -329,6 +329,10 @@ void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key,
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
 					for_each_entry_in_bst(((balancedbst*)(ds_p)), operation, additional_params);
+					break;
+				}
+				default :
+				{
 					break;
 				}
 			}
@@ -364,41 +368,49 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 	}
 	printf("bucket_occupancy : %llu\n", hashmap_p->bucket_occupancy);
 	printf("bucket_count : %llu\n", hashmap_p->bucket_count);
-	// iterate over all the buckets in the hashmap_p
-	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
+
+	if(hashmap_p->hashmap_policy == NO_POLICY)
 	{
-		printf("index = %lld\n", index);
-
-		// get the datastructure to be print for that index
-		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
-
-		if(ds_p != NULL)
+		print_bucket_array(&(hashmap_p->buckets_holder), print_key, print_value);
+	}
+	else
+	{
+		// iterate over all the buckets in the hashmap_p
+		for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
 		{
-			switch(hashmap_p->hashmap_policy)
+			printf("index = %lld\n", index);
+
+			// get the datastructure to be print for that index
+			const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
+
+			if(ds_p != NULL)
 			{
-				case NO_POLICY :
+				switch(hashmap_p->hashmap_policy)
 				{
-					print_bucket(((bucket*)(ds_p)), print_key, print_value);
-					break;
-				}
-				case ELEMENTS_AS_LINKEDLIST :
-				{
-					print_linkedlist_bucketted(((linkedlist*)(ds_p)), print_key, print_value);
-					break;
-				}
-				case ELEMENTS_AS_AVL_BST :
-				case ELEMENTS_AS_RED_BLACK_BST :
-				{
-					print_balancedbst(((balancedbst*)(ds_p)), print_key, print_value);
-					break;
+					case NO_POLICY :
+					{
+						print_bucket(((bucket*)(ds_p)), print_key, print_value);
+						break;
+					}
+					case ELEMENTS_AS_LINKEDLIST :
+					{
+						print_linkedlist_bucketted(((linkedlist*)(ds_p)), print_key, print_value);
+						break;
+					}
+					case ELEMENTS_AS_AVL_BST :
+					case ELEMENTS_AS_RED_BLACK_BST :
+					{
+						print_balancedbst(((balancedbst*)(ds_p)), print_key, print_value);
+						break;
+					}
 				}
 			}
-		}
-		else
-		{
-			printf("\tEMPTY\n");
-		}
+			else
+			{
+				printf("\tEMPTY\n");
+			}
 
+		}
 	}
 	printf("\n\n");
 }
