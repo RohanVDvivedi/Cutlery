@@ -33,10 +33,21 @@ void print_key(const void* key)
 	printf("%d", (*((int*)key)));
 }
 
+void insert_wrapper(const void* key, const void* value, const void* additional_params)
+{
+	insert_entry_in_hash(((hashmap*)(additional_params)), key, value);
+}
+
+void rehash(hashmap* old_p, hashmap* new_p)
+{
+	for_each_entry_in_hash(old_p, insert_wrapper, new_p);
+}
+
+#define POLICY_USED /*NO_POLICY*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
+
 int main()
 {
-	hashmap* hashmap_p = get_hashmap(4, hash_function, key_cmp,
-		/*NO_POLICY*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/);
+	hashmap* hashmap_p = get_hashmap(4, hash_function, key_cmp, POLICY_USED);
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
@@ -135,20 +146,21 @@ int main()
 	printf("\n\nBefore rehashing - 16\n");
 	print_hashmap(hashmap_p, print_key, print_ts);
 
-	rehash_to_size(hashmap_p, 16);
+	hashmap* hashmap_16 = get_hashmap(16, hash_function, key_cmp, POLICY_USED);
+	rehash(hashmap_p, hashmap_16);
 
 	printf("\n\nAfter rehashing - 16\n");
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_16, print_key, print_ts);
 
-	printf("\n\nBefore rehashing - 20\n");
-	print_hashmap(hashmap_p, print_key, print_ts);
-
-	rehash_to_size(hashmap_p, 20);
+	hashmap* hashmap_20 = get_hashmap(20, hash_function, key_cmp, POLICY_USED);
+	rehash(hashmap_p, hashmap_20);
 
 	printf("\n\nAfter rehashing - 20\n");
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_20, print_key, print_ts);
 
 	delete_hashmap(hashmap_p);
+	delete_hashmap(hashmap_16);
+	delete_hashmap(hashmap_20);
 
 	return 0;
 }
