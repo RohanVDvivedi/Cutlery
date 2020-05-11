@@ -15,7 +15,7 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 	hashmap_p->key_compare = key_compare;
 
 	// initialize array of the hashmap, it is a buckets_holder
-	hashmap_p->buckets_holder = get_array(bucket_count);
+	initialize_array(&(hashmap_p->buckets_holder), bucket_count);
 
 	hashmap_p->bucket_count = bucket_count;
 	hashmap_p->bucket_occupancy = 0;
@@ -30,7 +30,7 @@ static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const 
 	unsigned long long int hash = hashmap_p->hash_function(key);
 
 	// calculate index
-	unsigned long long int index = hash % hashmap_p->buckets_holder->total_size;
+	unsigned long long int index = hash % hashmap_p->buckets_holder.total_size;
 
 	return index;
 }
@@ -39,13 +39,13 @@ static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const 
 static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
 {
 	// if you try accessing hashtable, index greater than its size
-	if(index >= hashmap_p->buckets_holder->total_size)
+	if(index >= hashmap_p->buckets_holder.total_size)
 	{
 		return NULL;
 	}
 
 	// get the data structure at that index
-	const void* ds_p = get_element(hashmap_p->buckets_holder, index);
+	const void* ds_p = get_element(&(hashmap_p->buckets_holder), index);
 
 	// if the data structure is NULL
 	if(ds_p == NULL && new_if_empty)
@@ -79,7 +79,7 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 		}
 
 		// set it at the index there
-		set_element(hashmap_p->buckets_holder, ds_p, index);
+		set_element((array*)(&(hashmap_p->buckets_holder)), ds_p, index);
 	}
 
 	// return the data structure at that index
@@ -256,7 +256,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 			if(found_bucket_p != NULL)
 			{
 				// set element at index in array of buckets in the hashmap to NULL
-				set_element(hashmap_p->buckets_holder, NULL, get_index_for_key(hashmap_p, key));
+				set_element(&(hashmap_p->buckets_holder), NULL, get_index_for_key(hashmap_p, key));
 				has_been_deleted = 1;
 
 				if(return_key != NULL)
@@ -303,81 +303,10 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 	return has_been_deleted;
 }
 
-static void put_entry_in_bst_or_ll_wrapper(const void* key, const void* value, const void* new_hashmap_p)
-{
-	// insert this entry in the new hashmap
-	insert_entry( ((hashmap*)(new_hashmap_p)), key, value);
-}
-
-void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size)
-{
-	// make a local new hashmap properties holder
-	hashmap new_hashmap_properties = {.hashmap_policy = hashmap_p->hashmap_policy, .hash_function = hashmap_p->hash_function, .key_compare = hashmap_p->key_compare, .buckets_holder = get_array(new_bucket_size), .bucket_count = new_bucket_size, .bucket_occupancy = 0};
-
-	// iterate over all the elements in the hashmap_p
-	// and add them to the newly statically maintained hashmap
-	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
-	{
-		// get the datastructure to be printed for that index
-		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
-
-		if(ds_p != NULL)
-		{
-			switch(hashmap_p->hashmap_policy)
-			{
-				case NO_POLICY :
-				{
-					// ds_p = bucket, when No pilicy is used
-					insert_entry(&new_hashmap_properties, ((bucket*)(ds_p))->key, ((bucket*)(ds_p))->value);
-
-					// delete the old bucket
-					delete_bucket(((bucket*)(ds_p)));
-					break;
-				}
-				case ELEMENTS_AS_LINKEDLIST :
-				{
-					// iterate over all the elements of the linkedlist and insert all the key value entries
-					for_each_entry_in_ll(((linkedlist*)(ds_p)), put_entry_in_bst_or_ll_wrapper, &new_hashmap_properties);
-
-					// delete linkedlist
-					delete_linkedlist(((linkedlist*)(ds_p)));
-					break;
-				}
-				case ELEMENTS_AS_AVL_BST :
-				case ELEMENTS_AS_RED_BLACK_BST :
-				{
-					// iterate over all the elements of the bst and insert all the key value entries
-					for_each_entry_in_bst(((balancedbst*)(ds_p)), put_entry_in_bst_or_ll_wrapper, &new_hashmap_properties);
-
-					// delete complete old bst
-					delete_balancedbst(((balancedbst*)(ds_p)));
-					break;
-				}
-			}
-
-			// since the datastructure is deleted, we set the pointer of linkedlist to NULL, in the array
-			set_element(hashmap_p->buckets_holder, NULL, index);
-		}
-	}
-
-	// delete bucket array and assign a new one to it
-	delete_array(hashmap_p->buckets_holder);
-
-	// by reassign the values to it from the new hash map
-	(*hashmap_p) = new_hashmap_properties;
-}
-
-static void print_bucket_wrapper(void* bucket_p_to_print, const void* bucket_p_functions)
-{
-	bucket* bucket_p_to_print_t = ((bucket*)bucket_p_to_print);
-	bucket* bucket_p_functions_t = ((bucket*)bucket_p_functions);
-	print_bucket(bucket_p_to_print_t, bucket_p_functions_t->key, bucket_p_functions_t->value);
-}
-
 void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
 {
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
+	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
 	{
 		// get the datastructure to be print for that index
 		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
@@ -409,7 +338,6 @@ void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key,
 
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
 {
-	bucket print_functions = {.key = print_key, .value = print_value};
 	printf("HASHMAP : ");
 	switch(hashmap_p->hashmap_policy)
 	{
@@ -437,7 +365,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 	printf("bucket_occupancy : %llu\n", hashmap_p->bucket_occupancy);
 	printf("bucket_count : %llu\n", hashmap_p->bucket_count);
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
+	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
 	{
 		printf("index = %lld\n", index);
 
@@ -477,7 +405,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 
 void delete_hashmap(hashmap* hashmap_p)
 {
-	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder->total_size; index++)
+	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
 	{
 		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
 		if(ds_p != NULL)
@@ -501,10 +429,10 @@ void delete_hashmap(hashmap* hashmap_p)
 					break;
 				}
 			}
-			set_element(hashmap_p->buckets_holder, NULL, index);
+			set_element(&(hashmap_p->buckets_holder), NULL, index);
 		}
 	}
-	delete_array(hashmap_p->buckets_holder);
+	deinitialize_array(&(hashmap_p->buckets_holder));
 	free(hashmap_p);
 }
 

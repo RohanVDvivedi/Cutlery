@@ -58,7 +58,7 @@ struct hashmap
 	int (*key_compare)(const void* key1, const void* key2);
 
 	// pinter to the array of buckets
-	array* buckets_holder;
+	array buckets_holder;
 
 	// this is the number of buckets, which are occupied in the hashmap
 	unsigned long long int bucket_occupancy;
@@ -82,10 +82,6 @@ int update_value(hashmap* hashmap_p, const void* key_p, const void* value_p, con
 
 // returns 1 if the bucket is found and removed from hashmap and deleted
 int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value);
-
-// the following function rehashes the hashmap pointed by hashmap_p, to a new size (probably larger)
-// used to expand hashmap once the load factor is greater than 0.7 
-void rehash_to_size(hashmap* hashmap_p, unsigned long long int new_bucket_size);
 
 // print complete hashmap
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
