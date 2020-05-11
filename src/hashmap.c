@@ -37,7 +37,7 @@ static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const 
 	unsigned long long int hash = hashmap_p->hash_function(key);
 
 	// calculate index
-	unsigned long long int index = hash % hashmap_p->buckets_holder.total_size;
+	unsigned long long int index = hash % hashmap_p->bucket_count;
 
 	return index;
 }
@@ -417,31 +417,33 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 
 void delete_hashmap(hashmap* hashmap_p)
 {
-	for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
+	if(hashmap_p->hashmap_policy != NO_POLICY)
 	{
-		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
-		if(ds_p != NULL)
+		for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
 		{
-			switch(hashmap_p->hashmap_policy)
+			const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
+			if(ds_p != NULL)
 			{
-				case NO_POLICY :
+				switch(hashmap_p->hashmap_policy)
 				{
-					delete_bucket(((bucket*)(ds_p)));
-					break;
+					case ELEMENTS_AS_LINKEDLIST :
+					{
+						delete_linkedlist(((linkedlist*)(ds_p)));
+						break;
+					}
+					case ELEMENTS_AS_AVL_BST :
+					case ELEMENTS_AS_RED_BLACK_BST :
+					{
+						delete_balancedbst(((balancedbst*)(ds_p)));
+						break;
+					}
+					default :
+					{
+						break;
+					}
 				}
-				case ELEMENTS_AS_LINKEDLIST :
-				{
-					delete_linkedlist(((linkedlist*)(ds_p)));
-					break;
-				}
-				case ELEMENTS_AS_AVL_BST :
-				case ELEMENTS_AS_RED_BLACK_BST :
-				{
-					delete_balancedbst(((balancedbst*)(ds_p)));
-					break;
-				}
+				set_element(&(hashmap_p->buckets_holder), NULL, index);
 			}
-			set_element(&(hashmap_p->buckets_holder), NULL, index);
 		}
 	}
 	deinitialize_array(&(hashmap_p->buckets_holder));
