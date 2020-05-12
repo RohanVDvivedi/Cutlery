@@ -5,13 +5,15 @@
 #define get_top 		get_top_heap
 #define for_each_entry 	for_each_entry_in_heap
 
-heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1))
+heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
 {
 	heap* heap_p = ((heap*)(malloc(sizeof(heap))));
 	heap_p->type = type;
 	heap_p->key_compare = key_compare;
 	initialize_bucket_array(&(heap_p->heap_holder), expected_size + 1);
 	heap_p->heap_size = 0;
+	heap_p->heap_index_update_callback = heap_index_update_callback;
+	heap_p->additional_params = additional_params;
 	return heap_p;
 }
 
@@ -44,6 +46,13 @@ static void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long in
 
 	insert_in_bucket_array(&(heap_p->heap_holder), key_p_i1, value_p_i1, i2);
 	insert_in_bucket_array(&(heap_p->heap_holder), key_p_i2, value_p_i2, i1);
+
+	// once the buckets have been interchanged we call update index on the elements
+	if(heap_p->heap_index_update_callback != NULL)
+	{
+		heap_p->heap_index_update_callback(key_p_i1, value_p_i1, i2, heap_p->additional_params);
+		heap_p->heap_index_update_callback(key_p_i2, value_p_i2, i1, heap_p->additional_params);
+	}
 }
 
 // returns true (1) if, the reordering is required, else 0
@@ -125,6 +134,12 @@ void push(heap* heap_p, const void* key, const void* value)
 
 	// insert a new bucket to the holder at the last index and increment heap size
 	insert_in_bucket_array(&(heap_p->heap_holder), key, value, heap_p->heap_size++);
+
+	// after insertion we need to make a callback, that a bucket index has been updated
+	if(heap_p->heap_index_update_callback != NULL)
+	{
+		heap_p->heap_index_update_callback(key, value, heap_p->heap_size-1, heap_p->additional_params);
+	}
 
 	// bubble up the newly added element at index heap_p->heap_size-1, to its desired place
 	bubble_up(heap_p, heap_p->heap_size-1);

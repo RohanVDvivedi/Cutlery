@@ -34,10 +34,18 @@ struct heap
 	
 	// number of buckets in the heap
 	unsigned long long int heap_size;
+
+	// heap_index_update
+	// everytime heap updates the position/index of a key->value pair in heap, it will make a call to this function
+	// it can be provided as NULL aswell, if you do not need this functionality
+	// you may use this functionality to cache the heap_index of any element, and later call heapify on the index, to restore heap property, after updating the index
+	// please keep this method as small as possible, to ensure O(log(n)) push and pop execution costs
+	void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params);
+	const void* additional_params;
 };
 
 // build and get a new heap, with expected size, and of the given heap type (either MIN_HEAP or MAX_HEAP)
-heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1));
+heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params);
 
 // push a new bucket to the heap
 // O(log(N)) operation

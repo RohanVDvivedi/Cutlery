@@ -5,6 +5,7 @@ struct teststruct
 {
 	int a;
 	char* s;
+	int index;
 };
 
 typedef struct key ke;
@@ -25,7 +26,7 @@ int key_cmp(const void* key1, const void* key2)
 
 void print_ts(const void* tsv)
 {
-	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+	printf(" %d, %s =<HEAP_INDEX>=> %d", ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->index);
 }
 
 void print_key(const void* key)
@@ -42,9 +43,14 @@ void change_key(heap* heap_p, unsigned long long int index, int new_key)
 	}
 }
 
+void update_index_callback(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params)
+{
+	((ts*)value)->index = heap_index;
+}
+
 int main()
 {
-	heap* heap_p = get_heap(5, MIN_HEAP, key_cmp);
+	heap* heap_p = get_heap(5, MIN_HEAP, key_cmp, update_index_callback, NULL);
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){1}), &((ts){1, "one"}));
