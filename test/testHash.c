@@ -45,9 +45,27 @@ void rehash(hashmap* old_p, hashmap* new_p)
 
 #define POLICY_USED NO_POLICY /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
 
+#define HASH_BUCKETS 4
+
+#if POLICY_USED == NO_POLICY
+	#undef HASH_BUCKETS
+	#define HASH_BUCKETS 40
+#endif
+
+//#define USE_STACK_MEMORY
+#define USE_HEAP_MEMORY
+
 int main()
 {
-	hashmap* hashmap_p = get_hashmap(4, hash_function, key_cmp, POLICY_USED);
+	#if defined USE_STACK_MEMORY
+		printf("HASHMAP WILL BE CREATED ON STACK MEMORY\n\n");
+		hashmap hashmap_temp;
+		hashmap* hashmap_p = &hashmap_temp;
+		initialize_hashmap(hashmap_p, HASH_BUCKETS, hash_function, key_cmp, POLICY_USED);
+	#elif defined USE_HEAP_MEMORY
+		printf("HASHMAP WILL BE CREATED ON HEAP MEMORY\n\n");
+		hashmap* hashmap_p = get_hashmap(HASH_BUCKETS, hash_function, key_cmp, POLICY_USED);
+	#endif
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
@@ -158,7 +176,12 @@ int main()
 	printf("\n\nAfter rehashing - 20\n");
 	print_hashmap(hashmap_20, print_key, print_ts);
 
-	delete_hashmap(hashmap_p);
+	#if defined USE_STACK_MEMORY
+		deinitialize_hashmap(hashmap_p);
+	#elif defined USE_HEAP_MEMORY
+		delete_hashmap(hashmap_p);
+	#endif
+
 	delete_hashmap(hashmap_16);
 	delete_hashmap(hashmap_20);
 
