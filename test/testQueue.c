@@ -12,11 +12,23 @@ void print_ts(const void* tsv)
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
+#define USE_STACK_MEMORY
+//#define USE_HEAP_MEMORY
+
 int main()
 {
 	int iter = 0;
 
-	queue* queue_p = get_queue(5);
+	#if defined USE_STACK_MEMORY
+		printf("QUEUE WILL BE CREATED ON STACK MEMORY\n\n");
+		queue queue_temp;
+		queue* queue_p = &queue_temp;
+		initialize_queue(queue_p, 5);
+	#elif defined USE_HEAP_MEMORY
+		printf("QUEUE WILL BE CREATED ON HEAP MEMORY\n\n");
+		queue* queue_p = get_queue(5);
+	#endif
+
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 0
 
 	push_queue(queue_p, &((ts){1, "one"}));
@@ -232,6 +244,11 @@ int main()
 	pop_queue(queue_p);
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 71
 
-	delete_queue(queue_p);
+	#if defined USE_STACK_MEMORY
+		deinitialize_queue(queue_p);
+	#elif defined USE_HEAP_MEMORY
+		delete_queue(queue_p);
+	#endif
+
 	return 0;
 }
