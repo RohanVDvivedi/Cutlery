@@ -12,9 +12,21 @@ void print_ts(const void* tsv)
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
+#define USE_STACK_MEMORY
+//#define USE_HEAP_MEMORY
+
 int main()
 {
-	stack* stack_p = get_stack(5);
+	#if defined USE_STACK_MEMORY
+		printf("STACK WILL BE CREATED ON STACK MEMORY\n\n");
+		stack stack_temp;
+		stack* stack_p = &stack_temp;
+		initialize_stack(stack_p, 5);
+	#elif defined USE_HEAP_MEMORY
+		printf("STACK WILL BE CREATED ON HEAP MEMORY\n\n");
+		stack* stack_p = get_stack(5);
+	#endif
+	
 	print_stack(stack_p, print_ts);
 
 	push_stack(stack_p, &((ts){1, "one"}));
@@ -107,6 +119,11 @@ int main()
 	pop_stack(stack_p);
 	print_stack(stack_p, print_ts);
 
-	delete_stack(stack_p);
+	#if defined USE_STACK_MEMORY
+		deinitialize_stack(stack_p);
+	#elif defined USE_HEAP_MEMORY
+		delete_stack(stack_p);
+	#endif
+
 	return 0;
 }
