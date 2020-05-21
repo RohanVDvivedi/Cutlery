@@ -48,9 +48,21 @@ void update_index_callback(const void* key, const void* value, unsigned long lon
 	((ts*)value)->index = heap_index;
 }
 
+#define USE_STACK_MEMORY
+//#define USE_HEAP_MEMORY
+
 int main()
 {
-	heap* heap_p = get_heap(5, MIN_HEAP, key_cmp, update_index_callback, NULL);
+	#if defined USE_STACK_MEMORY
+		printf("HEAP WILL BE CREATED ON STACK MEMORY\n\n");
+		heap heap_temp;
+		heap* heap_p = &heap_temp;
+		initialize_heap(heap_p, 5, MIN_HEAP, key_cmp, update_index_callback, NULL);
+	#elif defined USE_HEAP_MEMORY
+		printf("HEAP WILL BE CREATED ON HEAP MEMORY\n\n");
+		heap* heap_p = get_heap(5, MIN_HEAP, key_cmp, update_index_callback, NULL);
+	#endif
+
 	print_heap(heap_p, print_key, print_ts);
 
 	push_heap(heap_p, &((ke){1}), &((ts){1, "one"}));
@@ -242,6 +254,11 @@ int main()
 	pop_heap(heap_p);
 	print_heap(heap_p, print_key, print_ts);
 
-	delete_heap(heap_p);
+	#if defined USE_STACK_MEMORY
+		deinitialize_heap(heap_p);
+	#elif defined USE_HEAP_MEMORY
+		delete_heap(heap_p);
+	#endif
+
 	return 0;
 }
