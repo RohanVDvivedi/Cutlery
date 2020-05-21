@@ -47,6 +47,9 @@ struct heap
 // build and get a new heap, with expected size, and of the given heap type (either MIN_HEAP or MAX_HEAP)
 heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params);
 
+// initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
+void initialize_heap(heap* heap_p, unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params);
+
 // push a new bucket to the heap
 // O(log(N)) operation
 void push(heap* heap_p, const void* key, const void* value);
@@ -62,6 +65,10 @@ void pop(heap* heap_p);
 // the below function is to be called when you doubt if the heap properties are being maintained at the given index
 // if your doubt turns out to be true and the heap property is being violated, the heap property would be restored at that place
 void heapify_at(heap* heap_p, unsigned long long int index);
+
+// frees all the data being held by the heap, this function, does not release memory of the actual heap structure, only the memory of the components
+// the same heap can be reused by calling initialize_heap function, after it is deinitialized
+void deinitialize_heap(heap* heap_p);
 
 // delete heap and heap_holder array, along with all its buckets
 void delete_heap(heap* heap_p);

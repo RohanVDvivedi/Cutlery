@@ -8,13 +8,18 @@
 heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
 {
 	heap* heap_p = ((heap*)(malloc(sizeof(heap))));
+	initialize_heap(heap_p, expected_size, type, key_compare, heap_index_update_callback, additional_params);
+	return heap_p;
+}
+
+void initialize_heap(heap* heap_p, unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
+{
 	heap_p->type = type;
 	heap_p->key_compare = key_compare;
 	initialize_bucket_array(&(heap_p->heap_holder), expected_size + 1);
 	heap_p->heap_size = 0;
 	heap_p->heap_index_update_callback = heap_index_update_callback;
 	heap_p->additional_params = additional_params;
-	return heap_p;
 }
 
 // utility : gets index of the bucket, that is the parent to the given bucket at index = child
@@ -257,10 +262,15 @@ void heapify_at(heap* heap_p, unsigned long long int index)
 	}
 }
 
-void delete_heap(heap* heap_p)
+void deinitialize_heap(heap* heap_p)
 {
 	deinitialize_array(&(heap_p->heap_holder));
 	heap_p->heap_size = 0;
+}
+
+void delete_heap(heap* heap_p)
+{
+	deinitialize_heap(heap_p);
 	free(heap_p);
 }
 
