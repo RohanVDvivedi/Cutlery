@@ -8,11 +8,16 @@
 queue* get_queue(unsigned long long int expected_size)
 {
 	queue* queue_p = (queue*) calloc(1, sizeof(queue));
+	initialize_queue(queue_p, expected_size);
+	return queue_p;
+}
+
+void initialize_queue(queue* queue_p, unsigned long long int expected_size)
+{
 	initialize_array(&(queue_p->queue_holder), expected_size + 1);
 	queue_p->queue_size = 0;
 	queue_p->earliest_element_index = 1;
 	queue_p->latest_element_index = 0;
-	return queue_p;
 }
 
 static unsigned long long int revolveToNextIndex(queue* queue_p, unsigned long long int index)
@@ -99,11 +104,17 @@ const void* get_top(queue* queue_p)
 	return get_element(&(queue_p->queue_holder), queue_p->earliest_element_index);
 }
 
-void delete_queue(queue* queue_p)
+void deinitialize_queue(queue* queue_p)
 {
 	deinitialize_array(&(queue_p->queue_holder));
+	queue_p->queue_size = 0;
 	queue_p->earliest_element_index = 1;
 	queue_p->latest_element_index = 0;
+}
+
+void delete_queue(queue* queue_p)
+{
+	deinitialize_queue(queue_p);
 	free(queue_p);
 }
 

@@ -47,7 +47,7 @@ struct heap
 // build and get a new heap, with expected size, and of the given heap type (either MIN_HEAP or MAX_HEAP)
 heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params);
 
-// initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
+// initializes heap and it will depend on initialize_bucket_array to give necessary memory to manage internal element contents
 void initialize_heap(heap* heap_p, unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params);
 
 // push a new bucket to the heap

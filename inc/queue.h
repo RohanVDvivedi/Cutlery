@@ -27,6 +27,9 @@ struct queue
 // build and get a new queue
 queue* get_queue(unsigned long long int expected_size);
 
+// initializes queue and it will depend on initialize_array to give necessary memory to manage internal element contents
+void initialize_queue(queue* queue_p, unsigned long long int expected_size);
+
 // push a new element to the queue
 void push(queue* queue_p, const void* data_p);
 
@@ -35,6 +38,10 @@ void pop(queue* queue_p);
 
 // returns pointer to the top element data pointer, (i.e. data pointer to the earliest inserted element) 
 const void* get_top(queue* queue_p);
+
+// frees all the data being held by the queue, this function, does not release memory of the actual queue structure, only the memory of the components
+// the same queue can be reused by calling initialize_queue function, after it is deinitialized
+void deinitialize_queue(queue* queue_p);
 
 // delete queue and queue_holder array
 void delete_queue(queue* queue_p);
