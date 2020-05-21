@@ -15,7 +15,7 @@ struct key
 
 unsigned long long int hash_function(const void* key)
 {
-	return (*((unsigned long long int *)key))-1;
+	return (unsigned long long int)((*((int *)key))-1);
 }
 
 int key_cmp(const void* key1, const void* key2)
@@ -52,8 +52,8 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	#define HASH_BUCKETS 40
 #endif
 
-//#define USE_STACK_MEMORY
-#define USE_HEAP_MEMORY
+#define USE_STACK_MEMORY
+//#define USE_HEAP_MEMORY
 
 int main()
 {
