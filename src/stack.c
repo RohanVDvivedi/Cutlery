@@ -8,9 +8,14 @@
 stack* get_stack(unsigned long long int expected_size)
 {
 	stack* stack_p = (stack*) calloc(1, sizeof(stack));
+	initialize_stack(stack_p, expected_size);
+	return stack_p;
+}
+
+void initialize_stack(stack* stack_p, unsigned long long int expected_size)
+{
 	initialize_array(&(stack_p->stack_holder), expected_size + 1);
 	stack_p->stack_size = 0;
-	return stack_p;
 }
 
 void push(stack* stack_p, const void* data_p)
@@ -45,10 +50,15 @@ const void* get_top(stack* stack_p)
 	return stack_p->stack_size > 0 ? get_element(&(stack_p->stack_holder), stack_p->stack_size - 1) : NULL;
 }
 
-void delete_stack(stack* stack_p)
+void deinitialize_stack(stack* stack_p)
 {
 	deinitialize_array(&(stack_p->stack_holder));
 	stack_p->stack_size = 0;
+}
+
+void delete_stack(stack* stack_p)
+{
+	deinitialize_stack(stack_p);
 	free(stack_p);
 }
 
