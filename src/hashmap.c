@@ -10,6 +10,12 @@
 hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy)
 {
 	hashmap* hashmap_p = ((hashmap*) calloc(1, sizeof(hashmap)));
+	initialize_hashmap(hashmap_p, bucket_count, hash_function, key_compare, hashmap_policy);
+	return hashmap_p;
+}
+
+void initialize_hashmap(hashmap* hashmap_p, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy)
+{
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->key_compare = key_compare;
@@ -26,7 +32,6 @@ hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int
 
 	hashmap_p->bucket_count = bucket_count;
 	hashmap_p->bucket_occupancy = 0;
-	return hashmap_p;
 }
 
 // utility :-> gets index after hashing and mod of the hash
@@ -415,7 +420,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 	printf("\n\n");
 }
 
-void delete_hashmap(hashmap* hashmap_p)
+void deinitialize_hashmap(hashmap* hashmap_p)
 {
 	if(hashmap_p->hashmap_policy != NO_POLICY)
 	{
@@ -447,6 +452,11 @@ void delete_hashmap(hashmap* hashmap_p)
 		}
 	}
 	deinitialize_array(&(hashmap_p->buckets_holder));
+}
+
+void delete_hashmap(hashmap* hashmap_p)
+{
+	deinitialize_hashmap(hashmap_p);
 	free(hashmap_p);
 }
 

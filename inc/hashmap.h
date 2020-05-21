@@ -73,6 +73,9 @@ struct hashmap
 // bucket count remains the same unless rehash is called with a new size
 hashmap* get_hashmap(unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy);
 
+// initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
+void initialize_hashmap(hashmap* hashmap_p, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy);
+
 // place a new bucket in the hashmap, with key as key and value as value
 void insert_entry(hashmap* hashmap_p, const void* key, const void* value);
 
@@ -87,6 +90,10 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 
 // print complete hashmap
 void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
+
+// frees all the data being held by the hashmap, this function, does not release memory of the actual hashmap structure, only the memory of the components
+// the same hashmap can be reused by calling initialize_hashmap function, after it is deinitialized
+void deinitialize_hashmap(hashmap* hashmap_p);
 
 // deletes all the data allocated by the hashmap and the hashmap itself
 void delete_hashmap(hashmap* hashmap_p);
