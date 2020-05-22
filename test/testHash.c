@@ -30,7 +30,7 @@ void print_ts(const void* tsv)
 
 void print_key(const void* key)
 {
-	printf("%d", (*((int*)key)));
+	printf("%d hash(%llu)", (*((int*)key)), hash_function(key));
 }
 
 void insert_wrapper(const void* key, const void* value, const void* additional_params)
@@ -43,13 +43,13 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	for_each_entry_in_hash(old_p, insert_wrapper, new_p);
 }
 
-#define POLICY_USED NO_POLICY /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
+#define POLICY_USED ROBINHOOD_HASHING /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
 
 #define HASH_BUCKETS 4
 
-#if POLICY_USED == NO_POLICY
+#if POLICY_USED == ROBINHOOD_HASHING
 	#undef HASH_BUCKETS
-	#define HASH_BUCKETS 40
+	#define HASH_BUCKETS 10
 #endif
 
 #define USE_STACK_MEMORY
@@ -160,6 +160,10 @@ int main()
 	print_hashmap(hashmap_p, print_key, print_ts);
 
 	insert_entry_in_hash(hashmap_p, &((ke){40}), &((ts){4000, "forty"}));
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	update_value_in_hash(hashmap_p, &((ke){70}), &((ts){7000, "seventy"}), NULL);
 
 	printf("\n\nBefore rehashing - 16\n");
 	print_hashmap(hashmap_p, print_key, print_ts);
