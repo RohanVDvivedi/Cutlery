@@ -11,13 +11,6 @@
 #include<linkedlist.h>
 #include<balancedbst.h>
 
-// hashmap only manages (create and free) the buckets
-// you are responsible for managing key and value pointers, passed to hashmap
-// collisions are resolved by managing buckets as a linked list
-// hashmap will not clone/touch/modify/free the memory pointed to by the pointer passed for key and value referencing
-// and definately not create any new look alikes of key,value,
-// hashmap will just store them directly in bucket and use the memory pointed by them when required
-
 // to avoid name collision with functions of balancedbst
 #define insert_entry	insert_entry_in_hash
 #define find_value		find_value_from_hash
@@ -29,9 +22,9 @@ typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
 {
 	// each element of the hashmap, is itself a bucket
-	// no collision is handled, if there is colision is happening, key and value of that bucket on that hash index are replaced
+	// collision is handled using Robinhood hashing,
 	// true hashtable, truely O(1)
-	NO_POLICY = 0,
+	ROBINHOOD_HASHING = 0,
 
 	// each element if the hashmap is a linkedlist of buckets
 	// worst case search is O(n)

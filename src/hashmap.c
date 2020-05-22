@@ -21,7 +21,7 @@ void initialize_hashmap(hashmap* hashmap_p, unsigned long long int bucket_count,
 	hashmap_p->key_compare = key_compare;
 
 	// initialize array of the hashmap, it is a buckets_holder
-	if(hashmap_p->hashmap_policy == NO_POLICY)
+	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
 	{
 		initialize_bucket_array(&(hashmap_p->buckets_holder), bucket_count);
 	}
@@ -48,6 +48,7 @@ static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const 
 }
 
 // utility, O(1) operation
+// function used for ELEMENTS_AS_LINKEDLIST, ELEMENTS_AS_RED_BLACK_BST and ELEMENTS_AS_AVL_BST only
 // call the below function only if every hashmap bucket is a separate datastructure i.e. closed addressing / open hashing hashmap
 static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
 {
@@ -98,6 +99,7 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 }
 
 // utility, O(1) operation
+// function used for ELEMENTS_AS_LINKEDLIST, ELEMENTS_AS_RED_BLACK_BST and ELEMENTS_AS_AVL_BST only
 static const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key, int new_if_empty)
 {
 	// get index for that key
@@ -107,18 +109,75 @@ static const void* get_data_structure_for_key(const hashmap* hashmap_p, const vo
 	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
+// function used for ROBINHOOD_HASHING only
+static unsigned long long int get_probe_sequence_length(const hashmap* hashmap_p, const void* key, unsigned long long int index_actual)
+{
+	unsigned long long int index_expected = get_index_for_key(hashmap_p, key);
+
+	if(index_actual >= index_expected)
+	{
+		return index_actual - index_expected;
+	}
+	else
+	{
+		return index_actual + hashmap_p->bucket_count - index_expected;
+	}
+}
+
+// function used for ROBINHOOD_HASHING only
+static unsigned long long int get_expected_index(const hashmap* hashmap_p, const void* key)
+{
+	unsigned long long int index = get_index_for_key(hashmap_p, key);
+	unsigned long long int probe_sequence_length = 0;
+
+	const void* key_at_index = NULL;
+
+	while(probe_sequence_length < hashmap_p->bucket_count)
+	{
+		key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+
+		if(key_at_index != NULL)
+		{
+			if(hashmap_p->key_compare(key, key_at_index) != 0)
+			{
+				if(probe_sequence_length > get_probe_sequence_length(hashmap_p, key_at_index, index))
+				{
+					break;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		else
+		{
+			break;
+		}
+
+		index = (index + 1) % hashmap_p->bucket_count;
+		probe_sequence_length++;
+	}
+
+	return index;
+}
+
 const void* find_value(const hashmap* hashmap_p, const void* key)
 {
 	switch(hashmap_p->hashmap_policy)
 	{
-		case NO_POLICY :
+		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_index_for_key(hashmap_p, key);
+			unsigned long long int index = get_expected_index(hashmap_p, key);
 
 			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
-			const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+			
+			if(key_at_index != NULL && hashmap_p->key_compare(key, key_at_index) == 0)
+			{
+				return get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+			}
 
-			return ((key_at_index != NULL && (hashmap_p->key_compare(key, key_at_index) == 0)) ? value_at_index : NULL);
+			return NULL;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
@@ -146,18 +205,35 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 
 	switch(hashmap_p->hashmap_policy)
 	{
-		case NO_POLICY :
+		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_index_for_key(hashmap_p, key);
-
-			// to check and make sure, if we are inserting a new entry
-			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
-			if(key_at_index == NULL)
+			if(hashmap_p->bucket_occupancy >= hashmap_p->bucket_count)
 			{
 				inserted_entry = 1;
+				break;
 			}
 
-			insert_in_bucket_array(&(hashmap_p->buckets_holder), key, value, index);
+			while(1)
+			{
+				unsigned long long int index = get_expected_index(hashmap_p, key);
+
+				const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+			
+				if(key_at_index == NULL)
+				{
+					insert_in_bucket_array(&(hashmap_p->buckets_holder), key, value, index);
+					inserted_entry = 1;
+					break;
+				}
+				else
+				{
+					// steal the slot
+					const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+					insert_in_bucket_array(&(hashmap_p->buckets_holder), key, value, index);
+					key = key_at_index;
+					value = value_at_index;
+				}
+			}
 
 			break;
 		}
@@ -195,21 +271,22 @@ int update_value(hashmap* hashmap_p, const void* key, const void* value, const v
 
 	switch(hashmap_p->hashmap_policy)
 	{
-		case NO_POLICY :
+		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_index_for_key(hashmap_p, key);
+			unsigned long long int index = get_expected_index(hashmap_p, key);
 
 			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
-			const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
-
-			if(key_at_index != NULL && (hashmap_p->key_compare(key, key_at_index) == 0))
+			
+			if(key_at_index != NULL && hashmap_p->key_compare(key, key_at_index) == 0)
 			{
+				const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+
 				if(return_value != NULL)
 				{
 					(*(return_value)) = value_at_index;
 				}
 
-				insert_in_bucket_array(&(hashmap_p->buckets_holder), key, value, index);
+				insert_in_bucket_array(&(hashmap_p->buckets_holder), key_at_index, value, index);
 
 				update_made = 1;
 			}
@@ -250,15 +327,16 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 
 	switch(hashmap_p->hashmap_policy)
 	{
-		case NO_POLICY :
+		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_index_for_key(hashmap_p, key);
+			unsigned long long int index = get_expected_index(hashmap_p, key);
 
 			const void* key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
-			const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
-
-			if(key_at_index != NULL && (hashmap_p->key_compare(key, key_at_index) == 0))
+			
+			if(key_at_index != NULL && hashmap_p->key_compare(key, key_at_index) == 0)
 			{
+				const void* value_at_index = get_value_bucket_array(&(hashmap_p->buckets_holder), index);
+
 				if(return_key != NULL)
 				{
 					(*(return_key)) = key_at_index;
@@ -309,7 +387,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 
 void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
 {
-	if(hashmap_p->hashmap_policy == NO_POLICY)
+	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
 	{
 		for_each_entry_in_bucket_array(&(hashmap_p->buckets_holder), operation, additional_params);
 		return;
@@ -350,9 +428,9 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 	printf("HASHMAP : ");
 	switch(hashmap_p->hashmap_policy)
 	{
-		case NO_POLICY :
+		case ROBINHOOD_HASHING :
 		{
-			printf("NO_POLICY\n");
+			printf("ROBINHOOD_HASHING\n");
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
@@ -374,7 +452,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 	printf("bucket_occupancy : %llu\n", hashmap_p->bucket_occupancy);
 	printf("bucket_count : %llu\n", hashmap_p->bucket_count);
 
-	if(hashmap_p->hashmap_policy == NO_POLICY)
+	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
 	{
 		print_bucket_array(&(hashmap_p->buckets_holder), print_key, print_value);
 	}
@@ -392,11 +470,6 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 			{
 				switch(hashmap_p->hashmap_policy)
 				{
-					case NO_POLICY :
-					{
-						print_bucket(((bucket*)(ds_p)), print_key, print_value);
-						break;
-					}
 					case ELEMENTS_AS_LINKEDLIST :
 					{
 						print_linkedlist_bucketted(((linkedlist*)(ds_p)), print_key, print_value);
@@ -406,6 +479,10 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 					case ELEMENTS_AS_RED_BLACK_BST :
 					{
 						print_balancedbst(((balancedbst*)(ds_p)), print_key, print_value);
+						break;
+					}
+					default :
+					{
 						break;
 					}
 				}
@@ -422,7 +499,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_key)(const void* key),
 
 void deinitialize_hashmap(hashmap* hashmap_p)
 {
-	if(hashmap_p->hashmap_policy != NO_POLICY)
+	if(hashmap_p->hashmap_policy != ROBINHOOD_HASHING)
 	{
 		for(unsigned long long int index = 0; index < hashmap_p->buckets_holder.total_size; index++)
 		{
