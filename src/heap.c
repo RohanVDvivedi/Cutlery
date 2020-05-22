@@ -43,20 +43,13 @@ static unsigned long long int get_right_child_index(unsigned long long int paren
 // utility : interchanges bucket at indices i1 and i2
 static void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, unsigned long long int i2)
 {
-	void* key_p_i1 = ((void*)get_key_bucket_array(&(heap_p->heap_holder), i1));
-	void* value_p_i1 = ((void*)get_value_bucket_array(&(heap_p->heap_holder), i1));
-
-	void* key_p_i2 = ((void*)get_key_bucket_array(&(heap_p->heap_holder), i2));
-	void* value_p_i2 = ((void*)get_value_bucket_array(&(heap_p->heap_holder), i2));
-
-	insert_in_bucket_array(&(heap_p->heap_holder), key_p_i1, value_p_i1, i2);
-	insert_in_bucket_array(&(heap_p->heap_holder), key_p_i2, value_p_i2, i1);
+	swap_buckets_bucket_array(&(heap_p->heap_holder), i1, i2);
 
 	// once the buckets have been interchanged we call update index on the elements
 	if(heap_p->heap_index_update_callback != NULL)
 	{
-		heap_p->heap_index_update_callback(key_p_i1, value_p_i1, i2, heap_p->additional_params);
-		heap_p->heap_index_update_callback(key_p_i2, value_p_i2, i1, heap_p->additional_params);
+		heap_p->heap_index_update_callback(get_key_bucket_array(&(heap_p->heap_holder), i1), get_value_bucket_array(&(heap_p->heap_holder), i1), i1, heap_p->additional_params);
+		heap_p->heap_index_update_callback(get_key_bucket_array(&(heap_p->heap_holder), i2), get_value_bucket_array(&(heap_p->heap_holder), i2), i2, heap_p->additional_params);
 	}
 }
 

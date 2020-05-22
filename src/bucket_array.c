@@ -78,3 +78,15 @@ void print_bucket_array(const array* array_p, void (*print_key)(const void* key)
 		printf("\n");
 	}
 }
+
+void swap_buckets_bucket_array(array* array_p, unsigned long long int i1, unsigned long long int i2)
+{
+	void* key_p_i1 = ((void*)get_key_bucket_array(array_p, i1));
+	void* value_p_i1 = ((void*)get_value_bucket_array(array_p, i1));
+
+	void* key_p_i2 = ((void*)get_key_bucket_array(array_p, i2));
+	void* value_p_i2 = ((void*)get_value_bucket_array(array_p, i2));
+
+	insert_in_bucket_array(array_p, key_p_i1, value_p_i1, i2);
+	insert_in_bucket_array(array_p, key_p_i2, value_p_i2, i1);
+}

@@ -37,4 +37,6 @@ void for_each_entry_in_bucket_array(const array* array_p, void (*operation)(cons
 
 void print_bucket_array(const array* array_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
+void swap_buckets_bucket_array(array* array_p, unsigned long long int i1, unsigned long long int i2);
+
 #endif

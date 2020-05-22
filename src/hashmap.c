@@ -351,6 +351,17 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 				has_been_deleted = 1;
 			}
 
+			unsigned long long int previousIndex = index;
+			index = (index + 1) % hashmap_p->bucket_count;
+			key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+			while(key_at_index != NULL && get_probe_sequence_length(hashmap_p, key_at_index, index) != 0)
+			{
+				swap_buckets_bucket_array(&(hashmap_p->buckets_holder), previousIndex, index);
+				previousIndex = index;
+				index = (index + 1) % hashmap_p->bucket_count;
+				key_at_index = get_key_bucket_array(&(hashmap_p->buckets_holder), index);
+			}
+
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :

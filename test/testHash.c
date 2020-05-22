@@ -154,6 +154,10 @@ int main()
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
+	insert_entry_in_hash(hashmap_p, &((ke){56}), &((ts){5600, "fifty six"}));
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
 	update_value_in_hash(hashmap_p, &((ke){70}), &((ts){70000, "seven hundred"}), NULL);
 
 	print_hashmap(hashmap_p, print_key, print_ts);
@@ -179,6 +183,11 @@ int main()
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
+	printf("Deleting key-value at 60\n");
+	delete_entry_from_hash(hashmap_p, &((ke){60}), NULL, NULL);
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
 	printf("Now finding value corresponding to key 20\n\n");
 	print_ts(find_value_from_hash(hashmap_p, &((ke){20})));printf("\n\n");
 
@@ -187,6 +196,9 @@ int main()
 
 	printf("Reinserting key-value at 80\n");
 	insert_entry_in_hash(hashmap_p, &((ke){80}), &((ts){8000, "eighty - new"}));
+
+	printf("Reinserting key-value at 60\n");
+	insert_entry_in_hash(hashmap_p, &((ke){60}), &((ts){6000, "sixty - new"}));
 
 	print_hashmap(hashmap_p, print_key, print_ts);
 
