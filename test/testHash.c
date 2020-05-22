@@ -25,7 +25,14 @@ int key_cmp(const void* key1, const void* key2)
 
 void print_ts(const void* tsv)
 {
-	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+	if(tsv == NULL)
+	{
+		printf("(null)");
+	}
+	else
+	{
+		printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+	}
 }
 
 void print_key(const void* key)
@@ -164,6 +171,26 @@ int main()
 	print_hashmap(hashmap_p, print_key, print_ts);
 
 	update_value_in_hash(hashmap_p, &((ke){70}), &((ts){7000, "seventy"}), NULL);
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	printf("Deleting key-value at 80\n");
+	delete_entry_from_hash(hashmap_p, &((ke){80}), NULL, NULL);
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	printf("Now finding value corresponding to key 20\n\n");
+	print_ts(find_value_from_hash(hashmap_p, &((ke){20})));printf("\n\n");
+
+	printf("Reinserting key-value at 80\n");
+	insert_entry_in_hash(hashmap_p, &((ke){80}), &((ts){8000, "eighty - new"}));
+
+	print_hashmap(hashmap_p, print_key, print_ts);
+
+	printf("Inserting key-value at 90\n");
+	insert_entry_in_hash(hashmap_p, &((ke){90}), &((ts){9000, "ninety"}));
+
+	print_hashmap(hashmap_p, print_key, print_ts);
 
 	printf("\n\nBefore rehashing - 16\n");
 	print_hashmap(hashmap_p, print_key, print_ts);
