@@ -182,6 +182,9 @@ int main()
 	printf("Now finding value corresponding to key 20\n\n");
 	print_ts(find_value_from_hash(hashmap_p, &((ke){20})));printf("\n\n");
 
+	printf("Now finding value corresponding to key 40\n\n");
+	print_ts(find_value_from_hash(hashmap_p, &((ke){40})));printf("\n\n");
+
 	printf("Reinserting key-value at 80\n");
 	insert_entry_in_hash(hashmap_p, &((ke){80}), &((ts){8000, "eighty - new"}));
 
