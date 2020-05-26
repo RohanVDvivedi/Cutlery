@@ -341,7 +341,6 @@ static void print_linkedlist_bucket_wrapper(node* node_p, const void* prbucket_p
 {
 	printf("\tprev => %p\n", node_p->prev);
 	printf("\t\tnode => %p\n", node_p);
-	bucket* bucket_p = ((bucket*)(node_p->data_p));
 	bucket* prbucket = ((bucket*)prbucket_p);
 	printf("\t\tdata => ");
 	print_bucket(node_p->data_p, ((void (*)(const void*))(prbucket->key)), ((void (*)(const void*))(prbucket->value)));

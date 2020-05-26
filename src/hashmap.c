@@ -196,6 +196,10 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 			// find value in a bst
 			return ds_p == NULL ? NULL : find_value_from_bst(((balancedbst*)(ds_p)), key);
 		}
+		default :
+		{
+			return NULL;
+		}
 	}
 }
 
@@ -319,9 +323,6 @@ int update_value(hashmap* hashmap_p, const void* key, const void* value, const v
 
 int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value)
 {
-	// this is where the bucket to be deleted gets stored
-	bucket* found_bucket_p = NULL;
-
 	// we are suppossed to return the number of entries we delete
 	int has_been_deleted = 0;
 

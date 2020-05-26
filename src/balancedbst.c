@@ -155,14 +155,14 @@ static node* get_largest_node_from_node(const node* node_p)
 	return node_p->right_sub_tree == NULL ? ((node*)node_p) : get_largest_node_from_node(node_p->right_sub_tree);
 }
 
-//      A                                _B_
-//     /  \                             /   \
-//    W    B        left rotation      A     C
-//        /  \        --------->>     / \   /  \
-//       X    C                      W   X Y    Z
-//           / \
-//          Y   Z
-// returns true if rotation was successfull
+/*      A                                _B_
+**     /  \                             /   \
+**    W    B        left rotation      A     C
+**        /  \        --------->>     / \   /  \
+**       X    C                      W   X Y    Z
+**           / \
+**          Y   Z
+** returns true if rotation was successfull*/
 static int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
 	node* parent_of_tree = A->parent;
@@ -205,14 +205,14 @@ static int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 	}
 }
 
-//           A                                 _B_
-//         /   \                              /   \
-//       B      W      right rotation        C     A
-//     /   \             --------->>        / \   /  \
-//   C      X                              Z   Y  X   W
-//  / \
-// Z   Y
-// returns true if rotation was successfull
+/*           A                                 _B_
+**         /   \                              /   \
+**       B      W      right rotation        C     A
+**     /   \             --------->>        / \   /  \
+**   C      X                              Z   Y  X   W
+**  / \
+** Z   Y
+** returns true if rotation was successfull*/
 static int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 {
 	node* parent_of_tree = A->parent;
