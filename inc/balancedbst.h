@@ -43,7 +43,7 @@ struct node
 	// if balanced_tree_type == NON_SELF_BALANCING then node property is ignored
 	// else if balanced_tree_type == AVL_TREE then node_property = max( right_tree->node_property, left_tree->node_property)
 	// else if balanced_tree_type == RED_BLACK_TREE then node_property = is_red_node? ? 0 : 1; (1 is black node) 
-	unsigned long long int node_property;
+	int node_property;
 
 	// all <= nodes									// all > nodes
 	node* left_sub_tree;							node* right_sub_tree;

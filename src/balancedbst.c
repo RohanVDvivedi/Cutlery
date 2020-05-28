@@ -985,7 +985,7 @@ static void print_node(node* node_p, void (*print_key)(const void* key), void (*
 		printf("\taddress => %p", node_p);
 		printf("\tdata => ");
 		print_bucket(&(node_p->data_entry), print_key, print_value);
-		printf("\t\twith property = %llu\n", node_p->node_property);
+		printf("\t\twith property = %d\n", node_p->node_property);
 
 		if( !is_root_node(node_p) )
 		{
