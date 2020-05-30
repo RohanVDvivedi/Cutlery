@@ -10,7 +10,9 @@ int main()
 	append_to_dstring(str, "Hello ");
 	display_dstring(str);printf("\n");
 
-	concatenate_dstring(str, get_dstring("World, as said by Rohan\n", 2));
+	dstring* tempstr = get_dstring("World, as said by Rohan\n", 2);
+	concatenate_dstring(str, tempstr);
+	delete_dstring(tempstr);
 	display_dstring(str);printf("\n");
 
 	display_dstring(str);printf("\n");
