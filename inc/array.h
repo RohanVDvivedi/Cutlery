@@ -18,12 +18,16 @@ struct array
 	const void** data_p_p;
 
 	// this is the factor, by which the previous size of data_p_p will be incremented
-	unsigned long long int increment_factor;
+	float increment_factor;
 
 	// this is the constant increment amount, over the increment factor
-	unsigned long long int increment_offset;
+	unsigned char increment_offset;
 
 	// new_total_size of data_p_p = old_total_size of data_p_p * increment_factor + increment_offset
+
+	// initial_size = the size with which the array was requested from using the initialize_array or get_array function
+	// The array is not allowed to shrink below its initial size
+	unsigned long long int initial_size;
 };
 
 // returns a new array with total_size as the initial size, with no elements inside,
@@ -60,6 +64,8 @@ void expand_array(array* array_p);
 // shrinks the array, if the array is considerably larger than the minimum size ( = end_index - start_index + 1) that was required
 // element at the start_index comes to 0, and element at end_index comes to end_index - start_index
 // it returns 1 if the array was shrunk
+// note : The array is not allowed to shrink below its initial size,
+// it shrinks only if the new_total_size is greater than or equal to the initial size
 int shrink_array(array* array_p, unsigned long long int start_index, unsigned long long int end_index);
 
 // prints the array

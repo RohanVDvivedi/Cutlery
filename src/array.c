@@ -10,15 +10,16 @@ array* get_array(unsigned long long int initial_size)
 void initialize_array(array* array_p, unsigned long long int initial_size)
 {
 	array_p->increment_offset = 1;
-	array_p->increment_factor = 2;
+	array_p->increment_factor = (1.0 + 1);
 	array_p->data_p_p = initial_size > 0 ? ((const void**)calloc(initial_size, sizeof(void*))) : NULL;
 	array_p->total_size = initial_size;
+	array_p->initial_size = initial_size;
 }
 
 // the below function will calculate the next size (on expansion) for the given array, if it's current size is current_size
 static unsigned long long int next_expansion_size(array* array_p, unsigned long long int current_size)
 {
-	return ( current_size * array_p->increment_factor ) + array_p->increment_offset;
+	return ((unsigned long long int)(current_size * array_p->increment_factor)) + array_p->increment_offset;
 }
 
 void deinitialize_array(array* array_p)
@@ -130,17 +131,22 @@ int shrink_array(array* array_p, unsigned long long int start_index, unsigned lo
 	{
 		unsigned long long int new_total_size = next_expansion_size(array_p, minimum_size);
 
-		// request memory for the new computed size
-		const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
+		// The array is not allowed to shrink below its initial size,
+		// it shrinks only if the new_total_size is greater than or equal to the initial size
+		if(new_total_size >= array_p->initial_size)
+		{
+			// request memory for the new computed size
+			const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
 
-		memcpy(new_data_p_p, array_p->data_p_p + start_index, minimum_size * sizeof(void*));
+			memcpy(new_data_p_p, array_p->data_p_p + start_index, minimum_size * sizeof(void*));
 
-		// free the old pointers array
-		free(array_p->data_p_p);
+			// free the old pointers array
+			free(array_p->data_p_p);
 
-		// new assignment to data_p_p and the total_size
-		array_p->data_p_p = new_data_p_p;
-		array_p->total_size = new_total_size;
+			// new assignment to data_p_p and the total_size
+			array_p->data_p_p = new_data_p_p;
+			array_p->total_size = new_total_size;
+		}
 
 		return 1;
 	}
@@ -165,8 +171,8 @@ static void print_array_element_wrapper(void* element, unsigned long long int in
 void print_array(const array* array_p, void (*print_element)(const void* data_p))
 {
 	printf("\narray:");
-	printf("\n\tincrement_factor : %lld", array_p->increment_factor);
-	printf("\n\tincrement_offset : %lld", array_p->increment_offset);
+	printf("\n\tincrement_factor : %f", array_p->increment_factor);
+	printf("\n\tincrement_offset : %u", array_p->increment_offset);
 	printf("\n\ttotal size : %lld\n", array_p->total_size);
 	for_each_in_array(array_p, print_array_element_wrapper, print_element);
 }
