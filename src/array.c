@@ -146,9 +146,9 @@ int shrink_array(array* array_p, unsigned long long int start_index, unsigned lo
 			// new assignment to data_p_p and the total_size
 			array_p->data_p_p = new_data_p_p;
 			array_p->total_size = new_total_size;
-		}
 
-		return 1;
+			return 1;
+		}
 	}
 
 	return 0;
