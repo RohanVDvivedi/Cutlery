@@ -69,6 +69,9 @@ struct balancedbst
 // get a new balancedbst
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1));
 
+// initializes as if a new balancedbst, may be to reuse
+void initialize_balancedbst(balancedbst* balancedbst_p, tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1));
+
 // inserts a node in the tree whose data is a bucket with key as key_p and value as value_p
 void insert_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p);
 

@@ -15,11 +15,16 @@
 linkedlist* get_linkedlist(linkedlisttype type, int (*key_compare)(const void* key1, const void* key2))
 {
 	linkedlist* ll = (linkedlist*) calloc(1, sizeof(linkedlist));
+	initialize_linkedlist(ll, type, key_compare);
+	return ll;
+}
+
+void initialize_linkedlist(linkedlist* ll, linkedlisttype type, int (*key_compare)(const void* key1, const void* key2))
+{
 	ll->head = NULL;
 	ll->tail = NULL;
 	ll->type = type;
 	ll->key_compare = key_compare;
-	return ll;
 }
 
 node* get_new_simple_node(const void* data_p)
@@ -220,12 +225,17 @@ const node* get_nth_node_from_tail(linkedlist* ll, unsigned long long int n)
 	return node_p;
 }
 
-void delete_linkedlist(linkedlist* ll)
+void deinitialize_linkedlist(linkedlist* ll)
 {
 	while(ll->head != NULL)
 	{
 		remove_head(ll);
 	}
+}
+
+void delete_linkedlist(linkedlist* ll)
+{
+	deinitialize_linkedlist(ll);
 	free(ll);
 }
 

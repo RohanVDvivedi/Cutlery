@@ -15,11 +15,16 @@
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
 {
 	balancedbst* balancedbst_p = (balancedbst*) calloc(1, sizeof(balancedbst));
+	initialize_balancedbst(balancedbst_p, balanced_tree_type, key_compare);
+	return balancedbst_p;
+}
+
+void initialize_balancedbst(balancedbst* balancedbst_p, tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
+{
 	balancedbst_p->balanced_tree_type = balanced_tree_type;
 	balancedbst_p->root = NULL;
 	balancedbst_p->key_compare = key_compare;
 	balancedbst_p->bucket_count = 0;
-	return balancedbst_p;
 }
 
 node* get_node(const void* key, const void* value)
@@ -1074,12 +1079,17 @@ static void delete_nodes_from(node* node_p)
 	delete_node(node_p);
 }
 
-void delete_balancedbst(balancedbst* balancedbst_p)
+void deinitialize_balancedbst(balancedbst* balancedbst_p)
 {
 	if(!is_balancedbst_empty(balancedbst_p))
 	{
 		delete_nodes_from(balancedbst_p->root);
 	}
+}
+
+void delete_balancedbst(balancedbst* balancedbst_p)
+{
+	deinitialize_balancedbst(balancedbst_p);
 	free(balancedbst_p);
 }
 

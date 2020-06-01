@@ -65,6 +65,9 @@ struct linkedlist
 // returns a new linked list
 linkedlist* get_linkedlist(linkedlisttype type, int (*compare)(const void* key1, const void* key2));
 
+// initializes to a new linked list
+void initialize_linkedlist(linkedlist* ll, linkedlisttype type, int (*compare)(const void* key1, const void* key2));
+
 /*
 	BELOW LINKEDLIST FUNCTIONS CAN BE USED TO IMPLEMENT QUEUES, STACKS AND DOUBLE ENDED QUEUES
 */
@@ -156,6 +159,10 @@ void for_each_entry(const linkedlist* ll, void (*operation)(const void* key_p, c
 /*
 	ABOVE ARE THE FUNCTIONS FOR BUCKETTED LINKEDLIST
 */
+
+// deinitializes the linked list and deletes all of its nodes
+// the linkedlist after deinitialization can be re initialized and reused
+void deinitialize_linkedlist(linkedlist* ll);
 
 // deletes the linked list and all of its nodes
 void delete_linkedlist(linkedlist* ll);
