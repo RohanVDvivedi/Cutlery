@@ -2,7 +2,7 @@
 
 dstring* get_dstring(const char* cstr_p, unsigned long long int additional_allocation)
 {
-	dstring* str_p = (dstring*)malloc(sizeof(dstring));
+	dstring* str_p = malloc(sizeof(dstring));
 	init_dstring(str_p, cstr_p, additional_allocation);
 	return str_p;
 }
@@ -11,7 +11,7 @@ void init_dstring(dstring* str_p, const char* cstr_p, unsigned long long int add
 {
 	str_p->bytes_occupied = cstr_p == NULL ? 1 : (strlen(cstr_p) + 1);
 	str_p->bytes_allocated = (2 * (str_p->bytes_occupied + 1)) + 2 + additional_allocation;
-	str_p->cstring = (char*)malloc(str_p->bytes_allocated);
+	str_p->cstring = malloc(str_p->bytes_allocated);
 	str_p->cstring[0] = '\0';
 	if(cstr_p != NULL)
 	{

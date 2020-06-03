@@ -18,7 +18,7 @@
 
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
 {
-	balancedbst* balancedbst_p = (balancedbst*) calloc(1, sizeof(balancedbst));
+	balancedbst* balancedbst_p = calloc(1, sizeof(balancedbst));
 	initialize_balancedbst(balancedbst_p, balanced_tree_type, key_compare);
 	return balancedbst_p;
 }
@@ -33,7 +33,7 @@ void initialize_balancedbst(balancedbst* balancedbst_p, tree_type balanced_tree_
 
 node* get_node(const void* key, const void* value)
 {
-	node* node_p = (node*) calloc(1, sizeof(node));
+	node* node_p = calloc(1, sizeof(node));
 	initialize_bucket(&(node_p->data_entry), key, value);
 	return node_p;
 }

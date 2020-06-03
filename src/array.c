@@ -2,7 +2,7 @@
 
 array* get_array(unsigned long long int initial_size)
 {
-	array* array_p = (array*) calloc(1, sizeof(array));
+	array* array_p = calloc(1, sizeof(array));
 	initialize_array(array_p, initial_size);
 	return array_p;
 }
@@ -11,7 +11,7 @@ void initialize_array(array* array_p, unsigned long long int initial_size)
 {
 	array_p->increment_offset = 1;
 	array_p->increment_factor = (1.0 + 1);
-	array_p->data_p_p = initial_size > 0 ? ((const void**)calloc(initial_size, sizeof(void*))) : NULL;
+	array_p->data_p_p = initial_size > 0 ? calloc(initial_size, sizeof(void*)) : NULL;
 	array_p->total_size = initial_size;
 	array_p->initial_size = initial_size;
 }
@@ -100,7 +100,7 @@ void expand_array(array* array_p)
 	unsigned long long int new_total_size = next_expansion_size(array_p, array_p->total_size);
 
 	// request memory for the new computed size
-	const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
+	const void** new_data_p_p = calloc(new_total_size, sizeof(void*));
 
 	// copy all pointers from the old pointers array
 	// larger the array larger is this task, O(n) for single expansion of array
@@ -159,7 +159,7 @@ static void print_array_element_wrapper(void* element, unsigned long long int in
 	printf("\telement_index %lld -> ", index);
 	if(element != NULL)
 	{
-		((void (*)(const void* data_p))print_element)(element);
+		((void (*)(const void*))print_element)(element);
 	}
 	else
 	{

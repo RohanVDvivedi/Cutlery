@@ -50,7 +50,7 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	for_each_entry_in_hash(old_p, insert_wrapper, new_p);
 }
 
-#define POLICY_USED ROBINHOOD_HASHING /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
+#define POLICY_USED /*ROBINHOOD_HASHING*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
 
 #define HASH_BUCKETS 4
 

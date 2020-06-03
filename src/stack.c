@@ -7,7 +7,7 @@
 
 stack* get_stack(unsigned long long int expected_size)
 {
-	stack* stack_p = (stack*) calloc(1, sizeof(stack));
+	stack* stack_p = calloc(1, sizeof(stack));
 	initialize_stack(stack_p, expected_size);
 	return stack_p;
 }

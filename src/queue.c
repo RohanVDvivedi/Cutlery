@@ -7,7 +7,7 @@
 
 queue* get_queue(unsigned long long int expected_size)
 {
-	queue* queue_p = (queue*) calloc(1, sizeof(queue));
+	queue* queue_p = calloc(1, sizeof(queue));
 	initialize_queue(queue_p, expected_size);
 	return queue_p;
 }

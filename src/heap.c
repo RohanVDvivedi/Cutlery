@@ -7,7 +7,7 @@
 
 heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
 {
-	heap* heap_p = ((heap*)(malloc(sizeof(heap))));
+	heap* heap_p = malloc(sizeof(heap));
 	initialize_heap(heap_p, expected_size, type, key_compare, heap_index_update_callback, additional_params);
 	return heap_p;
 }
