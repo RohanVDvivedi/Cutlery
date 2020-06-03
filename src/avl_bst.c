@@ -1,12 +1,9 @@
 #include<nonbalancing_bst.h>
 #include<rotations_bst.h>
-
 #include<avl_bst.h>
 
-#define node bstnode
-
 // gets max nodes from itself to any NULL, including itself, in an avl tree
-static unsigned long long int get_max_height(node* node_p)
+static unsigned long long int get_max_height(bstnode* node_p)
 {
 	if(node_p == NULL)
 	{
@@ -23,20 +20,20 @@ static unsigned long long int get_max_height(node* node_p)
 }
 
 // updates max height of the node, in an avl tree
-static void update_max_height(node* node_p)
+static void update_max_height(bstnode* node_p)
 {
 	node_p->node_property = 0;
 	get_max_height(node_p);
 }
 
 // handle imbalance occuring in avl tree, starting at input_node_p
-void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p)
+void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, bstnode* input_node_p)
 {
 	// maintain a reference that traces
 	// all the nodes from  node_p to root
-	node* unbalanced_node = input_node_p;
-	node* prev_unbalanced_node = input_node_p;
-	node* prev_prev_unbalanced_node = input_node_p;
+	bstnode* unbalanced_node = input_node_p;
+	bstnode* prev_unbalanced_node = input_node_p;
+	bstnode* prev_prev_unbalanced_node = input_node_p;
 
 	// loop untill you reach the root
 	while(unbalanced_node != NULL)
@@ -98,7 +95,7 @@ void handle_imbalance_in_avl_tree(balancedbst* balancedbst_p, node* input_node_p
 }
 
 // neither root nor node_p params are suppossed to be NULL in the function below
-void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_p)
+void insert_node_in_avl_tree(balancedbst* balancedbst_p, bstnode* root, bstnode* node_p)
 {
 	// the new node will be inserted any where, hence we mark it's node_property for recalculation
 	node_p->node_property = 0;
@@ -113,7 +110,7 @@ void insert_node_in_avl_tree(balancedbst* balancedbst_p, node* root, node* node_
 // the below function only detaches the node thatr has to be deleted
 // returns pointer of the node that has to be deleted
 // node_p can not be null in the parameters of the function
-node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
+bstnode* remove_node_from_avl_tree(balancedbst* balancedbst_p, bstnode* node_p)
 {
 	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted
 	node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
@@ -122,7 +119,7 @@ node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
 	if(!is_balancedbst_empty(balancedbst_p))
 	{
 		// the imbalance is always in the parent node of the node currently going to be deleted
-		node* imbalance_node_p = node_p->parent;
+		bstnode* imbalance_node_p = node_p->parent;
 
 		// remove the imbalance and remove it
 		handle_imbalance_in_avl_tree(balancedbst_p, imbalance_node_p);
@@ -131,5 +128,3 @@ node* remove_node_from_avl_tree(balancedbst* balancedbst_p, node* node_p)
 	// return the node that needs to be deleted
 	return node_p;
 }
-
-#undef node
