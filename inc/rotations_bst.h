@@ -3,10 +3,6 @@
 
 #include<balancedbst.h>
 
-// use generic api only as mentioned in balancedbst.h
-
-#define node bstnode
-
 /*      A                                _B_
 **     /  \                             /   \
 **    W    B        left rotation      A     C
@@ -15,7 +11,7 @@
 **           / \
 **          Y   Z
 ** returns true if rotation was successfull*/
-int left_rotate_tree(balancedbst* balancedbst_p, node* A);
+int left_rotate_tree(balancedbst* balancedbst_p, bstnode* A);
 
 /*           A                                 _B_
 **         /   \                              /   \
@@ -25,8 +21,6 @@ int left_rotate_tree(balancedbst* balancedbst_p, node* A);
 **  / \
 ** Z   Y
 ** returns true if rotation was successfull*/
-int right_rotate_tree(balancedbst* balancedbst_p, node* A);
-
-#undef node
+int right_rotate_tree(balancedbst* balancedbst_p, bstnode* A);
 
 #endif
