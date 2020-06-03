@@ -2,40 +2,14 @@
 #define LINKEDLIST_H
 
 #include<stdio.h>
-#include<stdlib.h>
-#include<bucket.h>
+#include<stdint.h>
 
-// to avoid name collision with node of balancedbst
-#define node llnode
-
-// to avoid name collision with functions of hashmap
-#define insert_entry 			insert_entry_in_ll
-#define find_value				find_value_from_ll 
-#define update_value			update_value_in_ll
-#define delete_entry 			delete_entry_from_ll
-#define for_each_entry 			for_each_entry_in_ll
-
-typedef struct node node;
-struct node
+typedef struct llnode llnode;
+struct llnode
 {
-	// the previous node in the linked list
-	node* prev;
-
-	// the next node in the linked list
-	node* next;
-
-	// the bucket of the node
-	bucket data_entry;
-};
-
-typedef enum linkedlisttype linkedlisttype;
-enum linkedlisttype
-{
-	// a SIMPLE linked list is a double linked list, that stores and maintains pointers to your data
-	SIMPLE,
-
-	// a BUCKETTED linked list, maintaine buckets on its node's data_p, you can put entries, and search using the key
-	BUCKETTED
+	// the previous and next node in the linked list
+	llnode* prev;
+	llnode* next;
 };
 
 typedef struct linkedlist linkedlist;
@@ -43,130 +17,73 @@ struct linkedlist
 {
 	// head->next->...->next = tail
 	// always head->prev = NULL
-	node* head;
+	llnode* head;
 
 	// tail->prev->...->prev = head
 	// always tail->next = NULL
-	node* tail;
+	llnode* tail;
 
-	// the type of the linkedlist
-	linkedlisttype type;
+	// number of nodes in the linkedlist
+	// this is how we reach node addresses from provided user's structure data addresses
+	unsigned long long int node_count;
 
-	// compare keys for bucketted linkedlist and returns 0 if they are same, else non-zero
-	// it returns 0 if they are same, >0 if key1 is greater than key2 else it must return <0 value
-	int (*key_compare)(const void* key1, const void* key2);
+	// defines the address of the data, with respect to the linkedlist node
+	unsigned long long int node_offset;
+
+	// compare data function, this helps in find operation
+	int (*compare)(const void* data1, const void* data2);
 };
 
-// returns a new linked list
-linkedlist* get_linkedlist(linkedlisttype type, int (*compare)(const void* key1, const void* key2));
+#define initialize_llnode(new_node)		{new_node->next = NULL; new_node->prev = NULL;}
+
+#define is_new_node(new_node)			((new_node->next == NULL) && (new_node->prev == NULL))
 
 // initializes to a new linked list
-void initialize_linkedlist(linkedlist* ll, linkedlisttype type, int (*compare)(const void* key1, const void* key2));
+void initialize_linkedlist(linkedlist* ll, unsigned int node_offset, int (*compare)(const void* data1, const void* data2));
 
-/*
-	BELOW LINKEDLIST FUNCTIONS CAN BE USED TO IMPLEMENT QUEUES, STACKS AND DOUBLE ENDED QUEUES
-*/
+// simply gets head node data
+const void* get_head(linkedlist* ll);
 
-// simply gets head data
-const void* get_head_data(linkedlist* ll);
+// simply gets tail node data
+const void* get_tail(linkedlist* ll);
 
-// simply gets tail
-const void* get_tail_data(linkedlist* ll);
+// inserts a new head element, returns 0 if it fails
+int insert_head(linkedlist* ll, const void* data);
 
-// inserts a new head, the previous head is now next to the new head
-void insert_head(linkedlist* ll, const void* data_p);
+// inserts a new tail element, returns 0 if it fails
+int insert_tail(linkedlist* ll, const void* data);
 
-// inserts a new tail, the previous tail is now prev to the new tail
-void insert_tail(linkedlist* ll, const void* data_p);
+// inserts the new data in linkedlist before data_xist, returns 0 if it fails
+int insert_before(linkedlist* ll, const void* data_xist, const void* data);
+
+// inserts the new data in linkedlist before data_xist, returns 0 if it fails
+int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 
 // removes the head, now the new head is next of the previous head
-void remove_head(linkedlist* ll);
+// returns 0 if it fails
+int remove_head(linkedlist* ll);
 
 // removes the tail, now the new tail is prev of the previous head
-void remove_tail(linkedlist* ll);
+// returns 0 if it fails
+int remove_tail(linkedlist* ll);
 
-/*
-	ABOVE LINKEDLIST FUNCTIONS CAN BE USED TO IMPLEMENT QUEUES, STACKS AND DOUBLE ENDED QUEUES
-*/
-
-
-
-/*
-	BELOW LINKEDLIST FUNCTIONS CAN BE USED TO DO NODE LEVEL MANIPULATIONS
-	TRY NOT TO USE THEM
-*/
-
-// create a node and insert it in linkedlist before node_p
-// here node_p may not be null
-void insert_node_before(linkedlist* ll, node* node_p, const void* data_p);
-
-// create a node and insert it in linkedlist after node_p
-// here node_p may not be null
-void insert_node_after(linkedlist* ll, node* node_p, const void* data_p);
-
-// remove the given node from the linked list
-void remove_node(linkedlist*ll, node* node_p);
+// remove the given element from the linked list
+// returns 0 if it fails
+int remove_element(linkedlist*ll, const void* data);
 
 // get pointer to nth element from head by doing next next
-const node* get_nth_node_from_head(linkedlist* ll, unsigned long long int n);
+const void* get_nth_from_head(linkedlist* ll, unsigned long long int n);
 
 // get pointer to nth element from tail by doing next next
-const node* get_nth_node_from_tail(linkedlist* ll, unsigned long long int n);
+const void* get_nth_from_tail(linkedlist* ll, unsigned long long int n);
 
-/*
-	ABOVE LINKEDLIST FUNCTIONS CAN BE USED TO DO NODE LEVEL MANIPULATIONS
-	TRY NOT TO USE THEM
-*/
+// get the data from the linkedlist, that equals data, based on the comparator provided
+const void* find_in_list(const linkedlist* ll, const void* data);
 
 // perform operation on all the elements of the linked list
 void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
 // prints complete linked list
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));
-
-// prints complete linkedlist
-void print_linkedlist_bucketted(linkedlist* ll, void (*print_key)(const void* key_p), void (*print_value)(const void* value_p));
-
-/*
-	BELOW ARE THE ONLY FUNCTIONS FOR BUCKETTED LINKEDLIST
-	DONOT INVOKE SIMPLE LINKEDLIST FUNCTIONS DIRECTLY ON BUCKETTED LINKEDLIST
-*/
-
-// place a new bucket with given key and value at the head of the linkedlist
-// O(1) operation
-void insert_entry(linkedlist* ll, const void* key, const void* value);
-
-// get the value from the linkedlist, stored at a particular key
-// O(n) operation
-const void* find_value(const linkedlist* ll, const void* key);
-
-// returns 1 if the bucket is found for the given key and updated
-// since you would have to first search the bucket, it is O(n) operation
-int update_value(linkedlist* ll, const void* key, const void* value, const void** return_value);
-
-// returns 1 if the bucket is found for the given key and removed from linkedlist and deleted
-// since you would have to first search the bucket, it is O(n) operation
-int delete_entry(linkedlist* ll, const void* key, const void** return_key, const void** return_value);
-
-// perform operation on all the buckets of the linked list
-void for_each_entry(const linkedlist* ll, void (*operation)(const void* key_p, const void* value_p, const void* additional_params), const void* additional_params);
-
-/*
-	ABOVE ARE THE FUNCTIONS FOR BUCKETTED LINKEDLIST
-*/
-
-// deinitializes the linked list and deletes all of its nodes
-// the linkedlist after deinitialization can be re initialized and reused
-void deinitialize_linkedlist(linkedlist* ll);
-
-// deletes the linked list and all of its nodes
-void delete_linkedlist(linkedlist* ll);
-
-#undef node
-#undef insert_entry
-#undef find_value
-#undef update_value
-#undef delete_entry
-#undef for_each_entry
 
 #endif
