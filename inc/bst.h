@@ -34,8 +34,8 @@ struct bstnode
 typedef struct bst bst;
 struct bst
 {
-	// the type of balancing algorithm to use
-	tree_type type;
+	// the type of balancing algorithm to use for the binary search tree
+	bsttype type;
 
 	// the root node of the tree
 	bstnode* root;

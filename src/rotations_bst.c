@@ -1,5 +1,5 @@
 #include<rotations_bst.h>
-
+#include<bst_util.h>
 
 /*      A                                _B_
 **     /  \                             /   \
@@ -9,43 +9,43 @@
 **           / \
 **          Y   Z
 ** returns true if rotation was successfull*/
-int left_rotate_tree(balancedbst* balancedbst_p, bstnode* A)
+int left_rotate_tree(bst* bst_p, bstnode* A)
 {
 	bstnode* parent_of_tree = A->parent;
-	bstnode* B = A->right_sub_tree;
+	bstnode* B = A->right;
 	if( B == NULL )
 	{
 		return 0;
 	}
 	else
 	{
-		bstnode* X = B->left_sub_tree;
+		bstnode* X = B->left;
 
 		if( is_root_node(A) )
 		{
-			balancedbst_p->root = B;
+			bst_p->root = B;
 		}
 		else
 		{
 			if( is_right_of_its_parent(A) )
 			{
-				parent_of_tree->right_sub_tree = B;
+				parent_of_tree->right = B;
 			}
 			else if( is_left_of_its_parent(A) )
 			{
-				parent_of_tree->left_sub_tree = B;
+				parent_of_tree->left = B;
 				
 			}
 		}
 		B->parent = parent_of_tree;
 
-		A->right_sub_tree = X;
+		A->right = X;
 		if(X != NULL)
 		{
 			X->parent = A;
 		}
 
-		B->left_sub_tree = A;
+		B->left = A;
 		A->parent = B;
 		return 1;
 	}
@@ -59,42 +59,42 @@ int left_rotate_tree(balancedbst* balancedbst_p, bstnode* A)
 **  / \
 ** Z   Y
 ** returns true if rotation was successfull*/
-int right_rotate_tree(balancedbst* balancedbst_p, bstnode* A)
+int right_rotate_tree(bst* bst_p, bstnode* A)
 {
 	bstnode* parent_of_tree = A->parent;
-	bstnode* B = A->left_sub_tree;
+	bstnode* B = A->left;
 	if( B == NULL )
 	{
 		return 0;
 	}
 	else
 	{
-		bstnode* X = B->right_sub_tree;
+		bstnode* X = B->right;
 
 		if( is_root_node(A) )
 		{
-			balancedbst_p->root = B;
+			bst_p->root = B;
 		}
 		else
 		{
 			if( is_right_of_its_parent(A) )
 			{
-				parent_of_tree->right_sub_tree = B;
+				parent_of_tree->right = B;
 			}
 			else if( is_left_of_its_parent(A) )
 			{
-				parent_of_tree->left_sub_tree = B;
+				parent_of_tree->left = B;
 			}
 		}
 		B->parent = parent_of_tree;
 
-		A->left_sub_tree = X;
+		A->left = X;
 		if(X != NULL)
 		{
 			X->parent = A;
 		}
 
-		B->right_sub_tree = A;
+		B->right = A;
 		A->parent = B;
 		return 1;
 	}
