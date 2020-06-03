@@ -5,6 +5,8 @@ struct teststruct
 {
 	int a;
 	char* s;
+
+	llnode ll_embed_node;
 };
 
 void print_ts(const void* tsv)
@@ -25,34 +27,37 @@ int test_compare(const void* a, const void* b)
 	}
 	else
 	{
-		return ((ts*)a)->a - ((ts*)b)->a;
+		return (((ts*)a)->a) - (((ts*)b)->a);
 	}
 }
 
 int main()
 {
-	linkedlist* ll = get_linkedlist(SIMPLE, test_compare);
+	linkedlist llist;
+	linkedlist* ll = &llist;
+	initialize_linkedlist(ll, (unsigned long long int)(&(((ts*)0)->ll_embed_node)), test_compare);
+
 	print_linkedlist(ll, print_ts);
 
-	insert_head(ll, &((ts){2, "two"}));
+	insert_head(ll, &((ts){2, "two", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
-	insert_head(ll, &((ts){1, "one"}));
+	insert_head(ll, &((ts){1, "one", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
-	insert_tail(ll, &((ts){5, "five"}));
+	insert_tail(ll, &((ts){5, "five", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
-	insert_tail(ll, &((ts){6, "six"}));
+	insert_tail(ll, &((ts){6, "six", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
-	insert_node_after(ll, ((llnode*)get_nth_node_from_head(ll, 1)), &((ts){3, "three"}));
+	insert_after(ll, get_nth_from_head(ll, 1), &((ts){3, "three", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
-	insert_node_before(ll, ((llnode*)get_nth_node_from_tail(ll, 1)), &((ts){4, "four"}));
+	insert_before(ll, get_nth_from_tail(ll, 1), &((ts){4, "four", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
-	insert_node_before(ll, ((llnode*)get_nth_node_from_tail(ll, 2)), &((ts){-1, "minus one"}));
+	insert_before(ll, get_nth_from_tail(ll, 2), &((ts){-1, "minus one", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
 	remove_head(ll);
@@ -61,9 +66,8 @@ int main()
 	remove_tail(ll);
 	print_linkedlist(ll, print_ts);
 
-	remove_node(ll, ((llnode*)get_nth_node_from_head(ll, 2)));
+	remove_element(ll, get_nth_from_head(ll, 2));
 	print_linkedlist(ll, print_ts);
 
-	delete_linkedlist(ll);
 	return 0;
 }
