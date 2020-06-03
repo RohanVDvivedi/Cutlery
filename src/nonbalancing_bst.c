@@ -11,7 +11,7 @@ const bstnode* get_largest_node_from_node(const bstnode* node_p)
 	return (node_p->right == NULL) ? node_p : get_largest_node_from_node(node_p->right);
 }
 
-void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* root, bstnode* node_p)
+static void insert_node_in_non_self_balancing_tree_recursively(bst* bst_p, bstnode* root, bstnode* node_p)
 {
 	if( bst_p->compare(get_data(node_p), get_data(root)) < 0 )
 	{
@@ -23,7 +23,7 @@ void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* root, bstnode* 
 		}
 		else
 		{
-			insert_node_in_non_self_balancing_tree(bst_p, root->left, node_p);
+			insert_node_in_non_self_balancing_tree_recursively(bst_p, root->left, node_p);
 		}
 	}
 	else if( bst_p->compare(get_data(node_p), get_data(root)) >= 0 )
@@ -36,14 +36,19 @@ void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* root, bstnode* 
 		}
 		else
 		{
-			insert_node_in_non_self_balancing_tree(bst_p, root->right, node_p);
+			insert_node_in_non_self_balancing_tree_recursively(bst_p, root->right, node_p);
 		}
 	}
 }
 
-// the below function only detaches the node that has to be deleted
-// returns pointer of the node that has been removed from the tree
-bstnode* remove_node_from_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
+void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
+{
+	insert_node_in_non_self_balancing_tree_recursively(bst_p, bst_p->root, node_p);
+}
+
+// the below function only detaches the node that has to be removed, it does not unintialize it
+// you must make it NULL, so it is identified as not existing in any bst
+void remove_node_from_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 {
 	// if atleast one of its children are NULL, the node itself can be removed easily
 	if(node_p->left == NULL || node_p->right == NULL)
@@ -81,12 +86,6 @@ bstnode* remove_node_from_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 
 		// decrement the bucket count for the tree
 		bst_p->node_count--;
-
-		// NULL all references of the removed node
-		initialize_llnode(node_p);
-
-		// this node that has been safely removed from the bst
-		return node_p;
 	}
 	else
 	{
@@ -99,6 +98,7 @@ bstnode* remove_node_from_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 		*node_p = temp_node;
 
 		// the node_p now is either a leaf node or has only 1 child (right child)
-		return remove_node_from_non_self_balancing_tree(bst_p, node_p);
+		// and will be handled by the if case in the next recursion, iteration
+		remove_node_from_non_self_balancing_tree(bst_p, node_p);
 	}
 }

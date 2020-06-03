@@ -295,6 +295,7 @@ int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** retu
 				break;
 			}
 		}
+
 		if(node_p != NULL)
 		{
 			if(return_key != NULL)
@@ -305,6 +306,9 @@ int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** retu
 			{
 				(*(return_value)) = node_p->data_entry.value;
 			}
+
+			// NULL all references of the removed node
+		initialize_llnode(node_p);
 			delete_node(node_p);
 			deleted_nodes_count++;
 		}

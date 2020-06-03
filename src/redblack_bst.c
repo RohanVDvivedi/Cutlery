@@ -224,6 +224,9 @@ void handle_black_height_imbalance(balancedbst* balancedbst_p, bstnode* double_b
 // the below function only detaches the node that has to be deleted
 // returns pointer of the node that has to be deleted
 // node_p can not be null in the parameters of the function
+
+// the below function only detaches the node that has to be removed, it does not unintialize it
+// you must make it NULL, so it is identified as not existing in any bst
 bstnode* remove_node_from_red_black_tree(balancedbst* balancedbst_p, bstnode* node_p)
 {
 	// remove the node as if it is a normal tree, reacquire the pointer to the node that needs to be deleted

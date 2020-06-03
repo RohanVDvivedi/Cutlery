@@ -28,6 +28,7 @@ struct bstnode
 	// if bsttype == NON_SELF_BALANCING then node property is ignored
 	// else if bsttype == AVL_TREE then node_property = max( right_tree->node_property, left_tree->node_property)
 	// else if bsttype == RED_BLACK_TREE then node_property = is_red_node? ? 0 : 1; (1 is black node) 
+	// it must be a signed integer, do not change this datatype
 	int node_property;
 };
 
