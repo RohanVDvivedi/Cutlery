@@ -1,19 +1,17 @@
 #include<nonbalancing_bst.h>
 
-#define node bstnode
-
-node* get_smallest_node_from_node(const node* node_p)
+bstnode* get_smallest_node_from_node(const bstnode* node_p)
 {
-	return node_p->left_sub_tree == NULL ? ((node*)node_p) : get_smallest_node_from_node(node_p->left_sub_tree);
+	return node_p->left_sub_tree == NULL ? ((bstnode*)node_p) : get_smallest_node_from_node(node_p->left_sub_tree);
 }
 
-node* get_largest_node_from_node(const node* node_p)
+bstnode* get_largest_node_from_node(const bstnode* node_p)
 {
-	return node_p->right_sub_tree == NULL ? ((node*)node_p) : get_largest_node_from_node(node_p->right_sub_tree);
+	return node_p->right_sub_tree == NULL ? ((bstnode*)node_p) : get_largest_node_from_node(node_p->right_sub_tree);
 }
 
 // neither root nor node_p params are suppossed to be NULL in the function below
-void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* root, node* node_p)
+void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, bstnode* root, bstnode* node_p)
 {
 	if( balancedbst_p->key_compare(node_p->data_entry.key, root->data_entry.key) < 0 )
 	{
@@ -46,17 +44,17 @@ void insert_node_in_non_self_balancing_tree(balancedbst* balancedbst_p, node* ro
 // the below function only detaches the node that has to be deleted
 // returns pointer of the node that has to be deleted
 // node_p can not be null in the parameters of the function
-node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node* node_p)
+bstnode* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, bstnode* node_p)
 {
 	// if atleast one of its children are NULL, the node itself can be removed easily
 	if(node_p->left_sub_tree == NULL || node_p->right_sub_tree == NULL)
 	{
 		// find the parent reference of the node
-		node* parent_node = node_p->parent;
+		bstnode* parent_node = node_p->parent;
 
 		// the child will have one or no child nodes
 		// find any one existing node else if it has no child nodes, either left or right are fine
-		node* child_sub_tree = has_only_right_sub_tree(node_p) ? node_p->right_sub_tree : node_p->left_sub_tree;
+		bstnode* child_sub_tree = has_only_right_sub_tree(node_p) ? node_p->right_sub_tree : node_p->left_sub_tree;
 
 		// since we are removing node_p we update the child references kept by parents 
 		// parents = (parent_node if node_p is internal or leaf node, root pointer if node_p is root node)
@@ -91,7 +89,7 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 	else
 	{
 		// find a smallest node that is grester than node_p
-		node* smallest_node_greater_than_node_p = get_smallest_node_from_node(node_p->right_sub_tree);
+		bstnode* smallest_node_greater_than_node_p = get_smallest_node_from_node(node_p->right_sub_tree);
 
 		// interchange their data, to bring the removal to any of previously seen easy cases
 		bucket bucket_p = node_p->data_entry;
@@ -103,5 +101,3 @@ node* remove_node_from_non_self_balancing_tree(balancedbst* balancedbst_p, node*
 		return remove_node_from_non_self_balancing_tree(balancedbst_p, smallest_node_greater_than_node_p);
 	}
 }
-
-#undef node
