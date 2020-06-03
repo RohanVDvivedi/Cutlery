@@ -66,6 +66,39 @@ struct balancedbst
 	unsigned long long int bucket_count;
 };
 
+
+/*
+*	MACROS TO DEFINE THE TYPE OF NODE
+*/
+
+#define is_leaf_node(node_p)									\
+	(node_p->left_sub_tree == NULL && node_p->right_sub_tree == NULL)
+
+#define is_root_node(node_p)									\
+	(node_p->parent == NULL)
+
+#define is_internal_node(node_p)								\
+	(!(is_leaf_node(node_p) || is_root_node(node_p)))
+
+#define has_only_right_sub_tree(node_p)							\
+	(node_p->left_sub_tree == NULL && node_p->right_sub_tree != NULL)
+
+#define has_only_left_sub_tree(node_p)							\
+	(node_p->left_sub_tree != NULL && node_p->right_sub_tree == NULL)
+
+#define is_left_of_its_parent(node_p)							\
+	((!(is_root_node(node_p))) && (node_p->parent->left_sub_tree == node_p))
+
+#define is_right_of_its_parent(node_p)							\
+	((!(is_root_node(node_p))) && (node_p->parent->right_sub_tree == node_p))
+
+#define is_balancedbst_empty(balancedbst_p)						\
+	(balancedbst_p->root == NULL && balancedbst_p->bucket_count == 0)
+
+
+
+
+
 // get a new balancedbst
 balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1));
 
