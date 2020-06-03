@@ -26,11 +26,11 @@ struct node
 	// the previous node in the linked list
 	node* prev;
 
-	// the data that this node addresses
-	const void* data_p;
-
 	// the next node in the linked list
 	node* next;
+
+	// the data that this node addresses
+	const void* data_p;
 };
 
 typedef enum linkedlisttype linkedlisttype;

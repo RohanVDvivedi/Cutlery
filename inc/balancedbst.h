@@ -36,8 +36,8 @@ struct node
 	// the pointer to the parent node
 	node* parent;
 
-	// the data to store
-	bucket data_entry;
+	// all <= nodes									// all > nodes
+	node* left_sub_tree;							node* right_sub_tree;
 
 	// the property of the node that will be used to help balance the tree
 	// if balanced_tree_type == NON_SELF_BALANCING then node property is ignored
@@ -45,8 +45,8 @@ struct node
 	// else if balanced_tree_type == RED_BLACK_TREE then node_property = is_red_node? ? 0 : 1; (1 is black node) 
 	int node_property;
 
-	// all <= nodes									// all > nodes
-	node* left_sub_tree;							node* right_sub_tree;
+	// the data to store
+	bucket data_entry;
 };
 
 typedef struct balancedbst balancedbst;
@@ -130,6 +130,9 @@ int update_value(balancedbst* balancedbst_p, const void* key_p, const void* valu
 
 // remove the node if found, returns a list of nodes that match, returns 1 if operation completed successfully
 int delete_entry(balancedbst* balancedbst_p, const void* key_p, const void** return_key, const void** return_value);
+
+// delete the balancedbst and all its nodes
+void deinitialize_balancedbst(balancedbst* balancedbst_p);
 
 // delete the balancedbst and all its nodes
 void delete_balancedbst(balancedbst* balancedbst_p);
