@@ -15,11 +15,6 @@
 #define delete_entry 			delete_entry_from_ll
 #define for_each_entry 			for_each_entry_in_ll
 
-// the datastructure of the linkedlist manages its data on its own
-// you manage your own data
-// the pointer you give will be directly stored internally
-// you have to delete your data pointers that you pass
-
 typedef struct node node;
 struct node
 {
@@ -29,8 +24,8 @@ struct node
 	// the next node in the linked list
 	node* next;
 
-	// the data that this node addresses
-	const void* data_p;
+	// the bucket of the node
+	bucket data_entry;
 };
 
 typedef enum linkedlisttype linkedlisttype;

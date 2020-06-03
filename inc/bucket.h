@@ -7,11 +7,12 @@
 typedef struct bucket bucket;
 struct bucket
 {
-	// the key of the bucket
-	const void* key;
-
-	// value of the bucket
-	const void* value;
+	const void* data;
+	union
+	{
+		const void* key;
+		const void* value;
+	};
 };
 
 // get a new bucket
