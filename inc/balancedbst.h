@@ -2,18 +2,7 @@
 #define BALANCEDBST_H
 
 #include<stdio.h>
-#include<stdlib.h>
 #include<bucket.h>
-
-// the tree manages all of its data on its own
-// you manage your own data
-// all the nodes on the left sub tree of the node are smaller than or equal to the node itself,
-// when compare using the data_compare function
-// all the nodes on the right sub tree of the node are greater than the node itself,
-// when compare using the data_compare function
-
-// to avoid name collision with node of linkedlist
-#define node bstnode
 
 // to avoid name collision with functions of hashmap
 #define insert_entry	insert_entry_in_bst
@@ -30,14 +19,14 @@ enum tree_type
 	RED_BLACK_TREE
 };
 
-typedef struct node node;
-struct node
+typedef struct bstnode bstnode;
+struct bstnode
 {
 	// the pointer to the parent node
-	node* parent;
+	bstnode* parent;
 
 	// all <= nodes									// all > nodes
-	node* left_sub_tree;							node* right_sub_tree;
+	bstnode* left_sub_tree;							bstnode* right_sub_tree;
 
 	// the property of the node that will be used to help balance the tree
 	// if balanced_tree_type == NON_SELF_BALANCING then node property is ignored
@@ -60,7 +49,7 @@ struct balancedbst
 	int (*key_compare)(const void* key0, const void* key1);
 
 	// the root node of the tree
-	node* root;
+	bstnode* root;
 
 	// this is number of buckets in the tree
 	unsigned long long int bucket_count;
@@ -143,7 +132,6 @@ void for_each_entry(const balancedbst* balancedbst_p, void (*operation)(const vo
 // print complete binary search tree
 void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value));
 
-#undef node
 #undef insert_entry
 #undef find_value
 #undef update_value
