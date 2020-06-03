@@ -21,7 +21,7 @@ struct bstnode
 	// the pointer to the parent node
 	bstnode* parent;
 
-	// all <= nodes					// all > nodes
+	// all < nodes					// all >= nodes
 	bstnode* left;					bstnode* right;
 
 	// the property of the node that will be used to help balance the tree
