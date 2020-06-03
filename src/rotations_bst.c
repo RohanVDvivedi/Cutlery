@@ -1,7 +1,5 @@
 #include<rotations_bst.h>
 
-#define node bstnode
-
 
 /*      A                                _B_
 **     /  \                             /   \
@@ -11,17 +9,17 @@
 **           / \
 **          Y   Z
 ** returns true if rotation was successfull*/
-int left_rotate_tree(balancedbst* balancedbst_p, node* A)
+int left_rotate_tree(balancedbst* balancedbst_p, bstnode* A)
 {
-	node* parent_of_tree = A->parent;
-	node* B = A->right_sub_tree;
+	bstnode* parent_of_tree = A->parent;
+	bstnode* B = A->right_sub_tree;
 	if( B == NULL )
 	{
 		return 0;
 	}
 	else
 	{
-		node* X = B->left_sub_tree;
+		bstnode* X = B->left_sub_tree;
 
 		if( is_root_node(A) )
 		{
@@ -61,17 +59,17 @@ int left_rotate_tree(balancedbst* balancedbst_p, node* A)
 **  / \
 ** Z   Y
 ** returns true if rotation was successfull*/
-int right_rotate_tree(balancedbst* balancedbst_p, node* A)
+int right_rotate_tree(balancedbst* balancedbst_p, bstnode* A)
 {
-	node* parent_of_tree = A->parent;
-	node* B = A->left_sub_tree;
+	bstnode* parent_of_tree = A->parent;
+	bstnode* B = A->left_sub_tree;
 	if( B == NULL )
 	{
 		return 0;
 	}
 	else
 	{
-		node* X = B->right_sub_tree;
+		bstnode* X = B->right_sub_tree;
 
 		if( is_root_node(A) )
 		{
@@ -101,5 +99,3 @@ int right_rotate_tree(balancedbst* balancedbst_p, node* A)
 		return 1;
 	}
 }
-
-#undef node
