@@ -1,5 +1,4 @@
-#include<balancedbst.h>
-
+#include<bst.h>
 #include<nonbalancing_bst.h>
 #include<avl_bst.h>
 #include<redblack_bst.h>

@@ -1,6 +1,6 @@
 #include<linkedlist.h>
 
-void initialize_linkedlist(linkedlist* ll, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
+void initialize_linkedlist(linkedlist* ll, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2))
 {
 	ll->head = NULL;
 	ll->tail = NULL;
@@ -226,7 +226,7 @@ int remove_tail(linkedlist* ll)
 }
 
 // remove the given element from the linked list
-int remove_element(linkedlist* ll, const void* data)
+int remove_from_list(linkedlist* ll, const void* data)
 {
 	llnode* node_p = get_node(data);
 

@@ -66,7 +66,7 @@ int main()
 	remove_tail(ll);
 	print_linkedlist(ll, print_ts);
 
-	remove_element(ll, get_nth_from_head(ll, 2));
+	remove_from_list(ll, get_nth_from_head(ll, 2));
 	print_linkedlist(ll, print_ts);
 
 	return 0;

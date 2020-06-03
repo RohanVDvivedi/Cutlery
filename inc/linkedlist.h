@@ -2,7 +2,6 @@
 #define LINKEDLIST_H
 
 #include<stdio.h>
-#include<stdint.h>
 
 typedef struct llnode llnode;
 struct llnode
@@ -39,13 +38,15 @@ struct linkedlist
 #define is_new_node(new_node)			((new_node->next == NULL) && (new_node->prev == NULL))
 
 // initializes to a new linked list
-void initialize_linkedlist(linkedlist* ll, unsigned int node_offset, int (*compare)(const void* data1, const void* data2));
+void initialize_linkedlist(linkedlist* ll, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
 
 // simply gets head node data
 const void* get_head(linkedlist* ll);
 
 // simply gets tail node data
 const void* get_tail(linkedlist* ll);
+
+// inserts will return 0, and fail if llnode of data is not a new node
 
 // inserts a new head element, returns 0 if it fails
 int insert_head(linkedlist* ll, const void* data);
@@ -59,6 +60,8 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data);
 // inserts the new data in linkedlist before data_xist, returns 0 if it fails
 int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 
+// removed will return 0, and fail if bstnode of data is a new node
+
 // removes the head, now the new head is next of the previous head
 // returns 0 if it fails
 int remove_head(linkedlist* ll);
@@ -69,7 +72,7 @@ int remove_tail(linkedlist* ll);
 
 // remove the given element from the linked list
 // returns 0 if it fails
-int remove_element(linkedlist*ll, const void* data);
+int remove_from_list(linkedlist*ll, const void* data);
 
 // get pointer to nth element from head by doing next next
 const void* get_nth_from_head(linkedlist* ll, unsigned long long int n);
