@@ -88,7 +88,7 @@ int main()
 	printf("INITIALIZING BALANCED BINARY SEARCH TREE\n");
 
 	bst my_bst;
-	bst* bst_p;
+	bst* bst_p = &my_bst;
 	initialize_bst(bst_p, TREE_TYPE_TO_USE, (unsigned long long int)(&(((ts*)0)->bst_embed_node)), cmp);
 	print_bst(bst_p, print_ts);
 
