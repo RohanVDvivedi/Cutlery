@@ -243,67 +243,71 @@ int main()
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	error = remove_from_bst(bst_p, &((ts){1}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){0})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	error = remove_from_bst(bst_p, &((ts){2}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){1})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	print_smallest(bst_p);
-	print_largest(bst_p);
-
-	error = remove_from_bst(bst_p, &((ts){7}));
-	printf("node removed = %d\n", error);
-	print_bst(bst_p, print_ts);
-
-	error = remove_from_bst(bst_p, &((ts){14}));
-	printf("node removed = %d\n", error);
-	print_bst(bst_p, print_ts);
-
-	error = remove_from_bst(bst_p, &((ts){15}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){2})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, &((ts){16}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){7})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	error = remove_from_bst(bst_p, &((ts){13}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){14})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	error = remove_from_bst(bst_p, &((ts){10}));
-	printf("node removed = %d\n", error);
-	print_bst(bst_p, print_ts);
-
-	error = remove_from_bst(bst_p, &((ts){9}));
-	printf("node removed = %d\n", error);
-	print_bst(bst_p, print_ts);
-
-	error = remove_from_bst(bst_p, &((ts){8}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){15})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, &((ts){11}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){16})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	error = remove_from_bst(bst_p, &((ts){12}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){13})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){10})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){8})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, &((ts){3}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){11})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){12})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	print_smallest(bst_p);
+	print_largest(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){3})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
@@ -323,37 +327,37 @@ int main()
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, &((ts){4}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){4})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	error = remove_from_bst(bst_p, &((ts){5}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){5})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	error = remove_from_bst(bst_p, &((ts){6}));
-	printf("node removed = %d\n", error);
-	print_bst(bst_p, print_ts);
-
-	print_smallest(bst_p);
-	print_largest(bst_p);
-
-	error = remove_from_bst(bst_p, &((ts){17}));
-	printf("node removed = %d\n", error);
-	print_bst(bst_p, print_ts);
-
-	error = remove_from_bst(bst_p, &((ts){18}));
-	printf("node removed = %d\n", error);
-	print_bst(bst_p, print_ts);
-
-	error = remove_from_bst(bst_p, &((ts){19}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){6})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, &((ts){9}));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){17})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){18})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){19})));
+	printf("node removed = %d\n", error);
+	print_bst(bst_p, print_ts);
+
+	print_smallest(bst_p);
+	print_largest(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
