@@ -58,8 +58,6 @@ static void insert_node_before(linkedlist* ll, llnode* node_p, llnode* new_node)
 		new_node->prev->next = new_node;
 		new_node->next->prev = new_node;
 	}
-
-	ll->node_count++;
 }
 
 static void insert_node_after(linkedlist* ll, llnode* node_p, llnode* new_node)
@@ -91,8 +89,6 @@ static void insert_node_after(linkedlist* ll, llnode* node_p, llnode* new_node)
 		new_node->prev->next = new_node;
 		new_node->next->prev = new_node;
 	}
-
-	ll->node_count++;
 }
 
 int insert_head(linkedlist* ll, const void* data_p)
@@ -116,6 +112,8 @@ int insert_head(linkedlist* ll, const void* data_p)
 		insert_node_before(ll, ll->head, new_node);
 	}
 
+	new_node->belongs_to_ll = ll;
+	ll->node_count++;
 	return 1;
 }
 
@@ -140,6 +138,8 @@ int insert_tail(linkedlist* ll, const void* data_p)
 		insert_node_after(ll, ll->tail, new_node);
 	}
 
+	new_node->belongs_to_ll = ll;
+	ll->node_count++;
 	return 1;
 }
 
@@ -159,6 +159,9 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data)
 	}
 
 	insert_node_before(ll, node_xist, new_node);
+
+	new_node->belongs_to_ll = ll;
+	ll->node_count++;
 	return 1;
 }
 
@@ -178,6 +181,8 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 	}
 
 	insert_node_after(ll, node_xist, new_node);
+	new_node->belongs_to_ll = ll;
+	ll->node_count++;
 	return 1;
 }
 
@@ -213,8 +218,6 @@ static void remove_node(linkedlist* ll, llnode* node_p)
 
 	node_p->next = NULL;
 	node_p->prev = NULL;
-
-	ll->node_count--;
 }
 
 int remove_head(linkedlist* ll)
@@ -223,6 +226,8 @@ int remove_head(linkedlist* ll)
 	if(ll->head != NULL)
 	{
 		remove_node(ll, ll->head);
+		node_p->belongs_to_ll = NULL;
+		ll->node_count--;
 		return 1;
 	}
 
@@ -235,6 +240,8 @@ int remove_tail(linkedlist* ll)
 	if(ll->tail != NULL)
 	{
 		remove_node(ll, ll->tail);
+		node_p->belongs_to_ll = NULL;
+		ll->node_count--;
 		return 1;
 	}
 
@@ -252,7 +259,8 @@ int remove_from_list(linkedlist* ll, const void* data)
 	}
 
 	remove_node(ll, node_p);
-
+	node_p->belongs_to_ll = NULL;
+	ll->node_count--;
 	return 1;
 }
 
