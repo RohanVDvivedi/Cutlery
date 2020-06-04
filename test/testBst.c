@@ -220,7 +220,13 @@ int main()
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = insert_in_bst(bst_p, &((ts){19, 19, "LOL"}));
+	printf("Updating key = 19 from 19 19 nineteen to 19 19 LOL\n");
+	ts* to_update = (void*) find_equals_in_bst(bst_p, &((ts){19}));
+	remove_from_bst(bst_p, to_update);
+	print_ts(to_update);printf("\n");
+	to_update->s = "LOL";
+	print_ts(to_update);printf("\n");
+	error = insert_in_bst(bst_p, to_update);
 	printf("node inserted = %d\n", error);
 	print_bst(bst_p, print_ts);
 
