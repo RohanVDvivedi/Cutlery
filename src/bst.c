@@ -178,6 +178,8 @@ int insert_in_bst(bst* bst_p, const void* data)
 		node_p->node_property = (bst_p->type == NON_SELF_BALANCING) ? 0 : 1;
 
 		node_p->parent = NULL;
+
+		node_p->belongs_to_bst = bst_p;
 		bst_p->node_count = 1;
 		return 1;
 	}
