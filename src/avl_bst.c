@@ -40,8 +40,8 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 	while(unbalanced_node != NULL)
 	{
 		update_max_height(unbalanced_node);
-		unsigned long long int left_tree_max_height = get_max_height(unbalanced_node->left);
-		unsigned long long int right_tree_max_height = get_max_height(unbalanced_node->right);
+		int left_tree_max_height = get_max_height(unbalanced_node->left);
+		int right_tree_max_height = get_max_height(unbalanced_node->right);
 
 		// if left tree height is more, do right rotate
 		if(left_tree_max_height - right_tree_max_height >= 2)

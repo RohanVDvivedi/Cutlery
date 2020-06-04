@@ -363,7 +363,7 @@ void print_bstnode_debug(bstnode* node_p)
 	printf("DEBUG -> self[%p] ", node_p);
 	if(node_p != NULL)
 	{
-		printf("parent[%p], left[%p], right[%p], belongs_to[%p]\n", node_p->parent, node_p->left, node_p->right, node_p->belongs_to_bst);
+		printf("parent[%p], left[%p], right[%p], belongs_to[%p], node_property = %d\n", node_p->parent, node_p->left, node_p->right, node_p->belongs_to_bst, node_p->node_property);
 	}
 	else
 	{
