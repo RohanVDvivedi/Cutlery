@@ -38,9 +38,9 @@ struct linkedlist
 	int (*compare)(const void* data1, const void* data2);
 };
 
-#define initialize_llnode(new_node)			{new_node->next = NULL; new_node->prev = NULL;}
+#define initialize_llnode(new_node)			{new_node->next = NULL; new_node->prev = NULL; new_node->belongs_to_ll = NULL;}
 
-#define is_new_llnode(new_node)				((new_node->next == NULL) && (new_node->prev == NULL))
+#define is_new_llnode(new_node)				((new_node->next == NULL) && (new_node->prev == NULL) && (new_node->belongs_to_ll == NULL))
 
 #define llnode_exists_in_this_ll(node_p)	(node_p->belongs_to_ll == ll)
 
@@ -55,7 +55,7 @@ const void* get_head(linkedlist* ll);
 // simply gets tail node data
 const void* get_tail(linkedlist* ll);
 
-// inserts will return 0, and fail if llnode of data is not a new node
+// inserts will return 0, and fail if llnode of data is not a new node or if node iexists in this or any other linkedlist
 
 // inserts a new head element, returns 0 if it fails
 int insert_head(linkedlist* ll, const void* data);
@@ -69,7 +69,7 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data);
 // inserts the new data in linkedlist before data_xist, returns 0 if it fails
 int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 
-// removed will return 0, and fail if bstnode of data is a new node
+// removes will return 0, and fail if llnode of data is a new node or if llnode does not exist in this linkedlist
 
 // removes the head, now the new head is next of the previous head
 // returns 0 if it fails
