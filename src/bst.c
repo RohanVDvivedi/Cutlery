@@ -266,50 +266,49 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 	{
 		if(is_root_node(node_p))
 		{
-			printf("\tROOT NODE     :");
+			printf("\tROOT NODE     : (%d)", node_p->node_property);
 		}
 		else if(is_leaf_node(node_p))
 		{
-			printf("\tLEAF NODE     :");
+			printf("\tLEAF NODE     : (%d)", node_p->node_property);
 		}
 		else if(is_internal_node(node_p))
 		{
-			printf("\tINTERNAL NODE :");
+			printf("\tINTERNAL NODE : (%d)", node_p->node_property);
 		}
 
-		printf("\taddress => %p", node_p);
-		printf("\tdata => ");
+		printf("\t\t\t[%p] => ", node_p);
 		print_element(get_data(node_p));
-		printf("\t\twith property = %d\n", node_p->node_property);
+		printf("\n");
 
 		if( !is_root_node(node_p) )
 		{
 			if(is_left_of_its_parent(node_p))
 			{
-				printf("\t\tis LEFT of  : \n");
+				printf("\t\tis LEFT of ");
 			}
 			else if(is_right_of_its_parent(node_p))
 			{
-				printf("\t\tis RIGHT of : \n");
+				printf("\t\tis RIGHT of ");
 			}
-			printf("\t\t\taddress => %p", node_p->parent);
-			printf("\tdata => ");
+			printf("\t\t\t[%p] =>", node_p->parent);
 			print_element(get_data(node_p->parent));
+			printf("\n");
 		}
 
 		if( (!is_leaf_node(node_p)) )
 		{
 			if(node_p->left != NULL)
 			{
-				printf("\t\thas a LEFT\n\t\t\tchild  => %p", node_p->left);
-				printf("\tdata => ");
+				printf("\t\thas a LEFT  child => \t\t[%p] => ", node_p->left);
 				print_element(get_data(node_p->left));
+				printf("\n");
 			}
 			if(node_p->right != NULL)
 			{
-				printf("\t\thas a RIGHT\n\t\t\tchild => %p", node_p->right); 
-				printf("\tdata => ");
+				printf("\t\thas a RIGHT child => \t\t[%p] => ", node_p->right);
 				print_element(get_data(node_p->right));
+				printf("\n");
 			}
 		}
 		printf("\n");
