@@ -60,6 +60,6 @@
 */
 
 #define is_balancedbst_empty(balancedbst_p)						\
-	(balancedbst_p->root == NULL && balancedbst_p->node_count == 0)
+	(balancedbst_p->root == NULL)
 
 #endif
