@@ -202,6 +202,7 @@ int insert_in_bst(bst* bst_p, const void* data)
 		}
 	}
 
+	node_p->belongs_to_bst = bst_p;
 	bst_p->node_count++;
 
 	return 1;
