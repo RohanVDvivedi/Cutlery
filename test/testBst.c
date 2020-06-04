@@ -285,9 +285,7 @@ int main()
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	ts* temp = NULL;
-	print_ts(temp = find_equals_in_bst(bst_p, &((ts){9})));
-	error = remove_from_bst(bst_p, temp);
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9})));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
 
