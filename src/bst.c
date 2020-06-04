@@ -353,6 +353,20 @@ void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 			break;
 		}
 	}
+	printf("BST root : [%p]\n", bst_p->root);
 	print_tree(bst_p, bst_p->root, print_element);
 	printf("--\n\n");
+}
+
+void print_bstnode_debug(bstnode* node_p)
+{
+	printf("DEBUG -> self[%p] ", node_p);
+	if(node_p != NULL)
+	{
+		printf("parent[%p], left[%p], right[%p], belongs_to[%p]\n", node_p->parent, node_p->left, node_p->right, node_p->belongs_to_bst);
+	}
+	else
+	{
+		printf("\n");
+	}
 }

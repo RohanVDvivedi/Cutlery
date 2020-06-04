@@ -100,4 +100,7 @@ void for_each_in_bst(const bst* bst_p, void (*operation)(const void* data, const
 // print complete binary search tree
 void print_bst(const bst* bst_p, void (*print_element)(const void* data));
 
+// PRINT NODE REFERENCES TO DEBUG YOUR APP
+void print_bstnode_debug(bstnode* node_p);
+
 #endif
