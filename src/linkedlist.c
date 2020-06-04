@@ -105,7 +105,6 @@ int insert_head(linkedlist* ll, const void* data_p)
 	{
 		ll->head = new_node;
 		ll->tail = ll->head;
-		ll->node_count++;
 	}
 	else
 	{
@@ -131,7 +130,6 @@ int insert_tail(linkedlist* ll, const void* data_p)
 	{
 		ll->tail = new_node;
 		ll->head = ll->tail;
-		ll->node_count++;
 	}
 	else
 	{
