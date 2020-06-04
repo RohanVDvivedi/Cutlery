@@ -66,7 +66,21 @@ int main()
 	remove_tail(ll);
 	print_linkedlist(ll, print_ts);
 
-	remove_from_list(ll, get_nth_from_head(ll, 2));
+	const ts* temp = get_nth_from_head(ll, 2);
+
+	remove_from_list(ll, temp);
+	print_linkedlist(ll, print_ts);
+
+	printf("Error on removing a not existing node twice %d\n", remove_from_list(ll, temp));
+	print_linkedlist(ll, print_ts);
+
+	printf("Error on inserting before a not existing node twice %d\n", insert_before(ll, temp, &((ts){-1, "minus one", {NULL, NULL}})));
+	print_linkedlist(ll, print_ts);
+
+	insert_after(ll, get_nth_from_head(ll, 1), temp);
+	print_linkedlist(ll, print_ts);
+
+	printf("Error on inserting an existing node %d\n", insert_before(ll, temp, get_nth_from_tail(ll, 3)));
 	print_linkedlist(ll, print_ts);
 
 	return 0;
