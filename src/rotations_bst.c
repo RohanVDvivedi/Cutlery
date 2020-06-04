@@ -161,6 +161,9 @@ void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
 		{
 			bst_p->root = B;
 		}
+
+		A->node_property = B_->node_property;
+		B->node_property = A_->node_property;
 	}
 	else
 	{
