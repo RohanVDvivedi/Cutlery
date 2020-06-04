@@ -8,13 +8,13 @@
 #define initialize_bstnode(new_node)								\
 	{new_node->parent = NULL; new_node->left = NULL; new_node->right = NULL; node_p->belongs_to_bst = NULL;}
 
-#define is_new_node(new_node)										\
+#define is_new_bstnode(new_node)									\
 	((new_node->parent == NULL) && (new_node->left == NULL) && (new_node->right == NULL))
 
-#define node_exists_in_this_bst(node_p)								\
+#define bstnode_exists_in_this_bst(node_p)								\
 	(node_p->belongs_to_bst == bst_p)
 
-#define node_exists_in_any_bst(node_p)								\
+#define bstnode_exists_in_any_bst(node_p)								\
 	(node_p->belongs_to_bst != NULL)
 
 

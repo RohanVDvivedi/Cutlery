@@ -157,14 +157,14 @@ const void* find_largest(const bst* bst_p)
 int exists_in_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
-	return node_exists_in_this_bst(node_p);
+	return bstnode_exists_in_this_bst(node_p);
 }
 
 int insert_in_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
 
-	if(node_exists_in_any_bst(node_p) || (!is_new_node(node_p)))
+	if(bstnode_exists_in_any_bst(node_p) || (!is_new_bstnode(node_p)))
 	{
 		return 0;
 	}
@@ -211,7 +211,7 @@ int remove_from_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
 
-	if((!node_exists_in_this_bst(node_p)) || is_new_node(node_p))
+	if((!bstnode_exists_in_this_bst(node_p)) || is_new_bstnode(node_p))
 	{
 		return 0;
 	}

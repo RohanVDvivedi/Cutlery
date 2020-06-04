@@ -3,15 +3,20 @@
 
 #include<stdio.h>
 
+typedef struct linkedlist linkedlist;
+struct linkedlist;
+
 typedef struct llnode llnode;
 struct llnode
 {
 	// the previous and next node in the linked list
 	llnode* prev;
 	llnode* next;
+
+	// the pointer to the linkedlist that this node belongs to
+	linkedlist* belongs_to_ll;
 };
 
-typedef struct linkedlist linkedlist;
 struct linkedlist
 {
 	// head->next->...->next = tail
@@ -33,9 +38,13 @@ struct linkedlist
 	int (*compare)(const void* data1, const void* data2);
 };
 
-#define initialize_llnode(new_node)		{new_node->next = NULL; new_node->prev = NULL;}
+#define initialize_llnode(new_node)			{new_node->next = NULL; new_node->prev = NULL;}
 
-#define is_new_node(new_node)			((new_node->next == NULL) && (new_node->prev == NULL))
+#define is_new_llnode(new_node)				((new_node->next == NULL) && (new_node->prev == NULL))
+
+#define llnode_exists_in_this_ll(node_p)	(node_p->belongs_to_ll == ll)
+
+#define llnode_exists_in_any_ll(node_p)		(node_p->belongs_to_ll != NULL)
 
 // initializes to a new linked list
 void initialize_linkedlist(linkedlist* ll, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
@@ -82,6 +91,10 @@ const void* get_nth_from_tail(linkedlist* ll, unsigned long long int n);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
 const void* find_in_list(const linkedlist* ll, const void* data);
+
+// check if a given data exists in the linkedlist
+// it used belongs_to_list attribute of the node
+int exist_in_list(const linkedlist* ll, const void* data);
 
 // perform operation on all the elements of the linked list
 void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
