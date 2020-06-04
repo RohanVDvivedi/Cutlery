@@ -102,17 +102,68 @@ int right_rotate_tree(bst* bst_p, bstnode* A)
 
 void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
 {
-	/*
-	** 		CACHE ORIGINAL VALUES OF A AND B 
-	*/
-		const bstnode A_ = *A;
-		const bstnode B_ = *B;
+	if(A->parent == B)
+	{
+		exchange_positions_in_bst(bst_p, B, A);
+		return;
+	}
 
-	/*
-	** 		POINT ALL RELATIVES OF A TO B
-	*/
+	bstnode A_ = *A;
+	bstnode B_ = *B;
 
-		// change the parent pointers of left and right children of A to point to B
+	if(B->parent == A)
+	{
+		A->left = B_.left;
+		if(B_.left != NULL)
+		{
+			B_.left->parent = A;
+		}
+
+		A->right = B_.right;
+		if(B_.right != NULL)
+		{
+			B_.right->parent = A;
+		}
+
+		A->parent = B;
+		if(A_.left == B)
+		{
+			B->left = A;
+			B->right = A_.right;
+			if(A_.right != NULL)
+			{
+				A_.right->parent = B;
+			}
+		}
+		else if(A_.right == B)
+		{
+			B->right = A;
+			B->left = A_.left;
+			if(A_.left != NULL)
+			{
+				A_.left->parent = B;
+			}
+		}
+
+		B->parent = A_.parent;
+		if(A_.parent != NULL)
+		{
+			if(A_.parent->left == A)
+			{
+				A_.parent->left = B;
+			}
+			else if(A_.parent->right == A)
+			{
+				A_.parent->right = B;
+			}
+		}
+		else
+		{
+			bst_p->root = B;
+		}
+	}
+	else
+	{
 		if(A_.left != NULL)
 		{
 			A_.left->parent = B;
@@ -122,29 +173,23 @@ void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
 			A_.right->parent = B;
 		}
 
-		// change (left or right) child pointer of parent of A to point B
 		if(A_.parent != NULL)
 		{
-			if(A_.parent->right == A)
-			{
-				A_.parent->right = B;
-			}
-			else if(A_.parent->left == A)
+			if(A_.parent->left == A)
 			{
 				A_.parent->left = B;
 			}
+			else if(A_.parent->right == A)
+			{
+				A_.parent->right = B;
+			}
 		}
-		// if A is not left or right of its parent, i.e. it has no parent, then A is root of BST, so we update bst root to point to B
 		else
 		{
 			bst_p->root = B;
 		}
 
-	/*
-	** 		POINT ALL RELATIVES OF B TO A
-	*/
 
-		// change the parent pointers of left and right children of B to point to A
 		if(B_.left != NULL)
 		{
 			B_.left->parent = A;
@@ -154,33 +199,23 @@ void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
 			B_.right->parent = A;
 		}
 
-		// change (left or right) child pointer of parent of B to point A
 		if(B_.parent != NULL)
 		{
-			if(B_.parent->right == B)
-			{
-				B_.parent->right = A;
-			}
-			else if(B_.parent->left == B)
+			if(B_.parent->left == B)
 			{
 				B_.parent->left = A;
 			}
+			else if(B_.parent->right == B)
+			{
+				B_.parent->right = A;
+			}
 		}
-		// if B is not left or right of its parent, i.e. it has no parent, then B is root of BST, so we update bst root to point to A
 		else
 		{
 			bst_p->root = A;
 		}
 
-	/*
-	** 		POINT ALL POINTERS OF B TO where A points
-	**		POINT ALL POINTERS OF A TO where B points
-	*/
-
-	// to do this task we will use the cached copies of A and B
-	// because in the above process of notifying the relatives of each of them
-	// we might have polluted their values
-
 		*A = B_;
 		*B = A_;
+	}
 }
