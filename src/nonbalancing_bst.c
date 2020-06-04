@@ -1,4 +1,5 @@
 #include<nonbalancing_bst.h>
+#include<rotations_bst.h>		// used only for interchange positions of nodes, no rotations performed
 #include<bst_util.h>
 
 const bstnode* get_smallest_node_from_node(const bstnode* node_p)
