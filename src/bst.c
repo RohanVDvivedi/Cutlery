@@ -115,7 +115,7 @@ const void* find_preceding_or_equals(const bst* bst_p, const void* data)
 	}
 }
 
-const void* find_value_succeeding_or_equals(const bst* bst_p, const void* data)
+const void* find_succeeding_or_equals(const bst* bst_p, const void* data)
 {
 	if(is_balancedbst_empty(bst_p))
 	{
