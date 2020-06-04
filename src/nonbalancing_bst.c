@@ -87,10 +87,8 @@ void remove_node_from_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 		// find a smallest node that is greater than node_p
 		bstnode* smallest_node_greater_than_node_p = (bstnode*) get_smallest_node_from_node(node_p->right);
 
-		// interchange their positions, to bring the removal to previously seen easy cases
-		bstnode temp_node = *smallest_node_greater_than_node_p;
-		*smallest_node_greater_than_node_p = *node_p;
-		*node_p = temp_node;
+		// interchange their positions in the tree, to bring the removal to previously seen easy cases
+		exchange_positions_in_bst(bst_p, node_p, smallest_node_greater_than_node_p);
 
 		// the node_p now is either a leaf node or has only 1 child (right child)
 		// and will be handled by the if case in the next recursion, iteration

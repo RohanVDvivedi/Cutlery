@@ -23,4 +23,6 @@ int left_rotate_tree(bst* bst_p, bstnode* A);
 ** returns true if rotation was successfull*/
 int right_rotate_tree(bst* bst_p, bstnode* A);
 
+void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B);
+
 #endif
