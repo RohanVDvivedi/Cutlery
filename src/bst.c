@@ -2,53 +2,38 @@
 #include<nonbalancing_bst.h>
 #include<avl_bst.h>
 #include<redblack_bst.h>
+#include<bst_util.h>
 
-// to avoid name collision with node of linkedlist
-#define delete_node delete_bstnode
-#define find_node 	find_bstnode
-
-// to avoid name collision with functions of hashmap
-#define insert_entry	insert_entry_in_bst
-#define find_value		find_value_from_bst 
-#define update_value	update_value_in_bst
-#define delete_entry 	delete_entry_from_bst
-#define for_each_entry 	for_each_entry_in_bst
-
-balancedbst* get_balancedbst(tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
+void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
 {
-	balancedbst* balancedbst_p = calloc(1, sizeof(balancedbst));
-	initialize_balancedbst(balancedbst_p, balanced_tree_type, key_compare);
-	return balancedbst_p;
+	bst_p->balanced_tree_type = type;
+	bst_p->root = NULL;
+	bst_p->node_offset = node_offset;
+	bst_p->compare = compare;
+	bst_p->node_count = 0;
 }
 
-void initialize_balancedbst(balancedbst* balancedbst_p, tree_type balanced_tree_type, int (*key_compare)(const void* key0, const void* key1))
-{
-	balancedbst_p->balanced_tree_type = balanced_tree_type;
-	balancedbst_p->root = NULL;
-	balancedbst_p->key_compare = key_compare;
-	balancedbst_p->bucket_count = 0;
-}
+#define is_greater(compare_A_with_B) 	(compare_A_with_B > 0)
+#define is_lesser(compare_A_with_B)		(compare_A_with_B < 0)
+#define is_equal(compare_A_with_B)		(compare_A_with_B == 0)
 
-bstnode* get_node(const void* key, const void* value)
-{
-	bstnode* node_p = calloc(1, sizeof(bstnode));
-	initialize_bucket(&(node_p->data_entry), key, value);
-	return node_p;
-}
 
-static bstnode* find_node_recursively(const balancedbst* balancedbst_p, const bstnode* root, const void* key_p)
+// recursively searches for bstnode that holds data equal to the given data
+static bstnode* find_node_recursively(const bst* bst_p, const bstnode* root, const void* data)
 {
-	if(balancedbst_p->key_compare(key_p, root->data_entry.key) == 0)
+	int compared_data_with_root = bst_p->compare(data, get_data(root));
+
+	if(is_equal(compared_data_with_root))
 	{
 		return ((bstnode*)root);
 	}
-	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) < 0)
+	else if(root->left != NULL && is_lesser(compared_data_with_root))
 	{
-		return find_node_recursively(balancedbst_p, root->left_sub_tree, key_p);
+		return find_node_recursively(bst_p, root->left, key_p);
 	}
-	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) > 0)
+	else if(root->right != NULL && is_greater(compared_data_with_root))
 	{
-		return find_node_recursively(balancedbst_p, root->right_sub_tree, key_p);
+		return find_node_recursively(bst_p, root->right, key_p);
 	}
 	else
 	{
@@ -56,16 +41,16 @@ static bstnode* find_node_recursively(const balancedbst* balancedbst_p, const bs
 	}
 }
 
-static bstnode* find_node(const balancedbst* balancedbst_p, const void* key_p)
+// wrapper to the function above
+static bstnode* find_node(const bst* bst_p, const void* data)
 {
-	// if the tree is empty, just return NULL
-	if( is_balancedbst_empty(balancedbst_p) )
+	if(is_balancedbst_empty(bst_p))
 	{
 		return NULL;
 	}
 	else
 	{
-		return find_node_recursively(balancedbst_p, balancedbst_p->root, key_p);
+		return find_node_recursively(bst_p, bst_p->root, data);
 	}
 }
 
@@ -266,11 +251,6 @@ int update_value(balancedbst* balancedbst_p, const void* key_p, const void* valu
 	}
 }
 
-void delete_node(bstnode* node_p)
-{
-	free(node_p);
-}
-
 int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** return_key,const void** return_value)
 {
 	int deleted_nodes_count = 0;
@@ -309,7 +289,6 @@ int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** retu
 
 			// NULL all references of the removed node
 		initialize_llnode(node_p);
-			delete_node(node_p);
 			deleted_nodes_count++;
 		}
 	}
@@ -345,20 +324,6 @@ static void delete_nodes_from(bstnode* node_p)
 		delete_nodes_from(node_p->right_sub_tree);
 	}
 	delete_node(node_p);
-}
-
-void deinitialize_balancedbst(balancedbst* balancedbst_p)
-{
-	if(!is_balancedbst_empty(balancedbst_p))
-	{
-		delete_nodes_from(balancedbst_p->root);
-	}
-}
-
-void delete_balancedbst(balancedbst* balancedbst_p)
-{
-	deinitialize_balancedbst(balancedbst_p);
-	free(balancedbst_p);
 }
 
 static void print_node(bstnode* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
@@ -456,11 +421,3 @@ void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const
 	print_tree(balancedbst_p->root, print_key, print_value);
 	printf("--\n\n");
 }
-
-#undef insert_entry
-#undef find_value
-#undef update_value
-#undef delete_entry
-#undef for_each_entry
-#undef delete_node
-#undef find_node

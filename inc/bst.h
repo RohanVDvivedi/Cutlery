@@ -88,6 +88,6 @@ int remove_from_bst(bst* bst_p, const void* data);
 void for_each_in_bst(const bst* bst_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
 
 // print complete binary search tree
-void print_balancedbst(const bst* bst_p, void (*print_element)(const void* data));
+void print_bst(const bst* bst_p, void (*print_element)(const void* data));
 
 #endif
