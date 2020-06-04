@@ -5,11 +5,17 @@
 *	MACROS TO CHECK IF THE NODE IS NEW NODE <you can only insert a new node, and remove an existing node>
 */
 
-#define initialize_llnode(new_node)								\
-	{new_node->parent = NULL; new_node->left = NULL; new_node->right = NULL;}
+#define initialize_bstnode(new_node)								\
+	{new_node->parent = NULL; new_node->left = NULL; new_node->right = NULL; node_p->belongs_to_bst = NULL;}
 
-#define is_new_node(new_node)									\
-	((new_node->parent == NULL) (new_node->left == NULL) && (new_node->right == NULL))
+#define is_new_node(new_node)										\
+	((new_node->parent == NULL) && (new_node->left == NULL) && (new_node->right == NULL))
+
+#define node_exists_in_this_bst(node_p)								\
+	(node_p->belongs_to_bst == bst_p)
+
+#define node_exists_in_any_bst(node_p)								\
+	(node_p->belongs_to_bst != NULL)
 
 
 /*

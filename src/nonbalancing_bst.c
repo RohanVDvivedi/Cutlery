@@ -19,7 +19,6 @@ static void insert_node_in_non_self_balancing_tree_recursively(bst* bst_p, bstno
 		{
 			root->left = node_p;
 			node_p->parent = root;
-			bst_p->node_count++;
 		}
 		else
 		{
@@ -32,7 +31,6 @@ static void insert_node_in_non_self_balancing_tree_recursively(bst* bst_p, bstno
 		{
 			root->right = node_p;
 			node_p->parent = root;
-			bst_p->node_count++;
 		}
 		else
 		{
@@ -83,9 +81,6 @@ void remove_node_from_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 		{
 			none_or_1_child->parent = parent_node;
 		}
-
-		// decrement the bucket count for the tree
-		bst_p->node_count--;
 	}
 	else
 	{

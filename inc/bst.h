@@ -15,6 +15,9 @@ enum bsttype
 	RED_BLACK_TREE
 };
 
+typedef struct bst bst;
+struct bst;
+
 typedef struct bstnode bstnode;
 struct bstnode
 {
@@ -30,9 +33,12 @@ struct bstnode
 	// else if bsttype == RED_BLACK_TREE then node_property = is_red_node? ? 0 : 1; (1 is black node) 
 	// it must be a signed integer, do not change this datatype
 	int node_property;
+
+	// pointer to the bst that this node belongs to
+	// it is used to quickly check if the given node exists in given bst
+	bst* belongs_to_bst;
 };
 
-typedef struct bst bst;
 struct bst
 {
 	// the type of balancing algorithm to use for the binary search tree
@@ -63,8 +69,12 @@ void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset
 // returns 0, and fails if bstnode of data is not a new node
 int insert_in_bst(bst* bst_p, const void* data);
 
+// function helps to quickly check if a node exists in the given bst
+// it uses belongs_to_bst attribute of the node
+int exists_in_bst(bst* bst_p, const void* data);
+
 // find data in tree, whose data compares equal to data provided
-const void* find_in_bst(const bst* bst_p, const void* data);
+const void* find_equals_in_bst(const bst* bst_p, const void* data);
 
 // find data in tree, with the biggest value which is smaller than or equal to data
 // returns NULL, if data is smaller than the smallest data

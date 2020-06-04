@@ -4,9 +4,9 @@
 #include<redblack_bst.h>
 #include<bst_util.h>
 
-void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
+void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2))
 {
-	bst_p->balanced_tree_type = type;
+	bst_p->type = type;
 	bst_p->root = NULL;
 	bst_p->node_offset = node_offset;
 	bst_p->compare = compare;
@@ -17,23 +17,21 @@ void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset
 #define is_lesser(compare_A_with_B)		(compare_A_with_B < 0)
 #define is_equal(compare_A_with_B)		(compare_A_with_B == 0)
 
-
 // recursively searches for bstnode that holds data equal to the given data
-static bstnode* find_node_recursively(const bst* bst_p, const bstnode* root, const void* data)
+static const bstnode* find_node_recursively(const bst* bst_p, const bstnode* root, const void* data)
 {
 	int compared_data_with_root = bst_p->compare(data, get_data(root));
-
 	if(is_equal(compared_data_with_root))
 	{
 		return ((bstnode*)root);
 	}
 	else if(root->left != NULL && is_lesser(compared_data_with_root))
 	{
-		return find_node_recursively(bst_p, root->left, key_p);
+		return find_node_recursively(bst_p, root->left, data);
 	}
 	else if(root->right != NULL && is_greater(compared_data_with_root))
 	{
-		return find_node_recursively(bst_p, root->right, key_p);
+		return find_node_recursively(bst_p, root->right, data);
 	}
 	else
 	{
@@ -41,8 +39,57 @@ static bstnode* find_node_recursively(const bst* bst_p, const bstnode* root, con
 	}
 }
 
-// wrapper to the function above
-static bstnode* find_node(const bst* bst_p, const void* data)
+static const bstnode* find_node_preceding_or_equals_recursively(const bst* bst_p, const bstnode* root, const void* data)
+{
+	int compared_data_with_root = bst_p->compare(data, get_data(root));
+	if(is_equal(compared_data_with_root))
+	{
+		return ((bstnode*)root);
+	}
+	else if(root->left != NULL && is_lesser(compared_data_with_root))
+	{
+		return find_node_preceding_or_equals_recursively(bst_p, root->left, data);
+	}
+	else if(is_greater(compared_data_with_root))
+	{
+		if(root->right != NULL)
+		{
+			return find_node_preceding_or_equals_recursively(bst_p, root->right, data);
+		}
+		return root;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+static const bstnode* find_node_succeeding_or_equals_recursively(const bst* bst_p, const bstnode* root, const void* data)
+{
+	int compared_data_with_root = bst_p->compare(data, get_data(root));
+	if(is_equal(compared_data_with_root))
+	{
+		return ((bstnode*)root);
+	}
+	else if(is_lesser(compared_data_with_root))
+	{
+		if(root->left != NULL)
+		{
+			return find_node_succeeding_or_equals_recursively(bst_p, root->left, data);
+		}
+		return root;
+	}
+	else if(root->right != NULL && is_greater(compared_data_with_root))
+	{
+		return find_node_succeeding_or_equals_recursively(bst_p, root->right, data);
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+const void* find_equals_in_bst(const bst* bst_p, const void* data)
 {
 	if(is_balancedbst_empty(bst_p))
 	{
@@ -50,302 +97,189 @@ static bstnode* find_node(const bst* bst_p, const void* data)
 	}
 	else
 	{
-		return find_node_recursively(bst_p, bst_p->root, data);
+		const bstnode* node_p = find_node_recursively(bst_p, bst_p->root, data);
+		return (node_p != NULL) ? get_data(node_p) : NULL;
 	}
 }
 
-static bstnode* find_node_preceding_or_equals_recursively(const balancedbst* balancedbst_p, const bstnode* root, const void* key_p)
+const void* find_preceding_or_equals(const bst* bst_p, const void* data)
 {
-	if(balancedbst_p->key_compare(key_p, root->data_entry.key) == 0)
-	{
-		return ((bstnode*)root);
-	}
-	else if(root->left_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) < 0)
-	{
-		return find_node_preceding_or_equals_recursively(balancedbst_p, root->left_sub_tree, key_p);
-	}
-	else if(balancedbst_p->key_compare(key_p, root->data_entry.key) > 0)
-	{
-		bstnode* result = NULL;
-		if(root->right_sub_tree != NULL)
-		{
-			result = find_node_preceding_or_equals_recursively(balancedbst_p, root->right_sub_tree, key_p);
-		}
-		return result == NULL ? ((bstnode*)root) : result;
-	}
-	else
-	{
-		return NULL;
-	}
-}
-
-static bstnode* find_node_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
-{
-	// if the tree is empty, just return NULL
-	if( is_balancedbst_empty(balancedbst_p) )
+	if(is_balancedbst_empty(bst_p))
 	{
 		return NULL;
 	}
 	else
 	{
-		return find_node_preceding_or_equals_recursively(balancedbst_p, balancedbst_p->root, key_p);
+		const bstnode* node_p = find_node_preceding_or_equals_recursively(bst_p, bst_p->root, data);
+		return (node_p != NULL) ? get_data(node_p) : NULL;
 	}
 }
 
-static bstnode* find_node_succeeding_or_equals_recursively(const balancedbst* balancedbst_p, const bstnode* root, const void* key_p)
+const void* find_value_succeeding_or_equals(const bst* bst_p, const void* data)
 {
-	if(balancedbst_p->key_compare(key_p, root->data_entry.key) == 0)
-	{
-		return ((bstnode*)root);
-	}
-	else if(balancedbst_p->key_compare(key_p, root->data_entry.key) < 0)
-	{
-		bstnode* result = NULL;
-		if(root->left_sub_tree != NULL)
-		{
-			result = find_node_succeeding_or_equals_recursively(balancedbst_p, root->left_sub_tree, key_p);
-		}
-		return result == NULL ? ((bstnode*)root) : result;
-	}
-	else if(root->right_sub_tree != NULL && balancedbst_p->key_compare(key_p, root->data_entry.key) > 0)
-	{
-		return find_node_succeeding_or_equals_recursively(balancedbst_p, root->right_sub_tree, key_p);
-	}
-	else
-	{
-		return NULL;
-	}
-}
-
-static bstnode* find_node_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
-{
-	// if the tree is empty, just return NULL
-	if( is_balancedbst_empty(balancedbst_p) )
+	if(is_balancedbst_empty(bst_p))
 	{
 		return NULL;
 	}
 	else
 	{
-		return find_node_succeeding_or_equals_recursively(balancedbst_p, balancedbst_p->root, key_p);
+		const bstnode* node_p = find_node_succeeding_or_equals_recursively(bst_p, bst_p->root, data);
+		return (node_p != NULL) ? get_data(node_p) : NULL;
 	}
 }
 
-static bstnode* find_node_with_smallest_key(const balancedbst* balancedbst_p)
+const void* find_smallest(const bst* bst_p)
 {
-	// if the tree is empty, just return NULL
-	if( is_balancedbst_empty(balancedbst_p) )
+	if(is_balancedbst_empty(bst_p))
 	{
 		return NULL;
 	}
 	else
 	{
-		return get_smallest_node_from_node(balancedbst_p->root);
+		const bstnode* node_p = get_smallest_node_from_node(bst_p->root);
+		return (node_p != NULL) ? get_data(node_p) : NULL;
 	}
 }
 
-static bstnode* find_node_with_largest_key(const balancedbst* balancedbst_p)
+const void* find_largest(const bst* bst_p)
 {
-	// if the tree is empty, just return NULL
-	if( is_balancedbst_empty(balancedbst_p) )
+	if(is_balancedbst_empty(bst_p))
 	{
 		return NULL;
 	}
 	else
 	{
-		return get_largest_node_from_node(balancedbst_p->root);
+		const bstnode* node_p = get_largest_node_from_node(bst_p->root);
+		return (node_p != NULL) ? get_data(node_p) : NULL;
 	}
 }
 
-const void* find_value(const balancedbst* balancedbst_p, const void* key_p)
+int exists_in_bst(bst* bst_p, const void* data)
 {
-	bstnode* node_p = find_node(balancedbst_p, key_p);
-	return node_p != NULL ? node_p->data_entry.value : NULL;
+	bstnode* node_p = get_node(data);
+	return node_exists_in_this_bst(node_p);
 }
 
-const void* find_value_with_smallest_key(const balancedbst* balancedbst_p)
+int insert_in_bst(bst* bst_p, const void* data)
 {
-	bstnode* node_p = find_node_with_smallest_key(balancedbst_p);
-	return node_p != NULL ? node_p->data_entry.value : NULL;
-}
+	bstnode* node_p = get_node(data);
 
-const void* find_value_with_largest_key(const balancedbst* balancedbst_p)
-{
-	bstnode* node_p = find_node_with_largest_key(balancedbst_p);
-	return node_p != NULL ? node_p->data_entry.value : NULL;
-}
+	if(node_exists_in_any_bst(node_p) || (!is_new_node(node_p)))
+	{
+		return 0;
+	}
 
-const void* find_value_preceding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
-{
-	bstnode* node_p = find_node_preceding_or_equals(balancedbst_p, key_p);
-	return node_p != NULL ? node_p->data_entry.value : NULL;
-}
-
-const void* find_value_succeeding_or_equals(const balancedbst* balancedbst_p, const void* key_p)
-{
-	bstnode* node_p = find_node_succeeding_or_equals(balancedbst_p, key_p);
-	return node_p != NULL ? node_p->data_entry.value : NULL;
-}
-
-// node_p param is not suppossed to be NULL in the function below
-static void insert_node_in_tree(balancedbst* balancedbst_p, bstnode* node_p)
-{
 	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
-	if( is_balancedbst_empty(balancedbst_p) )
+	if(is_balancedbst_empty(bst_p))
 	{
-		balancedbst_p->root = node_p;
-		node_p->node_property = balancedbst_p->balanced_tree_type == NON_SELF_BALANCING ? 0 : 1; // if avl => 1 : number of nodes to reach NULL node, if red-black => root is always black
+		bst_p->root = node_p;
+
+		// if avl => 1 : number of nodes to reach NULL node, if red-black => root is always black
+		node_p->node_property = (bst_p->type == NON_SELF_BALANCING) ? 0 : 1;
+
 		node_p->parent = NULL;
-		balancedbst_p->bucket_count = 1;
-		return;
+		bst_p->node_count = 1;
+		return 1;
 	}
 
 	// else insert node as per the balancing that this tree uses
-	switch( balancedbst_p->balanced_tree_type )
+	switch(bst_p->type)
 	{
 		case NON_SELF_BALANCING:
 		{
-			insert_node_in_non_self_balancing_tree(balancedbst_p, balancedbst_p->root, node_p);
+			insert_node_in_non_self_balancing_tree(bst_p, node_p);
 			break;
 		}
 		case RED_BLACK_TREE :
 		{
-			insert_node_in_red_black_tree(balancedbst_p, balancedbst_p->root, node_p);
+			insert_node_in_red_black_tree(bst_p, node_p);
 			break;
 		}
 		case AVL_TREE :
 		{
-			insert_node_in_avl_tree(balancedbst_p, balancedbst_p->root, node_p);
+			insert_node_in_avl_tree(bst_p, node_p);
 			break;
 		}
 	}
+
+	bst_p->node_count++;
+
+	return 1;
 }
 
-void insert_entry(balancedbst* balancedbst_p, const void* key_p, const void* value_p)
+int remove_from_bst(bst* bst_p, const void* data)
 {
-	// create a new node for the entry to be inserted
-	bstnode* node_p = get_node(key_p, value_p);
+	bstnode* node_p = get_node(data);
 
-	// insert that node in the tree
-	insert_node_in_tree(balancedbst_p, node_p);
-}
-
-int update_value(balancedbst* balancedbst_p, const void* key_p, const void* value_p, const void** return_value)
-{
-	// find a node in the tree that has key_p as its key
-	bstnode* node_p = find_node(balancedbst_p, key_p);
-
-	// if we can not find such a node, return 0
-	if(node_p == NULL)
+	if((!node_exists_in_this_bst(node_p)) || is_new_node(node_p))
 	{
 		return 0;
 	}
-	// else update the value for the node found
-	else
+
+	switch(bst_p->type)
 	{
-		if(return_value != NULL)
+		case NON_SELF_BALANCING:
 		{
-			(*return_value) = node_p->data_entry.value;
+			remove_node_from_non_self_balancing_tree(bst_p, node_p);
+			break;
 		}
-		node_p->data_entry.value = value_p;
-		return 1;
-	}
-}
-
-int delete_entry(balancedbst* balancedbst_p, const void* key_p,const void** return_key,const void** return_value)
-{
-	int deleted_nodes_count = 0;
-	bstnode* node_p = find_node(balancedbst_p, key_p);
-	if(node_p != NULL)
-	{
-		switch(balancedbst_p->balanced_tree_type)
+		case RED_BLACK_TREE :
 		{
-			case NON_SELF_BALANCING:
-			{
-				node_p = remove_node_from_non_self_balancing_tree(balancedbst_p, node_p);
-				break;
-			}
-			case RED_BLACK_TREE :
-			{
-				node_p = remove_node_from_red_black_tree(balancedbst_p, node_p);
-				break;
-			}
-			case AVL_TREE :
-			{
-				node_p = remove_node_from_avl_tree(balancedbst_p, node_p);
-				break;
-			}
+			remove_node_from_red_black_tree(bst_p, node_p);
+			break;
 		}
-
-		if(node_p != NULL)
+		case AVL_TREE :
 		{
-			if(return_key != NULL)
-			{
-				(*(return_key)) = node_p->data_entry.key;
-			}
-			if(return_value != NULL)
-			{
-				(*(return_value)) = node_p->data_entry.value;
-			}
-
-			// NULL all references of the removed node
-		initialize_llnode(node_p);
-			deleted_nodes_count++;
+			remove_node_from_avl_tree(bst_p, node_p);
+			break;
 		}
 	}
-	return deleted_nodes_count;
+
+	// NULL all references of the removed node
+	initialize_bstnode(node_p);
+	bst_p->node_count--;
+
+	return 1;
 }
 
-static void for_each_node(const bstnode* node_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
+static void for_each_node(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
 	if(node_p != NULL)
 	{
-		for_each_node(node_p->left_sub_tree, operation, additional_params);
-		operation(node_p->data_entry.key, node_p->data_entry.value, additional_params);
-		for_each_node(node_p->right_sub_tree, operation, additional_params);
+		for_each_node(bst_p, node_p->left, operation, additional_params);
+		operation(get_data(node_p), additional_params);
+		for_each_node(bst_p, node_p->right, operation, additional_params);
 	}
 }
 
-void for_each_entry(const balancedbst* balancedbst_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
+void for_each_in_bst(const bst* bst_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
-	if(!is_balancedbst_empty((balancedbst*)balancedbst_p))
+	if(!is_balancedbst_empty(bst_p))
 	{
-		for_each_node(balancedbst_p->root, operation, additional_params);
+		for_each_node(bst_p, bst_p->root, operation, additional_params);
 	}
 }
 
-static void delete_nodes_from(bstnode* node_p)
-{
-	if(node_p->left_sub_tree != NULL)
-	{
-		delete_nodes_from(node_p->left_sub_tree);
-	}
-	if(node_p->right_sub_tree != NULL)
-	{
-		delete_nodes_from(node_p->right_sub_tree);
-	}
-	delete_node(node_p);
-}
-
-static void print_node(bstnode* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_element)(const void* data))
 {
 	if(node_p != NULL)
 	{
-		if( is_root_node(node_p) )
+		if(is_root_node(node_p))
 		{
 			printf("\tROOT NODE     :");
 		}
-		else if( is_leaf_node(node_p) )
+		else if(is_leaf_node(node_p))
 		{
 			printf("\tLEAF NODE     :");
 		}
-		else if( is_internal_node(node_p) )
+		else if(is_internal_node(node_p))
 		{
 			printf("\tINTERNAL NODE :");
 		}
 
 		printf("\taddress => %p", node_p);
 		printf("\tdata => ");
-		print_bucket(&(node_p->data_entry), print_key, print_value);
+		print_element(get_data(node_p));
 		printf("\t\twith property = %d\n", node_p->node_property);
 
 		if( !is_root_node(node_p) )
@@ -360,46 +294,46 @@ static void print_node(bstnode* node_p, void (*print_key)(const void* key), void
 			}
 			printf("\t\t\taddress => %p", node_p->parent);
 			printf("\tdata => ");
-			print_bucket(&(node_p->parent->data_entry), print_key, print_value);
+			print_element(get_data(node_p->parent));
 		}
 
 		if( (!is_leaf_node(node_p)) )
 		{
-			if(node_p->left_sub_tree != NULL)
+			if(node_p->left != NULL)
 			{
-				printf("\t\thas a LEFT\n\t\t\tchild  => %p", node_p->left_sub_tree);
+				printf("\t\thas a LEFT\n\t\t\tchild  => %p", node_p->left);
 				printf("\tdata => ");
-				print_bucket(&(node_p->left_sub_tree->data_entry), print_key, print_value);
+				print_element(get_data(node_p->left));
 			}
-			if(node_p->right_sub_tree != NULL)
+			if(node_p->right != NULL)
 			{
-				printf("\t\thas a RIGHT\n\t\t\tchild => %p", node_p->right_sub_tree); 
+				printf("\t\thas a RIGHT\n\t\t\tchild => %p", node_p->right); 
 				printf("\tdata => ");
-				print_bucket(&(node_p->right_sub_tree->data_entry), print_key, print_value);
+				print_element(get_data(node_p->right));
 			}
 		}
 		printf("\n");
 	}
 }
 
-static void print_tree(bstnode* node_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+static void print_tree(const bst* bst_p, const bstnode* node_p, void (*print_element)(const void* data))
 {
 	if(node_p != NULL)
 	{
-		print_tree(node_p->left_sub_tree, print_key, print_value);
+		print_tree(bst_p, node_p->left, print_element);
 	}
-	print_node(node_p, print_key, print_value);
+	print_node(bst_p, node_p, print_element);
 	printf("\n");
 	if(node_p != NULL)
 	{
-		print_tree(node_p->right_sub_tree, print_key, print_value);
+		print_tree(bst_p, node_p->right, print_element);
 	}
 }
 
-void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 {
-	printf("TREE : ");
-	switch(balancedbst_p->balanced_tree_type)
+	printf("TREE : %llu\n", bst_p->node_count);
+	switch(bst_p->type)
 	{
 		case NON_SELF_BALANCING :
 		{
@@ -417,7 +351,6 @@ void print_balancedbst(const balancedbst* balancedbst_p, void (*print_key)(const
 			break;
 		}
 	}
-	printf("bucket_count : %llu\n", balancedbst_p->bucket_count);
-	print_tree(balancedbst_p->root, print_key, print_value);
+	print_tree(bst_p, bst_p->root, print_element);
 	printf("--\n\n");
 }
