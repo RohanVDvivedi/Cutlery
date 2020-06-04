@@ -269,18 +269,18 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 	{
 		if(is_root_node(node_p))
 		{
-			printf("\tROOT NODE     : (%d)", node_p->node_property);
+			printf("\tROOT NODE     :");
 		}
 		else if(is_leaf_node(node_p))
 		{
-			printf("\tLEAF NODE     : (%d)", node_p->node_property);
+			printf("\tLEAF NODE     :");
 		}
 		else if(is_internal_node(node_p))
 		{
-			printf("\tINTERNAL NODE : (%d)", node_p->node_property);
+			printf("\tINTERNAL NODE :");
 		}
 
-		printf("\t\t\t[%p] => ", node_p);
+		printf("(%d) of tree [%p]\t\t\t[%p] => ", node_p->node_property, node_p->belongs_to_bst, node_p);
 		print_element(get_data(node_p));
 		printf("\n");
 
@@ -294,7 +294,7 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 			{
 				printf("\t\tis RIGHT of ");
 			}
-			printf("\t\t\t[%p] =>", node_p->parent);
+			printf("\t\t\t\t[%p] =>", node_p->parent);
 			print_element(get_data(node_p->parent));
 			printf("\n");
 		}
@@ -303,13 +303,13 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 		{
 			if(node_p->left != NULL)
 			{
-				printf("\t\thas a LEFT  child => \t\t[%p] => ", node_p->left);
+				printf("\t\thas a LEFT  child => \t\t\t[%p] => ", node_p->left);
 				print_element(get_data(node_p->left));
 				printf("\n");
 			}
 			if(node_p->right != NULL)
 			{
-				printf("\t\thas a RIGHT child => \t\t[%p] => ", node_p->right);
+				printf("\t\thas a RIGHT child => \t\t\t[%p] => ", node_p->right);
 				print_element(get_data(node_p->right));
 				printf("\n");
 			}
@@ -334,7 +334,7 @@ static void print_tree(const bst* bst_p, const bstnode* node_p, void (*print_ele
 
 void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 {
-	printf("TREE : %llu\n", bst_p->node_count);
+	printf("\nTREE [%p] : %llu\n", bst_p, bst_p->node_count);
 	switch(bst_p->type)
 	{
 		case NON_SELF_BALANCING :
