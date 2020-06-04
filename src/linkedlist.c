@@ -225,6 +225,7 @@ int remove_head(linkedlist* ll)
 	// if there is a head node remove the head node
 	if(ll->head != NULL)
 	{
+		llnode* node_p = ll->head;
 		remove_node(ll, ll->head);
 		node_p->belongs_to_ll = NULL;
 		ll->node_count--;
@@ -239,6 +240,7 @@ int remove_tail(linkedlist* ll)
 	// if there is a tail node remove the tail node
 	if(ll->tail != NULL)
 	{
+		llnode* node_p = ll->tail;
 		remove_node(ll, ll->tail);
 		node_p->belongs_to_ll = NULL;
 		ll->node_count--;
