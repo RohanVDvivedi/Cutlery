@@ -61,7 +61,7 @@ struct hashmap
 };
 
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_hashmap(hashmap* hashmap_p, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), collision_resolution_policy hashmap_policy);
+void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned long long int node_offset);
 
 int exists_in_hashmap(hashmap* hashmap_p, const void* data);
 

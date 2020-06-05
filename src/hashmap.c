@@ -1,21 +1,12 @@
 #include<hashmap.h>
 
-void initialize_hashmap(hashmap* hashmap_p, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*key_compare)(const void* key1, const void* key2), collision_resolution_policy hashmap_policy)
+void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned long long int node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
-	hashmap_p->key_compare = key_compare;
-
-	// initialize array of the hashmap, it is a buckets_holder
-	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
-	{
-		initialize_bucket_array(&(hashmap_p->holder), bucket_count);
-	}
-	else
-	{
-		initialize_array(&(hashmap_p->holder), bucket_count);
-	}
-
+	hashmap_p->compare = compare;
+	initialize_array(&(hashmap_p->holder), bucket_count);
+	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = bucket_count;
 	hashmap_p->occupancy = 0;
 }
