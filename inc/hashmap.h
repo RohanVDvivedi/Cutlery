@@ -8,7 +8,7 @@
 #include<array.h>
 
 #include<linkedlist.h>
-#include<balancedbst.h>
+#include<bst.h>
 
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
@@ -39,6 +39,9 @@ struct hashmap
 {
 	// attribute defines how the collision is handled in the hashmap
 	collision_resolution_policy hashmap_policy;
+
+	// if it is using open addressing, this is the node_offset for instructing the linkedlist or binary search tree
+	unsigned long long int node_offset;
 
 	// hash function to hash the data
 	unsigned long long int (*hash_function)(const void* data);
