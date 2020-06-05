@@ -13,10 +13,10 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 
 // utility :-> gets index after hashing and mod of the hash
 // utility, O(1) operation
-static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const void* key)
+static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const void* data)
 {
 	// calculate hash
-	unsigned long long int hash = hashmap_p->hash_function(key);
+	unsigned long long int hash = hashmap_p->hash_function(data);
 
 	// calculate index
 	unsigned long long int index = hash % hashmap_p->element_count;
@@ -25,8 +25,6 @@ static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const 
 }
 
 // utility, O(1) operation
-// function used for ELEMENTS_AS_LINKEDLIST, ELEMENTS_AS_RED_BLACK_BST and ELEMENTS_AS_AVL_BST only
-// call the below function only if every hashmap bucket is a separate datastructure i.e. closed addressing / open hashing hashmap
 static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
 {
 	// if you try accessing hashtable, index greater than its size
@@ -46,19 +44,22 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 			case ELEMENTS_AS_LINKEDLIST :
 			{
 				// create a new linked list
-				ds_p = get_linkedlist(BUCKETTED, hashmap_p->key_compare);
+				ds_p = malloc(sizeof(linkedlist));
+				initialize_linkedlist((linkedlist*)ds_p, hashmap_p->node_offset, hashmap_p->compare);
 				break;
 			}
 			case ELEMENTS_AS_RED_BLACK_BST :
 			{
 				// create a new red black tree
-				ds_p = get_balancedbst(RED_BLACK_TREE, hashmap_p->key_compare);
+				ds_p = malloc(sizeof(bst));
+				initialize_bst((bst*)ds_p, hashmap_p->node_offset, RED_BLACK_TREE, hashmap_p->compare);
 				break;
 			}
 			case ELEMENTS_AS_AVL_BST :
 			{
 				// create a new avl tree
-				ds_p = get_balancedbst(AVL_TREE, hashmap_p->key_compare);
+				ds_p = malloc(sizeof(bst));
+				initialize_bst((bst*)ds_p, hashmap_p->node_offset, AVL_TREE, hashmap_p->compare);
 				break;
 			}
 			default :
@@ -76,8 +77,7 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 }
 
 // utility, O(1) operation
-// function used for ELEMENTS_AS_LINKEDLIST, ELEMENTS_AS_RED_BLACK_BST and ELEMENTS_AS_AVL_BST only
-static const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* key, int new_if_empty)
+static const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* data, int new_if_empty)
 {
 	// get index for that key
 	unsigned long long int index = get_index_for_key(hashmap_p, key);
