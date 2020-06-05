@@ -19,6 +19,11 @@ int exists_in_ll(linkedlist* ll, const void* data)
 	return llnode_exists_in_this_ll(node_p);
 }
 
+int is_linkedlist_empty(const linkedlist* ll)
+{
+	return (ll->head == NULL);
+}
+
 const void* get_head_data(linkedlist* ll)
 {
 	return ((ll->head == NULL) ? NULL : get_data(ll->head));

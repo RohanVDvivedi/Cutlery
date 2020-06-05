@@ -96,6 +96,8 @@ const void* find_equals_in_list(const linkedlist* ll, const void* data);
 // it used belongs_to_list attribute of the node
 int exist_in_list(const linkedlist* ll, const void* data);
 
+int is_linkedlist_empty(const linkedlist* ll);
+
 // perform operation on all the elements of the linked list
 void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
