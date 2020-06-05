@@ -1,13 +1,13 @@
 #include<hashmap.h>
 
-void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned long long int node_offset)
+void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned long long int total_bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned long long int node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->compare = compare;
-	initialize_array(&(hashmap_p->holder), bucket_count);
+	initialize_array(&(hashmap_p->holder), total_bucket_count);
 	hashmap_p->node_offset = node_offset;
-	hashmap_p->element_count = bucket_count;
+	hashmap_p->total_bucket_count = total_bucket_count;
 	hashmap_p->occupancy = 0;
 }
 
@@ -19,7 +19,7 @@ static unsigned long long int get_index(const hashmap* hashmap_p, const void* da
 	unsigned long long int hash = hashmap_p->hash_function(data);
 
 	// calculate index
-	unsigned long long int index = hash % hashmap_p->element_count;
+	unsigned long long int index = hash % hashmap_p->total_bucket_count;
 
 	return index;
 }
@@ -97,7 +97,7 @@ static unsigned long long int get_probe_sequence_length(const hashmap* hashmap_p
 	}
 	else
 	{
-		return index_actual + hashmap_p->element_count - index_expected;
+		return index_actual + hashmap_p->total_bucket_count - index_expected;
 	}
 }
 
@@ -109,7 +109,7 @@ static unsigned long long int get_actual_index(const hashmap* hashmap_p, const v
 
 	const void* data_at_index = NULL;
 
-	while(probe_sequence_length < hashmap_p->element_count)
+	while(probe_sequence_length < hashmap_p->total_bucket_count)
 	{
 		data_at_index = get_element(&(hashmap_p->holder), expected_index);
 
@@ -132,7 +132,7 @@ static unsigned long long int get_actual_index(const hashmap* hashmap_p, const v
 			break;
 		}
 
-		expected_index = (expected_index + 1) % hashmap_p->element_count;
+		expected_index = (expected_index + 1) % hashmap_p->total_bucket_count;
 		probe_sequence_length++;
 	}
 
@@ -180,39 +180,47 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 	}
 }
 
-void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
+int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 {
-	int inserted_entry = 0;
+	int inserted = 0;
 
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			if(hashmap_p->occupancy >= hashmap_p->element_count)
+			// if the hashmap is full
+			if(hashmap_p->occupancy == hashmap_p->total_bucket_count)
 			{
-				inserted_entry = 1;
 				break;
 			}
 
+			unsigned long long int expected_index = get_index(hashmap_p, data);
+
+			unsigned long long int index = expected_index;
+			unsigned long long int probe_sequence_length = 0;
+
 			while(1)
 			{
-				unsigned long long int index = get_expected_index(hashmap_p, key);
-
-				const void* key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
+				const void* data_at_index = get_element(&(hashmap_p->holder), index);
+				unsigned long long int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index, index);
 			
-				if(key_at_index == NULL)
+				if(data_at_index == NULL)
 				{
-					insert_in_bucket_array(&(hashmap_p->holder), key, value, index);
-					inserted_entry = 1;
+					set_element(&(hashmap_p->holder), data, index);
+					inserted = 1;
 					break;
+				}
+				else if(probe_sequence_length > probe_sequence_length_data_at_index)
+				{
+					// steal the slot
+					set_element(&(hashmap_p->holder), data, index);
+					data = data_at_index;
+					probe_sequence_length = probe_sequence_length_data_at_index;
 				}
 				else
 				{
-					// steal the slot
-					const void* value_at_index = get_value_bucket_array(&(hashmap_p->holder), index);
-					insert_in_bucket_array(&(hashmap_p->holder), key, value, index);
-					key = key_at_index;
-					value = value_at_index;
+					index = (index + 1) % hashmap_p->occupancy;
+					probe_sequence_length++;
 				}
 			}
 
@@ -221,29 +229,27 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 		case ELEMENTS_AS_LINKEDLIST :
 		{
 			// retrieve data structure for that key
-			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
+			void* ds_p = (void*)get_data_structure_for_data(hashmap_p, data, 1);
 
 			// insert the new bucket in the linkedlist
-			insert_entry_in_ll(((linkedlist*)(ds_p)), key, value);
-			
-			inserted_entry = 1;
+			inserted = insert_head(((linkedlist*)(ds_p)), data);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
 			// retrieve data structure for that key
-			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 1);
+			void* ds_p = (void*)get_data_structure_for_data(hashmap_p, data, 1);
 
 			// insert the new bucket in the bst
-			insert_entry_in_bst(((bst*)(ds_p)), key, value);
-
-			inserted_entry = 1;
+			inserted = insert_in_bst(((bst*)(ds_p)), data);
 			break;
 		}
 	}
 
-	hashmap_p->occupancy += inserted_entry;
+	hashmap_p->occupancy += inserted;
+
+	return inserted;
 }
 
 int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value)
@@ -278,13 +284,13 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 			}
 
 			unsigned long long int previousIndex = index;
-			index = (index + 1) % hashmap_p->element_count;
+			index = (index + 1) % hashmap_p->total_bucket_count;
 			key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
 			while(key_at_index != NULL && get_probe_sequence_length(hashmap_p, key_at_index, index) != 0)
 			{
 				swap_buckets_bucket_array(&(hashmap_p->holder), previousIndex, index);
 				previousIndex = index;
-				index = (index + 1) % hashmap_p->element_count;
+				index = (index + 1) % hashmap_p->total_bucket_count;
 				key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
 			}
 
@@ -387,7 +393,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 	}
 	printf("node_offset : %llu\n", hashmap_p->node_offset);
 	printf("occupancy : %llu\n", hashmap_p->occupancy);
-	printf("element_count : %llu\n", hashmap_p->element_count);
+	printf("element_count : %llu\n", hashmap_p->total_bucket_count);
 
 	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
 	{

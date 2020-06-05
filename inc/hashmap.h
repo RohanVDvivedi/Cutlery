@@ -31,9 +31,6 @@ enum collision_resolution_policy
 	ELEMENTS_AS_AVL_BST = 11
 };
 
-// hashmap only stores unique elements, i.e. all elements of hashmap when compared result in false
-// note : compared using the comparator function that you provide
-
 typedef struct hashmap hashmap;
 struct hashmap
 {
@@ -56,12 +53,12 @@ struct hashmap
 	// this is the number of buckets, which are occupied in the hashmap
 	unsigned long long int occupancy;
 
-	// this is the number of total unique elements in the hashmap
-	unsigned long long int element_count;
+	// this is the number of total buckets in the hashmap
+	unsigned long long int total_bucket_count;
 };
 
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned long long int bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned long long int node_offset);
+void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned long long int total_bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned long long int node_offset);
 
 int exists_in_hashmap(hashmap* hashmap_p, const void* data);
 
