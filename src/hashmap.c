@@ -389,7 +389,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 	}
 	printf("node_offset : %llu\n", hashmap_p->node_offset);
 	printf("occupancy : %llu\n", hashmap_p->occupancy);
-	printf("element_count : %llu\n", hashmap_p->total_bucket_count);
+	printf("total_bucket_count : %llu\n", hashmap_p->total_bucket_count);
 
 	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
 	{
