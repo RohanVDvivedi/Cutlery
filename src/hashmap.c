@@ -255,58 +255,6 @@ void insert_entry(hashmap* hashmap_p, const void* key, const void* value)
 	hashmap_p->occupancy += inserted_entry;
 }
 
-int update_value(hashmap* hashmap_p, const void* key, const void* value, const void** return_value)
-{
-	int update_made = 0;
-
-	switch(hashmap_p->hashmap_policy)
-	{
-		case ROBINHOOD_HASHING :
-		{
-			unsigned long long int index = get_expected_index(hashmap_p, key);
-
-			const void* key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
-			
-			if(key_at_index != NULL && hashmap_p->key_compare(key, key_at_index) == 0)
-			{
-				const void* value_at_index = get_value_bucket_array(&(hashmap_p->holder), index);
-
-				if(return_value != NULL)
-				{
-					(*(return_value)) = value_at_index;
-				}
-
-				insert_in_bucket_array(&(hashmap_p->holder), key_at_index, value, index);
-
-				update_made = 1;
-			}
-
-			break;
-		}
-		case ELEMENTS_AS_LINKEDLIST :
-		{
-			// retrieve data structure for that key
-			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 0);
-
-			// insert the new bucket in the linkedlist
-			update_made = ((ds_p == NULL) ? 0 : update_value_in_ll(((linkedlist*)(ds_p)), key, value, return_value));
-			break;
-		}
-		case ELEMENTS_AS_AVL_BST :
-		case ELEMENTS_AS_RED_BLACK_BST :
-		{
-			// retrieve data structure for that key
-			void* ds_p = (void*)get_data_structure_for_key(hashmap_p, key, 0);
-
-			// insert the new bucket in the bst
-			update_made = ((ds_p == NULL) ? 0 : update_value_in_bst(((bst*)(ds_p)), key, value, return_value));
-			break;
-		}
-	}
-
-	return update_made;
-}
-
 int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value)
 {
 	// we are suppossed to return the number of entries we delete
@@ -383,14 +331,8 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 	return has_been_deleted;
 }
 
-void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key, const void* value, const void* additional_params), const void* additional_params)
+void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
-	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
-	{
-		for_each_entry_in_bucket_array(&(hashmap_p->holder), operation, additional_params);
-		return;
-	}
-
 	// iterate over all the buckets in the hashmap_p
 	for(unsigned long long int index = 0; index < hashmap_p->holder.total_size; index++)
 	{
@@ -401,15 +343,20 @@ void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* key,
 		{
 			switch(hashmap_p->hashmap_policy)
 			{
+				case ROBINHOOD_HASHING :
+				{
+					operation(ds_p, additional_params);
+					break;
+				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					for_each_entry_in_ll(((linkedlist*)(ds_p)), operation, additional_params);
+					for_each_in_list(((linkedlist*)(ds_p)), operation, additional_params);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
-					for_each_entry_in_bst(((bst*)(ds_p)), operation, additional_params);
+					for_each_in_bst(((bst*)(ds_p)), operation, additional_params);
 					break;
 				}
 				default :
