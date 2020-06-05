@@ -5,11 +5,11 @@
 *	MACROS TO CHECK IF THE NODE IS NEW NODE <you can only insert a new node, and remove an existing node>
 */
 
-#define initialize_bstnode(new_node)									\
-	{new_node->parent = NULL; new_node->left = NULL; new_node->right = NULL; node_p->belongs_to_bst = NULL;}
+#define initialize_bstnode(node_p)									\
+	{node_p->parent = NULL; node_p->left = NULL; node_p->right = NULL; node_p->belongs_to_bst = NULL;}
 
-#define is_new_bstnode(new_node)										\
-	((new_node->parent == NULL) && (new_node->left == NULL) && (new_node->right == NULL) && (node_p->belongs_to_bst == NULL))
+#define is_new_bstnode(node_p)										\
+	((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->belongs_to_bst == NULL))
 
 #define bstnode_exists_in_this_bst(node_p)								\
 	(node_p->belongs_to_bst == bst_p)

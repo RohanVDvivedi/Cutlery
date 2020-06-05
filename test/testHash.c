@@ -14,6 +14,8 @@ struct teststruct
 	}embedded_nodes;
 };
 
+#define EMPTY {NULL, NULL, NULL, 0, NULL}
+
 unsigned long long int hash_function(const void* data)
 {
 	return (unsigned long long int)((((ts*)data)->key)-1);
@@ -62,7 +64,7 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	deinitialize_queue(&q);
 }
 
-collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
+collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ /*ELEMENTS_AS_LINKEDLIST*/ ELEMENTS_AS_RED_BLACK_BST /*ELEMENTS_AS_AVL_BST*/;
 
 unsigned int HASH_BUCKETS = 4;
 
@@ -78,7 +80,7 @@ int main()
 
 	print_hashmap(hashmap_p, print_ts);
 
-	insert_in_hashmap(hashmap_p, &((ts){1, 100, "one"}));
+	printf("inserting first element : %d\n", insert_in_hashmap(hashmap_p, &((ts){1, 100, "one", EMPTY})));
 
 	print_hashmap(hashmap_p, print_ts);
 
@@ -86,7 +88,7 @@ int main()
 
 	print_hashmap(hashmap_p, print_ts);
 
-	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there"}));
+	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there", EMPTY}));
 
 	print_hashmap(hashmap_p, print_ts);
 

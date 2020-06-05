@@ -38,9 +38,9 @@ struct linkedlist
 	int (*compare)(const void* data1, const void* data2);
 };
 
-#define initialize_llnode(new_node)			{new_node->next = NULL; new_node->prev = NULL; new_node->belongs_to_ll = NULL;}
+#define initialize_llnode(node_p)			{node_p->next = NULL; node_p->prev = NULL; node_p->belongs_to_ll = NULL;}
 
-#define is_new_llnode(new_node)				((new_node->next == NULL) && (new_node->prev == NULL) && (new_node->belongs_to_ll == NULL))
+#define is_new_llnode(node_p)				((node_p->next == NULL) && (node_p->prev == NULL) && (node_p->belongs_to_ll == NULL))
 
 #define llnode_exists_in_this_ll(node_p)	(node_p->belongs_to_ll == ll)
 

@@ -166,6 +166,7 @@ int insert_in_bst(bst* bst_p, const void* data)
 
 	if(bstnode_exists_in_any_bst(node_p) || (!is_new_bstnode(node_p)))
 	{
+		printf("%d %d %d %d\n", (node_p->parent == NULL), (node_p->left == NULL), (node_p->right == NULL), (node_p->belongs_to_bst == NULL));
 		return 0;
 	}
 
