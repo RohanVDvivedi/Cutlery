@@ -139,19 +139,19 @@ static unsigned long long int get_actual_index(const hashmap* hashmap_p, const v
 	return expected_index;
 }
 
-const void* find_value(const hashmap* hashmap_p, const void* key)
+const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 {
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_expected_index(hashmap_p, key);
+			unsigned long long int index = get_actual_index(hashmap_p, data);
 
-			const void* key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
+			const void* data_at_index = get_element(&(hashmap_p->holder), index);
 			
-			if(key_at_index != NULL && hashmap_p->key_compare(key, key_at_index) == 0)
+			if(data_at_index != NULL && hashmap_p->compare(data, data_at_index) == 0)
 			{
-				return get_value_bucket_array(&(hashmap_p->holder), index);
+				return data_at_index;
 			}
 
 			return NULL;
@@ -159,19 +159,19 @@ const void* find_value(const hashmap* hashmap_p, const void* key)
 		case ELEMENTS_AS_LINKEDLIST :
 		{
 			// get the data structure for that key, without any new creation
-			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
+			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
 
 			// find value in a linkedlist
-			return ds_p == NULL ? NULL : find_value_from_ll(((linkedlist*)(ds_p)), key);
+			return (ds_p == NULL) ? NULL : find_equals_in_list(((linkedlist*)(ds_p)), data);
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
 			// get the data structure for that key, without any new creation
-			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
+			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
 
 			// find value in a bst
-			return ds_p == NULL ? NULL : find_value_from_bst(((bst*)(ds_p)), key);
+			return (ds_p == NULL) ? NULL : find_equals_in_bst(((bst*)(ds_p)), data);
 		}
 		default :
 		{
@@ -259,7 +259,7 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 
 			const void* key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
 			
-			if(key_at_index != NULL && hashmap_p->key_compare(key, key_at_index) == 0)
+			if(key_at_index != NULL && hashmap_p->compare(key, key_at_index) == 0)
 			{
 				const void* value_at_index = get_value_bucket_array(&(hashmap_p->holder), index);
 

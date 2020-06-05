@@ -90,7 +90,7 @@ const void* get_nth_from_head(linkedlist* ll, unsigned long long int n);
 const void* get_nth_from_tail(linkedlist* ll, unsigned long long int n);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
-const void* find_in_list(const linkedlist* ll, const void* data);
+const void* find_equals_in_list(const linkedlist* ll, const void* data);
 
 // check if a given data exists in the linkedlist
 // it used belongs_to_list attribute of the node

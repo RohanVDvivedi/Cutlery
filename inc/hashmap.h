@@ -70,6 +70,9 @@ int exists_in_hashmap(hashmap* hashmap_p, const void* data);
 int insert_in_hashmap(hashmap* hashmap_p, const void* data);
 
 // get the data from the hashmap, that equals the data given to us
+//
+// the data you provide in the hashmap must have all the fields required to compare and hash equivalent to the actual data
+// i.e. it must have all the fields/attrubutes of the struct that are used in comparison and hash_function that you provided
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 
 // returns 1 if the element exists in the hashmap and is removed

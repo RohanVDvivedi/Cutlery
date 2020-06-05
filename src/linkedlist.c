@@ -286,7 +286,7 @@ const void* get_nth_from_tail(linkedlist* ll, unsigned long long int n)
 	return (node_p == NULL) ? NULL : get_data(node_p);
 }
 
-const void* find_in_list(const linkedlist* ll, const void* data)
+const void* find_equals_in_list(const linkedlist* ll, const void* data)
 {
 	llnode* node_p = ll->head;
 	while(node_p != NULL)
