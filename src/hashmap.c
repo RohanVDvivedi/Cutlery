@@ -11,9 +11,9 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 	hashmap_p->occupancy = 0;
 }
 
-// utility :-> gets index after hashing and mod of the hash
+// utility :-> gets plausible index after hashing and mod of the hash
 // utility, O(1) operation
-static unsigned long long int get_index_for_key(const hashmap* hashmap_p, const void* data)
+static unsigned long long int get_index(const hashmap* hashmap_p, const void* data)
 {
 	// calculate hash
 	unsigned long long int hash = hashmap_p->hash_function(data);
@@ -77,19 +77,19 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 }
 
 // utility, O(1) operation
-static const void* get_data_structure_for_key(const hashmap* hashmap_p, const void* data, int new_if_empty)
+static const void* get_data_structure_for_data(const hashmap* hashmap_p, const void* data, int new_if_empty)
 {
-	// get index for that key
-	unsigned long long int index = get_index_for_key(hashmap_p, key);
+	// get index for data
+	unsigned long long int index = get_index(hashmap_p, data);
 
 	// return the data structure at that index
 	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
 // function used for ROBINHOOD_HASHING only
-static unsigned long long int get_probe_sequence_length(const hashmap* hashmap_p, const void* key, unsigned long long int index_actual)
+static unsigned long long int get_probe_sequence_length(const hashmap* hashmap_p, const void* data, unsigned long long int index_actual)
 {
-	unsigned long long int index_expected = get_index_for_key(hashmap_p, key);
+	unsigned long long int index_expected = get_index(hashmap_p, data);
 
 	if(index_actual >= index_expected)
 	{
@@ -102,22 +102,22 @@ static unsigned long long int get_probe_sequence_length(const hashmap* hashmap_p
 }
 
 // function used for ROBINHOOD_HASHING only
-static unsigned long long int get_expected_index(const hashmap* hashmap_p, const void* key)
+static unsigned long long int get_actual_index(const hashmap* hashmap_p, const void* data)
 {
-	unsigned long long int index = get_index_for_key(hashmap_p, key);
+	unsigned long long int expected_index = get_index(hashmap_p, data);
 	unsigned long long int probe_sequence_length = 0;
 
-	const void* key_at_index = NULL;
+	const void* data_at_index = NULL;
 
 	while(probe_sequence_length < hashmap_p->element_count)
 	{
-		key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
+		data_at_index = get_element(&(hashmap_p->holder), expected_index);
 
-		if(key_at_index != NULL)
+		if(data_at_index != NULL)
 		{
-			if(hashmap_p->key_compare(key, key_at_index) != 0)
+			if(hashmap_p->compare(data, data_at_index) != 0)
 			{
-				if(probe_sequence_length > get_probe_sequence_length(hashmap_p, key_at_index, index))
+				if(probe_sequence_length > get_probe_sequence_length(hashmap_p, data_at_index, expected_index))
 				{
 					break;
 				}
@@ -132,11 +132,11 @@ static unsigned long long int get_expected_index(const hashmap* hashmap_p, const
 			break;
 		}
 
-		index = (index + 1) % hashmap_p->element_count;
+		expected_index = (expected_index + 1) % hashmap_p->element_count;
 		probe_sequence_length++;
 	}
 
-	return index;
+	return expected_index;
 }
 
 const void* find_value(const hashmap* hashmap_p, const void* key)
