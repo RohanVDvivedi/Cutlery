@@ -5,13 +5,6 @@
 #define get_top		get_top_stack
 #define for_each 	for_each_in_stack
 
-stack* get_stack(unsigned long long int expected_size)
-{
-	stack* stack_p = calloc(1, sizeof(stack));
-	initialize_stack(stack_p, expected_size);
-	return stack_p;
-}
-
 void initialize_stack(stack* stack_p, unsigned long long int expected_size)
 {
 	initialize_array(&(stack_p->stack_holder), expected_size + 1);
@@ -54,12 +47,6 @@ void deinitialize_stack(stack* stack_p)
 {
 	deinitialize_array(&(stack_p->stack_holder));
 	stack_p->stack_size = 0;
-}
-
-void delete_stack(stack* stack_p)
-{
-	deinitialize_stack(stack_p);
-	free(stack_p);
 }
 
 void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)

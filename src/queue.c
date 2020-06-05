@@ -5,13 +5,6 @@
 #define get_top 	get_top_queue
 #define for_each 	for_each_in_queue
 
-queue* get_queue(unsigned long long int expected_size)
-{
-	queue* queue_p = calloc(1, sizeof(queue));
-	initialize_queue(queue_p, expected_size);
-	return queue_p;
-}
-
 void initialize_queue(queue* queue_p, unsigned long long int expected_size)
 {
 	initialize_array(&(queue_p->queue_holder), expected_size + 1);
@@ -110,12 +103,6 @@ void deinitialize_queue(queue* queue_p)
 	queue_p->queue_size = 0;
 	queue_p->earliest_element_index = 1;
 	queue_p->latest_element_index = 0;
-}
-
-void delete_queue(queue* queue_p)
-{
-	deinitialize_queue(queue_p);
-	free(queue_p);
 }
 
 int isQueueEmpty(queue* queue_p)

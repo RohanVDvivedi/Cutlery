@@ -18,9 +18,6 @@ struct stack
 	unsigned long long int stack_size;
 };
 
-// build and get a new stack
-stack* get_stack(unsigned long long int expected_size);
-
 // initializes stack and it will depend on initialize_array to give necessary memory to manage internal element contents
 void initialize_stack(stack* stack_p, unsigned long long int expected_size);
 
@@ -36,9 +33,6 @@ const void* get_top(stack* stack_p);
 // frees all the data being held by the stack, this function, does not release memory of the actual stack structure, only the memory of the components
 // the same stack can be reused by calling initialize_stack function, after it is deinitialized
 void deinitialize_stack(stack* stack_p);
-
-// delete stack and stack_holder array
-void delete_stack(stack* stack_p);
 
 // for each element of the stack, perform the given operation
 void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params);
