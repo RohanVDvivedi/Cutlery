@@ -52,14 +52,14 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 			{
 				// create a new red black tree
 				ds_p = malloc(sizeof(bst));
-				initialize_bst((bst*)ds_p, hashmap_p->node_offset, RED_BLACK_TREE, hashmap_p->compare);
+				initialize_bst((bst*)ds_p, RED_BLACK_TREE, hashmap_p->node_offset, hashmap_p->compare);
 				break;
 			}
 			case ELEMENTS_AS_AVL_BST :
 			{
 				// create a new avl tree
 				ds_p = malloc(sizeof(bst));
-				initialize_bst((bst*)ds_p, hashmap_p->node_offset, AVL_TREE, hashmap_p->compare);
+				initialize_bst((bst*)ds_p, AVL_TREE, hashmap_p->node_offset, hashmap_p->compare);
 				break;
 			}
 			default :

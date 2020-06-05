@@ -14,8 +14,6 @@ struct teststruct
 	}embedded_nodes;
 };
 
-#define EMPTY {NULL, NULL, NULL, 0, NULL}
-
 unsigned long long int hash_function(const void* data)
 {
 	return (unsigned long long int)((((ts*)data)->key)-1);
@@ -64,23 +62,27 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	deinitialize_queue(&q);
 }
 
-collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ /*ELEMENTS_AS_LINKEDLIST*/ ELEMENTS_AS_RED_BLACK_BST /*ELEMENTS_AS_AVL_BST*/;
+const collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ /*ELEMENTS_AS_LINKEDLIST*/ ELEMENTS_AS_RED_BLACK_BST /*ELEMENTS_AS_AVL_BST*/;
 
 unsigned int HASH_BUCKETS = 4;
+
+unsigned long long int NODE_OFFSET = (unsigned long long int)(&(((ts*)0)->embedded_nodes));
 
 int main()
 {
 	hashmap hashmap_temp;
 	hashmap* hashmap_p = &hashmap_temp;
+
 	if(POLICY_USED == ROBINHOOD_HASHING)
 	{
 		HASH_BUCKETS = 10;
 	}
-	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, (unsigned long long int)(&(((ts*)0)->embedded_nodes)));
+
+	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, NODE_OFFSET);
 
 	print_hashmap(hashmap_p, print_ts);
 
-	printf("inserting first element : %d\n", insert_in_hashmap(hashmap_p, &((ts){1, 100, "one", EMPTY})));
+	insert_in_hashmap(hashmap_p, &((ts){1, 100, "one"}));
 
 	print_hashmap(hashmap_p, print_ts);
 
@@ -88,7 +90,7 @@ int main()
 
 	print_hashmap(hashmap_p, print_ts);
 
-	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there", EMPTY}));
+	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there"}));
 
 	print_hashmap(hashmap_p, print_ts);
 
@@ -273,7 +275,7 @@ int main()
 
 	hashmap hashmap_16;
 	hashmap* hashmap_16_p = &hashmap_16;
-	initialize_hashmap(hashmap_16_p, POLICY_USED, 16, hash_function, cmp, (unsigned long long int)(&(((ts*)0)->embedded_nodes)));
+	initialize_hashmap(hashmap_16_p, POLICY_USED, 16, hash_function, cmp, NODE_OFFSET);
 
 	rehash(hashmap_p, hashmap_16_p);
 
@@ -282,7 +284,7 @@ int main()
 
 	hashmap hashmap_20;
 	hashmap* hashmap_20_p = &hashmap_20;
-	initialize_hashmap(hashmap_20_p, POLICY_USED, 20, hash_function, cmp, (unsigned long long int)(&(((ts*)0)->embedded_nodes)));
+	initialize_hashmap(hashmap_20_p, POLICY_USED, 20, hash_function, cmp, NODE_OFFSET);
 
 	rehash(hashmap_16_p, hashmap_20_p);
 

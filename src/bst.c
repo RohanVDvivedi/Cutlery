@@ -163,10 +163,9 @@ int exists_in_bst(bst* bst_p, const void* data)
 int insert_in_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
-
+	
 	if(bstnode_exists_in_any_bst(node_p) || (!is_new_bstnode(node_p)))
 	{
-		printf("%d %d %d %d\n", (node_p->parent == NULL), (node_p->left == NULL), (node_p->right == NULL), (node_p->belongs_to_bst == NULL));
 		return 0;
 	}
 
@@ -355,6 +354,7 @@ void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 		}
 	}
 	printf("BST root : [%p]\n", bst_p->root);
+	printf("BST node_offset : [%llu]\n", bst_p->node_offset);
 	print_tree(bst_p, bst_p->root, print_element);
 	printf("--\n\n");
 }
