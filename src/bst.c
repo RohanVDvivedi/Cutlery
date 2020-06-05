@@ -13,6 +13,14 @@ void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset
 	bst_p->node_count = 0;
 }
 
+void initialize_bstnode(bstnode* node_p)
+{
+	node_p->parent = NULL;
+	node_p->left = NULL;
+	node_p->right = NULL;
+	node_p->belongs_to_bst = NULL;
+}
+
 #define is_greater(compare_A_with_B) 	(compare_A_with_B > 0)
 #define is_lesser(compare_A_with_B)		(compare_A_with_B < 0)
 #define is_equal(compare_A_with_B)		(compare_A_with_B == 0)

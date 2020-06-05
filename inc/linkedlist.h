@@ -38,8 +38,6 @@ struct linkedlist
 	int (*compare)(const void* data1, const void* data2);
 };
 
-#define initialize_llnode(node_p)			{node_p->next = NULL; node_p->prev = NULL; node_p->belongs_to_ll = NULL;}
-
 #define is_new_llnode(node_p)				((node_p->next == NULL) && (node_p->prev == NULL) && (node_p->belongs_to_ll == NULL))
 
 #define llnode_exists_in_this_ll(node_p)	(node_p->belongs_to_ll == ll)
@@ -48,6 +46,9 @@ struct linkedlist
 
 // initializes to a new linked list
 void initialize_linkedlist(linkedlist* ll, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
+
+// always initialize your linkedlist node before using it
+void initialize_llnode(llnode* node_p);
 
 // simply gets head node data
 const void* get_head(linkedlist* ll);

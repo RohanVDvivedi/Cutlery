@@ -65,6 +65,9 @@ struct bst
 // initializes as if a new bst, may be to reuse
 void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
 
+// always initialize your bstnode before using it
+void initialize_bstnode(bstnode* node_p);
+
 // inserts given data in the tree
 // returns 0, and fails if bstnode of data is not a new node
 int insert_in_bst(bst* bst_p, const void* data);

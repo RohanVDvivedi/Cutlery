@@ -9,6 +9,13 @@ void initialize_linkedlist(linkedlist* ll, unsigned long long int node_offset, i
 	ll->compare = compare;
 }
 
+void initialize_llnode(llnode* node_p)
+{
+	node_p->next = NULL;
+	node_p->prev = NULL;
+	node_p->belongs_to_ll = NULL;
+}
+
 #define get_data(node_p) 	(((void*)(node_p)) - ll->node_offset)
 
 #define get_node(data_p) 	(((void*)(data_p)) + ll->node_offset)
