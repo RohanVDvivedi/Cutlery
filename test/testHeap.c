@@ -9,7 +9,7 @@ struct teststruct
 	int index;
 };
 
-int key_cmp(const void* data1, const void* data2)
+int cmp(const void* data1, const void* data2)
 {
 	return ( (((ts*)data1)->key) - (((ts*)data2)->key) );
 }
@@ -161,7 +161,7 @@ int main()
 	push_heap(heap_p, &((ts){13, 13, "thirteen-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){14, 14, "fourteen-x"}));print_array(&(heap_p->heap_holder), print_key);
+	push_heap(heap_p, &((ts){14, 14, "fourteen-x"}));print_array(&(heap_p->heap_holder), print_ts);
 	print_heap(heap_p, print_ts);
 
 	change_key(heap_p, 12, 3);
