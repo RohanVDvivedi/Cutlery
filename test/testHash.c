@@ -62,7 +62,7 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	deinitialize_queue(&q);
 }
 
-const collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ /*ELEMENTS_AS_LINKEDLIST*/ ELEMENTS_AS_RED_BLACK_BST /*ELEMENTS_AS_AVL_BST*/;
+const collision_resolution_policy POLICY_USED = ROBINHOOD_HASHING /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
 
 unsigned int HASH_BUCKETS = 4;
 
@@ -234,19 +234,19 @@ int main()
 	print_hashmap(hashmap_p, print_ts);
 
 	printf("Deleting key-value at 80\n");
-	temp = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){80}));
+	ts* temp_80 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){80}));
 	if(temp != NULL)
 	{
-		remove_from_hashmap(hashmap_p, temp);
+		remove_from_hashmap(hashmap_p, temp_80);
 	}
 
 	print_hashmap(hashmap_p, print_ts);
 
 	printf("Deleting key-value at 60\n");
-	temp = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){60}));
+	ts* temp_60 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){60}));
 	if(temp != NULL)
 	{
-		remove_from_hashmap(hashmap_p, temp);
+		remove_from_hashmap(hashmap_p, temp_60);
 	}
 
 	print_hashmap(hashmap_p, print_ts);
@@ -258,10 +258,12 @@ int main()
 	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){40})));printf("\n\n");
 
 	printf("Reinserting key-value at 80\n");
-	insert_in_hashmap(hashmap_p, &((ts){80, 8000, "eighty - new"}));
+	temp_80->s = "eighty - new";
+	insert_in_hashmap(hashmap_p, temp_80);
 
 	printf("Reinserting key-value at 60\n");
-	insert_in_hashmap(hashmap_p, &((ts){60, 6000, "sixty - new"}));
+	temp_60->s = "sixty - new";
+	insert_in_hashmap(hashmap_p, temp_60);
 
 	print_hashmap(hashmap_p, print_ts);
 
