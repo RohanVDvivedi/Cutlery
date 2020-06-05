@@ -231,6 +231,7 @@ int remove_head(linkedlist* ll)
 		llnode* node_p = ll->head;
 		remove_node(ll, ll->head);
 		node_p->belongs_to_ll = NULL;
+		initialize_llnode(node_p);
 		ll->node_count--;
 		return 1;
 	}
@@ -246,6 +247,7 @@ int remove_tail(linkedlist* ll)
 		llnode* node_p = ll->tail;
 		remove_node(ll, ll->tail);
 		node_p->belongs_to_ll = NULL;
+		initialize_llnode(node_p);
 		ll->node_count--;
 		return 1;
 	}
@@ -265,6 +267,7 @@ int remove_from_list(linkedlist* ll, const void* data)
 
 	remove_node(ll, node_p);
 	node_p->belongs_to_ll = NULL;
+	initialize_llnode(node_p);
 	ll->node_count--;
 	return 1;
 }
