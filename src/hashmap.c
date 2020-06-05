@@ -202,7 +202,6 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			while(1)
 			{
 				const void* data_at_index = get_element(&(hashmap_p->holder), index);
-				unsigned long long int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index, index);
 			
 				if(data_at_index == NULL)
 				{
@@ -216,17 +215,21 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 					inserted = 0;
 					break;
 				}
-				else if(probe_sequence_length > probe_sequence_length_data_at_index)
-				{
-					// steal the slot
-					set_element(&(hashmap_p->holder), data, index);
-					data = data_at_index;
-					probe_sequence_length = probe_sequence_length_data_at_index;
-				}
 				else
 				{
-					index = (index + 1) % hashmap_p->occupancy;
-					probe_sequence_length++;
+					unsigned long long int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index, index);
+					if(probe_sequence_length > probe_sequence_length_data_at_index)
+					{
+						// steal the slot
+						set_element(&(hashmap_p->holder), data, index);
+						data = data_at_index;
+						probe_sequence_length = probe_sequence_length_data_at_index;
+					}
+					else
+					{
+						index = (index + 1) % hashmap_p->total_bucket_count;
+						probe_sequence_length++;
+					}
 				}
 			}
 
