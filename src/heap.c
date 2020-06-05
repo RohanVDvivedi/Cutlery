@@ -3,59 +3,54 @@
 #define push 			push_heap
 #define pop 			pop_heap
 #define get_top 		get_top_heap
-#define for_each_entry 	for_each_entry_in_heap
+#define for_each 		for_each_in_heap
 
-heap* get_heap(unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
-{
-	heap* heap_p = malloc(sizeof(heap));
-	initialize_heap(heap_p, expected_size, type, key_compare, heap_index_update_callback, additional_params);
-	return heap_p;
-}
-
-void initialize_heap(heap* heap_p, unsigned long long int expected_size, heap_type type, int (*key_compare)(const void* key0, const void* key1), void (*heap_index_update_callback)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
+void initialize_heap(heap* heap_p, unsigned long long int expected_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned long long int heap_index, const void* callback_params), const void* callback_params)
 {
 	heap_p->type = type;
-	heap_p->key_compare = key_compare;
-	initialize_bucket_array(&(heap_p->heap_holder), expected_size + 1);
+	heap_p->compare = compare;
+	initialize_array(&(heap_p->heap_holder), expected_size + 1);
 	heap_p->heap_size = 0;
 	heap_p->heap_index_update_callback = heap_index_update_callback;
-	heap_p->additional_params = additional_params;
+	heap_p->callback_params = callback_params;
 }
 
-// utility : gets index of the bucket, that is the parent to the given bucket at index = child
+// utility : gets index of the parent data to the data at index = child
 static unsigned long long int get_parent_index(unsigned long long int child)
 {
 	return (child-1)/2;
 }
 
-// utility : gets index of the bucket, that is the left child to the given parent bucket at index = child
+// utility : gets index of the left child to the data at index = parent
 static unsigned long long int get_left_child_index(unsigned long long int parent)
 {
 	return (2 * parent) + 1;
 }
 
-// utility : gets index of the bucket, that is the right child to the given parent bucket at index = child
+// utility : gets index of the right child to the data at index = parent
 static unsigned long long int get_right_child_index(unsigned long long int parent)
 {
 	return (2 * parent) + 2;
 }
 
-// utility : interchanges bucket at indices i1 and i2
-static void inter_change_buckets_for_indexes(heap* heap_p, unsigned long long int i1, unsigned long long int i2)
+// utility : interchanges data elements at indices i1 and i2
+static void inter_change_elements_for_indexes(heap* heap_p, unsigned long long int i1, unsigned long long int i2)
 {
-	swap_buckets_bucket_array(&(heap_p->heap_holder), i1, i2);
+	const void* data_temp_i1 = get_element(&(heap_p->heap_holder), i1);
+	set_element(&(heap_p->heap_holder), get_element(&(heap_p->heap_holder), i2), i1);
+	set_element(&(heap_p->heap_holder), data_temp_i1, i2);
 
-	// once the buckets have been interchanged we call update index on the elements
+	// once the elements have been interchanged we call update index on the elements
 	if(heap_p->heap_index_update_callback != NULL)
 	{
-		heap_p->heap_index_update_callback(get_key_bucket_array(&(heap_p->heap_holder), i1), get_value_bucket_array(&(heap_p->heap_holder), i1), i1, heap_p->additional_params);
-		heap_p->heap_index_update_callback(get_key_bucket_array(&(heap_p->heap_holder), i2), get_value_bucket_array(&(heap_p->heap_holder), i2), i2, heap_p->additional_params);
+		heap_p->heap_index_update_callback(get_element(&(heap_p->heap_holder), i1), i1, heap_p->callback_params);
+		heap_p->heap_index_update_callback(get_element(&(heap_p->heap_holder), i2), i2, heap_p->callback_params);
 	}
 }
 
 // returns true (1) if, the reordering is required, else 0
 // we do not check if parent index is actually the parent of the child
-// hence, this function can be user to test if the order could be made correct
+// hence, this function can be used to test if the order could be made correct
 static int is_reordering_required(const heap* heap_p, unsigned long long int parent_index, unsigned long long int child_index)
 {
 	if(parent_index >= heap_p->heap_size || child_index >= heap_p->heap_size)
@@ -64,11 +59,11 @@ static int is_reordering_required(const heap* heap_p, unsigned long long int par
 		return 0;
 	}
 
-	void* parent_key = ((void*)get_key_bucket_array(&(heap_p->heap_holder), parent_index));
-	void* child_key  = ((void*)get_key_bucket_array(&(heap_p->heap_holder), child_index));
+	const void* parent = get_element(&(heap_p->heap_holder), parent_index);
+	const void* child  = get_element(&(heap_p->heap_holder), child_index );
 
 	// if the child or parent is NULL, you can not reorder 
-	if(child_key == NULL || parent_key == NULL)
+	if(child == NULL || parent == NULL)
 	{
 		return 0;
 	}
@@ -79,8 +74,9 @@ static int is_reordering_required(const heap* heap_p, unsigned long long int par
 	{
 		case MIN_HEAP :
 		{
-			// in min heap, parent has to be smaller than or equal to the child, we have an issue if parent is greater than child 
-			if(heap_p->key_compare(parent_key, child_key) > 0)
+			// in min heap, parent has to be smaller than or equal to the child
+			// we have an issue if parent is greater than child 
+			if(heap_p->compare(parent, child) > 0)
 			{
 				reordering_required = 1;
 			}
@@ -88,8 +84,9 @@ static int is_reordering_required(const heap* heap_p, unsigned long long int par
 		}
 		case MAX_HEAP :
 		{
-			// in min heap, parent has to be greater than or equal to the child, we have an issue if parent is smaller than child 
-			if(heap_p->key_compare(parent_key, child_key) < 0)
+			// in max heap, parent has to be greater than or equal to the child
+			// we have an issue if parent is smaller than child 
+			if(heap_p->compare(parent, child) < 0)
 			{
 				reordering_required = 1;
 			}
@@ -111,60 +108,47 @@ static void bubble_up(heap* heap_p, unsigned long long int index)
 	// get parent index for the index
 	unsigned long long int parent_index = get_parent_index(index);
 
-	// if a reordering is required, we interchange the parent and child bucket
+	// if a reordering is required, we interchange the parent and child elements
 	if(is_reordering_required(heap_p, parent_index, index))
 	{
 		// we would have to interchange for reordering
-		inter_change_buckets_for_indexes(heap_p, parent_index, index);
+		inter_change_elements_for_indexes(heap_p, parent_index, index);
 
 		// and we bubble up with the parent_index
 		bubble_up(heap_p, parent_index);
 	}
 }
 
-void push(heap* heap_p, const void* key, const void* value)
+void push(heap* heap_p, const void* data)
 {
 	// expand heap_holder if necessary
-	if(heap_p->heap_size >= get_capacity_bucket_array((&(heap_p->heap_holder))))
+	if(heap_p->heap_size >= heap_p->heap_holder.total_size)
 	{
 		expand_array(&(heap_p->heap_holder));
 	}
 
-	// insert a new bucket to the holder at the last index and increment heap size
-	insert_in_bucket_array(&(heap_p->heap_holder), key, value, heap_p->heap_size++);
+	// insert new element to the heap_holder at the last index and increment heap size
+	set_element(&(heap_p->heap_holder), data, heap_p->heap_size++);
 
-	// after insertion we need to make a callback, that a bucket index has been updated
+	// after insertion we need to make a callback, to notify element index has been updated
 	if(heap_p->heap_index_update_callback != NULL)
 	{
-		heap_p->heap_index_update_callback(key, value, heap_p->heap_size-1, heap_p->additional_params);
+		heap_p->heap_index_update_callback(data, heap_p->heap_size-1, heap_p->callback_params);
 	}
 
 	// bubble up the newly added element at index heap_p->heap_size-1, to its desired place
 	bubble_up(heap_p, heap_p->heap_size-1);
 }
 
-const void* get_top(const heap* heap_p, const void** returned_key)
+const void* get_top(const heap* heap_p)
 {
-	// ther is no top bucket value, if there are no buckets in the heap
+	// ther is no top element, if there are no elements in the heap
 	if(heap_p->heap_size == 0)
 	{
-		if(returned_key != NULL)
-		{
-			(*returned_key) = NULL;
-		}
 		return NULL;
 	}
 
-	// first bucket is the top bucket, we fetch its value
-	void* top_value_p = (void*)get_value_bucket_array(&(heap_p->heap_holder), 0);
-
-	// return the key to the client
-	if(returned_key != NULL)
-	{
-		(*returned_key) = (void*)get_key_bucket_array(&(heap_p->heap_holder), 0);
-	}
-
-	return top_value_p;
+	return (void*)get_element(&(heap_p->heap_holder), 0);
 }
 
 static void bubble_down(heap* heap_p, unsigned long long int index)
@@ -180,7 +164,7 @@ static void bubble_down(heap* heap_p, unsigned long long int index)
 
 	unsigned long long int new_parent_index = -1;
 
-	// simple logic, if reordering is required for left child and index, left child would become the new parent
+	// simple logic, if reordering is required for left child index, left child would become the new parent
 	if(is_reordering_required(heap_p, index, left_child_index))
 	{
 		new_parent_index = left_child_index;
@@ -202,7 +186,7 @@ static void bubble_down(heap* heap_p, unsigned long long int index)
 	if(new_parent_index != -1)
 	{
 		// if new_parent_index has to come, we make the new_parent_index
-		inter_change_buckets_for_indexes(heap_p, new_parent_index, index);
+		inter_change_elements_for_indexes(heap_p, new_parent_index, index);
 
 		// and bubble down from. there
 		bubble_down(heap_p, new_parent_index);
@@ -211,20 +195,20 @@ static void bubble_down(heap* heap_p, unsigned long long int index)
 
 void pop(heap* heap_p)
 {
-	// we can pop only if the heap size if greater than 0, and there is atleast 1 element
+	// we can pop only if the heap size is greater than 0, and there is atleast 1 element
 	if(heap_p->heap_size > 0)
 	{
-		// put the first bucket at last and last bucket to first
-		inter_change_buckets_for_indexes(heap_p, 0, heap_p->heap_size-1);
+		// put the first element at last and last element to first
+		inter_change_elements_for_indexes(heap_p, 0, heap_p->heap_size-1);
 
-		// and set the last bucket to key and value NULLs, and decrementing the heap size
-		insert_in_bucket_array(&(heap_p->heap_holder), NULL, NULL, --heap_p->heap_size);
+		// and set the last to NULL, and decrement the heap size
+		set_element(&(heap_p->heap_holder), NULL, --heap_p->heap_size);
 
 		// bubble down the element at index 0
 		bubble_down(heap_p, 0);
 
 		// let the array be shrunk if it is required
-		shrink_bucket_array(&(heap_p->heap_holder), 0, heap_p->heap_size - 1);
+		shrink_array(&(heap_p->heap_holder), 0, heap_p->heap_size - 1);
 		// Note: we shrink the holder, only if we sucessfully pop the element
 	}
 }
@@ -255,24 +239,17 @@ void heapify_at(heap* heap_p, unsigned long long int index)
 	}
 }
 
+void for_each(const heap* heap_p, void (*operation)(void* data, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
+{
+	for_each_in_array(&(heap_p->heap_holder), operation, additional_params);
+}
+
 void deinitialize_heap(heap* heap_p)
 {
 	deinitialize_array(&(heap_p->heap_holder));
-	heap_p->heap_size = 0;
 }
 
-void delete_heap(heap* heap_p)
-{
-	deinitialize_heap(heap_p);
-	free(heap_p);
-}
-
-void for_each_entry(const heap* heap_p, void (*operation)(const void* key, const void* value, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
-{
-	for_each_in_bucket_array(&(heap_p->heap_holder), operation, additional_params);
-}
-
-void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_value)(const void* value))
+void print_heap(heap* heap_p, void (*print_element)(const void* data))
 {
 	switch(heap_p->type)
 	{
@@ -289,12 +266,12 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 	}
 	printf("\theap_size : %llu\n", heap_p->heap_size);
 	printf("\theap array : \n");
-	print_bucket_array(&(heap_p->heap_holder), print_key, print_value);
+	print_array(&(heap_p->heap_holder), print_element);
 	printf("\n");
 	printf("\tthe top element : ");
-	if(get_top(heap_p, NULL) != NULL)
+	if(get_top(heap_p) != NULL)
 	{
-		print_value(get_top(heap_p, NULL));
+		print_element(get_top(heap_p));
 	}
 	else
 	{
@@ -306,4 +283,4 @@ void print_heap(heap* heap_p, void (*print_key)(const void* key), void (*print_v
 #undef push
 #undef pop
 #undef get_top
-#undef for_each_entry
+#undef for_each
