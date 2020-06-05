@@ -83,5 +83,9 @@ int main()
 	printf("Error on inserting an existing node %d\n", insert_before(ll, temp, get_nth_from_tail(ll, 3)));
 	print_linkedlist(ll, print_ts);
 
+	printf("Searching for structure with a = 4\n");
+	print_ts(find_equals_in_list(ll, &((ts){4})));
+	printf("\n");
+
 	return 0;
 }
