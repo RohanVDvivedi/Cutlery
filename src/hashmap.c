@@ -324,7 +324,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 	return deleted;
 }
 
-void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
+void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
 	// iterate over all the buckets in the hashmap_p
 	for(unsigned long long int index = 0; index < hashmap_p->holder.total_size; index++)

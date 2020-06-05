@@ -3,24 +3,25 @@
 typedef struct teststruct ts;
 struct teststruct
 {
+	int key;
 	int a;
 	char* s;
+
+	union
+	{
+		bstnode embed_node1;
+		llnode  embed_node2;
+	}embedded_nodes;
 };
 
-typedef struct key ke;
-struct key
+unsigned long long int hash_function(const void* data)
 {
-	int k;
-};
-
-unsigned long long int hash_function(const void* key)
-{
-	return (unsigned long long int)((*((int *)key))-1);
+	return (unsigned long long int)((((ts*)data)->key)-1);
 }
 
-int key_cmp(const void* key1, const void* key2)
+int cmp(const void* data1, const void* data2)
 {
-	return (((ke*)key1)->k) - (((ke*)key2)->k);
+	return (((ts*)data1)->key) - (((ts*)data2)->key);
 }
 
 void print_ts(const void* tsv)
@@ -31,23 +32,34 @@ void print_ts(const void* tsv)
 	}
 	else
 	{
-		printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+		printf("%d, %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
 	}
 }
 
-void print_key(const void* key)
-{
-	printf("%d hash(%llu)", (*((int*)key)), hash_function(key));
-}
+#include<queue.h>
 
-void insert_wrapper(const void* key, const void* value, const void* additional_params)
+void sampler_queue_wrapper(const void* data, const void* additional_params)
 {
-	insert_entry_in_hash(((hashmap*)(additional_params)), key, value);
+	push_queue((queue*)(additional_params), data);
 }
 
 void rehash(hashmap* old_p, hashmap* new_p)
 {
-	for_each_entry_in_hash(old_p, insert_wrapper, new_p);
+	queue q;
+	initialize_queue(&q, 30);
+	for_each_in_hashmap(old_p, sampler_queue_wrapper, &q);
+
+	while(!isQueueEmpty(&q))
+	{
+		const void* data = get_top_queue(&q);
+
+		remove_from_hashmap(old_p, data);
+		insert_in_hashmap(new_p, data);
+
+		pop_queue(&q);
+	}
+
+	deinitialize_queue(&q);
 }
 
 #define POLICY_USED /*ROBINHOOD_HASHING*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
@@ -59,177 +71,180 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	#define HASH_BUCKETS 10
 #endif
 
-#define USE_STACK_MEMORY
-//#define USE_HEAP_MEMORY
-
 int main()
 {
-	#if defined USE_STACK_MEMORY
-		printf("HASHMAP WILL BE CREATED ON STACK MEMORY\n\n");
-		hashmap hashmap_temp;
-		hashmap* hashmap_p = &hashmap_temp;
-		initialize_hashmap(hashmap_p, HASH_BUCKETS, hash_function, key_cmp, POLICY_USED);
-	#elif defined USE_HEAP_MEMORY
-		printf("HASHMAP WILL BE CREATED ON HEAP MEMORY\n\n");
-		hashmap* hashmap_p = get_hashmap(HASH_BUCKETS, hash_function, key_cmp, POLICY_USED);
-	#endif
+	hashmap hashmap_temp;
+	hashmap* hashmap_p = &hashmap_temp;
+	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, (unsigned long long int)(&(((ts*)0)->embedded_nodes)));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){1}), &((ts){100, "one"}));
+	insert_in_hashmap(hashmap_p, &((ts){1, 100, "one"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){2}), &((ts){200, "two"}));
+	insert_in_hashmap(hashmap_p, &((ts){2, 200, "two"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){3}), &((ts){300, "there"}));
+	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	update_value_in_hash(hashmap_p, &((ke){3}), &((ts){300, "three"}), NULL);
+	// this is how you update, unless you want to update the key of the object
+	// in which case you would have to remove the element completely and reinsert
+	ts* thr = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){3}));
+	thr->s = "Three";
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){4}), &((ts){400, "four"}));
+	insert_in_hashmap(hashmap_p, &((ts){4, 400, "four"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){5}), &((ts){500, "five"}));
+	insert_in_hashmap(hashmap_p, &((ts){5, 500, "five"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){6}), &((ts){600, "six"}));
+	insert_in_hashmap(hashmap_p, &((ts){6, 600, "six"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){7}), &((ts){700, "seven"}));
+	insert_in_hashmap(hashmap_p, &((ts){7, 700, "seven"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){8}), &((ts){800, "eight"}));
+	insert_in_hashmap(hashmap_p, &((ts){8, 800, "eight"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){9}), &((ts){900, "nine"}));
+	insert_in_hashmap(hashmap_p, &((ts){9, 900, "nine"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
 	printf("\nStarting to remove few entries\n\n");
 
 	int nodes_deleted = 0;
 
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){6}), NULL, NULL);
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){2}), NULL, NULL);
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){6}), NULL, NULL);
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){4}), NULL, NULL);
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){6}));
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){2}));
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){6}));
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){4}));
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){6}), NULL, NULL);
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){7}), NULL, NULL);
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){5}), NULL, NULL);
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){8}), NULL, NULL);
-
-	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
-
-	print_hashmap(hashmap_p, print_key, print_ts);nodes_deleted = 0;
-
-	nodes_deleted += delete_entry_from_hash(hashmap_p, &((ke){9}), NULL, NULL);
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){6}));
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){7}));
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){5}));
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){8}));
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
-	print_hashmap(hashmap_p, print_key, print_ts);nodes_deleted = 0;
+	print_hashmap(hashmap_p, print_ts);nodes_deleted = 0;
+
+	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){9}));
+
+	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
+
+	print_hashmap(hashmap_p, print_ts);nodes_deleted = 0;
 
 	printf("\nCompleted removing entries\n\n");
 
-	insert_entry_in_hash(hashmap_p, &((ke){60}), &((ts){6000, "sixty"}));
+	insert_in_hashmap(hashmap_p, &((ts){60, 6000, "sixty"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){70}), &((ts){7000, "seventy"}));
+	insert_in_hashmap(hashmap_p, &((ts){70, 7000, "seventy"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){56}), &((ts){5600, "fifty six"}));
+	insert_in_hashmap(hashmap_p, &((ts){56, 5600, "fifty six"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	update_value_in_hash(hashmap_p, &((ke){70}), &((ts){70000, "seven hundred"}), NULL);
+	// this is how you update, unless you want to update the key of the object
+	// in which case you would have to remove the element completely and reinsert
+	ts* svntn = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){70}));
+	svntn->a = 70000;
+	svntn->s = "seven hundred";
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){80}), &((ts){8000, "eighty"}));
+	insert_in_hashmap(hashmap_p, &((ts){80, 8000, "eighty"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){20}), &((ts){2000, "twenty"}));
+	insert_in_hashmap(hashmap_p, &((ts){20, 2000, "twenty"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	insert_entry_in_hash(hashmap_p, &((ke){40}), &((ts){4000, "forty"}));
+	insert_in_hashmap(hashmap_p, &((ts){40, 4000, "forty"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	update_value_in_hash(hashmap_p, &((ke){70}), &((ts){7000, "seventy"}), NULL);
+	// this is how you update, unless you want to update the key of the object
+	// in which case you would have to remove the element completely and reinsert
+	svntn = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){70}));
+	svntn->a = 7000;
+	svntn->s = "seventy";
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
 	printf("Deleting key-value at 80\n");
-	delete_entry_from_hash(hashmap_p, &((ke){80}), NULL, NULL);
+	remove_from_hashmap(hashmap_p, &((ts){80}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
 	printf("Deleting key-value at 60\n");
-	delete_entry_from_hash(hashmap_p, &((ke){60}), NULL, NULL);
+	remove_from_hashmap(hashmap_p, &((ts){60}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
 	printf("Now finding value corresponding to key 20\n\n");
-	print_ts(find_value_from_hash(hashmap_p, &((ke){20})));printf("\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){20})));printf("\n\n");
 
 	printf("Now finding value corresponding to key 40\n\n");
-	print_ts(find_value_from_hash(hashmap_p, &((ke){40})));printf("\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){40})));printf("\n\n");
 
 	printf("Reinserting key-value at 80\n");
-	insert_entry_in_hash(hashmap_p, &((ke){80}), &((ts){8000, "eighty - new"}));
+	insert_in_hashmap(hashmap_p, &((ts){80, 8000, "eighty - new"}));
 
 	printf("Reinserting key-value at 60\n");
-	insert_entry_in_hash(hashmap_p, &((ke){60}), &((ts){6000, "sixty - new"}));
+	insert_in_hashmap(hashmap_p, &((ts){60, 6000, "sixty - new"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
 	printf("Inserting key-value at 90\n");
-	insert_entry_in_hash(hashmap_p, &((ke){90}), &((ts){9000, "ninety"}));
+	insert_in_hashmap(hashmap_p, &((ts){90, 9000, "ninety"}));
 
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
 	printf("\n\nBefore rehashing - 16\n");
-	print_hashmap(hashmap_p, print_key, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	hashmap* hashmap_16 = get_hashmap(16, hash_function, key_cmp, POLICY_USED);
-	rehash(hashmap_p, hashmap_16);
+	hashmap hashmap_16;
+	hashmap* hashmap_16_p = &hashmap_16;
+	initialize_hashmap(hashmap_16_p, POLICY_USED, 16, hash_function, cmp, (unsigned long long int)(&(((ts*)0)->embedded_nodes)));
+
+	rehash(hashmap_p, hashmap_16_p);
 
 	printf("\n\nAfter rehashing - 16\n");
-	print_hashmap(hashmap_16, print_key, print_ts);
+	print_hashmap(hashmap_16_p, print_ts);
 
-	hashmap* hashmap_20 = get_hashmap(20, hash_function, key_cmp, POLICY_USED);
-	rehash(hashmap_p, hashmap_20);
+	hashmap hashmap_20;
+	hashmap* hashmap_20_p = &hashmap_20;
+	initialize_hashmap(hashmap_20_p, POLICY_USED, 20, hash_function, cmp, (unsigned long long int)(&(((ts*)0)->embedded_nodes)));
+
+	rehash(hashmap_p, hashmap_20_p);
 
 	printf("\n\nAfter rehashing - 20\n");
-	print_hashmap(hashmap_20, print_key, print_ts);
+	print_hashmap(hashmap_20_p, print_ts);
 
-	#if defined USE_STACK_MEMORY
-		deinitialize_hashmap(hashmap_p);
-	#elif defined USE_HEAP_MEMORY
-		delete_hashmap(hashmap_p);
-	#endif
-
-	delete_hashmap(hashmap_16);
-	delete_hashmap(hashmap_20);
+	deinitialize_hashmap(hashmap_p);
+	deinitialize_hashmap(hashmap_16_p);
+	deinitialize_hashmap(hashmap_20_p);
 
 	return 0;
 }
