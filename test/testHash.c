@@ -62,19 +62,18 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	deinitialize_queue(&q);
 }
 
-#define POLICY_USED /*ROBINHOOD_HASHING*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/
+collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ ELEMENTS_AS_LINKEDLIST /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
 
-#define HASH_BUCKETS 4
-
-#if POLICY_USED == ROBINHOOD_HASHING
-	#undef HASH_BUCKETS
-	#define HASH_BUCKETS 10
-#endif
+unsigned int HASH_BUCKETS = 4;
 
 int main()
 {
 	hashmap hashmap_temp;
 	hashmap* hashmap_p = &hashmap_temp;
+	if(POLICY_USED == ROBINHOOD_HASHING)
+	{
+		HASH_BUCKETS = 10;
+	}
 	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, (unsigned long long int)(&(((ts*)0)->embedded_nodes)));
 
 	print_hashmap(hashmap_p, print_ts);
@@ -125,26 +124,64 @@ int main()
 	printf("\nStarting to remove few entries\n\n");
 
 	int nodes_deleted = 0;
+	ts* temp = NULL;
 
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){6}));
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){2}));
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){6}));
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){4}));
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){6}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){2}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){6}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){4}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
 	print_hashmap(hashmap_p, print_ts);
 
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){6}));
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){7}));
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){5}));
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){8}));
+	// this is exactly how we remove by finding the object from the hashmap first
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){6}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){7}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){5}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){8}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
 	print_hashmap(hashmap_p, print_ts);nodes_deleted = 0;
 
-	nodes_deleted += remove_from_hashmap(hashmap_p, &((ts){9}));
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){9}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
@@ -193,12 +230,20 @@ int main()
 	print_hashmap(hashmap_p, print_ts);
 
 	printf("Deleting key-value at 80\n");
-	remove_from_hashmap(hashmap_p, &((ts){80}));
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){80}));
+	if(temp != NULL)
+	{
+		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
+	}
 
 	print_hashmap(hashmap_p, print_ts);
 
 	printf("Deleting key-value at 60\n");
-	remove_from_hashmap(hashmap_p, &((ts){60}));
+	temp = find_equals_in_hashmap(hashmap_p, &((ts){60}));
+	if(temp != NULL)
+	{
+		remove_from_hashmap(hashmap_p, temp);
+	}
 
 	print_hashmap(hashmap_p, print_ts);
 
