@@ -115,7 +115,7 @@ static unsigned long long int get_actual_index(const hashmap* hashmap_p, const v
 
 		if(data_at_index != NULL)
 		{
-			if(hashmap_p->compare(data, data_at_index) != 0)
+			if(data != data_at_index && hashmap_p->compare(data, data_at_index) != 0)
 			{
 				if(probe_sequence_length > get_probe_sequence_length(hashmap_p, data_at_index, expected_index))
 				{
@@ -210,6 +210,12 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 					inserted = 1;
 					break;
 				}
+				// inserting the same data again, that is already existing is not allowed in the hashmap
+				else if(data_at_index == data)
+				{
+					inserted = 0;
+					break;
+				}
 				else if(probe_sequence_length > probe_sequence_length_data_at_index)
 				{
 					// steal the slot
@@ -252,46 +258,39 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 	return inserted;
 }
 
-int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, const void** return_value)
+int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 {
 	// we are suppossed to return the number of entries we delete
-	int has_been_deleted = 0;
+	int deleted = 0;
 
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_expected_index(hashmap_p, key);
+			unsigned long long int index = get_actual_index(hashmap_p, data);
 
-			const void* key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
+			const void* data_at_index = get_element(&(hashmap_p->holder), index);
 			
-			if(key_at_index != NULL && hashmap_p->compare(key, key_at_index) == 0)
+			if(data_at_index == data)
 			{
-				const void* value_at_index = get_value_bucket_array(&(hashmap_p->holder), index);
-
-				if(return_key != NULL)
-				{
-					(*(return_key)) = key_at_index;
-				}
-				if(return_value != NULL)
-				{
-					(*(return_value)) = value_at_index;
-				}
-
-				insert_in_bucket_array(&(hashmap_p->holder), NULL, NULL, index);
-
-				has_been_deleted = 1;
+				set_element(&(hashmap_p->holder), NULL, index);
+				deleted = 1;
+			}
+			// if the given element does not exist in the hashmap we can not remove it
+			else
+			{
+				break;
 			}
 
 			unsigned long long int previousIndex = index;
 			index = (index + 1) % hashmap_p->total_bucket_count;
-			key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
-			while(key_at_index != NULL && get_probe_sequence_length(hashmap_p, key_at_index, index) != 0)
+			data_at_index = get_element(&(hashmap_p->holder), index);
+			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
 			{
-				swap_buckets_bucket_array(&(hashmap_p->holder), previousIndex, index);
+				swap_elements(&(hashmap_p->holder), previousIndex, index);
 				previousIndex = index;
 				index = (index + 1) % hashmap_p->total_bucket_count;
-				key_at_index = get_key_bucket_array(&(hashmap_p->holder), index);
+				data_at_index = get_element(&(hashmap_p->holder), index);
 			}
 
 			break;
@@ -299,33 +298,30 @@ int delete_entry(hashmap* hashmap_p, const void* key, const void** return_key, c
 		case ELEMENTS_AS_LINKEDLIST :
 		{
 			// get the data structure for the given key
-			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
+			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
 
 			// if there is a linkedlist remove value from that tree
 			// here keep the found_bucket_p as NULL, because if you see linkedlist implementation, it handles memory allocation for buckets on its own 
-			has_been_deleted = ((ds_p == NULL) ? 0 : delete_entry_from_ll(((linkedlist*)(ds_p)), key, return_key, return_value));
+			deleted = ((ds_p == NULL) ? 0 : remove_from_list(((linkedlist*)(ds_p)), data));
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
 			// get the data structure for the given key
-			const void* ds_p = get_data_structure_for_key(hashmap_p, key, 0);
+			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
 
 			// if there is a binary search tree remove value from that tree
 			// here keep the found_bucket_p as NULL, because if you see balancedbst implementation, it handles memory allocation for buckets on its own 
-			has_been_deleted = ((ds_p == NULL) ? 0 : delete_entry_from_bst(((bst*)(ds_p)), key, return_key, return_value));
+			deleted = ((ds_p == NULL) ? 0 : remove_from_bst(((bst*)(ds_p)), data));
 			break;
 		}
 	}
 
-	if(has_been_deleted)
-	{
-		hashmap_p->occupancy--;
-	}
+	hashmap_p->occupancy -= deleted;
 
 	// return the number of buckets we deleted => eeither 1 or 0
-	return has_been_deleted;
+	return deleted;
 }
 
 void for_each_entry(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)

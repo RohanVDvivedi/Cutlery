@@ -36,9 +36,7 @@ static unsigned long long int get_right_child_index(unsigned long long int paren
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, unsigned long long int i1, unsigned long long int i2)
 {
-	const void* data_temp_i1 = get_element(&(heap_p->heap_holder), i1);
-	set_element(&(heap_p->heap_holder), get_element(&(heap_p->heap_holder), i2), i1);
-	set_element(&(heap_p->heap_holder), data_temp_i1, i2);
+	swap_elements(&(heap_p->heap_holder), i1, i2);
 
 	// once the elements have been interchanged we call update index on the elements
 	if(heap_p->heap_index_update_callback != NULL)

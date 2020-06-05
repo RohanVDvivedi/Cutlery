@@ -49,6 +49,9 @@ const void* get_element(const array* array_p, unsigned long long int index);
 // returns 0 for success, -1 for index out of bounds
 int set_element(array* array_p, const void* data_p, unsigned long long int index);
 
+// swap elements of array at given indexes
+void swap_elements(array* array_p, unsigned long long int i1, unsigned long long int i2);
+
 // perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params);
 //also ->

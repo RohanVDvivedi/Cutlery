@@ -31,6 +31,9 @@ enum collision_resolution_policy
 	ELEMENTS_AS_AVL_BST = 11
 };
 
+// inserting comparatively equal data is allowed
+// inserting same data (same address) is not allowed
+
 typedef struct hashmap hashmap;
 struct hashmap
 {
@@ -73,7 +76,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data);
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 
 // returns 1 if the element exists in the hashmap and is removed
-// fails with 0, if the data provided does not exist in hashmap
+// fails with 0, if the data provided does not exist in this hashmap
 int remove_from_hashmap(hashmap* hashmap_p, const void* data);
 
 // print complete hashmap

@@ -63,6 +63,13 @@ int set_element(array* array_p, const void* data_p, unsigned long long int index
 	}
 }
 
+void swap_elements(array* array_p, unsigned long long int i1, unsigned long long int i2)
+{
+	const void* data_temp_i1 = get_element(array_p, i1);
+	set_element(array_p, get_element(array_p, i2), i1);
+	set_element(array_p, data_temp_i1, i2);
+}
+
 void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
 {
 	for(unsigned long long int i = 0; i < array_p->total_size; i++)
