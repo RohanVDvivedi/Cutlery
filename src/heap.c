@@ -239,7 +239,7 @@ void heapify_at(heap* heap_p, unsigned long long int index)
 
 void for_each(const heap* heap_p, void (*operation)(void* data, unsigned long long int heap_index, const void* additional_params), const void* additional_params)
 {
-	for_each_in_array(&(heap_p->heap_holder), operation, additional_params);
+	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
 }
 
 void deinitialize_heap(heap* heap_p)
