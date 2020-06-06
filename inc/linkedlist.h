@@ -95,7 +95,7 @@ const void* find_equals_in_list(const linkedlist* ll, const void* data);
 
 // check if a given data exists in the linkedlist
 // it used belongs_to_list attribute of the node
-int exist_in_list(const linkedlist* ll, const void* data);
+int exists_in_list(const linkedlist* ll, const void* data);
 
 int is_linkedlist_empty(const linkedlist* ll);
 

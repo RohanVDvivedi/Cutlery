@@ -31,12 +31,12 @@ int is_linkedlist_empty(const linkedlist* ll)
 	return (ll->head == NULL);
 }
 
-const void* get_head_data(linkedlist* ll)
+const void* get_head(linkedlist* ll)
 {
 	return ((ll->head == NULL) ? NULL : get_data(ll->head));
 }
 
-const void* get_tail_data(linkedlist* ll)
+const void* get_tail(linkedlist* ll)
 {
 	return ((ll->tail == NULL) ? NULL : get_data(ll->tail));
 }
