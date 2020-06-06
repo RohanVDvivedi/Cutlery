@@ -20,7 +20,7 @@ void initialize_llnode(llnode* node_p)
 
 #define get_node(data_p) 	(((void*)(data_p)) + ll->node_offset)
 
-int exists_in_ll(linkedlist* ll, const void* data)
+int exists_in_list(const linkedlist* ll, const void* data)
 {
 	llnode* node_p = get_node(data);
 	return llnode_exists_in_this_ll(node_p);
