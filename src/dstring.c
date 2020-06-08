@@ -121,11 +121,19 @@ void display_dstring(dstring* str_p)
 	}
 }
 
-void delete_dstring(dstring* str_p)
+void deinit_dstring(dstring* str_p)
 {
 	if(str_p->cstring != NULL)
 	{
 		free(str_p->cstring);
 	}
+	str_p->cstring = NULL;
+	str_p->bytes_occupied = 0;
+	str_p->bytes_allocated = 0;
+}
+
+void delete_dstring(dstring* str_p)
+{
+	deinit_dstring(str_p);
 	free(str_p);
 }

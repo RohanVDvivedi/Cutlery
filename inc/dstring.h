@@ -22,6 +22,7 @@ struct dstring
 dstring* get_dstring(const char* cstr_p, unsigned long long int additional_allocation);
 
 // initializes am already existing but empty dstring variable, can be used when you have dstring struct on the stack
+// enable to use dstring on stack or in an embedded form in other data structures
 void init_dstring(dstring* str_p, const char* cstr_p, unsigned long long int additional_allocation);
 
 // make the dstring empty, i.e. not containing any characters except '\0'
@@ -49,6 +50,11 @@ void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
 
 void display_dstring(dstring* str_p);
+
+// deinitializing a dstring will release all its memory,
+// so you can init it again to reuse the dstring
+// enable to use dstring on stack or in an embedded form in other data structures
+void deinit_dstring(dstring* str_p);
 
 void delete_dstring(dstring* str_p);
 
