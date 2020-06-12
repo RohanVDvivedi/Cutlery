@@ -5,8 +5,6 @@
 #include<stdlib.h>
 #include<string.h>
 
-#include<array.h>
-
 #include<linkedlist.h>
 #include<bst.h>
 
@@ -51,7 +49,7 @@ struct hashmap
 	int (*compare)(const void* data1, const void* data2);
 
 	// array storing pointer to all the of data in the hashmap
-	array holder;
+	void** holder;
 
 	// this is the number of buckets, which are occupied in the hashmap
 	unsigned long long int occupancy;

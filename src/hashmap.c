@@ -5,7 +5,7 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->compare = compare;
-	initialize_array(&(hashmap_p->holder), total_bucket_count);
+	hashmap_p->holder = calloc(total_bucket_count, sizeof(void*));
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->total_bucket_count = total_bucket_count;
 	hashmap_p->occupancy = 0;
@@ -25,16 +25,16 @@ static unsigned long long int get_index(const hashmap* hashmap_p, const void* da
 }
 
 // utility, O(1) operation
-static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
+static void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
 {
 	// if you try accessing hashtable, index greater than its size
-	if(index >= hashmap_p->holder.total_size)
+	if(index >= hashmap_p->total_bucket_count)
 	{
 		return NULL;
 	}
 
 	// get the data structure at that index
-	const void* ds_p = get_element(&(hashmap_p->holder), index);
+	void* ds_p = hashmap_p->holder[index];
 
 	// if the data structure is NULL
 	if(ds_p == NULL && new_if_empty)
@@ -69,7 +69,7 @@ static const void* get_data_structure_for_index(const hashmap* hashmap_p, unsign
 		}
 
 		// set it at the index there
-		set_element((array*)(&(hashmap_p->holder)), ds_p, index);
+		hashmap_p->holder[index] = ds_p;
 	}
 
 	// return the data structure at that index
@@ -111,7 +111,7 @@ static unsigned long long int get_actual_index(const hashmap* hashmap_p, const v
 
 	while(probe_sequence_length < hashmap_p->total_bucket_count)
 	{
-		data_at_index = get_element(&(hashmap_p->holder), expected_index);
+		data_at_index = hashmap_p->holder[expected_index];
 
 		if(data_at_index != NULL)
 		{
@@ -147,7 +147,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 		{
 			unsigned long long int index = get_actual_index(hashmap_p, data);
 
-			const void* data_at_index = get_element(&(hashmap_p->holder), index);
+			const void* data_at_index = hashmap_p->holder[index];
 			
 			if(data_at_index != NULL && hashmap_p->compare(data, data_at_index) == 0)
 			{
@@ -201,11 +201,11 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 
 			while(1)
 			{
-				const void* data_at_index = get_element(&(hashmap_p->holder), index);
+				void* data_at_index = hashmap_p->holder[index];
 			
 				if(data_at_index == NULL)
 				{
-					set_element(&(hashmap_p->holder), data, index);
+					hashmap_p->holder[index] = (void*) data;
 					inserted = 1;
 					break;
 				}
@@ -221,7 +221,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 					if(probe_sequence_length > probe_sequence_length_data_at_index)
 					{
 						// steal the slot
-						set_element(&(hashmap_p->holder), data, index);
+						hashmap_p->holder[index] = (void*)data;
 						data = data_at_index;
 						probe_sequence_length = probe_sequence_length_data_at_index;
 					}
@@ -272,11 +272,11 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		{
 			unsigned long long int index = get_actual_index(hashmap_p, data);
 
-			const void* data_at_index = get_element(&(hashmap_p->holder), index);
+			void* data_at_index = hashmap_p->holder[index];
 			
 			if(data_at_index == data)
 			{
-				set_element(&(hashmap_p->holder), NULL, index);
+				hashmap_p->holder[index] = NULL;
 				deleted = 1;
 			}
 			// if the given element does not exist in the hashmap we can not remove it
@@ -287,13 +287,17 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 
 			unsigned long long int previousIndex = index;
 			index = (index + 1) % hashmap_p->total_bucket_count;
-			data_at_index = get_element(&(hashmap_p->holder), index);
+			data_at_index = hashmap_p->holder[index];
 			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
 			{
-				swap_elements(&(hashmap_p->holder), previousIndex, index);
+				// shift null downwards
+				{
+					hashmap_p->holder[previousIndex] = hashmap_p->holder[index];
+					hashmap_p->holder[index] = NULL;
+				}
 				previousIndex = index;
 				index = (index + 1) % hashmap_p->total_bucket_count;
-				data_at_index = get_element(&(hashmap_p->holder), index);
+				data_at_index = hashmap_p->holder[index];
 			}
 
 			break;
@@ -330,7 +334,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned long long int index = 0; index < hashmap_p->holder.total_size; index++)
+	for(unsigned long long int index = 0; index < hashmap_p->total_bucket_count; index++)
 	{
 		// get the datastructure to be print for that index
 		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
@@ -394,47 +398,42 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 	printf("occupancy : %llu\n", hashmap_p->occupancy);
 	printf("total_bucket_count : %llu\n", hashmap_p->total_bucket_count);
 
-	if(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
+	// iterate over all the buckets in the hashmap_p
+	for(unsigned long long int index = 0; index < hashmap_p->total_bucket_count; index++)
 	{
-		print_array(&(hashmap_p->holder), print_element);
-	}
-	else
-	{
-		// iterate over all the buckets in the hashmap_p
-		for(unsigned long long int index = 0; index < hashmap_p->holder.total_size; index++)
+		printf("index = %lld\n", index);
+
+		// get the datastructure to be print for that index
+		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
+
+		if(ds_p != NULL)
 		{
-			printf("index = %lld\n", index);
-
-			// get the datastructure to be print for that index
-			const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
-
-			if(ds_p != NULL)
+			switch(hashmap_p->hashmap_policy)
 			{
-				switch(hashmap_p->hashmap_policy)
+				case ROBINHOOD_HASHING :
 				{
-					case ELEMENTS_AS_LINKEDLIST :
-					{
-						print_linkedlist(((linkedlist*)(ds_p)), print_element);
-						break;
-					}
-					case ELEMENTS_AS_AVL_BST :
-					case ELEMENTS_AS_RED_BLACK_BST :
-					{
-						print_bst(((bst*)(ds_p)), print_element);
-						break;
-					}
-					default :
-					{
-						break;
-					}
+					print_element(ds_p);
+					break;
+				}
+				case ELEMENTS_AS_LINKEDLIST :
+				{
+					print_linkedlist(((linkedlist*)(ds_p)), print_element);
+					break;
+				}
+				case ELEMENTS_AS_AVL_BST :
+				case ELEMENTS_AS_RED_BLACK_BST :
+				{
+					print_bst(((bst*)(ds_p)), print_element);
+					break;
+				}
+				default :
+				{
+					break;
 				}
 			}
-			else
-			{
-				printf("\tEMPTY\n");
-			}
-
 		}
+		else
+			printf("\tEMPTY\n");
 	}
 	printf("\n\n");
 }
@@ -443,15 +442,14 @@ void deinitialize_hashmap(hashmap* hashmap_p)
 {
 	if(hashmap_p->hashmap_policy != ROBINHOOD_HASHING)
 	{
-		for(unsigned long long int index = 0; index < hashmap_p->holder.total_size; index++)
+		for(unsigned long long int index = 0; index < hashmap_p->total_bucket_count; index++)
 		{
-			void* ds_p = (void*) get_data_structure_for_index(hashmap_p, index, 0);
-			if(ds_p != NULL)
+			if(hashmap_p->holder[index] != NULL)
 			{
-				free(ds_p);
-				set_element(&(hashmap_p->holder), NULL, index);
+				free(hashmap_p->holder[index]);
+				hashmap_p->holder[index] = NULL;
 			}
 		}
 	}
-	deinitialize_array(&(hashmap_p->holder));
+	free(hashmap_p->holder);
 }
