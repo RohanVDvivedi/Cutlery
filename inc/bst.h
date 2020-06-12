@@ -48,10 +48,10 @@ struct bst
 	bstnode* root;
 
 	// this is number of nodes in the tree
-	unsigned long long int node_count;
+	unsigned int node_count;
 
 	// defines address to data with respect to bstnode
-	unsigned long long int node_offset;
+	unsigned int node_offset;
 
 	// compares data
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
@@ -63,7 +63,7 @@ struct bst
 */
 
 // initializes as if a new bst, may be to reuse
-void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
+void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*compare)(const void* data1, const void* data2));
 
 // always initialize your bstnode before using it
 void initialize_bstnode(bstnode* node_p);

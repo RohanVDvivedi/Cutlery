@@ -5,7 +5,7 @@
 #define get_top		get_top_stack
 #define for_each 	for_each_in_stack
 
-void initialize_stack(stack* stack_p, unsigned long long int expected_size)
+void initialize_stack(stack* stack_p, unsigned int expected_size)
 {
 	initialize_array(&(stack_p->stack_holder), expected_size + 1);
 	stack_p->stack_size = 0;
@@ -49,7 +49,7 @@ void deinitialize_stack(stack* stack_p)
 	stack_p->stack_size = 0;
 }
 
-void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
+void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
 	for_each_non_null_in_array(&(stack_p->stack_holder), operation, additional_params);
 }
@@ -57,7 +57,7 @@ void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned lon
 void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
 {
 	printf("stack : \n");
-	printf("\tstack_size : %llu\n", stack_p->stack_size);
+	printf("\tstack_size : %u\n", stack_p->stack_size);
 	printf("\tstack array : ");print_array(&(stack_p->stack_holder), print_element);printf("\n");
 	printf("\tthe top element : ");
 	if(get_top(stack_p)!=NULL)

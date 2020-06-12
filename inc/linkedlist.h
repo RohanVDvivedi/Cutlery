@@ -29,10 +29,10 @@ struct linkedlist
 
 	// number of nodes in the linkedlist
 	// this is how we reach node addresses from provided user's structure data addresses
-	unsigned long long int node_count;
+	unsigned int node_count;
 
 	// defines the address of the data, with respect to the linkedlist node
-	unsigned long long int node_offset;
+	unsigned int node_offset;
 
 	// compare data function, this helps in find operation
 	int (*compare)(const void* data1, const void* data2);
@@ -45,7 +45,7 @@ struct linkedlist
 #define llnode_exists_in_any_ll(node_p)		(node_p->belongs_to_ll != NULL)
 
 // initializes to a new linked list
-void initialize_linkedlist(linkedlist* ll, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2));
+void initialize_linkedlist(linkedlist* ll, unsigned int node_offset, int (*compare)(const void* data1, const void* data2));
 
 // always initialize your linkedlist node before using it
 void initialize_llnode(llnode* node_p);
@@ -85,10 +85,10 @@ int remove_tail(linkedlist* ll);
 int remove_from_list(linkedlist*ll, const void* data);
 
 // get pointer to nth element from head by doing next next
-const void* get_nth_from_head(linkedlist* ll, unsigned long long int n);
+const void* get_nth_from_head(linkedlist* ll, unsigned int n);
 
 // get pointer to nth element from tail by doing next next
-const void* get_nth_from_tail(linkedlist* ll, unsigned long long int n);
+const void* get_nth_from_tail(linkedlist* ll, unsigned int n);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
 const void* find_equals_in_list(const linkedlist* ll, const void* data);

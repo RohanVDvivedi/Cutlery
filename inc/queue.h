@@ -15,17 +15,17 @@ struct queue
 	array queue_holder;
 
 	// size of queue
-	unsigned long long int queue_size;
+	unsigned int queue_size;
 
 	// index, where the oldest element was inserted, the element at this index is popped
-	unsigned long long int earliest_element_index;
+	unsigned int earliest_element_index;
 
 	// index, after which a new element will be inserted, this is the index where the latest element was inserted
-	unsigned long long int latest_element_index;
+	unsigned int latest_element_index;
 };
 
 // initializes queue and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_queue(queue* queue_p, unsigned long long int expected_size);
+void initialize_queue(queue* queue_p, unsigned int expected_size);
 
 // push a new element to the queue
 void push(queue* queue_p, const void* data_p);
@@ -47,7 +47,7 @@ int isQueueEmpty(queue* queue_p);
 int isQueueHolderFull(queue* queue_p);
 
 // for each function, to iteration over all non null elements to perform an operation
-void for_each(const queue* queue_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params);
+void for_each(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
 // prints the queue
 void print_queue(queue* queue_p, void (*print_element)(const void* data_p));

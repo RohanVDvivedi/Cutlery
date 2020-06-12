@@ -13,17 +13,17 @@ struct dstring
 	char* cstring;
 
 	// number of bytes the string cstring occupies, 
-	unsigned long long int bytes_occupied;
-	unsigned long long int bytes_allocated;
+	unsigned int bytes_occupied;
+	unsigned int bytes_allocated;
 
-	unsigned long long int state_level;
+	unsigned int state_level;
 };
 
-dstring* get_dstring(const char* cstr_p, unsigned long long int additional_allocation);
+dstring* get_dstring(const char* cstr_p, unsigned int additional_allocation);
 
 // initializes am already existing but empty dstring variable, can be used when you have dstring struct on the stack
 // enable to use dstring on stack or in an embedded form in other data structures
-void init_dstring(dstring* str_p, const char* cstr_p, unsigned long long int additional_allocation);
+void init_dstring(dstring* str_p, const char* cstr_p, unsigned int additional_allocation);
 
 // make the dstring empty, i.e. not containing any characters except '\0'
 void make_dstring_empty(dstring* str_p);
@@ -36,10 +36,10 @@ int compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 int is_prefix(const dstring* str_p1, const char* str_p2);
 
 // takes a dstring as parameter, and returns a new dstring, that is of approximately double the size 
-void expand_dstring(dstring* str_p, unsigned long long int additional_allocation);
+void expand_dstring(dstring* str_p, unsigned int additional_allocation);
 
 // here occ is the number of bytes to be copied and appended from the cstr_p to str_p, without '\0' at the end
-void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned long long int occ);
+void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ);
 
 void append_to_dstring(dstring* str_p, char* cstr_p);
 

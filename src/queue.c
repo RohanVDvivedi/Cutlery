@@ -5,7 +5,7 @@
 #define get_top 	get_top_queue
 #define for_each 	for_each_in_queue
 
-void initialize_queue(queue* queue_p, unsigned long long int expected_size)
+void initialize_queue(queue* queue_p, unsigned int expected_size)
 {
 	initialize_array(&(queue_p->queue_holder), expected_size + 1);
 	queue_p->queue_size = 0;
@@ -13,7 +13,7 @@ void initialize_queue(queue* queue_p, unsigned long long int expected_size)
 	queue_p->latest_element_index = 0;
 }
 
-static unsigned long long int revolveToNextIndex(queue* queue_p, unsigned long long int index)
+static unsigned int revolveToNextIndex(queue* queue_p, unsigned int index)
 {
 	return ((index + 1) % (queue_p->queue_holder.total_size));
 }
@@ -115,7 +115,7 @@ int isQueueHolderFull(queue* queue_p)
 	return queue_p->queue_size == queue_p->queue_holder.total_size;
 }
 
-void for_each(const queue* queue_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
+void for_each(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
 	for_each_non_null_in_array(&(queue_p->queue_holder), operation, additional_params);
 }
@@ -123,9 +123,9 @@ void for_each(const queue* queue_p, void (*operation)(void* data_p, unsigned lon
 void print_queue(queue* queue_p, void (*print_element)(const void* data_p))
 {
 	printf("queue : \n");
-	printf("\tearliest_element_index : %llu\n", queue_p->earliest_element_index);
-	printf("\tlatest_element_index : %llu\n", queue_p->latest_element_index);
-	printf("\tqueue_size : %llu\n", queue_p->queue_size);
+	printf("\tearliest_element_index : %u\n", queue_p->earliest_element_index);
+	printf("\tlatest_element_index : %u\n", queue_p->latest_element_index);
+	printf("\tqueue_size : %u\n", queue_p->queue_size);
 	print_array(&(queue_p->queue_holder), print_element);printf("\n\n");
 }
 

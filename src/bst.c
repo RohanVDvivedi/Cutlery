@@ -4,7 +4,7 @@
 #include<redblack_bst.h>
 #include<bst_util.h>
 
-void initialize_bst(bst* bst_p, bsttype type, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2))
+void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
 {
 	bst_p->type = type;
 	bst_p->root = NULL;
@@ -342,7 +342,7 @@ static void print_tree(const bst* bst_p, const bstnode* node_p, void (*print_ele
 
 void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 {
-	printf("\nTREE [%p] : %llu\n", bst_p, bst_p->node_count);
+	printf("\nTREE [%p] : %u\n", bst_p, bst_p->node_count);
 	switch(bst_p->type)
 	{
 		case NON_SELF_BALANCING :
@@ -362,7 +362,7 @@ void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 		}
 	}
 	printf("BST root : [%p]\n", bst_p->root);
-	printf("BST node_offset : [%llu]\n", bst_p->node_offset);
+	printf("BST node_offset : [%u]\n", bst_p->node_offset);
 	print_tree(bst_p, bst_p->root, print_element);
 	printf("--\n\n");
 }

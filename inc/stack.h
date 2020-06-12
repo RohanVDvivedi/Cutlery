@@ -15,11 +15,11 @@ struct stack
 	array stack_holder;
 
 	// number of elements currently in stack
-	unsigned long long int stack_size;
+	unsigned int stack_size;
 };
 
 // initializes stack and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_stack(stack* stack_p, unsigned long long int expected_size);
+void initialize_stack(stack* stack_p, unsigned int expected_size);
 
 // push a new element to the stack
 void push(stack* stack_p, const void* data_p);
@@ -35,7 +35,7 @@ const void* get_top(stack* stack_p);
 void deinitialize_stack(stack* stack_p);
 
 // for each element of the stack, perform the given operation
-void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params);
+void for_each(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
 // prints the stack
 void print_stack(stack* stack_p, void (*print_element)(const void* data_p));

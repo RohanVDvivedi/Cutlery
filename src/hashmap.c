@@ -1,6 +1,6 @@
 #include<hashmap.h>
 
-void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned long long int total_bucket_count, unsigned long long int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned long long int node_offset)
+void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int total_bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
@@ -13,19 +13,19 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 
 // utility :-> gets plausible index after hashing and mod of the hash
 // utility, O(1) operation
-static unsigned long long int get_index(const hashmap* hashmap_p, const void* data)
+static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 {
 	// calculate hash
-	unsigned long long int hash = hashmap_p->hash_function(data);
+	unsigned int hash = hashmap_p->hash_function(data);
 
 	// calculate index
-	unsigned long long int index = hash % hashmap_p->total_bucket_count;
+	unsigned int index = hash % hashmap_p->total_bucket_count;
 
 	return index;
 }
 
 // utility, O(1) operation
-static void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned long long int index, int new_if_empty)
+static void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned int index, int new_if_empty)
 {
 	// if you try accessing hashtable, index greater than its size
 	if(index >= hashmap_p->total_bucket_count)
@@ -80,16 +80,16 @@ static void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned lon
 static const void* get_data_structure_for_data(const hashmap* hashmap_p, const void* data, int new_if_empty)
 {
 	// get index for data
-	unsigned long long int index = get_index(hashmap_p, data);
+	unsigned int index = get_index(hashmap_p, data);
 
 	// return the data structure at that index
 	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
 // function used for ROBINHOOD_HASHING only
-static unsigned long long int get_probe_sequence_length(const hashmap* hashmap_p, const void* data, unsigned long long int index_actual)
+static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const void* data, unsigned int index_actual)
 {
-	unsigned long long int index_expected = get_index(hashmap_p, data);
+	unsigned int index_expected = get_index(hashmap_p, data);
 
 	if(index_actual >= index_expected)
 	{
@@ -102,10 +102,10 @@ static unsigned long long int get_probe_sequence_length(const hashmap* hashmap_p
 }
 
 // function used for ROBINHOOD_HASHING only
-static unsigned long long int get_actual_index(const hashmap* hashmap_p, const void* data)
+static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 {
-	unsigned long long int expected_index = get_index(hashmap_p, data);
-	unsigned long long int probe_sequence_length = 0;
+	unsigned int expected_index = get_index(hashmap_p, data);
+	unsigned int probe_sequence_length = 0;
 
 	const void* data_at_index = NULL;
 
@@ -145,7 +145,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_actual_index(hashmap_p, data);
+			unsigned int index = get_actual_index(hashmap_p, data);
 
 			const void* data_at_index = hashmap_p->holder[index];
 			
@@ -194,10 +194,10 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 				break;
 			}
 
-			unsigned long long int expected_index = get_index(hashmap_p, data);
+			unsigned int expected_index = get_index(hashmap_p, data);
 
-			unsigned long long int index = expected_index;
-			unsigned long long int probe_sequence_length = 0;
+			unsigned int index = expected_index;
+			unsigned int probe_sequence_length = 0;
 
 			while(1)
 			{
@@ -217,7 +217,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 				}
 				else
 				{
-					unsigned long long int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index, index);
+					unsigned int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index, index);
 					if(probe_sequence_length > probe_sequence_length_data_at_index)
 					{
 						// steal the slot
@@ -270,7 +270,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned long long int index = get_actual_index(hashmap_p, data);
+			unsigned int index = get_actual_index(hashmap_p, data);
 
 			void* data_at_index = hashmap_p->holder[index];
 			
@@ -285,7 +285,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 				break;
 			}
 
-			unsigned long long int previousIndex = index;
+			unsigned int previousIndex = index;
 			index = (index + 1) % hashmap_p->total_bucket_count;
 			data_at_index = hashmap_p->holder[index];
 			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
@@ -334,7 +334,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned long long int index = 0; index < hashmap_p->total_bucket_count; index++)
+	for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
 	{
 		// get the datastructure to be print for that index
 		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
@@ -394,14 +394,14 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 			break;
 		}
 	}
-	printf("node_offset : %llu\n", hashmap_p->node_offset);
-	printf("occupancy : %llu\n", hashmap_p->occupancy);
-	printf("total_bucket_count : %llu\n", hashmap_p->total_bucket_count);
+	printf("node_offset : %u\n", hashmap_p->node_offset);
+	printf("occupancy : %u\n", hashmap_p->occupancy);
+	printf("total_bucket_count : %u\n", hashmap_p->total_bucket_count);
 
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned long long int index = 0; index < hashmap_p->total_bucket_count; index++)
+	for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
 	{
-		printf("index = %lld\n", index);
+		printf("index = %u\n", index);
 
 		// get the datastructure to be print for that index
 		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
@@ -442,7 +442,7 @@ void deinitialize_hashmap(hashmap* hashmap_p)
 {
 	if(hashmap_p->hashmap_policy != ROBINHOOD_HASHING)
 	{
-		for(unsigned long long int index = 0; index < hashmap_p->total_bucket_count; index++)
+		for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
 		{
 			if(hashmap_p->holder[index] != NULL)
 			{

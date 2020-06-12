@@ -1,13 +1,13 @@
 #include<dstring.h>
 
-dstring* get_dstring(const char* cstr_p, unsigned long long int additional_allocation)
+dstring* get_dstring(const char* cstr_p, unsigned int additional_allocation)
 {
 	dstring* str_p = malloc(sizeof(dstring));
 	init_dstring(str_p, cstr_p, additional_allocation);
 	return str_p;
 }
 
-void init_dstring(dstring* str_p, const char* cstr_p, unsigned long long int additional_allocation)
+void init_dstring(dstring* str_p, const char* cstr_p, unsigned int additional_allocation)
 {
 	str_p->bytes_occupied = cstr_p == NULL ? 1 : (strlen(cstr_p) + 1);
 	str_p->bytes_allocated = (2 * (str_p->bytes_occupied + 1)) + 2 + additional_allocation;
@@ -46,7 +46,7 @@ int is_prefix(const dstring* str_p1, const char* str_p2)
 	return (strncmp(str_p1->cstring, str_p2, prefix_length) == 0);
 }
 
-void expand_dstring(dstring* str_p, unsigned long long int additional_allocation)
+void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
 	dstring expanded_dstring;
 	expanded_dstring.bytes_occupied = str_p->bytes_occupied;
@@ -60,7 +60,7 @@ void expand_dstring(dstring* str_p, unsigned long long int additional_allocation
 	(*str_p) = expanded_dstring;
 }
 
-void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned long long int occ)
+void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ)
 {
 	// we appenmd only if cstr_p is not pointing to NULL pointer, or we are asked to copy 0 bytes
 	if(cstr_p != NULL && occ > 0)

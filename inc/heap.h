@@ -33,19 +33,19 @@ struct heap
 	array heap_holder;
 	
 	// number of elements in the heap
-	unsigned long long int heap_size;
+	unsigned int heap_size;
 
 	// heap_index_update
 	// everytime heap updates the position/index of a data in heap, it will make a call to this function
 	// it can be provided as NULL as well, if you do not need this functionality
 	// you may use this functionality to cache the heap_index of any element, and later call heapify on the index, to restore heap property, after updating the index
 	// please keep this method as small as possible, to ensure overall O(log(n)) push and pop execution costs
-	void (*heap_index_update_callback)(const void* data, unsigned long long int heap_index, const void* callback_params);
+	void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params);
 	const void* callback_params;
 };
 
 // initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_heap(heap* heap_p, unsigned long long int expected_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned long long int heap_index, const void* callback_params), const void* callback_params);
+void initialize_heap(heap* heap_p, unsigned int expected_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params);
 
 // push a new data element to the heap
 // O(log(N)) operation
@@ -60,10 +60,10 @@ void pop(heap* heap_p);
 // the below function is to be called when you doubt if the heap properties are being maintained at the given index
 // or because you changed the attributes of the data, which changed its ordering
 // if your doubt turns out to be true and the heap property is being violated, the heap property would be restored at that place
-void heapify_at(heap* heap_p, unsigned long long int index);
+void heapify_at(heap* heap_p, unsigned int index);
 
 // perform an operation on all the key value pairs for the heap
-void for_each(const heap* heap_p, void (*operation)(void* data, unsigned long long int heap_index, const void* additional_params), const void* additional_params);
+void for_each(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
 
 // print, heap and all the elements of the heap
 void print_heap(heap* heap_p, void (*print_element)(const void* data));

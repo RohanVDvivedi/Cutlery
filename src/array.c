@@ -1,13 +1,13 @@
 #include<array.h>
 
-array* get_array(unsigned long long int initial_size)
+array* get_array(unsigned int initial_size)
 {
 	array* array_p = calloc(1, sizeof(array));
 	initialize_array(array_p, initial_size);
 	return array_p;
 }
 
-void initialize_array(array* array_p, unsigned long long int initial_size)
+void initialize_array(array* array_p, unsigned int initial_size)
 {
 	array_p->increment_offset = 1;
 	array_p->increment_factor = (1.0 + 1);
@@ -17,9 +17,9 @@ void initialize_array(array* array_p, unsigned long long int initial_size)
 }
 
 // the below function will calculate the next size (on expansion) for the given array, if it's current size is current_size
-static unsigned long long int next_expansion_size(array* array_p, unsigned long long int current_size)
+static unsigned int next_expansion_size(array* array_p, unsigned int current_size)
 {
-	return ((unsigned long long int)(current_size * array_p->increment_factor)) + array_p->increment_offset;
+	return ((unsigned int)(current_size * array_p->increment_factor)) + array_p->increment_offset;
 }
 
 void deinitialize_array(array* array_p)
@@ -38,7 +38,7 @@ void delete_array(array* array_p)
 	free(array_p);
 }
 
-const void* get_element(const array* array_p, unsigned long long int index)
+const void* get_element(const array* array_p, unsigned int index)
 {
 	if(array_p->total_size > index)
 	{
@@ -50,7 +50,7 @@ const void* get_element(const array* array_p, unsigned long long int index)
 	}
 }
 
-int set_element(array* array_p, const void* data_p, unsigned long long int index)
+int set_element(array* array_p, const void* data_p, unsigned int index)
 {
 	if(array_p->total_size > index)
 	{
@@ -63,16 +63,16 @@ int set_element(array* array_p, const void* data_p, unsigned long long int index
 	}
 }
 
-void swap_elements(array* array_p, unsigned long long int i1, unsigned long long int i2)
+void swap_elements(array* array_p, unsigned int i1, unsigned int i2)
 {
 	const void* data_temp_i1 = get_element(array_p, i1);
 	set_element(array_p, get_element(array_p, i2), i1);
 	set_element(array_p, data_temp_i1, i2);
 }
 
-void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
+void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
-	for(unsigned long long int i = 0; i < array_p->total_size; i++)
+	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
 		if(get_element(array_p, i) != NULL)
 		{
@@ -81,17 +81,17 @@ void for_each_non_null_in_array(const array* array_p, void (*operation)(void* da
 	}
 }
 
-void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned long long int index, const void* additional_params), const void* additional_params)
+void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
-	for(unsigned long long int i = 0; i < array_p->total_size; i++)
+	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
 		operation(((void*)get_element(array_p, i)), i, additional_params);
 	}
 }
 
-unsigned long long int find_first_in_array(const array* array_p, void* data_p, int (*compare)(const void* data_p1, const void* data_p2))
+unsigned int find_first_in_array(const array* array_p, void* data_p, int (*compare)(const void* data_p1, const void* data_p2))
 {
-	for(unsigned long long int i = 0; i < array_p->total_size; i++)
+	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
 		if(compare(get_element(array_p, i), data_p) == 0)
 		{
@@ -104,7 +104,7 @@ unsigned long long int find_first_in_array(const array* array_p, void* data_p, i
 void expand_array(array* array_p)
 {
 	// compute new_size
-	unsigned long long int new_total_size = next_expansion_size(array_p, array_p->total_size);
+	unsigned int new_total_size = next_expansion_size(array_p, array_p->total_size);
 
 	// request memory for the new computed size
 	const void** new_data_p_p = calloc(new_total_size, sizeof(void*));
@@ -123,20 +123,20 @@ void expand_array(array* array_p)
 	array_p->total_size = new_total_size;
 }
 
-int shrink_array(array* array_p, unsigned long long int start_index, unsigned long long int end_index)
+int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index)
 {
 	if(end_index < start_index)
 	{
 		return 0;
 	}
 
-	unsigned long long int minimum_size = end_index - start_index + 1;
+	unsigned int minimum_size = end_index - start_index + 1;
 
-	unsigned long long int maximum_size = next_expansion_size(array_p, next_expansion_size(array_p, minimum_size));
+	unsigned int maximum_size = next_expansion_size(array_p, next_expansion_size(array_p, minimum_size));
 
 	if(array_p->total_size > maximum_size)
 	{
-		unsigned long long int new_total_size = next_expansion_size(array_p, minimum_size);
+		unsigned int new_total_size = next_expansion_size(array_p, minimum_size);
 
 		// The array is not allowed to shrink below its initial size,
 		// it shrinks only if the new_total_size is greater than or equal to the initial size
@@ -161,9 +161,9 @@ int shrink_array(array* array_p, unsigned long long int start_index, unsigned lo
 	return 0;
 }
 
-static void print_array_element_wrapper(void* element, unsigned long long int index, const void* print_element)
+static void print_array_element_wrapper(void* element, unsigned int index, const void* print_element)
 {
-	printf("\telement_index %lld -> ", index);
+	printf("\telement_index %u -> ", index);
 	if(element != NULL)
 	{
 		((void (*)(const void*))print_element)(element);
@@ -180,6 +180,6 @@ void print_array(const array* array_p, void (*print_element)(const void* data_p)
 	printf("\narray:");
 	printf("\n\tincrement_factor : %f", array_p->increment_factor);
 	printf("\n\tincrement_offset : %u", array_p->increment_offset);
-	printf("\n\ttotal size : %lld\n", array_p->total_size);
+	printf("\n\ttotal size : %u\n", array_p->total_size);
 	for_each_in_array(array_p, print_array_element_wrapper, print_element);
 }

@@ -1,6 +1,6 @@
 #include<linkedlist.h>
 
-void initialize_linkedlist(linkedlist* ll, unsigned long long int node_offset, int (*compare)(const void* data1, const void* data2))
+void initialize_linkedlist(linkedlist* ll, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
 {
 	ll->head = NULL;
 	ll->tail = NULL;
@@ -279,7 +279,7 @@ int remove_from_list(linkedlist* ll, const void* data)
 	return 1;
 }
 
-const void* get_nth_from_head(linkedlist* ll, unsigned long long int n)
+const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 {
 	llnode* node_p = ll->head;
 	while(node_p != NULL && n > 0)
@@ -290,7 +290,7 @@ const void* get_nth_from_head(linkedlist* ll, unsigned long long int n)
 	return (node_p == NULL) ? NULL : get_data(node_p);
 }
 
-const void* get_nth_from_tail(linkedlist* ll, unsigned long long int n)
+const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
 {
 	llnode* node_p = ll->tail;
 	while(node_p != NULL && n > 0)
@@ -337,7 +337,7 @@ static void print_linkedlist_wrapper(linkedlist* ll, const llnode* node_p, void 
 
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 {
-	printf("Linkedlist : %llu nodes\n", ll->node_count);
+	printf("Linkedlist : %u nodes\n", ll->node_count);
 	printf("head : %p\n", ll->head);
 	printf("tail : %p\n", ll->tail);
 	
