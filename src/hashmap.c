@@ -412,7 +412,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 			{
 				case ROBINHOOD_HASHING :
 				{
-					print_element(ds_p);
+					printf("  \t -> ");print_element(ds_p);printf("\n");
 					break;
 				}
 				case ELEMENTS_AS_LINKEDLIST :
