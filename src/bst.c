@@ -123,9 +123,7 @@ int insert_in_bst(bst* bst_p, const void* data)
 	bstnode* node_p = get_node(data);
 	
 	if(bstnode_exists_in_any_bst(node_p) || (!is_new_bstnode(node_p)))
-	{
 		return 0;
-	}
 
 	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
 	if(is_balancedbst_empty(bst_p))
@@ -173,9 +171,7 @@ int remove_from_bst(bst* bst_p, const void* data)
 	bstnode* node_p = get_node(data);
 
 	if((!bstnode_exists_in_this_bst(node_p)) || is_new_bstnode(node_p))
-	{
 		return 0;
-	}
 
 	switch(bst_p->type)
 	{
@@ -215,10 +211,7 @@ static void for_each_node(const bst* bst_p, const bstnode* node_p, void (*operat
 
 void for_each_in_bst(const bst* bst_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
-	if(!is_balancedbst_empty(bst_p))
-	{
-		for_each_node(bst_p, bst_p->root, operation, additional_params);
-	}
+	for_each_node(bst_p, bst_p->root, operation, additional_params);
 }
 
 static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_element)(const void* data))
@@ -226,17 +219,11 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 	if(node_p != NULL)
 	{
 		if(is_root_node(node_p))
-		{
 			printf("  ROOT  ");
-		}
 		else if(is_leaf_node(node_p))
-		{
 			printf("  LEAF  ");
-		}
 		else if(is_internal_node(node_p))
-		{
 			printf("  INTER ");
-		}
 
 		printf("of [%p]\t\t[%p]", node_p->belongs_to_bst, node_p);
 		print_element(get_data(node_p));
@@ -245,13 +232,9 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 		if( !is_root_node(node_p) )
 		{
 			if(is_left_of_its_parent(node_p))
-			{
 				printf("    LEFT  of");
-			}
 			else if(is_right_of_its_parent(node_p))
-			{
 				printf("    RIGHT of");
-			}
 			printf(" \t\t[%p]", node_p->parent);
 			print_element(get_data(node_p->parent));
 			printf("\n");
@@ -279,15 +262,11 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 static void print_tree(const bst* bst_p, const bstnode* node_p, void (*print_element)(const void* data))
 {
 	if(node_p != NULL)
-	{
 		print_tree(bst_p, node_p->left, print_element);
-	}
 	print_node(bst_p, node_p, print_element);
 	printf("\n");
 	if(node_p != NULL)
-	{
 		print_tree(bst_p, node_p->right, print_element);
-	}
 }
 
 void print_bst(const bst* bst_p, void (*print_element)(const void* data))
@@ -321,11 +300,7 @@ void print_bstnode_debug(bstnode* node_p)
 {
 	printf("DEBUG -> self[%p] ", node_p);
 	if(node_p != NULL)
-	{
 		printf("parent[%p], left[%p], right[%p], belongs_to[%p], node_property = %d\n", node_p->parent, node_p->left, node_p->right, node_p->belongs_to_bst, node_p->node_property);
-	}
 	else
-	{
 		printf("\n");
-	}
 }
