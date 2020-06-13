@@ -97,23 +97,18 @@ static int is_reordering_required(const heap* heap_p, unsigned int parent_index,
 
 static void bubble_up(heap* heap_p, unsigned int index)
 {
-	// an element at index 0, or thew index is out of range, can not be bubbled up
-	if(index == 0 || index >= heap_p->heap_size)
+	// exit at index 0, or thew index is out of range
+	while(index != 0 && index < heap_p->heap_size)
 	{
-		return;
-	}
+		unsigned int parent_index = get_parent_index(index);
 
-	// get parent index for the index
-	unsigned int parent_index = get_parent_index(index);
+		// exit, if reordering is not required
+		if(!is_reordering_required(heap_p, parent_index, index))
+			break;
 
-	// if a reordering is required, we interchange the parent and child elements
-	if(is_reordering_required(heap_p, parent_index, index))
-	{
-		// we would have to interchange for reordering
 		inter_change_elements_for_indexes(heap_p, parent_index, index);
 
-		// and we bubble up with the parent_index
-		bubble_up(heap_p, parent_index);
+		index = parent_index;
 	}
 }
 
@@ -152,42 +147,34 @@ const void* get_top(const heap* heap_p)
 static void bubble_down(heap* heap_p, unsigned int index)
 {
 	// we can not bubble down the last node
-	if(index >= heap_p->heap_size)
+	while(index < heap_p->heap_size)
 	{
-		return;
-	}
+		unsigned int left_child_index = get_left_child_index(index);
+		unsigned int right_child_index = get_right_child_index(index);
 
-	unsigned int left_child_index = get_left_child_index(index);
-	unsigned int right_child_index = get_right_child_index(index);
+		unsigned int new_parent_index = -1;
 
-	unsigned int new_parent_index = -1;
+		int left_reordering_required = is_reordering_required(heap_p, index, left_child_index);
+		int right_reordering_required = is_reordering_required(heap_p, index, right_child_index);
 
-	// simple logic, if reordering is required for left child index, left child would become the new parent
-	if(is_reordering_required(heap_p, index, left_child_index))
-	{
-		new_parent_index = left_child_index;
-
-		// if index and right child also require reordering, we have to contest whether right child or left child would become the new parent
-		// here we try to make the parent, which does not require further reordering, given the new parent is left_child_index
-		if(is_reordering_required(heap_p, index, right_child_index) && 
-			is_reordering_required(heap_p, new_parent_index, right_child_index))
-		{
+		if(left_reordering_required && !right_reordering_required)
+			new_parent_index = left_child_index;
+		else if(!left_reordering_required && right_reordering_required)
 			new_parent_index = right_child_index;
-		}	
-	}
-	// simple logic, if reordering is required for right child and index, right child would become the new parent
-	else if(is_reordering_required(heap_p, index, right_child_index))
-	{
-		new_parent_index = right_child_index;
-	}
+		else if(left_reordering_required && right_reordering_required)
+		{
+			if(is_reordering_required(heap_p, left_child_index, right_child_index))
+				new_parent_index = right_child_index;
+			else
+				new_parent_index = left_child_index;
+		}
 
-	if(new_parent_index != -1)
-	{
-		// if new_parent_index has to come, we make the new_parent_index
+		if(new_parent_index == -1)// if no reordering was required, exit the loop
+			break;
+
 		inter_change_elements_for_indexes(heap_p, new_parent_index, index);
 
-		// and bubble down from. there
-		bubble_down(heap_p, new_parent_index);
+		index = new_parent_index;
 	}
 }
 
