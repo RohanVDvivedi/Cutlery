@@ -3,20 +3,20 @@
 #include<avl_bst.h>
 #include<bst_util.h>
 
+// trivial
+#define max(a,b) ((a)>(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
+
+// macro to avoid recusive call, by making extensive checks and make recursive call only if we must 
+#define get_max_height_re(node_p) ((node_p==NULL)?0:((node_p->node_property>0)?node_p->node_property:get_max_height(node_p)))
+
 // gets max nodes from itself to any NULL, including itself, in an avl tree
-static unsigned long long int get_max_height(bstnode* node_p)
+static int get_max_height(bstnode* node_p)
 {
 	if(node_p == NULL)
-	{
 		return 0;
-	}
-	if(node_p->node_property > 0)
-	{
-		return node_p->node_property;
-	}
-	unsigned long long int left_tree_max_height = get_max_height(node_p->left);
-	unsigned long long int right_tree_max_height = get_max_height(node_p->right);
-	node_p->node_property = ((left_tree_max_height > right_tree_max_height) ? left_tree_max_height : right_tree_max_height) + 1;
+	else if(node_p->node_property == 0)
+		node_p->node_property = max(get_max_height_re(node_p->left), get_max_height_re(node_p->right)) + 1;
 	return node_p->node_property;
 }
 
