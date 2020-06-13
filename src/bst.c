@@ -26,7 +26,7 @@ void initialize_bstnode(bstnode* node_p)
 #define is_equal(compare_A_with_B)		(compare_A_with_B == 0)
 
 // searches for bstnode that holds data equal to the given data
-bstnode* find_node(const bst* bst_p, const void* data)
+static bstnode* find_node(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
@@ -42,54 +42,44 @@ bstnode* find_node(const bst* bst_p, const void* data)
 	return NULL;
 }
 
-static const bstnode* find_node_preceding_or_equals_recursively(const bst* bst_p, const bstnode* root, const void* data)
+static bstnode* find_node_preceding_or_equals(const bst* bst_p, const void* data)
 {
-	int compared_data_with_root = bst_p->compare(data, get_data(root));
-	if(is_equal(compared_data_with_root))
+	bstnode* result = NULL;
+	bstnode* node_p = bst_p->root;
+	while(node_p != NULL)
 	{
-		return ((bstnode*)root);
-	}
-	else if(root->left != NULL && is_lesser(compared_data_with_root))
-	{
-		return find_node_preceding_or_equals_recursively(bst_p, root->left, data);
-	}
-	else if(is_greater(compared_data_with_root))
-	{
-		if(root->right != NULL)
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		if(is_equal(compared_data_with_current_node))
+			return node_p;
+		else if(is_lesser(compared_data_with_current_node))
+			node_p = node_p->left;
+		else if(is_greater(compared_data_with_current_node))
 		{
-			return find_node_preceding_or_equals_recursively(bst_p, root->right, data);
+			result = node_p;
+			node_p = node_p->right;
 		}
-		return root;
 	}
-	else
-	{
-		return NULL;
-	}
+	return result;
 }
 
-static const bstnode* find_node_succeeding_or_equals_recursively(const bst* bst_p, const bstnode* root, const void* data)
+static bstnode* find_node_succeeding_or_equals(const bst* bst_p, const void* data)
 {
-	int compared_data_with_root = bst_p->compare(data, get_data(root));
-	if(is_equal(compared_data_with_root))
+	bstnode* result = NULL;
+	bstnode* node_p = bst_p->root;
+	while(node_p != NULL)
 	{
-		return ((bstnode*)root);
-	}
-	else if(is_lesser(compared_data_with_root))
-	{
-		if(root->left != NULL)
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		if(is_equal(compared_data_with_current_node))
+			return node_p;
+		else if(is_lesser(compared_data_with_current_node))
 		{
-			return find_node_succeeding_or_equals_recursively(bst_p, root->left, data);
+			result = node_p;
+			node_p = node_p->left;
 		}
-		return root;
+		else if(is_greater(compared_data_with_current_node))
+			node_p = node_p->right;
 	}
-	else if(root->right != NULL && is_greater(compared_data_with_root))
-	{
-		return find_node_succeeding_or_equals_recursively(bst_p, root->right, data);
-	}
-	else
-	{
-		return NULL;
-	}
+	return result;
 }
 
 const void* find_equals_in_bst(const bst* bst_p, const void* data)
@@ -100,28 +90,14 @@ const void* find_equals_in_bst(const bst* bst_p, const void* data)
 
 const void* find_preceding_or_equals(const bst* bst_p, const void* data)
 {
-	if(is_balancedbst_empty(bst_p))
-	{
-		return NULL;
-	}
-	else
-	{
-		const bstnode* node_p = find_node_preceding_or_equals_recursively(bst_p, bst_p->root, data);
-		return (node_p != NULL) ? get_data(node_p) : NULL;
-	}
+	bstnode* node_p = find_node_preceding_or_equals(bst_p, data);
+	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
 const void* find_succeeding_or_equals(const bst* bst_p, const void* data)
 {
-	if(is_balancedbst_empty(bst_p))
-	{
-		return NULL;
-	}
-	else
-	{
-		const bstnode* node_p = find_node_succeeding_or_equals_recursively(bst_p, bst_p->root, data);
-		return (node_p != NULL) ? get_data(node_p) : NULL;
-	}
+	const bstnode* node_p = find_node_succeeding_or_equals(bst_p, data);
+	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
 const void* find_smallest(const bst* bst_p)
