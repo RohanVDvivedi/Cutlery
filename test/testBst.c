@@ -81,7 +81,7 @@ void print_preceding_equals(const bst* bst_p, int k)
 	printf("\n");
 }
 
-#define TREE_TYPE_TO_USE 	NON_SELF_BALANCING /*AVL_TREE*/ /*RED_BLACK_TREE*/
+#define TREE_TYPE_TO_USE 	/*NON_SELF_BALANCING*/ /*AVL_TREE*/ RED_BLACK_TREE
 
 int main()
 {
