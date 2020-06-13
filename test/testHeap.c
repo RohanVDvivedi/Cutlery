@@ -19,7 +19,7 @@ void print_ts(const void* tsv)
 	printf(" %d, %d, %s =<HEAP_INDEX>=> %d", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->index);
 }
 
-void change_key(heap* heap_p, unsigned long long int index, int new_key)
+void change_key(heap* heap_p, unsigned int index, int new_key)
 {
 	if(index <= heap_p->heap_size - 1)
 	{
@@ -28,13 +28,10 @@ void change_key(heap* heap_p, unsigned long long int index, int new_key)
 	}
 }
 
-void update_index_callback(const void* data, unsigned long long int heap_index, const void* additional_params)
+void update_index_callback(const void* data, unsigned int heap_index, const void* additional_params)
 {
 	((ts*)data)->index = heap_index;
 }
-
-#define USE_STACK_MEMORY
-//#define USE_HEAP_MEMORY
 
 int main()
 {

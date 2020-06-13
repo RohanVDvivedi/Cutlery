@@ -14,9 +14,9 @@ struct teststruct
 	}embedded_nodes;
 };
 
-unsigned long long int hash_function(const void* data)
+unsigned int hash_function(const void* data)
 {
-	return (unsigned long long int)((((ts*)data)->key)-1);
+	return (unsigned int)((((ts*)data)->key)-1);
 }
 
 int cmp(const void* data1, const void* data2)
@@ -66,7 +66,7 @@ const collision_resolution_policy POLICY_USED = ROBINHOOD_HASHING /*ELEMENTS_AS_
 
 unsigned int HASH_BUCKETS = 4;
 
-unsigned long long int NODE_OFFSET = (unsigned long long int)(&(((ts*)0)->embedded_nodes));
+unsigned int NODE_OFFSET = (unsigned long long int)(&(((ts*)0)->embedded_nodes));
 
 int main()
 {
