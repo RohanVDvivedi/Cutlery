@@ -26,37 +26,35 @@ bstnode* get_largest_node_from_node(bstnode* node_p)
 	return prev;
 }
 
-static void insert_node_in_non_self_balancing_tree_recursively(bst* bst_p, bstnode* root, bstnode* node_p)
-{
-	if( bst_p->compare(get_data(node_p), get_data(root)) < 0 )
-	{
-		if( root->left == NULL )
-		{
-			root->left = node_p;
-			node_p->parent = root;
-		}
-		else
-		{
-			insert_node_in_non_self_balancing_tree_recursively(bst_p, root->left, node_p);
-		}
-	}
-	else if( bst_p->compare(get_data(node_p), get_data(root)) >= 0 )
-	{
-		if( root->right == NULL )
-		{
-			root->right = node_p;
-			node_p->parent = root;
-		}
-		else
-		{
-			insert_node_in_non_self_balancing_tree_recursively(bst_p, root->right, node_p);
-		}
-	}
-}
-
 void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 {
-	insert_node_in_non_self_balancing_tree_recursively(bst_p, bst_p->root, node_p);
+	bstnode* curr = bst_p->root;
+	while(curr != NULL)
+	{
+		int compare_result = bst_p->compare(get_data(node_p), get_data(curr));
+		if(compare_result < 0)
+		{
+			if(curr->left == NULL)
+			{
+				curr->left = node_p;
+				node_p->parent = curr;
+				return;
+			}
+			else
+				curr = curr->left;
+		}
+		else if(compare_result >= 0)
+		{
+			if(curr->right == NULL)
+			{
+				curr->right = node_p;
+				node_p->parent = curr;
+				return;
+			}
+			else
+				curr = curr->right;
+		}
+	}
 }
 
 // the below function only detaches the node that has to be removed, it does not unintialize it
