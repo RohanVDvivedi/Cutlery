@@ -138,28 +138,14 @@ const void* find_succeeding_or_equals(const bst* bst_p, const void* data)
 
 const void* find_smallest(const bst* bst_p)
 {
-	if(is_balancedbst_empty(bst_p))
-	{
-		return NULL;
-	}
-	else
-	{
-		const bstnode* node_p = get_smallest_node_from_node(bst_p->root);
-		return (node_p != NULL) ? get_data(node_p) : NULL;
-	}
+	const bstnode* node_p = get_smallest_node_from_node(bst_p->root);
+	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
 const void* find_largest(const bst* bst_p)
 {
-	if(is_balancedbst_empty(bst_p))
-	{
-		return NULL;
-	}
-	else
-	{
-		const bstnode* node_p = get_largest_node_from_node(bst_p->root);
-		return (node_p != NULL) ? get_data(node_p) : NULL;
-	}
+	const bstnode* node_p = get_largest_node_from_node(bst_p->root);
+	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
 int exists_in_bst(bst* bst_p, const void* data)

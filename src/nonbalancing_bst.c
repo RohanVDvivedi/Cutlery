@@ -4,12 +4,26 @@
 
 const bstnode* get_smallest_node_from_node(const bstnode* node_p)
 {
-	return (node_p->left == NULL) ? node_p : get_smallest_node_from_node(node_p->left);
+	bstnode* prev = NULL;
+	bstnode* curr = node_p;
+	while(curr != NULL)
+	{
+		prev = curr;
+		curr = curr->left;
+	}
+	return prev;
 }
 
 const bstnode* get_largest_node_from_node(const bstnode* node_p)
 {
-	return (node_p->right == NULL) ? node_p : get_largest_node_from_node(node_p->right);
+	bstnode* prev = NULL;
+	bstnode* curr = node_p;
+	while(curr != NULL)
+	{
+		prev = curr;
+		curr = curr->right;
+	}
+	return prev;
 }
 
 static void insert_node_in_non_self_balancing_tree_recursively(bst* bst_p, bstnode* root, bstnode* node_p)
