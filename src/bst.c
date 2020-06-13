@@ -25,26 +25,21 @@ void initialize_bstnode(bstnode* node_p)
 #define is_lesser(compare_A_with_B)		(compare_A_with_B < 0)
 #define is_equal(compare_A_with_B)		(compare_A_with_B == 0)
 
-// recursively searches for bstnode that holds data equal to the given data
-static const bstnode* find_node_recursively(const bst* bst_p, const bstnode* root, const void* data)
+// searches for bstnode that holds data equal to the given data
+bstnode* find_node(const bst* bst_p, const void* data)
 {
-	int compared_data_with_root = bst_p->compare(data, get_data(root));
-	if(is_equal(compared_data_with_root))
+	bstnode* node_p = bst_p->root;
+	while(node_p != NULL)
 	{
-		return ((bstnode*)root);
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		if(is_equal(compared_data_with_current_node))
+			return node_p;
+		else if(is_lesser(compared_data_with_current_node))
+			node_p = node_p->left;
+		else if(is_greater(compared_data_with_current_node))
+			node_p = node_p->right;
 	}
-	else if(root->left != NULL && is_lesser(compared_data_with_root))
-	{
-		return find_node_recursively(bst_p, root->left, data);
-	}
-	else if(root->right != NULL && is_greater(compared_data_with_root))
-	{
-		return find_node_recursively(bst_p, root->right, data);
-	}
-	else
-	{
-		return NULL;
-	}
+	return NULL;
 }
 
 static const bstnode* find_node_preceding_or_equals_recursively(const bst* bst_p, const bstnode* root, const void* data)
@@ -99,15 +94,8 @@ static const bstnode* find_node_succeeding_or_equals_recursively(const bst* bst_
 
 const void* find_equals_in_bst(const bst* bst_p, const void* data)
 {
-	if(is_balancedbst_empty(bst_p))
-	{
-		return NULL;
-	}
-	else
-	{
-		const bstnode* node_p = find_node_recursively(bst_p, bst_p->root, data);
-		return (node_p != NULL) ? get_data(node_p) : NULL;
-	}
+	bstnode* node_p = find_node(bst_p, data);
+	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
 const void* find_preceding_or_equals(const bst* bst_p, const void* data)
@@ -138,13 +126,13 @@ const void* find_succeeding_or_equals(const bst* bst_p, const void* data)
 
 const void* find_smallest(const bst* bst_p)
 {
-	const bstnode* node_p = get_smallest_node_from_node(bst_p->root);
+	bstnode* node_p = get_smallest_node_from_node(bst_p->root);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
 const void* find_largest(const bst* bst_p)
 {
-	const bstnode* node_p = get_largest_node_from_node(bst_p->root);
+	bstnode* node_p = get_largest_node_from_node(bst_p->root);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
