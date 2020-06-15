@@ -35,7 +35,7 @@ int main()
 {
 	linkedlist llist;
 	linkedlist* ll = &llist;
-	initialize_linkedlist(ll, (unsigned long long int)(&(((ts*)0)->ll_embed_node)), test_compare);
+	initialize_linkedlist(ll, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
 
 	print_linkedlist(ll, print_ts);
 
@@ -84,7 +84,7 @@ int main()
 	print_linkedlist(ll, print_ts);
 
 	printf("Searching for structure with a = 4\n");
-	print_ts(find_equals_in_list(ll, &((ts){4})));
+	print_ts(find_equals_in_list(ll, &((ts){4}), test_compare));
 	printf("\n");
 
 	return 0;
