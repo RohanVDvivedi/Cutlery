@@ -45,7 +45,7 @@ static void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned int
 			{
 				// create a new linked list
 				ds_p = malloc(sizeof(linkedlist));
-				initialize_linkedlist((linkedlist*)ds_p, hashmap_p->node_offset, hashmap_p->compare);
+				initialize_linkedlist((linkedlist*)ds_p, hashmap_p->node_offset);
 				break;
 			}
 			case ELEMENTS_AS_RED_BLACK_BST :
@@ -162,7 +162,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
 
 			// find value in a linkedlist
-			return (ds_p == NULL) ? NULL : find_equals_in_list(((linkedlist*)(ds_p)), data);
+			return (ds_p == NULL) ? NULL : find_equals_in_list(((linkedlist*)(ds_p)), data, hashmap_p->compare);
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :

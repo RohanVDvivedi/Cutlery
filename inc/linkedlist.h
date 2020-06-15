@@ -33,9 +33,6 @@ struct linkedlist
 
 	// defines the address of the data, with respect to the linkedlist node
 	unsigned int node_offset;
-
-	// compare data function, this helps in find operation
-	int (*compare)(const void* data1, const void* data2);
 };
 
 #define is_new_llnode(node_p)				((node_p->next == NULL) && (node_p->prev == NULL) && (node_p->belongs_to_ll == NULL))
@@ -45,7 +42,7 @@ struct linkedlist
 #define llnode_exists_in_any_ll(node_p)		(node_p->belongs_to_ll != NULL)
 
 // initializes to a new linked list
-void initialize_linkedlist(linkedlist* ll, unsigned int node_offset, int (*compare)(const void* data1, const void* data2));
+void initialize_linkedlist(linkedlist* ll, unsigned int node_offset);
 
 // always initialize your linkedlist node before using it
 void initialize_llnode(llnode* node_p);
@@ -91,7 +88,10 @@ const void* get_nth_from_head(linkedlist* ll, unsigned int n);
 const void* get_nth_from_tail(linkedlist* ll, unsigned int n);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
-const void* find_equals_in_list(const linkedlist* ll, const void* data);
+// in the compare function the first parameter is the data from the linkedlist,
+// while the second parameter is the data that has been provided by you
+// it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
+const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
 
 // check if a given data exists in the linkedlist
 // it used belongs_to_list attribute of the node

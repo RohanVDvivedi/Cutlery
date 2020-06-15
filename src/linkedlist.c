@@ -1,12 +1,11 @@
 #include<linkedlist.h>
 
-void initialize_linkedlist(linkedlist* ll, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
+void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
 {
 	ll->head = NULL;
 	ll->tail = NULL;
 	ll->node_count = 0;
 	ll->node_offset = node_offset;
-	ll->compare = compare;
 }
 
 void initialize_llnode(llnode* node_p)
@@ -301,13 +300,13 @@ const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
 	return (node_p == NULL) ? NULL : get_data(node_p);
 }
 
-const void* find_equals_in_list(const linkedlist* ll, const void* data)
+const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
 {
 	llnode* node_p = ll->head;
 	while(node_p != NULL)
 	{
 		const void* data_at_node = get_data(node_p);
-		if(ll->compare(data_at_node, data) == 0)
+		if(compare(data_at_node, data) == 0)
 		{
 			return data_at_node;
 		}
