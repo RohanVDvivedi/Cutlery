@@ -51,6 +51,7 @@ int main()
 	print_array(array_p, print_ts);
 
 	expand_array(array_p);
+	expand_array(array_p);
 
 	print_array(array_p, print_ts);
 
@@ -74,6 +75,7 @@ int main()
 	print_array(array_p, print_ts);
 
 	expand_array(array_p);
+	expand_array(array_p);
 
 	print_array(array_p, print_ts);
 
@@ -83,9 +85,11 @@ int main()
 	print_array(array_p, print_ts);
 
 	expand_array(array_p);
+	expand_array(array_p);
 
 	print_array(array_p, print_ts);
 
+	expand_array(array_p);
 	expand_array(array_p);
 
 	print_array(array_p, print_ts);
