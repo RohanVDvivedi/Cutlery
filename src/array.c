@@ -1,7 +1,7 @@
 #include<array.h>
 
 // this is the factor, by which the previous size of data_p_p will be incremented
-static const float increment_factor = 1.5;
+static const float increment_factor = 1.8;
 
 // this is the constant increment amount, over the increment factor
 static const unsigned char increment_offset = 1;
