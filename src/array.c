@@ -1,5 +1,19 @@
 #include<array.h>
 
+// this is the factor, by which the previous size of data_p_p will be incremented
+static const float increment_factor = 1.5;
+
+// this is the constant increment amount, over the increment factor
+static const unsigned char increment_offset = 1;
+
+// new_total_size of data_p_p = old_total_size of data_p_p * increment_factor + increment_offset
+
+// the below function will calculate the next size (on expansion) for the given array, if it's current size is current_size
+static unsigned int next_expansion_size(unsigned int current_size)
+{
+	return ((unsigned int)(current_size * increment_factor)) + increment_offset;
+}
+
 array* get_array(unsigned int initial_size)
 {
 	array* array_p = calloc(1, sizeof(array));
@@ -9,17 +23,9 @@ array* get_array(unsigned int initial_size)
 
 void initialize_array(array* array_p, unsigned int initial_size)
 {
-	array_p->increment_offset = 1;
-	array_p->increment_factor = (1.0 + 1);
 	array_p->data_p_p = initial_size > 0 ? calloc(initial_size, sizeof(void*)) : NULL;
 	array_p->total_size = initial_size;
 	array_p->initial_size = initial_size;
-}
-
-// the below function will calculate the next size (on expansion) for the given array, if it's current size is current_size
-static unsigned int next_expansion_size(array* array_p, unsigned int current_size)
-{
-	return ((unsigned int)(current_size * array_p->increment_factor)) + array_p->increment_offset;
 }
 
 void deinitialize_array(array* array_p)
@@ -29,6 +35,7 @@ void deinitialize_array(array* array_p)
 		free(array_p->data_p_p);
 	}
 	array_p->total_size = 0;
+	array_p->initial_size = 0;
 	array_p->data_p_p = NULL;
 }
 
@@ -40,27 +47,17 @@ void delete_array(array* array_p)
 
 const void* get_element(const array* array_p, unsigned int index)
 {
-	if(array_p->total_size > index)
-	{
-		return array_p->data_p_p[index];
-	}
-	else
-	{
-		return NULL;
-	}
+	return (index < array_p->total_size) ? array_p->data_p_p[index] : NULL;
 }
 
 int set_element(array* array_p, const void* data_p, unsigned int index)
 {
-	if(array_p->total_size > index)
+	if(index < array_p->total_size)
 	{
 		array_p->data_p_p[index] = data_p;
 		return 0;
 	}
-	else
-	{
-		return -1;
-	}
+	return -1;
 }
 
 void swap_elements(array* array_p, unsigned int i1, unsigned int i2)
@@ -75,18 +72,14 @@ void for_each_non_null_in_array(const array* array_p, void (*operation)(void* da
 	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
 		if(get_element(array_p, i) != NULL)
-		{
 			operation(((void*)get_element(array_p, i)), i, additional_params);
-		}
 	}
 }
 
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
 	for(unsigned int i = 0; i < array_p->total_size; i++)
-	{
 		operation(((void*)get_element(array_p, i)), i, additional_params);
-	}
 }
 
 unsigned int find_first_in_array(const array* array_p, void* data_p, int (*compare)(const void* data_p1, const void* data_p2))
@@ -94,17 +87,15 @@ unsigned int find_first_in_array(const array* array_p, void* data_p, int (*compa
 	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
 		if(compare(get_element(array_p, i), data_p) == 0)
-		{
 			return i;
-		}
 	}
-	return array_p->total_size + 1;
+	return array_p->total_size;
 }
 
 void expand_array(array* array_p)
 {
 	// compute new_size
-	unsigned int new_total_size = next_expansion_size(array_p, array_p->total_size);
+	unsigned int new_total_size = next_expansion_size(array_p->total_size);
 
 	// request memory for the new computed size
 	const void** new_data_p_p = calloc(new_total_size, sizeof(void*));
@@ -126,17 +117,15 @@ void expand_array(array* array_p)
 int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index)
 {
 	if(end_index < start_index)
-	{
 		return 0;
-	}
 
 	unsigned int minimum_size = end_index - start_index + 1;
 
-	unsigned int maximum_size = next_expansion_size(array_p, next_expansion_size(array_p, minimum_size));
+	unsigned int maximum_size = next_expansion_size(next_expansion_size(minimum_size));
 
 	if(array_p->total_size > maximum_size)
 	{
-		unsigned int new_total_size = next_expansion_size(array_p, minimum_size);
+		unsigned int new_total_size = next_expansion_size(minimum_size);
 
 		// The array is not allowed to shrink below its initial size,
 		// it shrinks only if the new_total_size is greater than or equal to the initial size
@@ -165,21 +154,17 @@ static void print_array_element_wrapper(void* element, unsigned int index, const
 {
 	printf("\telement_index %u -> ", index);
 	if(element != NULL)
-	{
 		((void (*)(const void*))print_element)(element);
-	}
 	else
-	{
 		printf("NULL");
-	}
 	printf("\n");
 }
 
 void print_array(const array* array_p, void (*print_element)(const void* data_p))
 {
 	printf("\narray:");
-	printf("\n\tincrement_factor : %f", array_p->increment_factor);
-	printf("\n\tincrement_offset : %u", array_p->increment_offset);
+	printf("\n\tincrement_factor : %f", increment_factor);
+	printf("\n\tincrement_offset : %u", increment_offset);
 	printf("\n\ttotal size : %u\n", array_p->total_size);
 	for_each_in_array(array_p, print_array_element_wrapper, print_element);
 }

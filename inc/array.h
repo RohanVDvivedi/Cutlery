@@ -8,26 +8,20 @@
 typedef struct array array;
 struct array
 {
+	// we maintain array of pointers each of which point to actual data
+	const void** data_p_p;
+
+	// initial_size = the size with which the array was requested from using the initialize_array or get_array function
+	// The array is not allowed to shrink below its initial size
+	unsigned int initial_size;
+
 	// this many elements can be accomodated in array, without expanding
 	// expanding which involves copying pointers, and
 	// requesting larger pointer array size than previously we had
 	// this could get expensive and is non productive computation
 	unsigned int total_size;
 
-	// we maintain array of pointers each of which point to actual data
-	const void** data_p_p;
-
-	// this is the factor, by which the previous size of data_p_p will be incremented
-	float increment_factor;
-
-	// this is the constant increment amount, over the increment factor
-	unsigned char increment_offset;
-
 	// new_total_size of data_p_p = old_total_size of data_p_p * increment_factor + increment_offset
-
-	// initial_size = the size with which the array was requested from using the initialize_array or get_array function
-	// The array is not allowed to shrink below its initial size
-	unsigned int initial_size;
 };
 
 // returns a new array with total_size as the initial size, with no elements inside,
