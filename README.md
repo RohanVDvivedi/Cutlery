@@ -1,5 +1,5 @@
 # cutlery
-A very primitive c library that provides simple standard data structures as a backpack for any project
+A c library that provides configurable data structures, serving as a backpack for any systems programming project.
 
 setup instructions
  * git clone https://github.com/RohanVDvivedi/cutlery.git
