@@ -60,4 +60,4 @@ clean :
 install : all
 	cp ${INC_DIR}/* /usr/local/include
 	cp ${LIB_DIR}/* /usr/local/lib
-	cp ${BIN_DIR}/* /usr/local/bin
+	#cp ${BIN_DIR}/* /usr/local/bin
