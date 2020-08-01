@@ -35,12 +35,6 @@ struct linkedlist
 	unsigned int node_offset;
 };
 
-#define is_new_llnode(node_p)				((node_p->next == NULL) && (node_p->prev == NULL) && (node_p->belongs_to_ll == NULL))
-
-#define llnode_exists_in_this_ll(node_p)	(node_p->belongs_to_ll == ll)
-
-#define llnode_exists_in_any_ll(node_p)		(node_p->belongs_to_ll != NULL)
-
 // initializes to a new linked list
 void initialize_linkedlist(linkedlist* ll, unsigned int node_offset);
 

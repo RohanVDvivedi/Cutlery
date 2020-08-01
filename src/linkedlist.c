@@ -1,5 +1,16 @@
 #include<linkedlist.h>
 
+// get data from llnode
+#define get_data(node_p) 	(((void*)(node_p)) - ll->node_offset)
+// get llnode from data
+#define get_node(data_p) 	(((void*)(data_p)) + ll->node_offset)
+
+// utility
+// to check if a node is new
+#define is_new_llnode(node_p)				((node_p->next == NULL) && (node_p->prev == NULL) && (node_p->belongs_to_ll == NULL))
+// to check if a node exists in this linkedlist
+#define llnode_exists_in_this_ll(node_p)	(node_p->belongs_to_ll == ll)
+
 void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
 {
 	ll->head = NULL;
@@ -14,10 +25,6 @@ void initialize_llnode(llnode* node_p)
 	node_p->prev = NULL;
 	node_p->belongs_to_ll = NULL;
 }
-
-#define get_data(node_p) 	(((void*)(node_p)) - ll->node_offset)
-
-#define get_node(data_p) 	(((void*)(data_p)) + ll->node_offset)
 
 int exists_in_list(const linkedlist* ll, const void* data)
 {
@@ -106,7 +113,7 @@ int insert_head(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p);
 
-	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
+	if(!is_new_llnode(new_node))	// insert only a new node
 		return 0;
 
 	// case when the linkedlist is empty
@@ -127,7 +134,7 @@ int insert_tail(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p);
 
-	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
+	if(!is_new_llnode(new_node))	// insert only a new node
 		return 0;
 
 	// case when the linkedlist is empty
@@ -149,10 +156,8 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data)
 	llnode* node_xist = get_node(data_xist);
 	llnode* new_node = get_node(data);
 
-	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
-		return 0;
-
-	if(!llnode_exists_in_this_ll(node_xist))
+	// insert only a new node, before a node that exists
+	if(!(llnode_exists_in_this_ll(node_xist) && is_new_llnode(new_node)))
 		return 0;
 
 	insert_node_before(ll, node_xist, new_node);
@@ -167,10 +172,8 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 	llnode* node_xist = get_node(data_xist);
 	llnode* new_node = get_node(data);
 
-	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
-		return 0;
-
-	if(!llnode_exists_in_this_ll(node_xist))
+	// insert only a new node, after a node that exists
+	if(!(llnode_exists_in_this_ll(node_xist) && is_new_llnode(new_node)))
 		return 0;
 
 	insert_node_after(ll, node_xist, new_node);
@@ -211,9 +214,8 @@ int remove_head(linkedlist* ll)
 	if(ll->head != NULL)
 	{
 		llnode* node_p = ll->head;
-		remove_node(ll, ll->head);
-		node_p->belongs_to_ll = NULL;
-		initialize_llnode(node_p);
+		remove_node(ll, node_p);
+		initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
 		ll->node_count--;
 		return 1;
 	}
@@ -227,9 +229,8 @@ int remove_tail(linkedlist* ll)
 	if(ll->tail != NULL)
 	{
 		llnode* node_p = ll->tail;
-		remove_node(ll, ll->tail);
-		node_p->belongs_to_ll = NULL;
-		initialize_llnode(node_p);
+		remove_node(ll, node_p);
+		initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
 		ll->node_count--;
 		return 1;
 	}
@@ -242,12 +243,11 @@ int remove_from_list(linkedlist* ll, const void* data)
 {
 	llnode* node_p = get_node(data);
 
-	if((!llnode_exists_in_this_ll(node_p)) || is_new_llnode(node_p))
+	if(!llnode_exists_in_this_ll(node_p))
 		return 0;
 
 	remove_node(ll, node_p);
-	node_p->belongs_to_ll = NULL;
-	initialize_llnode(node_p);
+	initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
 	ll->node_count--;
 	return 1;
 }
