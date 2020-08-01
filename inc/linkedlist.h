@@ -10,8 +10,8 @@ typedef struct llnode llnode;
 struct llnode
 {
 	// the previous and next node in the linked list
-	llnode* prev;
 	llnode* next;
+	llnode* prev;
 
 	// the pointer to the linkedlist that this node belongs to
 	linkedlist* belongs_to_ll;

@@ -107,9 +107,7 @@ int insert_head(linkedlist* ll, const void* data_p)
 	llnode* new_node = get_node(data_p);
 
 	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
-	{
 		return 0;
-	}
 
 	// case when the linkedlist is empty
 	if(ll->head == NULL)
@@ -118,9 +116,7 @@ int insert_head(linkedlist* ll, const void* data_p)
 		ll->tail = ll->head;
 	}
 	else
-	{
 		insert_node_before(ll, ll->head, new_node);
-	}
 
 	new_node->belongs_to_ll = ll;
 	ll->node_count++;
@@ -132,9 +128,7 @@ int insert_tail(linkedlist* ll, const void* data_p)
 	llnode* new_node = get_node(data_p);
 
 	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
-	{
 		return 0;
-	}
 
 	// case when the linkedlist is empty
 	if(ll->tail == NULL)
@@ -143,9 +137,7 @@ int insert_tail(linkedlist* ll, const void* data_p)
 		ll->head = ll->tail;
 	}
 	else
-	{
 		insert_node_after(ll, ll->tail, new_node);
-	}
 
 	new_node->belongs_to_ll = ll;
 	ll->node_count++;
@@ -158,14 +150,10 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data)
 	llnode* new_node = get_node(data);
 
 	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
-	{
 		return 0;
-	}
 
 	if(!llnode_exists_in_this_ll(node_xist))
-	{
 		return 0;
-	}
 
 	insert_node_before(ll, node_xist, new_node);
 
@@ -180,14 +168,10 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 	llnode* new_node = get_node(data);
 
 	if(llnode_exists_in_any_ll(new_node) || (!is_new_llnode(new_node)))
-	{
 		return 0;
-	}
 
 	if(!llnode_exists_in_this_ll(node_xist))
-	{
 		return 0;
-	}
 
 	insert_node_after(ll, node_xist, new_node);
 	new_node->belongs_to_ll = ll;
@@ -200,30 +184,22 @@ static void remove_node(linkedlist* ll, llnode* node_p)
 	// if the node to be removed is not the last node
 	// we have to update the prev pointer of "the node next to node_p" to the "previous node of node_p" 
 	if(node_p->next != NULL)
-	{
 		node_p->next->prev = node_p->prev;
-	}
 
 	// if the node to be removed is not the first node
 	// we have to update the next pointer of "the node previous to node_p" to the "next node of node_p" 
 	if(node_p->prev != NULL)
-	{
 		node_p->prev->next = node_p->next;
-	}
 
 	// if node_p is the head node
 	// update the head reference of the linkedlist to next of the node_p before deletion
 	if(node_p == ll->head)
-	{
 		ll->head = node_p->next;
-	}
 
 	// if node_p is the head node
 	// update the tail reference of the linkedlist to prev of the node_p before deletion
 	if(node_p == ll->tail)
-	{
 		ll->tail = node_p->prev;
-	}
 
 	node_p->next = NULL;
 	node_p->prev = NULL;
@@ -267,9 +243,7 @@ int remove_from_list(linkedlist* ll, const void* data)
 	llnode* node_p = get_node(data);
 
 	if((!llnode_exists_in_this_ll(node_p)) || is_new_llnode(node_p))
-	{
 		return 0;
-	}
 
 	remove_node(ll, node_p);
 	node_p->belongs_to_ll = NULL;
@@ -307,9 +281,7 @@ const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*co
 	{
 		const void* data_at_node = get_data(node_p);
 		if(compare(data_at_node, data) == 0)
-		{
 			return data_at_node;
-		}
 		node_p = node_p->next;
 	}
 	return NULL;
