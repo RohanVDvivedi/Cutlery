@@ -11,10 +11,6 @@
 #define bstnode_exists_in_this_bst(node_p)								\
 	(node_p->belongs_to_bst == bst_p)
 
-#define bstnode_exists_in_any_bst(node_p)								\
-	(node_p->belongs_to_bst != NULL)
-
-
 /*
 *	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
 */
