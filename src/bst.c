@@ -195,19 +195,44 @@ int remove_from_bst(bst* bst_p, const void* data)
 	return 1;
 }
 
-static void for_each_node(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
+static void for_each_node_pre_order(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
-	if(node_p != NULL)
-	{
-		for_each_node(bst_p, node_p->left, operation, additional_params);
-		operation(get_data(node_p), additional_params);
-		for_each_node(bst_p, node_p->right, operation, additional_params);
-	}
+	if(node_p == NULL)
+		return;
+	operation(get_data(node_p), additional_params);
+	for_each_node_pre_order(bst_p, node_p->left, operation, additional_params);
+	for_each_node_pre_order(bst_p, node_p->right, operation, additional_params);
 }
 
-void for_each_in_bst(const bst* bst_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
+static void for_each_node_in_order(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
-	for_each_node(bst_p, bst_p->root, operation, additional_params);
+	if(node_p == NULL)
+		return;
+	for_each_node_in_order(bst_p, node_p->left, operation, additional_params);
+	operation(get_data(node_p), additional_params);
+	for_each_node_in_order(bst_p, node_p->right, operation, additional_params);
+}
+
+static void for_each_node_post_order(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
+{
+	if(node_p == NULL)
+		return;
+	for_each_node_post_order(bst_p, node_p->left, operation, additional_params);
+	for_each_node_post_order(bst_p, node_p->right, operation, additional_params);
+	operation(get_data(node_p), additional_params);
+}
+
+void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
+{
+	switch(traversal)
+	{
+		case PRE_ORDER :
+			for_each_node_pre_order(bst_p, bst_p->root, operation, additional_params); return;
+		case IN_ORDER :
+			for_each_node_in_order(bst_p, bst_p->root, operation, additional_params); return;
+		case POST_ORDER :
+			for_each_node_post_order(bst_p, bst_p->root, operation, additional_params); return;
+	}
 }
 
 static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_element)(const void* data))

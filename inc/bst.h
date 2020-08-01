@@ -97,8 +97,12 @@ const void* find_largest(const bst* bst_p);
 // returns 0, and fails if bstnode of data is a new node
 int remove_from_bst(bst* bst_p, const void* data);
 
+// traversals possible in the tree
+typedef enum bsttraversal bsttraversal;
+enum bsttraversal {PRE_ORDER, IN_ORDER, POST_ORDER};
+
 // perform given operation on all the elements of the binary search tree
-void for_each_in_bst(const bst* bst_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
+void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
 
 // print complete binary search tree
 void print_bst(const bst* bst_p, void (*print_element)(const void* data));

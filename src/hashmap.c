@@ -356,7 +356,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
-					for_each_in_bst(((bst*)(ds_p)), operation, additional_params);
+					for_each_in_bst(((bst*)(ds_p)), POST_ORDER, operation, additional_params);
 					break;
 				}
 				default :
