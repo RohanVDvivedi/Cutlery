@@ -220,14 +220,19 @@ int main()
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
+	printf("\n");
+
 	printf("Updating key = 19 from 19 19 nineteen to 19 19 LOL\n");
+	printf("Demostrating update procedure\n");
+	printf("-> First find the data with key = 19 from the bst\n");
 	ts* to_update = (void*) find_equals_in_bst(bst_p, &((ts){19}));
-	remove_from_bst(bst_p, to_update);
+	printf("-> Then we removed the data (node) form the bst : return = %d\n", remove_from_bst(bst_p, to_update));
+	printf("-> Trying to remove the same data (node) again from the bst : return = %d\n", remove_from_bst(bst_p, to_update));
 	print_ts(to_update);printf("\n");
 	to_update->s = "LOL";
 	print_ts(to_update);printf("\n");
-	error = insert_in_bst(bst_p, to_update);
-	printf("node inserted = %d\n", error);
+	printf("-> Inserting the same data (node) with updated value in the bst : return = %d\n", insert_in_bst(bst_p, to_update));
+	printf("-> Trying to insert the same data (node) again in the bst : return = %d\n", insert_in_bst(bst_p, to_update));
 	print_bst(bst_p, print_ts);
 
 	print_preceding_equals(bst_p, 19);
