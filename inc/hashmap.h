@@ -85,6 +85,9 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 void deinitialize_hashmap(hashmap* hashmap_p);
 
 // perform operation on all the elements of the hashmap
+// the function is designed well, you may call free on your data, in the provided operation function
+// if BST we use POST_ORDER traversal and for linkedlist we cache the next pointer,
+// and hence we are able to iterate over the elements properly even if the current element gets freed
 void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
 
 #endif
