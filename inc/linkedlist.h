@@ -94,6 +94,7 @@ int exists_in_list(const linkedlist* ll, const void* data);
 int is_linkedlist_empty(const linkedlist* ll);
 
 // perform operation on all the elements of the linked list
+// the function is designed well, you may call free on your data, in the provided operation function
 void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
 // prints complete linked list

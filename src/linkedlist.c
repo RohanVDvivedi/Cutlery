@@ -296,8 +296,11 @@ void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p
 	llnode* node_p = ll->head;
 	while(node_p != NULL)
 	{
+		// cache the next element, since we do not trust the user's function
+		// there can be a seg fault if they decide to call free o their data in the operation function
+		llnode* next = node_p->next;
 		operation(get_data(node_p), additional_params);
-		node_p = node_p->next;
+		node_p = next;
 	}
 }
 
