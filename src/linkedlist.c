@@ -254,24 +254,28 @@ int remove_from_list(linkedlist* ll, const void* data)
 
 const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 {
+	if(!(n < ll->node_count))
+		return NULL;
 	llnode* node_p = ll->head;
 	while(node_p != NULL && n > 0)
 	{
 		n--;
 		node_p = node_p->next;
 	}
-	return (node_p == NULL) ? NULL : get_data(node_p);
+	return get_data(node_p);
 }
 
 const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
 {
+	if(!(n < ll->node_count))
+		return NULL;
 	llnode* node_p = ll->tail;
 	while(node_p != NULL && n > 0)
 	{
 		n--;
 		node_p = node_p->prev;
 	}
-	return (node_p == NULL) ? NULL : get_data(node_p);
+	return get_data(node_p);
 }
 
 const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
