@@ -56,7 +56,7 @@
 *	MARCOS TO CHECK WHETHER TREE IS EMPTY
 */
 
-#define is_balancedbst_empty(balancedbst_p)						\
-	(balancedbst_p->root == NULL)
+#define is_balancedbst_empty(bst_p)						\
+	(bst_p->root == NULL)
 
 #endif

@@ -129,40 +129,36 @@ int insert_in_bst(bst* bst_p, const void* data)
 	if(is_balancedbst_empty(bst_p))
 	{
 		bst_p->root = node_p;
-
-		// if avl => 1 : number of nodes to reach NULL node, if red-black => root is always black
-		node_p->node_property = (bst_p->type == NON_SELF_BALANCING) ? 0 : 1;
-
 		node_p->parent = NULL;
 
-		node_p->belongs_to_bst = bst_p;
-		bst_p->node_count = 1;
-		return 1;
+		// if avl => 1 : number of nodes to reach NULL node, if red-black => root is always black, (black = 1)
+		node_p->node_property = (bst_p->type == NON_SELF_BALANCING) ? 0 : 1;
 	}
-
-	// else insert node as per the balancing that this tree uses
-	switch(bst_p->type)
+	else
 	{
-		case NON_SELF_BALANCING:
+		// else insert node as per the balancing that this tree uses
+		switch(bst_p->type)
 		{
-			insert_node_in_non_self_balancing_tree(bst_p, node_p);
-			break;
-		}
-		case RED_BLACK_TREE :
-		{
-			insert_node_in_red_black_tree(bst_p, node_p);
-			break;
-		}
-		case AVL_TREE :
-		{
-			insert_node_in_avl_tree(bst_p, node_p);
-			break;
+			case NON_SELF_BALANCING:
+			{
+				insert_node_in_non_self_balancing_tree(bst_p, node_p);
+				break;
+			}
+			case RED_BLACK_TREE :
+			{
+				insert_node_in_red_black_tree(bst_p, node_p);
+				break;
+			}
+			case AVL_TREE :
+			{
+				insert_node_in_avl_tree(bst_p, node_p);
+				break;
+			}
 		}
 	}
 
 	node_p->belongs_to_bst = bst_p;
 	bst_p->node_count++;
-
 	return 1;
 }
 
