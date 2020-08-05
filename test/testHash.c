@@ -94,13 +94,6 @@ int main()
 
 	print_hashmap(hashmap_p, print_ts);
 
-	// this is how you update, unless you want to update the key of the object
-	// in which case you would have to remove the element completely and reinsert
-	ts* thr = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){3}));
-	thr->s = "Three";
-
-	print_hashmap(hashmap_p, print_ts);
-
 	insert_in_hashmap(hashmap_p, &((ts){4, 400, "four"}));
 
 	print_hashmap(hashmap_p, print_ts);
@@ -114,6 +107,24 @@ int main()
 	print_hashmap(hashmap_p, print_ts);
 
 	insert_in_hashmap(hashmap_p, &((ts){7, 700, "seven"}));
+
+	print_hashmap(hashmap_p, print_ts);
+
+	printf("We want to update the data with key = 3\n");
+
+	// this is how you update, unless you want to update the key of the object
+	// in which case you would have to remove the element completely and reinsert
+	ts* thr = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){3}));
+	printf("-> we find the data in the hashmap\n");
+	printf("-> we make sure that the data exists in the hashmap, existing : %d\n", exists_in_hashmap(hashmap_p, thr));
+	printf("-> we remove the data that we found, from the hashmap, removed : %d\n", remove_from_hashmap(hashmap_p, thr));
+	printf("-> we make sure that the data does not exist in the hashmap, existing : %d\n", exists_in_hashmap(hashmap_p, thr));
+	printf("-> we try to again remove from the hashmap, this time the remove must fail, removed : %d\n", remove_from_hashmap(hashmap_p, thr));
+	printf("-> now make actual update to the data\n");
+	thr->s = "Three";
+	printf("-> insert the data back into the hashmap, inserted : %d\n", insert_in_hashmap(hashmap_p, thr));
+	printf("-> As earlier, we make sure that the data exists in the hashmap, existing : %d\n", exists_in_hashmap(hashmap_p, thr));
+	printf("-> Try to again insert the data back into the hashmap, this time it must fail, inserted : %d\n", insert_in_hashmap(hashmap_p, thr));
 
 	print_hashmap(hashmap_p, print_ts);
 
