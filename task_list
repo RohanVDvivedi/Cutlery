@@ -1,0 +1,4 @@
+ * hashmap needs a revamp
+ * provide a singly linkedlist in cutlery
+ * store only one instance to linkedlist or bst in the hashmap across all the buckets
+ * change that linkedlist to a singly linkedlist
