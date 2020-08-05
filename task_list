@@ -1,4 +1,5 @@
  * hashmap needs a revamp
+ * dstring also needs a revamp, especially the line number 72, could lead to excessive memory hogging
  * provide a singly linkedlist in cutlery
  * store only one instance to linkedlist or bst in the hashmap across all the buckets
  * change that linkedlist to a singly linkedlist
