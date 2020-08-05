@@ -112,7 +112,7 @@ const void* find_largest(const bst* bst_p)
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-int exists_in_bst(bst* bst_p, const void* data)
+int exists_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
 	return bstnode_exists_in_this_bst(node_p);

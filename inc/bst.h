@@ -74,7 +74,7 @@ int insert_in_bst(bst* bst_p, const void* data);
 
 // function helps to quickly check if a node exists in the given bst
 // it uses belongs_to_bst attribute of the node
-int exists_in_bst(bst* bst_p, const void* data);
+int exists_in_bst(const bst* bst_p, const void* data);
 
 // find data in tree, whose data compares equal to data provided
 const void* find_equals_in_bst(const bst* bst_p, const void* data);

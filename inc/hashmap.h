@@ -31,6 +31,8 @@ enum collision_resolution_policy
 
 // inserting comparatively equal data is allowed
 // inserting same data (same address) is not allowed
+// hence hashmap does not gaurantee uniqueness for your data on its own
+// two data* (pointers) pointing to data that compare equals on the given compartor may exist in the hashmap
 
 typedef struct hashmap hashmap;
 struct hashmap
@@ -61,7 +63,8 @@ struct hashmap
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
 void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int total_bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
 
-int exists_in_hashmap(hashmap* hashmap_p, const void* data);
+// checks if the given data exists in the hashmap
+int exists_in_hashmap(const hashmap* hashmap_p, const void* data);
 
 // place a new data in the hashmap, fails with return 0, if the element already exists in the hashmap
 // or fails with 0, if the hashmap does not have enough space to hold the new data element

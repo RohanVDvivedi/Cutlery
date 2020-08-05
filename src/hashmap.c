@@ -180,6 +180,39 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 	}
 }
 
+int exists_in_hashmap(const hashmap* hashmap_p, const void* data)
+{
+	switch(hashmap_p->hashmap_policy)
+	{
+		case ROBINHOOD_HASHING :
+		{
+			unsigned int index = get_actual_index(hashmap_p, data);
+			const void* data_at_index = hashmap_p->holder[index];
+			
+			if(data_at_index == data)
+				return 1;
+			return 0;
+		}
+		case ELEMENTS_AS_LINKEDLIST :
+		{
+			// get the data structure for that key, without any new creation
+			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
+			return exists_in_list(ds_p, data);
+		}
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			// get the data structure for that key, without any new creation
+			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
+			return exists_in_bst(ds_p, data);
+		}
+		default :
+		{
+			return 0;
+		}
+	}
+}
+
 int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 {
 	int inserted = 0;
