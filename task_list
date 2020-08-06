@@ -1,7 +1,4 @@
  * hashmap needs a revamp
- * provide a singly linkedlist in cutlery
  * store only one instance to linkedlist or bst in the hashmap across all the buckets
- * change that linkedlist to a singly linkedlist
+ * change that linkedlist to a singly linkedlist, in the hashmap
  * hashmap closed implementations like the linkedlist or bst managed buckets need a way to protect them at bucket level, this can be of enormous importance in implementing caching hashtables (in single server or distributed servers) which need immense paralellism
- * update bst to not use belongs_to_bst pointer, the exists can also be implemented by using find
-  -> reson for such a change, let us say there are 10^9 elements, using belongs_to_bst pointer, will allow us to perform this task in 1 operation for any element, but it will constiture to about 8 * 10^9 = 8 GB or memory, while on the other hand, using find will let us do the same task but in log(10^9)base(2) = 29.89 operations, i.e. 29 more operation per element while freeing up 8GB of memory for other use.
