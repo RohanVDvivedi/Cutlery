@@ -162,10 +162,10 @@ int insert_in_bst(bst* bst_p, const void* data)
 
 int remove_from_bst(bst* bst_p, const void* data)
 {
-	bstnode* node_p = get_node(data);
-
-	if((!bstnode_exists_in_this_bst(node_p)))	// for attempting to remove the node, it must be present in bst
+	if(!exists_in_bst(bst_p, data))	// for attempting to remove the node, it must be present in bst
 		return 0;
+
+	bstnode* node_p = get_node(data);
 
 	switch(bst_p->type)
 	{
