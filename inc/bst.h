@@ -99,8 +99,11 @@ const void* find_largest(const bst* bst_p);
 // returns 0, and fails if bstnode of data is a new node
 int remove_from_bst(bst* bst_p, const void* data);
 
-// This function is tricky to explain, it returns true
-// if this node does not exist in any bst or is root of some other bst, other than the one provided
+// This function is tricky to explain, it returns true 2 types of nodes
+// 1. a node that does not exist in any bst
+// 2. a node that is a only single element of any other bst (other than the bst_p provided)
+// a true of this function signifies that this node can be inserted into bst_p without any bad consequences
+// a true signifies that this node_p does not exist in any other bst having more than one element
 int is_new_bstnode(bst* bst_p, bstnode* node_p);
 
 // traversals possible in the tree
