@@ -68,10 +68,15 @@ void initialize_bstnode(bstnode* node_p);
 // returns 0, and fails if bstnode of data is not a new node
 int insert_in_bst(bst* bst_p, const void* data);
 
-// function helps to quickly check if a node exists in the given bst
-// it is equivalent to checking using pointer comparision of your data,
-// i.e. if the exactly same data (at the same location) is present
-int exists_in_bst(const bst* bst_p, const void* data);
+/*
+**		NOTE FOR USING ALL THE FIND FUNCTIONS BELOW
+**
+** find_* functions get the data from the bst, that equals (when compared using the comparator function) the data given as parameter data
+**
+** the data you provide as parameter must have all the fields required for comparison, 
+** this completely depends on how you design your comparator function, and what some few or all fields you use to do comparison, it is up to you
+** i.e. it must have all the fields/attrubutes of the struct that are used in comparison function that you provided
+*/
 
 // find data in tree, whose data compares equal to data provided
 const void* find_equals_in_bst(const bst* bst_p, const void* data);

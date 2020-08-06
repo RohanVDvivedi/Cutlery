@@ -63,17 +63,19 @@ struct hashmap
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
 void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int total_bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
 
-// checks if the given data exists in the hashmap
-int exists_in_hashmap(const hashmap* hashmap_p, const void* data);
-
 // place a new data in the hashmap, fails with return 0, if the element already exists in the hashmap
 // or fails with 0, if the hashmap does not have enough space to hold the new data element
 int insert_in_hashmap(hashmap* hashmap_p, const void* data);
 
-// get the data from the hashmap, that equals the data given to us
-//
-// the data you provide in the hashmap must have all the fields required to compare and hash equivalent to the actual data
-// i.e. it must have all the fields/attrubutes of the struct that are used in comparison and hash_function that you provided
+/*
+**		NOTE FOR USING THE FIND FUNCTIONS BELOW
+**
+** find_* functions get the data from the bst, that equals (when compared using the comparator function) the data given as parameter data
+**
+** the data you provide as parameter must have all the fields required for comparison, 
+** this completely depends on how you design your comparator function, and what some few or all fields you use to do comparison, it is up to you
+** i.e. it must have all the fields/attrubutes of the struct that are used in comparison function that you provided
+*/
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 
 // returns 1 if the element exists in the hashmap and is removed

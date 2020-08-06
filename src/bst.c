@@ -111,45 +111,11 @@ const void* find_largest(const bst* bst_p)
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-int exists_in_bst(const bst* bst_p, const void* data)
-{
-	bstnode* node_p = get_node(data);
-
-	// O(1) check
-	if(is_new_bstnode(node_p))	// a new node will not exist in any bst, hence return 0
-		return 0;
-
-	// O(log(N)) check
-	const void* equal_data = find_equals_in_bst(bst_p, data);
-	if(equal_data == NULL)	// if there is no data comparatively equal in this bst, then data can not be present in bst
-		return 0;
-	else if(data == equal_data)  // else if there is some data comparatively equal, then comparing the pointers will prove if it is the same data or not
-		return 1;
-
-	bstnode* equal_data_node_p = get_node(equal_data);
-
-	// O(N) check (very rare)
-	/*
-	*					9
-	*			/			\
-	*			9			9
-	*		/		\	/		\
-	*		9		9	9		9
-	* You need to understand that the above tree is completely feasible balanced bst
-	* and it is possible to achieve this state by multiple rototions using the balancing properties
-	* even if their non balancing insertion part prefers to insert equal nodes to right (or left) of existing nodes
-	* and the below code is designed to take this cases into consideration
-	*/
-	// compare all pointers to all nodes below the equal data
-
-	return 0;
-}
-
 int insert_in_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
 	
-	if((!is_new_bstnode(node_p)))	// insert only a new node
+	if(!is_new_bstnode(node_p))	// insert only a new node
 		return 0;
 
 	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
@@ -190,10 +156,10 @@ int insert_in_bst(bst* bst_p, const void* data)
 
 int remove_from_bst(bst* bst_p, const void* data)
 {
-	if(!exists_in_bst(bst_p, data))	// for attempting to remove the node, it must be present in bst
-		return 0;
-
 	bstnode* node_p = get_node(data);
+
+	if(!is_new_bstnode(node_p))	// for attempting to remove the node, it must be present in bst, i.e. not a new node
+		return 0;
 
 	switch(bst_p->type)
 	{
