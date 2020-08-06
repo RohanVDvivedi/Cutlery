@@ -129,6 +129,17 @@ int exists_in_bst(const bst* bst_p, const void* data)
 	bstnode* equal_data_node_p = get_node(equal_data);
 
 	// O(N) check (very rare)
+	/*
+	*					9
+	*			/			\
+	*			9			9
+	*		/		\	/		\
+	*		9		9	9		9
+	* You need to understand that the above tree is completely feasible balanced bst
+	* and it is possible to achieve this state by multiple rototions using the balancing properties
+	* even if their non balancing insertion part prefers to insert equal nodes to right (or left) of existing nodes
+	* and the below code is designed to take this cases into consideration
+	*/
 	// compare all pointers to all nodes below the equal data
 
 	return 0;
