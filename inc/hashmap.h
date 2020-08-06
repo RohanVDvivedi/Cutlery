@@ -34,6 +34,9 @@ enum collision_resolution_policy
 // hence hashmap does not gaurantee uniqueness for your data on its own
 // two data* (pointers) pointing to data that compare equals on the given compartor may exist in the hashmap
 
+// While designing the hashfunction please consider using all the attributes, that you are using in the comparator function
+// the comparator function and the hashfunction must be based on using the same fields
+
 typedef struct hashmap hashmap;
 struct hashmap
 {
@@ -74,8 +77,9 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data);
 **
 ** the data you provide as parameter must have all the fields required for comparison, 
 ** this completely depends on how you design your comparator function, and what some few or all fields you use to do comparison, it is up to you
-** i.e. it must have all the fields/attrubutes of the struct that are used in comparison function that you provided
+** i.e. it must have all the fields/attrubutes of the struct that are used in comparison and hashmap function that you provided
 */
+// the parameter data provided must hash to the same value and must be comparatively equal to the data that you want to find
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 
 // returns 1 if the element exists in the hashmap and is removed
