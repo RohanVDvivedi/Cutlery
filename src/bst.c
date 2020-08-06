@@ -158,7 +158,7 @@ int remove_from_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
 
-	if(!is_new_bstnode(node_p))	// for attempting to remove the node, it must be present in bst, i.e. not a new node
+	if(is_new_bstnode(node_p))	// for attempting to remove the node, it must be present in bst, i.e. not a new node
 		return 0;
 
 	switch(bst_p->type)
