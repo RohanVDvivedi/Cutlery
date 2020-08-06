@@ -20,6 +20,13 @@ void initialize_bstnode(bstnode* node_p)
 	node_p->right = NULL;
 }
 
+int is_new_bstnode(bst* bst_p, bstnode* node_p)
+{
+	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) 
+		&& (bst_p->root != node_p));
+}
+
+
 #define is_greater(compare_A_with_B) 	(compare_A_with_B > 0)
 #define is_lesser(compare_A_with_B)		(compare_A_with_B < 0)
 #define is_equal(compare_A_with_B)		(compare_A_with_B == 0)

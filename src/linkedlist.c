@@ -7,7 +7,11 @@
 
 // utility
 // to check if a node is new
-#define is_new_llnode(ll, node_p)				((node_p->next == NULL) && (node_p->prev == NULL) && (ll->head != node_p))
+int is_new_llnode(linkedlist* ll, llnode* node_p)
+{
+	return ((node_p->next == NULL) && (node_p->prev == NULL)
+		&& (ll->head != node_p));
+}
 
 void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
 {

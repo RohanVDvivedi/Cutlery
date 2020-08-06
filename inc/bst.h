@@ -99,6 +99,10 @@ const void* find_largest(const bst* bst_p);
 // returns 0, and fails if bstnode of data is a new node
 int remove_from_bst(bst* bst_p, const void* data);
 
+// This function is tricky to explain, it returns true
+// if this node does not exist in any bst or is root of some other bst, other than the one provided
+int is_new_bstnode(bst* bst_p, bstnode* node_p);
+
 // traversals possible in the tree
 typedef enum bsttraversal bsttraversal;
 enum bsttraversal {PRE_ORDER, IN_ORDER, POST_ORDER};

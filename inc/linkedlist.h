@@ -72,6 +72,10 @@ int remove_tail(linkedlist* ll);
 // returns 0 if it fails
 int remove_from_list(linkedlist*ll, const void* data);
 
+// This function is tricky to explain, it returns true
+// if this node does not exist in any linkedlist or is head of some other linkedlist, other than the one provided
+int is_new_llnode(linkedlist* ll, llnode* node_p);
+
 // get pointer to nth element from head by doing next next
 const void* get_nth_from_head(linkedlist* ll, unsigned int n);
 
