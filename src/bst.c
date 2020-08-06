@@ -18,7 +18,6 @@ void initialize_bstnode(bstnode* node_p)
 	node_p->parent = NULL;
 	node_p->left = NULL;
 	node_p->right = NULL;
-	node_p->belongs_to_bst = NULL;
 }
 
 #define is_greater(compare_A_with_B) 	(compare_A_with_B > 0)
@@ -157,7 +156,6 @@ int insert_in_bst(bst* bst_p, const void* data)
 		}
 	}
 
-	node_p->belongs_to_bst = bst_p;
 	bst_p->node_count++;
 	return 1;
 }
@@ -246,7 +244,7 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 		else if(is_internal_node(node_p))
 			printf("  INTER ");
 
-		printf("of [%p]\t\t[%p]", node_p->belongs_to_bst, node_p);
+		printf("\t\t[%p]", node_p);
 		print_element(get_data(node_p));
 		printf("(%d)\n", node_p->node_property);
 
@@ -321,7 +319,7 @@ void print_bstnode_debug(bstnode* node_p)
 {
 	printf("DEBUG -> self[%p] ", node_p);
 	if(node_p != NULL)
-		printf("parent[%p], left[%p], right[%p], belongs_to[%p], node_property = %d\n", node_p->parent, node_p->left, node_p->right, node_p->belongs_to_bst, node_p->node_property);
+		printf("parent[%p], left[%p], right[%p], node_property = %d\n", node_p->parent, node_p->left, node_p->right, node_p->node_property);
 	else
 		printf("\n");
 }

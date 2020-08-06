@@ -33,10 +33,6 @@ struct bstnode
 	// else if bsttype == RED_BLACK_TREE then node_property = is_red_node? ? 0 : 1; (1 is black node) 
 	// it must be a signed integer, do not change this datatype
 	int node_property;
-
-	// pointer to the bst that this node belongs to
-	// it is used to quickly check if the given node exists in given bst
-	bst* belongs_to_bst;
 };
 
 struct bst
@@ -73,7 +69,8 @@ void initialize_bstnode(bstnode* node_p);
 int insert_in_bst(bst* bst_p, const void* data);
 
 // function helps to quickly check if a node exists in the given bst
-// it uses belongs_to_bst attribute of the node
+// it is equivalent to checking using pointer comparision of your data,
+// i.e. if the exactly same data (at the same location) is present
 int exists_in_bst(const bst* bst_p, const void* data);
 
 // find data in tree, whose data compares equal to data provided

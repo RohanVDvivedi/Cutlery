@@ -6,10 +6,7 @@
 */
 
 #define is_new_bstnode(node_p)											\
-	((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->belongs_to_bst == NULL))
-
-#define bstnode_exists_in_this_bst(node_p)								\
-	(node_p->belongs_to_bst == bst_p)
+	((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL))
 
 /*
 *	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
