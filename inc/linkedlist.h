@@ -9,16 +9,23 @@ struct linkedlist;
 typedef struct llnode llnode;
 struct llnode
 {
+	// the pointer to the linkedlist that this node belongs to
+	linkedlist* belongs_to_ll;
+
 	// the previous and next node in the linked list
 	llnode* next;
 	llnode* prev;
-
-	// the pointer to the linkedlist that this node belongs to
-	linkedlist* belongs_to_ll;
 };
 
 struct linkedlist
 {
+	// number of nodes in the linkedlist
+	// this is how we reach node addresses from provided user's structure data addresses
+	unsigned int node_count;
+
+	// defines the address of the data, with respect to the linkedlist node
+	unsigned int node_offset;
+
 	// head->next->...->next = tail
 	// always head->prev = NULL
 	llnode* head;
@@ -26,13 +33,6 @@ struct linkedlist
 	// tail->prev->...->prev = head
 	// always tail->next = NULL
 	llnode* tail;
-
-	// number of nodes in the linkedlist
-	// this is how we reach node addresses from provided user's structure data addresses
-	unsigned int node_count;
-
-	// defines the address of the data, with respect to the linkedlist node
-	unsigned int node_offset;
 };
 
 // initializes to a new linked list
