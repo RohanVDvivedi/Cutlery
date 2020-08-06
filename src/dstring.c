@@ -9,14 +9,12 @@ dstring* get_dstring(const char* cstr_p, unsigned int additional_allocation)
 
 void init_dstring(dstring* str_p, const char* cstr_p, unsigned int additional_allocation)
 {
-	str_p->bytes_occupied = cstr_p == NULL ? 1 : (strlen(cstr_p) + 1);
-	str_p->bytes_allocated = (2 * (str_p->bytes_occupied + 1)) + 2 + additional_allocation;
+	str_p->bytes_occupied = ((cstr_p == NULL) ? 1 : (strlen(cstr_p) + 1));
+	str_p->bytes_allocated = (2 * str_p->bytes_occupied) + additional_allocation;
 	str_p->cstring = malloc(str_p->bytes_allocated);
 	str_p->cstring[0] = '\0';
 	if(cstr_p != NULL)
-	{
 		memcpy(str_p->cstring, cstr_p, str_p->bytes_occupied);
-	}
 }
 
 void make_dstring_empty(dstring* str_p)
@@ -40,9 +38,7 @@ int is_prefix(const dstring* str_p1, const char* str_p2)
 	size_t prefix_length = strlen(str_p2);
 	// prefix length must be smaller than or equal to dstring provided
 	if(prefix_length > str_p1->bytes_occupied - 1)
-	{
 		return 0;
-	}
 	return (strncmp(str_p1->cstring, str_p2, prefix_length) == 0);
 }
 
@@ -50,13 +46,11 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
 	dstring expanded_dstring;
 	expanded_dstring.bytes_occupied = str_p->bytes_occupied;
-	expanded_dstring.bytes_allocated = (2 * (expanded_dstring.bytes_occupied + 1)) + 2 + additional_allocation;
-	expanded_dstring.cstring = (char*)malloc(expanded_dstring.bytes_allocated);
+	expanded_dstring.bytes_allocated = 2 * (expanded_dstring.bytes_occupied + additional_allocation);
+	expanded_dstring.cstring = malloc(expanded_dstring.bytes_allocated);
 	memcpy(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
-	if(str_p->cstring != NULL)
-	{
-		free(str_p->cstring);
-	}
+
+	deinit_dstring(str_p);
 	(*str_p) = expanded_dstring;
 }
 
@@ -68,9 +62,7 @@ void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ)
 		// we consider that the client has not considered counting '\0' in string
 		// we must expand the dstring, if it is smaller than the size we expect it to be
 		if( occ + str_p->bytes_occupied > str_p->bytes_allocated)
-		{
-			expand_dstring(str_p, (2 * occ) + 2);
-		}
+			expand_dstring(str_p, occ);
 
 		memcpy(str_p->cstring + str_p->bytes_occupied - 1, cstr_p, occ);
 		str_p->bytes_occupied += occ;
@@ -112,21 +104,15 @@ void toUppercase(dstring* str_p)
 void display_dstring(dstring* str_p)
 {
 	if(str_p == NULL)
-	{
 		printf("NULL");
-	}
 	else
-	{
 		printf("%s", str_p->cstring);
-	}
 }
 
 void deinit_dstring(dstring* str_p)
 {
 	if(str_p->cstring != NULL)
-	{
 		free(str_p->cstring);
-	}
 	str_p->cstring = NULL;
 	str_p->bytes_occupied = 0;
 	str_p->bytes_allocated = 0;
