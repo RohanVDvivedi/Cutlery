@@ -9,9 +9,6 @@ struct linkedlist;
 typedef struct llnode llnode;
 struct llnode
 {
-	// the pointer to the linkedlist that this node belongs to
-	linkedlist* belongs_to_ll;
-
 	// the previous and next node in the linked list
 	llnode* next;
 	llnode* prev;
@@ -86,10 +83,6 @@ const void* get_nth_from_tail(linkedlist* ll, unsigned int n);
 // while the second parameter is the data that has been provided by you
 // it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
 const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
-
-// check if a given data exists in the linkedlist
-// it used belongs_to_list attribute of the node
-int exists_in_list(const linkedlist* ll, const void* data);
 
 int is_linkedlist_empty(const linkedlist* ll);
 
