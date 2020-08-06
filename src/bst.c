@@ -115,7 +115,7 @@ int insert_in_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
 	
-	if(!is_new_bstnode(node_p))	// insert only a new node
+	if(!is_new_bstnode(bst_p, node_p))	// insert only a new node
 		return 0;
 
 	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
@@ -158,7 +158,7 @@ int remove_from_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
 
-	if(is_new_bstnode(node_p))	// for attempting to remove the node, it must be present in bst, i.e. not a new node
+	if(is_new_bstnode(bst_p, node_p))	// for attempting to remove the node, it must be present in bst, i.e. not a new node
 		return 0;
 
 	switch(bst_p->type)

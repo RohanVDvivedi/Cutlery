@@ -5,8 +5,8 @@
 *	MACROS TO CHECK IF THE NODE IS NEW NODE <you can only insert a new node, and remove an existing node>
 */
 
-#define is_new_bstnode(node_p)											\
-	((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL))
+#define is_new_bstnode(bst_p, node_p)											\
+	((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (bst_p->root != node_p))
 
 /*
 *	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA

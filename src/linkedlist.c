@@ -7,7 +7,7 @@
 
 // utility
 // to check if a node is new
-#define is_new_llnode(node_p)				((node_p->next == NULL) && (node_p->prev == NULL))
+#define is_new_llnode(ll, node_p)				((node_p->next == NULL) && (node_p->prev == NULL) && (ll->head != node_p))
 
 void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
 {
@@ -104,7 +104,7 @@ int insert_head(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p);
 
-	if(!is_new_llnode(new_node))	// insert only a new node
+	if(!is_new_llnode(ll, new_node))	// insert only a new node
 		return 0;
 
 	// case when the linkedlist is empty
@@ -124,7 +124,7 @@ int insert_tail(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p);
 
-	if(!is_new_llnode(new_node))	// insert only a new node
+	if(!is_new_llnode(ll, new_node))	// insert only a new node
 		return 0;
 
 	// case when the linkedlist is empty
@@ -146,7 +146,7 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data)
 	llnode* new_node = get_node(data);
 
 	// insert only a new node, before a node that exists
-	if(is_new_llnode(node_xist) || !is_new_llnode(new_node))
+	if(is_new_llnode(ll, node_xist) || !is_new_llnode(ll, new_node))
 		return 0;
 
 	insert_node_before(ll, node_xist, new_node);
@@ -161,7 +161,7 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 	llnode* new_node = get_node(data);
 
 	// insert only a new node, after a node that exists
-	if(is_new_llnode(node_xist) || !is_new_llnode(new_node))
+	if(is_new_llnode(ll, node_xist) || !is_new_llnode(ll, new_node))
 		return 0;
 
 	insert_node_after(ll, node_xist, new_node);
@@ -231,7 +231,7 @@ int remove_from_list(linkedlist* ll, const void* data)
 {
 	llnode* node_p = get_node(data);
 
-	if(is_new_llnode(node_p))	// a new node does not need to be removed
+	if(is_new_llnode(ll, node_p))	// a new node does not need to be removed
 		return 0;
 
 	remove_node(ll, node_p);
