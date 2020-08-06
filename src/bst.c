@@ -114,7 +114,24 @@ const void* find_largest(const bst* bst_p)
 int exists_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
-	return bstnode_exists_in_this_bst(node_p);
+
+	// O(1) check
+	if(is_new_bstnode(node_p))	// a new node will not exist in any bst, hence return 0
+		return 0;
+
+	// O(log(N)) check
+	const void* equal_data = find_equals_in_bst(bst_p, data);
+	if(equal_data == NULL)	// if there is no data comparatively equal in this bst, then data can not be present in bst
+		return 0;
+	else if(data == equal_data)  // else if there is some data comparatively equal, then comparing the pointers will prove if it is the same data or not
+		return 1;
+
+	bstnode* equal_data_node_p = get_node(equal_data);
+
+	// O(N) check (very rare)
+	// compare all pointers to all nodes below the equal data
+
+	return 0;
 }
 
 int insert_in_bst(bst* bst_p, const void* data)
