@@ -15,8 +15,6 @@ struct dstring
 	// number of bytes the string cstring occupies, 
 	unsigned int bytes_occupied;
 	unsigned int bytes_allocated;
-
-	unsigned int state_level;
 };
 
 dstring* get_dstring(const char* cstr_p, unsigned int additional_allocation);
