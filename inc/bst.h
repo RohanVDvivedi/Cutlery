@@ -47,6 +47,7 @@ struct bst
 	unsigned int node_count;
 
 	// defines address to data with respect to bstnode
+	// this is how we reach node addresses from provided user's structure data addresses and viceversa
 	unsigned int node_offset;
 
 	// compares data

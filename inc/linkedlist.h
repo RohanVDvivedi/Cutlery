@@ -17,10 +17,10 @@ struct llnode
 struct linkedlist
 {
 	// number of nodes in the linkedlist
-	// this is how we reach node addresses from provided user's structure data addresses
 	unsigned int node_count;
 
 	// defines the address of the data, with respect to the linkedlist node
+	// this is how we reach node addresses from provided user's structure data addresses and viceversa
 	unsigned int node_offset;
 
 	// head->next->...->next = tail
