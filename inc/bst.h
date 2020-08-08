@@ -40,16 +40,16 @@ struct bst
 	// the type of balancing algorithm to use for the binary search tree
 	bsttype type;
 
-	// compares data
-	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
-	int (*compare)(const void* data1, const void* data2);
-
 	// defines address to data with respect to bstnode
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
 	unsigned int node_offset;
 
 	// the root node of the tree
 	bstnode* root;
+
+	// compares data
+	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
+	int (*compare)(const void* data1, const void* data2);
 };
 
 /*
