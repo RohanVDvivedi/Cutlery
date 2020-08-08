@@ -2,9 +2,4 @@
  * store only one instance to linkedlist or bst in the hashmap across all the buckets
  * change that linkedlist to a singly linkedlist, in the hashmap
 
- * (solved)hashmap closed implementations like the linkedlist or bst managed buckets need a way to protect them at bucket level, this can be of enormous importance in implementing caching hashtables (in single server or distributed servers) which need immense paralellism
- 	-> solution, this is already provided, just hash the key before searching, take the lock before searching or writing on that key and later release the key, this way you can have locks outside and still not bother to write correct hashtable implementation
-
- * remove state level variable from dstring, it should not be there, complete tasks in serc parser for that
-
  * get ride of node_count from bst and linkedlist, if the users need them, they need to track them on their own
