@@ -3,6 +3,4 @@
  * add implementation for a singly linkedlist
  * change that linkedlist to a singly linkedlist, in the hashmap
 
- * get ride of node_count from bst and linkedlist, if the users need them, they need to track them on their own
-
  * decrease one variable in queue from three
