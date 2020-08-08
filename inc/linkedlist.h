@@ -3,9 +3,6 @@
 
 #include<stdio.h>
 
-typedef struct linkedlist linkedlist;
-struct linkedlist;
-
 typedef struct llnode llnode;
 struct llnode
 {
@@ -14,6 +11,7 @@ struct llnode
 	llnode* prev;
 };
 
+typedef struct linkedlist linkedlist;
 struct linkedlist
 {
 	// number of nodes in the linkedlist
@@ -82,7 +80,7 @@ int is_new_llnode(linkedlist* ll, llnode* node_p);
 // get pointer to nth element from head by doing next next
 const void* get_nth_from_head(linkedlist* ll, unsigned int n);
 
-// get pointer to nth element from tail by doing next next
+// get pointer to nth element from tail by doing prev prev
 const void* get_nth_from_tail(linkedlist* ll, unsigned int n);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
