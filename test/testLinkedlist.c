@@ -74,7 +74,7 @@ int main()
 	printf("Error on removing a not existing node twice %d\n", remove_from_list(ll, temp));
 	print_linkedlist(ll, print_ts);
 
-	printf("Error on inserting before a not existing node twice %d\n", insert_before(ll, temp, &((ts){-1, "minus one", {NULL, NULL}})));
+	printf("Error on inserting before a not existing node %d\n", insert_before(ll, temp, &((ts){-1, "minus one", {NULL, NULL}})));
 	print_linkedlist(ll, print_ts);
 
 	insert_after(ll, get_nth_from_head(ll, 1), temp);

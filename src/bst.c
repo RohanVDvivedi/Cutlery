@@ -7,10 +7,9 @@
 void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
 {
 	bst_p->type = type;
-	bst_p->root = NULL;
-	bst_p->node_offset = node_offset;
 	bst_p->compare = compare;
-	bst_p->node_count = 0;
+	bst_p->node_offset = node_offset;
+	bst_p->root = NULL;
 }
 
 void initialize_bstnode(bstnode* node_p)
@@ -157,7 +156,6 @@ int insert_in_bst(bst* bst_p, const void* data)
 		}
 	}
 
-	bst_p->node_count++;
 	return 1;
 }
 
@@ -189,7 +187,6 @@ int remove_from_bst(bst* bst_p, const void* data)
 
 	// NULL all references of the removed node
 	initialize_bstnode(node_p);	// you must reinitialize the node before final removal
-	bst_p->node_count--;
 
 	return 1;
 }
@@ -291,7 +288,7 @@ static void print_tree(const bst* bst_p, const bstnode* node_p, void (*print_ele
 
 void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 {
-	printf("\nTREE [%p] : %u\n", bst_p, bst_p->node_count);
+	printf("BINARY SEARCH TREE\n");
 	switch(bst_p->type)
 	{
 		case NON_SELF_BALANCING :
@@ -310,10 +307,11 @@ void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 			break;
 		}
 	}
-	printf("BST root : [%p]\n", bst_p->root);
-	printf("BST node_offset : [%u]\n", bst_p->node_offset);
+	printf("node_offset : [%u]\n", bst_p->node_offset);
+	printf("root : [%p]\n", bst_p->root);
+
 	print_tree(bst_p, bst_p->root, print_element);
-	printf("--\n\n");
+	printf("--\n\n\n");
 }
 
 void print_bstnode_debug(bstnode* node_p)

@@ -246,6 +246,9 @@ int main()
 
 	printf("STARTING TO REMOVE NODES\n");
 
+	printf("\nFirst we try to remove two nodes which compare equal to  some data (node) already in the bst, but these pointers (data) are not themselves existing in the bst\n");
+	printf("As you predict this both operation would Fail, since you need to find or already know exactly, which node from the bst you want to remove\n\n");
+
 	error = remove_from_bst(bst_p, &((ts){-1}));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
@@ -253,6 +256,9 @@ int main()
 	error = remove_from_bst(bst_p, &((ts){0}));
 	printf("node removed = %d\n", error);
 	print_bst(bst_p, print_ts);
+
+	printf("\nFor all the below operations, we first call a find with equal data\n");
+	printf("And then on the found node, which exists in the bst, we call remove, and these operations will now succeed\n\n");
 
 	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){0})));
 	printf("node removed = %d\n", error);

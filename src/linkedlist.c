@@ -15,10 +15,9 @@ int is_new_llnode(linkedlist* ll, llnode* node_p)
 
 void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
 {
+	ll->node_offset = node_offset;
 	ll->head = NULL;
 	ll->tail = NULL;
-	ll->node_count = 0;
-	ll->node_offset = node_offset;
 }
 
 void initialize_llnode(llnode* node_p)
@@ -120,7 +119,6 @@ int insert_head(linkedlist* ll, const void* data_p)
 	else
 		insert_node_before(ll, ll->head, new_node);
 
-	ll->node_count++;
 	return 1;
 }
 
@@ -140,7 +138,6 @@ int insert_tail(linkedlist* ll, const void* data_p)
 	else
 		insert_node_after(ll, ll->tail, new_node);
 
-	ll->node_count++;
 	return 1;
 }
 
@@ -155,7 +152,6 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data)
 
 	insert_node_before(ll, node_xist, new_node);
 
-	ll->node_count++;
 	return 1;
 }
 
@@ -170,7 +166,6 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 
 	insert_node_after(ll, node_xist, new_node);
 
-	ll->node_count++;
 	return 1;
 }
 
@@ -208,7 +203,6 @@ int remove_head(linkedlist* ll)
 		llnode* node_p = ll->head;
 		remove_node(ll, node_p);
 		initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
-		ll->node_count--;
 		return 1;
 	}
 
@@ -223,7 +217,6 @@ int remove_tail(linkedlist* ll)
 		llnode* node_p = ll->tail;
 		remove_node(ll, node_p);
 		initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
-		ll->node_count--;
 		return 1;
 	}
 
@@ -240,14 +233,11 @@ int remove_from_list(linkedlist* ll, const void* data)
 
 	remove_node(ll, node_p);
 	initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
-	ll->node_count--;
 	return 1;
 }
 
 const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 {
-	if(!(n < ll->node_count))
-		return NULL;
 	llnode* node_p = ll->head;
 	while(node_p != NULL && n > 0)
 	{
@@ -259,8 +249,6 @@ const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 
 const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
 {
-	if(!(n < ll->node_count))
-		return NULL;
 	llnode* node_p = ll->tail;
 	while(node_p != NULL && n > 0)
 	{
@@ -307,9 +295,10 @@ static void print_linkedlist_wrapper(linkedlist* ll, const llnode* node_p, void 
 
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 {
-	printf("Linkedlist : %u nodes\n", ll->node_count);
-	printf("head : %p\n", ll->head);
-	printf("tail : %p\n", ll->tail);
+	printf("LINKED LIST\n");
+	printf("node_offset : [%u]\n", ll->node_offset);
+	printf("head : [%p]\n", ll->head);
+	printf("tail : [%p]\n", ll->tail);
 	
 	llnode* node_p = ll->head;
 	while(node_p != NULL)
@@ -317,6 +306,5 @@ void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 		print_linkedlist_wrapper(ll, node_p, print_element);
 		node_p = node_p->next;
 	}
-
-	printf("\n");
+	printf("--\n\n\n");
 }
