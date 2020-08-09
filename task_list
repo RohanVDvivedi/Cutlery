@@ -1,6 +1,8 @@
- * hashmap needs a revamp
- * store only one instance to linkedlist or bst in the hashmap across all the buckets
- * add implementation for a singly linkedlist
- * change that linkedlist to a singly linkedlist, in the hashmap
-
  * decrease one variable in queue from three
+ * make linkedlist as circular doubly list, linkedlist only stores head to the list, linkedlist->head->prev = tail (of linkedlist), similarly linkedlist->head->prev->next (i.e. tail->next) = head (of linkedlist), this will help us to reduce 1 variable from the linkedlist, and help us in making the linkedlist compatible to both singly_list and double_list
+ * provide support for linkedlist type (SINGLY_LIST or DOUBLY_LIST), add a enum to be passed while creating the linkedlist. the methods which can not be implemented for singly list, mark to always return NULL or error
+
+ * add implementation for a singly linkedlist
+
+ * store only one instance to linkedlist or bst in the hashmap across all the buckets (*future feature)
+ * change that linkedlist to a singly linkedlist, in the hashmap (*future feature)
