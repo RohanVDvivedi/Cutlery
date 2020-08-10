@@ -7,11 +7,14 @@
 
 // utility
 // to check if a node is new
-int is_new_llnode(linkedlist* ll, llnode* node_p)
+int is_new_sllnode(linkedlist* ll, sllnode* node_p)
 {
-	if(ll->type == )
-	return ((node_p->next == NULL) && (node_p->prev == NULL)
-		&& (ll->head != node_p));
+	return ((node_p->next == NULL) && (ll->head != node_p));
+}
+
+int is_new_dllnode(linkedlist* ll, dllnode* node_p)
+{
+	return ((node_p->next == NULL) && (node_p->prev == NULL) && (ll->head != node_p));
 }
 
 void initialize_llnode(llnode* node_p)
