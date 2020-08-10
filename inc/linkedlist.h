@@ -51,8 +51,6 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 int remove_head(linkedlist* ll);
 int remove_tail(linkedlist* ll);
 int remove_from_list(linkedlist*ll, const void* data);
-int remove_next_of(linkedlist* ll, const void* data_xist);
-int remove_prev_of(linkedlist* ll, const void* data_xist);
 
 // This function is tricky to explain, it returns true 2 types of nodes
 // 1. a node that does not exist in any linkedlist
