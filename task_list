@@ -1,7 +1,3 @@
  * decrease one variable in queue from three
- * provide support for linkedlist type (SINGLY_LIST or DOUBLY_LIST), add a enum to be passed while creating the linkedlist. the methods which can not be implemented for singly list, mark to always return NULL or error
-
- * add implementation for a singly linkedlist
-
- * store only one instance to linkedlist or bst in the hashmap across all the buckets (*future feature)
- * change that linkedlist to a singly linkedlist, in the hashmap (*future feature)
+ * store only one instance to linkedlist or bst in the hashmap across all the buckets
+ * add implementation for a singly linkedlist, call it lean list
