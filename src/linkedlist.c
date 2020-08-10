@@ -262,13 +262,15 @@ void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 	printf("LINKED LIST\n");
 	printf("node_offset : [%u]\n", ll->node_offset);
 	printf("head : [%p]\n", ll->head);
-	
-	llnode* node_p = ll->head;
-	do
+	if(!is_linkedlist_empty(ll))
 	{
-		print_linkedlist_wrapper(ll, node_p, print_element);
-		node_p = node_p->next;
+		llnode* node_p = ll->head;
+		do
+		{
+			print_linkedlist_wrapper(ll, node_p, print_element);
+			node_p = node_p->next;
+		}
+		while(node_p != ll->head);
 	}
-	while(node_p != ll->head);
 	printf("--\n\n\n");
 }
