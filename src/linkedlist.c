@@ -174,8 +174,10 @@ static void remove_node(linkedlist* ll, llnode* node_p)
 
 	// if node_p is the head node
 	// update the head reference of the linkedlist to next of the node_p before deletion
-	if(node_p == ll->head)
+	if(ll->head == node_p)
 		ll->head = node_p->next;
+	if(ll->head == node_p)	// if there is only one node, then the next of head is also head, hence make head NULL
+		ll->head = NULL;
 
 	node_p->next = NULL;
 	node_p->prev = NULL;
