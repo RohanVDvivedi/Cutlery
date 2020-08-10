@@ -31,6 +31,8 @@ void initialize_linkedlist(linkedlist* ll, unsigned int node_offset);
 // always initialize your linkedlist node before using it
 void initialize_llnode(llnode* node_p);
 
+int is_linkedlist_empty(const linkedlist* ll);
+
 // simply gets head node data
 const void* get_head(linkedlist* ll);
 const void* get_tail(linkedlist* ll);
@@ -64,8 +66,6 @@ int is_new_llnode(linkedlist* ll, llnode* node_p);
 // while the second parameter is the data that has been provided by you
 // it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
 const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
-
-int is_linkedlist_empty(const linkedlist* ll);
 
 // perform operation on all the elements of the linked list
 // the function is designed well, you may call free on your data, in the provided operation function

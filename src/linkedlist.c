@@ -46,7 +46,7 @@ const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 	llnode* head = ll->head;
 	if(n == 0)
 		return head;
-	llnode* node_p = tail;
+	llnode* node_p = head;
 	while(node_p != head && n > 0)
 	{
 		n--;
@@ -126,12 +126,12 @@ int insert_tail(linkedlist* ll, const void* data_p)
 	// case when the linkedlist is empty
 	if(is_linkedlist_empty(ll))
 	{
-		ll->tail = new_node;
+		ll->head = new_node;
 		ll->head->next = new_node;
 		ll->head->prev = new_node;
 	}
 	else
-		insert_node_after(ll, ll->tail, new_node);
+		insert_node_after(ll, ll->head->prev, new_node);
 
 	return 1;
 }
@@ -166,25 +166,14 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 
 static void remove_node(linkedlist* ll, llnode* node_p)
 {
-	// if the node to be removed is not the last node
-	// we have to update the prev pointer of "the node next to node_p" to the "previous node of node_p" 
-	if(node_p->next != NULL)
-		node_p->next->prev = node_p->prev;
-
-	// if the node to be removed is not the first node
-	// we have to update the next pointer of "the node previous to node_p" to the "next node of node_p" 
-	if(node_p->prev != NULL)
-		node_p->prev->next = node_p->next;
+	// first update next and prev nodes of node_p
+	node_p->next->prev = node_p->prev;
+	node_p->prev->next = node_p->next;
 
 	// if node_p is the head node
 	// update the head reference of the linkedlist to next of the node_p before deletion
 	if(node_p == ll->head)
 		ll->head = node_p->next;
-
-	// if node_p is the head node
-	// update the tail reference of the linkedlist to prev of the node_p before deletion
-	if(node_p == ll->tail)
-		ll->tail = node_p->prev;
 
 	node_p->next = NULL;
 	node_p->prev = NULL;
@@ -192,8 +181,7 @@ static void remove_node(linkedlist* ll, llnode* node_p)
 
 int remove_head(linkedlist* ll)
 {
-	// if there is a head node remove the head node
-	if(ll->head != NULL)
+	if(!is_linkedlist_empty(ll))
 	{
 		llnode* node_p = ll->head;
 		remove_node(ll, node_p);
@@ -206,10 +194,9 @@ int remove_head(linkedlist* ll)
 
 int remove_tail(linkedlist* ll)
 {
-	// if there is a tail node remove the tail node
-	if(ll->tail != NULL)
+	if(!is_linkedlist_empty(ll))
 	{
-		llnode* node_p = ll->tail;
+		llnode* node_p = ll->head->prev;
 		remove_node(ll, node_p);
 		initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
 		return 1;
@@ -233,28 +220,32 @@ int remove_from_list(linkedlist* ll, const void* data)
 
 const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
 {
+	if(is_linkedlist_empty(ll))
+		return NULL;
 	llnode* node_p = ll->head;
-	while(node_p != NULL)
+	do
 	{
 		const void* data_at_node = get_data(node_p);
 		if(compare(data_at_node, data) == 0)
 			return data_at_node;
 		node_p = node_p->next;
 	}
+	while(node_p != ll->head);
 	return NULL;
 }
 
 void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
+	if(is_linkedlist_empty(ll))
+		return;
 	llnode* node_p = ll->head;
-	while(node_p != NULL)
+	do
 	{
-		// cache the next element, since we do not trust the user's function
-		// there can be a seg fault if they decide to call free o their data in the operation function
 		llnode* next = node_p->next;
 		operation(get_data(node_p), additional_params);
 		node_p = next;
 	}
+	while(node_p != ll->head);
 }
 
 static void print_linkedlist_wrapper(linkedlist* ll, const llnode* node_p, void (*print_element)(const void* data_p))
@@ -271,13 +262,13 @@ void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
 	printf("LINKED LIST\n");
 	printf("node_offset : [%u]\n", ll->node_offset);
 	printf("head : [%p]\n", ll->head);
-	printf("tail : [%p]\n", ll->tail);
 	
 	llnode* node_p = ll->head;
-	while(node_p != NULL)
+	do
 	{
 		print_linkedlist_wrapper(ll, node_p, print_element);
 		node_p = node_p->next;
 	}
+	while(node_p != ll->head);
 	printf("--\n\n\n");
 }
