@@ -47,11 +47,12 @@ const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 	if(n == 0)
 		return head;
 	llnode* node_p = head;
-	while(node_p != head && n > 0)
+	do
 	{
 		n--;
 		node_p = node_p->next;
 	}
+	while(node_p != head && n > 0);
 	return (node_p == head) ? NULL : get_data(node_p);
 }
 
@@ -63,11 +64,12 @@ const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
 	if(n == 0)
 		return tail;
 	llnode* node_p = tail;
-	while(node_p != tail && n > 0)
+	do
 	{
 		n--;
 		node_p = node_p->prev;
 	}
+	while(node_p != tail && n > 0);
 	return (node_p == tail) ? NULL : get_data(node_p);
 }
 

@@ -51,6 +51,8 @@ int main()
 	insert_tail(ll, &((ts){6, "six", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
+	print_ts(get_nth_from_head(ll, 1));
+
 	insert_after(ll, get_nth_from_head(ll, 1), &((ts){3, "three", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
@@ -85,6 +87,26 @@ int main()
 
 	printf("Searching for structure with a = 4\n");
 	print_ts(find_equals_in_list(ll, &((ts){4}), test_compare));
+	printf("\n");
+
+	printf("Searching for structure with a = 1\n");
+	print_ts(find_equals_in_list(ll, &((ts){1}), test_compare));
+	printf("\n");
+
+	printf("Searching for structure with a = 2\n");
+	print_ts(find_equals_in_list(ll, &((ts){2}), test_compare));
+	printf("\n");
+
+	printf("Searching for structure with a = -1\n");
+	print_ts(find_equals_in_list(ll, &((ts){-1}), test_compare));
+	printf("\n");
+
+	printf("Searching for structure with a = 6\n");
+	print_ts(find_equals_in_list(ll, &((ts){6}), test_compare));
+	printf("\n");
+
+	printf("Searching for structure with a = 5\n");
+	print_ts(find_equals_in_list(ll, &((ts){5}), test_compare));
 	printf("\n");
 
 	return 0;
