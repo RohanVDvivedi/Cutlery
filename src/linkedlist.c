@@ -9,21 +9,27 @@
 // to check if a node is new
 int is_new_llnode(linkedlist* ll, llnode* node_p)
 {
+	if(ll->type == )
 	return ((node_p->next == NULL) && (node_p->prev == NULL)
 		&& (ll->head != node_p));
-}
-
-void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
-{
-	ll->node_offset = node_offset;
-	ll->head = NULL;
-	ll->tail = NULL;
 }
 
 void initialize_llnode(llnode* node_p)
 {
 	node_p->next = NULL;
 	node_p->prev = NULL;
+}
+
+void initialize_sllnode(sllnode* node_p)
+{
+	node_p->next = NULL;
+}
+
+void initialize_linkedlist(linkedlist* ll, lltype type, unsigned int node_offset)
+{
+	ll->type = type;
+	ll->node_offset = node_offset;
+	ll->head = NULL;
 }
 
 int is_linkedlist_empty(const linkedlist* ll)

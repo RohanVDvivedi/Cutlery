@@ -45,7 +45,7 @@ static void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned int
 			{
 				// create a new linked list
 				ds_p = malloc(sizeof(linkedlist));
-				initialize_linkedlist((linkedlist*)ds_p, hashmap_p->node_offset);
+				initialize_linkedlist((linkedlist*)ds_p, DOUBLY_LIST, hashmap_p->node_offset);
 				break;
 			}
 			case ELEMENTS_AS_RED_BLACK_BST :
