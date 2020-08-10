@@ -11,6 +11,7 @@ struct llnode
 	llnode* prev;	// the prev of the head node points to tail
 };
 
+// it is a circular doubly linkedlist
 typedef struct linkedlist linkedlist;
 struct linkedlist
 {
