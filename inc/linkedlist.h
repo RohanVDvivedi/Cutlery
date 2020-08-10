@@ -19,7 +19,8 @@ struct linkedlist
 	unsigned int node_offset;
 
 	// head->next->...->next = tail
-	// always head->prev = tail but tail->prev = NULL
+	// tail->prev->...->prev = head
+	// always head->prev = tail but tail->prev = head
 	llnode* head;
 };
 

@@ -9,15 +9,13 @@
 // to check if a node is new
 int is_new_llnode(linkedlist* ll, llnode* node_p)
 {
-	return ((node_p->next == NULL) && (node_p->prev == NULL)
-		&& (ll->head != node_p));
+	return ((node_p->next == NULL) && (node_p->prev == NULL) && (ll->head != node_p));
 }
 
 void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
 {
 	ll->node_offset = node_offset;
 	ll->head = NULL;
-	ll->tail = NULL;
 }
 
 void initialize_llnode(llnode* node_p)
@@ -38,69 +36,64 @@ const void* get_head(linkedlist* ll)
 
 const void* get_tail(linkedlist* ll)
 {
-	return ((ll->tail == NULL) ? NULL : get_data(ll->tail));
+	return ((ll->head == NULL) ? NULL : get_data(ll->head->prev));
+}
+
+const void* get_nth_from_head(linkedlist* ll, unsigned int n)
+{
+	if(is_linkedlist_empty(ll))
+		return NULL;
+	llnode* head = ll->head;
+	if(n == 0)
+		return head;
+	llnode* node_p = tail;
+	while(node_p != head && n > 0)
+	{
+		n--;
+		node_p = node_p->next;
+	}
+	return (node_p == head) ? NULL : get_data(node_p);
+}
+
+const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
+{
+	if(is_linkedlist_empty(ll))
+		return NULL;
+	llnode* tail = ll->head->prev;
+	if(n == 0)
+		return tail;
+	llnode* node_p = tail;
+	while(node_p != tail && n > 0)
+	{
+		n--;
+		node_p = node_p->prev;
+	}
+	return (node_p == tail) ? NULL : get_data(node_p);
 }
 
 static void insert_node_before(linkedlist* ll, llnode* node_p, llnode* new_node)
-{	
-	// if there is no node before node_p
-	// we are basically adding a node to the head
-	if(node_p->prev == NULL)
-	{
-		// the prev of new node is NULL
-		// and its next is node_p
-		// since it is going to be the last
-		new_node->prev = NULL;
-		new_node->next = node_p;
+{
+	// first update the new_node's prev and next references
+	new_node->prev = node_p->prev;
+	new_node->next = node_p;
 
-		// the new node is before node_p (next of the new_node)
-		new_node->next->prev = new_node;
+	// then update the next of prev of new_node to itself and the prev of next of new_node to itself
+	new_node->prev->next = new_node;
+	new_node->next->prev = new_node;
 
-		// since this is the new head node
-		// we update the reference to the head node in the linkedlist struct
+	if(node_p == ll->head)
 		ll->head = new_node;
-	}
-	else
-	{
-		// first update the new_node's prev and next references
-		new_node->prev = node_p->prev;
-		new_node->next = node_p;
-
-		// then update the next of prev of new_node to itself and the prev of next of new_node to itself
-		new_node->prev->next = new_node;
-		new_node->next->prev = new_node;
-	}
 }
 
 static void insert_node_after(linkedlist* ll, llnode* node_p, llnode* new_node)
 {
-	// if there is no node after node_p
-	// we are basically adding a node to the tail
-	if(node_p->next == NULL)
-	{
-		// the prev of new node is node_p
-		// and its next is NULL
-		// since it is going to be the last
-		new_node->prev = node_p;
-		new_node->next = NULL;
+	// first update the new_node's prev and next references
+	new_node->prev = node_p;
+	new_node->next = node_p->next;
 
-		// the new node is after node_p (prev of new_node)
-		new_node->prev->next = new_node;
-
-		// since this is the new tail node
-		// we update the reference to the tail node in the linkedlist struct
-		ll->tail = new_node;
-	}
-	else
-	{
-		// first update the new_node's prev and next references
-		new_node->prev = node_p;
-		new_node->next = node_p->next;
-
-		// then update the next of prev of new_node to itself and the prev of next of new_node to itself
-		new_node->prev->next = new_node;
-		new_node->next->prev = new_node;
-	}
+	// then update the next of prev of new_node to itself and the prev of next of new_node to itself
+	new_node->prev->next = new_node;
+	new_node->next->prev = new_node;
 }
 
 int insert_head(linkedlist* ll, const void* data_p)
@@ -111,10 +104,11 @@ int insert_head(linkedlist* ll, const void* data_p)
 		return 0;
 
 	// case when the linkedlist is empty
-	if(ll->head == NULL)
+	if(is_linkedlist_empty(ll))
 	{
 		ll->head = new_node;
-		ll->tail = ll->head;
+		ll->head->next = new_node;
+		ll->head->prev = new_node;
 	}
 	else
 		insert_node_before(ll, ll->head, new_node);
@@ -130,10 +124,11 @@ int insert_tail(linkedlist* ll, const void* data_p)
 		return 0;
 
 	// case when the linkedlist is empty
-	if(ll->tail == NULL)
+	if(is_linkedlist_empty(ll))
 	{
 		ll->tail = new_node;
-		ll->head = ll->tail;
+		ll->head->next = new_node;
+		ll->head->prev = new_node;
 	}
 	else
 		insert_node_after(ll, ll->tail, new_node);
@@ -234,28 +229,6 @@ int remove_from_list(linkedlist* ll, const void* data)
 	remove_node(ll, node_p);
 	initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
 	return 1;
-}
-
-const void* get_nth_from_head(linkedlist* ll, unsigned int n)
-{
-	llnode* node_p = ll->head;
-	while(node_p != NULL && n > 0)
-	{
-		n--;
-		node_p = node_p->next;
-	}
-	return get_data(node_p);
-}
-
-const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
-{
-	llnode* node_p = ll->tail;
-	while(node_p != NULL && n > 0)
-	{
-		n--;
-		node_p = node_p->prev;
-	}
-	return get_data(node_p);
 }
 
 const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
