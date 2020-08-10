@@ -242,6 +242,36 @@ int remove_from_list(linkedlist* ll, const void* data)
 	return 1;
 }
 
+int remove_next_of(linkedlist* ll, const void* data_xist)
+{
+	llnode* node_p = get_node(data_xist);
+
+	if(is_new_llnode(ll, node_p))	// data_xist must not be a new node
+		return 0;
+
+	if(node_p->next == NULL)
+		return 0;
+
+	remove_node(ll, node_p->next);
+	initialize_llnode(node_p->next);	// re-initialize the node as soon as it is removed
+	return 1;
+}
+
+int remove_prev_of(linkedlist* ll, const void* data_xist)
+{
+	llnode* node_p = get_node(data_xist);
+
+	if(is_new_llnode(ll, node_p))	// data_xist must not be a new node
+		return 0;
+
+	if(node_p->prev == NULL)
+		return 0;
+
+	remove_node(ll, node_p->next);
+	initialize_llnode(node_p->next);	// re-initialize the node as soon as it is removed
+	return 1;
+}
+
 const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 {
 	llnode* node_p = ll->head;
