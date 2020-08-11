@@ -1,3 +1,2 @@
- * decrease one variable in queue from three
  * store only one instance to linkedlist or bst in the hashmap across all the buckets
  * add implementation for a singly linkedlist, call it lean list
