@@ -24,66 +24,30 @@ static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 	return index;
 }
 
-// utility, O(1) operation
-static void* get_data_structure_for_index(const hashmap* hashmap_p, unsigned int index, int new_if_empty)
+static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 {
-	// if you try accessing hashtable, index greater than its size
-	if(index >= hashmap_p->total_bucket_count)
+	switch(hashmap_p->hashmap_policy)
 	{
-		return NULL;
-	}
-
-	// get the data structure at that index
-	void* ds_p = hashmap_p->holder[index];
-
-	// if the data structure is NULL
-	if(ds_p == NULL && new_if_empty)
-	{
-		switch(hashmap_p->hashmap_policy)
+		case ELEMENTS_AS_LINKEDLIST :
 		{
-			case ELEMENTS_AS_LINKEDLIST :
-			{
-				// create a new linked list
-				ds_p = malloc(sizeof(linkedlist));
-				initialize_linkedlist((linkedlist*)ds_p, hashmap_p->node_offset);
-				break;
-			}
-			case ELEMENTS_AS_RED_BLACK_BST :
-			{
-				// create a new red black tree
-				ds_p = malloc(sizeof(bst));
-				initialize_bst((bst*)ds_p, RED_BLACK_TREE, hashmap_p->node_offset, hashmap_p->compare);
-				break;
-			}
-			case ELEMENTS_AS_AVL_BST :
-			{
-				// create a new avl tree
-				ds_p = malloc(sizeof(bst));
-				initialize_bst((bst*)ds_p, AVL_TREE, hashmap_p->node_offset, hashmap_p->compare);
-				break;
-			}
-			default :
-			{
-				break;
-			}
+			initialize_linkedlist((linkedlist*)ds_p, hashmap_p->node_offset);
+			break;
 		}
-
-		// set it at the index there
-		hashmap_p->holder[index] = ds_p;
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			initialize_bst((bst*)ds_p, RED_BLACK_TREE, hashmap_p->node_offset, hashmap_p->compare);
+			break;
+		}
+		case ELEMENTS_AS_AVL_BST :
+		{
+			initialize_bst((bst*)ds_p, AVL_TREE, hashmap_p->node_offset, hashmap_p->compare);
+			break;
+		}
+		default :
+		{
+			break;
+		}
 	}
-
-	// return the data structure at that index
-	return ds_p;
-}
-
-// utility, O(1) operation
-static const void* get_data_structure_for_data(const hashmap* hashmap_p, const void* data, int new_if_empty)
-{
-	// get index for data
-	unsigned int index = get_index(hashmap_p, data);
-
-	// return the data structure at that index
-	return get_data_structure_for_index(hashmap_p, index, new_if_empty);
 }
 
 // function used for ROBINHOOD_HASHING only
@@ -158,20 +122,20 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
-			// get the data structure for that key, without any new creation
-			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
-
-			// find value in a linkedlist
-			return (ds_p == NULL) ? NULL : find_equals_in_list(((linkedlist*)(ds_p)), data, hashmap_p->compare);
+			unsigned int index = get_index(hashmap_p, data);
+			linkedlist ll; init_data_structure(hashmap_p, &ll);
+			
+			ll.head = hashmap_p->holder[index];
+			return find_equals_in_list(&ll, data, hashmap_p->compare);
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			// get the data structure for that key, without any new creation
-			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
-
-			// find value in a bst
-			return (ds_p == NULL) ? NULL : find_equals_in_bst(((bst*)(ds_p)), data);
+			unsigned int index = get_index(hashmap_p, data);
+			bst bstt; init_data_structure(hashmap_p, &bstt);
+			
+			bstt.root = hashmap_p->holder[index];
+			return find_equals_in_bst(&bstt, data);
 		}
 		default :
 		{
@@ -237,21 +201,23 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
-			// retrieve data structure for that key
-			void* ds_p = (void*)get_data_structure_for_data(hashmap_p, data, 1);
+			unsigned int index = get_index(hashmap_p, data);
+			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
-			// insert the new bucket in the linkedlist
-			inserted = insert_head(((linkedlist*)(ds_p)), data);
+			ll.head = hashmap_p->holder[index];
+			inserted = insert_head(&ll, data);
+			hashmap_p->holder[index] = ll.head;
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			// retrieve data structure for that key
-			void* ds_p = (void*)get_data_structure_for_data(hashmap_p, data, 1);
-
-			// insert the new bucket in the bst
-			inserted = insert_in_bst(((bst*)(ds_p)), data);
+			unsigned int index = get_index(hashmap_p, data);
+			bst bstt; init_data_structure(hashmap_p, &bstt);
+			
+			bstt.root = hashmap_p->holder[index];
+			inserted = insert_in_bst(&bstt, data);
+			hashmap_p->holder[index] = bstt.root;
 			break;
 		}
 	}
@@ -304,23 +270,23 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
-			// get the data structure for the given key
-			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
+			unsigned int index = get_index(hashmap_p, data);
+			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
-			// if there is a linkedlist remove value from that tree
-			// here keep the found_bucket_p as NULL, because if you see linkedlist implementation, it handles memory allocation for buckets on its own 
-			deleted = ((ds_p == NULL) ? 0 : remove_from_list(((linkedlist*)(ds_p)), data));
+			ll.head = hashmap_p->holder[index];
+			deleted = remove_from_list(&ll, data);
+			hashmap_p->holder[index] = ll.head;
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			// get the data structure for the given key
-			const void* ds_p = get_data_structure_for_data(hashmap_p, data, 0);
-
-			// if there is a binary search tree remove value from that tree
-			// here keep the found_bucket_p as NULL, because if you see balancedbst implementation, it handles memory allocation for buckets on its own 
-			deleted = ((ds_p == NULL) ? 0 : remove_from_bst(((bst*)(ds_p)), data));
+			unsigned int index = get_index(hashmap_p, data);
+			bst bstt; init_data_structure(hashmap_p, &bstt);
+			
+			bstt.root = hashmap_p->holder[index];
+			deleted = remove_from_bst(&bstt, data);
+			hashmap_p->holder[index] = bstt.root;
 			break;
 		}
 	}
@@ -333,30 +299,32 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 
 void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
+	linkedlist ll; init_data_structure(hashmap_p, &ll);
+	bst bstt; init_data_structure(hashmap_p, &bstt);
+
 	// iterate over all the buckets in the hashmap_p
 	for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
 	{
-		// get the datastructure to be print for that index
-		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
-
-		if(ds_p != NULL)
+		if(hashmap_p->holder[index] != NULL)
 		{
 			switch(hashmap_p->hashmap_policy)
 			{
 				case ROBINHOOD_HASHING :
 				{
-					operation(ds_p, additional_params);
+					operation(hashmap_p->holder[index], additional_params);
 					break;
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					for_each_in_list(((linkedlist*)(ds_p)), operation, additional_params);
+					ll.head = hashmap_p->holder[index];
+					for_each_in_list(&ll, operation, additional_params);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
-					for_each_in_bst(((bst*)(ds_p)), POST_ORDER, operation, additional_params);
+					bstt.root = hashmap_p->holder[index];
+					for_each_in_bst(&bstt, POST_ORDER, operation, additional_params);
 					break;
 				}
 				default :
@@ -398,32 +366,34 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 	printf("occupancy : %u\n", hashmap_p->occupancy);
 	printf("total_bucket_count : %u\n", hashmap_p->total_bucket_count);
 
+	linkedlist ll; init_data_structure(hashmap_p, &ll);
+	bst bstt; init_data_structure(hashmap_p, &bstt);
+
 	// iterate over all the buckets in the hashmap_p
 	for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
 	{
 		printf("index = %u\n", index);
 
-		// get the datastructure to be print for that index
-		const void* ds_p = get_data_structure_for_index(hashmap_p, index, 0);
-
-		if(ds_p != NULL)
+		if(hashmap_p->holder[index] != NULL)
 		{
 			switch(hashmap_p->hashmap_policy)
 			{
 				case ROBINHOOD_HASHING :
 				{
-					printf("  \t -> ");print_element(ds_p);printf("\n");
+					printf("  \t -> ");print_element(hashmap_p->holder[index]);printf("\n");
 					break;
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					print_linkedlist(((linkedlist*)(ds_p)), print_element);
+					ll.head = hashmap_p->holder[index];
+					print_linkedlist(&ll, print_element);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
-					print_bst(((bst*)(ds_p)), print_element);
+					bstt.root = hashmap_p->holder[index];
+					print_bst(&bstt, print_element);
 					break;
 				}
 				default :
@@ -440,16 +410,5 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 
 void deinitialize_hashmap(hashmap* hashmap_p)
 {
-	if(hashmap_p->hashmap_policy != ROBINHOOD_HASHING)
-	{
-		for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
-		{
-			if(hashmap_p->holder[index] != NULL)
-			{
-				free(hashmap_p->holder[index]);
-				hashmap_p->holder[index] = NULL;
-			}
-		}
-	}
 	free(hashmap_p->holder);
 }
