@@ -9,13 +9,17 @@ void initialize_queue(queue* queue_p, unsigned int expected_size)
 {
 	initialize_array(&(queue_p->queue_holder), expected_size + 1);
 	queue_p->queue_size = 0;
-	queue_p->earliest_element_index = 1;
-	queue_p->latest_element_index = 0;
+	queue_p->earliest_element_index = 0;
 }
 
 static unsigned int revolveToNextIndex(queue* queue_p, unsigned int index)
 {
 	return ((index + 1) % (queue_p->queue_holder.total_size));
+}
+
+static unsigned int latest_element_index(queue* queue_p)
+{
+	return ((queue_p->earliest_element_index + queue_p->queue_size - 1) % (queue_p->queue_holder.total_size));
 }
 
 static void push_no_expand(queue* queue_p, const void* data_p)

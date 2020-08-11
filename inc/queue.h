@@ -21,7 +21,8 @@ struct queue
 	unsigned int earliest_element_index;
 
 	// index, after which a new element will be inserted, this is the index where the latest element was inserted
-	unsigned int latest_element_index;
+	// this attribute of the queue is now, computed, and not stored directly in the queue structure
+	// unsigned int latest_element_index;
 };
 
 // initializes queue and it will depend on initialize_array to give necessary memory to manage internal element contents
