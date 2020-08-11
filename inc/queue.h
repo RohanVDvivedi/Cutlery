@@ -14,7 +14,7 @@ struct queue
 	// array to store queue elements
 	array queue_holder;
 
-	// size of queue
+	// current size of queue, i.e. number of elements in it
 	unsigned int queue_size;
 
 	// index, where the oldest element was inserted, the element at this index is popped
