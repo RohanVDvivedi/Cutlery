@@ -20,7 +20,7 @@ static unsigned int revolveToNextIndex(queue* queue_p, unsigned int index)
 // this is index where the latest element is located in the array
 static unsigned int latest_element_index(queue* queue_p)
 {
-	return ((queue_p->earliest_element_index + queue_p->queue_size - 1) % (queue_p->queue_holder.total_size));
+	return (((queue_p->earliest_element_index + queue_p->queue_holder.total_size) + queue_p->queue_size - 1) % (queue_p->queue_holder.total_size));
 }
 
 static void push_no_expand(queue* queue_p, const void* data_p)
