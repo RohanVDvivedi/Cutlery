@@ -4,7 +4,6 @@
 #include<stdio.h>
 
 // LINKEDLIST is a doubly circular linkedlist
-// while LEANLIST is singly non-circular linear linkedlist
 
 typedef struct llnode llnode;
 struct llnode
