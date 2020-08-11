@@ -17,6 +17,7 @@ static unsigned int revolveToNextIndex(queue* queue_p, unsigned int index)
 	return ((index + 1) % (queue_p->queue_holder.total_size));
 }
 
+// this is index where the latest element is located in the array
 static unsigned int latest_element_index(queue* queue_p)
 {
 	return ((queue_p->earliest_element_index + queue_p->queue_size - 1) % (queue_p->queue_holder.total_size));
@@ -25,20 +26,19 @@ static unsigned int latest_element_index(queue* queue_p)
 static void push_no_expand(queue* queue_p, const void* data_p)
 {
 	if(isQueueHolderFull(queue_p))
-	{
 		return;
-	}
-	queue_p->latest_element_index = revolveToNextIndex(queue_p, queue_p->latest_element_index);
-	set_element(&(queue_p->queue_holder), data_p, queue_p->latest_element_index);
+
+	unsigned latest_element_index_calculated = latest_element_index(queue_p);
+	unsigned int new_element_index = revolveToNextIndex(queue_p, latest_element_index_calculated);
+	set_element(&(queue_p->queue_holder), data_p, new_element_index);
 	queue_p->queue_size++;
 }
 
 static void pop_no_shrink(queue* queue_p)
 {
 	if(isQueueEmpty(queue_p))
-	{
 		return;
-	}
+	
 	set_element(&(queue_p->queue_holder), NULL, queue_p->earliest_element_index);
 	queue_p->earliest_element_index = revolveToNextIndex(queue_p, queue_p->earliest_element_index);
 	queue_p->queue_size--;
@@ -79,25 +79,22 @@ void pop(queue* queue_p)
 {
 	pop_no_shrink(queue_p);
 
+	unsigned latest_element_index_calculated = latest_element_index(queue_p);
+
 	// we go forward to shrink the queue holder only if it is not empty -> if the queue_holder is already empty, it is small enough to not have allocated much memory to shrink it significantly
 	// we also check that the earliest element_index is lesser or equal to latest element index, this allow us to avoid undesired rotations required in the ring buffer
-	if(!isQueueEmpty(queue_p) && (queue_p->earliest_element_index <= queue_p->latest_element_index))
+	if(!isQueueEmpty(queue_p) && (queue_p->earliest_element_index <= latest_element_index_calculated))
 	{
-		int was_queue_array_shrunk = shrink_array(&(queue_p->queue_holder), queue_p->earliest_element_index, queue_p->latest_element_index);
+		int was_queue_array_shrunk = shrink_array(&(queue_p->queue_holder), queue_p->earliest_element_index, latest_element_index_calculated);
 		if(was_queue_array_shrunk)
-		{
 			queue_p->earliest_element_index = 0;
-			queue_p->latest_element_index = queue_p->queue_size-1;
-		}
 	}
 }
 
 const void* get_top(queue* queue_p)
 {
 	if(isQueueEmpty(queue_p))
-	{
 		return NULL;
-	}
 	return get_element(&(queue_p->queue_holder), queue_p->earliest_element_index);
 }
 
@@ -105,8 +102,7 @@ void deinitialize_queue(queue* queue_p)
 {
 	deinitialize_array(&(queue_p->queue_holder));
 	queue_p->queue_size = 0;
-	queue_p->earliest_element_index = 1;
-	queue_p->latest_element_index = 0;
+	queue_p->earliest_element_index = 0;
 }
 
 int isQueueEmpty(queue* queue_p)
@@ -128,7 +124,7 @@ void print_queue(queue* queue_p, void (*print_element)(const void* data_p))
 {
 	printf("queue : \n");
 	printf("\tearliest_element_index : %u\n", queue_p->earliest_element_index);
-	printf("\tlatest_element_index : %u\n", queue_p->latest_element_index);
+	printf("\tlatest_element_index : %u\n", latest_element_index(queue_p));
 	printf("\tqueue_size : %u\n", queue_p->queue_size);
 	print_array(&(queue_p->queue_holder), print_element);printf("\n\n");
 }
