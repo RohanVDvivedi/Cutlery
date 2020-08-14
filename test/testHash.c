@@ -1,5 +1,8 @@
 #include<hashmap.h>
 
+#include<linkedlist.h>
+#include<bst.h>
+
 typedef struct teststruct ts;
 struct teststruct
 {
