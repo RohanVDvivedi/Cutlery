@@ -1,3 +1,4 @@
+#include<stdio.h>
 #include<bst.h>
 
 typedef struct teststruct ts;

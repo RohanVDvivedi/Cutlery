@@ -1,3 +1,4 @@
+#include<stdio.h>
 #include<hashmap.h>
 
 #include<linkedlist.h>

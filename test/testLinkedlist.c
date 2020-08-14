@@ -1,3 +1,4 @@
+#include<stdio.h>
 #include<linkedlist.h>
 
 typedef struct teststruct ts;
