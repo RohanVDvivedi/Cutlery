@@ -3,6 +3,9 @@
 #include<linkedlist.h>
 #include<bst.h>
 
+#include<stdio.h>
+#include<stdlib.h>
+
 void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int total_bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;

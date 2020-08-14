@@ -1,5 +1,10 @@
 #include<dstring.h>
 
+#include<stdio.h>
+#include<stdlib.h>
+#include<ctype.h>
+#include<string.h>
+
 dstring* get_dstring(const char* cstr_p, unsigned int additional_allocation)
 {
 	dstring* str_p = malloc(sizeof(dstring));

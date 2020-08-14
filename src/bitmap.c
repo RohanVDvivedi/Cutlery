@@ -1,5 +1,8 @@
 #include<bitmap.h>
 
+#include<stdio.h>
+#include<string.h>
+
 int get_bit(uint8_t* bitmap, uint32_t index)
 {
 	return (bitmap[index/8] >> (index % 8)) & 0x01;

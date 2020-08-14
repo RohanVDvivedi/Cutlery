@@ -1,9 +1,7 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
-#include<stdio.h>
 #include<stdint.h>
-#include<string.h>
 
 int get_bit(uint8_t* bitmap, uint32_t index);
 

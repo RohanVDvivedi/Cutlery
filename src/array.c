@@ -1,5 +1,9 @@
 #include<array.h>
 
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
 // this is the factor, by which the previous size of data_p_p will be incremented
 static const float increment_factor = 1.8;
 

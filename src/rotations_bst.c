@@ -1,6 +1,8 @@
 #include<rotations_bst.h>
 #include<bst_util.h>
 
+#include<stdio.h>
+
 /*      A                                _B_
 **     /  \                             /   \
 **    W    B        left rotation      A     C

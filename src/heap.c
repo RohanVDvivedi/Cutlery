@@ -1,9 +1,6 @@
 #include<heap.h>
 
-#define push 			push_heap
-#define pop 			pop_heap
-#define get_top 		get_top_heap
-#define for_each 		for_each_in_heap
+#include<stdio.h>
 
 void initialize_heap(heap* heap_p, unsigned int expected_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params)
 {
@@ -112,7 +109,7 @@ static void bubble_up(heap* heap_p, unsigned int index)
 	}
 }
 
-void push(heap* heap_p, const void* data)
+void push_heap(heap* heap_p, const void* data)
 {
 	// expand heap_holder if necessary
 	if(heap_p->heap_size >= heap_p->heap_holder.total_size)
@@ -133,7 +130,7 @@ void push(heap* heap_p, const void* data)
 	bubble_up(heap_p, heap_p->heap_size-1);
 }
 
-const void* get_top(const heap* heap_p)
+const void* get_top_heap(const heap* heap_p)
 {
 	// ther is no top element, if there are no elements in the heap
 	if(heap_p->heap_size == 0)
@@ -178,7 +175,7 @@ static void bubble_down(heap* heap_p, unsigned int index)
 	}
 }
 
-void pop(heap* heap_p)
+void pop_heap(heap* heap_p)
 {
 	// we can pop only if the heap size is greater than 0, and there is atleast 1 element
 	if(heap_p->heap_size > 0)
@@ -224,7 +221,7 @@ void heapify_at(heap* heap_p, unsigned int index)
 	}
 }
 
-void for_each(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params)
+void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params)
 {
 	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
 }
@@ -254,9 +251,9 @@ void print_heap(heap* heap_p, void (*print_element)(const void* data))
 	print_array(&(heap_p->heap_holder), print_element);
 	printf("\n");
 	printf("\tthe top element : ");
-	if(get_top(heap_p) != NULL)
+	if(get_top_heap(heap_p) != NULL)
 	{
-		print_element(get_top(heap_p));
+		print_element(get_top_heap(heap_p));
 	}
 	else
 	{
@@ -264,8 +261,3 @@ void print_heap(heap* heap_p, void (*print_element)(const void* data))
 	}
 	printf("\n");
 }
-
-#undef push
-#undef pop
-#undef get_top
-#undef for_each

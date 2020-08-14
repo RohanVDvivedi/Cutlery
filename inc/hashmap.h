@@ -1,9 +1,6 @@
 #ifndef HASHMAP_H
 #define HASHMAP_H
 
-#include<stdio.h>
-#include<stdlib.h>
-
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
 {

@@ -1,5 +1,7 @@
 #include<linkedlist.h>
 
+#include<stdio.h>
+
 // get data from llnode
 #define get_data(node_p) 	(((void*)(node_p)) - ll->node_offset)
 // get llnode from data

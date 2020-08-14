@@ -3,6 +3,8 @@
 #include<redblack_bst.h>
 #include<bst_util.h>
 
+#include<stdio.h>
+
 #define is_red_node(node_p)					\
 	((node_p != NULL) && (node_p->node_property == 0))
 

@@ -1,15 +1,7 @@
 #ifndef HEAP_H
 #define HEAP_H
 
-#include<stdio.h>
-#include<stdlib.h>
-
 #include<array.h>
-
-#define push 			push_heap
-#define pop 			pop_heap
-#define get_top 		get_top_heap
-#define for_each 		for_each_in_heap
 
 typedef enum heap_type heap_type;
 enum heap_type
@@ -49,13 +41,13 @@ void initialize_heap(heap* heap_p, unsigned int expected_size, heap_type type, i
 
 // push a new data element to the heap
 // O(log(N)) operation
-void push(heap* heap_p, const void* data);
+void push_heap(heap* heap_p, const void* data);
 
 // returns pointer to the minimum data of the heap, returns NULL if the heap is empty
-const void* get_top(const heap* heap_p);
+const void* get_top_heap(const heap* heap_p);
 
 // pop the top element from the heap, no element will be popped if the heap is already empty
-void pop(heap* heap_p);
+void pop_heap(heap* heap_p);
 
 // the below function is to be called when you doubt if the heap properties are being maintained at the given index
 // or because you changed the attributes of the data, which changed its ordering
@@ -63,16 +55,11 @@ void pop(heap* heap_p);
 void heapify_at(heap* heap_p, unsigned int index);
 
 // perform an operation on all the key value pairs for the heap
-void for_each(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
+void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
 
 // print, heap and all the elements of the heap
 void print_heap(heap* heap_p, void (*print_element)(const void* data));
 
 void deinitialize_heap(heap* heap_p);
-
-#undef push
-#undef pop
-#undef get_top
-#undef for_each
 
 #endif

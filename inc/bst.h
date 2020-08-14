@@ -5,8 +5,6 @@
 ** 	BST is short for Binary Search Tree
 */
 
-#include<stdio.h>
-
 typedef enum bsttype bsttype;
 enum bsttype
 {

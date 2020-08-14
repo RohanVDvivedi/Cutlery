@@ -1,9 +1,6 @@
- #include<queue.h>
+#include<queue.h>
 
-#define push 		push_queue
-#define pop 		pop_queue
-#define get_top 	get_top_queue
-#define for_each 	for_each_in_queue
+#include<stdio.h>
 
 void initialize_queue(queue* queue_p, unsigned int expected_size)
 {
@@ -44,7 +41,7 @@ static void pop_no_shrink(queue* queue_p)
 	queue_p->queue_size--;
 }
 
-void push(queue* queue_p, const void* data_p)
+void push_queue(queue* queue_p, const void* data_p)
 {
 	if(isQueueHolderFull(queue_p))
 	{
@@ -65,7 +62,7 @@ void push(queue* queue_p, const void* data_p)
 
 			while(!isQueueEmpty(&queue_old_temp))
 			{
-				const void* data_p = get_top(&queue_old_temp);
+				const void* data_p = get_top_queue(&queue_old_temp);
 				pop_no_shrink(&queue_old_temp);
 				push_no_expand(queue_p, data_p);
 			}
@@ -75,7 +72,7 @@ void push(queue* queue_p, const void* data_p)
 	push_no_expand(queue_p, data_p);
 }
 
-void pop(queue* queue_p)
+void pop_queue(queue* queue_p)
 {
 	pop_no_shrink(queue_p);
 
@@ -91,7 +88,7 @@ void pop(queue* queue_p)
 	}
 }
 
-const void* get_top(queue* queue_p)
+const void* get_top_queue(queue* queue_p)
 {
 	if(isQueueEmpty(queue_p))
 		return NULL;
@@ -115,7 +112,7 @@ int isQueueHolderFull(queue* queue_p)
 	return queue_p->queue_size == queue_p->queue_holder.total_size;
 }
 
-void for_each(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
+void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
 	for_each_non_null_in_array(&(queue_p->queue_holder), operation, additional_params);
 }
@@ -128,8 +125,3 @@ void print_queue(queue* queue_p, void (*print_element)(const void* data_p))
 	printf("\tqueue_size : %u\n", queue_p->queue_size);
 	print_array(&(queue_p->queue_holder), print_element);printf("\n\n");
 }
-
-#undef push
-#undef pop
-#undef get_top
-#undef for_each

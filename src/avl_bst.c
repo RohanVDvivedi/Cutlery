@@ -3,6 +3,8 @@
 #include<avl_bst.h>
 #include<bst_util.h>
 
+#include<stdio.h>
+
 // trivial
 #define max(a,b) ((a)>(b)?(a):(b))
 #define min(a,b) ((a)<(b)?(a):(b))

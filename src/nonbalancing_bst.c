@@ -2,6 +2,8 @@
 #include<rotations_bst.h>		// used only for interchange positions of nodes, no rotations performed
 #include<bst_util.h>
 
+#include<stdio.h>
+
 bstnode* get_smallest_node_from_node(bstnode* node_p)
 {
 	bstnode* prev = NULL;

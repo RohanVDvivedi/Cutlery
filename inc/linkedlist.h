@@ -1,8 +1,6 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-#include<stdio.h>
-
 // LINKEDLIST is a doubly circular linkedlist
 
 typedef struct llnode llnode;

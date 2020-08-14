@@ -1,8 +1,11 @@
 #include<bst.h>
+
 #include<nonbalancing_bst.h>
 #include<avl_bst.h>
 #include<redblack_bst.h>
 #include<bst_util.h>
+
+#include<stdio.h>
 
 void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
 {
