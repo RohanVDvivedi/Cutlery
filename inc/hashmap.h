@@ -3,10 +3,6 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
-
-#include<linkedlist.h>
-#include<bst.h>
 
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
