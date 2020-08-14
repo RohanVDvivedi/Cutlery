@@ -1,1 +1,3 @@
  * passable malloc and free implementation, for cutlery data structures (mainly handle array, hashmap,heap and stack) (*future feature)
+ * remove unnecessary dependencies from headers
+ * remove dependencies from stdio and stdlib (*future feature)
