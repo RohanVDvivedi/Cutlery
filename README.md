@@ -1,13 +1,13 @@
-# cutlery
+# Cutlery
 A c library that provides configurable data structures, serving as a backpack for any systems programming project.
 
 ## Setup instructions
 
 **Download source code :**
- * `git clone https://github.com/RohanVDvivedi/cutlery.git`
+ * `git clone https://github.com/RohanVDvivedi/Cutlery.git`
 
 **Build from source :**
- * `cd cutlery`
+ * `cd Cutlery`
  * `make clean all`
 
 **Install from the build :**
@@ -30,5 +30,5 @@ A c library that provides configurable data structures, serving as a backpack fo
 ## Instructions for uninstalling library
 
 **Uninstall :**
- * `cd cutlery`
+ * `cd Cutlery`
  * `sudo make uninstall`
