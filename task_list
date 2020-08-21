@@ -2,3 +2,8 @@
  * remove unnecessary dependencies from headers
  * remove dependencies from stdio and stdlib (*future feature)
  * remove complex node swap method call from bst remove function, keep the method but since this can be done in easier way with lesser operation so do it
+
+ * add dstring based slices, this helps in further develop lexers on top of that
+ * convert all print functions to dstring based serializers
+
+ * provide sorting and binary lookup in array datastructure
