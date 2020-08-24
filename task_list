@@ -1,9 +1,10 @@
  * passable malloc and free implementation, for cutlery data structures (mainly handle array, hashmap,heap and stack) (*future feature)
  * remove unnecessary dependencies from headers
  * remove dependencies from stdio and stdlib (*future feature)
+
  * remove complex node swap method call from bst remove function, keep the method but since this can be done in easier way with lesser operation so do it
 
  * add dstring based slices, this helps in further develop lexers on top of that
  * convert all print functions to dstring based serializers
 
- * provide sorting and binary lookup in array datastructure
+ * allow all print functions to serialize in debug and non debug modes
