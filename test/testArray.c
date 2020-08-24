@@ -149,7 +149,7 @@ int main()
 
 	print_array(array_p, print_ts);
 
-	sort_array(array_p, 0, test_sort_size, test_compare);
+	sort_array(array_p, 0, test_sort_size - 1, test_compare);
 
 	print_array(array_p, print_ts);
 
