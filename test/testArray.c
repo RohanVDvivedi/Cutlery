@@ -20,7 +20,15 @@ void print_ts(const void* tsv)
 
 int test_compare(const void* a, const void* b)
 {
-	if(a==NULL || b==NULL)
+	if(a==NULL && b==NULL)
+	{
+		return 0;
+	}
+	else if(a!=NULL && b==NULL)
+	{
+		return 1;
+	}
+	else if(a==NULL && b!=NULL)
 	{
 		return -1;
 	}
@@ -114,7 +122,10 @@ int main()
 
 	ts to_find = {444, "lol"};
 	printf("Finding data where a = %d\n", to_find.a);
+	printf("Linear search : ");
 	print_ts(get_element(array_p, linear_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare)));
+	printf("\nBinary search : ");
+	print_ts(get_element(array_p, binary_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare)));
 	printf("\n");
 
 	#if defined USE_STACK_MEMORY
