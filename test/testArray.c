@@ -131,13 +131,13 @@ int main()
 
 	// testing sort
 
+	#define test_sort_size 157
 
-	#define test_sort_size 123
+	#define start_index test_sort_size/33
+	#define end_index test_sort_size-1
 
 	while(array_p->total_size < test_sort_size)
-	{
 		expand_array(array_p);
-	}
 
 	ts ts_ss[test_sort_size];
 
@@ -149,7 +149,7 @@ int main()
 
 	print_array(array_p, print_ts);
 
-	sort_array(array_p, 0, test_sort_size - 1, test_compare);
+	sort_array(array_p, start_index, end_index, test_compare);
 
 	print_array(array_p, print_ts);
 
@@ -162,7 +162,7 @@ int main()
 		printf("Finding data where a = %d\n", to_find.a);
 
 		printf("Linear search : ");
-		index = linear_search_in_array(array_p, 0, test_sort_size - 1, ((void*)(&to_find)), test_compare);
+		index = linear_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
 		printf("%u : ", index);
 		if(index != array_p->total_size)
 			print_ts(get_element(array_p, index));
@@ -170,7 +170,7 @@ int main()
 			printf("Not found");
 
 		printf("\nBinary search : ");
-		index = binary_search_in_array(array_p, 0, test_sort_size - 1, ((void*)(&to_find)), test_compare);
+		index = binary_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
 		printf("%u : ", index);
 		if(index != array_p->total_size)
 			print_ts(get_element(array_p, index));
