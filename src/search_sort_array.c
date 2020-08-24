@@ -24,7 +24,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 
 	unsigned int sort_chunk_size = 1;
 	while(sort_chunk_size <= total_elements)
-	{printf("\nchunk => %u\n", sort_chunk_size);
+	{
 		unsigned int dest_index = 0;
 		while(dest_index < total_elements)
 		{
@@ -38,7 +38,6 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 				if(a_end > total_elements - 1)
 					a_end = total_elements - 1;
 
-				printf("src A => [%u, %u]\n",   a_start, a_end);
 				memcpy(dest->data_p_p + dest_index, src->data_p_p + a_start, (a_end - a_start + 1) * sizeof(void*));
 				break;
 			}
@@ -46,9 +45,6 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 			{
 				if(b_end > total_elements - 1)
 					b_end = total_elements - 1;
-
-				printf("src A => [%u, %u]\n",   a_start, a_end);
-				printf("src B => [%u, %u]\n\n", b_start, b_end);
 
 				while(dest_index <= b_end)
 				{
