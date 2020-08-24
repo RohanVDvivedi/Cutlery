@@ -1,7 +1,7 @@
 #include<array.h>
 
 #include<string.h>
-
+#include<stdio.h>
 void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2))
 {
 	if(start_index > end_index || end_index >= array_p->total_size || end_index - start_index == 1)
@@ -24,7 +24,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 
 	unsigned int sort_chunk_size = 1;
 	while(sort_chunk_size <= total_elements)
-	{
+	{printf("\nchunk => %u\n", sort_chunk_size);
 		unsigned int dest_index = 0;
 		while(dest_index < total_elements)
 		{
@@ -34,11 +34,17 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 			unsigned int b_end = b_start + sort_chunk_size - 1;
 
 			if(b_start > total_elements - 1)
-				memcpy(dest->data_p_p + dest_index, src->data_p_p + a_start, (total_elements - dest_index) * sizeof(void*));
+			{
+				if(a_end > total_elements - 1)
+					a_end = total_elements - 1;
+				printf("src A => [%u, %u]\n",   a_start, a_end);
+				memcpy(dest->data_p_p + dest_index, src->data_p_p + a_start, (a_end - a_start + 1) * sizeof(void*));
+				break;
+			}
 			else
 			{
-				if(b_end > total_elements - 1)
-					b_end = total_elements - 1;
+				printf("src A => [%u, %u]\n",   a_start, a_end);
+				printf("src B => [%u, %u]\n\n", b_start, b_end);
 
 				while(dest_index <= b_end)
 				{
@@ -54,7 +60,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 		src = dest;
 		dest = temp;
 
-		sort_chunk_size <<= 1;
+		sort_chunk_size = sort_chunk_size << 1;
 	}
 
 	void* temp = src;
