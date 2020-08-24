@@ -4,7 +4,7 @@
 // NOTE NOTe NOTE
 // the sorting and searching is based on the compare function provided, 
 // which must be designed such that, int (*compare)(const void* data_p1, const void* data_p2)
-// compare > 0, if data_p1 > data_p2 else compare < 0
+// compare > 0, if data_p1 > data_p2 else compare < 0, if the data_p1 and data_p2 are equal, then compare = 0
 // where both data_p1 and data_p2 are elements of the array
 
 typedef struct array array;

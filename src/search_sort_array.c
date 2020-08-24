@@ -22,7 +22,17 @@ unsigned int binary_search_in_array(const array* array_p, unsigned int start_ind
 	if(start_index > end_index || end_index >= array_p->total_size)
 		return array_p->total_size;
 
-	// perform binary search here
+	while(start_index <= end_index)
+	{
+		unsigned int mid = (start_index + end_index) / 2;
+
+		if(compare(get_element(array_p, mid), data_p) > 0)
+			end_index = mid;
+		else if(compare(get_element(array_p, mid), data_p) < 0)
+			start_index = mid;
+		else
+			return mid;
+	}
 
 	// we return answer or return an element out of bounds
 	return array_p->total_size;
