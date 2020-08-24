@@ -131,9 +131,9 @@ int main()
 
 	// testing sort
 
-	#define test_sort_size 157
+	#define test_sort_size 44
 
-	#define start_index test_sort_size/33
+	#define start_index 10
 	#define end_index test_sort_size-1
 
 	while(array_p->total_size < test_sort_size)
