@@ -9,15 +9,10 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 
 	unsigned int total_elements = end_index - start_index + 1;
 
-	array test_arr_1;
-	initialize_array(&test_arr_1, total_elements);
-	array test_arr_2;
-	initialize_array(&test_arr_2, total_elements);
+	void** src  = malloc(sizeof(void*) * total_elements);
+	void** dest = malloc(sizeof(void*) * total_elements);
 
-	array* src = &test_arr_1;
-	array* dest = &test_arr_2;
-
-	memcpy(src->data_p_p, array_p->data_p_p + start_index, total_elements * sizeof(void*));
+	memcpy(src, array_p->data_p_p + start_index, total_elements * sizeof(void*));
 
 	// sort element in src and write them to dest
 	// sort algo
@@ -38,7 +33,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 				if(a_end > total_elements - 1)
 					a_end = total_elements - 1;
 
-				memcpy(dest->data_p_p + dest_index, src->data_p_p + a_start, (a_end - a_start + 1) * sizeof(void*));
+				memcpy(dest + dest_index, src + a_start, (a_end - a_start + 1) * sizeof(void*));
 				break;
 			}
 			else
@@ -48,15 +43,15 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 
 				while(dest_index <= b_end)
 				{
-					if((b_start > b_end) || (a_start <= a_end && compare(get_element(src, a_start), get_element(src, b_start)) < 0))
-						set_element(dest, get_element(src, a_start++), dest_index++);
+					if((b_start > b_end) || (a_start <= a_end && compare(src[a_start], src[b_start]) < 0))
+						dest[dest_index++] = src[a_start++];
 					else
-						set_element(dest, get_element(src, b_start++), dest_index++);
+						dest[dest_index++] = src[b_start++];
 				}
 			}
 		}
 
-		void* temp = src;
+		void** temp = src;
 		src = dest;
 		dest = temp;
 
@@ -69,10 +64,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 
 	// sort algo
 
-	memcpy(array_p->data_p_p + start_index, dest->data_p_p, total_elements * sizeof(void*));
-
-	deinitialize_array(&test_arr_1);
-	deinitialize_array(&test_arr_2);
+	memcpy(array_p->data_p_p + start_index, dest, total_elements * sizeof(void*));
 }
 
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* arr_data, const void* data_p))
