@@ -153,6 +153,33 @@ int main()
 
 	print_array(array_p, print_ts);
 
+	printf("Executing Search of all\n\n");
+
+	for(int i = 0; i < test_sort_size; i++)
+	{
+		ts to_find = {i, "lol"};
+		unsigned int index;
+		printf("Finding data where a = %d\n", to_find.a);
+
+		printf("Linear search : ");
+		index = linear_search_in_array(array_p, 0, test_sort_size - 1, ((void*)(&to_find)), test_compare);
+		printf("%u : ", index);
+		if(index != array_p->total_size)
+			print_ts(get_element(array_p, index));
+		else
+			printf("Not found");
+
+		printf("\nBinary search : ");
+		index = binary_search_in_array(array_p, 0, test_sort_size - 1, ((void*)(&to_find)), test_compare);
+		printf("%u : ", index);
+		if(index != array_p->total_size)
+			print_ts(get_element(array_p, index));
+		else
+			printf("Not found");
+
+		printf("\n\n");
+	}
+
 
 
 	#if defined USE_STACK_MEMORY
