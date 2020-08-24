@@ -10,10 +10,8 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 
 	unsigned int total_elements = end_index - start_index + 1;
 
-	void** src  = malloc(sizeof(void*) * total_elements);
+	void** src  = (void**) array_p->data_p_p + start_index;
 	void** dest = malloc(sizeof(void*) * total_elements);
-
-	memcpy(src, array_p->data_p_p + start_index, total_elements * sizeof(void*));
 
 	// sort element in src and write them to dest
 	// sort algo
@@ -59,16 +57,15 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 		sort_chunk_size = sort_chunk_size << 1;
 	}
 
-	void* temp = src;
-	src = dest;
-	dest = temp;
-
 	// sort algo
 
-	memcpy(array_p->data_p_p + start_index, dest, total_elements * sizeof(void*));
-
-	free(src);
-	free(dest);
+	if( ((void**)(array_p->data_p_p + start_index)) == src)
+		free(dest);
+	else
+	{
+		memcpy(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
+		free(src);
+	}
 }
 
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* arr_data, const void* data_p))
