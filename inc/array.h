@@ -47,10 +47,6 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 //also ->
 void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
-// returns index of the element found in array_p, if compare between the element and data_p returns 0
-// compare > 0, if data_p1 > data_p2 else compare < 0
-unsigned int find_first_in_array(const array* array_p, void* data_p, int (*compare)(const void* data_p1, const void* data_p2));
-
 // it expands array, as per the array rules
 void expand_array(array* array_p);
 
@@ -63,5 +59,7 @@ int shrink_array(array* array_p, unsigned int start_index, unsigned int end_inde
 
 // prints the array
 void print_array(const array* array_p, void (*print_element)(const void* data_p));
+
+#include<search_sort_array.h>
 
 #endif

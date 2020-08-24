@@ -86,16 +86,6 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 		operation(((void*)get_element(array_p, i)), i, additional_params);
 }
 
-unsigned int find_first_in_array(const array* array_p, void* data_p, int (*compare)(const void* data_p1, const void* data_p2))
-{
-	for(unsigned int i = 0; i < array_p->total_size; i++)
-	{
-		if(compare(get_element(array_p, i), data_p) == 0)
-			return i;
-	}
-	return array_p->total_size;
-}
-
 void expand_array(array* array_p)
 {
 	// compute new_size
