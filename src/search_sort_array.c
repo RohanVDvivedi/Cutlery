@@ -1,6 +1,31 @@
 #include<array.h>
 
-void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2));
+#include<string.h>
+
+void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2))
+{
+	if(start_index > end_index || end_index >= array_p->total_size || end_index - start_index == 1)
+		return;
+
+	unsigned int total_elements = end_index - start_index + 1;
+
+	array test_arr_1;
+	initialize_array(&test_arr_1, total_elements);
+	array test_arr_2;
+	initialize_array(&test_arr_2, total_elements);
+
+	array* src = &test_arr_1;
+	array* dest = &test_arr_2;
+
+	memcpy(src->data_p_p, array_p->data_p_p + start_index, total_elements * sizeof(void*));
+
+	// sort element in src and write them to dest
+
+	memcpy(array_p->data_p_p + start_index, dest->data_p_p, total_elements * sizeof(void*));
+
+	deinitialize_array(&test_arr_1);
+	deinitialize_array(&test_arr_2);
+}
 
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* arr_data, const void* data_p))
 {
