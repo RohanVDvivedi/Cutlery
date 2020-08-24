@@ -37,12 +37,16 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 			{
 				if(a_end > total_elements - 1)
 					a_end = total_elements - 1;
+
 				printf("src A => [%u, %u]\n",   a_start, a_end);
 				memcpy(dest->data_p_p + dest_index, src->data_p_p + a_start, (a_end - a_start + 1) * sizeof(void*));
 				break;
 			}
 			else
 			{
+				if(b_end > total_elements - 1)
+					b_end = total_elements - 1;
+
 				printf("src A => [%u, %u]\n",   a_start, a_end);
 				printf("src B => [%u, %u]\n\n", b_start, b_end);
 
