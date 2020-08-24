@@ -65,6 +65,9 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 	// sort algo
 
 	memcpy(array_p->data_p_p + start_index, dest, total_elements * sizeof(void*));
+
+	free(src);
+	free(dest);
 }
 
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* arr_data, const void* data_p))
