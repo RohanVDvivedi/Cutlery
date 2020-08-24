@@ -3,7 +3,7 @@
 #include<avl_bst.h>
 #include<bst_util.h>
 
-#include<stdio.h>
+#include<cutlery_stds.h>
 
 // trivial
 #define max(a,b) ((a)>(b)?(a):(b))
