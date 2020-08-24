@@ -128,6 +128,29 @@ int main()
 	print_ts(get_element(array_p, binary_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare)));
 	printf("\n");
 
+
+	// testing sort
+
+
+	#define test_sort_size 123
+
+	while(array_p->total_size < test_sort_size)
+	{
+		expand_array(array_p);
+	}
+
+	ts ts_ss[test_sort_size];
+
+	for(int i = 0; i < test_sort_size; i++)
+	{
+		ts_ss[i] = ((ts){rand() % test_sort_size, "XXX-dont care"});
+		set_element(array_p, ts_ss + i, i);
+	}
+
+	print_array(array_p, print_ts);
+
+
+
 	#if defined USE_STACK_MEMORY
 		deinitialize_array(array_p);
 	#elif defined USE_HEAP_MEMORY
