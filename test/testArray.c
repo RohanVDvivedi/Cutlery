@@ -114,7 +114,7 @@ int main()
 
 	ts to_find = {444, "lol"};
 	printf("Finding data where a = %d\n", to_find.a);
-	print_ts(get_element(array_p, find_first_in_array(array_p, ((void*)(&to_find)), test_compare)));
+	print_ts(get_element(array_p, linear_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare)));
 	printf("\n");
 
 	#if defined USE_STACK_MEMORY
