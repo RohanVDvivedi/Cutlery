@@ -1,5 +1,6 @@
 #include<array.h>
 
+#include<stdlib.h>
 #include<string.h>
 
 void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2))
