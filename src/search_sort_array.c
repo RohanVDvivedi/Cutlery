@@ -20,6 +20,48 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 	memcpy(src->data_p_p, array_p->data_p_p + start_index, total_elements * sizeof(void*));
 
 	// sort element in src and write them to dest
+	// sort algo
+
+	unsigned int sort_chunk_size = 1;
+	while(sort_chunk_size <= total_elements)
+	{
+		unsigned int dest_index = 0;
+		while(dest_index < total_elements)
+		{
+			unsigned int a_start = dest_index;
+			unsigned int a_end = a_start + sort_chunk_size - 1;
+			unsigned int b_start = a_end + 1;
+			unsigned int b_end = b_start + sort_chunk_size - 1;
+
+			if(b_start > total_elements - 1)
+				memcpy(dest->data_p_p + dest_index, src->data_p_p + a_start, (total_elements - dest_index) * sizeof(void*));
+			else
+			{
+				if(b_end > total_elements - 1)
+					b_end = total_elements - 1;
+
+				while(dest_index <= b_end)
+				{
+					if((b_start > b_end) || (a_start <= a_end && compare(get_element(src, a_start), get_element(src, b_start)) < 0))
+						set_element(dest, get_element(src, a_start++), dest_index++);
+					else
+						set_element(dest, get_element(src, b_start++), dest_index++);
+				}
+			}
+		}
+
+		void* temp = src;
+		src = dest;
+		dest = temp;
+
+		sort_chunk_size <<= 1;
+	}
+
+	void* temp = src;
+	src = dest;
+	dest = temp;
+
+	// sort algo
 
 	memcpy(array_p->data_p_p + start_index, dest->data_p_p, total_elements * sizeof(void*));
 
