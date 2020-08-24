@@ -95,18 +95,29 @@ unsigned int binary_search_in_array(const array* array_p, unsigned int start_ind
 	if(start_index > end_index || end_index >= array_p->total_size)
 		return array_p->total_size;
 
-	while(start_index <= end_index)
-	{
-		unsigned int mid = (start_index + end_index) / 2;
+	if(compare(get_element(array_p, start_index), data_p) >= 0)
+		return start_index;
 
-		if(compare(get_element(array_p, mid), data_p) > 0)
+	if(compare(get_element(array_p, end_index), data_p) <= 0)
+		return end_index;
+
+	unsigned int mid = (start_index + end_index) / 2;
+	while(start_index < end_index)
+	{
+		int cmp = compare(get_element(array_p, mid), data_p);
+		if(cmp > 0)
 			end_index = mid;
-		else if(compare(get_element(array_p, mid), data_p) < 0)
+		else if(cmp < 0)
 			start_index = mid;
 		else
 			return mid;
+
+		mid = (start_index + end_index) / 2;
+
+		if(mid == start_index || mid == end_index)
+			break;
 	}
 
-	// we return answer or return an element out of bounds
-	return array_p->total_size;
+	// we return answer else return some other element closer to it
+	return mid;
 }
