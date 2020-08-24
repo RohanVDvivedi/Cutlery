@@ -1,7 +1,7 @@
 #include<array.h>
 
 #include<string.h>
-#include<stdio.h>
+
 void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2))
 {
 	if(start_index > end_index || end_index >= array_p->total_size || end_index - start_index == 1)
