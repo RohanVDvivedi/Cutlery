@@ -35,6 +35,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 // performs linear search in array from start_index to end_index, both inclusive,
 // the sorting is based on the compare function provided
 // it returns the first element that when compared to data_p equals to 0
+// if no such element is found, then the function returns the total_size of array (which must not be indexed, as our logic suggests)
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* arr_data, const void* data_p));
 
 
@@ -46,6 +47,8 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 // performs binary search in array from start_index to end_index, both inclusive,
 // the sorting is based on the compare function provided
 // it returns the element that when compared to data_p equals to 0
+// if no such element is found, we return the index which holds element, which is immediately greater or lesser than the data_p provided
+// if the indexes provided are inappropriate to begin with, the function returns the total_size of array (which must not be indexed, as our logic suggests)
 unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, void* data_p, int (*compare)(const void* arr_data, const void* data_p));
 
 
