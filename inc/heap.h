@@ -57,7 +57,7 @@ void heapify_at(heap* heap_p, unsigned int index);
 // this function removes an eelement from the heap, at a particular index
 // it returns 0, if no element was removed, else it returns 1
 // this functions fails with 0 returns, if the index provided is greater than the elements in the heap
-// i.e. fails if index is out of bounds
+// i.e. fails if index is out of bounds, else if the element was removed it will return 1
 int remove_from_heap(heap* heap_p, unsigned int index);
 
 // perform an operation on all the key value pairs for the heap
