@@ -54,6 +54,12 @@ void pop_heap(heap* heap_p);
 // if your doubt turns out to be true and the heap property is being violated, the heap property would be restored at that place
 void heapify_at(heap* heap_p, unsigned int index);
 
+// this function removes an eelement from the heap, at a particular index
+// it returns 0, if no element was removed, else it returns 1
+// this functions fails with 0 returns, if the index provided is greater than the elements in the heap
+// i.e. fails if index is out of bounds
+int remove_from_heap(heap* heap_p, unsigned int index);
+
 // perform an operation on all the key value pairs for the heap
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
 
