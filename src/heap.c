@@ -175,33 +175,39 @@ static void bubble_down(heap* heap_p, unsigned int index)
 	}
 }
 
+int remove_from_heap(heap* heap_p, unsigned int index)
+{
+	// do not provide out of heap-bound index, also not an empty heap
+	if(index >= heap_p->heap_size || heap_p->heap_size == 0)
+		return 0;
+
+	// put the indexed element at last and last element to indexed place
+	inter_change_elements_for_indexes(heap_p, index, heap_p->heap_size-1);
+
+	// and set the last to NULL, and decrement the heap size
+	set_element(&(heap_p->heap_holder), NULL, --heap_p->heap_size);
+
+	// bubble down the element at index 0
+	bubble_down(heap_p, index);
+
+	// let the array be shrunk if it is required
+	shrink_array(&(heap_p->heap_holder), 0, heap_p->heap_size - 1);
+	// Note: we shrink the holder, only if we sucessfully remove the element
+
+	return 1;
+}
+
 void pop_heap(heap* heap_p)
 {
-	// we can pop only if the heap size is greater than 0, and there is atleast 1 element
-	if(heap_p->heap_size > 0)
-	{
-		// put the first element at last and last element to first
-		inter_change_elements_for_indexes(heap_p, 0, heap_p->heap_size-1);
-
-		// and set the last to NULL, and decrement the heap size
-		set_element(&(heap_p->heap_holder), NULL, --heap_p->heap_size);
-
-		// bubble down the element at index 0
-		bubble_down(heap_p, 0);
-
-		// let the array be shrunk if it is required
-		shrink_array(&(heap_p->heap_holder), 0, heap_p->heap_size - 1);
-		// Note: we shrink the holder, only if we sucessfully pop the element
-	}
+	// remove the 0th element from the heap
+	remove_from_heap(heap_p, 0);
 }
 
 void heapify_at(heap* heap_p, unsigned int index)
 {
 	// do not provide out of heap-bound index
 	if(index >= heap_p->heap_size)
-	{
 		return;
-	}
 
 	// pre-evaluate parent, left child and right child indexes for the corresponding index
 	unsigned int parent_index = get_parent_index(index);
