@@ -32,12 +32,12 @@ int is_prefix(const dstring* str_p1, const char* str_p2);
 void expand_dstring(dstring* str_p, unsigned int additional_allocation);
 
 // here occ is the number of bytes to be copied and appended from the cstr_p to str_p, without '\0' at the end
-void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ);
+void appendn_to_dstring(dstring* str_p, const char* cstr_p, unsigned int occ);
 
-void append_to_dstring(dstring* str_p, char* cstr_p);
-void append_to_dstring_formatted(dstring* str_p, char* cstr_format, ...);
+void append_to_dstring(dstring* str_p, const char* cstr_p);
+void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...);
 
-void concatenate_dstring(dstring* str_p1, dstring* str_p2);
+void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 
 // modifying the dstring case
 void toLowercase(dstring* str_p);
