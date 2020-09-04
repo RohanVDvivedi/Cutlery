@@ -172,7 +172,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			
 				if(data_at_index == NULL)
 				{
-					hashmap_p->holder[index] = (void*) data;
+					set_element(&(hashmap_p->hashmap_holder), data, index);
 					inserted = 1;
 					break;
 				}
@@ -188,7 +188,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 					if(probe_sequence_length > probe_sequence_length_data_at_index)
 					{
 						// steal the slot
-						hashmap_p->holder[index] = (void*)data;
+						set_element(&(hashmap_p->hashmap_holder), data, index);
 						data = data_at_index;
 						probe_sequence_length = probe_sequence_length_data_at_index;
 					}
@@ -209,7 +209,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 
 			ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
 			inserted = insert_head(&ll, data);
-			hashmap_p->holder[index] = ll.head;
+			set_element(&(hashmap_p->hashmap_holder), ll.head, index);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -220,7 +220,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			
 			bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
 			inserted = insert_in_bst(&bstt, data);
-			hashmap_p->holder[index] = bstt.root;
+			set_element(&(hashmap_p->hashmap_holder), bstt.root, index);
 			break;
 		}
 	}
@@ -241,11 +241,11 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		{
 			unsigned int index = get_actual_index(hashmap_p, data);
 
-			void* data_at_index = hashmap_p->holder[index];
+			const void* data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
 			
 			if(data_at_index == data)
 			{
-				hashmap_p->holder[index] = NULL;
+				set_element(&(hashmap_p->hashmap_holder), NULL, index);
 				deleted = 1;
 			}
 			// if the given element does not exist in the hashmap we can not remove it
@@ -255,18 +255,18 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			}
 
 			unsigned int previousIndex = index;
-			index = (index + 1) % hashmap_p->total_bucket_count;
-			data_at_index = hashmap_p->holder[index];
+			index = (index + 1) % hashmap_p->hashmap_holder.total_size;
+			data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
 			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
 			{
 				// shift null downwards
 				{
-					hashmap_p->holder[previousIndex] = hashmap_p->holder[index];
-					hashmap_p->holder[index] = NULL;
+					set_element(&(hashmap_p->hashmap_holder), get_element(&(hashmap_p->hashmap_holder), index), previousIndex);
+					set_element(&(hashmap_p->hashmap_holder), NULL, index);
 				}
 				previousIndex = index;
-				index = (index + 1) % hashmap_p->total_bucket_count;
-				data_at_index = hashmap_p->holder[index];
+				index = (index + 1) % hashmap_p->hashmap_holder.total_size;
+				data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
 			}
 
 			break;
@@ -278,7 +278,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 
 			ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
 			deleted = remove_from_list(&ll, data);
-			hashmap_p->holder[index] = ll.head;
+			set_element(&(hashmap_p->hashmap_holder), ll.head, index);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -289,7 +289,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			
 			bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
 			deleted = remove_from_bst(&bstt, data);
-			hashmap_p->holder[index] = bstt.root;
+			set_element(&(hashmap_p->hashmap_holder), bstt.root, index);
 			break;
 		}
 	}
