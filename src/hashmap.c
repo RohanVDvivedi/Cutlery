@@ -11,9 +11,8 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->compare = compare;
-	hashmap_p->holder = calloc(total_bucket_count, sizeof(void*));
+	initialize_array(&(hashmap_p->hashmap_holder), total_bucket_count);
 	hashmap_p->node_offset = node_offset;
-	hashmap_p->total_bucket_count = total_bucket_count;
 	hashmap_p->occupancy = 0;
 }
 
@@ -25,7 +24,7 @@ static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 	unsigned int hash = hashmap_p->hash_function(data);
 
 	// calculate index
-	unsigned int index = hash % hashmap_p->total_bucket_count;
+	unsigned int index = hash % hashmap_p->hashmap_holder.total_size;
 
 	return index;
 }
@@ -67,7 +66,7 @@ static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const vo
 	}
 	else
 	{
-		return index_actual + hashmap_p->total_bucket_count - index_expected;
+		return index_actual + hashmap_p->hashmap_holder.total_size - index_expected;
 	}
 }
 
@@ -79,9 +78,9 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 
 	const void* data_at_index = NULL;
 
-	while(probe_sequence_length < hashmap_p->total_bucket_count)
+	while(probe_sequence_length < hashmap_p->hashmap_holder.total_size)
 	{
-		data_at_index = hashmap_p->holder[expected_index];
+		data_at_index = get_element(&(hashmap_p->holder), expected_index);
 
 		if(data_at_index != NULL)
 		{
@@ -102,7 +101,7 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 			break;
 		}
 
-		expected_index = (expected_index + 1) % hashmap_p->total_bucket_count;
+		expected_index = (expected_index + 1) % hashmap_p->hashmap_holder.total_size;
 		probe_sequence_length++;
 	}
 
@@ -416,5 +415,5 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 
 void deinitialize_hashmap(hashmap* hashmap_p)
 {
-	free(hashmap_p->holder);
+	deinitialize_array(&(hashmap_p->hashmap_holder));
 }

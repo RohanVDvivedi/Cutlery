@@ -1,6 +1,8 @@
 #ifndef HASHMAP_H
 #define HASHMAP_H
 
+#include<array.h>
+
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
 {
@@ -47,13 +49,10 @@ struct hashmap
 	int (*compare)(const void* data1, const void* data2);
 
 	// array storing pointer to all the of data in the hashmap
-	void** holder;
+	array hashmap_holder;
 
-	// this is the number of buckets, which are occupied in the hashmap
+	// this is the number of elements in the hashmap
 	unsigned int occupancy;
-
-	// this is the number of total buckets in the hashmap
-	unsigned int total_bucket_count;
 };
 
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
