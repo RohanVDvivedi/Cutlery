@@ -35,6 +35,7 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation);
 void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ);
 
 void append_to_dstring(dstring* str_p, char* cstr_p);
+void append_to_dstring_formatted(dstring* str_p, char* cstr_format, ...);
 
 void concatenate_dstring(dstring* str_p1, dstring* str_p2);
 
