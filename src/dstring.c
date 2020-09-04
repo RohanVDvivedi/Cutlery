@@ -13,30 +13,59 @@ dstring* get_dstring(const char* cstr_p, unsigned int additional_allocation)
 	return str_p;
 }
 
-void init_dstring(dstring* str_p, const char* cstr_p, unsigned int additional_allocation)
+void init_dstring_slize(dstring* slize, char* data, unsigned int data_size)
 {
-	str_p->bytes_occupied = ((cstr_p == NULL) ? 1 : (strlen(cstr_p) + 1));
-	str_p->bytes_allocated = (2 * str_p->bytes_occupied) + additional_allocation;
+	slize->cstring = data;
+	slize->bytes_occupied = data_size;
+	slize->bytes_allocated = 0;
+}
+
+void init_dstring(dstring* str_p, const char* cstr_p)
+{
+	if(cstr_p == NULL || cstr_p[0] == '\0')
+		return
+	init_dstring_data(str_p, cstr_p, strlen(cstr_p));
+}
+
+void init_dstring_data(dstring* str_p, const char* data, unsigned int data_size)
+{
+	str_p->bytes_occupied = data_size;
+	str_p->bytes_allocated = data_size;
 	str_p->cstring = malloc(str_p->bytes_allocated);
-	str_p->cstring[0] = '\0';
-	if(cstr_p != NULL)
-		memcpy(str_p->cstring, cstr_p, str_p->bytes_occupied);
+	memcpy(str_p->cstring, cstr_p, str_p->bytes_occupied);
+}
+
+void convert_slize_to_dstring(dstring* slize)
+{
+	init_dstring_data(slize, slize->cstring, slize->bytes_occupied);
 }
 
 void make_dstring_empty(dstring* str_p)
 {
-	str_p->cstring[0] = '\0';
-	str_p->bytes_occupied = 1;
+	str_p->bytes_occupied = 0;
+}
+
+static int compare_string_safe(const char* str1, unsigned int size1, const char* str2, unsigned int size2)
+{
+	if(size1 == size2)
+		return strncmp(str1, str2, size1);
+	unsigned int min_size = (size1 < size2) ? size1 : size2;
+	int cmp = strncmp(str1, str2, min_size);
+	if(cmp != 0)
+		return cmp;
+	if(min_size == size1)
+		return 1;
+	return -1;
 }
 
 int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
-	return strcmp(str_p1->cstring, str_p2->cstring);
+	return compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
 }
 
 int compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 {
-	return strcmp(str_p1->cstring, str_p2);
+	return compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
 }
 
 int is_prefix(const dstring* str_p1, const char* str_p2)
@@ -141,11 +170,11 @@ void display_dstring(const dstring* str_p)
 
 void deinit_dstring(dstring* str_p)
 {
-	if(str_p->cstring != NULL)
+	if(str_p->bytes_allocated > 0)
 		free(str_p->cstring);
 	str_p->cstring = NULL;
-	str_p->bytes_occupied = 0;
 	str_p->bytes_allocated = 0;
+	str_p->bytes_occupied = 0;
 }
 
 void delete_dstring(dstring* str_p)
