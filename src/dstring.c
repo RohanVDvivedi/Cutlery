@@ -32,6 +32,7 @@ void init_dstring_data(dstring* str_p, const char* data, unsigned int data_size)
 		str_p->bytes_occupied = 0;
 		str_p->bytes_allocated = 0;
 		str_p->cstring = NULL;
+		return;
 	}
 	str_p->bytes_occupied = data_size;
 	str_p->bytes_allocated = data_size;
