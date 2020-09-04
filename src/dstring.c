@@ -6,10 +6,10 @@
 #include<ctype.h>
 #include<string.h>
 
-dstring* get_dstring(const char* cstr_p, unsigned int additional_allocation)
+dstring* get_dstring_data(const char* data, unsigned int data_size)
 {
 	dstring* str_p = malloc(sizeof(dstring));
-	init_dstring(str_p, cstr_p, additional_allocation);
+	init_dstring(str_p, data, data_size);
 	return str_p;
 }
 
@@ -57,22 +57,41 @@ static int compare_string_safe(const char* str1, unsigned int size1, const char*
 		return 1;
 	return -1;
 }
-
 int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
 	return compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
 }
-
 int compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 {
 	return compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
+}
+
+static int case_compare_string_safe(const char* str1, unsigned int size1, const char* str2, unsigned int size2)
+{
+	if(size1 == size2)
+		return strncasecmp(str1, str2, size1);
+	unsigned int min_size = (size1 < size2) ? size1 : size2;
+	int cmp = strncasecmp(str1, str2, min_size);
+	if(cmp != 0)
+		return cmp;
+	if(min_size == size1)
+		return 1;
+	return -1;
+}
+int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
+{
+	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
+}
+int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
+{
+	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
 }
 
 int is_prefix(const dstring* str_p1, const char* str_p2)
 {
 	size_t prefix_length = strlen(str_p2);
 	// prefix length must be smaller than or equal to dstring provided
-	if(prefix_length > str_p1->bytes_occupied - 1)
+	if(prefix_length > str_p1->bytes_occupied)
 		return 0;
 	return (strncmp(str_p1->cstring, str_p2, prefix_length) == 0);
 }
@@ -84,24 +103,21 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 	expanded_dstring.bytes_allocated = str_p->bytes_allocated + additional_allocation;
 	expanded_dstring.cstring = malloc(expanded_dstring.bytes_allocated);
 	memcpy(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
-
 	deinit_dstring(str_p);
 	(*str_p) = expanded_dstring;
 }
 
-void appendn_to_dstring(dstring* str_p, const char* cstr_p, unsigned int occ)
+void appendn_to_dstring(dstring* str_p, const char* data, unsigned int data_size)
 {
-	// we appenmd only if cstr_p is not pointing to NULL pointer, or we are asked to copy 0 bytes
-	if(cstr_p != NULL && occ > 0)
+	if(data != NULL && data_size > 0)
 	{
-		// we consider that the client has not considered counting '\0' in string
-		// we must expand the dstring, if it is smaller than the size we expect it to be
-		if( occ + str_p->bytes_occupied > str_p->bytes_allocated)
-			expand_dstring(str_p, str_p->bytes_allocated + 2 * occ);
+		// check if new data could fit, without expansion, else expand the dstring
+		if(str_p->bytes_occupied + data_size > str_p->bytes_allocated)
+			expand_dstring(str_p, str_p->bytes_allocated + 2 * data_size);
 
-		memcpy(str_p->cstring + str_p->bytes_occupied - 1, cstr_p, occ);
-		str_p->bytes_occupied += occ;
-		str_p->cstring[str_p->bytes_occupied - 1] = '\0';
+		// do appending as normal now
+		memcpy(str_p->cstring + str_p->bytes_occupied, data, data_size);
+		str_p->bytes_occupied += data_size;
 	}
 }
 
@@ -112,38 +128,32 @@ void append_to_dstring(dstring* str_p, const char* cstr_p)
 
 void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...)
 {
-	va_list var_args;
+	va_list var_args, var_args_dummy;
 	va_start(var_args, cstr_format);
 
+	va_copy(var_args_dummy, va_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
-	unsigned int size_extra_req = 0;
-
-	for(const char* temp = cstr_format; (*temp) != '\0'; temp++, size_extra_req++)
-	{
-		if(*(temp) == '%')
-			size_extra_req += 20;
-	}
+	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy);
+	va_end(var_args_dummy);
 
 	// expand str_p as needed
 	if(size_extra_req + str_p->bytes_occupied > str_p->bytes_allocated)
 		expand_dstring(str_p, str_p->bytes_allocated + 2 * size_extra_req);
 
-	// perform a snprintf
-	vsnprintf(str_p->cstring + str_p->bytes_occupied-1, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
-
+	vsnprintf(str_p->cstring + str_p->bytes_occupied, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
 	va_end(var_args);
 }
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
 	// we shall send the length of the dstring without the '\0'
-	appendn_to_dstring(str_p1, str_p2->cstring, str_p2->bytes_occupied-1);
+	appendn_to_dstring(str_p1, str_p2->cstring, str_p2->bytes_occupied);
 }
 
 void toLowercase(dstring* str_p)
 {
 	char* stemp = str_p->cstring;
-	while(*stemp != '\0')
+	while(stemp < str_p->cstring + str_p->bytes_occupied)
 	{
 		*stemp = tolower(*stemp);
 		stemp++;
@@ -153,7 +163,7 @@ void toLowercase(dstring* str_p)
 void toUppercase(dstring* str_p)
 {
 	char* stemp = str_p->cstring;
-	while(*stemp != '\0')
+	while(stemp < str_p->cstring + str_p->bytes_occupied)
 	{
 		*stemp = toupper(*stemp);
 		stemp++;
@@ -165,12 +175,12 @@ void display_dstring(const dstring* str_p)
 	if(str_p == NULL)
 		printf("NULL");
 	else
-		printf("%s", str_p->cstring);
+		printf("%.*s", str_p->bytes_occupied, str_p->cstring);
 }
 
 void deinit_dstring(dstring* str_p)
 {
-	if(str_p->bytes_allocated > 0)
+	if(str_p->bytes_allocated > 0 && str_p->cstring != NULL)
 		free(str_p->cstring);
 	str_p->cstring = NULL;
 	str_p->bytes_allocated = 0;
