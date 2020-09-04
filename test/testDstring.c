@@ -37,5 +37,9 @@ int main()
 	temp = "Hello World, as said by Rohan\n, Hello World";
 	printf("prefix %s %d\n", temp, is_prefix(&str, temp));
 
+	append_to_dstring_formatted(&str, "int no : %d, string : %s, float : %f\n", 336, "Heello Worlds!! =+", 35.49);
+
+	display_dstring(&str);
+
 	deinit_dstring(&str);
 }
