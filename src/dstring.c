@@ -2,6 +2,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<stdarg.h>
 #include<ctype.h>
 #include<string.h>
 
@@ -51,7 +52,7 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
 	dstring expanded_dstring;
 	expanded_dstring.bytes_occupied = str_p->bytes_occupied;
-	expanded_dstring.bytes_allocated = 2 * (expanded_dstring.bytes_occupied + additional_allocation);
+	expanded_dstring.bytes_allocated = str_p->bytes_allocated + additional_allocation;
 	expanded_dstring.cstring = malloc(expanded_dstring.bytes_allocated);
 	memcpy(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
 
@@ -67,7 +68,7 @@ void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ)
 		// we consider that the client has not considered counting '\0' in string
 		// we must expand the dstring, if it is smaller than the size we expect it to be
 		if( occ + str_p->bytes_occupied > str_p->bytes_allocated)
-			expand_dstring(str_p, occ);
+			expand_dstring(str_p, str_p->bytes_allocated + 2 * occ);
 
 		memcpy(str_p->cstring + str_p->bytes_occupied - 1, cstr_p, occ);
 		str_p->bytes_occupied += occ;
@@ -78,6 +79,30 @@ void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ)
 void append_to_dstring(dstring* str_p, char* cstr_p)
 {
 	appendn_to_dstring(str_p, cstr_p, ((cstr_p == NULL) ? 0 : strlen(cstr_p)) );
+}
+
+void append_to_dstring_formatted(dstring* str_p, char* cstr_format, ...)
+{
+	va_list var_args;
+	va_start(var_args, cstr_format);
+
+	// this is the additional size that will be occupied by the final dstring over the current occupied size
+	unsigned int size_extra_req = 0;
+
+	for(char* temp = cstr_format; (*temp) != '\0'; temp++, size_extra_req++)
+	{
+		if(*(temp) == '%')
+			size_extra_req += 20;
+	}
+
+	// expand str_p as needed
+	if(size_extra_req + str_p->bytes_occupied > str_p->bytes_allocated)
+		expand_dstring(str_p, str_p->bytes_allocated + 2 * size_extra_req);
+
+	// perform a snprintf
+	vsnprintf(str_p->cstring + str_p->bytes_occupied-1, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
+
+	va_end(var_args);
 }
 
 void concatenate_dstring(dstring* str_p1, dstring* str_p2)
