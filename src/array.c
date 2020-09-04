@@ -18,13 +18,6 @@ static unsigned int next_expansion_size(unsigned int current_size)
 	return ((unsigned int)(current_size * increment_factor)) + increment_offset;
 }
 
-array* get_array(unsigned int initial_size)
-{
-	array* array_p = calloc(1, sizeof(array));
-	initialize_array(array_p, initial_size);
-	return array_p;
-}
-
 void initialize_array(array* array_p, unsigned int initial_size)
 {
 	array_p->data_p_p = initial_size > 0 ? calloc(initial_size, sizeof(void*)) : NULL;
@@ -41,12 +34,6 @@ void deinitialize_array(array* array_p)
 	array_p->total_size = 0;
 	array_p->initial_size = 0;
 	array_p->data_p_p = NULL;
-}
-
-void delete_array(array* array_p)
-{
-	deinitialize_array(array_p);
-	free(array_p);
 }
 
 const void* get_element(const array* array_p, unsigned int index)
