@@ -80,7 +80,7 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 
 	while(probe_sequence_length < hashmap_p->hashmap_holder.total_size)
 	{
-		data_at_index = get_element(&(hashmap_p->holder), expected_index);
+		data_at_index = get_element(&(hashmap_p->hashmap_holder), expected_index);
 
 		if(data_at_index != NULL)
 		{
@@ -308,27 +308,27 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 	bst bstt; init_data_structure(hashmap_p, &bstt);
 
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
+	for(unsigned int index = 0; index < hashmap_p->hashmap_holder.total_size; index++)
 	{
-		if(hashmap_p->holder[index] != NULL)
+		if(get_element(&(hashmap_p->hashmap_holder), index) != NULL)
 		{
 			switch(hashmap_p->hashmap_policy)
 			{
 				case ROBINHOOD_HASHING :
 				{
-					operation(hashmap_p->holder[index], additional_params);
+					operation(get_element(&(hashmap_p->hashmap_holder), index), additional_params);
 					break;
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					ll.head = hashmap_p->holder[index];
+					ll.head = get_element(&(hashmap_p->hashmap_holder), index);
 					for_each_in_list(&ll, operation, additional_params);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
-					bstt.root = hashmap_p->holder[index];
+					bstt.root = get_element(&(hashmap_p->hashmap_holder), index);
 					for_each_in_bst(&bstt, POST_ORDER, operation, additional_params);
 					break;
 				}
@@ -369,35 +369,36 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 	}
 	printf("node_offset : %u\n", hashmap_p->node_offset);
 	printf("occupancy : %u\n", hashmap_p->occupancy);
-	printf("total_bucket_count : %u\n", hashmap_p->total_bucket_count);
 
 	linkedlist ll; init_data_structure(hashmap_p, &ll);
 	bst bstt; init_data_structure(hashmap_p, &bstt);
 
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned int index = 0; index < hashmap_p->total_bucket_count; index++)
+	for(unsigned int index = 0; index < hashmap_p->hashmap_holder.total_size; index++)
 	{
 		printf("index = %u\n", index);
 
-		if(hashmap_p->holder[index] != NULL)
+		if(get_element(&(hashmap_p->hashmap_holder) != NULL)
 		{
 			switch(hashmap_p->hashmap_policy)
 			{
 				case ROBINHOOD_HASHING :
 				{
-					printf("  \t -> ");print_element(hashmap_p->holder[index]);printf("\n");
+					printf("  \t -> ");
+					print_element(get_element(&(hashmap_p->hashmap_holder), index));
+					printf("\n");
 					break;
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					ll.head = hashmap_p->holder[index];
+					ll.head = get_element(&(hashmap_p->hashmap_holder), index);
 					print_linkedlist(&ll, print_element);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
-					bstt.root = hashmap_p->holder[index];
+					bstt.root = get_element(&(hashmap_p->hashmap_holder), index);
 					print_bst(&bstt, print_element);
 					break;
 				}
