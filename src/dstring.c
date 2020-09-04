@@ -131,7 +131,7 @@ void toUppercase(dstring* str_p)
 	}
 }
 
-void display_dstring(dstring* str_p)
+void display_dstring(const dstring* str_p)
 {
 	if(str_p == NULL)
 		printf("NULL");

@@ -43,7 +43,7 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
 
-void display_dstring(dstring* str_p);
+void display_dstring(const dstring* str_p);
 
 // deinitializing a dstring will release all its memory,
 // so you can init it again to reuse the dstring
