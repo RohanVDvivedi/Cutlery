@@ -60,7 +60,7 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 	(*str_p) = expanded_dstring;
 }
 
-void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ)
+void appendn_to_dstring(dstring* str_p, const char* cstr_p, unsigned int occ)
 {
 	// we appenmd only if cstr_p is not pointing to NULL pointer, or we are asked to copy 0 bytes
 	if(cstr_p != NULL && occ > 0)
@@ -76,12 +76,12 @@ void appendn_to_dstring(dstring* str_p, char* cstr_p, unsigned int occ)
 	}
 }
 
-void append_to_dstring(dstring* str_p, char* cstr_p)
+void append_to_dstring(dstring* str_p, const char* cstr_p)
 {
 	appendn_to_dstring(str_p, cstr_p, ((cstr_p == NULL) ? 0 : strlen(cstr_p)) );
 }
 
-void append_to_dstring_formatted(dstring* str_p, char* cstr_format, ...)
+void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...)
 {
 	va_list var_args;
 	va_start(var_args, cstr_format);
@@ -89,7 +89,7 @@ void append_to_dstring_formatted(dstring* str_p, char* cstr_format, ...)
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
 	unsigned int size_extra_req = 0;
 
-	for(char* temp = cstr_format; (*temp) != '\0'; temp++, size_extra_req++)
+	for(const char* temp = cstr_format; (*temp) != '\0'; temp++, size_extra_req++)
 	{
 		if(*(temp) == '%')
 			size_extra_req += 20;
@@ -105,7 +105,7 @@ void append_to_dstring_formatted(dstring* str_p, char* cstr_format, ...)
 	va_end(var_args);
 }
 
-void concatenate_dstring(dstring* str_p1, dstring* str_p2)
+void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
 	// we shall send the length of the dstring without the '\0'
 	appendn_to_dstring(str_p1, str_p2->cstring, str_p2->bytes_occupied-1);
