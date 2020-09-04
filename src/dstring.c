@@ -9,7 +9,7 @@
 dstring* get_dstring_data(const char* data, unsigned int data_size)
 {
 	dstring* str_p = malloc(sizeof(dstring));
-	init_dstring(str_p, data, data_size);
+	init_dstring_data(str_p, data, data_size);
 	return str_p;
 }
 
@@ -31,8 +31,8 @@ void init_dstring_data(dstring* str_p, const char* data, unsigned int data_size)
 {
 	str_p->bytes_occupied = data_size;
 	str_p->bytes_allocated = data_size;
-	str_p->cstring = malloc(str_p->bytes_allocated);
-	memcpy(str_p->cstring, cstr_p, str_p->bytes_occupied);
+	str_p->cstring = malloc(data_size);
+	memcpy(str_p->cstring, data, data_size);
 }
 
 void convert_slize_to_dstring(dstring* slize)
@@ -100,7 +100,12 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
 	dstring expanded_dstring;
 	expanded_dstring.bytes_occupied = str_p->bytes_occupied;
-	expanded_dstring.bytes_allocated = str_p->bytes_allocated + additional_allocation;
+	expanded_dstring.bytes_allocated = str_p->bytes_occupied + additional_allocation;
+
+	// if expanded dstring does not result in real expansion, than just exit
+	if(expanded_dstring.bytes_allocated <= str_p->bytes_allocated)
+		return;
+
 	expanded_dstring.cstring = malloc(expanded_dstring.bytes_allocated);
 	memcpy(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
 	deinit_dstring(str_p);
@@ -113,7 +118,7 @@ void appendn_to_dstring(dstring* str_p, const char* data, unsigned int data_size
 	{
 		// check if new data could fit, without expansion, else expand the dstring
 		if(str_p->bytes_occupied + data_size > str_p->bytes_allocated)
-			expand_dstring(str_p, str_p->bytes_allocated + 2 * data_size);
+			expand_dstring(str_p, str_p->bytes_occupied + 2 * data_size);
 
 		// do appending as normal now
 		memcpy(str_p->cstring + str_p->bytes_occupied, data, data_size);
@@ -131,14 +136,14 @@ void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...)
 	va_list var_args, var_args_dummy;
 	va_start(var_args, cstr_format);
 
-	va_copy(var_args_dummy, va_args);
+	va_copy(var_args_dummy, var_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
 	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy);
 	va_end(var_args_dummy);
 
 	// expand str_p as needed
 	if(size_extra_req + str_p->bytes_occupied > str_p->bytes_allocated)
-		expand_dstring(str_p, str_p->bytes_allocated + 2 * size_extra_req);
+		expand_dstring(str_p, str_p->bytes_occupied + 2 * size_extra_req);
 
 	vsnprintf(str_p->cstring + str_p->bytes_occupied, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
 	va_end(var_args);
@@ -172,10 +177,7 @@ void toUppercase(dstring* str_p)
 
 void display_dstring(const dstring* str_p)
 {
-	if(str_p == NULL)
-		printf("NULL");
-	else
-		printf("%.*s", str_p->bytes_occupied, str_p->cstring);
+	printf("%.*s", str_p->bytes_occupied, str_p->cstring);
 }
 
 void deinit_dstring(dstring* str_p)
