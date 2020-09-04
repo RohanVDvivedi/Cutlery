@@ -243,7 +243,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			
 			// if the given element does not exist in the hashmap we can not remove it
 			if(data_at_index != data)
-				break
+				break;
 
 			set_element(&(hashmap_p->hashmap_holder), NULL, index);
 			deleted = 1;
