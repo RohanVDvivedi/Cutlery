@@ -38,20 +38,11 @@ int test_compare(const void* a, const void* b)
 	}
 }
 
-#define USE_STACK_MEMORY
-//#define USE_HEAP_MEMORY
-
 int main()
 {
-	#if defined USE_STACK_MEMORY
-		printf("ARRAY WILL BE CREATED ON STACK MEMORY\n\n");
-		array array_temp;
-		array* array_p = &array_temp;
-		initialize_array(array_p, 3);
-	#elif defined USE_HEAP_MEMORY
-		printf("ARRAY WILL BE CREATED ON HEAP MEMORY\n\n");
-		array* array_p = get_array(3);
-	#endif
+	array array_temp;
+	array* array_p = &array_temp;
+	initialize_array(array_p, 3);
 
 	print_array(array_p, print_ts);
 
@@ -182,11 +173,7 @@ int main()
 
 
 
-	#if defined USE_STACK_MEMORY
-		deinitialize_array(array_p);
-	#elif defined USE_HEAP_MEMORY
-		delete_array(array_p);
-	#endif
+	deinitialize_array(array_p);
 
 	return 0;
 }
