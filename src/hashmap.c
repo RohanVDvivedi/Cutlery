@@ -157,9 +157,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		{
 			// if the hashmap is full
 			if(hashmap_p->occupancy == hashmap_p->hashmap_holder.total_size)
-			{
 				break;
-			}
 
 			unsigned int expected_index = get_index(hashmap_p, data);
 
@@ -243,16 +241,12 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 
 			const void* data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
 			
-			if(data_at_index == data)
-			{
-				set_element(&(hashmap_p->hashmap_holder), NULL, index);
-				deleted = 1;
-			}
 			// if the given element does not exist in the hashmap we can not remove it
-			else
-			{
-				break;
-			}
+			if(data_at_index != data)
+				break
+
+			set_element(&(hashmap_p->hashmap_holder), NULL, index);
+			deleted = 1;
 
 			unsigned int previousIndex = index;
 			index = (index + 1) % hashmap_p->hashmap_holder.total_size;
