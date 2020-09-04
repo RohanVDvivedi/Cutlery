@@ -1,11 +1,7 @@
- * passable malloc and free implementation, for cutlery data structures (mainly handle array, hashmap,heap and stack) (*future feature)
-  * build a cutlery specific memory allocator interface, that is required to be passed to datastructures that need memory management like the hashmap, array, and (stack, queue and heap)
-  * also inside the hashmap start using the array as an embedded datastructure, to normalize everything
+ * passable malloc and free implementation, for cutlery data structures (mainly handle array since all of hashmap,heap and stack rely on its implementation) (*future feature)
+ * build a cutlery specific memory allocator interface, that is required to be passed to datastructures that need memory management like the array and (hashmap, stack, queue and heap)
 
  * remove complex node swap method call from bst remove function, keep the method but since this can be done in easier way with lesser operation so do it (* left for future, sonce this O(1) operation for does not affect the performance as much on mordern systems, unless we start using it on micros, and that has a long time to go)
-
-
-
 
  **** dstring revamp needed (TASKS BELOW)
 
