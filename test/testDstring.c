@@ -37,9 +37,19 @@ int main()
 	temp = "Hello World, as said by Rohan\n, Hello World";
 	printf("prefix %s %d\n", temp, is_prefix(&str, temp));
 
-	append_to_dstring_formatted(&str, "int no : %d, string : %s, float : %f\n", 336, "Heello Worlds!! =+", 35.49);
-
+	append_to_dstring_formatted(&str, "iNt no : %d, strIng : %s, floAT : %f\n", 336, "Heello Worlds!! =+", 35.49);
 	display_dstring(&str);
+
+	toLowercase(&str);
+	display_dstring(&str);
+
+	toUppercase(&str);
+	display_dstring(&str);
+
+	dstring slize;
+	init_dstring_slize(&slize, str->cstring + 4, 10);
+	display_dstring(&slize);
+	deinit_dstring(&slize);
 
 	deinit_dstring(&str);
 }
