@@ -149,7 +149,7 @@ void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...)
 	if(size_extra_req + str_p->bytes_occupied > str_p->bytes_allocated)
 		expand_dstring(str_p, str_p->bytes_occupied + 2 * size_extra_req);
 
-	vsnprintf(str_p->cstring + str_p->bytes_occupied, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
+	str_p->bytes_occupied += vsnprintf(str_p->cstring + str_p->bytes_occupied, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
 	va_end(var_args);
 }
 
