@@ -5,19 +5,19 @@
 int main()
 {
 	dstring str;
-	init_dstring(&str, "", 1);
-	display_dstring(&str);printf("\n");
+	init_dstring(&str, "");
+	printf("str : ");display_dstring(&str);printf("\n");
 
 	append_to_dstring(&str, "Hello ");
-	display_dstring(&str);printf("\n");
+	printf("str : ");display_dstring(&str);printf("\n");
 
 	dstring tempstr;
-	init_dstring(&tempstr, "World, as said by Rohan\n", 2);
+	init_dstring(&tempstr, "World, as said by Rohan\n");
+	printf("tempstr : ");display_dstring(&tempstr);printf("\n");
 	concatenate_dstring(&str, &tempstr);
 	deinit_dstring(&tempstr);
-	display_dstring(&str);printf("\n");
+	printf("str : ");display_dstring(&str);printf("\n");
 
-	display_dstring(&str);printf("\n");
 	char* temp = NULL;
 
 	temp = "";
@@ -47,7 +47,7 @@ int main()
 	display_dstring(&str);
 
 	dstring slize;
-	init_dstring_slize(&slize, str->cstring + 4, 10);
+	init_dstring_slize(&slize, str.cstring + 4, 10);
 	display_dstring(&slize);
 	deinit_dstring(&slize);
 

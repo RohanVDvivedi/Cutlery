@@ -23,7 +23,7 @@ void init_dstring_slize(dstring* slize, char* data, unsigned int data_size)
 void init_dstring(dstring* str_p, const char* cstr_p)
 {
 	if(cstr_p == NULL || cstr_p[0] == '\0')
-		return
+		return;
 	init_dstring_data(str_p, cstr_p, strlen(cstr_p));
 }
 
@@ -177,7 +177,8 @@ void toUppercase(dstring* str_p)
 
 void display_dstring(const dstring* str_p)
 {
-	printf("%.*s", str_p->bytes_occupied, str_p->cstring);
+	if(str_p->cstring != NULL)
+		printf("%.*s", str_p->bytes_occupied, str_p->cstring);
 }
 
 void deinit_dstring(dstring* str_p)
