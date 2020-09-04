@@ -20,18 +20,12 @@ struct array
 	// new_total_size of data_p_p = old_total_size of data_p_p * increment_factor + increment_offset
 };
 
-// returns a new array with total_size as the initial size, with no elements inside,
-array* get_array(unsigned int initial_size);
-
 // initializes and gives necessary memory to manage internal element contents
 void initialize_array(array* array_p, unsigned int initial_size);
 
 // frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
 // the same array can be reused by calling initialize_array function, after it is deinitialized
 void deinitialize_array(array* array_p);
-
-// deletes all the memory allocated by the array and itself
-void delete_array(array* array_p);
 
 // returns pointer to the data at index = index
 const void* get_element(const array* array_p, unsigned int index);
