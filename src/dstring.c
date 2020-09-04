@@ -22,13 +22,17 @@ void init_dstring_slize(dstring* slize, char* data, unsigned int data_size)
 
 void init_dstring(dstring* str_p, const char* cstr_p)
 {
-	if(cstr_p == NULL || cstr_p[0] == '\0')
-		return;
-	init_dstring_data(str_p, cstr_p, strlen(cstr_p));
+	init_dstring_data(str_p, cstr_p, ((cstr_p == NULL) ? 0 : strlen(cstr_p)));
 }
 
 void init_dstring_data(dstring* str_p, const char* data, unsigned int data_size)
 {
+	if(data == NULL || data_size == 0)
+	{
+		str_p->bytes_occupied = 0;
+		str_p->bytes_allocated = 0;
+		str_p->cstring = NULL;
+	}
 	str_p->bytes_occupied = data_size;
 	str_p->bytes_allocated = data_size;
 	str_p->cstring = malloc(data_size);
