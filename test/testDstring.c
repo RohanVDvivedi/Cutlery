@@ -12,11 +12,11 @@ int main()
 	printf("str : ");display_dstring(&str);printf("\n");
 
 	dstring tempstr;
-	init_dstring(&tempstr, "World, as said by Rohan\n");
+	init_dstring(&tempstr, "World, as said by Rohan");
 	printf("tempstr : ");display_dstring(&tempstr);printf("\n");
 	concatenate_dstring(&str, &tempstr);
 	deinit_dstring(&tempstr);
-	printf("str : ");display_dstring(&str);printf("\n");
+	printf("str : ");display_dstring(&str);printf("\n\n");
 
 	char* temp = NULL;
 
@@ -32,24 +32,66 @@ int main()
 	printf("prefix %s %d\n", temp, is_prefix(&str, temp));
 	temp = "Hello Worlds";
 	printf("prefix %s %d\n", temp, is_prefix(&str, temp));
-	temp = "Hello World, as said by Rohan\n";
+	temp = "Hello World, as said by Rohan";
 	printf("prefix %s %d\n", temp, is_prefix(&str, temp));
-	temp = "Hello World, as said by Rohan\n, Hello World";
+	temp = "Hello World, as said by Rohan, Hello World";
 	printf("prefix %s %d\n", temp, is_prefix(&str, temp));
 
-	append_to_dstring_formatted(&str, "iNt no : %d, strIng : %s, floAT : %f\n", 336, "Heello Worlds!! =+", 35.49);
+	append_to_dstring_formatted(&str, "iNt no : %d, strIng : %s, floAT : %f", 336, "Heello Worlds!! =+", 35.49);
 	display_dstring(&str);
-
-	toLowercase(&str);
-	display_dstring(&str);
-
-	toUppercase(&str);
-	display_dstring(&str);
+	printf("\n\n");
 
 	dstring slize;
+	printf("Created a slize : ");
 	init_dstring_slize(&slize, str.cstring + 4, 10);
 	display_dstring(&slize);
+	printf("\n\n");
+
+	printf("Created a slize : ");
+	init_dstring_slize(&slize, str.cstring, str.bytes_occupied);
+	display_dstring(&slize);
+	printf("\non compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, &slize));
+
+	printf("Created a slize : ");
+	init_dstring_slize(&slize, str.cstring, str.bytes_occupied);
+	display_dstring(&slize);
+	printf("\non compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, &slize));
+
+	printf("Created a slize : ");
+	init_dstring_slize(&slize, str.cstring, 20);
+	display_dstring(&slize);
+	printf("\non compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, &slize));
+
+	printf("Created a slize : ");
+	init_dstring_slize(&slize, str.cstring, 20);
+	display_dstring(&slize);
+	printf("\non compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, &slize));
+
+	init_dstring_slize(&slize, str.cstring, str.bytes_occupied);
+	convert_slize_to_dstring(&slize);
+	dstring capitalize_slize;
+	init_dstring_slize(&capitalize_slize, slize.cstring + 4, 10);
+	toUppercase(&capitalize_slize);
+	deinit_dstring(&capitalize_slize);
+	printf("Created a slize : ");
+	display_dstring(&slize);
+	printf("\n\n");
+
+	printf("\non compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, &slize));
+
+	printf("\non compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, &slize));
+
 	deinit_dstring(&slize);
+
+	toLowercase(&str);
+	printf("To lowercase str : ");
+	display_dstring(&str);
+	printf("\n\n");
+
+	toUppercase(&str);
+	printf("To uppercase str : ");
+	display_dstring(&str);
+	printf("\n\n");
 
 	deinit_dstring(&str);
 }
