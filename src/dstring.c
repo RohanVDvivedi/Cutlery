@@ -99,9 +99,9 @@ int contains_dstring(const dstring* str, const dstring* sub_str)
 	for(int i = 0; i <= str->bytes_occupied - sub_str->bytes_occupied; i++)
 	{
 		int found = 1;
-		for(int j = 0; j <= sub_str->bytes_occupied; j++)
+		for(int j = 0; j < sub_str->bytes_occupied; j++)
 		{
-			if(str->cstring[i] != sub_str->cstring[i])
+			if(str->cstring[i + j] != sub_str->cstring[j])
 			{
 				found = 0;
 				break;

@@ -83,6 +83,17 @@ int main()
 
 	deinit_dstring(&slize);
 
+	printf("Testing contains function for %s in str => %d\n\n", "Hello World", contains_cstring(&str, "Hello World"));
+	printf("Testing contains function for %s in str => %d\n\n", "Rohan", contains_cstring(&str, "Rohan"));
+	printf("Testing contains function for %s in str => %d\n\n", "said by", contains_cstring(&str, "said by"));
+	printf("Testing contains function for %s in str => %d\n\n", "said byt", contains_cstring(&str, "said byt"));
+	printf("Testing contains function for %s in str => %d\n\n", "rHello World", contains_cstring(&str, "rHello World"));
+	printf("Testing contains function for %s in str => %d\n\n", "sRohan", contains_cstring(&str, "sRohan"));
+	printf("Testing contains function for %s in str => %d\n\n", "Hello Worldp", contains_cstring(&str, "Hello Worldp"));
+	printf("Testing contains function for %s in str => %d\n\n", "Rohano", contains_cstring(&str, "Rohano"));
+	printf("Testing contains function for %s in str => %d\n\n", "Hellyo World", contains_cstring(&str, "Hellyo World"));
+	printf("Testing contains function for %s in str => %d\n\n", "Rohhan", contains_cstring(&str, "Rohhan"));
+
 	toLowercase(&str);
 	printf("To lowercase str : ");
 	display_dstring(&str);
