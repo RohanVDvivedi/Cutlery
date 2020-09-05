@@ -32,6 +32,10 @@ int compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 
+// returns index of first substring match, else -1
+int contains_dstring(const dstring* str, const dstring* sub_str);
+int contains_cstring(const dstring* str, const char* sub_str);
+
 int is_prefix(const dstring* str_p1, const char* str_p2);
 
 void expand_dstring(dstring* str_p, unsigned int additional_allocation);
