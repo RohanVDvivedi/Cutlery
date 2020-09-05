@@ -92,10 +92,10 @@ int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
 }
 
-int contains_dstring(const dstring* str, const dstring* sub_str)
+char* contains_dstring(const dstring* str, const dstring* sub_str)
 {
 	if(str->bytes_occupied < sub_str->bytes_occupied)
-		return -1;
+		return NULL;
 	for(int i = 0; i <= str->bytes_occupied - sub_str->bytes_occupied; i++)
 	{
 		int found = 1;
@@ -108,11 +108,11 @@ int contains_dstring(const dstring* str, const dstring* sub_str)
 			}
 		}
 		if(found)
-			return i;
+			return  str->cstring + i;
 	}
-	return -1;
+	return NULL;
 }
-int contains_cstring(const dstring* str, const char* sub_str)
+char* contains_cstring(const dstring* str, const char* sub_str)
 {
 	return contains_dstring(str, &((dstring){.cstring = (char*)sub_str, .bytes_occupied = strlen(sub_str)}));
 }
