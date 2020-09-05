@@ -5,3 +5,5 @@
 
  * convert all print functions to dstring based serializers, sprintf, and make checks for string sizes and expand dstring accordingly, this helps figure out issues in serialization at early point in time, also the generic data structures will not have to rely primarily on the multiple printf function calls
  * allow all print functions to serialize in debug and non debug modes
+
+ * convert dstring conatins functions from simple O(mn) to O(m+n) using KMP (* future)
