@@ -94,12 +94,12 @@ int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 }
 
 // KMP implementation for substring position in a given string
-char* contains_dstring(const dstring* str, const dstring* sub_str)
+unsigned int contains_dstring(const dstring* str, const dstring* sub_str)
 {
 	if(str->bytes_occupied < sub_str->bytes_occupied)
-		return NULL;
+		return SUBSTRING_NOT_FOUND;
 
-	unsigned int* suf_pre_sub_cache_matches = alloc(sizeof(unsigned int) * sub_str->bytes_occupied);
+	unsigned int* suf_pre_sub_cache_matches = alloca(sizeof(unsigned int) * sub_str->bytes_occupied);
 
 	// build the cache for the substring calculation
 	for(unsigned int i = 0; i <= sub_str->bytes_occupied; i++) {
@@ -119,9 +119,9 @@ char* contains_dstring(const dstring* str, const dstring* sub_str)
 			// substring_iter = suf_pre_sub_cache_matches[substring_iter]
 	}
 
-	return NULL;
+	return SUBSTRING_NOT_FOUND;
 }
-char* contains_cstring(const dstring* str, const char* sub_str)
+unsigned int contains_cstring(const dstring* str, const char* sub_str)
 {
 	return contains_dstring(str, &((dstring){.cstring = (char*)sub_str, .bytes_occupied = strlen(sub_str)}));
 }

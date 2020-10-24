@@ -33,9 +33,10 @@ int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 
 // KMP (Knuth–Morris–Pratt) implementation for substring position in a given string
-// returns pointer to the position of first substring match, else NULL
-char* contains_dstring(const dstring* str, const dstring* sub_str);
-char* contains_cstring(const dstring* str, const char* sub_str);
+// returns index to the position of first substring match, else SUBSTRING_NOT_FOUND
+#define SUBSTRING_NOT_FOUND ~0U
+unsigned int contains_dstring(const dstring* str, const dstring* sub_str);
+unsigned int contains_cstring(const dstring* str, const char* sub_str);
 
 int is_prefix(const dstring* str_p1, const char* str_p2);
 
