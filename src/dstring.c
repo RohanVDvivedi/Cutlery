@@ -2,6 +2,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<alloca.h>
 #include<stdarg.h>
 #include<ctype.h>
 #include<string.h>
@@ -92,27 +93,35 @@ int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
 }
 
-int contains_dstring(const dstring* str, const dstring* sub_str)
+// KMP implementation for substring position in a given string
+char* contains_dstring(const dstring* str, const dstring* sub_str)
 {
 	if(str->bytes_occupied < sub_str->bytes_occupied)
-		return -1;
-	for(int i = 0; i <= str->bytes_occupied - sub_str->bytes_occupied; i++)
-	{
-		int found = 1;
-		for(int j = 0; j < sub_str->bytes_occupied; j++)
-		{
-			if(str->cstring[i + j] != sub_str->cstring[j])
-			{
-				found = 0;
-				break;
-			}
-		}
-		if(found)
-			return i;
+		return NULL;
+
+	unsigned int* suf_pre_sub_cache_matches = alloc(sizeof(unsigned int) * sub_str->bytes_occupied);
+
+	// build the cache for the substring calculation
+	for(unsigned int i = 0; i <= sub_str->bytes_occupied; i++) {
+		// calculate the match where the prefic equals the suffic of the substring
+		suf_pre_sub_cache_matches[i] = 0;
 	}
-	return -1;
+
+	// iterate over the string to find the substring loaction
+	for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied; i++) {
+		// if the ccharacters match
+			// if not a last character of substring
+				// increment the substring iter and i
+			// else
+				// substring found
+				// return str->cstring + i - sub_str->bytes_occupied + 1
+		// else
+			// substring_iter = suf_pre_sub_cache_matches[substring_iter]
+	}
+
+	return NULL;
 }
-int contains_cstring(const dstring* str, const char* sub_str)
+char* contains_cstring(const dstring* str, const char* sub_str)
 {
 	return contains_dstring(str, &((dstring){.cstring = (char*)sub_str, .bytes_occupied = strlen(sub_str)}));
 }
