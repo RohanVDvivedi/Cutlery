@@ -100,24 +100,26 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str)
 		return SUBSTRING_NOT_FOUND;
 
 	// from the first i characters of the sub_str, the longest prefix and suffix match length is suffix_prefix_match_length[i]
-	unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * sub_str->bytes_occupied + 1);
+	unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * (sub_str->bytes_occupied + 1));
 
 	// build the cache for the substring calculation
-	suffix_prefix_match_length[0] = 0;
-	suffix_prefix_match_length[1] = 0;
+	suffix_prefix_match_length[0] = 0;printf("0 -> 0\n");
+	suffix_prefix_match_length[1] = 0;printf("1 -> 0\n");
 	for(unsigned int sub_length = 2; sub_length <= sub_str->bytes_occupied; sub_length++) {
 		// calculate the next match check location where the prefix equals the suffix of the substring
-		if(sub_str->cstring[sub_length-1] == sub_str->cstring[suffix_prefix_match_length[sub_length-2]+1])
-			suffix_prefix_match_length[sub_length] = suffix_prefix_match_length[sub_length] + 1;
+		if(sub_str->cstring[sub_length-1] == sub_str->cstring[suffix_prefix_match_length[sub_length-1]])
+			suffix_prefix_match_length[sub_length] = suffix_prefix_match_length[sub_length-1] + 1;
 		else
 			suffix_prefix_match_length[sub_length] = 0;
+
+		printf("%u -> %u\n", sub_length, suffix_prefix_match_length[sub_length]);
 	}
 
 	// iterate over the string to find the substring loaction
 	for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied;) {
 		if(str->cstring[i] == sub_str->cstring[substring_iter])
 		{
-			if(substring_iter < sub_str->bytes_occupied)
+			if(substring_iter < sub_str->bytes_occupied - 1)
 			{
 				substring_iter++;
 				i++;
@@ -125,6 +127,8 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str)
 			else
 				return i - (sub_str->bytes_occupied - 1);
 		}
+		else if(substring_iter == 0)
+			i++;
 		else
 			substring_iter = suffix_prefix_match_length[substring_iter];
 	}
