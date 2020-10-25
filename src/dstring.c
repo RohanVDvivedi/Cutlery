@@ -98,12 +98,28 @@ void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_pr
 	// build the cache for the substring calculation
 	suffix_prefix_match_length[0] = 0;
 	suffix_prefix_match_length[1] = 0;
-	for(unsigned int sub_length = 2; sub_length <= str->bytes_occupied; sub_length++) {
-		// calculate the next match check location where the prefix equals the suffix of the substring
-		if(str->cstring[sub_length-1] == str->cstring[suffix_prefix_match_length[sub_length-1]])
-			suffix_prefix_match_length[sub_length] = suffix_prefix_match_length[sub_length-1] + 1;
-		else
-			suffix_prefix_match_length[sub_length] = 0;
+	unsigned int string_length = 2;
+	while(string_length <= str->bytes_occupied)
+	{
+		unsigned int prefix_length_old = suffix_prefix_match_length[string_length - 1];
+		while(1)
+		{
+			if(str->cstring[string_length-1] == str->cstring[prefix_length_old])
+			{
+				suffix_prefix_match_length[string_length] = prefix_length_old + 1;
+				break;
+			}
+			else
+			{
+				prefix_length_old = suffix_prefix_match_length[prefix_length_old];
+				if(prefix_length_old == 0)
+				{
+					suffix_prefix_match_length[string_length] = 0;
+					break;
+				}
+			}
+		}
+		string_length++;
 	}
 }
 // KMP implementation for substring position in a given string
@@ -114,8 +130,9 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 
 	// use KMP algorithm O(m + n)
 	if(suffix_prefix_match_length_for_sub_str != NULL) {
-		// iterate over the string to find the substring loaction
-		for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied;) {
+		// iterate over the string to find the substring location
+		for(unsigned int i = 0, substring_iter = 0; i < str->bytes_occupied;)
+		{
 			if(str->cstring[i] == sub_str->cstring[substring_iter])
 			{
 				if(substring_iter < sub_str->bytes_occupied - 1)
