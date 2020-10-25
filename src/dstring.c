@@ -93,14 +93,14 @@ int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
 }
 
-void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffix_prefix_match_length)
+void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length)
 {
 	// build the cache for the substring calculation
 	suffix_prefix_match_length[0] = 0;
 	suffix_prefix_match_length[1] = 0;
-	for(unsigned int sub_length = 2; sub_length <= sub_str->bytes_occupied; sub_length++) {
+	for(unsigned int sub_length = 2; sub_length <= str->bytes_occupied; sub_length++) {
 		// calculate the next match check location where the prefix equals the suffix of the substring
-		if(sub_str->cstring[sub_length-1] == sub_str->cstring[suffix_prefix_match_length[sub_length-1]])
+		if(str->cstring[sub_length-1] == str->cstring[suffix_prefix_match_length[sub_length-1]])
 			suffix_prefix_match_length[sub_length] = suffix_prefix_match_length[sub_length-1] + 1;
 		else
 			suffix_prefix_match_length[sub_length] = 0;
@@ -112,7 +112,7 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 	if(str->bytes_occupied < sub_str->bytes_occupied)
 		return SUBSTRING_NOT_FOUND;
 
-	// use KMP algorithm O(m+n)
+	// use KMP algorithm O(m + n)
 	if(suffix_prefix_match_length_for_sub_str != NULL) {
 		// iterate over the string to find the substring loaction
 		for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied;) {
@@ -129,10 +129,10 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 			else if(substring_iter == 0)
 				i++;
 			else
-				substring_iter = suffix_prefix_match_length[substring_iter];
+				substring_iter = suffix_prefix_match_length_for_sub_str[substring_iter];
 		}
 	}
-	else // use standard algorithm O(mn)
+	else // use standard algorithm O(m * n)
 	{
 
 	}
@@ -141,7 +141,7 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 }
 unsigned int contains_cstring(const dstring* str, const char* sub_str)
 {
-	return contains_dstring(str, &((dstring){.cstring = (char*)sub_str, .bytes_occupied = strlen(sub_str)}));
+	return contains_dstring(str, &((dstring){.cstring = (char*)sub_str, .bytes_occupied = strlen(sub_str)}), NULL);
 }
 
 int is_prefix(const dstring* str_p1, const char* str_p2)
