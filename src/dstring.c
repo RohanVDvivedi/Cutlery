@@ -99,24 +99,34 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str)
 	if(str->bytes_occupied < sub_str->bytes_occupied)
 		return SUBSTRING_NOT_FOUND;
 
-	unsigned int* suf_pre_sub_cache_matches = alloca(sizeof(unsigned int) * sub_str->bytes_occupied);
+	// from the first i characters of the sub_str, the longest prefix and suffix match length is suffix_prefix_match_length[i]
+	unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * sub_str->bytes_occupied + 1);
 
 	// build the cache for the substring calculation
-	for(unsigned int i = 0; i <= sub_str->bytes_occupied; i++) {
-		// calculate the match where the prefic equals the suffic of the substring
-		suf_pre_sub_cache_matches[i] = 0;
+	suffix_prefix_match_length[0] = 0;
+	suffix_prefix_match_length[1] = 0;
+	for(unsigned int sub_length = 2; sub_length <= sub_str->bytes_occupied; sub_length++) {
+		// calculate the next match check location where the prefix equals the suffix of the substring
+		if(sub_str->cstring[sub_length-1] == sub_str->cstring[suffix_prefix_match_length[sub_length-2]+1])
+			suffix_prefix_match_length[sub_length] = suffix_prefix_match_length[sub_length] + 1;
+		else
+			suffix_prefix_match_length[sub_length] = 0;
 	}
 
 	// iterate over the string to find the substring loaction
-	for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied; i++) {
-		// if the ccharacters match
-			// if not a last character of substring
-				// increment the substring iter and i
-			// else
-				// substring found
-				// return str->cstring + i - sub_str->bytes_occupied + 1
-		// else
-			// substring_iter = suf_pre_sub_cache_matches[substring_iter]
+	for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied;) {
+		if(str->cstring[i] == sub_str->cstring[substring_iter])
+		{
+			if(substring_iter < sub_str->bytes_occupied)
+			{
+				substring_iter++;
+				i++;
+			}
+			else
+				return i - (sub_str->bytes_occupied - 1);
+		}
+		else
+			substring_iter = suffix_prefix_match_length[substring_iter];
 	}
 
 	return SUBSTRING_NOT_FOUND;
