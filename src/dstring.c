@@ -93,15 +93,8 @@ int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
 	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
 }
 
-// KMP implementation for substring position in a given string
-unsigned int contains_dstring(const dstring* str, const dstring* sub_str)
+void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffix_prefix_match_length)
 {
-	if(str->bytes_occupied < sub_str->bytes_occupied)
-		return SUBSTRING_NOT_FOUND;
-
-	// from the first i characters of the sub_str, the longest prefix and suffix match length is suffix_prefix_match_length[i]
-	unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * (sub_str->bytes_occupied + 1));
-
 	// build the cache for the substring calculation
 	suffix_prefix_match_length[0] = 0;
 	suffix_prefix_match_length[1] = 0;
@@ -112,23 +105,36 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str)
 		else
 			suffix_prefix_match_length[sub_length] = 0;
 	}
+}
+// KMP implementation for substring position in a given string
+unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length_for_sub_str)
+{
+	if(str->bytes_occupied < sub_str->bytes_occupied)
+		return SUBSTRING_NOT_FOUND;
 
-	// iterate over the string to find the substring loaction
-	for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied;) {
-		if(str->cstring[i] == sub_str->cstring[substring_iter])
-		{
-			if(substring_iter < sub_str->bytes_occupied - 1)
+	// use KMP algorithm O(m+n)
+	if(suffix_prefix_match_length_for_sub_str != NULL) {
+		// iterate over the string to find the substring loaction
+		for(unsigned int i = 0, substring_iter = 0; i <= str->bytes_occupied;) {
+			if(str->cstring[i] == sub_str->cstring[substring_iter])
 			{
-				substring_iter++;
-				i++;
+				if(substring_iter < sub_str->bytes_occupied - 1)
+				{
+					substring_iter++;
+					i++;
+				}
+				else
+					return i - (sub_str->bytes_occupied - 1);
 			}
+			else if(substring_iter == 0)
+				i++;
 			else
-				return i - (sub_str->bytes_occupied - 1);
+				substring_iter = suffix_prefix_match_length[substring_iter];
 		}
-		else if(substring_iter == 0)
-			i++;
-		else
-			substring_iter = suffix_prefix_match_length[substring_iter];
+	}
+	else // use standard algorithm O(mn)
+	{
+
 	}
 
 	return SUBSTRING_NOT_FOUND;
