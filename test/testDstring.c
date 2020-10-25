@@ -12,7 +12,7 @@ int main()
 	printf("str : ");display_dstring(&str);printf("\n");
 
 	dstring tempstr;
-	init_dstring(&tempstr, "World, as said by Rohan");
+	init_dstring(&tempstr, "World, as said by Rohan AAACAAAAAC BBCBBD BBCBBD");
 	printf("tempstr : ");display_dstring(&tempstr);printf("\n");
 	concatenate_dstring(&str, &tempstr);
 	deinit_dstring(&tempstr);
@@ -101,25 +101,25 @@ int main()
 	display_dstring(&str);
 	printf("\n\n");
 
-	dstring substring1;init_dstring(&substring1, "AFFA");unsigned int* cache1 = alloca(sizeof(unsigned int) * (substring1.bytes_occupied + 1));get_prefix_suffix_match_lengths(&substring1, cache1);
+	dstring substring1;init_dstring(&substring1, "AFFA");unsigned int* cache1 = alloca(sizeof(unsigned int) * (substring1.bytes_occupied+1));get_prefix_suffix_match_lengths(&substring1, cache1);
 	for(unsigned int i = 0; i <= substring1.bytes_occupied; i++)
 		printf("%u -> %u\n", i, cache1[i]);
 	printf("\nsubstring1 : \"");display_dstring(&substring1);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, &substring1, NULL), contains_dstring(&str, &substring1, cache1));
 	deinit_dstring(&substring1);
 
-	dstring substring2;init_dstring(&substring2, "BBCBBD");unsigned int* cache2 = alloca(sizeof(unsigned int) * (substring2.bytes_occupied + 1));get_prefix_suffix_match_lengths(&substring2, cache2);
+	dstring substring2;init_dstring(&substring2, "BBCBBD");unsigned int* cache2 = alloca(sizeof(unsigned int) * (substring2.bytes_occupied+1));get_prefix_suffix_match_lengths(&substring2, cache2);
 	for(unsigned int i = 0; i <= substring2.bytes_occupied; i++)
 		printf("%u -> %u\n", i, cache2[i]);
 	printf("\nsubstring2 : \"");display_dstring(&substring2);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, &substring2, NULL), contains_dstring(&str, &substring2, cache2));
 	deinit_dstring(&substring2);
 
-	dstring substring3;init_dstring(&substring3, "AABAACAABAA");unsigned int* cache3 = alloca(sizeof(unsigned int) * (substring3.bytes_occupied + 1));get_prefix_suffix_match_lengths(&substring3, cache3);
+	dstring substring3;init_dstring(&substring3, "AABAACAABAA");unsigned int* cache3 = alloca(sizeof(unsigned int) * (substring3.bytes_occupied+1));get_prefix_suffix_match_lengths(&substring3, cache3);
 	for(unsigned int i = 0; i <= substring3.bytes_occupied; i++)
 		printf("%u -> %u\n", i, cache3[i]);
 	printf("\nsubstring3 : \"");display_dstring(&substring3);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, &substring3, NULL), contains_dstring(&str, &substring3, cache3));
 	deinit_dstring(&substring3);
 
-	dstring substring4;init_dstring(&substring4, "AAACAAAAAC");unsigned int* cache4 = alloca(sizeof(unsigned int) * (substring4.bytes_occupied + 1));get_prefix_suffix_match_lengths(&substring4, cache4);
+	dstring substring4;init_dstring(&substring4, "AAACAAAAAC");unsigned int* cache4 = alloca(sizeof(unsigned int) * (substring4.bytes_occupied+1));get_prefix_suffix_match_lengths(&substring4, cache4);
 	for(unsigned int i = 0; i <= substring4.bytes_occupied; i++)
 		printf("%u -> %u\n", i, cache4[i]);
 	printf("\nsubstring4 : \"");display_dstring(&substring4);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, &substring4, NULL), contains_dstring(&str, &substring4, cache4));
