@@ -134,7 +134,20 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 	}
 	else // use standard algorithm O(m * n)
 	{
-
+		for(unsigned int i = 0; i <= str->bytes_occupied - sub_str->bytes_occupied; i++)
+		{
+			unsigned int found = 1;
+			for(unsigned int j = 0; j < sub_str->bytes_occupied; j++)
+			{
+				if(str->cstring[i + j] != sub_str->cstring[j])
+				{
+					found = 0;
+					break;
+				}
+			}
+			if(found)
+				return i;
+		}
 	}
 
 	return SUBSTRING_NOT_FOUND;
