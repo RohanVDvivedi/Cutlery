@@ -1,9 +1,19 @@
+TOMORROW + 2
+
  * passable malloc and free implementation, for cutlery data structures (mainly handle array since all of hashmap,heap and stack rely on its implementation) (*future feature)
  * build a cutlery specific memory allocator interface, that is required to be passed to datastructures that need memory management like the array and (hashmap, stack, queue and heap)
 
- * remove complex node swap method call from bst remove function, keep the method but since this can be done in easier way with lesser operation so do it (* left for future, sonce this O(1) operation for does not affect the performance as much on mordern systems, unless we start using it on micros, and that has a long time to go)
+
+
+TOMORROW + 1
 
  * convert all print functions to dstring based serializers, sprintf, and make checks for string sizes and expand dstring accordingly, this helps figure out issues in serialization at early point in time, also the generic data structures will not have to rely primarily on the multiple printf function calls
  * allow all print functions to serialize in debug and non debug modes
 
- * convert dstring conatins functions from simple O(mn) to O(m+n) using KMP (* future)
+
+
+TOMORROW
+
+ * remove complex node swap method call from bst remove function, keep the method but since this can be done in easier way with lesser operation so do it (* left for future, sonce this O(1) operation for does not affect the performance as much on mordern systems, unless we start using it on micros, and that has a long time to go)
+
+ * add liscense
