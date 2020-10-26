@@ -104,6 +104,11 @@ int right_rotate_tree(bst* bst_p, bstnode* A)
 
 void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
 {
+	// if A or B provided are NULL or if they point to same nodes in tree,
+	// then an exchange of nodes is not possible
+	if(A == B || A == NULL || B == NULL)
+		return;
+
 	if(A->parent == B)
 	{
 		exchange_positions_in_bst(bst_p, B, A);
