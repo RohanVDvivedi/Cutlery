@@ -1,7 +1,8 @@
 LATER
 
  * build a cutlery specific memory allocator interface, that is required to be passed to datastructures that need memory management like the array and (hashmap, stack, queue and heap)
-
+ * provide standard graph implementation interface (a structure to describe access methods to graphs), and use this access methods to develop and provide graph algorithms. The implementation must be agnostic of the structural implementation of the graphs. It must offcourse support node-pointer-based, adjacency-list-based, adjacency-matrix-based, incidence-matrix-based, edge list, etc all graphical representations must be supported. (* very far in the future)
+ * provide a very simple trie data structure, to store groups of dstring. (* very far in the future)
 
 
 FUTURE
