@@ -1,7 +1,6 @@
 LATER
 
  * build a cutlery specific memory allocator interface, that is required to be passed to datastructures that need memory management like the array and (hashmap, stack, queue and heap)
- * add license
 
 
 
