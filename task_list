@@ -6,7 +6,9 @@ LATER
 
 FUTURE
 
- * convert all print functions to dstring based serializers using append_to_dstring_formatted() function
- * trim function to trim n characters from front or back in dstring
- * allow all print functions to serialize in debug and non debug modes
+ [dev branch : print_implementations]
+  * convert all print functions to dstring based serializers using append_to_dstring_formatted() function
+  * trim function to trim n characters from front or back in dstring
+  * allow all print functions to serialize in debug and non debug modes
+
  * imlement custom memory_move function, which must be memory overlap/overwrite safe (using reverse iteration) and should perform a processor word transfer as alignment matches with the processor word size (instead of byte transfer to increase efficiency) [dev branch : memory_move_implementation]
