@@ -12,18 +12,18 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 
 	if(dest_start < src_start) // make forward pass
 	{
-		void* dest = dest_start;
-		const void* src = src_start;
+		char* dest = dest_start;
+		const char* src = src_start;
 
-		while(src <= src_end)
-			*((char*)(dest++)) = *((char*)(src++));
+		while(src <= ((char*)(src_end)))
+			*(dest++) = *(src++);
 	}
 	else // else make backward pass
 	{
-		void* dest = dest_end;
-		const void* src = src_end;
+		char* dest = dest_end;
+		const char* src = src_end;
 
-		while(src >= src_start)
-			*((char*)(dest--)) = *((char*)(src--));
+		while(src >= ((char*)(src_start)))
+			*(dest--) = *(src--);
 	}
 }
