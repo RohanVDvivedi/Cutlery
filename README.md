@@ -26,6 +26,7 @@ A c library that provides configurable data structures, serving as a backpack fo
    * `#include<hashmap.h>`
    * `#include<dstring.h>`
    * `#include<bitmap.h>`
+   * `graph_algorithms.h`
 
 ## Instructions for uninstalling library
 
