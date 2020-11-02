@@ -1,8 +1,7 @@
 LATER
 
  * integrate memory allocator interface with Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap) [dev branch : memory_allocator_interface]
- * use graph descriptor interface to build graph algorithms [dev branch : graph_interface]
-   like :
+ * use graph descriptor interface to build graph algorithms [dev branch : graph_interface]like :
        * dfs (iterative only with Cutlery stack)
        * bfs (iterative only with Cutlery queue)
        * bellmanford
@@ -20,4 +19,4 @@ FUTURE
   * trim function to trim n characters from front or back in dstring
   * allow all print functions to serialize in debug and non debug modes
 
- * imlement custom memory_move function, which must be memory overlap/overwrite safe (using reverse iteration) and should perform a processor word transfer as alignment matches with the processor word size (instead of byte transfer to increase efficiency) [dev branch : memory_move_implementation]
+ * integrate memory_move function and implement int transfer for it (alongside existing byte by byte char transfer) [dev branch : memory_move_implementation]
