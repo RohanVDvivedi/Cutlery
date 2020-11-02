@@ -3,7 +3,7 @@
 void memory_move(void* dest_start, const void* src_start, unsigned int size)
 {
 	// if they are the same memory locations, skip the copy operation
-	if(src == dest)
+	if(src_start == dest_start)
 		return;
 
 	// calcualte the last src and dest addresses
@@ -16,7 +16,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		const void* src = src_start;
 
 		while(src <= src_end)
-			*(dest++) = *(src++);
+			*((char*)(dest++)) = *((char*)(src++));
 	}
 	else // else make backward pass
 	{
@@ -24,6 +24,6 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		const void* src = src_end;
 
 		while(src >= src_start)
-			*(dest--) = *(src--);
+			*((char*)(dest--)) = *((char*)(src--));
 	}
 }
