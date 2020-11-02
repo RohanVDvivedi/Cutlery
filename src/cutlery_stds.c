@@ -11,7 +11,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		char* dest = dest_start;
 		const char* src = src_start;
 
-		while(src <= ((char*)(src_start + size - 1)))
+		while(src < ((char*)(src_start + size)))
 			*(dest++) = *(src++);
 	}
 	else // else make backward pass
