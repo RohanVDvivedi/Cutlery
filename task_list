@@ -1,10 +1,12 @@
 LATER
 
- * integrate memory allocator interface with Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap) [dev branch : memory_allocator_interface]
+[dev branch : mem_alloc_move_integ]
+ * integrate memory allocator interface with Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
  * integrate memory_move function and check correctness
- * implement more case - inclusive int transfer for it [dev branch : memory_move_implementation]
+ * implement more case - inclusive int transfer for it
 
- * use graph descriptor interface to build graph algorithms [dev branch : graph_interface]like :
+ [dev branch : graph_implementation]
+ * use graph descriptor interface to build graph algorithms like :
        * dfs (iterative only with Cutlery stack)
        * bfs (iterative only with Cutlery queue)
        * bellmanford
@@ -14,9 +16,10 @@ LATER
        * minimum spanning tree
         etc (more will be added)
 
+ [dev branch : trie_implementation]
  * provide a very simple trie data structure, to store groups of dstring. (* very far in the future)
 
- * [dev branch : print_implementations]
+ * [dev branch : print_implementation]
   * convert all print functions to dstring based serializers using append_to_dstring_formatted() function
   * trim function to trim n characters from front or back in dstring
   * allow all print functions to serialize in debug and non debug modes
