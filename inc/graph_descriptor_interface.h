@@ -49,9 +49,11 @@ struct node_descriptor
 	int (*is_visited)(void* node, void* context);
 };
 
+// possible return values of get_edge_type function for any edge
 #define DIRECTED   1
 #define UNDIRECTED 2
 
+// possible values of node_index as a parameter of get_node function for a DIRECTED edge
 #define FROM_NODE 0
 #define TO_NODE   1
 
