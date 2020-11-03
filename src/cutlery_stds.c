@@ -57,6 +57,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 			*(dest++) = *(src++);
 	}
 	// else make backward pass
+	// no optimization here since this is a minor and less frequent case
 	else
 	{
 		// start from the last byte that needs to be copied
