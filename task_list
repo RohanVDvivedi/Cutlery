@@ -3,6 +3,8 @@ LATER
 [dev branch : mem_alloc_move_integ]
  * integrate memory allocator interface with Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
  * check correctness and integrate memory_move function with the memory allocator usage in the array and dstring
+ * convert memory_allocator_interface into a single function instead of a complex struct (make deallocate just a special case of allocate fuction, some thing like we do in realloc std function)
+ * provide appropriate macros to easily initialize custom memory_allocator_interface in a single line for ease of use
 
  [dev branch : graph_implementation]
  * use graph descriptor interface to build graph algorithms like :
@@ -14,6 +16,7 @@ LATER
        * Astar
        * minimum spanning tree
         etc (more will be added)
+  * we need a memory_allocator_interface to be provided separately for graph functions
 
  [dev branch : trie_implementation]
  * provide a very simple trie data structure, to store groups of dstring. (* very far in the future)
@@ -22,3 +25,4 @@ LATER
   * convert all print functions to dstring based serializers using append_to_dstring_formatted() function
   * trim function to trim n characters from front or back in dstring
   * allow all print functions to serialize in debug and non debug modes
+  * segregate display_dstring function and since it required stdio, implement it as a macro and allow it to be written to any file descriptor
