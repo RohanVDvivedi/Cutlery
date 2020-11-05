@@ -17,7 +17,7 @@ struct memory_allocator
 	** old_memory                 : memory allocated in the past, that you no longer require, this memory must/will be freed
 	** old_size                   : size of memory pointed to by old_allocation (your custom may or may not use this value, your call)
 	** new_size                   : size of new memory that you want
-	** new_alignment              : the alignment reuired for the new memory, this is of size new_size
+	** new_alignment              : the alignment required for the new memory (0 or 1 represents no memory alignment requirements)
 	** zero_initialize_new_memory : if this parameter is non zero, then the new memory must be nonzero
 	**
 	**
