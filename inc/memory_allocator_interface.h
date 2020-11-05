@@ -5,6 +5,14 @@
 // it defines a memory allocator methods to be used by a container data structure of this library (Cutlery)
 // you may provide a custom memory allocator for any specific datastructure container for cutlery
 
+typedef enum memory_allocator_initialization memory_allocator_initialization;
+enum memory_allocator_initialization
+{
+	UN_AFFECTED,		// the cutlery algorithm/datastructure does not care about initialization of the newly allocated memory, that you will return 
+	ZERO_INITIALIZE,	// the new allocated memory, must conatain all zero bytes
+	PRESERVE_OLD_MEMORY	// if possible preserve maximum number of bytes that you could preserve from old_memory
+};
+
 typedef struct memory_allocator memory_allocator;
 struct memory_allocator
 {
@@ -14,27 +22,27 @@ struct memory_allocator
 	/*
 	** parameters
 	**
-	** old_memory                 : memory allocated in the past, that you no longer require, this memory must/will be freed
-	** old_size                   : size of memory pointed to by old_allocation (your custom may or may not use this value, your call)
-	** new_size                   : size of new memory that you want
-	** new_alignment              : the alignment required for the new memory (0 or 1 represents no memory alignment requirements)
-	** zero_initialize_new_memory : if this parameter is non zero, then the new memory must be nonzero
+	** old_memory     : memory allocated in the past, that you no longer require, this memory must/will be freed
+	** old_size       : size of memory pointed to by old_allocation (your custom allocator may or may not use this value, it is up to you)
+	** new_size       : size of new memory that you want
+	** new_alignment  : the alignment required for the new memory (0 or 1 represents no memory alignment requirements)
+	** initialization : check enum memory_allocator_initialization
 	**
 	**
-	** returns
-	** 		if the new_size != 0 then,
-	**			this a pointer to a new memory address,
-	** 			of size equal to new_size,
-	**			with its first address aligned to new_alignment,
-	**			all the returned memory must be 0, if (zero_initialize_new_memory != 0)
-	**		else
-	**			this function returns NULL ( ((void*)0) as defined in cutlery_stds.h )
+	** return value
+	**		if there is enough amount of memory, then for a non zero value of parameter "new_size",
+	**		it must return a pointer that is aligned to "new_alignment", and can safely hold atleast "new_size" number of bytes
+	**		and these "new_size" number of bytes must be initialized according to "initialization" enum memory_allocator_initialization parameter
 	**
-	**	this function must return NULL on any error that you encounter,
-	**	inclusive but not limited to
-	**		* memory allocation failure due to excessive memory utilization
+	** 		The returned memory pointer must point to atleast new_size number of bytes
+	**		The returned memory pointer may or may not point to the same old_memory
+	**			and Cutlery algorithms and datastructures will not make any such assumptions about implementation details of the memory allocator provided to them
+	**
+	**		this function must return NULL on any error that you encounter,
+	**		inclusive but not limited to 
+	**			* memory allocation failure due to excessive memory utilization
 	*/
-	void* (*allocate)(void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, int zero_initialize_new_memory);
+	void* (*allocate)(void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
 
 	// usage similar to free
 	/*
