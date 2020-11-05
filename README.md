@@ -1,5 +1,10 @@
 # Cutlery
-A c library that provides configurable data structures, serving as a backpack for any systems programming project.
+A C (standard C99) library that provides configurable data structures, serving as a backpack for any systems programming project.
+
+*This library is currently pivoting to a barebone implementation, i.e. to compile using any c (C99) compiler, even with -nostdlibs.*
+*It uses embedded nodes to implement bst (binary search tree) and linkedlist.*
+*It is meant to be used for (but usage is not limited to) very low level systems programming, with minimal environment without any of stdlib c, posix libs or 3rd party library support.*
+*It can most certainly be used for high level systems software and application software, you may find me using it extensively in all of C/C++ projects on GITHUB.*
 
 ## Setup instructions
 
