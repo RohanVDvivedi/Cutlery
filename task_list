@@ -3,7 +3,7 @@ LATER
 [dev branch : mem_alloc_move_integ]
  * integrate memory allocator interface with Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
  * for fixed size array, (and other cutlery datastructures) memory_allocator
- * check correctness and integrate memory_move function with the memory allocator usage in the array and dstring
+ * integrate memory_move function with the memory allocator usage in the array and dstring
 
  [dev branch : graph_implementation]
  * use graph descriptor interface to build graph algorithms like :
