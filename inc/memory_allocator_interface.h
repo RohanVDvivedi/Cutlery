@@ -67,5 +67,21 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 **	When the memory allocation fails the Cutlery datastructures assume that old_memory is freed and can not be used
 */
 
+// BELOW ARE SIMPLIFIED MEMORY ALLOCATOR CALLS
+// TO SIMPLIFY ACCESS OF THE MEMORY ALLOCATOR
+
+// macros to simplify access to memory allocator
+// although the memory_allocator has a lot of usecases
+// these are the most basic usecases that it must satisfy
+
+// first and foreost calls to the memory allocator
+#define allocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, UN_AFFECTED)
+#define zallocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, ZERO_INITIALIZE)
+
+// subsequent reallocation calls to the memory allocator
+#define reallocate(mem_allocator, old_memory, old_size, new_size) 	memory_allocator(old_memory, old_size, new_size, 0, PRESERVE_OLD_MEMORY)
+
+// final deallocate / free call to the memory allocator
+#define deallocate(mem_allocator, old_memory, old_size)				memory_allocator(old_memory, old_size, 0, 0, UN_AFFECTED)
 
 #endif
