@@ -27,5 +27,6 @@ LATER
   * allow all print functions to serialize in debug and non debug modes
   * segregate display_dstring function and since it required stdio, implement it as a macro and allow it to be written to any file descriptor
 
- * integrate queue and stack implementataions, so that we can handle a single header and source for both of them
+ * integrate queue and stack implementataions, so that we can handle a single header and source for both of them, and call is arraylist
   * add macros so that initialize_queue and initialize_stack (and the corresponding deinitialize functions) point to same functions underneath
+  * it must have push_back_arraylist, push_front_arraylist, pop_back_arraylist and pop_front_arraylist functions which are also #defined to their counterpart implementation for push_stack, push_queue, pop_stack and pop_queue
