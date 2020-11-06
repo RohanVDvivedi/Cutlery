@@ -24,6 +24,8 @@
  * provide a very simple trie data structure, to store of dstring* vs void*. (* very far in the future)
 
  STAGE - 5
+ * need a context for memory allocator interface
+ * simplify memory allocator interface too complex for a noobie
  * integrate memory_allocator and memory_move with other Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
 
  STAGE - 6
