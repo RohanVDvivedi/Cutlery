@@ -7,7 +7,7 @@
  * implement arraylist, define queue and stack as extensions to arraylist (such that they are using arraylist underneath), write calls of print, expand and shrink an arraylist (and heap aswell)
 
  STAGE - 2.1
- * instead of intialization function, also provide copy-on-intialization, NEW_LINKEDLIST, NEW_LINKEDLIST_NODE, NEW_BST, NEW_BST_NODE, etc
+ * instead of intialization function, also provide copy-on-intialization, NEW_LINKEDLIST, NEW_LLNODE, NEW_BST, NEW_BSTNODE, for simplicity
 
  STAGE - 3 (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
  * use graph descriptor interface to build graph algorithms like :
