@@ -28,7 +28,7 @@ struct dstring
 #define dstring_DUMMY_CSTRING(cstr)         &((dstring){.cstring = ((char*)(cstr)), .bytes_occupied = strlen((cstr)), .bytes_allocated = 0})
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
-inline void init_dstring_from_cstring(dstring* str_p, const char* cstr){return init_dstring(str_p, cstr, strlen(cstr));}
+static inline void init_dstring_from_cstring(dstring* str_p, const char* cstr){init_dstring(str_p, cstr, strlen(cstr));}
 
 void make_dstring_empty(dstring* str_p);
 
