@@ -25,6 +25,7 @@ struct dstring
 // please deinitialize it before the end of the scope or refrain from holding a reference to it or passing it to functions that could modify it
 #define dstring_DUMMY_DATA(data, data_size)	&((dstring){.cstring = ((char*)(data)),    .bytes_occupied = (data_size)      , bytes_allocated = 0})
 #define dstring_DUMMY_CSTRING(cstring)		&((dstring){.cstring = ((char*)(cstring)), .bytes_occupied = strlen((cstring)), bytes_allocated = 0})
+#define init_dstring_from_cstring(str_p, data)	init_dstring((str_p), (data), strlen((data)))
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 
@@ -41,7 +42,7 @@ int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length);
 
 // returns index to the position of first substring match, else SUBSTRING_NOT_FOUND
-#define SUBSTRING_NOT_FOUND ~0U
+#define SUBSTRING_NOT_FOUND (~0U)
 // KMP (Knuth–Morris–Pratt) O(m+n) will be used if you provide a non-NULL value for suffix_prefix_match_length (result of get_prefix_suffix_match_lengths)
 // else it will use standard O(m*n) sub string algorithm
 unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length);
@@ -59,9 +60,9 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
 // marcos for io using dstring
-#define printf_dstring(str_p)				((str_p->cstring != NULL && str_p->bytes_occupied > 0) ? printf("%.*s", str_p->bytes_occupied, str_p->cstring) : 0)
-#define pwrite_dstring(fd, str_p, offt)		pwrite(fd, str_p->cstring, str_p->bytes_occupied, offt)
-#define write_dstring(fd, str_p)			write(fd, str_p->cstring, str_p->bytes_occupied)
+#define printf_dstring(str_p)				(((str_p)->cstring != NULL && (str_p)->bytes_occupied > 0) ? printf("%.*s", (str_p)->bytes_occupied, (str_p)->cstring) : 0)
+#define pwrite_dstring(fd, str_p, offt)		pwrite((fd), (str_p)->cstring, (str_p)->bytes_occupied, (offt))
+#define write_dstring(fd, str_p)			write((fd), (str_p)->cstring, (str_p)->bytes_occupied)
 
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
