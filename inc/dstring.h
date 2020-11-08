@@ -53,11 +53,13 @@ void expand_dstring(dstring* str_p, unsigned int additional_size);
 // concatenates str_p2 to str_p1
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 
-// append_to_dstring_formatted is a sprintf implementation for dstrings
-void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...);
+// append_to_dstring_formatted is a snprintf implementation for dstrings
+void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
-#define print_dstring(str_p)	if(str_p->cstring != NULL){printf("%.*s", str_p->bytes_occupied, str_p->cstring);}
-#define write_dstring(str_p)	if(str_p->cstring != NULL){printf("%.*s", str_p->bytes_occupied, str_p->cstring);}
+// marcos for io using dstring
+#define printf_dstring(str_p)				printf("%.*s", str_p->bytes_occupied, str_p->cstring)
+#define pwrite_dstring(fd, str_p, offt)		pwrite(fd, str_p->cstring, str_p->bytes_occupied, offt)
+#define write_dstring(fd, str_p)			write(fd, str_p->cstring, str_p->bytes_occupied)
 
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
