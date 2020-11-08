@@ -20,7 +20,9 @@ struct dstring
 
 // dstring_DUMMY_* macros below do not allocate any memory
 // they rather starts pointing to the data that you provided
-// deinitializing such a dstring will not and must not cause any error, but refrain from attempting such feats
+// deinitializing such a dstring will not and must not cause any error
+// so if you plan to hold a reference to even a dstring_DUMMY, 
+// please deinitialize it before the end of the scope or refrain from holding a reference to it or passing it to functions that could modify it
 #define dstring_DUMMY_DATA(data, data_size)	&((dstring){.cstring = ((char*)(data)),    .bytes_occupied = (data_size)      , bytes_allocated = 0})
 #define dstring_DUMMY_CSTRING(cstring)		&((dstring){.cstring = ((char*)(cstring)), .bytes_occupied = strlen((cstring)), bytes_allocated = 0})
 
@@ -44,8 +46,8 @@ void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_pr
 // else it will use standard O(m*n) sub string algorithm
 unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length);
 
-// returns true if str_p2 is prefix of str_p1
-int is_prefix(const dstring* str_p1, const char* str_p2);
+// returns 1 if prifix_p is prefix of string_p, else it returns 0
+int is_prefix(const dstring* string_p, const dstring* prefix_p);
 
 // increases the size of dstring by additional_size number of bytes
 void expand_dstring(dstring* str_p, unsigned int additional_size);
