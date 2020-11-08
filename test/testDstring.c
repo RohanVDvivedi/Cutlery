@@ -11,7 +11,7 @@ int main()
 	printf("str : ");printf_dstring(&str);printf("\n");
 
 	{
-		dstring* tempstr = dstring_DUMMY_CSTRING("World, as said by Rohan AAACAAAAAC BBCBBD BBCBBD");
+		const dstring* tempstr = dstring_DUMMY_CSTRING("World, as said by Rohan AAACAAAAAC BBCBBD BBCBBD");
 		printf("concatenate str with tempstr : ");printf_dstring(tempstr);printf("\n");
 		concatenate_dstring(&str, tempstr);
 		printf("str : ");printf_dstring(&str);printf("\n\n");
@@ -52,7 +52,7 @@ int main()
 	printf("\n\n");
 
 	printf("Created a slize : ");
-	dstring* slize = dstring_DUMMY_DATA(str.cstring, str.bytes_occupied);
+	const dstring* slize = dstring_DUMMY_DATA(str.cstring, str.bytes_occupied);
 	printf_dstring(slize);
 	printf("\non compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, slize));
 
@@ -80,15 +80,13 @@ int main()
 	printf("\non compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, slize));
 
 	printf("Created a slize : ");
-	slize = &((dstring){});init_dstring(slize, str.cstring, str.bytes_occupied);
-	toUppercase(slize);
-	printf_dstring(slize);
+	dstring* slize2 = &((dstring){});init_dstring(slize2, str.cstring, str.bytes_occupied);
+	toUppercase(slize2);
+	printf_dstring(slize2);
 	printf("\n\n");
-
-	printf("\non compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, slize));
-	printf("\non compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, slize));
-
-	deinit_dstring(slize);
+	printf("\non compare to str = case_compare(str,slize2) = %d\n\n", case_compare_dstring(&str, slize2));
+	printf("\non compare to str = compare(str,slize2) = %d\n\n", compare_dstring(&str, slize2));
+	deinit_dstring(slize2);
 
 	printf_dstring(&str);
 	printf("\n\n");

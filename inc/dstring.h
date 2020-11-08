@@ -24,8 +24,8 @@ struct dstring
 // deinitializing such a dstring will not and must not cause any error
 // so if you plan to hold a reference to even a dstring_DUMMY, 
 // please deinitialize it before the end of the scope or refrain from holding a reference to it or passing it to functions that could modify it
-#define dstring_DUMMY_DATA(data, data_size) &((dstring){.cstring = ((char*)(data)), .bytes_occupied = (data_size),    .bytes_allocated = 0})
-#define dstring_DUMMY_CSTRING(cstr)         &((dstring){.cstring = ((char*)(cstr)), .bytes_occupied = strlen((cstr)), .bytes_allocated = 0})
+#define dstring_DUMMY_DATA(data, data_size) &((const dstring){.cstring = ((char*)(data)), .bytes_occupied = (data_size),    .bytes_allocated = 0})
+#define dstring_DUMMY_CSTRING(cstr)         &((const dstring){.cstring = ((char*)(cstr)), .bytes_occupied = strlen((cstr)), .bytes_allocated = 0})
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 static inline void init_dstring_from_cstring(dstring* str_p, const char* cstr){init_dstring(str_p, cstr, strlen(cstr));}
