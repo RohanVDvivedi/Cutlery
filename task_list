@@ -1,8 +1,3 @@
- STAGE - 1
- * get_substring function to trim n characters from front or back in dstring
- * segregate display_dstring function and since it requires stdio, implement it as a macro and allow it to be written to any file descriptor
- * reduce number of initializers in dstring interface, to simplify
-
  STAGE - 2
  * implement arraylist, define queue and stack as extensions to arraylist (such that they are using arraylist underneath), write calls of print, expand and shrink an arraylist (and heap aswell)
 
