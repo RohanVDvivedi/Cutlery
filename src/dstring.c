@@ -26,46 +26,33 @@ void make_dstring_empty(dstring* str_p)
 	str_p->bytes_occupied = 0;
 }
 
-static int compare_string_safe(const char* str1, unsigned int size1, const char* str2, unsigned int size2)
-{
-	if(size1 == size2)
-		return strncmp(str1, str2, size1);
-	unsigned int min_size = (size1 < size2) ? size1 : size2;
-	int cmp = strncmp(str1, str2, min_size);
-	if(cmp != 0)
-		return cmp;
-	if(min_size == size1)
-		return 1;
-	return -1;
-}
 int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
-	return compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
-}
-int compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
-{
-	return compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
-}
+	if(str_p1->bytes_occupied == str_p2->bytes_occupied)
+		return strncmp(str_p1->cstring, str_p2->cstring, str_p1->bytes_occupied);
 
-static int case_compare_string_safe(const char* str1, unsigned int size1, const char* str2, unsigned int size2)
-{
-	if(size1 == size2)
-		return strncasecmp(str1, str2, size1);
-	unsigned int min_size = (size1 < size2) ? size1 : size2;
-	int cmp = strncasecmp(str1, str2, min_size);
+	unsigned int min_size = (str_p1->bytes_occupied < str_p2->bytes_occupied) ? str_p1->bytes_occupied : str_p2->bytes_occupied;
+	int cmp = strncmp(str_p1->cstring, str_p2->cstring, min_size);
+
 	if(cmp != 0)
 		return cmp;
-	if(min_size == size1)
-		return 1;
-	return -1;
+	if(min_size == str_p1->bytes_occupied)
+		return -1;
+	return 1;
 }
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
-	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
-}
-int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2)
-{
-	return case_compare_string_safe(str_p1->cstring, str_p1->bytes_occupied, str_p2, strlen(str_p2));
+	if(str_p1->bytes_occupied == str_p2->bytes_occupied)
+		return strncasecmp(str_p1->cstring, str_p2->cstring, str_p1->bytes_occupied);
+
+	unsigned int min_size = (str_p1->bytes_occupied < str_p2->bytes_occupied) ? str_p1->bytes_occupied : str_p2->bytes_occupied;
+	int cmp = strncasecmp(str_p1->cstring, str_p2->cstring, min_size);
+
+	if(cmp != 0)
+		return cmp;
+	if(min_size == str_p1->bytes_occupied)
+		return -1;
+	return 1;
 }
 
 void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length)
@@ -144,25 +131,18 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 
 	return SUBSTRING_NOT_FOUND;
 }
-unsigned int contains_cstring(const dstring* str, const char* sub_str)
-{
-	return contains_dstring(str, &((dstring){.cstring = (char*)sub_str, .bytes_occupied = strlen(sub_str)}), NULL);
-}
 
-int is_prefix(const dstring* str_p1, const char* str_p2)
+int is_prefix(const dstring* string_p, const dstring* prefix_p)
 {
-	size_t prefix_length = strlen(str_p2);
-	// prefix length must be smaller than or equal to dstring provided
-	if(prefix_length > str_p1->bytes_occupied)
-		return 0;
-	return (strncmp(str_p1->cstring, str_p2, prefix_length) == 0);
+	// prefix must have a length smaller than or equal to provided main string
+	if(string_p->bytes_occupied >= prefix_p->bytes_occupied)
+		return 0 == strncmp(string_p->cstring, prefix_p->cstring, prefix_p->bytes_occupied);
+	return 0;
 }
 
 void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
-	dstring expanded_dstring;
-	expanded_dstring.bytes_occupied = str_p->bytes_occupied;
-	expanded_dstring.bytes_allocated = str_p->bytes_occupied + additional_allocation;
+	dstring expanded_dstring = {.bytes_occupied = str_p->bytes_occupied, .bytes_allocated = str_p->bytes_occupied + additional_allocation};
 
 	// if expanded dstring does not result in real expansion, than just exit
 	if(expanded_dstring.bytes_allocated <= str_p->bytes_allocated)
@@ -170,30 +150,26 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 
 	expanded_dstring.cstring = malloc(expanded_dstring.bytes_allocated);
 	memcpy(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
+
 	deinit_dstring(str_p);
 	(*str_p) = expanded_dstring;
 }
 
-void appendn_to_dstring(dstring* str_p, const char* data, unsigned int data_size)
+void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
-	if(data != NULL && data_size > 0)
+	if(str_p2->cstring != NULL && str_p2->bytes_occupied > 0)
 	{
 		// check if new data could fit, without expansion, else expand the dstring
-		if(str_p->bytes_occupied + data_size > str_p->bytes_allocated)
-			expand_dstring(str_p, str_p->bytes_occupied + 2 * data_size);
+		if(str_p1->bytes_occupied + str_p2->bytes_occupied > str_p1->bytes_allocated)
+			expand_dstring(str_p1, str_p1->bytes_occupied + 2 * str_p2->bytes_occupied);
 
 		// do appending as normal now
-		memcpy(str_p->cstring + str_p->bytes_occupied, data, data_size);
-		str_p->bytes_occupied += data_size;
+		memcpy(str_p1->cstring + str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
+		str_p1->bytes_occupied += str_p2->bytes_occupied;
 	}
 }
 
-void append_to_dstring(dstring* str_p, const char* cstr_p)
-{
-	appendn_to_dstring(str_p, cstr_p, ((cstr_p == NULL) ? 0 : strlen(cstr_p)) );
-}
-
-void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...)
+void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 {
 	va_list var_args, var_args_dummy;
 	va_start(var_args, cstr_format);
@@ -209,12 +185,6 @@ void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...)
 
 	str_p->bytes_occupied += vsnprintf(str_p->cstring + str_p->bytes_occupied, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
 	va_end(var_args);
-}
-
-void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
-{
-	// we shall send the length of the dstring without the '\0'
-	appendn_to_dstring(str_p1, str_p2->cstring, str_p2->bytes_occupied);
 }
 
 #define toLowercaseChar(c) ((('A' <= (c)) && ((c) <= 'Z')) ? ((c) - 'A' + 'a') : (c))
