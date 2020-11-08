@@ -59,7 +59,7 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
 // marcos for io using dstring
-#define printf_dstring(str_p)				printf("%.*s", str_p->bytes_occupied, str_p->cstring)
+#define printf_dstring(str_p)				((str_p->cstring != NULL && str_p->bytes_occupied > 0) ? printf("%.*s", str_p->bytes_occupied, str_p->cstring) : 0)
 #define pwrite_dstring(fd, str_p, offt)		pwrite(fd, str_p->cstring, str_p->bytes_occupied, offt)
 #define write_dstring(fd, str_p)			write(fd, str_p->cstring, str_p->bytes_occupied)
 
