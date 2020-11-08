@@ -1,5 +1,5 @@
  STAGE - 2
- * implement arraylist, define queue and stack as extensions to arraylist (such that they are using arraylist underneath), write calls of print, expand and shrink an arraylist (and heap aswell)
+ * implement arraylist, define queue and stack as extensions to arraylist (such that they are using arraylist underneath), write calls of print and foreach for an arraylist (and heap aswell)
 
  STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
  * use graph descriptor interface to build graph algorithms like :
@@ -22,9 +22,9 @@
  * integrate memory_allocator and memory_move with other Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
  * use a global memory allocator for dstring, that can be set by someone
 
- STAGE - 5 (dependent on STAGE - 4, need strong memory management model for new datastructures)
+ STAGE - 5 (dependent on STAGE - 4, need strong memory management model for new cutlery datastructures)
  * provide a very simple trie data structure, to store of dstring* vs void*. (* very far in the future)
 
  STAGE - 6
- * convert all print functions to dstring based serializers using append_to_dstring_formatted() function
+ * convert all print functions to dstring based serializers using snprintf_dstring()
  * allow all print functions to serialize in debug and non debug modes
