@@ -4,7 +4,6 @@
 #include<stdlib.h>
 #include<alloca.h>
 #include<stdarg.h>
-#include<ctype.h>
 #include<string.h>
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
@@ -218,22 +217,24 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 	appendn_to_dstring(str_p1, str_p2->cstring, str_p2->bytes_occupied);
 }
 
+#define toLowercaseChar(c) ((('A' <= (c)) && ((c) <= 'Z')) ? ((c) - 'A' + 'a') : (c))
 void toLowercase(dstring* str_p)
 {
 	char* stemp = str_p->cstring;
 	while(stemp < str_p->cstring + str_p->bytes_occupied)
 	{
-		*stemp = tolower(*stemp);
+		*stemp = toLowercaseChar(*stemp);
 		stemp++;
 	}
 }
 
+#define toUppercaseChar(c) ((('a' <= (c)) && ((c) <= 'z')) ? ((c) - 'a' + 'A') : (c))
 void toUppercase(dstring* str_p)
 {
 	char* stemp = str_p->cstring;
 	while(stemp < str_p->cstring + str_p->bytes_occupied)
 	{
-		*stemp = toupper(*stemp);
+		*stemp = toUppercaseChar(*stemp);
 		stemp++;
 	}
 }
