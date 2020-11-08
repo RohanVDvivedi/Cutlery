@@ -1,15 +1,12 @@
  STAGE - 1
- * trim function to trim n characters from front or back in dstring
+ * get_substring function to trim n characters from front or back in dstring
  * segregate display_dstring function and since it requires stdio, implement it as a macro and allow it to be written to any file descriptor
  * reduce number of initializers in dstring interface, to simplify
 
  STAGE - 2
  * implement arraylist, define queue and stack as extensions to arraylist (such that they are using arraylist underneath), write calls of print, expand and shrink an arraylist (and heap aswell)
 
- STAGE - 2.1
- * instead of intialization function, also provide copy-on-intialization, NEW_LINKEDLIST, NEW_LLNODE, NEW_BST, NEW_BSTNODE, for simplicity
-
- STAGE - 3 (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
+ STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
  * use graph descriptor interface to build graph algorithms like :
     each of these graph functions take a memory_allocator to allocate memory for its own internal structures
     each of these functions must also take an array/queue/stack that will contain the result
@@ -23,14 +20,15 @@
        * minimum spanning tree
         etc (more will be added)
 
- STAGE - 4
- * provide a very simple trie data structure, to store of dstring* vs void*. (* very far in the future)
-
- STAGE - 5
+ STAGE - 4 (dependent on STAGE - 1, 2, 3(to start to conceptualize the memory allocation) )
  * need a context for memory allocator interface
  * simplify memory allocator interface too complex for a noobie
  * implement a stdlib memory_allocator for cutlery specific datastructures
  * integrate memory_allocator and memory_move with other Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
+ * use a global memory allocator for dstring, that can be set by someone
+
+ STAGE - 5 (dependent on STAGE - 4, need strong memory management model for new datastructures)
+ * provide a very simple trie data structure, to store of dstring* vs void*. (* very far in the future)
 
  STAGE - 6
  * convert all print functions to dstring based serializers using append_to_dstring_formatted() function
