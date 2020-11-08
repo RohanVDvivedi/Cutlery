@@ -18,19 +18,18 @@ struct dstring
 	unsigned int bytes_allocated;
 };
 
-dstring* get_dstring_data(const char* data, unsigned int data_size);
-void init_dstring_slize(dstring* slize, char* data, unsigned int data_size);
-void init_dstring(dstring* str_p, const char* cstr_p);
-void init_dstring_data(dstring* str_p, const char* data, unsigned int data_size);
+// dstring_DUMMY_* macros below do not allocate any memory
+// they rather starts pointing to the data that you provided
+// deinitializing such a dstring will not and must not cause any error, but refrain from attempting such feats
+#define dstring_DUMMY_DATA(data, data_size)	&((dstring){.cstring = ((char*)(data)),    .bytes_occupied = (data_size)      , bytes_allocated = 0})
+#define dstring_DUMMY_CSTRING(cstring)		&((dstring){.cstring = ((char*)(cstring)), .bytes_occupied = strlen((cstring)), bytes_allocated = 0})
 
-void convert_slize_to_dstring(dstring* slize);
+void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 
 void make_dstring_empty(dstring* str_p);
 
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
-int compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
-int case_compare_dstring_cstring(const dstring* str_p1, const char* str_p2);
 
 // returns suffix_prefix_match_length
 // for first i characters of str, the prefix of str rquals the suffix of str
@@ -44,22 +43,25 @@ void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_pr
 // KMP (Knuth–Morris–Pratt) O(m+n) will be used if you provide a non-NULL value for suffix_prefix_match_length (result of get_prefix_suffix_match_lengths)
 // else it will use standard O(m*n) sub string algorithm
 unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length);
-unsigned int contains_cstring(const dstring* str, const char* sub_str);
 
+// returns true if str_p2 is prefix of str_p1
 int is_prefix(const dstring* str_p1, const char* str_p2);
 
-void expand_dstring(dstring* str_p, unsigned int additional_allocation);
-void appendn_to_dstring(dstring* str_p, const char* data, unsigned int data_size);
-void append_to_dstring(dstring* str_p, const char* cstr_p);
-void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...);
+// increases the size of dstring by additional_size number of bytes
+void expand_dstring(dstring* str_p, unsigned int additional_size);
+
+// concatenates str_p2 to str_p1
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
+
+// append_to_dstring_formatted is a sprintf implementation for dstrings
+void append_to_dstring_formatted(dstring* str_p, const char* cstr_format, ...);
+
+#define print_dstring(str_p)	if(str_p->cstring != NULL){printf("%.*s", str_p->bytes_occupied, str_p->cstring);}
+#define write_dstring(str_p)	if(str_p->cstring != NULL){printf("%.*s", str_p->bytes_occupied, str_p->cstring);}
 
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
 
-void display_dstring(const dstring* str_p);
-
 void deinit_dstring(dstring* str_p);
-void delete_dstring(dstring* str_p);
 
 #endif
