@@ -81,6 +81,7 @@ int main()
 
 	printf("Created a slize : ");
 	slize = &((dstring){});init_dstring(slize, str.cstring, str.bytes_occupied);
+	toUppercase(slize);
 	printf_dstring(slize);
 	printf("\n\n");
 
