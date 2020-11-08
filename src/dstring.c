@@ -7,26 +7,7 @@
 #include<ctype.h>
 #include<string.h>
 
-dstring* get_dstring_data(const char* data, unsigned int data_size)
-{
-	dstring* str_p = malloc(sizeof(dstring));
-	init_dstring_data(str_p, data, data_size);
-	return str_p;
-}
-
-void init_dstring_slize(dstring* slize, char* data, unsigned int data_size)
-{
-	slize->cstring = data;
-	slize->bytes_occupied = data_size;
-	slize->bytes_allocated = 0;
-}
-
-void init_dstring(dstring* str_p, const char* cstr_p)
-{
-	init_dstring_data(str_p, cstr_p, ((cstr_p == NULL) ? 0 : strlen(cstr_p)));
-}
-
-void init_dstring_data(dstring* str_p, const char* data, unsigned int data_size)
+void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 {
 	if(data == NULL || data_size == 0)
 	{
@@ -39,11 +20,6 @@ void init_dstring_data(dstring* str_p, const char* data, unsigned int data_size)
 	str_p->bytes_allocated = data_size;
 	str_p->cstring = malloc(data_size);
 	memcpy(str_p->cstring, data, data_size);
-}
-
-void convert_slize_to_dstring(dstring* slize)
-{
-	init_dstring_data(slize, slize->cstring, slize->bytes_occupied);
 }
 
 void make_dstring_empty(dstring* str_p)
@@ -262,12 +238,6 @@ void toUppercase(dstring* str_p)
 	}
 }
 
-void display_dstring(const dstring* str_p)
-{
-	if(str_p->cstring != NULL)
-		printf("%.*s", str_p->bytes_occupied, str_p->cstring);
-}
-
 void deinit_dstring(dstring* str_p)
 {
 	if(str_p->bytes_allocated > 0 && str_p->cstring != NULL)
@@ -275,10 +245,4 @@ void deinit_dstring(dstring* str_p)
 	str_p->cstring = NULL;
 	str_p->bytes_allocated = 0;
 	str_p->bytes_occupied = 0;
-}
-
-void delete_dstring(dstring* str_p)
-{
-	deinit_dstring(str_p);
-	free(str_p);
 }
