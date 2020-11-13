@@ -5,14 +5,18 @@
 // that defines/describes implementation of a graph data structure
 // and access methods to access it by the graph algorithms of cutlery
 
-/* 
-	here the context defines and the context should help you know the following
+/*
+	context is a parameter to every function defined on either of nodes, edges and even graphs
+
+	here the context defines and the context should help you to know the following
 	  * the query that we are solving (a description of the problem that you are solving)
 	  * the graph that we are solving it on (ideally a pointer to the graph itself)
 	  * any current query specific variables
 	      * this is where you should ideally maintain 
 	        * what nodes have been visited
 	        * what edges have been traversed, etc
+	  * the context should not be used to store parts of the graph, nodes or edges
+	  * the context should instead represent the query and the state of the query processing algorithm to help you take decissions accordingly and efficiently
 
 	the above points should be used only as a guide line to define what a context datastructure should contain
 	you may aswell feel free to do what ever you like
