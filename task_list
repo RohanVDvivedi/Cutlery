@@ -1,5 +1,6 @@
  STAGE - 2
  * implement arraylist, define queue and stack as extensions to arraylist (such that they are using arraylist underneath), write calls of print and foreach for an arraylist (and heap aswell)
+ * keep arraylist similar to linkedlist (also rpovide get_nth_from_top and bottom functions, and all other corrresponding functions for head tail to top bottom based), yet with same functionalitites as stack and queue, to easily port them with very simple functions making direct calls
 
  STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
  * use graph descriptor interface to build graph algorithms like :
