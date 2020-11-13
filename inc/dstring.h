@@ -18,7 +18,6 @@ struct dstring
 	unsigned int bytes_allocated;
 };
 
-#include<string.h>
 // dstring_DUMMY_* macro below do not allocate any memory
 // they rather starts pointing to the data that you provided
 // deinitializing such a dstring will not and must not cause any error
@@ -28,7 +27,6 @@ struct dstring
 #define dstring_DUMMY_CSTRING(cstr)         &((const dstring){.cstring = ((char*)(cstr)), .bytes_occupied = strlen((cstr)), .bytes_allocated = 0})
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
-static inline void init_dstring_from_cstring(dstring* str_p, const char* cstr){init_dstring(str_p, cstr, strlen(cstr));}
 
 void make_dstring_empty(dstring* str_p);
 
@@ -62,8 +60,6 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
 // marcos for io using dstring
 #define printf_dstring(str_p)				(((str_p)->cstring != NULL && (str_p)->bytes_occupied > 0) ? printf("%.*s", (str_p)->bytes_occupied, (str_p)->cstring) : 0)
-#define pwrite_dstring(fd, str_p, offt)		pwrite((fd), (str_p)->cstring, (str_p)->bytes_occupied, (offt))
-#define write_dstring(fd, str_p)			write((fd), (str_p)->cstring, (str_p)->bytes_occupied)
 
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
