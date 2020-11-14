@@ -1,6 +1,11 @@
 #include<arraylist.h>
 
-void intialize_arraylist(arraylist* al, unsigned int initial_size);
+void intialize_arraylist(arraylist* al, unsigned int initial_size)
+{
+	initialize_array(&(al->arraylist_holder), initial_size);
+	al->first_index = 0;
+	al->element_count = 0;
+}
 
 int push_front(arraylist* al, const void* data_p);
 
@@ -18,7 +23,10 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n);
 
 const void* get_nth_from_back(const arraylist* al, unsigned int n);
 
-unsigned int get_arraylist_element_count(const arraylist* al);
+unsigned int get_arraylist_element_count(const arraylist* al)
+{
+	return al->element_count; 
+}
 
 int is_arraylist_full(const arraylist* al);
 
@@ -34,4 +42,7 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 
 void print_arraylist(const arraylist* al);
 
-void deintialize_arraylist(arraylist* al);
+void deintialize_arraylist(arraylist* al)
+{
+	deinitialize_array(&(al->arraylist_holder));
+}

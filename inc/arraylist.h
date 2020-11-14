@@ -13,20 +13,13 @@ struct arraylist
 	array arraylist_holder;
 
 	// arraylist is a circular buffer
-	// from front_index to back_index, if front_index < back_index
-	// else front_index -> arraylist_holder.total_size - 1 -> 0 -> back_index
+	// from first_index to first_index + ((element_count - 1) % arraylist_holder.total_size)
 
-	// front_index points to the front of the arraylist
-	unsigned int front_index;
+	// first_index points to the front of the arraylist
+	unsigned int first_index;
 
-	// back_index points to the back of the arraylist
-	unsigned int back_index;
-
-	// at initial
-	// front_index = arraylist_holder.total_size - 1
-	// back_index = 0
-
-	// element_count = (front_index <= back_index) ? (back_index - front_index + 1) : ((back_index + arraylist_holder.total_size) - front_index + 1)
+	// element_count represents the number of elements contained in the array list
+	unsigned int element_count;
 };
 
 void intialize_arraylist(arraylist* al, unsigned int initial_size);
@@ -46,10 +39,10 @@ int pop_back(arraylist* al);
 // pop_* functions will fail and return 0, if no element was popped from the arraylist 
 // This happens if the number of elements in the given arraylist is 0
 
-// returns an element at the front of the arraylist, this is also the element at the front_index
+// returns an element at the front of the arraylist, this is also the element at the first_index
 // it fails and returns NULL, if the 
 const void* get_front(const arraylist* al);
-// returns an element at the back of the arraylist, this is also the element at the back_index
+// returns an element at the back of the arraylist, this is also the element at the first_index + ((element_count - 1) % arraylist_holder.total_size)
 const void* get_back(const arraylist* al);
 // get_* functions will fail and return NULL if the number of elements in the given arraylist is 0
 
