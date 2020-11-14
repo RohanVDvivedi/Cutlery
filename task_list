@@ -3,7 +3,7 @@
  * re-implement queue and stack as extentions to arraylist
  * implement rehash_to_new_size function for hashmap
  * segregate pusp/pop and expand/contract functionality from stack/queue/heap just like arraylist and concretely follow intial_size parameter, setting everything to NULL/0 if initial size is 0
- * refactor dependent code bases (namely testcases of Cutlery, Boompar(queue), Bufferpool(heap, hashmap), Cashed(hashmap, queue), JSONParser(stack, hashmap), Serc(hashmap)) to use the new api for hashmap/stack/queue/heap
+ * refactor dependent code bases (namely testcases of Cutlery, Boompar(queue), Bufferpool(heap, hashmap), Cashed(hashmap, heap), JSONParser(stack, hashmap), Serc(hashmap)) to use the new api for hashmap/stack/queue/heap
 
  STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
  * use graph descriptor interface to build graph algorithms like :
