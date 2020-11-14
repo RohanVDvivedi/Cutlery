@@ -212,7 +212,7 @@ int remove_tail(linkedlist* ll)
 }
 
 // remove the given element from the linked list
-int remove_from_list(linkedlist* ll, const void* data)
+int remove_from_linkedlist(linkedlist* ll, const void* data)
 {
 	llnode* node_p = get_node(data);
 
@@ -224,7 +224,7 @@ int remove_from_list(linkedlist* ll, const void* data)
 	return 1;
 }
 
-const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
+const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
 {
 	if(is_linkedlist_empty(ll))
 		return NULL;
@@ -240,7 +240,7 @@ const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*co
 	return NULL;
 }
 
-void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
+void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
 	if(is_linkedlist_empty(ll))
 		return;

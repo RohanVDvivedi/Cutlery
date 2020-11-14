@@ -50,7 +50,7 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 
 int remove_head(linkedlist* ll);
 int remove_tail(linkedlist* ll);
-int remove_from_list(linkedlist*ll, const void* data);
+int remove_from_linkedlist(linkedlist*ll, const void* data);
 
 // This function is tricky to explain, it returns true 2 types of nodes
 // 1. a node that does not exist in any linkedlist
@@ -63,11 +63,11 @@ int is_new_llnode(linkedlist* ll, llnode* node_p);
 // in the compare function the first parameter is the data from the linkedlist,
 // while the second parameter is the data that has been provided by you
 // it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
-const void* find_equals_in_list(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
+const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
 
 // perform operation on all the elements of the linked list
 // the function is designed well, you may call free on your data, in the provided operation function
-void for_each_in_list(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
+void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
 // prints complete linked list
 void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));

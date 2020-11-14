@@ -9,6 +9,7 @@
 typedef struct arraylist arraylist;
 struct arraylist
 {
+	// this is the holder for storing the elements in the arraylist
 	array arraylist_holder;
 
 	// arraylist is a circular buffer
@@ -26,20 +27,22 @@ struct arraylist
 
 void intialize_arraylist(arraylist* al, unsigned int initial_size);
 
-// push_* functions return 1 if data_p is successfully pushed in the arraylist
-// push fails and returns with a 0, if the arraylist_holder is full
-int push_front(arraylist* al, void* data_p);
-int push_back(arraylist* al, void* data_p);
+// push_front & push_back functions will push data_p to the front and back of the arraylist, respectively
+void push_front(arraylist* al, const void* data_p);
+void push_back(arraylist* al, const void* data_p);
 
-// pop_* functions return 1 if data_p is successfully poped in the arraylist
-// pop fails and returns with a 0, if the arraylist_holder is already empty
-int pop_front(arraylist* al);
-int pop_back(arraylist* al);
+// pop_front & pop_back functions will pop a data element from the front and back of the arraylist, respectively
+void pop_front(arraylist* al);
+void pop_back(arraylist* al);
 
 // returns an element at the front of the arraylist, this is also the element at the front_index
-void* get_front(const arraylist* al);
+const void* get_front(const arraylist* al);
 // returns an element at the back of the arraylist, this is also the element at the back_index => (front_index + arraylist_size) % arraylist_holder.total_size
-void* get_back(const arraylist* al);
+const void* get_back(const arraylist* al);
+
+// to get nth element from front or back respectively
+const void* get_nth_from_front(const arraylist* al);
+const void* get_nth_from_back(const arraylist* al);
 
 // returns the number of elements in the array list
 unsigned int get_arraylist_size(const arraylist* al);
@@ -49,8 +52,16 @@ int is_arraylist_full(const arraylist* al);
 // returns 1 if the arraylist is empty, else returns 0
 int is_arraylist_empty(const arraylist* al);
 
+// get the data from the arraylist, that equals data, based on the comparator provided
+// in the compare function the first parameter is the data from the linkedlist,
+// while the second parameter is the data that has been provided by you
+// it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
+const void* find_equals_in_arraylist(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
+
 // iterates over all the elements in the arraylist from front to back
 void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
+
+void print_arraylist(const arraylist* al);
 
 void deintialize_arraylist(arraylist* al);
 
