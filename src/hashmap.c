@@ -129,7 +129,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			
 			ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
-			return find_equals_in_list(&ll, data, hashmap_p->compare);
+			return find_equals_in_linkedlist(&ll, data, hashmap_p->compare);
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
@@ -271,7 +271,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
 			ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
-			deleted = remove_from_list(&ll, data);
+			deleted = remove_from_linkedlist(&ll, data);
 			set_element(&(hashmap_p->hashmap_holder), ll.head, index);
 			break;
 		}
@@ -314,7 +314,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 				case ELEMENTS_AS_LINKEDLIST :
 				{
 					ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
-					for_each_in_list(&ll, operation, additional_params);
+					for_each_in_linkedlist(&ll, operation, additional_params);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
