@@ -19,44 +19,65 @@ struct arraylist
 	// front_index points to the front of the arraylist
 	unsigned int front_index;
 
-	// arraylist_size is the total number of elements currently in the array list
-	unsigned int arraylist_size;
+	// back_index points to the back of the arraylist
+	unsigned int back_index;
 
-	// the back_index => front_index + arraylist_size % arraylist_holder.total_size
+	// at initial
+	// front_index = arraylist_holder.total_size - 1
+	// back_index = 0
+
+	// element_count = (front_index <= back_index) ? (back_index - front_index + 1) : ((back_index + arraylist_holder.total_size) - front_index + 1)
 };
 
 void intialize_arraylist(arraylist* al, unsigned int initial_size);
 
-// push_front & push_back functions will push data_p to the front and back of the arraylist, respectively
-void push_front(arraylist* al, const void* data_p);
-void push_back(arraylist* al, const void* data_p);
+// push_front functions will push data_p to the front of the arraylist, and will return 1 on success
+int push_front(arraylist* al, const void* data_p);
+// push_back functions will push data_p to the back of the arraylist, and will return 1 on success
+int push_back(arraylist* al, const void* data_p);
+// push_* functions will fail and return 0, if the number of elements in the arraylist is equal to the arraylist_holder.total_size
+// this happens because the arraylist does not have additional space to store the new element
+// if this happens you may call expand_arraylist to  expand the arrayholder of the arraylist
 
-// pop_front & pop_back functions will pop a data element from the front and back of the arraylist, respectively
-void pop_front(arraylist* al);
-void pop_back(arraylist* al);
+// pop_front functions will pop a data element from the front of the arraylist, and will return 1 on success
+int pop_front(arraylist* al);
+// pop_back functions will pop a data element from the front of the arraylist, and will return 1 on success
+int pop_back(arraylist* al);
+// pop_* functions will fail and return 0, if no element was popped from the arraylist 
+// This happens if the number of elements in the given arraylist is 0
 
 // returns an element at the front of the arraylist, this is also the element at the front_index
+// it fails and returns NULL, if the 
 const void* get_front(const arraylist* al);
-// returns an element at the back of the arraylist, this is also the element at the back_index => (front_index + arraylist_size) % arraylist_holder.total_size
+// returns an element at the back of the arraylist, this is also the element at the back_index
 const void* get_back(const arraylist* al);
+// get_* functions will fail and return NULL if the number of elements in the given arraylist is 0
 
-// to get nth element from front or back respectively
-const void* get_nth_from_front(const arraylist* al);
-const void* get_nth_from_back(const arraylist* al);
+// to get nth element from the front of the arraylist
+const void* get_nth_from_front(const arraylist* al, unsigned int n);
+// to get nth element from the back of the arraylist
+const void* get_nth_from_back(const arraylist* al, unsigned int n);
+// get_nth_from_* functions will fail and return NULL if n is greater than the number of elements in the given arraylist
 
 // returns the number of elements in the array list
-unsigned int get_arraylist_size(const arraylist* al);
+unsigned int get_arraylist_element_count(const arraylist* al);
 
 // returns 1 if the arraylist is full, else returns 0
 int is_arraylist_full(const arraylist* al);
 // returns 1 if the arraylist is empty, else returns 0
 int is_arraylist_empty(const arraylist* al);
 
+// the below functions can be used tto expand or shring the arrayholder of the arraylist
+// these functions will return 1, if they succeeds
+// else they return 0 on failure
+int expand_arraylist(arraylist* al);
+int shrink_arraylist(arraylist* al);
+
 // get the data from the arraylist, that equals data, based on the comparator provided
-// in the compare function the first parameter is the data from the linkedlist,
+// in the compare function the first parameter is the data from the arraylist,
 // while the second parameter is the data that has been provided by you
 // it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
-const void* find_equals_in_arraylist(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
+const void* find_equals_in_arraylist(const arraylist* ll, const void* data, int (*compare)(const void* al_data, const void* data));
 
 // iterates over all the elements in the arraylist from front to back
 void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
