@@ -116,7 +116,10 @@ int shrink_arraylist(arraylist* al);
 
 const void* find_equals_in_arraylist(const arraylist* ll, const void* data, int (*compare)(const void* al_data, const void* data));
 
-void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
+void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
+{
+	for_each_non_null_in_array(&(al->arraylist_holder), operation, additional_params);
+}
 
 void print_arraylist(const arraylist* al);
 
