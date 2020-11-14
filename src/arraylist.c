@@ -7,21 +7,93 @@ void intialize_arraylist(arraylist* al, unsigned int initial_size)
 	al->element_count = 0;
 }
 
-int push_front(arraylist* al, const void* data_p);
+int push_front(arraylist* al, const void* data_p)
+{
+	// if full, you can't push to arraylist
+	if(is_arraylist_full(al))
+		return 0;
 
-int push_back(arraylist* al, const void* data_p);
+	// push to front of array list - TODO
 
-int pop_front(arraylist* al);
+	return 1;
+}
 
-int pop_back(arraylist* al);
+int push_back(arraylist* al, const void* data_p)
+{
+	// if full, you can't push to arraylist
+	if(is_arraylist_full(al))
+		return 0;
 
-const void* get_front(const arraylist* al);
+	// push to back of array list - TODO
 
-const void* get_back(const arraylist* al);
+	return 1;
+}
 
-const void* get_nth_from_front(const arraylist* al, unsigned int n);
+int pop_front(arraylist* al)
+{
+	// if empty you can't pop from the arraylist
+	if(is_arraylist_empty(al))
+		return 0;
 
-const void* get_nth_from_back(const arraylist* al, unsigned int n);
+	// pop an element from front of the arraylist - TODO
+
+	return 1;
+}
+
+int pop_back(arraylist* al)
+{
+	// if empty you can't pop from the arraylist
+	if(is_arraylist_empty(al))
+		return 0;
+
+	// pop an element from back of the arraylist - TODO
+
+	return 1;
+}
+
+const void* get_front(const arraylist* al)
+{
+	// if empty, return NULL
+	if(is_arraylist_empty(al))
+		return NULL;
+
+	// find front element of the arraylist - TODO
+
+	return 1;
+}
+
+const void* get_back(const arraylist* al)
+{
+	// if empty, return NULL
+	if(is_arraylist_empty(al))
+		return NULL;
+
+	// find back element of the arraylist - TODO
+
+	return 1;
+}
+
+const void* get_nth_from_front(const arraylist* al, unsigned int n)
+{
+	// if there are lesser than n elements return NULL
+	if(get_arraylist_element_count(al) < n)
+		return NULL;
+
+	// find nth element from front of the arraylist - TODO
+
+	return 1;
+}
+
+const void* get_nth_from_back(const arraylist* al, unsigned int n)
+{
+	// if there are lesser than n elements return NULL
+	if(get_arraylist_element_count(al) < n)
+		return NULL;
+
+	// find nth element from back of the arraylist - TODO
+
+	return 1;
+}
 
 unsigned int get_arraylist_element_count(const arraylist* al)
 {
