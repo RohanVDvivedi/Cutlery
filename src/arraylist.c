@@ -25,12 +25,18 @@ const void* get_nth_from_back(const arraylist* al, unsigned int n);
 
 unsigned int get_arraylist_element_count(const arraylist* al)
 {
-	return al->element_count; 
+	return al->element_count;
 }
 
-int is_arraylist_full(const arraylist* al);
+int is_arraylist_full(const arraylist* al)
+{
+	return al->element_count == al->arraylist_holder.total_size;
+}
 
-int is_arraylist_empty(const arraylist* al);
+int is_arraylist_empty(const arraylist* al)
+{
+	return al->element_count == 0;
+}
 
 int expand_arraylist(arraylist* al);
 
