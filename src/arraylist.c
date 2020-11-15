@@ -13,6 +13,15 @@ int push_front(arraylist* al, const void* data_p)
 	if(is_arraylist_full(al))
 		return 0;
 
+	// if empty push the first element at 0th index
+	if(is_arraylist_empty(al))
+	{
+		al->first_index = 0;
+		al->element_count = 1;
+		set_element(&(al->arraylist_holder), data_p, al->first_index);
+		return 1;
+	}
+
 	// push to front of array list - TODO
 
 	return 1;
@@ -23,6 +32,15 @@ int push_back(arraylist* al, const void* data_p)
 	// if full, you can't push to arraylist
 	if(is_arraylist_full(al))
 		return 0;
+
+	// if empty push the first element at 0th index
+	if(is_arraylist_empty(al))
+	{
+		al->first_index = 0;
+		al->element_count = 1;
+		set_element(&(al->arraylist_holder), data_p, al->first_index);
+		return 1;
+	}
 
 	// push to back of array list - TODO
 
