@@ -1,7 +1,7 @@
  STAGE - 2
- * implement arraylist
+ * write randomly generatable test cases for arraylist
+ * implement array/arraylist expand(with new size, use realloc instead)/shrink(allow shrinking to 0 size) functions more rigidly, implement rehash_to_new_size
  * re-implement queue and stack as extentions to arraylist
- * implement rehash_to_new_size function for hashmap
  * segregate pusp/pop and expand/contract functionality from stack/queue/heap just like arraylist and concretely follow intial_size parameter, setting everything to NULL/0 if initial size is 0
  * refactor dependent code bases (namely testcases of Cutlery, Boompar(queue), Bufferpool(heap, hashmap), Cashed(hashmap, heap), JSONParser(stack, hashmap), Serc(hashmap)) to use the new api for hashmap/stack/queue/heap
 
