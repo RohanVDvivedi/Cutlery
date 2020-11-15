@@ -164,6 +164,7 @@ void print_arraylist(const arraylist* al, void (*print_element)(const void* data
 	const void* front_element = get_front(al);
 	printf("\tthe front element : ");
 	(front_element != NULL) ? print_element(front_element) : printf("NULL");
+	printf("\n");
 
 	const void* back_element = get_back(al);
 	printf("\tthe back element : ");
