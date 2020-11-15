@@ -17,10 +17,10 @@ int push_front(arraylist* al, const void* data_p)
 	if(is_arraylist_empty(al))
 		al->first_index = 0;
 	else // else an index prior to the first index in the circular index scheme
-		al->first_index = ((al->first_index + al->arraylist_holder.total_size) - 1);
+		al->first_index = ((al->first_index + al->arraylist_holder.total_size) - 1) % al->arraylist_holder.total_size;
 
 	// push to front of array list
-	set_element(&(al->arraylist_holder), data_p, (al->first_index % al->arraylist_holder.total_size));
+	set_element(&(al->arraylist_holder), data_p, al->first_index);
 
 	// increment the element counter
 	al->element_count++;
@@ -39,10 +39,10 @@ int push_back(arraylist* al, const void* data_p)
 		al->first_index = 0;
 
 	// end_index is the index to the position on the circular buffer, that is immediately after the last element
-	unsigned int end_index = (al->first_index + al->element_count + al->arraylist_holder.total_size);
+	unsigned int end_index = (al->first_index + al->element_count) % al->arraylist_holder.total_size;
 
 	// push to back of array list
-	set_element(&(al->arraylist_holder), data_p, (end_index % al->arraylist_holder.total_size));
+	set_element(&(al->arraylist_holder), data_p, end_index);
 
 	// increment the element counter
 	al->element_count++;
@@ -56,7 +56,14 @@ int pop_front(arraylist* al)
 	if(is_arraylist_empty(al))
 		return 0;
 
-	// pop an element from front of the arraylist - TODO
+	// pop an element from front of the arraylist
+	set_element(&(al->arraylist_holder), NULL, al->first_index);
+
+	// update the first index
+	al->first_index = (al->first_index + 1) % al->arraylist_holder.total_size;
+
+	// decrement the element counter
+	al->element_count--;
 
 	return 1;
 }
@@ -67,7 +74,14 @@ int pop_back(arraylist* al)
 	if(is_arraylist_empty(al))
 		return 0;
 
-	// pop an element from back of the arraylist - TODO
+	// find the index to the last element in the arraylist
+	unsigned int back_index = (al->first_index + al->element_count - 1) % al->arraylist_holder.total_size;
+
+	// pop an element from front of the arraylist
+	set_element(&(al->arraylist_holder), NULL, back_index);
+
+	// decrement the element counter
+	al->element_count--;
 
 	return 1;
 }
@@ -78,9 +92,8 @@ const void* get_front(const arraylist* al)
 	if(is_arraylist_empty(al))
 		return NULL;
 
-	// find front element of the arraylist - TODO
-
-	return 1;
+	// find front element of the arraylist, and return it
+	return get_element(&(al->arraylist_holder), al->first_index);
 }
 
 const void* get_back(const arraylist* al)
@@ -89,31 +102,28 @@ const void* get_back(const arraylist* al)
 	if(is_arraylist_empty(al))
 		return NULL;
 
-	// find back element of the arraylist - TODO
-
-	return 1;
+	// find back element of the arraylist
+	return get_element(&(al->arraylist_holder), (al->first_index + al->element_count - 1) % al->arraylist_holder.total_size);
 }
 
 const void* get_nth_from_front(const arraylist* al, unsigned int n)
 {
-	// if there are lesser than n elements return NULL
-	if(get_arraylist_element_count(al) < n)
+	// arraylist must not be empty and the index-n must be lesser than the element-count
+	if(is_arraylist_empty(al) || n >= get_arraylist_element_count(al))
 		return NULL;
 
-	// find nth element from front of the arraylist - TODO
-
-	return 1;
+	// find nth element from front of the arraylist, and return it
+	return get_element(&(al->arraylist_holder), (al->first_index + n) % al->arraylist_holder.total_size);
 }
 
 const void* get_nth_from_back(const arraylist* al, unsigned int n)
 {
-	// if there are lesser than n elements return NULL
-	if(get_arraylist_element_count(al) < n)
+	// arraylist must not be empty and the index-n must be lesser than the element-count
+	if(is_arraylist_empty(al) || n >= get_arraylist_element_count(al))
 		return NULL;
 
-	// find nth element from back of the arraylist - TODO
-
-	return 1;
+	// find nth element from back of the arraylist, and return it
+	return get_element(&(al->arraylist_holder), ((al->first_index + al->element_count - 1) - n) % al->arraylist_holder.total_size);
 }
 
 unsigned int get_arraylist_element_count(const arraylist* al)
