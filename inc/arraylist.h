@@ -75,7 +75,7 @@ const void* find_equals_in_arraylist(const arraylist* ll, const void* data, int 
 // iterates over all the elements in the arraylist from front to back
 void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
-void print_arraylist(const arraylist* al);
+void print_arraylist(const arraylist* al, void (*print_element)(const void* data_p));
 
 void deintialize_arraylist(arraylist* al);
 

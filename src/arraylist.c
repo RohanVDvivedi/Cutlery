@@ -1,5 +1,7 @@
 #include<arraylist.h>
 
+#include<stdio.h>
+
 void intialize_arraylist(arraylist* al, unsigned int initial_size)
 {
 	initialize_array(&(al->arraylist_holder), initial_size);
@@ -152,7 +154,22 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 	for_each_non_null_in_array(&(al->arraylist_holder), operation, additional_params);
 }
 
-void print_arraylist(const arraylist* al);
+void print_arraylist(const arraylist* al, void (*print_element)(const void* data_p))
+{
+	printf("arraylist : \n");
+	printf("\tfirst_index : %u\n", al->first_index);
+	printf("\telement_count : %u\n", al->element_count);
+	printf("\tarraylist_holder : ");print_array(&(al->arraylist_holder), print_element);printf("\n");
+	
+	const void* front_element = get_front(al);
+	printf("\tthe front element : ");
+	(front_element != NULL) ? print_element(front_element) : printf("NULL");
+
+	const void* back_element = get_back(al);
+	printf("\tthe back element : ");
+	(back_element != NULL) ? print_element(back_element) : printf("NULL");
+	printf("\n");
+}
 
 void deintialize_arraylist(arraylist* al)
 {
