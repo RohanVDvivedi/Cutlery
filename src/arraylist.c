@@ -143,11 +143,49 @@ int is_arraylist_empty(const arraylist* al)
 	return al->element_count == 0;
 }
 
-int expand_arraylist(arraylist* al);
+int expand_arraylist(arraylist* al)
+{
+	unsigned int back_index = (al->first_index + al->element_count - 1) % al->arraylist_holder.total_size;
+	if(is_arraylist_empty(al) || al->first_index <= back_index)
+	{
+		// on this condition, we can expand without any data movement
+		expand_array(&(al->arraylist_holder));
+	}
+	else
+	{
+		// allocate new array
+		// move data from old array to new array
+	}
+	return 1;
+}
 
-int shrink_arraylist(arraylist* al);
+int shrink_arraylist(arraylist* al)
+{
+	unsigned int back_index = (al->first_index + al->element_count - 1) % al->arraylist_holder.total_size;
+	if(is_arraylist_empty(al) || al->first_index <= back_index)
+	{
+		// on this condition, we can expand without any data movement
+		return shrink_array(&(al->arraylist_holder), al->first_index, back_index);
+	}
+	else
+	{
+		// allocate new array
+		// move data from old array to new array
+		return 0;
+	}
+}
 
-const void* find_equals_in_arraylist(const arraylist* ll, const void* data, int (*compare)(const void* al_data, const void* data));
+const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* al_data, const void* data))
+{
+	for(unsigned int i = 0, index = al->first_index; i < al->element_count; i++, index++)
+	{
+		const void* found = get_element(&(al->arraylist_holder), index % al->arraylist_holder.total_size);
+		if(0 == compare(found, data))
+			return found;
+	}
+
+	return NULL;
+}
 
 void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {

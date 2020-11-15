@@ -70,7 +70,7 @@ int shrink_arraylist(arraylist* al);
 // in the compare function the first parameter is the data from the arraylist,
 // while the second parameter is the data that has been provided by you
 // it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
-const void* find_equals_in_arraylist(const arraylist* ll, const void* data, int (*compare)(const void* al_data, const void* data));
+const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* al_data, const void* data));
 
 // iterates over all the elements in the arraylist from front to back
 void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
