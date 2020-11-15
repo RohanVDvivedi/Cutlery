@@ -3,7 +3,6 @@
 void intialize_arraylist(arraylist* al, unsigned int initial_size)
 {
 	initialize_array(&(al->arraylist_holder), initial_size);
-	al->first_index = 0;
 	al->element_count = 0;
 }
 
@@ -13,16 +12,18 @@ int push_front(arraylist* al, const void* data_p)
 	if(is_arraylist_full(al))
 		return 0;
 
-	// if empty push the first element at 0th index
+	// update the first_index, to its new place where it will hold the new element
+	// if empty push the element at 0th index
 	if(is_arraylist_empty(al))
-	{
 		al->first_index = 0;
-		al->element_count = 1;
-		set_element(&(al->arraylist_holder), data_p, al->first_index);
-		return 1;
-	}
+	else // else an index prior to the first index in the circular index scheme
+		al->first_index = ((al->first_index + al->arraylist_holder.total_size) - 1);
 
-	// push to front of array list - TODO
+	// push to front of array list
+	set_element(&(al->arraylist_holder), data_p, (al->first_index % al->arraylist_holder.total_size));
+
+	// increment the element counter
+	al->element_count++;
 
 	return 1;
 }
@@ -33,16 +34,18 @@ int push_back(arraylist* al, const void* data_p)
 	if(is_arraylist_full(al))
 		return 0;
 
-	// if empty push the first element at 0th index
+	// if empty push the element at 0th index
 	if(is_arraylist_empty(al))
-	{
 		al->first_index = 0;
-		al->element_count = 1;
-		set_element(&(al->arraylist_holder), data_p, al->first_index);
-		return 1;
-	}
 
-	// push to back of array list - TODO
+	// end_index is the index to the position on the circular buffer, that is immediately after the last element
+	unsigned int end_index = (al->first_index + al->element_count + al->arraylist_holder.total_size);
+
+	// push to back of array list
+	set_element(&(al->arraylist_holder), data_p, (end_index % al->arraylist_holder.total_size));
+
+	// increment the element counter
+	al->element_count++;
 
 	return 1;
 }
