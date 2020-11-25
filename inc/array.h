@@ -26,10 +26,6 @@ struct array
 // initializes and gives necessary memory to manage internal element contents
 void initialize_array(array* array_p, unsigned int initial_size);
 
-// frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
-// the same array can be reused by calling initialize_array function, after it is deinitialized
-void deinitialize_array(array* array_p);
-
 // returns pointer to the data at index = index
 const void* get_element(const array* array_p, unsigned int index);
 
@@ -39,10 +35,9 @@ int set_element(array* array_p, const void* data_p, unsigned int index);
 // swap elements of array at given indexes
 void swap_elements(array* array_p, unsigned int i1, unsigned int i2);
 
-// perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
-void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
-//also ->
-void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
+// frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
+// the same array can be reused by calling initialize_array function, after it is deinitialized
+void deinitialize_array(array* array_p);
 
 // it expands array
 // it returns 1, for success if the array container was successfull expanded,
@@ -55,6 +50,11 @@ int expand_array(array* array_p);
 // note : The array is not allowed to shrink below its initial size,
 // it shrinks only if the new_total_size is greater than or equal to the initial size
 int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index);
+
+// perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
+void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
+//also ->
+void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
 // prints the array
 void print_array(const array* array_p, void (*print_element)(const void* data_p));
