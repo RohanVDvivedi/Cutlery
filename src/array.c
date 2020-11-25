@@ -73,13 +73,17 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 		operation(((void*)get_element(array_p, i)), i, additional_params);
 }
 
-void expand_array(array* array_p)
+int expand_array(array* array_p)
 {
 	// compute new_size
 	unsigned int new_total_size = next_expansion_size(array_p->total_size);
 
 	// request memory for the new computed size
 	const void** new_data_p_p = calloc(new_total_size, sizeof(void*));
+
+	// since memory allocation failed, return 0
+	if(new_data_p_p == NULL)
+		return 0;
 
 	// copy all pointers from the old pointers array
 	// larger the array larger is this task, O(n) for single expansion of array
@@ -93,6 +97,9 @@ void expand_array(array* array_p)
 	// new assignment to data_p_p and the total_size
 	array_p->data_p_p = new_data_p_p;
 	array_p->total_size = new_total_size;
+
+	// expansion of the array container is successfull
+	return 1;
 }
 
 int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index)

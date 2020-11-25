@@ -44,8 +44,10 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 //also ->
 void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
-// it expands array, as per the array rules
-void expand_array(array* array_p);
+// it expands array
+// it returns 1, for success if the array container was successfull expanded,
+// else this function may fail with 0, to indicate a failure, fron the memory allocator
+int expand_array(array* array_p);
 
 // shrinks the array, if the array is considerably larger than the minimum size ( = end_index - start_index + 1) that was required
 // element at the start_index comes to 0, and element at end_index comes to end_index - start_index
