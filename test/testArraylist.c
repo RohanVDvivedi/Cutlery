@@ -90,9 +90,9 @@ void operate_on_arraylist(arraylist* al, al_op op)
 void print_int(const void* data)
 {
 	if(data != NULL)
-		printf("%d\n", *((int*)data));
+		printf("%d", *((int*)data));
 	else
-		printf("NULL\n");
+		printf("NULL - INT");
 }
 
 int main()
@@ -130,7 +130,7 @@ int main()
 			printf("\n\n");
 		}
 
-		if(num_ops % 20)
+		if(num_ops % 20 == 0)
 		{
 			printf("SHRINK ARRAYLIST : %d\n", shrink_arraylist(al));
 			print_arraylist(al, print_int);

@@ -1,5 +1,6 @@
 #include<arraylist.h>
 
+#include<string.h>	// memset
 #include<stdio.h>
 
 void initialize_arraylist(arraylist* al, unsigned int initial_size)
@@ -177,6 +178,11 @@ int expand_arraylist(arraylist* al)
 		memory_move(al->arraylist_holder.data_p_p + new_first_index,
 					al->arraylist_holder.data_p_p + old_first_index,
 					elements_to_move * sizeof(void*));
+
+		// mem set all others as NULL
+		unsigned int elements_to_NULL = new_first_index - old_first_index;
+		elements_to_NULL = (elements_to_NULL > elements_to_move) ? elements_to_move : elements_to_NULL;
+		memset(al->arraylist_holder.data_p_p + old_first_index, 0, elements_to_NULL * sizeof(void*));
 
 		// update the new first_index
 		al->first_index = new_first_index;
