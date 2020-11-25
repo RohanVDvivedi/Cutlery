@@ -4,7 +4,7 @@
 
 #include<arraylist.h>
 
-#define TOTAL_OPERATIONS_SUPPORTED 8
+#define TOTAL_OPERATIONS_SUPPORTED 6
 
 typedef enum al_op al_op;
 enum al_op
@@ -13,8 +13,6 @@ enum al_op
 	PUSH_BACK,
 	POP_FRONT,
 	POP_BACK,
-	GET_FRONT,
-	GET_BACK,
 	GET_NTH_FRONT,
 	GET_NTH_BACK
 };
@@ -55,20 +53,6 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			break;
 		}
 
-		case GET_FRONT :
-		{
-			const int* data = get_front(al);
-			printf("GET_FRONT : %d :: %p\n", ((data != NULL) ? (*data) : -1), data);
-			break;
-		}
-
-		case GET_BACK :
-		{
-			const int* data = get_back(al);
-			printf("GET_BACK : %d :: %p\n", ((data != NULL) ? (*data) : -1), data);
-			break;
-		}
-
 		case GET_NTH_FRONT :
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 2) * 1.5));
@@ -90,9 +74,9 @@ void operate_on_arraylist(arraylist* al, al_op op)
 void print_int(const void* data)
 {
 	if(data != NULL)
-		printf("%d\n", *((int*)data));
+		printf("%d", *((int*)data));
 	else
-		printf("NULL\n");
+		printf("NULL - INT");
 }
 
 int main()
@@ -130,7 +114,7 @@ int main()
 			printf("\n\n");
 		}
 
-		if(num_ops % 20)
+		if(num_ops % 20 == 0)
 		{
 			printf("SHRINK ARRAYLIST : %d\n", shrink_arraylist(al));
 			print_arraylist(al, print_int);
