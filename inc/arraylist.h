@@ -58,9 +58,9 @@ unsigned int get_total_size_arraylist(arraylist* al);
 unsigned int get_element_count_arraylist(arraylist* al);
 
 // returns 1 if the arraylist is full (i.e. arraylist_holder.total_size == element_count), else returns 0
-int is_arraylist_full(const arraylist* al);
+int is_full_arraylist(const arraylist* al);
 // returns 1 if the arraylist is empty (i.e. element_count == 0), else returns 0
-int is_arraylist_empty(const arraylist* al);
+int is_empty_arraylist(const arraylist* al);
 
 // the below functions can be used tto expand or shring the arrayholder of the arraylist
 // these functions will return 1, if they succeeds
