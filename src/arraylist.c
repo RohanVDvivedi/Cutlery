@@ -178,6 +178,12 @@ int expand_arraylist(arraylist* al)
 					al->arraylist_holder.data_p_p + old_first_index,
 					elements_to_move * sizeof(void*));
 
+		// mem set all old positions in the array as NULL
+		unsigned int elements_to_NULL = new_first_index - old_first_index;
+		elements_to_NULL = (elements_to_NULL > elements_to_move) ? elements_to_move : elements_to_NULL;
+		memory_set(al->arraylist_holder.data_p_p + old_first_index, 0,
+					elements_to_NULL * sizeof(void*));
+
 		// update the new first_index
 		al->first_index = new_first_index;
 	}
