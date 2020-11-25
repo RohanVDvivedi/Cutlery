@@ -68,3 +68,12 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 			*(dest--) = *(src--);
 	}
 }
+
+#include<string.h>
+
+void memory_set(void* dest_start, char byte_value, unsigned int size)
+{
+	// ##TODO
+	// replace with custom implementation
+	memset(dest_start, byte_value, size);
+}
