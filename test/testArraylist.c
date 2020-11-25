@@ -70,7 +70,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 
 		case GET_NTH_FRONT :
 		{
-			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) * 1.5));
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 2) * 1.5));
 			const int* data = get_nth_from_front(al, index);
 			printf("GET %u TH_FRONT : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
 			break;
@@ -78,7 +78,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 
 		case GET_NTH_BACK :
 		{
-			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) * 1.5));
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 2) * 1.5));
 			const int* data = get_nth_from_back(al, index);
 			printf("GET %u TH_BACK : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
 			break;
