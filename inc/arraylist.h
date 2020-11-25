@@ -52,12 +52,14 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n);
 const void* get_nth_from_back(const arraylist* al, unsigned int n);
 // get_nth_from_* functions will fail and return NULL if n is greater than the number of elements in the given arraylist
 
-// returns the number of elements in the array list
-unsigned int get_arraylist_element_count(const arraylist* al);
+// returns total_size of the arraylist_holder
+unsigned int get_total_size_arraylist(arraylist* al);
+// returns the number of elements inside the arraylist
+unsigned int get_element_count_arraylist(arraylist* al);
 
-// returns 1 if the arraylist is full, else returns 0
+// returns 1 if the arraylist is full (i.e. arraylist_holder.total_size == element_count), else returns 0
 int is_arraylist_full(const arraylist* al);
-// returns 1 if the arraylist is empty, else returns 0
+// returns 1 if the arraylist is empty (i.e. element_count == 0), else returns 0
 int is_arraylist_empty(const arraylist* al);
 
 // the below functions can be used tto expand or shring the arrayholder of the arraylist

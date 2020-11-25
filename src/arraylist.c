@@ -128,7 +128,12 @@ const void* get_nth_from_back(const arraylist* al, unsigned int n)
 	return get_element(&(al->arraylist_holder), ((al->first_index + al->element_count - 1) - n) % al->arraylist_holder.total_size);
 }
 
-unsigned int get_arraylist_element_count(const arraylist* al)
+unsigned int get_total_size_arraylist(arraylist* al)
+{
+	return al->arraylist_holder.total_size;
+}
+
+unsigned int get_element_count_arraylist(arraylist* al)
 {
 	return al->element_count;
 }
