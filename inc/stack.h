@@ -41,6 +41,14 @@ unsigned int get_total_size_stack(stack* stack_p);
 // returns the number of elements inside the stack
 unsigned int get_element_count_stack(stack* stack_p);
 
+// returns 1, if the stack container is full, i.e. it needs to be expanded to push any futher elements
+// else it return 0, this means there is still space in the container to push elements
+int is_full_stack(stack* stack_p);
+
+// returns 1, if the stack is empty, i.e. does not have any elements to pop
+// else it return 0
+int is_empty_stack(stack* stack_p);
+
 // expand the stack container, returns 1 on successfull expansion of the stack container
 // else returns 0
 int expand_stack(stack* stack_p);
@@ -49,14 +57,6 @@ int expand_stack(stack* stack_p);
 // else returns 0
 // you may call this function at regular intervals, to keep the stack size in check
 int shrink_stack(stack* stack_p);
-
-// returns 1, if the stack is empty, i.e. does not have any elements to pop
-// else it return 0
-int is_empty_stack(stack* stack_p);
-
-// returns 1, if the stack container is full, i.e. it needs to be expanded to push any futher elements
-// else it return 0, this means there is still space in the container to push elements
-int is_full_stack(stack* stack_p);
 
 // for each element of the stack, perform the given operation
 void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);

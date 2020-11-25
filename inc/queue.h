@@ -48,6 +48,14 @@ unsigned int get_total_size_queue(queue* queue_p);
 // returns the number of elements inside the queue
 unsigned int get_element_count_queue(queue* queue_p);
 
+// returns 1, if the queue container is full, i.e. it needs to be expanded to push any futher elements
+// else it return 0, this means there is still space in the container to push elements
+int is_full_queue(queue* queue_p);
+
+// returns 1, if the queue is empty, i.e. does not have any elements to pop
+// else it return 0
+int is_empty_queue(queue* queue_p);
+
 // expand the queue container, returns 1 on successfull expansion of the queue container
 // else returns 0
 int expand_queue(queue* queue_p);
@@ -56,14 +64,6 @@ int expand_queue(queue* queue_p);
 // else returns 0
 // you may call this function at regular intervals, to keep the queue size in check
 int shrink_queue(queue* queue_p);
-
-// returns 1, if the queue is empty, i.e. does not have any elements to pop
-// else it return 0
-int is_empty_queue(queue* queue_p);
-
-// returns 1, if the queue container is full, i.e. it needs to be expanded to push any futher elements
-// else it return 0, this means there is still space in the container to push elements
-int is_full_queue(queue* queue_p);
 
 // for each function, to iteration over all non null elements to perform an operation
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
