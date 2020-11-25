@@ -151,34 +151,35 @@ int is_arraylist_empty(const arraylist* al)
 
 int expand_arraylist(arraylist* al)
 {
-	unsigned int back_index = (al->first_index + al->element_count - 1) % al->arraylist_holder.total_size;
-	if(is_arraylist_empty(al) || al->first_index <= back_index)
+	int data_movement_will_be_required = 1;
+
+	// on this condition, we can expand without any data movement
+	if(is_arraylist_empty(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size)
+		data_movement_will_be_required = 0;
+
+	// record total size for further use
+	unsigned int total_size_old = al->arraylist_holder.total_size;
+
+	// expand the holder fearlessly
+	int has_holder_expanded = expand_array(&(al->arraylist_holder));
+
+	// move data if necessary conditions meet
+	if(data_movement_will_be_required && has_holder_expanded)
 	{
-		// on this condition, we can expand without any data movement
-		return expand_array(&(al->arraylist_holder));
+		// move partial data, that was at the end of the array
+		// ##TODO
 	}
-	else
-	{
-		// allocate new array
-		// move data from old array to new array
-		return 1;
-	}
+
+	return has_holder_expanded;
 }
 
 int shrink_arraylist(arraylist* al)
 {
-	unsigned int back_index = (al->first_index + al->element_count - 1) % al->arraylist_holder.total_size;
-	if(is_arraylist_empty(al) || al->first_index <= back_index)
-	{
-		// on this condition, we can expand without any data movement
-		return shrink_array(&(al->arraylist_holder), al->first_index, back_index);
-	}
-	else
-	{
-		// allocate new array
-		// move data from old array to new array
-		return 0;
-	}
+	// to be able to shrink an array, it must have a non-zero total size
+	if((al->arraylist_holder.total_size > 0) && (is_arraylist_empty(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size))
+		return shrink_array(&(al->arraylist_holder), al->first_index, al->first_index + al->element_count - 1);
+
+	return 0;
 }
 
 const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* al_data, const void* data))
