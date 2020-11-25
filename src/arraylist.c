@@ -2,7 +2,7 @@
 
 #include<stdio.h>
 
-void intialize_arraylist(arraylist* al, unsigned int initial_size)
+void initialize_arraylist(arraylist* al, unsigned int initial_size)
 {
 	initialize_array(&(al->arraylist_holder), initial_size);
 	al->first_index = 0;
@@ -235,7 +235,7 @@ void print_arraylist(const arraylist* al, void (*print_element)(const void* data
 	printf("\n");
 }
 
-void deintialize_arraylist(arraylist* al)
+void deinitialize_arraylist(arraylist* al)
 {
 	deinitialize_array(&(al->arraylist_holder));
 }
