@@ -22,7 +22,7 @@ struct arraylist
 	unsigned int element_count;
 };
 
-void intialize_arraylist(arraylist* al, unsigned int initial_size);
+void initialize_arraylist(arraylist* al, unsigned int initial_size);
 
 // push_front functions will push data_p to the front of the arraylist, and will return 1 on success
 int push_front(arraylist* al, const void* data_p);
@@ -79,6 +79,6 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 
 void print_arraylist(const arraylist* al, void (*print_element)(const void* data_p));
 
-void deintialize_arraylist(arraylist* al);
+void deinitialize_arraylist(arraylist* al);
 
 #endif

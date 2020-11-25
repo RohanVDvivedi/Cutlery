@@ -24,6 +24,7 @@ A C (standard C99) library that provides configurable data structures, serving a
  * add `-lcutlery` linker flag, while compiling your application
  * do not forget to include appropriate public api headers as and when needed. this includes
    * `#include<array.h>`
+   * `#include<arraylist.h>>`
    * `#include<stack.h>`
    * `#include<queue.h>`
    * `#include<heap.h>`
