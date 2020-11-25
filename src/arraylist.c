@@ -5,6 +5,7 @@
 void intialize_arraylist(arraylist* al, unsigned int initial_size)
 {
 	initialize_array(&(al->arraylist_holder), initial_size);
+	al->first_index = 0;
 	al->element_count = 0;
 }
 
@@ -77,7 +78,7 @@ int pop_back(arraylist* al)
 		return 0;
 
 	// find the index to the last element in the arraylist
-	unsigned int back_index = (al->first_index + al->element_count - 1) % al->arraylist_holder.total_size;
+	unsigned int back_index = ((al->first_index + al->element_count) - 1) % al->arraylist_holder.total_size;
 
 	// pop an element from front of the arraylist
 	set_element(&(al->arraylist_holder), NULL, back_index);
@@ -111,7 +112,7 @@ const void* get_back(const arraylist* al)
 const void* get_nth_from_front(const arraylist* al, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_arraylist_empty(al) || n >= get_arraylist_element_count(al))
+	if(is_arraylist_empty(al) || n >= al->element_count)
 		return NULL;
 
 	// find nth element from front of the arraylist, and return it
@@ -121,11 +122,11 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n)
 const void* get_nth_from_back(const arraylist* al, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_arraylist_empty(al) || n >= get_arraylist_element_count(al))
+	if(is_arraylist_empty(al) || n >= al->element_count)
 		return NULL;
 
 	// find nth element from back of the arraylist, and return it
-	return get_element(&(al->arraylist_holder), ((al->first_index + al->element_count - 1) - n) % al->arraylist_holder.total_size);
+	return get_element(&(al->arraylist_holder), (((al->first_index + al->element_count) - 1) - n) % al->arraylist_holder.total_size);
 }
 
 unsigned int get_total_size_arraylist(arraylist* al)
