@@ -155,14 +155,14 @@ int expand_arraylist(arraylist* al)
 	if(is_arraylist_empty(al) || al->first_index <= back_index)
 	{
 		// on this condition, we can expand without any data movement
-		expand_array(&(al->arraylist_holder));
+		return expand_array(&(al->arraylist_holder));
 	}
 	else
 	{
 		// allocate new array
 		// move data from old array to new array
+		return 1;
 	}
-	return 1;
 }
 
 int shrink_arraylist(arraylist* al)
