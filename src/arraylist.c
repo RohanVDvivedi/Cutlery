@@ -167,7 +167,7 @@ int expand_arraylist(arraylist* al)
 	if(data_movement_will_be_required && has_holder_expanded)
 	{
 		// move partial data, that was at the end of the array
-		// ##TODO
+		unsigned int elements_to_move = total_size_old - al->first_index;
 	}
 
 	return has_holder_expanded;
@@ -175,11 +175,17 @@ int expand_arraylist(arraylist* al)
 
 int shrink_arraylist(arraylist* al)
 {
+	int has_holder_shrunk = 0;
+
 	// to be able to shrink an array, it must have a non-zero total size
 	if((al->arraylist_holder.total_size > 0) && (is_arraylist_empty(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size))
-		return shrink_array(&(al->arraylist_holder), al->first_index, al->first_index + al->element_count - 1);
+		has_holder_shrunk = shrink_array(&(al->arraylist_holder), al->first_index, al->first_index + al->element_count - 1);
 
-	return 0;
+	// if the arraylist_holder had shrunk, the new first_index has to be at 0ss
+	if(has_holder_shrunk)
+		al->first_index = 0;
+
+	return has_holder_shrunk;
 }
 
 const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* al_data, const void* data))
