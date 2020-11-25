@@ -157,8 +157,9 @@ int expand_arraylist(arraylist* al)
 	if(is_arraylist_empty(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size)
 		data_movement_will_be_required = 0;
 
-	// record total size for further use
-	unsigned int total_size_old = al->arraylist_holder.total_size;
+	// record total size and first index for further use
+	unsigned int old_first_index = al->first_index;
+	unsigned int old_total_size = al->arraylist_holder.total_size;
 
 	// expand the holder fearlessly
 	int has_holder_expanded = expand_array(&(al->arraylist_holder));
@@ -167,7 +168,18 @@ int expand_arraylist(arraylist* al)
 	if(data_movement_will_be_required && has_holder_expanded)
 	{
 		// move partial data, that was at the end of the array
-		unsigned int elements_to_move = total_size_old - al->first_index;
+		unsigned int elements_to_move = old_total_size - old_first_index;
+
+		// calculate the new first index
+		unsigned int new_first_index = al->arraylist_holder.total_size - elements_to_move;
+
+		// move data
+		memory_move(al->arraylist_holder.data_p_p + new_first_index,
+					al->arraylist_holder.data_p_p + old_first_index,
+					elements_to_move * sizeof(void*));
+
+		// update the new first_index
+		al->first_index = new_first_index;
 	}
 
 	return has_holder_expanded;
