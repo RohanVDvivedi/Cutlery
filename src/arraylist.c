@@ -12,12 +12,12 @@ void initialize_arraylist(arraylist* al, unsigned int initial_size)
 int push_front(arraylist* al, const void* data_p)
 {
 	// if full, you can't push to arraylist
-	if(is_arraylist_full(al))
+	if(is_full_arraylist(al))
 		return 0;
 
 	// update the first_index, to its new place where it will hold the new element
 	// if empty push the element at 0th index
-	if(is_arraylist_empty(al))
+	if(is_empty_arraylist(al))
 		al->first_index = 0;
 	else // else an index prior to the first index in the circular index scheme
 		al->first_index = ((al->first_index + al->arraylist_holder.total_size) - 1) % al->arraylist_holder.total_size;
@@ -34,11 +34,11 @@ int push_front(arraylist* al, const void* data_p)
 int push_back(arraylist* al, const void* data_p)
 {
 	// if full, you can't push to arraylist
-	if(is_arraylist_full(al))
+	if(is_full_arraylist(al))
 		return 0;
 
 	// if empty push the element at 0th index
-	if(is_arraylist_empty(al))
+	if(is_empty_arraylist(al))
 		al->first_index = 0;
 
 	// end_index is the index to the position on the circular buffer, that is immediately after the last element
@@ -56,7 +56,7 @@ int push_back(arraylist* al, const void* data_p)
 int pop_front(arraylist* al)
 {
 	// if empty you can't pop from the arraylist
-	if(is_arraylist_empty(al))
+	if(is_empty_arraylist(al))
 		return 0;
 
 	// pop an element from front of the arraylist
@@ -74,7 +74,7 @@ int pop_front(arraylist* al)
 int pop_back(arraylist* al)
 {
 	// if empty you can't pop from the arraylist
-	if(is_arraylist_empty(al))
+	if(is_empty_arraylist(al))
 		return 0;
 
 	// find the index to the last element in the arraylist
@@ -92,7 +92,7 @@ int pop_back(arraylist* al)
 const void* get_front(const arraylist* al)
 {
 	// if empty, return NULL
-	if(is_arraylist_empty(al))
+	if(is_empty_arraylist(al))
 		return NULL;
 
 	// find front element of the arraylist, and return it
@@ -102,7 +102,7 @@ const void* get_front(const arraylist* al)
 const void* get_back(const arraylist* al)
 {
 	// if empty, return NULL
-	if(is_arraylist_empty(al))
+	if(is_empty_arraylist(al))
 		return NULL;
 
 	// find back element of the arraylist
@@ -112,7 +112,7 @@ const void* get_back(const arraylist* al)
 const void* get_nth_from_front(const arraylist* al, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_arraylist_empty(al) || n >= al->element_count)
+	if(is_empty_arraylist(al) || n >= al->element_count)
 		return NULL;
 
 	// find nth element from front of the arraylist, and return it
@@ -122,7 +122,7 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n)
 const void* get_nth_from_back(const arraylist* al, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_arraylist_empty(al) || n >= al->element_count)
+	if(is_empty_arraylist(al) || n >= al->element_count)
 		return NULL;
 
 	// find nth element from back of the arraylist, and return it
@@ -139,12 +139,12 @@ unsigned int get_element_count_arraylist(arraylist* al)
 	return al->element_count;
 }
 
-int is_arraylist_full(const arraylist* al)
+int is_full_arraylist(const arraylist* al)
 {
 	return al->element_count == al->arraylist_holder.total_size;
 }
 
-int is_arraylist_empty(const arraylist* al)
+int is_empty_arraylist(const arraylist* al)
 {
 	return al->element_count == 0;
 }
@@ -154,7 +154,7 @@ int expand_arraylist(arraylist* al)
 	int data_movement_will_be_required = 1;
 
 	// on this condition, we can expand without any data movement
-	if(is_arraylist_empty(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size)
+	if(is_empty_arraylist(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size)
 		data_movement_will_be_required = 0;
 
 	// record total size and first index for further use
@@ -190,7 +190,7 @@ int shrink_arraylist(arraylist* al)
 	int has_holder_shrunk = 0;
 
 	// to be able to shrink an array, it must have a non-zero total size
-	if((al->arraylist_holder.total_size > 0) && (is_arraylist_empty(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size))
+	if((al->arraylist_holder.total_size > 0) && (is_empty_arraylist(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size))
 		has_holder_shrunk = shrink_array(&(al->arraylist_holder), al->first_index, al->first_index + al->element_count - 1);
 
 	// if the arraylist_holder had shrunk, the new first_index has to be at 0ss

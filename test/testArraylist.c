@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 #include<arraylist.h>
 
@@ -18,8 +19,8 @@ enum al_op
 	GET_NTH_BACK
 };
 
-#define INITIAL_TOTAL_SIZE 5
-#define NUMBER_OF_OPERATIONS 30
+#define INITIAL_TOTAL_SIZE 3
+#define NUMBER_OF_OPERATIONS 50
 #define ELEMENT_POOL_SIZE 50
 
 int element_pool[ELEMENT_POOL_SIZE];
@@ -96,6 +97,10 @@ void print_int(const void* data)
 
 int main()
 {
+	// seed the random number generator
+	srand(12);
+	// srand(time(0));
+
 	// initializide element pool
 	for(int i = 0; i < ELEMENT_POOL_SIZE; i++)
 		element_pool[i] = i;
@@ -106,10 +111,31 @@ int main()
 
 	int num_ops = NUMBER_OF_OPERATIONS;
 
+	int expand_required = 0;
+
 	while(num_ops--)
 	{
 		operate_on_arraylist(al, (rand() % TOTAL_OPERATIONS_SUPPORTED));
 		print_arraylist(al, print_int);
+		printf("\n\n");
+
+		expand_required += is_full_arraylist(al);
+		if(expand_required >= 2)
+		{
+			int has_expanded = expand_arraylist(al);
+			if(has_expanded)
+				expand_required = 0;
+			printf("EXPAND ARRAYLIST : %d\n", has_expanded);
+			print_arraylist(al, print_int);
+			printf("\n\n");
+		}
+
+		if(num_ops % 20)
+		{
+			printf("SHRINK ARRAYLIST : %d\n", shrink_arraylist(al));
+			print_arraylist(al, print_int);
+			printf("\n\n");
+		}
 	}
 
 	deinitialize_arraylist(al);
