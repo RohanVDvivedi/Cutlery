@@ -35,6 +35,12 @@ const void* get_nth_from_top_stack(stack* stack_p, unsigned int n);
 // the same stack can be reused by calling initialize_stack function, after it is deinitialized
 void deinitialize_stack(stack* stack_p);
 
+// returns total_size of the stack
+unsigned int get_total_size_stack(stack* stack_p);
+
+// returns the number of elements inside the stack
+unsigned int get_element_count_stack(stack* stack_p);
+
 // expand the stack container, returns 1 on successfull expansion of the stack container
 // else returns 0
 int expand_stack(stack* stack_p);

@@ -67,6 +67,12 @@ int remove_from_heap(heap* heap_p, unsigned int index);
 
 void deinitialize_heap(heap* heap_p);
 
+// returns total_size of the heap
+unsigned int get_total_size_heap(heap* heap_p);
+
+// returns the number of elements inside the heap
+unsigned int get_element_count_heap(heap* heap_p);
+
 // expand the heap container, returns 1 on successfull expansion of the heap container
 // else returns 0
 int expand_heap(heap* heap_p);
