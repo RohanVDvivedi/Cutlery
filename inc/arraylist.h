@@ -53,9 +53,9 @@ const void* get_nth_from_back(const arraylist* al, unsigned int n);
 // get_nth_from_* functions will fail and return NULL if n is greater than the number of elements in the given arraylist
 
 // returns total_size of the arraylist_holder
-unsigned int get_total_size_arraylist(arraylist* al);
+unsigned int get_total_size_arraylist(const arraylist* al);
 // returns the number of elements inside the arraylist
-unsigned int get_element_count_arraylist(arraylist* al);
+unsigned int get_element_count_arraylist(const arraylist* al);
 
 // returns 1 if the arraylist is full (i.e. arraylist_holder.total_size == element_count), else returns 0
 int is_full_arraylist(const arraylist* al);

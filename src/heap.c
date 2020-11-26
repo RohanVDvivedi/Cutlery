@@ -225,22 +225,22 @@ void deinitialize_heap(heap* heap_p)
 	deinitialize_array(&(heap_p->heap_holder));
 }
 
-unsigned int get_total_size_heap(heap* heap_p)
+unsigned int get_total_size_heap(const heap* heap_p)
 {
 	return heap_p->heap_holder.total_size;
 }
 
-unsigned int get_element_count_heap(heap* heap_p)
+unsigned int get_element_count_heap(const heap* heap_p)
 {
 	return heap_p->element_count;
 }
 
-int is_full_heap(heap* heap_p)
+int is_full_heap(const heap* heap_p)
 {
 	return heap_p->element_count == heap_p->heap_holder.total_size;
 }
 
-int is_empty_heap(heap* heap_p)
+int is_empty_heap(const heap* heap_p)
 {
 	return heap_p->element_count == 0;
 }
@@ -260,7 +260,7 @@ void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned
 	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
 }
 
-void print_heap(heap* heap_p, void (*print_element)(const void* data))
+void print_heap(const heap* heap_p, void (*print_element)(const void* data))
 {
 	switch(heap_p->type)
 	{

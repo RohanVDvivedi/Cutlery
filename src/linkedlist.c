@@ -254,7 +254,7 @@ void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* 
 	while(node_p != ll->head);
 }
 
-static void print_linkedlist_wrapper(linkedlist* ll, const llnode* node_p, void (*print_element)(const void* data_p))
+static void print_linkedlist_wrapper(const linkedlist* ll, const llnode* node_p, void (*print_element)(const void* data_p))
 {
 	printf("\tprev => %p\n", node_p->prev);
 	printf("\t\tnode => %p\n", node_p);
@@ -263,7 +263,7 @@ static void print_linkedlist_wrapper(linkedlist* ll, const llnode* node_p, void 
 	printf("\n");
 }
 
-void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p))
+void print_linkedlist(const linkedlist* ll, void (*print_element)(const void* data_p))
 {
 	printf("LINKED LIST\n");
 	printf("node_offset : [%u]\n", ll->node_offset);
