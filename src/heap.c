@@ -2,16 +2,6 @@
 
 #include<stdio.h>
 
-void initialize_heap(heap* heap_p, unsigned int expected_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params)
-{
-	heap_p->type = type;
-	heap_p->compare = compare;
-	initialize_array(&(heap_p->heap_holder), expected_size + 1);
-	heap_p->heap_size = 0;
-	heap_p->heap_index_update_callback = heap_index_update_callback;
-	heap_p->callback_params = callback_params;
-}
-
 // utility : gets index of the parent data to the data at index = child
 static unsigned int get_parent_index(unsigned int child)
 {
@@ -109,38 +99,6 @@ static void bubble_up(heap* heap_p, unsigned int index)
 	}
 }
 
-void push_heap(heap* heap_p, const void* data)
-{
-	// expand heap_holder if necessary
-	if(heap_p->heap_size >= heap_p->heap_holder.total_size)
-	{
-		expand_array(&(heap_p->heap_holder));
-	}
-
-	// insert new element to the heap_holder at the last index and increment heap size
-	set_element(&(heap_p->heap_holder), data, heap_p->heap_size++);
-
-	// after insertion we need to make a callback, to notify element index has been updated
-	if(heap_p->heap_index_update_callback != NULL)
-	{
-		heap_p->heap_index_update_callback(data, heap_p->heap_size-1, heap_p->callback_params);
-	}
-
-	// bubble up the newly added element at index heap_p->heap_size-1, to its desired place
-	bubble_up(heap_p, heap_p->heap_size-1);
-}
-
-const void* get_top_heap(const heap* heap_p)
-{
-	// ther is no top element, if there are no elements in the heap
-	if(heap_p->heap_size == 0)
-	{
-		return NULL;
-	}
-
-	return (void*)get_element(&(heap_p->heap_holder), 0);
-}
-
 static void bubble_down(heap* heap_p, unsigned int index)
 {
 	// we can not bubble down the last node
@@ -175,6 +133,48 @@ static void bubble_down(heap* heap_p, unsigned int index)
 	}
 }
 
+void initialize_heap(heap* heap_p, unsigned int expected_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params)
+{
+	heap_p->type = type;
+	heap_p->compare = compare;
+	initialize_array(&(heap_p->heap_holder), expected_size + 1);
+	heap_p->heap_size = 0;
+	heap_p->heap_index_update_callback = heap_index_update_callback;
+	heap_p->callback_params = callback_params;
+}
+
+int push_heap(heap* heap_p, const void* data)
+{
+	// expand heap_holder if necessary
+	if(heap_p->heap_size >= heap_p->heap_holder.total_size)
+		expand_array(&(heap_p->heap_holder));
+
+	// insert new element to the heap_holder at the last index and increment heap size
+	set_element(&(heap_p->heap_holder), data, heap_p->heap_size++);
+
+	// after insertion we need to make a callback, to notify element index has been updated
+	if(heap_p->heap_index_update_callback != NULL)
+		heap_p->heap_index_update_callback(data, heap_p->heap_size-1, heap_p->callback_params);
+
+	// bubble up the newly added element at index heap_p->heap_size-1, to its desired place
+	bubble_up(heap_p, heap_p->heap_size-1);
+}
+
+int pop_heap(heap* heap_p)
+{
+	// remove the 0th element from the heap
+	return remove_from_heap(heap_p, 0);
+}
+
+const void* get_top_heap(const heap* heap_p)
+{
+	// ther is no top element, if there are no elements in the heap
+	if(heap_p->heap_size == 0)
+		return NULL;
+
+	return (void*)get_element(&(heap_p->heap_holder), 0);
+}
+
 int remove_from_heap(heap* heap_p, unsigned int index)
 {
 	// do not provide out of heap-bound index, also not an empty heap
@@ -197,12 +197,6 @@ int remove_from_heap(heap* heap_p, unsigned int index)
 	return 1;
 }
 
-void pop_heap(heap* heap_p)
-{
-	// remove the 0th element from the heap
-	remove_from_heap(heap_p, 0);
-}
-
 void heapify_at(heap* heap_p, unsigned int index)
 {
 	// do not provide out of heap-bound index
@@ -216,20 +210,12 @@ void heapify_at(heap* heap_p, unsigned int index)
 
 	// if re-ordering is required at the parent side, we bubble up
 	if(is_reordering_required(heap_p, parent_index, index))
-	{
 		bubble_up(heap_p, index);
-	}
+
 	// else if the re ordering is required at any of the children's side we bubble down
 	else if(is_reordering_required(heap_p, index, left_child_index) || 
 			is_reordering_required(heap_p, index, right_child_index))
-	{
 		bubble_down(heap_p, index);
-	}
-}
-
-void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params)
-{
-	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
 }
 
 void deinitialize_heap(heap* heap_p)
@@ -237,33 +223,43 @@ void deinitialize_heap(heap* heap_p)
 	deinitialize_array(&(heap_p->heap_holder));
 }
 
+unsigned int get_total_size_heap(heap* heap_p);
+
+unsigned int get_element_count_heap(heap* heap_p);
+
+int is_full_heap(heap* heap_p);
+
+int is_empty_heap(heap* heap_p);
+
+int expand_heap(heap* heap_p);
+
+int shrink_heap(heap* heap_p);
+
+void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params)
+{
+	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
+}
+
 void print_heap(heap* heap_p, void (*print_element)(const void* data))
 {
 	switch(heap_p->type)
 	{
 		case MIN_HEAP :
-		{
-			printf("heap : MIN_HEAP\n");
-			break;
-		}
+		{	printf("heap : MIN_HEAP\n");break;	}
 		case MAX_HEAP :
-		{
-			printf("heap : MAX_HEAP\n");
-			break;
-		}
+		{	printf("heap : MAX_HEAP\n");break;	}
 	}
+
 	printf("\theap_size : %u\n", heap_p->heap_size);
+
 	printf("\theap array : \n");
 	print_array(&(heap_p->heap_holder), print_element);
 	printf("\n");
-	printf("\tthe top element : ");
+
+	printf("\tthe top element of this heap : ");
 	if(get_top_heap(heap_p) != NULL)
-	{
 		print_element(get_top_heap(heap_p));
-	}
 	else
-	{
 		printf("NULL");
-	}
 	printf("\n");
 }
