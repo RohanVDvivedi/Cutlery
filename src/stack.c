@@ -4,66 +4,60 @@
 
 void initialize_stack(stack* stack_p, unsigned int expected_size)
 {
-	initialize_array(&(stack_p->stack_holder), expected_size + 1);
-	stack_p->stack_size = 0;
+	initialize_arraylist(&(stack_p->stack_holder), expected_size);
 }
 
-void push_stack(stack* stack_p, const void* data_p)
+int push_stack(stack* stack_p, const void* data_p)
 {
-	// expand stack holder if necessary
-	if(stack_p->stack_size >= stack_p->stack_holder.total_size)
-	{
-		expand_array(&(stack_p->stack_holder));
-	}
-
-	// set the element to the last index and increment its size
-	set_element(&(stack_p->stack_holder), data_p, stack_p->stack_size++);
+	return push_back(&(stack_p->stack_holder), data_p);
 }
 
-void pop_stack(stack* stack_p)
+int pop_stack(stack* stack_p)
 {
-	// we can pop only if the stack size if greater than 0, and there is atleast 1 element
-	if(stack_p->stack_size > 0)
-	{
-		// set the last element to null
-		set_element(&(stack_p->stack_holder), NULL, --stack_p->stack_size);
-
-		// let the array be shrunk if it is required
-		shrink_array(&(stack_p->stack_holder), 0, stack_p->stack_size - 1);
-		// Note: we shrink the holder, only if we sucessfully pop the element
-	}
+	return pop_back(&(stack_p->stack_holder));
 }
 
 const void* get_top_stack(stack* stack_p)
 {
-	// return the last element from the stack holder
-	return stack_p->stack_size > 0 ? get_element(&(stack_p->stack_holder), stack_p->stack_size - 1) : NULL;
+	return get_back(&(stack_p->stack_holder));
+}
+
+const void* get_nth_from_top_stack(stack* stack_p, unsigned int n)
+{
+	return get_nth_from_back(&(stack_p->stack_holder), n);
 }
 
 void deinitialize_stack(stack* stack_p)
 {
-	deinitialize_array(&(stack_p->stack_holder));
-	stack_p->stack_size = 0;
+	deinitialize_arraylist(&(stack_p->stack_holder));
 }
+
+unsigned int get_total_size_stack(stack* stack_p);
+
+unsigned int get_element_count_stack(stack* stack_p);
+
+int is_full_stack(stack* stack_p);
+
+int is_empty_stack(stack* stack_p);
+
+int expand_stack(stack* stack_p);
+
+int shrink_stack(stack* stack_p);
 
 void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
-	for_each_non_null_in_array(&(stack_p->stack_holder), operation, additional_params);
+	for_each_in_arraylist(&(stack_p->stack_holder), operation, additional_params);
 }
 
 void print_stack(stack* stack_p, void (*print_element)(const void* data_p))
 {
-	printf("stack : \n");
-	printf("\tstack_size : %u\n", stack_p->stack_size);
-	printf("\tstack array : ");print_array(&(stack_p->stack_holder), print_element);printf("\n");
-	printf("\tthe top element : ");
+	printf("stack : \n\t");
+	print_arraylist(&(stack_p->stack_holder), print_element);
+	printf("\n");
+	printf("\tthe top element of this stack : ");
 	if(get_top_stack(stack_p)!=NULL)
-	{
 		print_element(get_top_stack(stack_p));
-	}
 	else
-	{
 		printf("NULL");
-	}
 	printf("\n");
 }
