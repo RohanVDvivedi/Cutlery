@@ -25,7 +25,7 @@ struct heap
 	array heap_holder;
 	
 	// number of elements in the heap
-	unsigned int heap_size;
+	unsigned int element_count;
 
 	// heap_index_update
 	// everytime heap updates the position/index of a data in heap, it will make a call to this function
