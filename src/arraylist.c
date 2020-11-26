@@ -228,7 +228,10 @@ void print_arraylist(const arraylist* al, void (*print_element)(const void* data
 	printf("arraylist : \n");
 	printf("\tfirst_index : %u\n", al->first_index);
 	printf("\telement_count : %u\n", al->element_count);
-	printf("\tarraylist_holder : ");print_array(&(al->arraylist_holder), print_element);printf("\n");
+	
+	printf("\tarraylist_holder : \n\t");
+	print_array(&(al->arraylist_holder), print_element);
+	printf("\n");
 	
 	const void* front_element = get_front(al);
 	printf("\tthe front element : ");

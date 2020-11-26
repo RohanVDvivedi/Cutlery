@@ -150,9 +150,10 @@ static void print_array_element_wrapper(void* element, unsigned int index, const
 
 void print_array(const array* array_p, void (*print_element)(const void* data_p))
 {
-	printf("\narray:");
+	printf("array:");
 	printf("\n\tincrement_factor : %f", increment_factor);
 	printf("\n\tincrement_offset : %u", increment_offset);
 	printf("\n\ttotal size : %u\n", array_p->total_size);
 	for_each_in_array(array_p, print_array_element_wrapper, print_element);
+	printf("\n");
 }
