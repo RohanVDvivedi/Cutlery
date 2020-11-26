@@ -9,22 +9,22 @@ void initialize_queue(queue* queue_p, unsigned int expected_size)
 
 int push_queue(queue* queue_p, const void* data_p)
 {
-	return push_front(&(queue_p->queue_holder), data_p);
+	return push_back(&(queue_p->queue_holder), data_p);
 }
 
 int pop_queue(queue* queue_p)
 {
-	return pop_back(&(queue_p->queue_holder));
+	return pop_front(&(queue_p->queue_holder));
 }
 
 const void* get_top_queue(const queue* queue_p)
 {
-	return get_back(&(queue_p->queue_holder));
+	return get_front(&(queue_p->queue_holder));
 }
 
 const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n)
 {
-	return get_nth_from_back(&(queue_p->queue_holder), n);
+	return get_nth_from_front(&(queue_p->queue_holder), n);
 }
 
 void deinitialize_queue(queue* queue_p)
