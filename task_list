@@ -5,12 +5,9 @@
  * implement memory_set function
  * implement a stdlib memory_allocator for cutlery specific datastructures
 
- STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
+ STAGE - 3
  * use graph descriptor interface to build graph algorithms like :
-    each of these graph functions take a memory_allocator to allocate memory for its own internal structures
-    each of these functions must also take an array/queue/stack that will contain the result
-    they also take a, node that we need to find and a compare function that returns zero when the match succeeds
-       * dfs (iterative only with Cutlery stack)
+       * dfs (iterative only (not recursive) with Cutlery stack)
        * bfs (iterative only with Cutlery queue)
        * bellmanford
        * dijkstra
@@ -19,11 +16,11 @@
        * minimum spanning tree
         etc (more will be added)
 
- STAGE - 4 (dependent on STAGE - 1, 2, 3(to start to conceptualize the memory allocation) )
+ STAGE - 4
  * integrate memory_allocator and memory_move with other Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
  * use a global memory allocator for dstring, that can be set by someone
 
- STAGE - 5 (dependent on STAGE - 4, need strong memory management model for new cutlery datastructures)
+ STAGE - 5
  * provide a very simple trie data structure, to store of dstring* vs void*. (* very far in the future)
 
  STAGE - 6
