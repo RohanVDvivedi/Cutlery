@@ -1,4 +1,6 @@
 #include<stdio.h>
+#include<stdlib.h>
+
 #include<array.h>
 
 typedef struct teststruct ts;
@@ -26,11 +28,11 @@ int test_compare(const void* a, const void* b)
 	}
 	else if(a!=NULL && b==NULL)
 	{
-		return 1;
+		return -1;
 	}
 	else if(a==NULL && b!=NULL)
 	{
-		return -1;
+		return 1;
 	}
 	else
 	{
