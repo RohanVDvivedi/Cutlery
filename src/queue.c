@@ -32,17 +32,35 @@ void deinitialize_queue(queue* queue_p)
 	deinitialize_arraylist(&(queue_p->queue_holder));
 }
 
-unsigned int get_total_size_queue(queue* queue_p);
+unsigned int get_total_size_queue(queue* queue_p)
+{
+	return get_total_size_arraylist(&(queue_p->queue_holder));
+}
 
-unsigned int get_element_count_queue(queue* queue_p);
+unsigned int get_element_count_queue(queue* queue_p)
+{
+	return get_element_count_arraylist(&(queue_p->queue_holder));
+}
 
-int is_full_queue(queue* queue_p);
+int is_full_queue(queue* queue_p)
+{
+	return is_full_arraylist(&(queue_p->queue_holder));
+}
 
-int is_empty_queue(queue* queue_p);
+int is_empty_queue(queue* queue_p)
+{
+	return is_empty_arraylist(&(queue_p->queue_holder));
+}
 
-int expand_queue(queue* queue_p);
+int expand_queue(queue* queue_p)
+{
+	return expand_arraylist(&(queue_p->queue_holder));
+}
 
-int shrink_queue(queue* queue_p);
+int shrink_queue(queue* queue_p)
+{
+	return shrink_arraylist(&(queue_p->queue_holder));
+}
 
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
