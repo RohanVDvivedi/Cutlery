@@ -1,23 +1,13 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include<array.h>
+#include<arraylist.h>
 
 typedef struct queue queue;
 struct queue
 {
-	// array to store queue elements
-	array queue_holder;
-
-	// current size of queue, i.e. number of elements in it
-	unsigned int queue_size;
-
-	// index, where the oldest element was inserted, the element at this index is popped
-	unsigned int earliest_element_index;
-
-	// index, after which a new element will be inserted, this is the index where the latest element was inserted
-	// this attribute of the queue is now, computed, and not stored directly in the queue structure
-	// unsigned int latest_element_index;
+	// arraylist to store queue elements
+	arraylist queue_holder;
 };
 
 // initializes queue and it will depend on initialize_array to give necessary memory to manage internal element contents
