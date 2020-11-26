@@ -1,5 +1,5 @@
  STAGE - 2
- * run and test throughly the result of test cases for arraylist, stack, queue and heap
+ * run and test throughly the result of test cases for heap
  * implement rehash_to_new_size
  * refactor dependent code bases (namely testcases of Cutlery, Boompar(queue), Bufferpool(heap, hashmap), Cashed(hashmap, heap), JSONParser(stack, hashmap), Serc(hashmap)) to use the new api for hashmap/stack/queue/heap
 
