@@ -17,12 +17,12 @@ int pop_queue(queue* queue_p)
 	return pop_back(&(queue_p->queue_holder));
 }
 
-const void* get_top_queue(queue* queue_p)
+const void* get_top_queue(const queue* queue_p)
 {
 	return get_back(&(queue_p->queue_holder));
 }
 
-const void* get_nth_from_top_queue(queue* queue_p, unsigned int n)
+const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n)
 {
 	return get_nth_from_back(&(queue_p->queue_holder), n);
 }
@@ -32,22 +32,22 @@ void deinitialize_queue(queue* queue_p)
 	deinitialize_arraylist(&(queue_p->queue_holder));
 }
 
-unsigned int get_total_size_queue(queue* queue_p)
+unsigned int get_total_size_queue(const queue* queue_p)
 {
 	return get_total_size_arraylist(&(queue_p->queue_holder));
 }
 
-unsigned int get_element_count_queue(queue* queue_p)
+unsigned int get_element_count_queue(const queue* queue_p)
 {
 	return get_element_count_arraylist(&(queue_p->queue_holder));
 }
 
-int is_full_queue(queue* queue_p)
+int is_full_queue(const queue* queue_p)
 {
 	return is_full_arraylist(&(queue_p->queue_holder));
 }
 
-int is_empty_queue(queue* queue_p)
+int is_empty_queue(const queue* queue_p)
 {
 	return is_empty_arraylist(&(queue_p->queue_holder));
 }
@@ -67,7 +67,7 @@ void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, uns
 	for_each_in_arraylist(&(queue_p->queue_holder), operation, additional_params);
 }
 
-void print_queue(queue* queue_p, void (*print_element)(const void* data_p))
+void print_queue(const queue* queue_p, void (*print_element)(const void* data_p))
 {
 	printf("queue : \n\t");
 	print_arraylist(&(queue_p->queue_holder), print_element);

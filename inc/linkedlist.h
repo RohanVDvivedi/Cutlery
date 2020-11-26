@@ -70,6 +70,6 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
 // prints complete linked list
-void print_linkedlist(linkedlist* ll, void (*print_element)(const void* data_p));
+void print_linkedlist(const linkedlist* ll, void (*print_element)(const void* data_p));
 
 #endif

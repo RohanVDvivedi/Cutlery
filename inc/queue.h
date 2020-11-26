@@ -25,26 +25,26 @@ int push_queue(queue* queue_p, const void* data_p);
 int pop_queue(queue* queue_p);
 
 // returns pointer to the top element data pointer, (i.e. data pointer to the earliest inserted element) 
-const void* get_top_queue(queue* queue_p);
-const void* get_nth_from_top_queue(queue* queue_p, unsigned int n);
+const void* get_top_queue(const queue* queue_p);
+const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n);
 
 // frees all the data being held by the queue, this function, does not release memory of the actual queue structure, only the memory of the components
 // the same queue can be reused by calling initialize_queue function, after it is deinitialized
 void deinitialize_queue(queue* queue_p);
 
 // returns total_size of the queue
-unsigned int get_total_size_queue(queue* queue_p);
+unsigned int get_total_size_queue(const queue* queue_p);
 
 // returns the number of elements inside the queue
-unsigned int get_element_count_queue(queue* queue_p);
+unsigned int get_element_count_queue(const queue* queue_p);
 
 // returns 1, if the queue container is full, i.e. it needs to be expanded to push any futher elements
 // else it return 0, this means there is still space in the container to push elements
-int is_full_queue(queue* queue_p);
+int is_full_queue(const queue* queue_p);
 
 // returns 1, if the queue is empty, i.e. does not have any elements to pop
 // else it return 0
-int is_empty_queue(queue* queue_p);
+int is_empty_queue(const queue* queue_p);
 
 // expand the queue container, returns 1 on successfull expansion of the queue container
 // else returns 0
@@ -59,6 +59,6 @@ int shrink_queue(queue* queue_p);
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
 // prints the queue
-void print_queue(queue* queue_p, void (*print_element)(const void* data_p));
+void print_queue(const queue* queue_p, void (*print_element)(const void* data_p));
 
 #endif

@@ -68,18 +68,18 @@ int remove_from_heap(heap* heap_p, unsigned int index);
 void deinitialize_heap(heap* heap_p);
 
 // returns total_size of the heap
-unsigned int get_total_size_heap(heap* heap_p);
+unsigned int get_total_size_heap(const heap* heap_p);
 
 // returns the number of elements inside the heap
-unsigned int get_element_count_heap(heap* heap_p);
+unsigned int get_element_count_heap(const heap* heap_p);
 
 // returns 1, if the heap container is full, i.e. it needs to be expanded to push any futher elements
 // else it return 0, this means there is still space in the container to push elements
-int is_full_heap(heap* heap_p);
+int is_full_heap(const heap* heap_p);
 
 // returns 1, if the heap is empty, i.e. does not have any elements to pop
 // else it return 0
-int is_empty_heap(heap* heap_p);
+int is_empty_heap(const heap* heap_p);
 
 // expand the heap container, returns 1 on successfull expansion of the heap container
 // else returns 0
@@ -94,6 +94,6 @@ int shrink_heap(heap* heap_p);
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
 
 // print, heap and all the elements of the heap
-void print_heap(heap* heap_p, void (*print_element)(const void* data));
+void print_heap(const heap* heap_p, void (*print_element)(const void* data));
 
 #endif
