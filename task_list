@@ -1,6 +1,6 @@
  STAGE - 2
- * run and test throughly the result of test cases for arraylist
- * re-implement queue and stack as extentions to arraylist, segregate heap expand and shrin functionality, implement rehash_to_new_size functionality, implement rehash_to_new_size
+ * run and test throughly the result of test cases for arraylist, stack, queue and heap
+ * implement rehash_to_new_size
  * refactor dependent code bases (namely testcases of Cutlery, Boompar(queue), Bufferpool(heap, hashmap), Cashed(hashmap, heap), JSONParser(stack, hashmap), Serc(hashmap)) to use the new api for hashmap/stack/queue/heap
 
  STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
