@@ -1,6 +1,6 @@
  STAGE - 2
- * refactor dependent code bases (namely testcases of Cutlery, Boompar(queue), Bufferpool(heap, hashmap), Cashed(hashmap, heap), JSONParser(stack, hashmap), Serc(hashmap)) to use the new api for hashmap/stack/queue/heap
- * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and repeat previous step
+ * refactor dependent code bases (namely testcases of Cutlery, Boompar(queue), Bufferpool(heap), Cashed(heap), JSONParser(stack) to use the new api for stack/queue/heap
+ * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and repeat previous step for hashmap in testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
 
  STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
  * use graph descriptor interface to build graph algorithms like :
