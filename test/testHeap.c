@@ -20,9 +20,23 @@ void print_ts(const void* tsv)
 	printf(" %d, %d, %s =<HEAP_INDEX>=> %d", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->index);
 }
 
+void push_heap_SAFE(heap* heap_p, const void* data_p)
+{
+	if(is_full_heap(heap_p))
+		expand_heap(heap_p);
+	push_heap(heap_p, data_p);
+}
+
+void pop_heap_OPTIMUM_MEMORY(heap* heap_p)
+{
+	pop_heap(heap_p);
+	if(get_total_size_heap(heap_p) > 1.5 * get_element_count_heap(heap_p))
+		shrink_heap(heap_p);
+}
+
 void change_key(heap* heap_p, unsigned int index, int new_key)
 {
-	if(index <= heap_p->heap_size - 1)
+	if(index <= heap_p->element_count - 1)
 	{
 		((ts*)get_element(&(heap_p->heap_holder), index))->key = new_key;
 		heapify_at(heap_p, index);
@@ -42,124 +56,124 @@ int main()
 
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){1, 1, "one"}));
+	push_heap_SAFE(heap_p, &((ts){1, 1, "one"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){2, 2, "two"}));
+	push_heap_SAFE(heap_p, &((ts){2, 2, "two"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){5, 3, "three"}));
+	push_heap_SAFE(heap_p, &((ts){5, 3, "three"}));
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){4, 4, "four"}));
+	push_heap_SAFE(heap_p, &((ts){4, 4, "four"}));
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){4, 4, "four-x"}));
+	push_heap_SAFE(heap_p, &((ts){4, 4, "four-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){3, 3, "three-x"}));
+	push_heap_SAFE(heap_p, &((ts){3, 3, "three-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){2, 2, "two-x"}));
+	push_heap_SAFE(heap_p, &((ts){2, 2, "two-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){1, 1, "one-x"}));
+	push_heap_SAFE(heap_p, &((ts){1, 1, "one-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){5, 5, "five"}));
+	push_heap_SAFE(heap_p, &((ts){5, 5, "five"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){6, 6, "six"}));
+	push_heap_SAFE(heap_p, &((ts){6, 6, "six"}));
 	print_heap(heap_p, print_ts);
 
-	change_key(heap_p, heap_p->heap_size/2, -2000);
+	change_key(heap_p, heap_p->element_count/2, -2000);
 	print_heap(heap_p, print_ts);
 
-	change_key(heap_p, heap_p->heap_size/2, +2000);
+	change_key(heap_p, heap_p->element_count/2, +2000);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){7, 7, "seven"}));
+	push_heap_SAFE(heap_p, &((ts){7, 7, "seven"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){8, 8, "eight"}));
+	push_heap_SAFE(heap_p, &((ts){8, 8, "eight"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){14, 14, "fourteen"}));
+	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){13, 13, "thirteen"}));
+	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){12, 12, "twelve"}));
+	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){11, 11, "eleven"}));
+	push_heap_SAFE(heap_p, &((ts){11, 11, "eleven"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){9, 9, "nine"}));
+	push_heap_SAFE(heap_p, &((ts){9, 9, "nine"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){10, 10, "ten"}));
+	push_heap_SAFE(heap_p, &((ts){10, 10, "ten"}));
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){2, 2, "two-xx"}));
+	push_heap_SAFE(heap_p, &((ts){2, 2, "two-xx"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){1, 1, "one-xx"}));
+	push_heap_SAFE(heap_p, &((ts){1, 1, "one-xx"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){5, 5, "five-x"}));
+	push_heap_SAFE(heap_p, &((ts){5, 5, "five-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){6, 6, "six-x"}));
+	push_heap_SAFE(heap_p, &((ts){6, 6, "six-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){11, 11, "eleven-x"}));
+	push_heap_SAFE(heap_p, &((ts){11, 11, "eleven-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){5, 5, "five-xx"}));
+	push_heap_SAFE(heap_p, &((ts){5, 5, "five-xx"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){6, 6, "six-xx"}));
+	push_heap_SAFE(heap_p, &((ts){6, 6, "six-xx"}));
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){12, 12, "twelve-x"}));
+	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){13, 13, "thirteen-x"}));
+	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){14, 14, "fourteen-x"}));print_array(&(heap_p->heap_holder), print_ts);
+	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x"}));print_array(&(heap_p->heap_holder), print_ts);
 	print_heap(heap_p, print_ts);
 
 	change_key(heap_p, 12, 3);
@@ -171,64 +185,64 @@ int main()
 	change_key(heap_p, 5, 2);
 	print_heap(heap_p, print_ts);
 
-	push_heap(heap_p, &((ts){9, 9, "nine-x"}));
+	push_heap_SAFE(heap_p, &((ts){9, 9, "nine-x"}));
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
-	pop_heap(heap_p);
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_heap(heap_p, print_ts);
 
 	deinitialize_heap(heap_p);
