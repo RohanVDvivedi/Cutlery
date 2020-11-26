@@ -1,5 +1,6 @@
  STAGE - 2
  * refactor dependent code bases Bufferpool(heap, linkedlist), Cashed(heap) to use the new api for stack/queue/heap
+ * is_empty_linkedlist instead of is_linkedlist_empty -> used in Bufferpool, Cashed and Sloppy
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and repeat previous step for hashmap in testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
  * implement set_nth_from_front and set_nth_from_front for arraylist
 
