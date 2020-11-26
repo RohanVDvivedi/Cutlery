@@ -154,10 +154,10 @@ int push_heap(heap* heap_p, const void* data)
 
 	// after insertion we need to make a callback, to notify element index has been updated
 	if(heap_p->heap_index_update_callback != NULL)
-		heap_p->heap_index_update_callback(data, heap_p->element_count-1, heap_p->callback_params);
+		heap_p->heap_index_update_callback(data, heap_p->element_count - 1, heap_p->callback_params);
 
-	// bubble up the newly added element at index heap_p->element_count-1, to its desired place
-	bubble_up(heap_p, heap_p->element_count-1);
+	// bubble up the newly added element at index heap_p->element_count - 1, to its desired place
+	bubble_up(heap_p, heap_p->element_count - 1);
 
 	return 1;
 }
@@ -184,7 +184,7 @@ int remove_from_heap(heap* heap_p, unsigned int index)
 		return 0;
 
 	// put the indexed element at last and last element to indexed place
-	inter_change_elements_for_indexes(heap_p, index, heap_p->element_count-1);
+	inter_change_elements_for_indexes(heap_p, index, heap_p->element_count - 1);
 
 	// and set the last to NULL, and decrement the element_count of the heap
 	set_element(&(heap_p->heap_holder), NULL, --heap_p->element_count);
