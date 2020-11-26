@@ -1,8 +1,9 @@
  STAGE - 2
- * refactor dependent code bases Bufferpool(heap, linkedlist), Cashed(heap) to use the new api for stack/queue/heap
  * is_empty_linkedlist instead of is_linkedlist_empty -> used in Bufferpool, Cashed and Sloppy
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and repeat previous step for hashmap in testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
  * implement set_nth_from_front and set_nth_from_front for arraylist
+ * implement memory_set function
+ * implement a stdlib memory_allocator for cutlery specific datastructures
 
  STAGE - 3 (dependent on STAGE - 2) (just start these implementation and stage 3 is completed, since covering all graph implementations will take a long time, so start trie implementation alongside this task)
  * use graph descriptor interface to build graph algorithms like :
@@ -19,9 +20,7 @@
         etc (more will be added)
 
  STAGE - 4 (dependent on STAGE - 1, 2, 3(to start to conceptualize the memory allocation) )
- * implement a stdlib memory_allocator for cutlery specific datastructures
  * integrate memory_allocator and memory_move with other Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap)
- * implement memory_set function
  * use a global memory allocator for dstring, that can be set by someone
 
  STAGE - 5 (dependent on STAGE - 4, need strong memory management model for new cutlery datastructures)
