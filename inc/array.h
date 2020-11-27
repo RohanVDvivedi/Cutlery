@@ -29,7 +29,7 @@ void initialize_array(array* array_p, unsigned int initial_size);
 // returns pointer to the data at index = index
 const void* get_element(const array* array_p, unsigned int index);
 
-// returns 0 for success, -1 for index out of bounds
+// returns 1 for success, and fails with a return of 0 for index out of bounds
 int set_element(array* array_p, const void* data_p, unsigned int index);
 
 // swap elements of array at given indexes
