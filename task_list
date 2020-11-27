@@ -1,6 +1,5 @@
  STAGE - 2
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and repeat previous step for hashmap in testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
- * implement set_nth_from_front and set_nth_from_front for arraylist
  * implement memory_set function and a reverse copy of memory move function
  * implement a stdlib memory_allocator for cutlery specific datastructures
 
