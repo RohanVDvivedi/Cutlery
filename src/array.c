@@ -43,12 +43,12 @@ const void* get_element(const array* array_p, unsigned int index)
 
 int set_element(array* array_p, const void* data_p, unsigned int index)
 {
-	if(index < array_p->total_size)
-	{
-		array_p->data_p_p[index] = data_p;
+	// fail and return 0, if the index is out of bounds
+	if(index >= array_p->total_size)
 		return 0;
-	}
-	return -1;
+
+	array_p->data_p_p[index] = data_p;
+	return 1;
 }
 
 void swap_elements(array* array_p, unsigned int i1, unsigned int i2)
