@@ -26,7 +26,7 @@ void initialize_llnode(llnode* node_p)
 	node_p->prev = NULL;
 }
 
-int is_linkedlist_empty(const linkedlist* ll)
+int is_empty_linkedlist(const linkedlist* ll)
 {
 	return (ll->head == NULL);
 }
@@ -43,7 +43,7 @@ const void* get_tail(linkedlist* ll)
 
 const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 {
-	if(is_linkedlist_empty(ll))
+	if(is_empty_linkedlist(ll))
 		return NULL;
 	llnode* head = ll->head;
 	if(n == 0)
@@ -60,7 +60,7 @@ const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 
 const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
 {
-	if(is_linkedlist_empty(ll))
+	if(is_empty_linkedlist(ll))
 		return NULL;
 	llnode* tail = ll->head->prev;
 	if(n == 0)
@@ -108,7 +108,7 @@ int insert_head(linkedlist* ll, const void* data_p)
 		return 0;
 
 	// case when the linkedlist is empty
-	if(is_linkedlist_empty(ll))
+	if(is_empty_linkedlist(ll))
 	{
 		ll->head = new_node;
 		ll->head->next = new_node;
@@ -128,7 +128,7 @@ int insert_tail(linkedlist* ll, const void* data_p)
 		return 0;
 
 	// case when the linkedlist is empty
-	if(is_linkedlist_empty(ll))
+	if(is_empty_linkedlist(ll))
 	{
 		ll->head = new_node;
 		ll->head->next = new_node;
@@ -187,28 +187,22 @@ static void remove_node(linkedlist* ll, llnode* node_p)
 
 int remove_head(linkedlist* ll)
 {
-	if(!is_linkedlist_empty(ll))
-	{
-		llnode* node_p = ll->head;
-		remove_node(ll, node_p);
-		initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
-		return 1;
-	}
-
-	return 0;
+	if(is_empty_linkedlist(ll))	// remove fails with 0, if linkedlist is empty
+		return 0;
+	llnode* node_p = ll->head;
+	remove_node(ll, node_p);
+	initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
+	return 1;
 }
 
 int remove_tail(linkedlist* ll)
 {
-	if(!is_linkedlist_empty(ll))
-	{
-		llnode* node_p = ll->head->prev;
-		remove_node(ll, node_p);
-		initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
-		return 1;
-	}
-
-	return 0;
+	if(is_empty_linkedlist(ll))	// remove fails with 0, if linkedlist is empty
+		return 0;
+	llnode* node_p = ll->head->prev;
+	remove_node(ll, node_p);
+	initialize_llnode(node_p);	// re-initialize the node as soon as it is removed
+	return 1;
 }
 
 // remove the given element from the linked list
@@ -226,7 +220,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data)
 
 const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
 {
-	if(is_linkedlist_empty(ll))
+	if(is_empty_linkedlist(ll))
 		return NULL;
 	llnode* node_p = ll->head;
 	do
@@ -242,7 +236,7 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 
 void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
-	if(is_linkedlist_empty(ll))
+	if(is_empty_linkedlist(ll))
 		return;
 	llnode* node_p = ll->head;
 	do
@@ -268,7 +262,7 @@ void print_linkedlist(const linkedlist* ll, void (*print_element)(const void* da
 	printf("LINKED LIST\n");
 	printf("node_offset : [%u]\n", ll->node_offset);
 	printf("head : [%p]\n", ll->head);
-	if(!is_linkedlist_empty(ll))
+	if(!is_empty_linkedlist(ll))
 	{
 		llnode* node_p = ll->head;
 		do

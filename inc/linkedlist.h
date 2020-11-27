@@ -31,7 +31,7 @@ void initialize_linkedlist(linkedlist* ll, unsigned int node_offset);
 // always initialize your linkedlist node before using it
 void initialize_llnode(llnode* node_p);
 
-int is_linkedlist_empty(const linkedlist* ll);
+int is_empty_linkedlist(const linkedlist* ll);
 
 // simply gets head node data
 const void* get_head(linkedlist* ll);
