@@ -4,17 +4,19 @@
 
 #include<arraylist.h>
 
-#define TOTAL_OPERATIONS_SUPPORTED 6
+#define TOTAL_OPERATIONS_SUPPORTED 8
 
 typedef enum al_op al_op;
 enum al_op
 {
 	PUSH_FRONT = 0,
-	PUSH_BACK,
-	POP_FRONT,
-	POP_BACK,
-	GET_NTH_FRONT,
-	GET_NTH_BACK
+	PUSH_BACK,		// 1
+	POP_FRONT,		// 2
+	POP_BACK,		// 3
+	SET_NTH_FRONT,	// 4
+	SET_NTH_BACK,	// 5
+	GET_NTH_FRONT,	// 6
+	GET_NTH_BACK 	// 7
 };
 
 #define INITIAL_TOTAL_SIZE 3
@@ -29,14 +31,14 @@ void operate_on_arraylist(arraylist* al, al_op op)
 	{
 		case PUSH_FRONT :
 		{
-			int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
+			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
 			printf("PUSH_FRONT : %d :: %d\n", *data, push_front(al, data));
 			break;
 		}
 
 		case PUSH_BACK :
 		{
-			int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
+			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
 			printf("PUSH_BACK : %d :: %d\n", *data, push_back(al, data));
 			break;
 		}
@@ -55,7 +57,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 
 		case GET_NTH_FRONT :
 		{
-			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 2) * 1.5));
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
 			const int* data = get_nth_from_front(al, index);
 			printf("GET %u TH_FRONT : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
 			break;
@@ -63,9 +65,25 @@ void operate_on_arraylist(arraylist* al, al_op op)
 
 		case GET_NTH_BACK :
 		{
-			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 2) * 1.5));
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
 			const int* data = get_nth_from_back(al, index);
 			printf("GET %u TH_BACK : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
+			break;
+		}
+
+		case SET_NTH_FRONT :
+		{
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
+			printf("SET %u TH_FRONT : %d : %d\n", index, *data, set_nth_from_front(al, data, index));
+			break;
+		}
+
+		case SET_NTH_BACK :
+		{
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
+			printf("SET %u TH_BACK : %d : %d\n", index, *data, set_nth_from_back(al, data, index));
 			break;
 		}
 	}
@@ -99,8 +117,10 @@ int main()
 
 	while(num_ops--)
 	{
-		operate_on_arraylist(al, (rand() % TOTAL_OPERATIONS_SUPPORTED));
-		print_arraylist(al, print_int);
+		int op = rand() % TOTAL_OPERATIONS_SUPPORTED;
+		operate_on_arraylist(al, op);
+		if(op <= 5)	// print complete arraylist only on an update operation
+			print_arraylist(al, print_int);
 		printf("\n\n");
 
 		expand_required += is_full_arraylist(al);
