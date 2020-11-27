@@ -129,6 +129,26 @@ const void* get_nth_from_back(const arraylist* al, unsigned int n)
 	return get_element(&(al->arraylist_holder), (((al->first_index + al->element_count) - 1) - n) % al->arraylist_holder.total_size);
 }
 
+int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n)
+{
+	// arraylist must not be empty and the index-n must be lesser than the element-count
+	if(is_empty_arraylist(al) || n >= al->element_count)
+		return 0;
+
+	// set nth element from front of the arraylist to data_p
+	return set_element(&(al->arraylist_holder), data_p, (al->first_index + n) % al->arraylist_holder.total_size);
+}
+
+int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n)
+{
+	// arraylist must not be empty and the index-n must be lesser than the element-count
+	if(is_empty_arraylist(al) || n >= al->element_count)
+		return 0;
+
+	// set nth element from back of the arraylist to data_p
+	return set_element(&(al->arraylist_holder), data_p, (((al->first_index + al->element_count) - 1) - n) % al->arraylist_holder.total_size);
+}
+
 unsigned int get_total_size_arraylist(const arraylist* al)
 {
 	return al->arraylist_holder.total_size;

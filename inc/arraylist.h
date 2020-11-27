@@ -52,6 +52,13 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n);
 const void* get_nth_from_back(const arraylist* al, unsigned int n);
 // get_nth_from_* functions will fail and return NULL if n is greater than the number of elements in the given arraylist
 
+// to set nth element from front in the arraylist to data_p pointer
+int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n);
+// to set nth element from back in the arraylist to data_p pointer
+int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n);
+// set_nth_from_* functions will fail and return 0 if n is greater than the number of elements in the given arraylist
+// on success, these functions will return 1
+
 // returns total_size of the arraylist_holder
 unsigned int get_total_size_arraylist(const arraylist* al);
 // returns the number of elements inside the arraylist
