@@ -1,7 +1,7 @@
+#include<cutlery_stds.h> 
+
 #include<stdio.h>
 #include<stdlib.h>
-
-#include<cutlery_stds.h>
 
 void init_rand_memory(char* mem, int size)
 {
