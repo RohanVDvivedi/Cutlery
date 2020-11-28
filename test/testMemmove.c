@@ -48,8 +48,8 @@ int main()
 	}
 
 	{
-		char memory_src[BUFFER_SIZE];
 		char memory_dest[BUFFER_SIZE];
+		char memory_src[BUFFER_SIZE];
 		printf("TEST MEM MOVE FORWARD COPY\n\n");
 		for(int i = 0; i < sizeof(int); i++)
 		{
@@ -59,7 +59,7 @@ int main()
 				init_rand_memory(memory_dest + j, MEMORY_OPERATION_SIZE);
 
 				printf("\nInitial : \n");
-				printf("src:");
+				printf("src :");
 				print_memory(memory_src + i, MEMORY_OPERATION_SIZE);
 				printf("dest:");
 				print_memory(memory_dest + j, MEMORY_OPERATION_SIZE);
@@ -77,8 +77,8 @@ int main()
 	}
 
 	{
-		char memory_dest[BUFFER_SIZE];
 		char memory_src[BUFFER_SIZE];
+		char memory_dest[BUFFER_SIZE];
 		printf("TEST MEM MOVE BACKWARD COPY\n\n");
 		for(int i = 0; i < sizeof(int); i++)
 		{
@@ -88,7 +88,7 @@ int main()
 				init_rand_memory(memory_dest + j, MEMORY_OPERATION_SIZE);
 
 				printf("\nInitial : \n");
-				printf("src:");
+				printf("src :");
 				print_memory(memory_src + i, MEMORY_OPERATION_SIZE);
 				printf("dest:");
 				print_memory(memory_dest + j, MEMORY_OPERATION_SIZE);
