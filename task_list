@@ -1,7 +1,7 @@
  STAGE - 2
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and repeat previous step for hashmap in testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
  * test cases for memory_set and memory_copy functions
- * implement a stdlib c memory_allocator
+ * implement and build test case setup a stdlib c memory_allocator
 
  STAGE - 3
  * use graph descriptor interface to build graph algorithms like :
