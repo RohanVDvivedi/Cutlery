@@ -1,9 +1,6 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-#include<cutlery_stds.h>
-#include<memory_allocator_interface.h>
-
 typedef struct array array;
 struct array
 {

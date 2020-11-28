@@ -1,8 +1,10 @@
 #include<array.h>
 
+#include<cutlery_stds.h>
+#include<memory_allocator_interface.h>
+
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 
 // this is the factor, by which the previous size of data_p_p will be incremented
 static const float increment_factor = 1.8;
@@ -89,7 +91,7 @@ int expand_array(array* array_p)
 	// larger the array larger is this task, O(n) for single expansion of array
 	// think of doing it multiple times, and you are done, in case you have a increment_factor 0,
 	// and increment_amount = 1
-	memcpy(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
+	memory_move(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
 
 	// free the old pointers array
 	free(array_p->data_p_p);
@@ -122,7 +124,7 @@ int shrink_array(array* array_p, unsigned int start_index, unsigned int end_inde
 			// request memory for the new computed size
 			const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
 
-			memcpy(new_data_p_p, array_p->data_p_p + start_index, minimum_size * sizeof(void*));
+			memory_move(new_data_p_p, array_p->data_p_p + start_index, minimum_size * sizeof(void*));
 
 			// free the old pointers array
 			free(array_p->data_p_p);
