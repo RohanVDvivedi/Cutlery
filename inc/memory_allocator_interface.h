@@ -84,4 +84,6 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 // final deallocate / free call to the memory allocator
 #define deallocate(mem_allocator, old_memory, old_size)				memory_allocator(old_memory, old_size, 0, 0, UN_AFFECTED)
 
+extern const memory_allocator STD_C_mem_alloc;
+
 #endif
