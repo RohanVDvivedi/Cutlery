@@ -1,5 +1,8 @@
 #include<dstring.h>
 
+#include<cutlery_stds.h>
+#include<memory_allocator_interface.h>
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdarg.h>
@@ -17,7 +20,7 @@ void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 	str_p->bytes_occupied = data_size;
 	str_p->bytes_allocated = data_size;
 	str_p->cstring = malloc(data_size);
-	memcpy(str_p->cstring, data, data_size);
+	memory_move(str_p->cstring, data, data_size);
 }
 
 void make_dstring_empty(dstring* str_p)
@@ -148,7 +151,7 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 		return;
 
 	expanded_dstring.cstring = malloc(expanded_dstring.bytes_allocated);
-	memcpy(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
+	memory_move(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
 
 	deinit_dstring(str_p);
 	(*str_p) = expanded_dstring;
@@ -163,7 +166,7 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 			expand_dstring(str_p1, str_p1->bytes_occupied + 2 * str_p2->bytes_occupied);
 
 		// do appending as normal now
-		memcpy(str_p1->cstring + str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
+		memory_move(str_p1->cstring + str_p1->bytes_occupied, str_p2->cstring, str_p2->bytes_occupied);
 		str_p1->bytes_occupied += str_p2->bytes_occupied;
 	}
 }
