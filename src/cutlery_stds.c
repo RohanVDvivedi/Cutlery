@@ -40,10 +40,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		{
 			// perform a byte-by-byte copy until the addresses are int aligned
 			while( ( ((long int)src) & ~int_alignment_bit_mask ) )
-			{
-				printf("%p -> %p [1]\n", src, dest);
 				*(dest++) = *(src++);
-			}
 
 			// perform an int-by-int transfer in this scope
 			// dest_int and src_int must not leave this scope
@@ -60,10 +57,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 
 				// int-by-int copy loop
 				while( src_int <= src_last_int )
-				{
-					printf("%p -> %p [4]\n", src_int, dest_int);
 					*(dest_int++) = *(src_int++);
-				}
 
 				src = (char*)src_int;
 				dest = (char*)dest_int;
@@ -72,10 +66,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 
 		// finish up remaining with an old fashioned byte-by-byte copy loop
 		while( src <= ((char*)(src_last)) )
-		{
-			printf("%p -> %p [1]\n", src, dest);
 			*(dest++) = *(src++);
-		}
 	}
 	// else make backward pass
 	else
@@ -93,10 +84,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		{
 			// perform a byte-by-byte copy until the addresses are int - 1 aligned
 			while( ( ((long int)src) & ~int_alignment_bit_mask ) != ( ~int_alignment_bit_mask ) )
-			{
-				printf("%p -> %p [1]\n", src, dest);
 				*(dest--) = *(src--);
-			}
 
 			// point src and dest to next int that needs to be copied
 			src -= (int_size - 1);
@@ -117,10 +105,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 
 				// int-by-int copy loop
 				while( src_int >= src_start_int )
-				{
-					printf("%p -> %p [4]\n", src_int, dest_int);
 					*(dest_int--) = *(src_int--);
-				}
 
 				src = (char*)src_int;
 				dest = (char*)dest_int;
@@ -132,10 +117,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 
 		// finish up remaining with an old fashioned byte-by-byte copy loop
 		while( src >= ((char*)(src_start)) )
-		{
-			printf("%p -> %p [1]\n", src, dest);
 			*(dest--) = *(src--);
-		}
 	}
 }
 
@@ -156,10 +138,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 	{
 		// perform a byte-by-byte copy until the address is int aligned
 		while( ( ((long int)dest) & ~int_alignment_bit_mask ) )
-		{
-			printf("%p [1]\n", dest);
 			*(dest++) = byte_value;
-		}
 
 		// perform an int-by-int transfer in this scope
 		// dest_int must not leave this scope
@@ -180,10 +159,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 
 			// int-by-int copy loop
 			while( dest_int <= dest_last_int )
-			{
-				printf("%p [4]\n", dest_int);
 				*(dest_int++) = int_value;
-			}
 
 			dest = (char*)dest_int;
 		}
@@ -191,8 +167,5 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 
 	// finish up remaining with an old fashioned byte-by-byte copy
 	while( dest <= ((char*)(dest_last)) )
-	{
-		printf("%p [1]\n", dest);
 		*(dest++) = byte_value;
-	}
 }
