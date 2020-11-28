@@ -1,7 +1,9 @@
 #ifndef CUTLERY_STDS_H
 #define CUTLERY_STDS_H
 
-#define NULL ((void*)0)
+#ifndef NULL
+	#define NULL ((void*)0)
+#endif
 
 /* this is cutlery specific memory move implementation
    this is the function to be used in place of memcpy/memmove std library functions
