@@ -1,7 +1,9 @@
 #include<array.h>
 
+#include<cutlery_stds.h>
+#include<memory_allocator_interface.h>
+
 #include<stdlib.h>
-#include<string.h>
 
 void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2))
 {
@@ -32,7 +34,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 				if(a_end > total_elements - 1)
 					a_end = total_elements - 1;
 
-				memcpy(dest + dest_index, src + a_start, (a_end - a_start + 1) * sizeof(void*));
+				memory_move(dest + dest_index, src + a_start, (a_end - a_start + 1) * sizeof(void*));
 				break;
 			}
 			else
@@ -63,7 +65,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 		free(dest);
 	else
 	{
-		memcpy(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
+		memory_move(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
 		free(src);
 	}
 }
