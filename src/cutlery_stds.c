@@ -15,13 +15,15 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 	if(src_start == dest_start || size == 0)
 		return;
 
-	// the end of the src buffer and last src byte address that needs to be copied
-	const void* src_end = src_start + size;
-	const void* src_last = src_end - 1;
+	// compute the last src and dest byte address that needs to be copied
+	const void* src_last = src_start + (size - 1);
+	void* dest_last = dest_start + (size - 1);
+
+	// decide to make a forward pass or backward pass 
+	// based on whether the pass could corrupt the src memory address before we could copy it
 
 	// make forward pass
-	// if there is no overlap or if the overlap doesnt corrupt the copy operation
-	if(dest_start < src_start  || src_last < dest_start)
+	if(dest_start < src_start || src_last < dest_start)
 	{
 		// intialize our iterators for forward copy
 		char* dest = dest_start;
@@ -34,7 +36,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 			)
 		)
 		{
-			// perform a byte-by-byte copy until the address is int aligned
+			// perform a byte-by-byte copy until the addresses are int aligned
 			while( ((long int)src) & ~int_alignment_bit_mask )
 				*(dest++) = *(src++);
 
@@ -46,12 +48,13 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 				const int* src_int = (int*)src;
 
 				// additonal bytes that you might have to copy after completing the int copy
-				unsigned long int additional_bytes = ((unsigned long int)src_end) & ~int_alignment_bit_mask;
+				unsigned long int additional_bytes = ((unsigned long int)(src_last + 1)) & ~int_alignment_bit_mask;
 
-				// if you hit this address, stop copying ints
-				const int* src_end_int = src_end - additional_bytes;
+				// this is the address of the last byte that must be copied under the int-by-int copy loop
+				const int* src_last_int = src_last - additional_bytes;
 
-				while( src_int < src_end_int )
+				// int-by-int copy loop
+				while( src_int <= src_last_int )
 					*(dest_int++) = *(src_int++);
 
 				dest = (char*)dest_int;
@@ -59,17 +62,15 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 			}
 		}
 
-		// finish up remaining with an old fashioned byte-by-byte copy
-		while( src < ((char*)(src_end)) )
+		// finish up remaining with an old fashioned byte-by-byte copy loop
+		while( src <= ((char*)(src_last)) )
 			*(dest++) = *(src++);
 	}
 	// else make backward pass
-	// no optimization here since this is a minor and less frequent case
 	else
 	{
 		// intialize our iterators for backward copy
-		// start from the last byte that needs to be copied
-		char* dest = dest_start + size - 1;
+		char* dest = dest_last;
 		const char* src = src_last;
 
 		while( src >= ((char*)(src_start)) )
@@ -83,9 +84,8 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 	if(size == 0)
 		return;
 
-	// the end of the dest buffer and last dest byte address that needs to be copied
-	const void* dest_end = dest_start + size;
-	//const void* dest_last = dest_end - 1;
+	// compute the last dest byte address that needs to be copied
+	void* dest_last = dest_start + (size - 1);
 
 	// intialize our iterators for the copy operation
 	char* dest = dest_start;
@@ -109,12 +109,13 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 				int_value |= ( (((int)byte_value) & 0xff) << i );
 
 			// additonal bytes that you might have to copy after completing the int copy
-			unsigned long int additional_bytes = ((unsigned long int)dest_end) & ~int_alignment_bit_mask;
+			unsigned long int additional_bytes = ((unsigned long int)(dest_last + 1)) & ~int_alignment_bit_mask;
 
-			// if you hit this address, stop copying ints
-			const int* dest_end_int = dest_end - additional_bytes;
+			// this is the address of the last byte that must be copied under the int-by-int copy loop
+			const int* dest_last_int = dest_last - additional_bytes;
 
-			while( dest_int < dest_end_int )
+			// int-by-int copy loop
+			while( dest_int <= dest_last_int )
 				*(dest_int++) = int_value;
 
 			dest = (char*)dest_int;
@@ -122,6 +123,6 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 	}
 
 	// finish up remaining with an old fashioned byte-by-byte copy
-	while( dest < ((char*)(dest_end)) )
+	while( dest <= ((char*)(dest_last)) )
 		*(dest++) = byte_value;
 }
