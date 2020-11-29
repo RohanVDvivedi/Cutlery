@@ -8,9 +8,9 @@
 typedef enum memory_allocator_initialization memory_allocator_initialization;
 enum memory_allocator_initialization
 {
-	UN_AFFECTED,		// the cutlery algorithm/datastructure does not care about initialization of the newly allocated memory, that you will return 
-	ZERO_INITIALIZE,	// the new allocated memory, must conatain all zero bytes
-	PRESERVE_OLD_MEMORY	// if possible preserve maximum number of bytes that you could preserve from old_memory
+	DONT_CARE,	// caller does not care about initialization of the newly allocated memory, that you will return 
+	ZERO,		// the new allocated memory, must contain all zeros
+	PRESERVE	// preserve a minimum_of(old_size, new_size) number of bytes from old_memory, upon new allocation
 };
 
 // usage of this typedef-ed function is sohisticated and complex
@@ -47,19 +47,19 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 **	this notes define how a memory_allocator interface function must behave or how it should be used
 **
 **	malloc like usage
-**	void* new_memory = memory_allocator(NULL, 0, new_size, 0, UN_AFFECTED);
+**	void* new_memory = memory_allocator(NULL, 0, new_size, 0, DONT_CARE);
 **
 **	calloc like usage
-**	void* new_memory = memory_allocator(NULL, 0, new_size, 0, ZERO_INITIALIZE);
+**	void* new_memory = memory_allocator(NULL, 0, new_size, 0, ZERO);
 **
 **	realloc like usage
-**	void* new_memory = memory_allocator(old_memory, old_size, new_size, 0, PRESERVE_OLD_MEMORY);
+**	void* new_memory = memory_allocator(old_memory, old_size, new_size, 0, PRESERVE);
 **
 **	aligned_alloc/posix_memalign like usage
-**	void* new_memory = memory_allocator(NULL, 0, new_size, new_alignment, UN_AFFECTED);
+**	void* new_memory = memory_allocator(NULL, 0, new_size, new_alignment, DONT_CARE);
 **
 **	free like usage
-**	memory_allocator(old_memory, old_size, 0, 0, UN_AFFECTED);
+**	memory_allocator(old_memory, old_size, 0, 0, DONT_CARE);
 **
 **	as you can see the memory_allocator interface is a function that specifies specific usecases according to the parameters passed
 **	please note that this are just stdlib c specific usecases, a custom memory allocator interface must provide implementation of all possible usecases
@@ -74,15 +74,15 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 // although the memory_allocator has a lot of usecases
 // these are the most basic usecases that it must satisfy
 
-// first and foreost calls to the memory allocator
-#define allocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, UN_AFFECTED)
-#define zallocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, ZERO_INITIALIZE)
+// first and foremost calls to the memory allocator
+#define allocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, DONT_CARE)
+#define zallocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, ZERO)
 
 // subsequent reallocation calls to the memory allocator
-#define reallocate(mem_allocator, old_memory, old_size, new_size) 	memory_allocator(old_memory, old_size, new_size, 0, PRESERVE_OLD_MEMORY)
+#define reallocate(mem_allocator, old_memory, old_size, new_size) 	memory_allocator(old_memory, old_size, new_size, 0, PRESERVE)
 
 // final deallocate / free call to the memory allocator
-#define deallocate(mem_allocator, old_memory, old_size)				memory_allocator(old_memory, old_size, 0, 0, UN_AFFECTED)
+#define deallocate(mem_allocator, old_memory, old_size)				memory_allocator(old_memory, old_size, 0, 0, DONT_CARE)
 
 extern const memory_allocator STD_C_mem_alloc;
 
