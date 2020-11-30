@@ -43,8 +43,8 @@ struct node_descriptor
 	unsigned int (*get_edge_count)(void* node, void* context);
 
 	// get an edge that is touching this node i.e. this node is either source or destination for a given edge
-	// here the edge_index is always lesser than the result of get_outgoing_edge_count
-	// it varies from 0 to get_outgoing_edge_count() - 1
+	// here the edge_index is always lesser than the result of get_edge_count
+	// it varies from 0 to get_edge_count() - 1
 	void* (*get_edge)(void* node, unsigned int edge_index, void* context);
 
 	// to mark a given node as visited and
