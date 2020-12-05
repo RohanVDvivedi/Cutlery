@@ -11,7 +11,7 @@ struct stack
 };
 
 // initializes stack and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_stack(stack* stack_p, unsigned int expected_size);
+void initialize_stack(stack* stack_p, unsigned int initial_size);
 
 // push a new element to the stack
 // push returns 1, if data_p is successfully pushed

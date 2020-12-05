@@ -2,9 +2,9 @@
 
 #include<stdio.h>
 
-void initialize_queue(queue* queue_p, unsigned int expected_size)
+void initialize_queue(queue* queue_p, unsigned int initial_size)
 {
-	initialize_arraylist(&(queue_p->queue_holder), expected_size);
+	initialize_arraylist(&(queue_p->queue_holder), initial_size);
 }
 
 int push_queue(queue* queue_p, const void* data_p)
