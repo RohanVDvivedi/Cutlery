@@ -7,17 +7,8 @@ struct array
 	// we maintain array of pointers each of which point to actual data
 	const void** data_p_p;
 
-	// initial_size = the size with which the array was requested from using the initialize_array or get_array function
-	// The array is not allowed to shrink below its initial size
-	unsigned int initial_size;
-
 	// this many elements can be accomodated in array, without expanding
-	// expanding which involves copying pointers, and
-	// requesting larger pointer array size than previously we had
-	// this could get expensive and is non productive computation
 	unsigned int total_size;
-
-	// new_total_size of data_p_p = old_total_size of data_p_p * increment_factor + increment_offset
 };
 
 // initializes and gives necessary memory to manage internal element contents
@@ -43,9 +34,7 @@ int expand_array(array* array_p);
 
 // shrinks the array, if the array is considerably larger than the minimum size ( = end_index - start_index + 1) that was required
 // element at the start_index comes to 0, and element at end_index comes to end_index - start_index
-// it returns 1 if the array was shrunk
-// note : The array is not allowed to shrink below its initial size,
-// it shrinks only if the new_total_size is greater than or equal to the initial size
+// it returns 1 if the array was shrunk, else it will return a 0 for a failure
 int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index);
 
 // perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
