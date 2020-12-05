@@ -53,7 +53,7 @@ void rehash(hashmap* old_p, hashmap* new_p)
 	initialize_queue(&q, 30);
 	for_each_in_hashmap(old_p, sampler_queue_wrapper, &q);
 
-	while(!isQueueEmpty(&q))
+	while(!is_empty_queue(&q))
 	{
 		const void* data = get_top_queue(&q);
 
