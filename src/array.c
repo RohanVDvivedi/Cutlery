@@ -6,36 +6,29 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// this is the factor, by which the previous size of data_p_p will be incremented
-static const float increment_factor = 1.8;
+// this is the factor and the constant amount, by which the size of data_p_p will be expanded or shrunk
+#define EXPANSION_FACTR 1.8
+#define EXPANSION_CONST 1
 
-// this is the constant increment amount, over the increment factor
-static const unsigned char increment_offset = 1;
-
-// new_total_size of data_p_p = old_total_size of data_p_p * increment_factor + increment_offset
-
+// new_total_size of data_p_p = (old_total_size of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next size (on expansion) for the given array, if it's current size is current_size
-static unsigned int next_expansion_size(unsigned int current_size)
+static unsigned int get_new_total_size(unsigned int current_size)
 {
-	return ((unsigned int)(current_size * increment_factor)) + increment_offset;
+	return (current_size * EXPANSION_FACTR) + EXPANSION_CONST;
 }
 
 void initialize_array(array* array_p, unsigned int initial_size)
 {
 	array_p->data_p_p = initial_size > 0 ? calloc(initial_size, sizeof(void*)) : NULL;
 	array_p->total_size = initial_size;
-	array_p->initial_size = initial_size;
 }
 
 void deinitialize_array(array* array_p)
 {
 	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
-	{
 		free(array_p->data_p_p);
-	}
-	array_p->total_size = 0;
-	array_p->initial_size = 0;
 	array_p->data_p_p = NULL;
+	array_p->total_size = 0;
 }
 
 const void* get_element(const array* array_p, unsigned int index)
@@ -45,12 +38,12 @@ const void* get_element(const array* array_p, unsigned int index)
 
 int set_element(array* array_p, const void* data_p, unsigned int index)
 {
-	// fail and return 0, if the index is out of bounds
-	if(index >= array_p->total_size)
-		return 0;
-
-	array_p->data_p_p[index] = data_p;
-	return 1;
+	if(index < array_p->total_size)
+	{
+		array_p->data_p_p[index] = data_p;
+		return 1;
+	}
+	return 0;
 }
 
 void swap_elements(array* array_p, unsigned int i1, unsigned int i2)
@@ -153,8 +146,6 @@ static void print_array_element_wrapper(void* element, unsigned int index, const
 void print_array(const array* array_p, void (*print_element)(const void* data_p))
 {
 	printf("array:");
-	printf("\n\tincrement_factor : %f", increment_factor);
-	printf("\n\tincrement_offset : %u", increment_offset);
 	printf("\n\ttotal size : %u\n", array_p->total_size);
 	for_each_in_array(array_p, print_array_element_wrapper, print_element);
 	printf("\n");
