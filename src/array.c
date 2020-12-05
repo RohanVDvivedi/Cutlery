@@ -8,7 +8,7 @@
 
 // this is the factor and the constant amount, by which the size of data_p_p will be expanded or shrunk
 #define EXPANSION_FACTR 1.8
-#define EXPANSION_CONST 1
+#define EXPANSION_CONST 2
 
 // new_total_size of data_p_p = (old_total_size of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next size (on expansion) for the given array, if it's current size is current_size
@@ -70,20 +70,21 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 
 int expand_array(array* array_p)
 {
-	// compute new_size
-	unsigned int new_total_size = next_expansion_size(array_p->total_size);
+	// compute new_total_size to expand to
+	unsigned int new_total_size = get_new_total_size(array_p->total_size);
 
-	// request memory for the new computed size
+	// new_total_size must be greater than the old_total_size
+	if(new_total_size <= array_p->total_size)
+		return 0;
+
+	// allocate memory for the new_total_size
 	const void** new_data_p_p = calloc(new_total_size, sizeof(void*));
 
 	// since memory allocation failed, return 0
 	if(new_data_p_p == NULL)
 		return 0;
 
-	// copy all pointers from the old pointers array
-	// larger the array larger is this task, O(n) for single expansion of array
-	// think of doing it multiple times, and you are done, in case you have a increment_factor 0,
-	// and increment_amount = 1
+	// copy all pointers from the old pointers array (which we know is smaller than the new allocated memory)
 	memory_move(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
 
 	// free the old pointers array
@@ -93,44 +94,42 @@ int expand_array(array* array_p)
 	array_p->data_p_p = new_data_p_p;
 	array_p->total_size = new_total_size;
 
-	// expansion of the array container is successfull
 	return 1;
 }
 
 int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index)
 {
-	if(end_index < start_index)
+	// start_index and the end_index, are used to identify the extent of the array that you are using
+	if(!(	 (start_index <= end_index)
+		  && (start_index <  array_p->total_size)
+		  && (end_index   <  array_p->total_size)  ))
 		return 0;
 
-	unsigned int minimum_size = end_index - start_index + 1;
+	// compute the new_total_size to shrink to
+	unsigned int new_total_size = end_index - start_index + 1;
 
-	unsigned int maximum_size = next_expansion_size(next_expansion_size(minimum_size));
+	// new_total_size must be lesser than the old_total_size
+	if(new_total_size >= array_p->total_size)
+		return 0;
 
-	if(array_p->total_size > maximum_size)
-	{
-		unsigned int new_total_size = next_expansion_size(minimum_size);
+	// allocate memory for the new_total_size
+	const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
 
-		// The array is not allowed to shrink below its initial size,
-		// it shrinks only if the new_total_size is greater than or equal to the initial size
-		if(new_total_size >= array_p->initial_size)
-		{
-			// request memory for the new computed size
-			const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
+	// since memory allocation failed, return 0
+	if(new_data_p_p == NULL)
+		return 0;
 
-			memory_move(new_data_p_p, array_p->data_p_p + start_index, minimum_size * sizeof(void*));
+	// copy only the required number of pointers from the old array to the new one
+	memory_move(new_data_p_p, array_p->data_p_p + start_index, new_total_size * sizeof(void*));
 
-			// free the old pointers array
-			free(array_p->data_p_p);
+	// free the old pointers array
+	free(array_p->data_p_p);
 
-			// new assignment to data_p_p and the total_size
-			array_p->data_p_p = new_data_p_p;
-			array_p->total_size = new_total_size;
+	// new assignment to data_p_p and the total_size
+	array_p->data_p_p = new_data_p_p;
+	array_p->total_size = new_total_size;
 
-			return 1;
-		}
-	}
-
-	return 0;
+	return 1;
 }
 
 static void print_array_element_wrapper(void* element, unsigned int index, const void* print_element)
