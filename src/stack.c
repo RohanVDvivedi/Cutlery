@@ -2,9 +2,9 @@
 
 #include<stdio.h>
 
-void initialize_stack(stack* stack_p, unsigned int expected_size)
+void initialize_stack(stack* stack_p, unsigned int initial_size)
 {
-	initialize_arraylist(&(stack_p->stack_holder), expected_size);
+	initialize_arraylist(&(stack_p->stack_holder), initial_size);
 }
 
 int push_stack(stack* stack_p, const void* data_p)
