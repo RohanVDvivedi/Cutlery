@@ -1,5 +1,7 @@
  STAGE - 2
- * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and repeat previous step for hashmap in testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
+ * integrate memory_allocator with array and dstring, use only the std allocator here, i.e. do not allow to change the memory allocator yet
+ * modify shrink_array function with size insteead of indices
+ * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
 
  STAGE - 3
  * use graph descriptor interface to build graph algorithms like :
@@ -13,8 +15,7 @@
         etc (more will be added)
 
  STAGE - 4
- * integrate memory_allocator with other Cutlery datastructures that need memory management like the array and (hashmap, stack, queue and heap) and test it, also update api and other projects that use it
- * use a global memory allocator for dstring, that can be set by someone, and default it to use a stdlibc memory_allocator
+ * provide an interface/function to change the memory_allocator for Cutlery datastructures, also update cutlery api and other projects that use it
 
  STAGE - 5
  * provide a very simple trie data structure, to store of dstring* vs void*. (* very far in the future)
