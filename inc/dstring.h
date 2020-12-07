@@ -70,6 +70,6 @@ void deinit_dstring(dstring* str_p);
 
 // This is the global memory allocator that will be used for contents 
 // of every dstring that ever gets created/modified
-memory_allocator DSTRING_mem_alloc = STD_C_mem_allocator;
+extern memory_allocator DSTRING_mem_alloc;
 
 #endif
