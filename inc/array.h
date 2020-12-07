@@ -38,11 +38,10 @@ void deinitialize_array(array* array_p);
 // else this function may fail with 0, to indicate a failure, from the memory allocator
 int expand_array(array* array_p);
 
-// shrinks the array, if the array is considerably larger than the minimum size ( = end_index - start_index + 1) that was required
-// element at the start_index comes to 0, and element at end_index comes to end_index - start_index
-// it returns 1 if the array was shrunk, else it will return a 0 for a failure
-// and since the start_index <= end_index, this funtion will not shrink your array to size 0
-int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index);
+// shrinks the array, to a new_size
+// returns 1, if the array was shrunk to the new_size
+// else it returns 0 and fails, if it fails (the function fails if new_total_size < old_total_size or if the allocation fails)
+int shrink_array(array* array_p, unsigned int new_total_size);
 
 // perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);

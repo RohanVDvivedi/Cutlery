@@ -218,8 +218,28 @@ int shrink_arraylist(arraylist* al)
 	int has_holder_shrunk = 0;
 
 	// to be able to shrink an array, it must have a non-zero total size
+	// and there is no rotation, i.e. elements are all contiguously placed at index after the first index
 	if((al->arraylist_holder.total_size > 0) && (is_empty_arraylist(al) || (al->first_index + al->element_count) <= al->arraylist_holder.total_size))
-		has_holder_shrunk = shrink_array(&(al->arraylist_holder), al->first_index, al->first_index + al->element_count - 1);
+	{
+		if(!is_empty_arraylist(al) && al->first_index > 0)
+		{
+			// move the arraylist to the complete front, i.e. first_index = 0
+			memory_move(al->arraylist_holder.data_p_p,
+						al->arraylist_holder.data_p_p + al->first_index,
+						al->element_count * sizeof(void*));
+
+			// end_index = index that comes after the last index
+			unsigned int elements_to_NULL_from = (al->first_index > (al->element_count - 1)) ? al->first_index : al->element_count;
+			unsigned int elements_to_NULL_to   = al->first_index + al->element_count - 1;
+			unsigned int elements_to_NULL = elements_to_NULL_to - elements_to_NULL_from + 1;
+			memory_set(al->arraylist_holder.data_p_p + elements_to_NULL_from, 0,
+						elements_to_NULL * sizeof(void*));
+
+			al->first_index = 0;
+		}
+
+		has_holder_shrunk = shrink_array(&(al->arraylist_holder), al->element_count);
+	}
 
 	// if the arraylist_holder had shrunk, the new first_index has to be at 0ss
 	if(has_holder_shrunk)

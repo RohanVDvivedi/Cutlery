@@ -78,15 +78,19 @@ int expand_array(array* array_p)
 	if(new_total_size <= array_p->total_size)
 		return 0;
 
-	// allocate memory for the new_total_size
-	const void** new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
+	const void** new_data_p_p = NULL;
+	if(new_total_size > 0)
+	{
+		// allocate memory for the new_total_size
+		new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
 
-	// since memory allocation failed, return 0
-	if(new_data_p_p == NULL)
-		return 0;
+		// since memory allocation failed, return 0
+		if(new_data_p_p == NULL)
+			return 0;
 
-	// copy all pointers from the old pointers array (which we know is smaller than the new allocated memory)
-	memory_move(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
+		// copy all pointers from the old pointers array (which we know is smaller than the new allocated memory)
+		memory_move(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
+	}
 
 	// free the old pointers array
 	deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
@@ -98,30 +102,25 @@ int expand_array(array* array_p)
 	return 1;
 }
 
-int shrink_array(array* array_p, unsigned int start_index, unsigned int end_index)
+int shrink_array(array* array_p, unsigned int new_total_size)
 {
-	// start_index and the end_index, are used to identify the extent of the array that you are using
-	if(!(	 (start_index <= end_index)
-		  && (start_index <  array_p->total_size)
-		  && (end_index   <  array_p->total_size)  ))
-		return 0;
-
-	// compute the new_total_size to shrink to
-	unsigned int new_total_size = end_index - start_index + 1;
-
 	// new_total_size must be lesser than the old_total_size
 	if(new_total_size >= array_p->total_size)
 		return 0;
 
-	// allocate memory for the new_total_size
-	const void** new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
+	const void** new_data_p_p = NULL;
+	if(new_total_size > 0)
+	{
+		// allocate memory for the new_total_size
+		new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
 
-	// since memory allocation failed, return 0
-	if(new_data_p_p == NULL)
-		return 0;
+		// since memory allocation failed, return 0
+		if(new_data_p_p == NULL)
+			return 0;
 
-	// copy only the required number of pointers from the old array to the new one
-	memory_move(new_data_p_p, array_p->data_p_p + start_index, new_total_size * sizeof(void*));
+		// copy only the required number of pointers from the old array to the new one
+		memory_move(new_data_p_p, array_p->data_p_p, new_total_size * sizeof(void*));
+	}
 
 	// free the old pointers array
 	deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
