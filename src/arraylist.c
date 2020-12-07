@@ -229,7 +229,7 @@ int shrink_arraylist(arraylist* al)
 						al->element_count * sizeof(void*));
 
 			// end_index = index that comes after the last index
-			unsigned int elements_to_NULL_from = (al->first_index > (al->element_count - 1)) ? al->first_index : al->element_count;
+			unsigned int elements_to_NULL_from = (al->first_index > al->element_count) ? al->first_index : al->element_count;
 			unsigned int elements_to_NULL_to   = al->first_index + al->element_count - 1;
 			unsigned int elements_to_NULL = elements_to_NULL_to - elements_to_NULL_from + 1;
 			memory_set(al->arraylist_holder.data_p_p + elements_to_NULL_from, 0,
