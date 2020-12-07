@@ -145,7 +145,7 @@ void initialize_heap(heap* heap_p, unsigned int initial_size, heap_type type, in
 
 int push_heap(heap* heap_p, const void* data)
 {
-	// expand heap_holder if necessary
+	// fail, heap is full
 	if(is_full_heap(heap_p))
 		return 0;
 
@@ -191,10 +191,6 @@ int remove_from_heap(heap* heap_p, unsigned int index)
 
 	// bubble down the element at index 0
 	bubble_down(heap_p, index);
-
-	// let the array be shrunk if it is required
-	shrink_array(&(heap_p->heap_holder), 0, heap_p->element_count - 1);
-	// Note: we shrink the holder, only if we sucessfully remove the element
 
 	return 1;
 }
@@ -252,7 +248,7 @@ int expand_heap(heap* heap_p)
 
 int shrink_heap(heap* heap_p)
 {
-	return shrink_array(&(heap_p->heap_holder), 0, heap_p->element_count - 1);
+	return shrink_array(&(heap_p->heap_holder), heap_p->element_count);
 }
 
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params)
