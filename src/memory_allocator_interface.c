@@ -3,7 +3,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-void* STD_C_mem_alloc_impl(void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization)
+void* STD_C_mem_allocator(void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization)
 {
 	int new_memory_allocation_failed = 0;
 	void* new_memory = NULL;
@@ -88,4 +88,3 @@ void* STD_C_mem_alloc_impl(void* old_memory, unsigned int old_size, unsigned int
 
 	return new_memory;
 }
-const memory_allocator STD_C_mem_alloc = STD_C_mem_alloc_impl;
