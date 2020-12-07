@@ -1,6 +1,6 @@
  STAGE - 2
- * integrate memory_allocator with array and dstring, use only the std allocator here, i.e. do not allow to change the memory allocator yet
- * modify shrink_array function with size insteead of indices
+ * test array and dstring functions and test cases
+ * modify shrink_array function with size insteead of indices and then test all of heap, stack, queue and arraylist
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
 
  STAGE - 3
