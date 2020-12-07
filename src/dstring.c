@@ -4,7 +4,6 @@
 #include<memory_allocator_interface.h>
 
 #include<stdio.h>
-#include<stdlib.h>
 #include<stdarg.h>
 #include<string.h>
 
@@ -19,7 +18,7 @@ void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 	}
 	str_p->bytes_occupied = data_size;
 	str_p->bytes_allocated = data_size;
-	str_p->cstring = malloc(data_size);
+	str_p->cstring = allocate(DSTRING_mem_alloc, data_size);
 	memory_move(str_p->cstring, data, data_size);
 }
 
@@ -150,7 +149,7 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 	if(expanded_dstring.bytes_allocated <= str_p->bytes_allocated)
 		return;
 
-	expanded_dstring.cstring = malloc(expanded_dstring.bytes_allocated);
+	expanded_dstring.cstring = allocate(DSTRING_mem_alloc, expanded_dstring.bytes_allocated);
 	memory_move(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
 
 	deinit_dstring(str_p);
@@ -214,7 +213,7 @@ void toUppercase(dstring* str_p)
 void deinit_dstring(dstring* str_p)
 {
 	if(str_p->bytes_allocated > 0 && str_p->cstring != NULL)
-		free(str_p->cstring);
+		deallocate(DSTRING_mem_alloc, str_p->cstring, str_p->bytes_allocated);
 	str_p->cstring = NULL;
 	str_p->bytes_allocated = 0;
 	str_p->bytes_occupied = 0;

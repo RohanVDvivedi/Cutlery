@@ -75,15 +75,16 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 // these are the most basic usecases that it must satisfy
 
 // first and foremost calls to the memory allocator
-#define allocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, DONT_CARE)
-#define zallocate(mem_allocator, new_size) 							memory_allocator(NULL, 0, new_size, 0, ZERO)
+#define allocate(mem_allocator, new_size) 							mem_allocator(NULL, 0, new_size, 0, DONT_CARE)
+#define zallocate(mem_allocator, new_size) 							mem_allocator(NULL, 0, new_size, 0, ZERO)
 
 // subsequent reallocation calls to the memory allocator
-#define reallocate(mem_allocator, old_memory, old_size, new_size) 	memory_allocator(old_memory, old_size, new_size, 0, PRESERVE)
+#define reallocate(mem_allocator, old_memory, old_size, new_size) 	mem_allocator(old_memory, old_size, new_size, 0, PRESERVE)
 
 // final deallocate / free call to the memory allocator
-#define deallocate(mem_allocator, old_memory, old_size)				memory_allocator(old_memory, old_size, 0, 0, DONT_CARE)
+#define deallocate(mem_allocator, old_memory, old_size)				mem_allocator(old_memory, old_size, 0, 0, DONT_CARE)
 
-extern const memory_allocator STD_C_mem_alloc;
+// the memory allocator interface for a STD_C library functions like malloc, calloc, aligned_alloc, and free
+void* STD_C_mem_allocator(void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
 
 #endif
