@@ -40,7 +40,7 @@ int expand_array(array* array_p);
 
 // shrinks the array, to a new_size
 // returns 1, if the array was shrunk to the new_size
-// else it returns 0 and fails, if it fails (the function fails if new_total_size < old_total_size or if the allocation fails)
+// else it returns 0 and fails, if it fails (the function fails if new_total_size >= old_total_size or if the allocation fails)
 int shrink_array(array* array_p, unsigned int new_total_size);
 
 // perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
