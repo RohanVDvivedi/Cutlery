@@ -1,6 +1,8 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#include<memory_allocator_interface.h>
+
 typedef struct array array;
 struct array
 {
@@ -9,6 +11,10 @@ struct array
 
 	// this many elements can be accomodated in array, without expanding
 	unsigned int total_size;
+
+	// this is the memory_allocator that will be used for allocating memory for the array
+	// for expand or shrink, this function will be called
+	memory_allocator array_mem_allocator;
 };
 
 // initializes and gives necessary memory to manage internal element contents

@@ -1,10 +1,8 @@
 #include<array.h>
 
 #include<cutlery_stds.h>
-#include<memory_allocator_interface.h>
 
 #include<stdio.h>
-#include<stdlib.h>
 
 // this is the factor and the constant amount, by which the size of data_p_p will be expanded or shrunk
 #define EXPANSION_FACTR 1.8
@@ -19,14 +17,17 @@ static unsigned int get_new_total_size(unsigned int current_size)
 
 void initialize_array(array* array_p, unsigned int initial_size)
 {
-	array_p->data_p_p = initial_size > 0 ? calloc(initial_size, sizeof(void*)) : NULL;
-	array_p->total_size = initial_size;
+	// set to a default memory allocator
+	array_p->array_mem_allocator = STD_C_mem_allocator;
+
+	array_p->data_p_p = (initial_size > 0) ? zallocate(array_p->array_mem_allocator, initial_size * sizeof(void*)) : NULL;
+	array_p->total_size = (array_p->data_p_p != NULL) ? initial_size : 0;
 }
 
 void deinitialize_array(array* array_p)
 {
 	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
-		free(array_p->data_p_p);
+		deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
 	array_p->data_p_p = NULL;
 	array_p->total_size = 0;
 }
@@ -78,7 +79,7 @@ int expand_array(array* array_p)
 		return 0;
 
 	// allocate memory for the new_total_size
-	const void** new_data_p_p = calloc(new_total_size, sizeof(void*));
+	const void** new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
 
 	// since memory allocation failed, return 0
 	if(new_data_p_p == NULL)
@@ -88,7 +89,7 @@ int expand_array(array* array_p)
 	memory_move(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
 
 	// free the old pointers array
-	free(array_p->data_p_p);
+	deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
 
 	// new assignment to data_p_p and the total_size
 	array_p->data_p_p = new_data_p_p;
@@ -113,7 +114,7 @@ int shrink_array(array* array_p, unsigned int start_index, unsigned int end_inde
 		return 0;
 
 	// allocate memory for the new_total_size
-	const void** new_data_p_p = ((const void**)calloc(new_total_size, sizeof(void*)));
+	const void** new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
 
 	// since memory allocation failed, return 0
 	if(new_data_p_p == NULL)
@@ -123,7 +124,7 @@ int shrink_array(array* array_p, unsigned int start_index, unsigned int end_inde
 	memory_move(new_data_p_p, array_p->data_p_p + start_index, new_total_size * sizeof(void*));
 
 	// free the old pointers array
-	free(array_p->data_p_p);
+	deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
 
 	// new assignment to data_p_p and the total_size
 	array_p->data_p_p = new_data_p_p;
