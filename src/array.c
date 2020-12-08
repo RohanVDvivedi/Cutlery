@@ -78,22 +78,19 @@ int expand_array(array* array_p)
 	if(new_total_size <= array_p->total_size)
 		return 0;
 
-	const void** new_data_p_p = NULL;
-	if(new_total_size > 0)
-	{
-		// allocate memory for the new_total_size
-		new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
+	// reallocate memory for the new_total_size
+	const void** new_data_p_p = reallocate(array_p->array_mem_allocator,
+										array_p->data_p_p,
+										array_p->total_size * sizeof(void*),
+										new_total_size * sizeof(void*));
 
-		// since memory allocation failed, return 0
-		if(new_data_p_p == NULL)
-			return 0;
+	// since memory allocation failed, return 0
+	if(new_data_p_p == NULL && new_total_size > 0)
+		return 0;
 
-		// copy all pointers from the old pointers array (which we know is smaller than the new allocated memory)
-		memory_move(new_data_p_p, array_p->data_p_p, array_p->total_size * sizeof(void*));
-	}
-
-	// free the old pointers array
-	deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
+	// set all new pointers to NULL i.e. from old_total_size to new_total_size
+	memory_set(new_data_p_p + array_p->total_size, 0,
+			(new_total_size - array_p->total_size) * sizeof(void*));
 
 	// new assignment to data_p_p and the total_size
 	array_p->data_p_p = new_data_p_p;
@@ -108,22 +105,15 @@ int shrink_array(array* array_p, unsigned int new_total_size)
 	if(new_total_size >= array_p->total_size)
 		return 0;
 
-	const void** new_data_p_p = NULL;
-	if(new_total_size > 0)
-	{
-		// allocate memory for the new_total_size
-		new_data_p_p = zallocate(array_p->array_mem_allocator, new_total_size * sizeof(void*));
+	// reallocate memory for the new_total_size
+	const void** new_data_p_p = reallocate(array_p->array_mem_allocator,
+										array_p->data_p_p,
+										array_p->total_size * sizeof(void*),
+										new_total_size * sizeof(void*));
 
-		// since memory allocation failed, return 0
-		if(new_data_p_p == NULL)
-			return 0;
-
-		// copy only the required number of pointers from the old array to the new one
-		memory_move(new_data_p_p, array_p->data_p_p, new_total_size * sizeof(void*));
-	}
-
-	// free the old pointers array
-	deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
+	// since memory allocation failed, return 0
+	if(new_data_p_p == NULL && new_total_size > 0)
+		return 0;
 
 	// new assignment to data_p_p and the total_size
 	array_p->data_p_p = new_data_p_p;
