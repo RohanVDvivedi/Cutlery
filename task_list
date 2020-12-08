@@ -10,7 +10,9 @@
         etc (more will be added)
 
  STAGE - 4
+ * provide expand_array_addional_size functions to expand array and other dependent datastructures in a more controller and flexible way
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
+ * implement find all functions for all cutlery datastructures
 
  STAGE - 5
  * provide an interface/function to change the memory_allocator for Cutlery datastructures, also update cutlery api and other projects that use it
