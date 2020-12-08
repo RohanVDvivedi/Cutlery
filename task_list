@@ -1,7 +1,4 @@
  STAGE - 2
- * testing
- 	- array, dstring -> memory_allocator functionality
- 	- heap, stack, queue, arraylist -> shrink_array functionality
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
 
  STAGE - 3
