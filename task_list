@@ -1,7 +1,3 @@
- STAGE - 2
- * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
- * start using char[] instead of uint8_t[] for bitmaps
-
  STAGE - 3
  * use graph descriptor interface to build graph algorithms like :
        * dfs (iterative only (not recursive) with Cutlery stack)
@@ -14,11 +10,18 @@
         etc (more will be added)
 
  STAGE - 4
- * provide an interface/function to change the memory_allocator for Cutlery datastructures, also update cutlery api and other projects that use it
+ * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
 
  STAGE - 5
- * provide a very simple trie data structure, to store of dstring* vs void*. (* very far in the future)
+ * provide an interface/function to change the memory_allocator for Cutlery datastructures, also update cutlery api and other projects that use it
+ * and enable usage of static or pre allocated memory for use with cutlery data structures
 
  STAGE - 6
- * convert all print functions to dstring based serializers using snprintf_dstring()
- * allow all print functions to serialize in debug and non debug modes
+ * provide a very simple trie data structure, to insert/search dstring* vs void*
+
+ STAGE - 7
+ * start using char[] instead of uint8_t[] for bitmaps -> get rid of <stdint.h>
+ * convert all print functions to dstring based serializers using snprintf_dstring(), also with debug_print and tab_count as input parameters -> get rid of <stdio.h>
+
+ STAGE - 8
+ * provide a bloom_filter, based on the implementation of cutlery's bitmap datastructure
