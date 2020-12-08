@@ -1,5 +1,6 @@
  STAGE - 2
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery, BufferPool, Cashed, JSONParser, Serc
+ * start using char[] instead of uint8_t[] for bitmaps
 
  STAGE - 3
  * use graph descriptor interface to build graph algorithms like :
