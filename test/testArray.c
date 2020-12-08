@@ -98,7 +98,7 @@ int main()
 
 	print_array(array_p, print_ts);
 
-	shrink_array(array_p, 7);
+	shrink_array(array_p, 5);
 
 	print_array(array_p, print_ts);
 
