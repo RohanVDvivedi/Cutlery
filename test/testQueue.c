@@ -250,6 +250,12 @@ int main()
 	pop_queue_OPTIMUM_MEMORY(queue_p);
 	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 71
 
+	push_queue_SAFE(queue_p, &((ts){35, "thirty five"}));
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 72
+
+	push_queue_SAFE(queue_p, &((ts){36, "thirty six"}));
+	printf("-> %d\n", iter++);print_queue(queue_p, print_ts); // 73
+
 	deinitialize_queue(queue_p);
 
 	return 0;

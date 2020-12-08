@@ -173,7 +173,7 @@ int main()
 	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen-x"}));
 	print_heap(heap_p, print_ts);
 
-	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x"}));print_array(&(heap_p->heap_holder), print_ts);
+	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x"}));
 	print_heap(heap_p, print_ts);
 
 	change_key(heap_p, 12, 3);
@@ -243,6 +243,15 @@ int main()
 	print_heap(heap_p, print_ts);
 
 	pop_heap_OPTIMUM_MEMORY(heap_p);
+	print_heap(heap_p, print_ts);
+
+	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x"}));
+	print_heap(heap_p, print_ts);
+
+	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen-x"}));
+	print_heap(heap_p, print_ts);
+
+	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x"}));
 	print_heap(heap_p, print_ts);
 
 	deinitialize_heap(heap_p);
