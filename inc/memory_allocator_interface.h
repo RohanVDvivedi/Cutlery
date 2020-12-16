@@ -67,7 +67,8 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 **	as you can see the memory_allocator interface is a function that specifies specific usecases according to the parameters passed
 **	please note that this are just stdlib c specific usecases, a custom memory allocator interface must provide implementation of all possible usecases
 **	and return NULL on an allocation failure
-**	When the memory allocation fails the Cutlery datastructures assume that old_memory is not freed and can still be used
+**
+**	When the memory allocation fails (return value = NULL) the Cutlery datastructures assume that old_memory is not freed and can still be used
 */
 
 // BELOW ARE SIMPLIFIED MEMORY ALLOCATOR CALLS
