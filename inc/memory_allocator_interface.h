@@ -1,9 +1,12 @@
 #ifndef MEMORY_ALLOCATOR_INTERFACE_H
 #define MEMORY_ALLOCATOR_INTERFACE_H
 
-// A memory allocator is a struct thet contains methods for allocation/deallocation of heap memory
-// it defines a memory allocator methods to be used by a container data structure of this library (Cutlery)
-// you may provide a custom memory allocator for any specific datastructure container for cutlery
+// A memory allocator is a function pointer that contains methods for allocation/deallocation of heap memory
+// it defines a memory allocator support that gets used by any container data structure of this library (Cutlery)
+// you may provide a custom memory allocator (a function pointer of type memory_allocator) for any specific datastructure container for cutlery
+
+// for building a custom memory allocator to use with Cutlery-containers, please read this header file thoroughly
+// and follow the conventions defined
 
 typedef enum memory_allocator_initialization memory_allocator_initialization;
 enum memory_allocator_initialization
@@ -64,7 +67,7 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 **	as you can see the memory_allocator interface is a function that specifies specific usecases according to the parameters passed
 **	please note that this are just stdlib c specific usecases, a custom memory allocator interface must provide implementation of all possible usecases
 **	and return NULL on an allocation failure
-**	When the memory allocation fails the Cutlery datastructures assume that old_memory is freed and can not be used
+**	When the memory allocation fails the Cutlery datastructures assume that old_memory is not freed and can still be used
 */
 
 // BELOW ARE SIMPLIFIED MEMORY ALLOCATOR CALLS
@@ -86,5 +89,6 @@ typedef void* (*memory_allocator)(void* old_memory, unsigned int old_size, unsig
 
 // the memory allocator interface for a STD_C library functions like malloc, calloc, aligned_alloc, and free
 void* STD_C_mem_allocator(void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
+// please check the source file, and use STD_C_mem_allocator as a reference to implement your custom memory_allocator
 
 #endif
