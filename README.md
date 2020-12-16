@@ -8,6 +8,8 @@ A C (standard C99) library that provides configurable data structures, serving a
  * *It can most certainly be used for high level systems software and application software, you may find me using it extensively in all of C/C++ projects on GITHUB.*
 
 ## Setup instructions
+**Install dependencies :**
+ * This project does not have any dependencies.
 
 **Download source code :**
  * `git clone https://github.com/RohanVDvivedi/Cutlery.git`
