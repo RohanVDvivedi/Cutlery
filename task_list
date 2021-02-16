@@ -6,7 +6,8 @@
 (fix return types)
  STAGE - 1.2
  * start using char[] instead of uint8_t[] for bitmaps -> get rid of <stdint.h>
- * remove const returns when returning of user data
+ * remove const returns when returning user's data from all of get_* functions of cutlery data structures
+ * add const to linkedlist pointer in get_* functions of linkedlist datastructure
  * fix dependencies for above changes of this stage
 
 (building new simple data structures)
