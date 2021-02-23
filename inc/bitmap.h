@@ -1,22 +1,27 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
-#include<stdint.h>
+// char* bitmap      => first pointer adddress of the bitmap
+// unsigned int size => size of the bitmap in number of bits
+// unsigned int index => bit location in the bitmap (starting with 0)
 
-int get_bit(uint8_t* bitmap, uint32_t index);
+int get_bit(char* bitmap, unsigned int index);
 
-void set_bit(uint8_t* bitmap, uint32_t index);
+void set_bit(char* bitmap, unsigned int index);
 
-void reset_bit(uint8_t* bitmap, uint32_t index);
+void reset_bit(char* bitmap, unsigned int index);
 
-void set_all_bits(uint8_t* bitmap, uint32_t size);
+void set_all_bits(char* bitmap, unsigned int size);
 
-void reset_all_bits(uint8_t* bitmap, uint32_t size);
+void reset_all_bits(char* bitmap, unsigned int size);
 
-void print_bitmap(uint8_t* bitmap, uint32_t size);
+void print_bitmap(char* bitmap, unsigned int size);
 
-uint32_t bitmap_size_in_bytes(uint32_t size);
+unsigned int bitmap_size_in_bytes(unsigned int size);
 
-uint32_t find_first_set(uint8_t* bitmap, uint32_t start_index, uint32_t size);
+// unsigned int start_index => bit location in the bitmap to start checking from
+// returns a least index of the bit set to 1, that is between start_index and size-1
+// if no bit is set in the given range return size (size is out-of-bound index)
+unsigned int find_first_set(char* bitmap, unsigned int start_index, unsigned int size);
 
 #endif
