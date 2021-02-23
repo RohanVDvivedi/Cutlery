@@ -34,10 +34,10 @@ void initialize_llnode(llnode* node_p);
 int is_empty_linkedlist(const linkedlist* ll);
 
 // simply gets head node data
-const void* get_head(linkedlist* ll);
-const void* get_tail(linkedlist* ll);
-const void* get_nth_from_head(linkedlist* ll, unsigned int n);
-const void* get_nth_from_tail(linkedlist* ll, unsigned int n);
+const void* get_head(const linkedlist* ll);
+const void* get_tail(const linkedlist* ll);
+const void* get_nth_from_head(const linkedlist* ll, unsigned int n);
+const void* get_nth_from_tail(const linkedlist* ll, unsigned int n);
 
 // inserts will return 0, and fail if llnode of data is not a new node
 
@@ -52,12 +52,11 @@ int remove_head(linkedlist* ll);
 int remove_tail(linkedlist* ll);
 int remove_from_linkedlist(linkedlist*ll, const void* data);
 
-// This function is tricky to explain, it returns true 2 types of nodes
-// 1. a node that does not exist in any linkedlist
-// 2. a node that is a only single element of any other linkedlist (other than the ll linkedlist provided)
-// a true of this function signifies that this node can be inserted into ll linkedlist without any bad consequences
-// a true signifies that this node_p does not exist in any other linkedlist having more than one element
-int is_new_llnode(linkedlist* ll, llnode* node_p);
+// This function returns true(1),
+// if a llnode is insertable in the given linkedlist ll
+// i.e. next and prev pointers are NULL and it is not at the head of ll linkedlist
+// please try and avoid using this function in user application
+int is_new_llnode(const linkedlist* ll, const llnode* node_p);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
 // in the compare function the first parameter is the data from the linkedlist,
