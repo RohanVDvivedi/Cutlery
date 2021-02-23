@@ -1,12 +1,6 @@
- STAGE - 1.1
+ STAGE - 1
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery and its dependencies : BufferPool, Cashed, JSONParser, Serc
- * provide expand_array_addional_size functions to expand array and other dependent datastructures to control memory allocation in a more controlled and flexible way
- * provide a function to set all cutlery data structure's container pointer memory pointer to static memory or to pre-allocated memory locations
-
-(fix return types)
- STAGE - 1.2
- * remove const returns when returning user's data from all of get_* functions of cutlery data structures
- * fix dependencies for above changes of this stage
+ * remove const returns when returning user's data from all of get_* functions of cutlery data structures, and remove redundant typecasting from its dependencies
 
 (building new simple data structures)
  STAGE - 2
@@ -34,3 +28,9 @@
 (fix print functions)
  STAGE - 4
  * convert all print functions to dstring based serializers using snprintf_dstring(), also with debug_print and tab_count as input parameters -> get rid of <stdio.h>
+
+(fix memmory allocation user's interface with Cutlery library)
+ STAGE - 5
+ * provide expand_array_addional_size functions to expand array and other dependent datastructures to control memory allocation in a more controlled and flexible way
+ * provide a function to set all cutlery data structure's container pointer memory pointer to static memory or to pre-allocated memory locations
+ * remove pointer to memory allocator and default to a global void pointer allocator, like we did to dstring. Since all Cutlery containers (except dstring) allocate and use only void pointers, there is no reason from different allocators, except for covering very specific use cases (which though not discussed, we still may not be willing to miss; SO keeping this pointer as is for now).
