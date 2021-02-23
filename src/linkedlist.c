@@ -9,7 +9,7 @@
 
 // utility
 // to check if a node is new
-int is_new_llnode(linkedlist* ll, llnode* node_p)
+int is_new_llnode(const linkedlist* ll, const llnode* node_p)
 {
 	return ((node_p->next == NULL) && (node_p->prev == NULL) && (ll->head != node_p));
 }
@@ -31,17 +31,17 @@ int is_empty_linkedlist(const linkedlist* ll)
 	return (ll->head == NULL);
 }
 
-const void* get_head(linkedlist* ll)
+const void* get_head(const linkedlist* ll)
 {
 	return ((ll->head == NULL) ? NULL : get_data(ll->head));
 }
 
-const void* get_tail(linkedlist* ll)
+const void* get_tail(const linkedlist* ll)
 {
 	return ((ll->head == NULL) ? NULL : get_data(ll->head->prev));
 }
 
-const void* get_nth_from_head(linkedlist* ll, unsigned int n)
+const void* get_nth_from_head(const linkedlist* ll, unsigned int n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
@@ -58,7 +58,7 @@ const void* get_nth_from_head(linkedlist* ll, unsigned int n)
 	return (node_p == head) ? NULL : get_data(node_p);
 }
 
-const void* get_nth_from_tail(linkedlist* ll, unsigned int n)
+const void* get_nth_from_tail(const linkedlist* ll, unsigned int n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
