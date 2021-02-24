@@ -1,4 +1,5 @@
  STAGE - 1
+ * hashmap protection against zero sizes of the underlying array, change occupancy to element_count
  * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery and its dependencies : BufferPool, Cashed, JSONParser, Serc
  * remove const returns when returning user's data from all of get_* functions of cutlery data structures, and remove redundant typecasting from its dependencies
 
