@@ -119,14 +119,20 @@ int main()
 	// this is how you update, unless you want to update the key of the object
 	// in which case you would have to remove the element completely and reinsert
 	ts* thr = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){3}));
-	printf("-> we find the data in the hashmap\n");
-	printf("-> we remove the data that we found, from the hashmap, removed : %d\n", remove_from_hashmap(hashmap_p, thr));
-	printf("-> we try to again remove from the hashmap, this time the remove must fail, removed : %d\n", remove_from_hashmap(hashmap_p, thr));
-	printf("-> now make actual update to the data\n");
-	thr->s = "Three";
-	printf("-> insert the data back into the hashmap, inserted : %d\n", insert_in_hashmap(hashmap_p, thr));
-	printf("-> Try to again insert the data back into the hashmap, this time it must fail, inserted : %d\n", insert_in_hashmap(hashmap_p, thr));
-
+	if(thr != NULL)
+	{
+		printf("-> we found the data in the hashmap\n");
+		printf("-> we remove the data that we found, from the hashmap, removed : %d\n", remove_from_hashmap(hashmap_p, thr));
+		printf("-> we try to again remove from the hashmap, this time the remove must fail, removed : %d\n", remove_from_hashmap(hashmap_p, thr));
+		printf("-> now make actual update to the data\n");
+		thr->s = "Three";
+		printf("-> insert the data back into the hashmap, inserted : %d\n", insert_in_hashmap(hashmap_p, thr));
+		printf("-> Try to again insert the data back into the hashmap, this time it must fail, inserted : %d\n\n", insert_in_hashmap(hashmap_p, thr));
+	}
+	else
+	{
+		printf("-> we couldn't find the data in the hashmap\n\n");
+	}
 	print_hashmap(hashmap_p, print_ts);
 
 	insert_in_hashmap(hashmap_p, &((ts){8, 800, "eight"}));
@@ -219,9 +225,17 @@ int main()
 
 	// this is how you update, unless you want to update the key of the object
 	// in which case you would have to remove the element completely and reinsert
+	printf("Updating the value of data with key = 70\n\n");
 	ts* svntn = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){70}));
-	svntn->a = 70000;
-	svntn->s = "seven hundred";
+	if(svntn != NULL)
+	{
+		svntn->a = 70000;
+		svntn->s = "seven hundred";
+	}
+	else
+	{
+		printf("Update failed; key = 70 absent\n\n");
+	}
 
 	print_hashmap(hashmap_p, print_ts);
 
@@ -239,26 +253,42 @@ int main()
 
 	// this is how you update, unless you want to update the key of the object
 	// in which case you would have to remove the element completely and reinsert
+	printf("Updating the value of data with key = 70\n\n");
 	svntn = (ts*)find_equals_in_hashmap(hashmap_p, &((ts){70}));
-	svntn->a = 7000;
-	svntn->s = "seventy";
-
-	print_hashmap(hashmap_p, print_ts);
-
-	printf("Deleting key-value at 80\n");
-	ts* temp_80 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){80}));
-	if(temp != NULL)
+	if(svntn != NULL)
 	{
-		remove_from_hashmap(hashmap_p, temp_80);
+		svntn->a = 7000;
+		svntn->s = "seventy";
+	}
+	else
+	{
+		printf("Update failed; key = 70 absent\n\n");
 	}
 
 	print_hashmap(hashmap_p, print_ts);
 
-	printf("Deleting key-value at 60\n");
+	printf("Deleting key-value at 80, if found\n\n");
+	ts* temp_80 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){80}));
+	if(temp_80 != NULL)
+	{
+		remove_from_hashmap(hashmap_p, temp_80);
+	}
+	else
+	{
+		printf("key-value at 80 not found\n\n");
+	}
+
+	print_hashmap(hashmap_p, print_ts);
+
+	printf("Deleting key-value at 60, if found\n\n");
 	ts* temp_60 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){60}));
-	if(temp != NULL)
+	if(temp_60 != NULL)
 	{
 		remove_from_hashmap(hashmap_p, temp_60);
+	}
+	else
+	{
+		printf("key-value at 60 not found\n\n");
 	}
 
 	print_hashmap(hashmap_p, print_ts);
@@ -269,13 +299,19 @@ int main()
 	printf("Now finding value corresponding to key 40\n\n");
 	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){40})));printf("\n\n");
 
-	printf("Reinserting key-value at 80\n");
-	temp_80->s = "eighty - new";
-	insert_in_hashmap(hashmap_p, temp_80);
+	if(temp_80 != NULL)
+	{
+		printf("Reinserting key-value at 80\n");
+		temp_80->s = "eighty - new";
+		insert_in_hashmap(hashmap_p, temp_80);
+	}
 
-	printf("Reinserting key-value at 60\n");
-	temp_60->s = "sixty - new";
-	insert_in_hashmap(hashmap_p, temp_60);
+	if(temp_60 != NULL)
+	{
+		printf("Reinserting key-value at 60\n");
+		temp_60->s = "sixty - new";
+		insert_in_hashmap(hashmap_p, temp_60);
+	}
 
 	print_hashmap(hashmap_p, print_ts);
 
