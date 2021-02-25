@@ -16,6 +16,21 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 	hashmap_p->element_count = 0;
 }
 
+unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p)
+{
+	return hashmap_p->hashmap_holder.total_size;
+}
+
+unsigned int get_element_count_hashmap(const hashmap* hashmap_p)
+{
+	return hashmap_p->element_count;
+}
+
+int is_empty_hashmap(const hashmap* hashmap_p)
+{
+	return (hashmap_p->element_count == 0);
+}
+
 // utility :-> gets plausible index after hashing and mod of the hash
 static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 {
@@ -23,14 +38,14 @@ static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 	unsigned int hash = hashmap_p->hash_function(data);
 
 	// calculate index
-	unsigned int index = hash % hashmap_p->hashmap_holder.total_size;
+	unsigned int index = hash % get_bucket_count_hashmap(hashmap_p);
 
 	return index;
 }
 
 static int is_hashmap_with_ZERO_buckets(const hashmap* hashmap_p)
 {
-	return hashmap_p->hashmap_holder.total_size == 0;
+	return get_bucket_count_hashmap(hashmap_p) == 0;
 }
 
 static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
@@ -70,7 +85,7 @@ static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const vo
 	}
 	else
 	{
-		return index_actual + hashmap_p->hashmap_holder.total_size - index_expected;
+		return index_actual + get_bucket_count_hashmap(hashmap_p) - index_expected;
 	}
 }
 
@@ -82,7 +97,7 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 
 	const void* data_at_index = NULL;
 
-	while(probe_sequence_length < hashmap_p->hashmap_holder.total_size)
+	while(probe_sequence_length < get_bucket_count_hashmap(hashmap_p))
 	{
 		data_at_index = get_element(&(hashmap_p->hashmap_holder), expected_index);
 
@@ -105,7 +120,7 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 			break;
 		}
 
-		expected_index = (expected_index + 1) % hashmap_p->hashmap_holder.total_size;
+		expected_index = (expected_index + 1) % get_bucket_count_hashmap(hashmap_p);
 		probe_sequence_length++;
 	}
 
@@ -114,8 +129,8 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 {
-	// can not find in a hashmap that has no (/0) buckets
-	if(is_hashmap_with_ZERO_buckets(hashmap_p))
+	// can not find in a hashmap that has no (0) buckets OR if it is empty
+	if(is_hashmap_with_ZERO_buckets(hashmap_p) || is_empty_hashmap(hashmap_p))
 		return NULL;
 
 	switch(hashmap_p->hashmap_policy)
@@ -168,7 +183,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		case ROBINHOOD_HASHING :
 		{
 			// if the hashmap is full
-			if(hashmap_p->element_count == hashmap_p->hashmap_holder.total_size)
+			if(hashmap_p->element_count == get_bucket_count_hashmap(hashmap_p))
 				break;
 
 			unsigned int expected_index = get_index(hashmap_p, data);
@@ -204,7 +219,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 					}
 					else
 					{
-						index = (index + 1) % hashmap_p->hashmap_holder.total_size;
+						index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
 						probe_sequence_length++;
 					}
 				}
@@ -245,8 +260,8 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 {
 	int deleted = 0;
 
-	// 0 (= deleted) elements deleted, :> can not delete anything from the hashmap that has no buckets
-	if(is_hashmap_with_ZERO_buckets(hashmap_p))
+	// 0 (= deleted) elements deleted, :> can not delete anything from the hashmap that has no buckets OR if the hashmap is empty
+	if(is_hashmap_with_ZERO_buckets(hashmap_p) || is_empty_hashmap(hashmap_p))
 		return deleted;
 
 	switch(hashmap_p->hashmap_policy)
@@ -265,7 +280,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			deleted = 1;
 
 			unsigned int previousIndex = index;
-			index = (index + 1) % hashmap_p->hashmap_holder.total_size;
+			index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
 			data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
 			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
 			{
@@ -275,7 +290,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 					set_element(&(hashmap_p->hashmap_holder), NULL, index);
 				}
 				previousIndex = index;
-				index = (index + 1) % hashmap_p->hashmap_holder.total_size;
+				index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
 				data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
 			}
 
@@ -316,7 +331,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 	bst bstt; init_data_structure(hashmap_p, &bstt);
 
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned int index = 0; index < hashmap_p->hashmap_holder.total_size; index++)
+	for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 	{
 		if(get_element(&(hashmap_p->hashmap_holder), index) != NULL)
 		{
@@ -347,6 +362,14 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 			}
 		}
 	}
+}
+
+int resize_hashmap(const hashmap* hashmap_p, unsigned int new_bucket_count);
+
+int expand_hashmap(const hashmap* hashmap_p, float expand_factor)
+{
+	return (expand_factor <= 1.0) ? 0 : 
+		resize_hashmap(hashmap_p, expand_factor * get_bucket_count_hashmap(hashmap_p));
 }
 
 void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* data))
@@ -382,7 +405,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 	bst bstt; init_data_structure(hashmap_p, &bstt);
 
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned int index = 0; index < hashmap_p->hashmap_holder.total_size; index++)
+	for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 	{
 		printf("index = %u\n", index);
 
