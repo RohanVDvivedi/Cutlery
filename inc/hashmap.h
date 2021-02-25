@@ -63,13 +63,14 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 int insert_in_hashmap(hashmap* hashmap_p, const void* data);
 
 /*
-**		NOTE FOR USING THE FIND FUNCTIONS BELOW
+**		NOTE FOR USING THE FIND FUNCTION BELOW
 **
-** find_* functions get the data from the bst, that equals (when compared using the comparator function) the data given as parameter data
+** find_* function; returns the data from the hashmap, that equals the data given as parameter "data",
+** (when compared using the comparator function)
 **
-** the data you provide as parameter must have all the fields required for comparison, 
-** this completely depends on how you design your comparator function, and what some few or all fields you use to do comparison, it is up to you
-** i.e. it must have all the fields/attrubutes of the struct that are used in comparison and hashmap function that you provided
+** the "data" you provide as parameter must have all the fields required for comparison 
+** used in the given comparator function (as in "hashmap_p" struct).
+** i.e. it must have all the fields/attributes of the struct that are used in "hashmap_p->compare(,)".
 */
 // the parameter data provided must hash to the same value and must be comparatively equal to the data that you want to find
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
@@ -78,12 +79,21 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 // fails with 0, if the data provided does not exist in this hashmap
 int remove_from_hashmap(hashmap* hashmap_p, const void* data);
 
-// print complete hashmap
-void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* data));
+// incresase the number of buckets in the hashmap
+// this is O(n) operation, since it involves rehashing all the elements of the hashmap
+// On failure it returns 0, when new_bucket_count < old_element_count (for ROBINHOOD_HASHING) || new_bucket_count == 0
+// else it returns 1 on successfully resizing
+int resize_hashmap(const hashmap* hashmap_p, unsigned int new_bucket_count);
+// below function works similarly to resize_hashmap
+// it fails with return 0, when expand_factor < 1.0
+int expand_hashmap(const hashmap* hashmap_p, float expand_factor);
 
 // frees all the data being held by the hashmap
 // the same hashmap can be reused by calling initialize_hashmap function, after it is deinitialized
 void deinitialize_hashmap(hashmap* hashmap_p);
+
+// print complete hashmap
+void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* data));
 
 // perform operation on all the elements of the hashmap
 // the function is designed well, you may call free on your data, in the provided operation function
