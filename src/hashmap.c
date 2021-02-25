@@ -364,7 +364,27 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 	}
 }
 
-int resize_hashmap(const hashmap* hashmap_p, unsigned int new_bucket_count);
+int resize_hashmap(const hashmap* hashmap_p, unsigned int new_bucket_count)
+{
+	// resizing to the same bucket count; i.e. nothing needs to be done
+	if(get_bucket_count_hashmap(hashmap_p) == new_bucket_count)
+		return 1;
+
+	// a hashmap with non zero number of elements, can never be resized to 0 bucketed hashmap
+	if((get_element_count_hashmap(hashmap_p) > 0) && (new_bucket_count == 0))
+		return 0;
+
+	// for ROBINHOOD_HASHING, the element_count must always be lesser than or equal to the bucket_count
+	if(		(hashmap_p->hashmap_policy == ROBINHOOD_HASHING)
+		&& (get_element_count_hashmap(hashmap_p) > new_bucket_count)	)
+		return 0;
+
+	/**
+	**		generic expand hashmap logic [covering 0 old_bucket_count or 0 new_bucket_count logic] **
+	**/
+
+	return 1;
+}
 
 int expand_hashmap(const hashmap* hashmap_p, float expand_factor)
 {
