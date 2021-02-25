@@ -9,13 +9,8 @@
  * provide a very simple trie data structure, to insert/search dstring* vs void*
  * provide a circular io_buffer queue datastructure to enable managing input/output data queues, necessary for buiding network stacks
 
-(long term implementation for all additional find functions to work on)
- STAGE - 3.1
- * implement find_all functions for bst and hashmap
- * implement find_in_range function for bst
-
 (long term implementation for all graph algorithms)
- STAGE - 3.2
+ STAGE - 3
  * use graph descriptor interface to build graph algorithms like :
        * dfs (iterative only (not recursive) with Cutlery stack)
        * bfs (iterative only with Cutlery queue)
