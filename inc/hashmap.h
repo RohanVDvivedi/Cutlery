@@ -51,12 +51,12 @@ struct hashmap
 	// array storing pointer to all the of data in the hashmap
 	array hashmap_holder;
 
-	// this is the number of elements in the hashmap
-	unsigned int occupancy;
+	// element_count represents the number of elements in the hashmap
+	unsigned int element_count;
 };
 
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int total_bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
+void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
 
 // place a new data in the hashmap, fails with return 0, if the element already exists in the hashmap
 // or fails with 0, if the hashmap does not have enough space to hold the new data element

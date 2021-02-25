@@ -6,18 +6,17 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int total_bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
+void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->compare = compare;
-	initialize_array(&(hashmap_p->hashmap_holder), total_bucket_count);
+	initialize_array(&(hashmap_p->hashmap_holder), bucket_count);
 	hashmap_p->node_offset = node_offset;
-	hashmap_p->occupancy = 0;
+	hashmap_p->element_count = 0;
 }
 
 // utility :-> gets plausible index after hashing and mod of the hash
-// utility, O(1) operation
 static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 {
 	// calculate hash
@@ -27,6 +26,11 @@ static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 	unsigned int index = hash % hashmap_p->hashmap_holder.total_size;
 
 	return index;
+}
+
+static int is_hashmap_with_ZERO_buckets(const hashmap* hashmap_p)
+{
+	return hashmap_p->hashmap_holder.total_size == 0;
 }
 
 static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
@@ -110,6 +114,10 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 {
+	// can not find in a hashmap that has no (/0) buckets
+	if(is_hashmap_with_ZERO_buckets(hashmap_p))
+		return NULL;
+
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
@@ -151,12 +159,16 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 {
 	int inserted = 0;
 
+	// 0 (= inserted) elements inserted, :> can not insert anything, if the hashmap has no buckets
+	if(is_hashmap_with_ZERO_buckets(hashmap_p))
+		return inserted;
+
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
 			// if the hashmap is full
-			if(hashmap_p->occupancy == hashmap_p->hashmap_holder.total_size)
+			if(hashmap_p->element_count == hashmap_p->hashmap_holder.total_size)
 				break;
 
 			unsigned int expected_index = get_index(hashmap_p, data);
@@ -223,15 +235,19 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		}
 	}
 
-	hashmap_p->occupancy += inserted;
+	// increment the element_count, if inserted successfully
+	hashmap_p->element_count += inserted;
 
 	return inserted;
 }
 
 int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 {
-	// we are suppossed to return the number of entries we delete
 	int deleted = 0;
+
+	// 0 (= deleted) elements deleted, :> can not delete anything from the hashmap that has no buckets
+	if(is_hashmap_with_ZERO_buckets(hashmap_p))
+		return deleted;
 
 	switch(hashmap_p->hashmap_policy)
 	{
@@ -288,9 +304,9 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		}
 	}
 
-	hashmap_p->occupancy -= deleted;
+	// decrement the element_count, if inserted successfully
+	hashmap_p->element_count -= deleted;
 
-	// return the number of buckets we deleted => eeither 1 or 0
 	return deleted;
 }
 
@@ -360,7 +376,7 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 		}
 	}
 	printf("node_offset : %u\n", hashmap_p->node_offset);
-	printf("occupancy : %u\n", hashmap_p->occupancy);
+	printf("element_count : %u\n", hashmap_p->element_count);
 
 	linkedlist ll; init_data_structure(hashmap_p, &ll);
 	bst bstt; init_data_structure(hashmap_p, &bstt);
