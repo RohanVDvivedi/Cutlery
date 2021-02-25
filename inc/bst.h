@@ -67,11 +67,12 @@ int insert_in_bst(bst* bst_p, const void* data);
 /*
 **		NOTE FOR USING ALL THE FIND FUNCTIONS BELOW
 **
-** find_* functions get the data from the bst, that equals (when compared using the comparator function) the data given as parameter data
+** find_* functions; return the data from the bst, that equals the data given as parameter "data",
+** (when compared using the comparator function)
 **
-** the data you provide as parameter must have all the fields required for comparison, 
-** this completely depends on how you design your comparator function, and what some few or all fields you use to do comparison, it is up to you
-** i.e. it must have all the fields/attrubutes of the struct that are used in comparison function that you provided
+** the "data" you provide as parameter must have all the fields required for comparison 
+** used in the given comparator function (as in "bst_p" struct).
+** i.e. it must have all the fields/attributes of the struct that are used in "bst_p->compare(,)".
 */
 
 // find data in tree, whose data compares equal to data provided
