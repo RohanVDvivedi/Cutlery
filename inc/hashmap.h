@@ -79,6 +79,13 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 // fails with 0, if the data provided does not exist in this hashmap
 int remove_from_hashmap(hashmap* hashmap_p, const void* data);
 
+// returns bucket_count of the hashmap;;; i.e. total_size of the hashmap_holder
+unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p);
+// returns the number of elements inside the hashmap
+unsigned int get_element_count_hashmap(const hashmap* hashmap_p);
+// returns 1 if the hashmap is empty (i.e. element_count == 0), else returns 0
+int is_empty_hashmap(const hashmap* hashmap_p);
+
 // incresase the number of buckets in the hashmap
 // this is O(n) operation, since it involves rehashing all the elements of the hashmap
 // On failure it returns 0, when new_bucket_count < old_element_count (for ROBINHOOD_HASHING) || new_bucket_count == 0
