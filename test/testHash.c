@@ -40,32 +40,6 @@ void print_ts(const void* tsv)
 	}
 }
 
-#include<queue.h>
-
-void sampler_queue_wrapper(const void* data, const void* additional_params)
-{
-	push_queue((queue*)(additional_params), data);
-}
-
-void rehash(hashmap* old_p, hashmap* new_p)
-{
-	queue q;
-	initialize_queue(&q, 30);
-	for_each_in_hashmap(old_p, sampler_queue_wrapper, &q);
-
-	while(!is_empty_queue(&q))
-	{
-		const void* data = get_top_queue(&q);
-
-		remove_from_hashmap(old_p, data);
-		insert_in_hashmap(new_p, data);
-
-		pop_queue(&q);
-	}
-
-	deinitialize_queue(&q);
-}
-
 const collision_resolution_policy POLICY_USED = ROBINHOOD_HASHING /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
 
 unsigned int HASH_BUCKETS = 4;
@@ -323,27 +297,17 @@ int main()
 	printf("\n\nBefore rehashing - 16\n");
 	print_hashmap(hashmap_p, print_ts);
 
-	hashmap hashmap_16;
-	hashmap* hashmap_16_p = &hashmap_16;
-	initialize_hashmap(hashmap_16_p, POLICY_USED, 16, hash_function, cmp, NODE_OFFSET);
-
-	rehash(hashmap_p, hashmap_16_p);
+	resize_hashmap(hashmap_p, 16);
 
 	printf("\n\nAfter rehashing - 16\n");
-	print_hashmap(hashmap_16_p, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
-	hashmap hashmap_20;
-	hashmap* hashmap_20_p = &hashmap_20;
-	initialize_hashmap(hashmap_20_p, POLICY_USED, 20, hash_function, cmp, NODE_OFFSET);
-
-	rehash(hashmap_16_p, hashmap_20_p);
+	resize_hashmap(hashmap_p, 20);
 
 	printf("\n\nAfter rehashing - 20\n");
-	print_hashmap(hashmap_20_p, print_ts);
+	print_hashmap(hashmap_p, print_ts);
 
 	deinitialize_hashmap(hashmap_p);
-	deinitialize_hashmap(hashmap_16_p);
-	deinitialize_hashmap(hashmap_20_p);
 
 	return 0;
 }
