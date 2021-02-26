@@ -307,6 +307,16 @@ int main()
 	printf("\n\nAfter rehashing - 20\n");
 	print_hashmap(hashmap_p, print_ts);
 
+	expand_hashmap(hashmap_p, 1.2);
+
+	printf("\n\nAfter rehashing - 20 * 1.2\n");
+	print_hashmap(hashmap_p, print_ts);
+
+	resize_hashmap(hashmap_p, 10);
+
+	printf("\n\nAfter rehashing - 10\n");
+	print_hashmap(hashmap_p, print_ts);
+
 	deinitialize_hashmap(hashmap_p);
 
 	return 0;
