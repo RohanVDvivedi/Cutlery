@@ -90,10 +90,10 @@ int is_empty_hashmap(const hashmap* hashmap_p);
 // this is O(n) operation, since it involves rehashing all the elements of the hashmap
 // On failure it returns 0, when new_bucket_count < old_element_count (for ROBINHOOD_HASHING) || new_bucket_count == 0
 // else it returns 1 on successfully resizing
-int resize_hashmap(const hashmap* hashmap_p, unsigned int new_bucket_count);
+int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count);
 // below function works similarly to resize_hashmap
 // it fails with return 0, when expand_factor < 1.0
-int expand_hashmap(const hashmap* hashmap_p, float expand_factor);
+int expand_hashmap(hashmap* hashmap_p, float expand_factor);
 
 // frees all the data being held by the hashmap
 // the same hashmap can be reused by calling initialize_hashmap function, after it is deinitialized

@@ -2,6 +2,7 @@
 
 #include<linkedlist.h>
 #include<bst.h>
+#include<queue.h>
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -364,7 +365,10 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 	}
 }
 
-int resize_hashmap(const hashmap* hashmap_p, unsigned int new_bucket_count)
+// utility function used by resize_hashmap function only
+static void push_to_queue_wrapper(const void* hashmap_data, const void* queue_p) {	push_queue((queue*)(queue_p), hashmap_data);	}
+
+int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count)
 {
 	// resizing to the same bucket count; i.e. nothing needs to be done
 	if(get_bucket_count_hashmap(hashmap_p) == new_bucket_count)
@@ -379,14 +383,38 @@ int resize_hashmap(const hashmap* hashmap_p, unsigned int new_bucket_count)
 		&& (get_element_count_hashmap(hashmap_p) > new_bucket_count)	)
 		return 0;
 
-	/**
-	**		generic expand hashmap logic [covering 0 old_bucket_count or 0 new_bucket_count logic] **
-	**/
+	// create a new hashmap indentical to the hashmap_p with new_bucket_count number of buckets
+	hashmap new_hashmap;
+	initialize_hashmap(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset);
+
+	{
+		// create a temporary queue variable, and push all the hashmap_p elements into it
+		queue q;
+		initialize_queue(&q, get_element_count_hashmap(hashmap_p));
+		for_each_in_hashmap(hashmap_p, push_to_queue_wrapper, &q);
+
+		// pop elements in the queue 1 by 1 and transfer them from one hashmap to another
+		while(!is_empty_queue(&q))
+		{
+			const void* data = get_top_queue(&q);
+
+			remove_from_hashmap(hashmap_p, data);
+			insert_in_hashmap(&new_hashmap, data);
+
+			pop_queue(&q);
+		}
+
+		deinitialize_queue(&q);
+	}
+
+	// deinitialize hashmap_p (old empty hashmap), and shallow copy the new_hashmap in to it
+	deinitialize_hashmap(hashmap_p);
+	(*hashmap_p) = new_hashmap;
 
 	return 1;
 }
 
-int expand_hashmap(const hashmap* hashmap_p, float expand_factor)
+int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 {
 	return (expand_factor <= 1.0) ? 0 : 
 		resize_hashmap(hashmap_p, expand_factor * get_bucket_count_hashmap(hashmap_p));
