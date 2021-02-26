@@ -1,5 +1,5 @@
  STAGE - 1
- * implement expand_and_reash_hashmap inside cutlery for expanding hashmap and remove rehashing functions from testcases of cutlery and its dependencies : BufferPool, Cashed, JSONParser, Serc
+ * use expand_hashmap functionality of Cutlery hashmap in its dependencies : BufferPool, Cashed, JSONParser, Serc
  * remove const returns when returning user's data from all of get_* functions of cutlery data structures, and remove redundant typecasting from its dependencies
 
 (building new simple data structures)
@@ -29,3 +29,7 @@
  * provide expand_array_addional_size functions to expand array and other dependent datastructures to control memory allocation in a more controlled and flexible way
  * provide a function to set all cutlery data structure's container pointer memory pointer to static memory or to pre-allocated memory locations
  * remove pointer to memory allocator and default to a global void pointer allocator, like we did to dstring. Since all Cutlery containers (except dstring) allocate and use only void pointers, there is no reason from different allocators, except for covering very specific use cases (which though not discussed, we still may not be willing to miss; SO keeping this pointer as is for now).
+
+(optimize resize_hashmap function)
+STAGE - 6
+ * for ELEMENTS_AS_LINKEDLIST and ELEMENTS_AS_*_BST we could use linkedlist queue to save on the additional memory (taken by the "queue q" structure)
