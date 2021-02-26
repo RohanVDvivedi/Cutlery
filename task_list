@@ -1,5 +1,4 @@
  STAGE - 1
- * use expand_hashmap functionality of Cutlery hashmap in its dependencies : BufferPool, Cashed, JSONParser, Serc
  * remove const returns when returning user's data from all of get_* functions of cutlery data structures, and remove redundant typecasting from its dependencies
 
 (building new simple data structures)
