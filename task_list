@@ -1,14 +1,11 @@
- STAGE - 1
- * remove const returns when returning user's data from all of get_* functions of cutlery data structures, and remove redundant typecasting from its dependencies
-
 (building new simple data structures)
- STAGE - 2
+ STAGE - 1
  * provide a bloom_filter, based on the implementation of cutlery's bitmap datastructure
  * provide a very simple trie data structure, to insert/search dstring* vs void*
  * provide a circular io_buffer queue datastructure to enable managing input/output data queues, necessary for buiding network stacks
 
 (long term implementation for all graph algorithms)
- STAGE - 3
+ STAGE - 2
  * use graph descriptor interface to build graph algorithms like :
        * dfs (iterative only (not recursive) with Cutlery stack)
        * bfs (iterative only with Cutlery queue)
@@ -20,15 +17,19 @@
         etc (more will be added)
 
 (fix print functions)
- STAGE - 4
+ STAGE - 3
  * convert all print functions to dstring based serializers using snprintf_dstring(), also with debug_print and tab_count as input parameters -> get rid of <stdio.h>
 
 (fix memmory allocation user's interface with Cutlery library)
- STAGE - 5
+ STAGE - 4
  * provide expand_array_addional_size functions to expand array and other dependent datastructures to control memory allocation in a more controlled and flexible way
  * provide a function to set all cutlery data structure's container pointer memory pointer to static memory or to pre-allocated memory locations
  * remove pointer to memory allocator and default to a global void pointer allocator, like we did to dstring. Since all Cutlery containers (except dstring) allocate and use only void pointers, there is no reason from different allocators, except for covering very specific use cases (which though not discussed, we still may not be willing to miss; SO keeping this pointer as is for now).
 
 (optimize resize_hashmap function)
-STAGE - 6
+STAGE - 5
  * for ELEMENTS_AS_LINKEDLIST and ELEMENTS_AS_*_BST we could use linkedlist queue to save on the additional memory (taken by the "queue q" structure)
+
+(optimize resize_hashmap function)
+STAGE - 6
+ * for find_* and get_* functions think about api changes such that the user does not have to typecast the data pointer, when returned by these functions. *** Keep in mind that we (Cutlery) do not change any of user's data (we only store their data pointers or modify their embedded node (bstnode or llnode)) and that must be obvious from the api of the function (explicitly from the function declaration, implicitly by a programmer's rationale).
