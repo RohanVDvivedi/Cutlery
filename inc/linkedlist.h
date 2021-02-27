@@ -54,7 +54,7 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 // removes will return 0, and fail if llnode of data is a new node or if llnode does not exist in this linkedlist
 int remove_head(linkedlist* ll);
 int remove_tail(linkedlist* ll);
-int remove_from_linkedlist(linkedlist*ll, const void* data);
+int remove_from_linkedlist(linkedlist* ll, const void* data);
 
 // This function returns true(1),
 // if a llnode is insertable in the given linkedlist ll
