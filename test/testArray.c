@@ -117,7 +117,7 @@ int main()
 
 	#define test_sort_size  30
 
-	#define start_index     10
+	#define start_index     9
 	#define end_index       (start_index + test_sort_size - 1)
 
 	// expand existing array
@@ -134,7 +134,7 @@ int main()
 	printf("Array initialized\n\n");print_array(array_p, print_ts);printf("\n\n");
 
 	sort_array(array_p, start_index, end_index, test_compare);
-	printf("Array sorted\n\n");print_array(array_p, print_ts);printf("\n\n");
+	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_array(array_p, print_ts);printf("\n\n");
 
 	printf("Executing Search of all\n\n");
 
@@ -162,8 +162,6 @@ int main()
 
 		printf("\n\n");
 	}
-
-
 
 	deinitialize_array(array_p);
 
