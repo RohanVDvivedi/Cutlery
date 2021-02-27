@@ -113,28 +113,28 @@ int main()
 
 
 	// testing sort
+	#define sort_array_size 50
 
-	#define test_sort_size 44
+	#define test_sort_size  30
 
-	#define start_index 10
-	#define end_index test_sort_size-1
+	#define start_index     10
+	#define end_index       (start_index + test_sort_size - 1)
 
-	while(array_p->total_size < test_sort_size)
+	// expand existing array
+	while(array_p->total_size < sort_array_size)
 		expand_array(array_p);
-
-	ts ts_ss[test_sort_size];
-
-	for(int i = 0; i < test_sort_size; i++)
+	// initialize array
+	ts ts_ss[sort_array_size];
+	for(int i = 0; i < sort_array_size; i++)
 	{
-		ts_ss[i] = ((ts){rand() % test_sort_size, "XXX-dont care"});
+		ts_ss[i] = ((ts){rand() % sort_array_size, "XXX-dont care"});
 		set_element(array_p, ts_ss + i, i);
 	}
 
-	print_array(array_p, print_ts);
+	printf("Array initialized\n\n");print_array(array_p, print_ts);printf("\n\n");
 
 	sort_array(array_p, start_index, end_index, test_compare);
-
-	print_array(array_p, print_ts);
+	printf("Array sorted\n\n");print_array(array_p, print_ts);printf("\n\n");
 
 	printf("Executing Search of all\n\n");
 
