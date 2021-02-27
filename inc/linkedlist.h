@@ -19,8 +19,8 @@ struct linkedlist
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
 	unsigned int node_offset;
 
-	// head->next->...->next = tail // ->next is called n-1 times, n being the number of elements
-	// tail->prev->...->prev = head // ->prev is called n-1 times, n being the number of elements
+	// head->next->...->next = tail // ->next is called n-2 times, n being the number of elements
+	// tail->prev->...->prev = head // ->prev is called n-2 times, n being the number of elements
 	// always head->prev = tail but tail->next = head
 	llnode* head;
 };
@@ -33,21 +33,25 @@ void initialize_llnode(llnode* node_p);
 
 int is_empty_linkedlist(const linkedlist* ll);
 
-// simply gets head node data
+// simply gets nth from head or tail node's data
 const void* get_head(const linkedlist* ll);
 const void* get_tail(const linkedlist* ll);
 const void* get_nth_from_head(const linkedlist* ll, unsigned int n);
 const void* get_nth_from_tail(const linkedlist* ll, unsigned int n);
 
-// inserts will return 0, and fail if llnode of data is not a new node
+// get next or previous node's data of a given data element of the linkedlist
+// data_xist must be a valid data pointer existing in the linkedlist
+const void* get_next_of(const linkedlist* ll, const void* data_xist);
+const void* get_prev_of(const linkedlist* ll, const void* data_xist);
 
+// inserts will return 0, and fail if llnode of data is not a new node
+// data_xist must be a valid data pointer existing in the linkedlist
 int insert_head(linkedlist* ll, const void* data);
 int insert_tail(linkedlist* ll, const void* data);
 int insert_before(linkedlist* ll, const void* data_xist, const void* data);
 int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 
 // removes will return 0, and fail if llnode of data is a new node or if llnode does not exist in this linkedlist
-
 int remove_head(linkedlist* ll);
 int remove_tail(linkedlist* ll);
 int remove_from_linkedlist(linkedlist*ll, const void* data);
