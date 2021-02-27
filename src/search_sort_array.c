@@ -7,10 +7,13 @@
 
 void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2))
 {
-	if(start_index > end_index || end_index >= array_p->total_size || end_index - start_index == 1)
+	if(start_index > end_index || end_index >= array_p->total_size)
 		return;
 
+	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
 	unsigned int total_elements = end_index - start_index + 1;
+	if(total_elements <= 1)
+		return;
 
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
 	const void** src  = array_p->data_p_p + start_index;
