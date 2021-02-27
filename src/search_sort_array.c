@@ -12,22 +12,30 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 
 	unsigned int total_elements = end_index - start_index + 1;
 
+	// we iteratively merge adjacent sorted chunks from src and store them in dest
 	void** src  = (void**) array_p->data_p_p + start_index;
 	void** dest = malloc(sizeof(void*) * total_elements);
 
-	// sort element in src and write them to dest
-	// sort algo
-
+	// start with sorted chunk size equals 1, (a single element is always sorted)
 	unsigned int sort_chunk_size = 1;
 	while(sort_chunk_size <= total_elements)
 	{
+
+		// in each iteration of the internal loop
+		// merge 2 adjacent sorted chunks of src array
+		// to form 1 chunk of twice the size in dest array
 		unsigned int dest_index = 0;
 		while(dest_index < total_elements)
 		{
+			// start and end indices of chunk 1
 			unsigned int a_start = dest_index;
 			unsigned int a_end = a_start + sort_chunk_size - 1;
+
+			// start and end indices of chunk 2
 			unsigned int b_start = a_end + 1;
 			unsigned int b_end = b_start + sort_chunk_size - 1;
+
+			// *_start and *_end are both inclusive indices
 
 			if(b_start > total_elements - 1)
 			{
@@ -52,15 +60,16 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 			}
 		}
 
+		// src becomes dest, and dest becomes src
 		void** temp = src;
 		src = dest;
 		dest = temp;
 
-		sort_chunk_size = sort_chunk_size << 1;
+		// double the chunk size, for next iteration
+		sort_chunk_size = sort_chunk_size * 2;
 	}
 
-	// sort algo
-
+	// free the extra memory
 	if( ((void**)(array_p->data_p_p + start_index)) == src)
 		free(dest);
 	else
