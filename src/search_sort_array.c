@@ -13,8 +13,8 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 	unsigned int total_elements = end_index - start_index + 1;
 
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
-	void** src  = (void**) array_p->data_p_p + start_index;
-	void** dest = malloc(sizeof(void*) * total_elements);
+	const void** src  = array_p->data_p_p + start_index;
+	const void** dest = malloc(sizeof(void*) * total_elements);
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	unsigned int sort_chunk_size = 1;
@@ -61,7 +61,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 		}
 
 		// src becomes dest, and dest becomes src
-		void** temp = src;
+		const void** temp = src;
 		src = dest;
 		dest = temp;
 
@@ -70,7 +70,7 @@ void sort_array(array* array_p, unsigned int start_index, unsigned int end_index
 	}
 
 	// free the extra memory
-	if( ((void**)(array_p->data_p_p + start_index)) == src)
+	if((array_p->data_p_p + start_index) == src)
 		free(dest);
 	else
 	{
