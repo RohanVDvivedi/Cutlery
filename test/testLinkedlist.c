@@ -65,6 +65,28 @@ int main()
 	insert_before(ll, get_nth_from_tail(ll, 2), &((ts){-1, "minus one", {NULL, NULL}}));
 	print_linkedlist(ll, print_ts);
 
+	// check get next and prev functionality
+	{
+		const ts* head_data = get_head(ll);
+		printf("prev : ");print_ts(get_prev_of(ll, head_data));
+		printf("\nnode : ");print_ts(head_data);
+		printf("\nnext : ");print_ts(get_next_of(ll, head_data));
+		printf("\n\n");
+
+		const ts* mid_data = find_equals_in_linkedlist(ll, &((ts){-1}), test_compare);
+		printf("prev : ");print_ts(get_prev_of(ll, mid_data));
+		printf("\nnode : ");print_ts(mid_data);
+		printf("\nnext : ");print_ts(get_next_of(ll, mid_data));
+		printf("\n\n");
+
+		const ts* tail_data = get_tail(ll);
+		printf("prev : ");print_ts(get_prev_of(ll, tail_data));
+		printf("\nnode : ");print_ts(tail_data);
+		printf("\nnext : ");print_ts(get_next_of(ll, tail_data));
+		printf("\n\n");
+	}
+	// **** 
+
 	remove_head(ll);
 	print_linkedlist(ll, print_ts);
 

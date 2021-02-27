@@ -75,6 +75,16 @@ const void* get_nth_from_tail(const linkedlist* ll, unsigned int n)
 	return (node_p == tail) ? NULL : get_data(node_p);
 }
 
+const void* get_next_of(const linkedlist* ll, const void* data_xist)
+{
+	return get_data(((llnode*)(get_node(data_xist)))->next);
+}
+
+const void* get_prev_of(const linkedlist* ll, const void* data_xist)
+{
+	return get_data(((llnode*)(get_node(data_xist)))->prev);
+}
+
 static void insert_node_before(linkedlist* ll, llnode* node_p, llnode* new_node)
 {
 	// first update the new_node's prev and next references
