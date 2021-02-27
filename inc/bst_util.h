@@ -4,7 +4,7 @@
 /*
 *	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
 */
-#define get_data(node_p) 	(((void*)(node_p)) - bst_p->node_offset)
+#define get_data(node_p) 	(((const void*)(node_p)) - bst_p->node_offset)
 
 #define get_node(data_p) 	(((void*)(data_p)) + bst_p->node_offset)
 

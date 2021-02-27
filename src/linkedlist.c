@@ -3,7 +3,7 @@
 #include<stdio.h>
 
 // get data from llnode
-#define get_data(node_p) 	(((void*)(node_p)) - ll->node_offset)
+#define get_data(node_p) 	(((const void*)(node_p)) - ll->node_offset)
 // get llnode from data
 #define get_node(data_p) 	(((void*)(data_p)) + ll->node_offset)
 
