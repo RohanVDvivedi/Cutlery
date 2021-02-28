@@ -36,7 +36,7 @@ int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
 // returns suffix_prefix_match_length
-// for first i characters of str, the prefix of str rquals the suffix of str
+// for first i characters of str, the prefix of str equals the suffix of str
 // and its length is stored in suffix_prefix_match_length[i]
 // the suffix_prefix_match_length must have space for (str->bytes_occupied + 1) many unsigned ints
 // result of this function is required for using KMP algorithm (pass suffix_prefix_match_length in contains_dstring function)
