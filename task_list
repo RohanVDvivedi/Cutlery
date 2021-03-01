@@ -4,7 +4,12 @@
  * provide a circular io_buffer queue datastructure to enable managing input/output data queues, necessary for buiding network stacks
 
  STAGE - 1.2
- * find_all_in_range(bst, traversal, data_small, data_large) function for bst (result includes data_small and data_large), the traversal parameter defines how the result needs to be ordered.
+ * find_all_in_range(bst, data_small, data_large, max_result_count, result_arraylist)
+ 	-> find all (or maximum being max_result_count number of) elements from bst that are greater than or equal to data_small and lesser than or equal to data_large, and them into result_arraylist
+ 	->  if data_small == NULL (or -infinity), 
+ 			then we will find all elements that are lesser than or equals to data_large; 
+ 		else if data_large == NULL (or +infinity),
+ 			then we will find all elements that are greater than or equals to data_small;
  * iterative (for loop) approach for in-order, pre-order and post-order traversals.
  * radix_sort function for array based on a hash_function (instead of a compare function) given by the user in function params.
 
