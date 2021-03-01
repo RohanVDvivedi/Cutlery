@@ -248,7 +248,7 @@ int shrink_arraylist(arraylist* al)
 	return has_holder_shrunk;
 }
 
-const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* al_data, const void* data))
+const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* data1, const void* data2))
 {
 	for(unsigned int i = 0, index = al->first_index; i < al->element_count; i++, index++)
 	{

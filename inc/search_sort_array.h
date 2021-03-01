@@ -1,56 +1,58 @@
 #ifndef SEARCH_SORT_ARRAY_H
 #define SEARCH_SORT_ARRAY_H
 
-// NOTE NOTe NOTE
+// NOTE NOTE NOTE
 // the sorting and searching is based on the compare function provided, 
-// which must be designed such that, int (*compare)(const void* data_p1, const void* data_p2)
-// compare > 0, if data_p1 > data_p2 else compare < 0, if the data_p1 and data_p2 are equal, then compare = 0
-// where both data_p1 and data_p2 are elements of the array
+// which must be designed such that, int (*compare)(const void* data1, const void* data2)
+// if data1 > data2
+//    then compare > 0
+// else if data1 < data2
+//    then compare < 0
+// else compare = 0 (i.e. data1 == data2)
+// where both data1 and data2 are elements of the array
 
 typedef struct array array;
 
-// SORT FUNCTIONS ON ARRAY
+//---------------------------------------------------------------------------
+//                         SORT FUNCTIONS ON ARRAY
+//---------------------------------------------------------------------------
 
-// sorts elements in array from start_index to end_index, both inclusive,
+// All functions sort elements in array from start_index to end_index, both inclusive,
 // the sorting is based on the compare function provided
-// sorting algorithm used => merge sort algorithm (iterative approach)
-void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data_p1, const void* data_p2));
 
-// SEARCH FUNCTIONS ON ARRAY
+
+// sorting algorithm used => merge sort algorithm (iterative approach)
+void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2));
+
+
+
+
+
+
+//------------------------------------------------------------------------------
+//                          SEARCH FUNCTIONS ON ARRAY
+//------------------------------------------------------------------------------
+
 // These functions return an index to the array element, that compares equals to the data provided
 // The data provided as parameter for equality checking may or may not be pointing to the element, already existing in array
 
-// COMPARE FUNCTION FOR SORT ARRAY
-// The compare function for sort_array, is little bit different from the one to be used for search array
-// int (*compare)(const void* arr_data, const void* data_p)
-// here the first parameter arr_data, will always be an element that already exists in array
-// the second element data_p will be the pointer that you provide for comparison
-// all other rules for comparison function remain the same, as stated above
-
-// The above information is not so important, since the same compare function that worked for you in sort_array,
-// will most likely work for you for search functions aswell 
-// but if you have the above info, you may be able to use it wisely to provide only comparison key for data
-// and so you may not construct the whole object on your stack just for the sake of comparison
-
-
 // performs linear search in array from start_index to end_index, both inclusive,
-// the sorting is based on the compare function provided
-// it returns the first element that when compared to data_p equals to 0
 // if no such element is found, then the function returns the total_size of array (which will not be indexable, INDEX_OUT_OF_BOUNDS)
-unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* arr_data, const void* data_p));
+unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data, int (*compare)(const void* data1, const void* data2));
+
+
 
 
 // NOTE NOTE NOTE
 // the binary_search_in_array function can be called on the array, only if
-// your data in the array is sorted in ascending order in accordance to the compare function provided
+// your data in the array is sorted in ascending order in accordance to the compare function provided as parameter
 // , (sorted) for all indices from start_index to end_index inclusive
 
 // performs binary search in array from start_index to end_index, both inclusive,
-// the sorting is based on the compare function provided
-// it returns the element that when compared to data_p equals to 0
-// if no such element is found, we return the index which holds element, which is immediately greater or lesser than the data_p provided
+// it returns the element that when compared to data equals to 0
+// if no such element is found, we return the index which holds element, which is closest to data in the array
 // if the indexes provided are inappropriate to begin with, the function returns the total_size of array (which is not indexable, INDEX_OUT_OF_BOUNDS)
-unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, void* data_p, int (*compare)(const void* arr_data, const void* data_p));
+unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data, int (*compare)(const void* data1, const void* data2));
 
 
 #endif

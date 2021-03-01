@@ -63,10 +63,8 @@ int remove_from_linkedlist(linkedlist* ll, const void* data);
 int is_new_llnode(const linkedlist* ll, const llnode* node_p);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
-// in the compare function the first parameter is the data from the linkedlist,
-// while the second parameter is the data that has been provided by you
-// it will return the pointer to the linkedlist data that compares equal (i.e. compare function returns 0)
-const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data));
+// it will return the pointer to the data contained in the linkedlist that compares equal (i.e. compare function returns 0)
+const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2));
 
 // perform operation on all the elements of the linked list
 // the function is designed well, you may call free on your data, in the provided operation function
