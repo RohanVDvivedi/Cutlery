@@ -5,7 +5,7 @@
 
 #include<stdlib.h>
 
-void sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
+void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > end_index || end_index >= array_p->total_size)
 		return;

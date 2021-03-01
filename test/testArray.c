@@ -133,7 +133,7 @@ int main()
 
 	printf("Array initialized\n\n");print_array(array_p, print_ts);printf("\n\n");
 
-	sort_array(array_p, start_index, end_index, test_compare);
+	merge_sort_array(array_p, start_index, end_index, test_compare);
 	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_array(array_p, print_ts);printf("\n\n");
 
 	printf("Executing Search of all\n\n");
