@@ -1,11 +1,12 @@
 (building new simple data structures)
- STAGE - 1
- * use cutlery's bitmap datastructure to provide a test case bloom_filter
- * find_all_in_range(bst, traversal, data_small, data_large) function for bst (result includes data_small and data_large), the traversal parameter defines how the result needs to be ordered.
- * iterative (for loop) approach for in-order, pre-order and post-order traversals.
- * radix_sort (based on hash_function (instead of a compare function) given by the user in function params) and heap_sort (using heap data structure) functions for array. also segregate merge_sort function. allow users to choose from all sorting algorithms.
+ STAGE - 1.1
  * provide a very simple trie data structure, to insert/search dstring* vs void*
  * provide a circular io_buffer queue datastructure to enable managing input/output data queues, necessary for buiding network stacks
+
+ STAGE - 1.2
+ * find_all_in_range(bst, traversal, data_small, data_large) function for bst (result includes data_small and data_large), the traversal parameter defines how the result needs to be ordered.
+ * iterative (for loop) approach for in-order, pre-order and post-order traversals.
+ * radix_sort function for array based on a hash_function (instead of a compare function) given by the user in function params.
 
 (long term implementation for all graph algorithms)
  STAGE - 2
