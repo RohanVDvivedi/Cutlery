@@ -228,7 +228,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data)
 	return 1;
 }
 
-const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* ll_data, const void* data))
+const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2))
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;

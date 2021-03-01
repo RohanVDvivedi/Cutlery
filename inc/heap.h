@@ -19,7 +19,7 @@ struct heap
 
 	// compare data provided and returns 0 if they are same, else non-zero
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
-	int (*compare)(const void* data1, const void* key2);
+	int (*compare)(const void* data1, const void* data2);
 
 	// to store pointers to the elements of the heap
 	array heap_holder;
