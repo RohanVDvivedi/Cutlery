@@ -17,6 +17,7 @@
 	        * what edges have been traversed, etc
 	  * the context should not be used to store parts of the graph, nodes or edges
 	  * the context should instead represent the query and the state of the query processing algorithm to help you take decissions accordingly and efficiently
+	  * the context can be used to cache the cumulative cost that was incurred for each visited node or a traversed edge.
 
 	the above points should be used only as a guide line to define what a context datastructure should contain
 	you may aswell feel free to do what ever you like
@@ -30,7 +31,7 @@
 	the context has to be discardable after the query or search algorithm or path finding algorithm
 	so that you dont need to ""unvisit"" the visisted nodes and ""untraverse"" the traversed edges
 
-	keeping the context specific variables will also help you segregate actual data vs temporary data of the graph (like visited node and edge specific data)
+	keeping the context specific variables will also help you segregate actual data vs temporary data of the graph (like visited node and traversed edge specific cache data)
 	having the traversal context separate from the graph will help you to parallelize algorithms
 	by supplying separate new context to run read-only graph traversals all in different threads concurrently
 */
