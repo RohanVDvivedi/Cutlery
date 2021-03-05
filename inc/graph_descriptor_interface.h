@@ -47,6 +47,9 @@ struct node_descriptor
 	// it varies from 0 to get_edge_count() - 1
 	void* (*get_edge)(void* node, unsigned int edge_index, void* context);
 
+	// this is the cost incurred every time, we visit this node
+	int (*get_visiting_cost)(void* edge, void* context);
+
 	// to mark a given node as visited and
 	// to check if a given node has been visited ( 1 if visited, 0 if not visited )
 	void (*mark_visited)(void* node, void* context);
@@ -73,7 +76,7 @@ struct edge_descriptor
 	//    node_index == TO_NODE    => return destination node (edge going in)
 	void* (*get_node)(void* edge, unsigned int node_index, void* context);
 
-	// this is the cost incurred while traversing this particular edge
+	// this is the cost incurred every time, we traverse this edge
 	int (*get_traversal_cost)(void* edge, void* context);
 
 	// to mark a given edge as traversed and
