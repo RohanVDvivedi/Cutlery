@@ -8,7 +8,7 @@ enum collision_resolution_policy
 {
 	// each element of the hashmap, is itself a bucket
 	// collision is handled using Robinhood hashing,
-	// true hashtable, truely O(1)
+	// worst case search is O(n)
 	ROBINHOOD_HASHING = 0,
 
 	// each element if the hashmap is a linkedlist of buckets
