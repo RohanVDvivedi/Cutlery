@@ -9,6 +9,7 @@
  * iterative (for loop) approach for in-order, pre-order and post-order traversals.
  * radix_sort function for array based on a hash_function (instead of a compare function) given by the user in function params.
  * include heap_sort and quick_sort aswell.
+ * addition to dstring => distance formulas Levenshtein, Hamming, Lee, Jaro Winkler distance of strings.
 
 (long term implementation for all graph algorithms)
  STAGE - 2
