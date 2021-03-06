@@ -40,12 +40,3 @@
 (optimize resize_hashmap function)
 STAGE - 5
  * for ELEMENTS_AS_LINKEDLIST and ELEMENTS_AS_*_BST we could use linkedlist queue to save on the additional memory (taken by the "queue q" structure)
-
-(optimize resize_hashmap function)
-STAGE - 6
- * for find_* and get_* functions think about api changes such that the user does not have to typecast the data pointer, when returned by these functions. *** Keep in mind that we (Cutlery) do not change any of user's data (we only store their data pointers or modify their embedded node (bstnode or llnode)) and that must be obvious from the api of the function (explicitly from the function declaration, implicitly by a programmer's rationale).
-
- //
-new library
- bp_tree_index
- hash_index
