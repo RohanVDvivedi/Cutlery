@@ -1,4 +1,5 @@
 #include<array.h>
+#include<heap.h>
 
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
@@ -81,6 +82,37 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end
 		free(src);
 	}
 }
+
+void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
+{
+	if(start_index > end_index || end_index >= array_p->total_size)
+		return;
+
+	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
+	unsigned int total_elements = end_index - start_index + 1;
+	if(total_elements <= 1)
+		return;
+
+	// create a min heap
+	heap sort_heap;
+	initialize_heap(&sort_heap, total_elements, MIN_HEAP, compare, NULL, NULL);
+
+	// push all the elements in the min heap
+	for(unsigned int i = start_index; i <= end_index; i++)
+		push_heap(&sort_heap, get_element(array_p, i));
+
+	// place the top of the heap element in the array, then pop heap
+	for(unsigned int i = start_index; i <= end_index; i++)
+	{
+		const void* min_data = get_top_heap(&sort_heap);
+		set_element(array_p, min_data, i);
+		pop_heap(&sort_heap);
+	}
+
+	// destroy the temporary heap
+	deinitialize_heap(&sort_heap);
+}
+
 
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
