@@ -84,21 +84,21 @@ void print_preceding_equals(const bst* bst_p, int k)
 
 void print_accumulate(const void* data, const void* additional_params){print_ts(data);printf("\n");}
 
-void print_all_in_range(const bst* bst_p, int small, int large, unsigned int count, sort_direction sd)
+void print_all_in_range(const bst* bst_p, int small, int large, sort_direction sd, unsigned int count)
 {
 	printf("Atleast %u values in range [%d, %d] as %s are : \n", count, small, large, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	unsigned int n = find_all_in_range(bst_p, &small, &large, count, sd, print_accumulate, NULL);
+	unsigned int n = find_all_in_range(bst_p, &small, &large, sd, count, print_accumulate, NULL);
 	printf("total : %u\n\n", n);
 }
 
-void print_all_greater_than_equals(const bst* bst_p, int k, unsigned int count, sort_direction sd)
+void print_all_greater_than_equals(const bst* bst_p, int k, sort_direction sd, unsigned int count)
 {
 	printf("Atleast %u values in range [%d, infinity) as %s are : \n", count, k, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	unsigned int n = find_all_in_range(bst_p, &k, NULL, count, sd, print_accumulate, NULL);
+	unsigned int n = find_all_in_range(bst_p, &k, NULL, sd, count, print_accumulate, NULL);
 	printf("total : %u\n\n", n);
 }
 
-void print_all_lesser_than_equals(const bst* bst_p, int k, unsigned int count, sort_direction sd)
+void print_all_lesser_than_equals(const bst* bst_p, int k, sort_direction sd, unsigned int count)
 {
 	printf("Atleast %u values in range (-infinity, %d] %s are : \n", count, k, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
 	unsigned int n = find_all_in_range(bst_p, NULL, &k, sd, count, print_accumulate, NULL);
@@ -266,12 +266,12 @@ int main()
 	printf("node inserted = %d\n", error);
 	print_bst(bst_p, print_ts);
 
-	print_all_lesser_than_equals(bst_p, 3, 3, ASCENDING_ORDERED);
-	print_all_lesser_than_equals(bst_p, 3, 3, DESCENDING_ORDERED);
-	print_all_in_range(bst_p, 5, 15, 7, ASCENDING_ORDERED);
-	print_all_in_range(bst_p, 5, 15, 7, DESCENDING_ORDERED);
-	print_all_greater_than_equals(bst_p, 14, 5, ASCENDING_ORDERED);
-	print_all_greater_than_equals(bst_p, 14, 5, DESCENDING_ORDERED);
+	print_all_lesser_than_equals(bst_p, 3, ASCENDING_ORDERED, 3);
+	print_all_lesser_than_equals(bst_p, 3, DESCENDING_ORDERED, 3);
+	print_all_in_range(bst_p, 5, 15, ASCENDING_ORDERED, 7);
+	print_all_in_range(bst_p, 5, 15, DESCENDING_ORDERED, 7);
+	print_all_greater_than_equals(bst_p, 14, ASCENDING_ORDERED, 5);
+	print_all_greater_than_equals(bst_p, 14, DESCENDING_ORDERED, 5);
 
 	printf("COMPLETED INSERTING NODES\n");
 
