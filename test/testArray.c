@@ -140,7 +140,7 @@ int main()
 
 //#define MERGE_SORT
 #define HEAP_SORT
-#define RADIX_SORT
+//#define RADIX_SORT
 
 #if defined MERGE_SORT
 	printf("Sorting %u to %u using MERGE_SORT\n\n", start_index, end_index);
