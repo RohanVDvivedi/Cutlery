@@ -97,18 +97,17 @@ const void* find_largest(const bst* bst_p);
 // This function can also be used as a for_each_in_range function, to perform a give operation on all the data elements in a given range
 // the return value of this function is equal to the number of times the result_accumulator was called (or the number of data elements found)
 unsigned int find_all_in_range(	
-						const bst* bst_p,					// binary search tree to search in
+						const bst* bst_p,				// binary search tree to search in
 						
-						const void* data_lower_bound,		// if(data_lower_bound != NULL), then find all data >= data_lower_bound, else find all ignoring the lower_bound
-						const void* data_upper_bound,		// if(data_upper_bound != NULL), then find all data <= data_upper_bound, else find all ignoring the upper_bound
+						const void* lower_bound,		// if(lower_bound != NULL), then find all data >= lower_bound, else find all ignoring the lower_bound
+						const void* upper_bound,		// if(upper_bound != NULL), then find all data <= upper_bound, else find all ignoring the upper_bound
 						
-						unsigned int max_result_count,		// this is the maximum in-range results to find. if max_result_count == 0, then find all results ignoring this counter
+						unsigned int max_result_count,	// this is the maximum in-range results to find.
+							// TO GET ALL THE RESULTS => max_result_count = 0xffffffff (maximum unsigned int)
 
 						// result_accumulator is a function that will be called for a maximum of max_result_count number of times
 						// it will be called once for each element found, with parameters; data and additional_params
-						// the result_accumulator must return 1, to accumulate all the data elements that are found in range
-						// the find/search will be terminated if the result accumulator returns 0.
-						int (*result_accumulator)(const void* data, const void* additional_params),
+						void (*result_accumulator)(const void* data, const void* additional_params),
 						const void* additional_params
 					);
 
