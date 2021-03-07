@@ -40,6 +40,11 @@ int test_compare(const void* a, const void* b)
 	}
 }
 
+unsigned int get_radix_sort_attr(const void* a)
+{
+	return ((ts*)a)->a;
+}
+
 int main()
 {
 	array array_temp;
@@ -135,13 +140,20 @@ int main()
 
 //#define MERGE_SORT
 #define HEAP_SORT
+#define RADIX_SORT
 
 #if defined MERGE_SORT
 	printf("Sorting %u to %u using MERGE_SORT\n\n", start_index, end_index);
 	merge_sort_array(array_p, start_index, end_index, test_compare);
-#else
+#elif defined HEAP_SORT
 	printf("Sorting %u to %u using HEAP_SORT\n\n", start_index, end_index);
 	heap_sort_array(array_p, start_index, end_index, test_compare);
+#elif defined RADIX_SORT
+	printf("Sorting %u to %u using RADIX_SORT\n\n", start_index, end_index);
+	radix_sort_array(array_p, start_index, end_index, get_radix_sort_attr);
+#else
+	printf("No sort algorithm defined\n\n")
+	return 0;
 #endif
 
 	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_array(array_p, print_ts);printf("\n\n");
