@@ -3,7 +3,6 @@
  * DSTRING
  	* addition to dstring => distance formulas Levenshtein, Jaro Winkler distance of strings in a separate src file dstring_distance.c.
  	* longest common sub sequence
- 	* segregate sstring contains function, dstring_substring.c.
 
 (long term implementation for all graph algorithms)
  STAGE - 2
