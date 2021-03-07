@@ -1,5 +1,6 @@
 #include<array.h>
 #include<heap.h>
+#include<queue.h>
 
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
@@ -111,6 +112,52 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_
 
 	// destroy the temporary heap
 	deinitialize_heap(&sort_heap);
+}
+
+void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, unsigned int (*get_sort_attribute)(const void* data))
+{
+	if(start_index > end_index || end_index >= array_p->total_size)
+		return;
+
+	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
+	unsigned int total_elements = end_index - start_index + 1;
+	if(total_elements <= 1)
+		return;
+
+	// TODO
+
+	// construct temporary queues for 0 and 1 bit containing elements
+	queue sort_queue[2];
+	initialize_queue(&(sort_queue[0]), total_elements);
+	initialize_queue(&(sort_queue[1]), total_elements);
+
+	for(unsigned int i = 0; i < 32; i++)
+	{
+		unsigned index = start_index;
+		while(index <= end_index)
+		{
+			const void* data = get_element(array_p, index++);
+			unsigned int queue_index = (get_sort_attribute(data) >> i) & 1;
+			push_queue(&(sort_queue[queue_index]), data);
+		}
+
+		index = start_index;
+		while(!is_empty_queue(&(sort_queue[0])))
+		{
+			const void* data = get_top_queue(&(sort_queue[0]));
+			set_element(array_p, data, index++);
+			pop_queue(&(sort_queue[0]));
+		}
+		while(!is_empty_queue(&(sort_queue[1])))
+		{
+			const void* data = get_top_queue(&(sort_queue[1]));
+			set_element(array_p, data, index++);
+			pop_queue(&(sort_queue[1]));
+		}
+	}
+
+	deinitialize_queue(&(sort_queue[0]));
+	deinitialize_queue(&(sort_queue[1]));
 }
 
 
