@@ -120,6 +120,21 @@ const void* find_largest(const bst* bst_p)
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
+static unsigned int find_all_in_range_recursive(const bstnode* root, const void* data_lower_bound, const void* data_upper_bound, unsigned int max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
+{
+	if(root == NULL)
+		return 0;
+
+	unsigned int results_accumulated = 0;
+
+	return results_accumulated;
+}
+
+unsigned int find_all_in_range(const bst* bst_p, const void* data_lower_bound, const void* data_upper_bound, unsigned int max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
+{
+	return find_all_in_range_recursive(bst_p->root, data_lower_bound, data_upper_bound, max_result_count, result_accumulator, additional_params);
+}
+
 int insert_in_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data);
