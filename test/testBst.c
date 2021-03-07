@@ -87,22 +87,22 @@ void print_accumulate(const void* data, const void* additional_params){print_ts(
 void print_all_in_range(const bst* bst_p, int small, int large, unsigned int count, sort_direction sd)
 {
 	printf("Atleast %u values in range [%d, %d] as %s are : \n", count, small, large, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	find_all_in_range(bst_p, &small, &large, count, sd, print_accumulate, NULL);
-	printf("\n");
+	unsigned int n = find_all_in_range(bst_p, &small, &large, count, sd, print_accumulate, NULL);
+	printf("total : %u\n\n", n);
 }
 
 void print_all_greater_than_equals(const bst* bst_p, int k, unsigned int count, sort_direction sd)
 {
 	printf("Atleast %u values in range [%d, infinity) as %s are : \n", count, k, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	find_all_in_range(bst_p, &k, NULL, count, sd, print_accumulate, NULL);
-	printf("\n");
+	unsigned int n = find_all_in_range(bst_p, &k, NULL, count, sd, print_accumulate, NULL);
+	printf("total : %u\n\n", n);
 }
 
 void print_all_lesser_than_equals(const bst* bst_p, int k, unsigned int count, sort_direction sd)
 {
 	printf("Atleast %u values in range (-infinity, %d] %s are : \n", count, k, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	find_all_in_range(bst_p, NULL, &k, sd, count, print_accumulate, NULL);
-	printf("\n");
+	unsigned int n = find_all_in_range(bst_p, NULL, &k, sd, count, print_accumulate, NULL);
+	printf("total : %u\n\n", n);
 }
 
 #define TREE_TYPE_TO_USE 	/*NON_SELF_BALANCING*/ AVL_TREE /*RED_BLACK_TREE*/
@@ -271,7 +271,7 @@ int main()
 	print_all_in_range(bst_p, 5, 15, 7, ASCENDING_ORDERED);
 	print_all_in_range(bst_p, 5, 15, 7, DESCENDING_ORDERED);
 	print_all_greater_than_equals(bst_p, 14, 5, ASCENDING_ORDERED);
-	print_all_greater_than_equals(bst_p, 14, 5, DESCENDING_ORDERED);return 0;
+	print_all_greater_than_equals(bst_p, 14, 5, DESCENDING_ORDERED);
 
 	printf("COMPLETED INSERTING NODES\n");
 
