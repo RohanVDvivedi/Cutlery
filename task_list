@@ -1,7 +1,5 @@
 (building new simple data structures)
  STAGE - 1
- * ARRAY
-	* radix_sort function for array based on a hash_function (instead of a compare function) given by the user in function params.
  * DSTRING
  	* addition to dstring => distance formulas Levenshtein, Jaro Winkler distance of strings in a separate src file dstring_distance.c.
  	* longest common sub sequence
