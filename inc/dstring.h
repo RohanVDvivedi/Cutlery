@@ -35,22 +35,6 @@ void make_dstring_empty(dstring* str_p);
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
-// returns suffix_prefix_match_length
-// for first i characters of str, the prefix of str equals the suffix of str
-// and its length is stored in suffix_prefix_match_length[i]
-// the suffix_prefix_match_length must have space for (str->bytes_occupied + 1) many unsigned ints
-// result of this function is required for using KMP algorithm (pass suffix_prefix_match_length in contains_dstring function)
-void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length);
-
-// returns index to the position of first substring match, else SUBSTRING_NOT_FOUND
-#define SUBSTRING_NOT_FOUND (~0U)
-// KMP (Knuth–Morris–Pratt) O(m+n) will be used if you provide a non-NULL value for suffix_prefix_match_length (result of get_prefix_suffix_match_lengths)
-// else it will use standard O(m*n) sub string algorithm
-unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length);
-
-// returns 1 if prifix_p is prefix of string_p, else it returns 0
-int is_prefix(const dstring* string_p, const dstring* prefix_p);
-
 // increases the size of dstring by additional_size number of bytes
 void expand_dstring(dstring* str_p, unsigned int additional_size);
 
@@ -65,6 +49,8 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
+
+#include<dstring_substring.h>
 
 void deinit_dstring(dstring* str_p);
 
