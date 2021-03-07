@@ -13,6 +13,15 @@ enum bsttype
 	RED_BLACK_TREE
 };
 
+// traversals possible in the tree
+typedef enum bsttraversal bsttraversal;
+enum bsttraversal
+{
+	PRE_ORDER,
+	IN_ORDER,
+	POST_ORDER
+};
+
 typedef struct bst bst;
 struct bst;
 
@@ -92,6 +101,28 @@ const void* find_smallest(const bst* bst_p);
 // find data in tree, with the biggest value
 const void* find_largest(const bst* bst_p);
 
+// find all (or atleast max_result_count number of) data pointers in the bst,
+// which compare >= data_lower_bound and <= data_upper_bound in the given traversal order.
+// This function can also be used as a for_each_in_range function, to perform a give operation on all the data elements in a given range
+// the return value of this function is equal to the number of times the result_accumulator was called (or the number of data elements found)
+unsigned int find_all_in_range(	
+						const bst* bst_p,					// binary search tree to search in
+						
+						const void* data_lower_bound,		// if(data_lower_bound != NULL), then find all data >= data_lower_bound, else find all ignoring the lower_bound
+						const void* data_upper_bound,		// if(data_upper_bound != NULL), then find all data <= data_upper_bound, else find all ignoring the upper_bound
+						
+						bsttraversal traversal,				// the traversal type to choose from (IN_ORDER, PRE_ORDER or POST_ORDER)
+						
+						unsigned int max_result_count,		// this is the maximum in-range results to find. if max_result_count == 0, then find all results ignoring this counter
+
+						// result_accumulator is a function that will be called for a maximum of max_result_count number of times
+						// it will be called once for each element found, with parameters; data and additional_params
+						// the result_accumulator must return 1, to accumulate all the data elements that are found in range
+						// the find/search will be terminated if the result accumulator returns 0.
+						int (*result_accumulator)(const void* data, const void* additional_params),
+						const void* additional_params
+					);
+
 // remove data from the given tree
 // returns 0, and fails if bstnode of data is a new node
 int remove_from_bst(bst* bst_p, const void* data);
@@ -101,10 +132,6 @@ int remove_from_bst(bst* bst_p, const void* data);
 // i.e. left, right and parent pointers are NULL and it is not at the root of bst_p bst
 // please try and avoid using this function in user application
 int is_new_bstnode(const bst* bst_p, const bstnode* node_p);
-
-// traversals possible in the tree
-typedef enum bsttraversal bsttraversal;
-enum bsttraversal {PRE_ORDER, IN_ORDER, POST_ORDER};
 
 // perform given operation on all the elements of the binary search tree
 void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
