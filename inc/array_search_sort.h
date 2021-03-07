@@ -27,6 +27,10 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end
 // sorting algorithm used => heap sort algorithm
 void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2));
 
+// sorting algorithm used => radix sort algorithm
+// all the elements will be ordered in increasing order of their value for get_sort_attribute()
+void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, unsigned int (*get_sort_attribute)(const void* data));
+
 
 
 
