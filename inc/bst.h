@@ -95,9 +95,8 @@ const void* find_largest(const bst* bst_p);
 typedef enum sort_direction sort_direction;
 enum sort_direction{ASCENDING_ORDERED, DESCENDING_ORDERED};
 // find all (or atleast max_result_count number of) data pointers in the bst,
-// which compare >= data_lower_bound and <= data_upper_bound in the IN_ORDER traversal order.
-// This function can also be used as a for_each_in_range function, to perform a give operation on all the data elements in a given range
-// the return value of this function is equal to the number of times the result_accumulator was called (or the number of data elements found)
+// which compare >= lower_bound and <= upper_bound,
+// and accumulate them in the sort_direction order (either ASCENDING or DESCENDING order).
 unsigned int find_all_in_range(	
 						const bst* bst_p,				// binary search tree to search in
 						
@@ -117,6 +116,8 @@ unsigned int find_all_in_range(
 						void (*result_accumulator)(const void* data, const void* additional_params),
 						const void* additional_params
 					);
+// The above function can also be used as a for_each_in_range function, to perform a give operation on all the data elements in a given range
+// the return value of this function is equal to the number of times the result_accumulator was called (or the number of data elements found)
 
 // remove data from the given tree
 // returns 0, and fails if bstnode of data is a new node
