@@ -152,8 +152,9 @@ static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode*
 
 unsigned int find_all_in_range(const bst* bst_p, const void* lower_bound, const void* upper_bound, unsigned int max_result_count, void (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
-	// errror in providing values, i.e. lower_bound must not be greater than upper bound
-	if((lower_bound != NULL) && (upper_bound != NULL) && (bst_p->compare(lower_bound, upper_bound) > 0))
+	// errror in providing values 
+	// if both of the lower and upper bounds are provided, then lower_bound must not be greater than upper bound
+	if(((lower_bound != NULL) && (upper_bound != NULL)) && (bst_p->compare(lower_bound, upper_bound) > 0))
 		return 0;
 	return find_all_in_range_recursive(bst_p, bst_p->root, lower_bound, upper_bound, max_result_count, result_accumulator, additional_params);
 }
