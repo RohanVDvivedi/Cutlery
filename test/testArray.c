@@ -133,7 +133,17 @@ int main()
 
 	printf("Array initialized\n\n");print_array(array_p, print_ts);printf("\n\n");
 
+//#define MERGE_SORT
+#define HEAP_SORT
+
+#if defined MERGE_SORT
+	printf("Sorting %u to %u using MERGE_SORT\n\n", start_index, end_index);
 	merge_sort_array(array_p, start_index, end_index, test_compare);
+#else
+	printf("Sorting %u to %u using HEAP_SORT\n\n", start_index, end_index);
+	heap_sort_array(array_p, start_index, end_index, test_compare);
+#endif
+
 	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_array(array_p, print_ts);printf("\n\n");
 
 	printf("Executing Search of all\n\n");
