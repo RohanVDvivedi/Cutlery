@@ -8,12 +8,12 @@
 
 char bloomfilter_bitmap[2][BLOOM_FILTER_SIZE_IN_BYTES];
 
-unsigned int hash_f_1(char* str)
+unsigned int hash_f_1(const char* str)
 {
 	return strlen(str) % BLOOM_FILTER_SIZE_IN_BITS;
 }
 
-unsigned int hash_f_2(char* str)
+unsigned int hash_f_2(const char* str)
 {
 	unsigned int sum_chars = 0;
 	while((*str) != '\0')
