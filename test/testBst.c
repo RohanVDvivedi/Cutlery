@@ -82,6 +82,29 @@ void print_preceding_equals(const bst* bst_p, int k)
 	printf("\n");
 }
 
+void print_accumulate(const void* data, const void* additional_params){print_ts(data);printf("\n");}
+
+void print_all_in_range(const bst* bst_p, int small, int large, unsigned int count)
+{
+	printf("Atleast %u values in range [%d, %d] are : \n", count, small, large);
+	find_all_in_range(bst_p, &small, &large, count, print_accumulate, NULL);
+	printf("\n");
+}
+
+void print_all_greater_than_equals(const bst* bst_p, int k, unsigned int count)
+{
+	printf("Atleast %u values in range [%d, infinity) are : \n", count, k);
+	find_all_in_range(bst_p, &k, NULL, count, print_accumulate, NULL);
+	printf("\n");
+}
+
+void print_all_lesser_than_equals(const bst* bst_p, int k, unsigned int count)
+{
+	printf("Atleast %u values in range (-infinity, %d] are : \n", count, k);
+	find_all_in_range(bst_p, NULL, &k, count, print_accumulate, NULL);
+	printf("\n");
+}
+
 #define TREE_TYPE_TO_USE 	/*NON_SELF_BALANCING*/ AVL_TREE /*RED_BLACK_TREE*/
 
 int main()
@@ -242,6 +265,10 @@ int main()
 	error = insert_in_bst(bst_p, &((ts){9, 9, "nine-lol"}));
 	printf("node inserted = %d\n", error);
 	print_bst(bst_p, print_ts);
+
+	print_all_lesser_than_equals(bst_p, 3, 3);
+	print_all_in_range(bst_p, 5, 15, 7);
+	print_all_greater_than_equals(bst_p, 14, 5);
 
 	printf("COMPLETED INSERTING NODES\n");
 
