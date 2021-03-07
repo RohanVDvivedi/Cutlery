@@ -1,13 +1,6 @@
 (building new simple data structures)
  STAGE - 1
   * BST
-	* find_all_in_range(bst, bst_traversal, data_small, data_large, max_result_count, result_arraylist)
-	 	-> find all (or maximum being max_result_count number of) elements from bst that are greater than or equal to data_small and lesser than or equal to data_large, and them into result_arraylist
-	 	->  if data_small == NULL (or -infinity), 
-	 			then we will find all elements that are lesser than or equals to data_large; 
-	 		else if data_large == NULL (or +infinity),
-	 			then we will find all elements that are greater than or equals to data_small;
-		-> Also write for_each_in_range(bst, bst_traversal, data_small, data_large, max_result_count, void (*result_accumulator)(const void* data, const void* additional_params), void* additional_params);
  	* iterative (for loop) approach for in-order, pre-order and post-order traversals.
  * ARRAY
 	* radix_sort function for array based on a hash_function (instead of a compare function) given by the user in function params.
