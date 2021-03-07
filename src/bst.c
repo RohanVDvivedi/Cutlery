@@ -120,19 +120,39 @@ const void* find_largest(const bst* bst_p)
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-static unsigned int find_all_in_range_recursive(const bstnode* root, const void* data_lower_bound, const void* data_upper_bound, unsigned int max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
+static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode* node_p, const void* lower_bound, const void* upper_bound, unsigned int max_result_count, void (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
-	if(root == NULL)
+	if(node_p == NULL)
 		return 0;
 
 	unsigned int results_accumulated = 0;
 
+	const void* data_p = get_data(node_p);
+
+	int lower_bound_check = (lower_bound != NULL) ? (bst_p->compare(lower_bound, data_p) <= 0) : 1;
+	int upper_bound_check = (upper_bound != NULL) ? (bst_p->compare(upper_bound, data_p) >= 0) : 1;
+
+	// node_p is greater than the upper_bound
+	if(lower_bound_check && !upper_bound_check && (results_accumulated <= max_result_count))
+		results_accumulated += find_all_in_range_recursive(bst_p, node_p->left, lower_bound, upper_bound, max_result_count - results_accumulated, result_accumulator, additional_params);
+
+	// node_p is in range [lower_bound, upper_bound]
+	if(lower_bound_check && upper_bound_check  && (results_accumulated <= max_result_count))
+	{
+		result_accumulator(data_p, additional_params);
+		results_accumulated += 1;
+	}
+
+	// node_p is lesser than the lower_bound
+	if(!lower_bound_check && upper_bound_check && (results_accumulated <= max_result_count))
+		results_accumulated += find_all_in_range_recursive(bst_p, node_p->right, lower_bound, upper_bound, max_result_count - results_accumulated, result_accumulator, additional_params);
+
 	return results_accumulated;
 }
 
-unsigned int find_all_in_range(const bst* bst_p, const void* data_lower_bound, const void* data_upper_bound, unsigned int max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
+unsigned int find_all_in_range(const bst* bst_p, const void* lower_bound, const void* upper_bound, unsigned int max_result_count, void (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
-	return find_all_in_range_recursive(bst_p->root, data_lower_bound, data_upper_bound, max_result_count, result_accumulator, additional_params);
+	return find_all_in_range_recursive(bst_p, bst_p->root, lower_bound, upper_bound, max_result_count, result_accumulator, additional_params);
 }
 
 int insert_in_bst(bst* bst_p, const void* data)
