@@ -1,5 +1,5 @@
-#include<nonbalancing_bst.h>
-#include<rotations_bst.h>		// used only for interchange positions of nodes, no rotations performed
+#include<bst_nonbalancing.h>
+#include<bst_rotations.h>		// used only for interchange positions of nodes, no rotations performed
 #include<bst_util.h>
 
 #include<cutlery_stds.h>

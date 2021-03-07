@@ -1,1 +1,1 @@
-gcc $1.c -lcutlery && sudo valgrind -v ./a.out
+gcc $1.c -lcutlery #&& sudo valgrind -v ./a.out
