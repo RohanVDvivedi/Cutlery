@@ -132,19 +132,19 @@ static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode*
 	int lower_bound_check = (lower_bound != NULL) ? (bst_p->compare(lower_bound, data_p) <= 0) : 1;
 	int upper_bound_check = (upper_bound != NULL) ? (bst_p->compare(upper_bound, data_p) >= 0) : 1;
 
-	// node_p is greater than the upper_bound
-	if(lower_bound_check && !upper_bound_check && (results_accumulated <= max_result_count))
+	// node_p is greater than the lower_bound, i.e. left sub tree may have nodes lesser than the lower bound
+	if(lower_bound_check && (results_accumulated < max_result_count))
 		results_accumulated += find_all_in_range_recursive(bst_p, node_p->left, lower_bound, upper_bound, max_result_count - results_accumulated, result_accumulator, additional_params);
 
-	// node_p is in range [lower_bound, upper_bound]
-	if(lower_bound_check && upper_bound_check  && (results_accumulated <= max_result_count))
+	// node_p is in range [lower_bound, upper_bound], consider this node aswell
+	if(lower_bound_check && upper_bound_check && (results_accumulated < max_result_count))
 	{
 		result_accumulator(data_p, additional_params);
 		results_accumulated += 1;
 	}
 
-	// node_p is lesser than the lower_bound
-	if(!lower_bound_check && upper_bound_check && (results_accumulated <= max_result_count))
+	// node_p is lesser than the upper_bound, i.e. right sub tree may have nodes greater than the lower bound
+	if(upper_bound_check && (results_accumulated < max_result_count))
 		results_accumulated += find_all_in_range_recursive(bst_p, node_p->right, lower_bound, upper_bound, max_result_count - results_accumulated, result_accumulator, additional_params);
 
 	return results_accumulated;
@@ -152,6 +152,9 @@ static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode*
 
 unsigned int find_all_in_range(const bst* bst_p, const void* lower_bound, const void* upper_bound, unsigned int max_result_count, void (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
+	// errror in providing values, i.e. lower_bound must not be greater than upper bound
+	if((lower_bound != NULL) && (upper_bound != NULL) && (bst_p->compare(lower_bound, upper_bound) > 0))
+		return 0;
 	return find_all_in_range_recursive(bst_p, bst_p->root, lower_bound, upper_bound, max_result_count, result_accumulator, additional_params);
 }
 
