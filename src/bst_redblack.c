@@ -1,6 +1,6 @@
-#include<nonbalancing_bst.h>
-#include<rotations_bst.h>
-#include<redblack_bst.h>
+#include<bst_nonbalancing.h>
+#include<bst_rotations.h>
+#include<bst_redblack.h>
 #include<bst_util.h>
 
 #include<cutlery_stds.h>

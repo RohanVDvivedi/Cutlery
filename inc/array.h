@@ -51,6 +51,6 @@ void for_each_non_null_in_array(const array* array_p, void (*operation)(void* da
 // prints the array
 void print_array(const array* array_p, void (*print_element)(const void* data_p));
 
-#include<search_sort_array.h>
+#include<array_search_sort.h>
 
 #endif

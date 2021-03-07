@@ -1,6 +1,6 @@
-#include<nonbalancing_bst.h>
-#include<rotations_bst.h>
-#include<avl_bst.h>
+#include<bst_nonbalancing.h>
+#include<bst_rotations.h>
+#include<bst_avl.h>
 #include<bst_util.h>
 
 #include<cutlery_stds.h>

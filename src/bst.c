@@ -1,8 +1,8 @@
 #include<bst.h>
 
-#include<nonbalancing_bst.h>
-#include<avl_bst.h>
-#include<redblack_bst.h>
+#include<bst_nonbalancing.h>
+#include<bst_avl.h>
+#include<bst_redblack.h>
 #include<bst_util.h>
 
 #include<stdio.h>
