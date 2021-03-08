@@ -1,8 +1,8 @@
 (building new simple data structures)
  STAGE - 1
  * DSTRING
- 	* addition to dstring => distance formulas Levenshtein, Jaro Winkler distance of strings in a separate src file dstring_distance.c.
- 	* longest common sub sequence
+ 	* distance formulas Levenshtein distance (dp) and Jaro distance (bit manipulation) of a pair of strings.
+ 	* longest common sub sequence dp algo.
 
 (long term implementation for all graph algorithms)
  STAGE - 2
