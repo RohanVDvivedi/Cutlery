@@ -31,3 +31,7 @@ STAGE - 4
 (optimize heap_sort function)
 STAGE - 5
  * in the heap sort function construct the temporary max heap that points to the sub array that needs to be sorted. then call heapify from i = 0 to total_elements on that heap. then loop for total_elements, where you pop and place the max element at the end_index - i. This optimization will reduce memory requirement of the heap sort.
+
+ (additional dstring distance function)
+STAGE - 5
+ * implement Jaro distance and Jaro Winkler function.
