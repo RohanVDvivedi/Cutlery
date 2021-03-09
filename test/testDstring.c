@@ -160,4 +160,13 @@ int main()
 	printf("\n\n");
 
 	deinit_dstring(&str);
+
+
+	// levenshtein distance formula and length of longest common sub sequence
+	{
+		const dstring* s0 = dstring_DUMMY_CSTRING("TRACE");
+		const dstring* s1 = dstring_DUMMY_CSTRING("CRATE");
+		printf("leven-dist(\"%s\", \"%s\") = %u\n\n", s0->cstring, s1->cstring, levenshtein_distance(s0, s1));
+		printf("len-of-lcs(\"%s\", \"%s\") = %u\n\n", s0->cstring, s1->cstring, length_of_longest_common_subsequence(s0, s1));
+	}
 }

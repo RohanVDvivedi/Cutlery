@@ -62,7 +62,7 @@ unsigned int levenshtein_distance(dstring* str0, dstring* str1)
 	return result;
 }
 
-unsigned int longest_common_subsequence(dstring* str0, dstring* str1)
+unsigned int length_of_longest_common_subsequence(dstring* str0, dstring* str1)
 {
 	array_2d arr;
 	arr.dim_0_size = str0->bytes_occupied + 1;
