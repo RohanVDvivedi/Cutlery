@@ -33,22 +33,31 @@ static unsigned int* iterator(array_2d* arr, unsigned int i1, unsigned int i0)
 unsigned int levenshtein_distance(dstring* str0, dstring* str1)
 {
 	array_2d arr;
-	arr.dim_0_size = str0->bytes_occupied;
-	arr.dim_1_size = str1->bytes_occupied;
+	arr.dim_0_size = str0->bytes_occupied + 1;
+	arr.dim_1_size = str1->bytes_occupied + 1;
 	arr.holder = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 
-	for(unsigned int i = 0; i < str1->bytes_occupied - 1; i++)
+	for(unsigned int i = 0; i <= str1->bytes_occupied; i++)
 	{
-		for(unsigned int j = 0; j < str0->bytes_occupied - 1; j++)
+		for(unsigned int j = 0; j <= str0->bytes_occupied; j++)
 		{
-			if(str1->cstring[i] == str0->cstring[j])
-				(*(iterator(&arr, i, j))) = 0;
+			if(i == 0)
+				(*(iterator(&arr, i, j))) = j;
+			else if(j == 0)
+				(*(iterator(&arr, i, j))) = i;
 			else
-				(*(iterator(&arr, i, j))) = 0;
+			{
+				if(str1->cstring[i - 1] == str0->cstring[j - 1])
+					(*(iterator(&arr, i, j))) = (*(iterator(&arr, i - 1, j - 1)));
+				else
+					(*(iterator(&arr, i, j))) = minimum_of( 1 + (*(iterator(&arr, i - 1, j - 1))),	// replace
+															1 + (*(iterator(&arr, i - 1, j    ))),	// insert in str1
+															1 + (*(iterator(&arr, i    , j - 1))));	// insert in str0
+			}
 		}
 	}
 
-	unsigned int result = (*(iterator(&arr, str1->bytes_occupied - 1, str0->bytes_occupied - 1)));
+	unsigned int result = (*(iterator(&arr, str1->bytes_occupied, str0->bytes_occupied)));
 	deallocate(DSTRING_mem_alloc, arr.holder, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 	return result;
 }
@@ -56,18 +65,27 @@ unsigned int levenshtein_distance(dstring* str0, dstring* str1)
 unsigned int longest_common_subsequence(dstring* str0, dstring* str1)
 {
 	array_2d arr;
-	arr.dim_0_size = str0->bytes_occupied;
-	arr.dim_1_size = str1->bytes_occupied;
+	arr.dim_0_size = str0->bytes_occupied + 1;
+	arr.dim_1_size = str1->bytes_occupied + 1;
 	arr.holder = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 
-	for(unsigned int i = 0; i < str1->bytes_occupied - 1; i++)
+	for(unsigned int i = 0; i <= str1->bytes_occupied; i++)
 	{
-		for(unsigned int j = 0; j < str0->bytes_occupied - 1; j++)
+		for(unsigned int j = 0; j <= str0->bytes_occupied; j++)
 		{
-			if(str1->cstring[i] == str0->cstring[j])
+			if(i == 0)
+				(*(iterator(&arr, i, j))) = 0;
+			else if(j == 0)
 				(*(iterator(&arr, i, j))) = 0;
 			else
-				(*(iterator(&arr, i, j))) = 0;
+			{
+				if(str1->cstring[i - 1] == str0->cstring[j - 1])
+					(*(iterator(&arr, i, j))) = 1 + (*(iterator(&arr, i - 1, j - 1)));
+				else
+					(*(iterator(&arr, i, j))) = maximum_of( (*(iterator(&arr, i - 1, j - 1))),
+															(*(iterator(&arr, i - 1, j    ))),
+															(*(iterator(&arr, i    , j - 1))));
+			}
 		}
 	}
 
