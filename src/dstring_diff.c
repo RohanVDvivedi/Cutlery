@@ -30,7 +30,7 @@ static unsigned int* iterator(array_2d* arr, unsigned int i1, unsigned int i0)
 	return arr->holder + (i1 * arr->dim_0_size) + i0;
 }
 
-unsigned int levenshtein_distance(dstring* str0, dstring* str1)
+unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 {
 	array_2d arr;
 	arr.dim_0_size = str0->bytes_occupied + 1;
@@ -62,7 +62,7 @@ unsigned int levenshtein_distance(dstring* str0, dstring* str1)
 	return result;
 }
 
-unsigned int length_of_longest_common_subsequence(dstring* str0, dstring* str1)
+unsigned int length_of_longest_common_subsequence(const dstring* str0, const dstring* str1)
 {
 	array_2d arr;
 	arr.dim_0_size = str0->bytes_occupied + 1;
