@@ -20,16 +20,36 @@ void reset_bit(char* bitmap, unsigned int index)
 
 void set_all_bits(char* bitmap, unsigned int size)
 {
-	unsigned int bitmap_size = bitmap_size_in_bytes(size);
-	for(unsigned int i = 0; i < bitmap_size; i++)
+	unsigned int bitmap_byte_size = bitmap_size_in_bytes(size);
+	
+	// chop off the partial byte
+	if(bitmap_byte_size % 8 > 0)
+		bitmap_byte_size -= 1;
+	
+	// set all bits in the complete bytes
+	for(unsigned int i = 0; i < bitmap_byte_size; i++)
 		bitmap[i] = 0xff;
+
+	// set necessary bits in the last partial byte
+	for(unsigned int i = (8 * bitmap_byte_size); i < size; i++)
+		set_bit(bitmap, i);
 }
 
 void reset_all_bits(char* bitmap, unsigned int size)
 {
-	unsigned int bitmap_size = bitmap_size_in_bytes(size);
-	for(unsigned int i = 0; i < bitmap_size; i++)
-		bitmap[i] = 0;
+	unsigned int bitmap_byte_size = bitmap_size_in_bytes(size);
+	
+	// chop off the partial byte
+	if(bitmap_byte_size % 8 > 0)
+		bitmap_byte_size -= 1;
+	
+	// reset all bits in the complete bytes
+	for(unsigned int i = 0; i < bitmap_byte_size; i++)
+		bitmap[i] = 0x00;
+
+	// set necessary bits in the last partial byte
+	for(unsigned int i = (8 * bitmap_byte_size); i < size; i++)
+		reset_bit(bitmap, i);
 }
 
 void print_bitmap(const char* bitmap, unsigned int size)
