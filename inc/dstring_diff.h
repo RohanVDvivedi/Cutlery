@@ -5,6 +5,6 @@
 
 unsigned int levenshtein_distance(dstring* str0, dstring* str1);
 
-unsigned int longest_common_subsequence(dstring* str0, dstring* str1);
+unsigned int length_of_longest_common_subsequence(dstring* str0, dstring* str1);
 
 #endif
