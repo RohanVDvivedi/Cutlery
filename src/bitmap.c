@@ -77,7 +77,7 @@ unsigned int find_first_set(const char* bitmap, unsigned int start_index, unsign
 	{
 		if(bitmap[byte_index])
 		{
-			// ffs functions returns value between 1 <-> 2^n
+			// ffs functions returns value between 1 <-> 8
 			unsigned int bit_index = (byte_index*8) + (ffs(bitmap[byte_index]) - 1);
 
 			// bit index valid only if it is between returnable bounds
