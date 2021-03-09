@@ -51,6 +51,7 @@ void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
 
 #include<dstring_substring.h>
+#include<dstring_diff.h>
 
 void deinit_dstring(dstring* str_p);
 
