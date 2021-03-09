@@ -89,7 +89,7 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 		}
 	}
 
-	unsigned int result = (*(iterator(&arr, str1->bytes_occupied - 1, str0->bytes_occupied - 1)));
+	unsigned int result = (*(iterator(&arr, str1->bytes_occupied, str0->bytes_occupied)));
 	deallocate(DSTRING_mem_alloc, arr.holder, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 	return result;
 }
