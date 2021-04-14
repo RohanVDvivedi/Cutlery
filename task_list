@@ -1,21 +1,17 @@
 (fix print functions)
- STAGE - 2
+ STAGE - 1
  * convert all print functions to dstring based serializers using snprintf_dstring(), also with debug_print and tab_count as input parameters -> get rid of <stdio.h>
 
 (fix memmory allocation user's interface with Cutlery library)
- STAGE - 3
+ STAGE - 2
  * provide expand_array_addional_size functions to expand array and other dependent datastructures to control memory allocation in a more controlled and flexible way
  * provide a function to set all cutlery data structure's container pointer memory pointer to static memory or to pre-allocated memory locations
  * remove pointer to memory allocator and default to a global void pointer allocator, like we did to dstring. Since all Cutlery containers (except dstring) allocate and use only void pointers, there is no reason from different allocators, except for covering very specific use cases (which though not discussed, we still may not be willing to miss; SO keeping this pointer as is for now).
 
 (optimize resize_hashmap function)
-STAGE - 4
+STAGE - 3
  * for ELEMENTS_AS_LINKEDLIST and ELEMENTS_AS_*_BST we could use linkedlist queue to save on the additional memory (taken by the "queue q" structure). This optimization will reduce memory requirement when the hashmap is eleemnts as linkedlist or bst.
 
 (optimize heap_sort function)
-STAGE - 5
+STAGE - 4
  * in the heap sort function construct the temporary max heap that points to the sub array that needs to be sorted. then call heapify from i = 0 to total_elements on that heap. then loop for total_elements, where you pop and place the max element at the end_index - i. This optimization will reduce memory requirement of the heap sort.
-
- (additional dstring distance function)
-STAGE - 5
- * implement Jaro distance and Jaro Winkler function.
