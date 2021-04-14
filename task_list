@@ -1,19 +1,3 @@
-(long term implementation for all graph algorithms)
- STAGE - 1
- * use graph descriptor interface to build graph algorithms like :
-       * dfs (iterative only (not recursive) with Cutlery stack)
-       * bfs (iterative only with Cutlery queue)
-       * bellmanford
-       * dijkstra
-       * floydwarshall
-       * A*-star
-       * minimum spanning tree
-        etc (more will be added)
-
------------------------------------------------------------------------------------------
---------------------------- RELEASE 1.0 -------------------------------------------------
------------------------------------------------------------------------------------------
-
 (fix print functions)
  STAGE - 2
  * convert all print functions to dstring based serializers using snprintf_dstring(), also with debug_print and tab_count as input parameters -> get rid of <stdio.h>

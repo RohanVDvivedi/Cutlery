@@ -35,7 +35,6 @@ A C (standard C99) library that provides configurable data structures, serving a
    * `#include<hashmap.h>`
    * `#include<dstring.h>`
    * `#include<bitmap.h>`
-   * `#include<graph_algorithms.h>`
    * `#include<memory_allocator_interface.h>`
 
 ## Instructions for uninstalling library
