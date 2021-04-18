@@ -7,6 +7,11 @@ void initialize_queue(queue* queue_p, unsigned int initial_size)
 	initialize_arraylist(&(queue_p->queue_holder), initial_size);
 }
 
+void initialize_queue_with_allocator(queue* queue_p, unsigned int initial_size, memory_allocator array_mem_allocator)
+{
+	initialize_arraylist_with_allocator(&(queue_p->queue_holder), initial_size, array_mem_allocator);
+}
+
 int push_queue(queue* queue_p, const void* data_p)
 {
 	return push_back(&(queue_p->queue_holder), data_p);
