@@ -11,6 +11,13 @@ void initialize_arraylist(arraylist* al, unsigned int initial_size)
 	al->element_count = 0;
 }
 
+void initialize_arraylist_with_allocator(arraylist* al, unsigned int initial_size, memory_allocator array_mem_allocator)
+{
+	initialize_array_with_allocator(&(al->arraylist_holder), initial_size, array_mem_allocator);
+	al->first_index = 0;
+	al->element_count = 0;
+}
+
 int push_front(arraylist* al, const void* data_p)
 {
 	// if full, you can't push to arraylist

@@ -23,6 +23,7 @@ struct arraylist
 };
 
 void initialize_arraylist(arraylist* al, unsigned int initial_size);
+void initialize_arraylist_with_allocator(arraylist* al, unsigned int initial_size, memory_allocator array_mem_allocator);
 
 // push_front functions will push data_p to the front of the arraylist, and will return 1 on success
 int push_front(arraylist* al, const void* data_p);
