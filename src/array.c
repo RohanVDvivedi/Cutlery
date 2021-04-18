@@ -18,8 +18,12 @@ static unsigned int get_new_total_size(unsigned int current_size)
 void initialize_array(array* array_p, unsigned int initial_size)
 {
 	// set to a default memory allocator
-	array_p->array_mem_allocator = STD_C_mem_allocator;
+	initialize_array_with_allocator(array_p, initial_size, STD_C_mem_allocator);
+}
 
+void initialize_array_with_allocator(array* array_p, unsigned int initial_size, memory_allocator array_mem_allocator)
+{
+	array_p->array_mem_allocator = array_mem_allocator;
 	array_p->data_p_p = (initial_size > 0) ? zallocate(array_p->array_mem_allocator, initial_size * sizeof(void*)) : NULL;
 	array_p->total_size = (array_p->data_p_p != NULL) ? initial_size : 0;
 }

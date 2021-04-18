@@ -19,6 +19,7 @@ struct array
 
 // initializes and gives necessary memory to manage internal element contents
 void initialize_array(array* array_p, unsigned int initial_size);
+void initialize_array_with_allocator(array* array_p, unsigned int initial_size, memory_allocator array_mem_allocator);
 
 // returns pointer to the data at index = index
 const void* get_element(const array* array_p, unsigned int index);
