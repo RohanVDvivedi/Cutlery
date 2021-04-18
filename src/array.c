@@ -31,6 +31,7 @@ void deinitialize_array(array* array_p)
 {
 	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
 		deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
+	array_p->array_mem_allocator = NULL;
 	array_p->data_p_p = NULL;
 	array_p->total_size = 0;
 }
