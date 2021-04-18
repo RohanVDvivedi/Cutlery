@@ -9,7 +9,3 @@
 (optimize resize_hashmap function)
 STAGE - 3
  * for ELEMENTS_AS_LINKEDLIST and ELEMENTS_AS_*_BST we could use linkedlist queue to save on the additional memory (taken by the "queue q" structure). This optimization will reduce memory requirement when the hashmap is eleemnts as linkedlist or bst.
-
-(optimize heap_sort function)
-STAGE - 4
- * in the heap sort function construct the temporary max heap that points to the sub array that needs to be sorted. then call heapify from i = 0 to total_elements on that heap. then loop for total_elements, where you pop and place the max element at the end_index - i. This optimization will reduce memory requirement of the heap sort.
