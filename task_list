@@ -2,10 +2,6 @@
  STAGE - 1
  * convert all print functions to dstring based serializers using snprintf_dstring(), also with debug_print and tab_count as input parameters -> get rid of <stdio.h>
 
-(fix memmory allocation user's interface with Cutlery library)
- STAGE - 2
- * provide a function to set all cutlery data structure's container pointer memory pointer to static memory or to pre-allocated memory locations
-
 (optimize resize_hashmap function)
-STAGE - 3
+STAGE - 2
  * for ELEMENTS_AS_LINKEDLIST and ELEMENTS_AS_*_BST we could use linkedlist queue to save on the additional memory (taken by the "queue q" structure). This optimization will reduce memory requirement when the hashmap is eleemnts as linkedlist or bst.
