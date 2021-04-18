@@ -1,7 +1,3 @@
 (fix print functions)
  STAGE - 1
  * convert all print functions to dstring based serializers using snprintf_dstring(), also with debug_print and tab_count as input parameters -> get rid of <stdio.h>
-
-(optimize resize_hashmap function)
-STAGE - 2
- * for ELEMENTS_AS_LINKEDLIST and ELEMENTS_AS_*_BST we could use linkedlist queue to save on the additional memory (taken by the "queue q" structure). This optimization will reduce memory requirement when the hashmap is eleemnts as linkedlist or bst.
