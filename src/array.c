@@ -16,8 +16,7 @@ static unsigned int get_new_total_size(unsigned int current_size)
 }
 
 void initialize_array(array* array_p, unsigned int initial_size)
-{
-	// set to a default memory allocator
+{// initialize array with the default memory allocator
 	initialize_array_with_allocator(array_p, initial_size, STD_C_mem_allocator);
 }
 
