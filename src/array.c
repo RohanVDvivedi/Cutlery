@@ -29,7 +29,7 @@ void initialize_array_with_allocator(array* array_p, unsigned int initial_size, 
 
 void deinitialize_array(array* array_p)
 {
-	if(array_p->total_size > 0 && array_p->data_p_p != NULL)
+	if(array_p->array_mem_allocator != NULL && array_p->total_size > 0 && array_p->data_p_p != NULL)
 		deallocate(array_p->array_mem_allocator, array_p->data_p_p, array_p->total_size);
 	array_p->array_mem_allocator = NULL;
 	array_p->data_p_p = NULL;
@@ -75,6 +75,10 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 
 int expand_array(array* array_p)
 {
+	// can not shrink if the allocator is NULL
+	if(array_p->array_mem_allocator == NULL)
+		return 0;
+
 	// compute new_total_size to expand to
 	unsigned int new_total_size = get_new_total_size(array_p->total_size);
 
@@ -105,6 +109,10 @@ int expand_array(array* array_p)
 
 int shrink_array(array* array_p, unsigned int new_total_size)
 {
+	// can not shrink if the allocator is NULL
+	if(array_p->array_mem_allocator == NULL)
+		return 0;
+
 	// new_total_size must be lesser than the old_total_size
 	if(new_total_size >= array_p->total_size)
 		return 0;
