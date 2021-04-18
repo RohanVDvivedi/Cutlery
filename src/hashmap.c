@@ -17,6 +17,16 @@ void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_
 	hashmap_p->element_count = 0;
 }
 
+void initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator array_mem_allocator)
+{
+	hashmap_p->hashmap_policy = hashmap_policy;
+	hashmap_p->hash_function = hash_function;
+	hashmap_p->compare = compare;
+	initialize_array_with_allocator(&(hashmap_p->hashmap_holder), bucket_count, array_mem_allocator);
+	hashmap_p->node_offset = node_offset;
+	hashmap_p->element_count = 0;
+}
+
 unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p)
 {
 	return hashmap_p->hashmap_holder.total_size;
@@ -370,6 +380,10 @@ static void push_to_queue_wrapper(const void* hashmap_data, const void* queue_p)
 
 int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count)
 {
+	// if the memory allocator is NULL, we can not resize the hashmap
+	if(hashmap_p->hashmap_holder.array_mem_allocator == NULL)
+		return 0;
+
 	// resizing to the same bucket count; i.e. nothing needs to be done
 	if(get_bucket_count_hashmap(hashmap_p) == new_bucket_count)
 		return 1;
@@ -385,7 +399,7 @@ int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count)
 
 	// create a new hashmap indentical to the hashmap_p with new_bucket_count number of buckets
 	hashmap new_hashmap;
-	initialize_hashmap(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset);
+	initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset, hashmap_p->hashmap_holder.array_mem_allocator);
 
 	{
 		// create a temporary queue variable, and push all the hashmap_p elements into it
