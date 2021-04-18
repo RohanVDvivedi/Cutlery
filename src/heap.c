@@ -143,6 +143,16 @@ void initialize_heap(heap* heap_p, unsigned int initial_size, heap_type type, in
 	heap_p->callback_params = callback_params;
 }
 
+void initialize_heap_with_allocator(heap* heap_p, unsigned int initial_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params, memory_allocator array_mem_allocator)
+{
+	heap_p->type = type;
+	heap_p->compare = compare;
+	initialize_array_with_allocator(&(heap_p->heap_holder), initial_size, array_mem_allocator);
+	heap_p->element_count = 0;
+	heap_p->heap_index_update_callback = heap_index_update_callback;
+	heap_p->callback_params = callback_params;
+}
+
 int push_heap(heap* heap_p, const void* data)
 {
 	// fail, heap is full

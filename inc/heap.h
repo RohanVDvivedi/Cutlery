@@ -37,7 +37,8 @@ struct heap
 };
 
 // initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_heap(heap* heap_p, unsigned int expected_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params);
+void initialize_heap(heap* heap_p, unsigned int initial_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params);
+void initialize_heap_with_allocator(heap* heap_p, unsigned int initial_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params, memory_allocator array_mem_allocator);
 
 // push a new data element to the heap
 // push returns 1, if data_p is successfully pushed
