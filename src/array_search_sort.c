@@ -94,24 +94,26 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_
 	if(total_elements <= 1)
 		return;
 
-	// create a min heap
+	// create a max heap
 	heap sort_heap;
-	initialize_heap(&sort_heap, total_elements, MIN_HEAP, compare, NULL, NULL);
+	initialize_heap(&sort_heap, 0, MAX_HEAP, compare, NULL, NULL);
+	sort_heap.heap_holder.data_p_p = array_p->data_p_p + start_index;
+	sort_heap.heap_holder.total_size = total_elements;
 
-	// push all the elements in the min heap
+	// push all the elements in the max heap
 	for(unsigned int i = start_index; i <= end_index; i++)
 		push_heap(&sort_heap, get_element(array_p, i));
 
 	// place the top of the heap element in the array, then pop heap
-	for(unsigned int i = start_index; i <= end_index; i++)
+	for(unsigned int i = end_index; ; i--)
 	{
-		const void* min_data = get_top_heap(&sort_heap);
-		set_element(array_p, min_data, i);
+		const void* max_data = get_top_heap(&sort_heap);
 		pop_heap(&sort_heap);
-	}
+		set_element(array_p, max_data, i);
 
-	// destroy the temporary heap
-	deinitialize_heap(&sort_heap);
+		if(i == start_index)
+			break;
+	}
 }
 
 void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, unsigned int (*get_sort_attribute)(const void* data))
