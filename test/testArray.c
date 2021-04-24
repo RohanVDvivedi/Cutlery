@@ -14,10 +14,10 @@ void print_ts(const void* tsv)
 {
 	if(tsv == NULL)
 	{
-		printf("NULL");
+		printf("NULL\n");
 		return;
 	}
-	printf("%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+	printf("%d, %s\n", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
 void sprint_ts(dstring* append_str, const void* tsv)
@@ -57,6 +57,7 @@ void print_ts_array(array* array_p)
 	sprint_array(&str, array_p, sprint_ts, 0, 0);
 	printf_dstring(&str);
 	deinit_dstring(&str);
+	printf("\n\n");
 }
 
 int main()
