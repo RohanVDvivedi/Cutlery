@@ -14,10 +14,15 @@ void print_ts(const void* tsv)
 {
 	if(tsv == NULL)
 	{
-		printf(" NULL");
+		printf("NULL");
 		return;
 	}
-	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+	printf("%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
+void sprint_ts(dstring* append_str, const void* tsv)
+{
+	snprintf_dstring(append_str, "%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
 int test_compare(const void* a, const void* b)
@@ -45,67 +50,76 @@ unsigned int get_radix_sort_attr(const void* a)
 	return ((ts*)a)->a;
 }
 
+void print_ts_array(array* array_p)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_array(&str, array_p, sprint_ts, 0, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+}
+
 int main()
 {
 	array array_temp;
 	array* array_p = &array_temp;
 	initialize_array(array_p, 3);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	set_element(array_p, &((ts){111, "def"}), 1);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	expand_array(array_p);
 	expand_array(array_p);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	set_element(array_p, &((ts){333, "jkl"}), 3);
 	set_element(array_p, &((ts){222, "ghi"}), 2);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	set_element(array_p, &((ts){555, "one 0 3"}), 5);
 	set_element(array_p, &((ts){100, "abc"}), 0);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	set_element(array_p, &((ts){444, "mno"}), 4);
 	set_element(array_p, &((ts){555, "pqr"}), 5);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	set_element(array_p, &((ts){666, "stu"}), 6);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	expand_array(array_p);
 	expand_array(array_p);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	set_element(array_p, &((ts){777, "7 th"}), 7);
 	set_element(array_p, &((ts){888, "8 th"}), 8);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	expand_array(array_p);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	expand_array(array_p);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	expand_array(array_p);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 	shrink_array(array_p, 5);
 
-	print_array(array_p, print_ts);
+	print_ts_array(array_p);
 
 
 	ts to_find = {444, "lol"};
@@ -136,7 +150,7 @@ int main()
 		set_element(array_p, ts_ss + i, i);
 	}
 
-	printf("Array initialized\n\n");print_array(array_p, print_ts);printf("\n\n");
+	printf("Array initialized\n\n");print_ts_array(array_p);printf("\n\n");
 
 //#define MERGE_SORT
 #define HEAP_SORT
@@ -156,7 +170,7 @@ int main()
 	return 0;
 #endif
 
-	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_array(array_p, print_ts);printf("\n\n");
+	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_ts_array(array_p);printf("\n\n");
 
 	printf("Executing Search of all\n\n");
 
