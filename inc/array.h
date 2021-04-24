@@ -1,6 +1,7 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#include<dstring.h>
 #include<memory_allocator_interface.h>
 
 typedef struct array array;
@@ -49,8 +50,8 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 //also ->
 void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
-// prints the array
-void print_array(const array* array_p, void (*print_element)(const void* data_p));
+// serializes the array, and appends the serialized form to the dstring
+void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p), int tabs, int debug);
 
 #include<array_search_sort.h>
 
