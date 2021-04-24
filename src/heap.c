@@ -279,7 +279,7 @@ void print_heap(const heap* heap_p, void (*print_element)(const void* data))
 	printf("\telements in heap : %u\n", heap_p->element_count);
 
 	printf("\theap array : \n");
-	print_array(&(heap_p->heap_holder), print_element);
+	//print_array(&(heap_p->heap_holder), print_element);
 	printf("\n");
 
 	printf("\tthe top element of this heap : ");
