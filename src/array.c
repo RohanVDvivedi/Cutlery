@@ -138,8 +138,8 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 {
 	if(debug)
 	{
-		snprintf_dstring(append_str, "%0*carray:\n", tabs++, '\t');
-		snprintf_dstring(append_str, "%0*ctotal size : %u\n", tabs, '\t',array_p->total_size);
+		snprintf_dstring(append_str, "%0*carray:\n", tabs, '\t');
+		snprintf_dstring(append_str, "%0*ctotal size : %u\n", tabs++, '\t',array_p->total_size);
 	}
 	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
