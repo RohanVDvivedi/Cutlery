@@ -136,10 +136,8 @@ int shrink_array(array* array_p, unsigned int new_total_size)
 
 void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "array:\n");
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "total size : %u\n",array_p->total_size);
-	
-	tabs++;
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "array:\n");
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "total size : %u\n",array_p->total_size);
 
 	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
