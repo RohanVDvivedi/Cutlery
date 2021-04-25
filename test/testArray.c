@@ -54,7 +54,7 @@ void print_ts_array(array* array_p)
 {
 	dstring str;
 	init_dstring(&str, "", 0);
-	sprint_array(&str, array_p, sprint_ts, 5, 1);
+	sprint_array(&str, array_p, sprint_ts, 0, 1);
 	printf_dstring(&str);
 	deinit_dstring(&str);
 	printf("\n");

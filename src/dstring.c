@@ -108,7 +108,7 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 
 void sprint_chars(dstring* str_p, char chr, unsigned int count)
 {
-	for(int i = 0; i < count; i++)
+	for(unsigned int i = 0; i < count; i++)
 		snprintf_dstring(str_p, "%c", chr);
 }
 

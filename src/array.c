@@ -134,25 +134,25 @@ int shrink_array(array* array_p, unsigned int new_total_size)
 	return 1;
 }
 
-void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p), int tabs, int debug)
+void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	if(debug)
-	{
-		snprintf_dstring(append_str, "%0*carray:\n", tabs, '\t');
-		snprintf_dstring(append_str, "%0*ctotal size : %u\n", tabs++, '\t',array_p->total_size);
-	}
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "array:\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "total size : %u\n",array_p->total_size);
+	
+	tabs++;
+
 	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
-		if(debug)
-			snprintf_dstring(append_str, "%0*celement_index %u -> ", tabs, '\t', i);
-		else
-			snprintf_dstring(append_str, "%0*c", tabs, '\t');
+		sprint_chars(append_str, '\t', tabs); 
+
+		snprintf_dstring(append_str, "index %u -> ", i);
 
 		const void* element = get_element(array_p, i);
 		if(element != NULL)
 			sprint_element(append_str, element);
 		else
 			snprintf_dstring(append_str, "NULL");
+
 		snprintf_dstring(append_str, "\n");
 	}
 }
