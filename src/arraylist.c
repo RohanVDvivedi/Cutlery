@@ -2,8 +2,6 @@
 
 #include<cutlery_stds.h>
 
-#include<stdio.h>
-
 void initialize_arraylist(arraylist* al, unsigned int initial_size)
 {
 	initialize_array(&(al->arraylist_holder), initial_size);
@@ -272,25 +270,25 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 	for_each_non_null_in_array(&(al->arraylist_holder), operation, additional_params);
 }
 
-void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs);
+void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	printf("arraylist : \n");
-	printf("\tfirst_index : %u\n", al->first_index);
-	printf("\telement_count : %u\n", al->element_count);
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "arraylist : \n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "first_index : %u\n", al->first_index);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "element_count : %u\n", al->element_count);
 	
-	printf("\tarraylist_holder : \n\t");
-	print_array(&(al->arraylist_holder), print_element);
-	printf("\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "arraylist_holder : \n\t");
+	sprint_array(append_str, &(al->arraylist_holder), sprint_element, tabs);
+	snprintf_dstring(append_str, "\n");
 	
 	const void* front_element = get_front(al);
-	printf("\tthe front element : ");
-	(front_element != NULL) ? print_element(front_element) : printf("NULL");
-	printf("\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "the front element : ");
+	(front_element != NULL) ? sprint_element(append_str, front_element) : snprintf_dstring(append_str, "NULL");
+	snprintf_dstring(append_str, "\n");
 
 	const void* back_element = get_back(al);
-	printf("\tthe back element : ");
-	(back_element != NULL) ? print_element(back_element) : printf("NULL");
-	printf("\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "the back element : ");
+	(back_element != NULL) ? sprint_element(append_str, back_element) : snprintf_dstring(append_str, "NULL");
+	snprintf_dstring(append_str, "\n");
 }
 
 void deinitialize_arraylist(arraylist* al)
