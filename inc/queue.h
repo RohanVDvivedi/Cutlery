@@ -59,7 +59,7 @@ int shrink_queue(queue* queue_p);
 // for each function, to iteration over all non null elements to perform an operation
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
-// prints the queue
-void print_queue(const queue* queue_p, void (*print_element)(const void* data_p));
+// serializes the queue, and appends the serialized form to the dstring
+void sprint_queue(dstring* append_str, const queue* queue_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs);
 
 #endif

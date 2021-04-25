@@ -72,15 +72,19 @@ void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, uns
 	for_each_in_arraylist(&(queue_p->queue_holder), operation, additional_params);
 }
 
-void print_queue(const queue* queue_p, void (*print_element)(const void* data_p))
+void sprint_queue(dstring* append_str, const queue* queue_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	printf("queue : \n\t");
-	//print_arraylist(&(queue_p->queue_holder), print_element);
-	printf("\n");
-	printf("\tthe top element of this queue : ");
-	if(get_top_queue(queue_p)!=NULL)
-		print_element(get_top_queue(queue_p));
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "queue : \n");
+
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "queue_holder : \n");
+	sprint_arraylist(append_str, &(queue_p->queue_holder), sprint_element, tabs + 1);
+	snprintf_dstring(append_str, "\n");
+
+	sprint_chars(append_str, '\t', tabs); 
+	snprintf_dstring(append_str, "top : ");
+	if(get_top_queue(queue_p) != NULL)
+		sprint_element(append_str, get_top_queue(queue_p));
 	else
-		printf("NULL");
-	printf("\n");
+		snprintf_dstring(append_str, "NULL");
+	snprintf_dstring(append_str, "\n");
 }
