@@ -97,6 +97,24 @@ void print_int(const void* data)
 		printf("NULL - INT");
 }
 
+void sprint_int(dstring* append_str, const void* data)
+{
+	if(data != NULL)
+		snprintf_dstring(append_str, "%d", *((int*)data));
+	else
+		snprintf_dstring(append_str, "NULL - INT");
+}
+
+void print_int_arraylist(arraylist* al)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_arraylist(&str, al, sprint_int, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+	printf("\n");
+}
+
 int main()
 {
 	// seed the random number generator
@@ -120,7 +138,7 @@ int main()
 		int op = rand() % TOTAL_OPERATIONS_SUPPORTED;
 		operate_on_arraylist(al, op);
 		if(op <= 5)	// print complete arraylist only on an update operation
-			print_arraylist(al, print_int);
+			print_int_arraylist(al);
 		printf("\n\n");
 
 		expand_required += is_full_arraylist(al);
@@ -130,14 +148,14 @@ int main()
 			if(has_expanded)
 				expand_required = 0;
 			printf("EXPAND ARRAYLIST : %d\n", has_expanded);
-			print_arraylist(al, print_int);
+			print_int_arraylist(al);
 			printf("\n\n");
 		}
 
 		if(num_ops % 20 == 0)
 		{
 			printf("SHRINK ARRAYLIST : %d\n", shrink_arraylist(al));
-			print_arraylist(al, print_int);
+			print_int_arraylist(al);
 			printf("\n\n");
 		}
 	}
