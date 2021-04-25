@@ -272,14 +272,14 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 	for_each_non_null_in_array(&(al->arraylist_holder), operation, additional_params);
 }
 
-void print_arraylist(const arraylist* al, void (*print_element)(const void* data_p))
+void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs);
 {
 	printf("arraylist : \n");
 	printf("\tfirst_index : %u\n", al->first_index);
 	printf("\telement_count : %u\n", al->element_count);
 	
 	printf("\tarraylist_holder : \n\t");
-	//print_array(&(al->arraylist_holder), print_element);
+	print_array(&(al->arraylist_holder), print_element);
 	printf("\n");
 	
 	const void* front_element = get_front(al);
