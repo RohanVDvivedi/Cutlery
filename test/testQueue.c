@@ -15,7 +15,6 @@ void print_ts(const void* tsv)
 
 void sprint_ts(dstring* append_str, const void* tsv)
 {
-	printf("%u %u\n", append_str->bytes_occupied, append_str->bytes_allocated);
 	snprintf_dstring(append_str, "%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
@@ -25,8 +24,6 @@ void print_ts_queue(queue* queue_p)
 	init_dstring(&str, "", 0);
 	sprint_queue(&str, queue_p, sprint_ts, 0);
 	printf_dstring(&str);
-	for(unsigned int i = 0; i < str.bytes_occupied; i++)
-		printf("%c %d\n", str.cstring[i], str.cstring[i]);
 	deinit_dstring(&str);
 	printf("\n");
 }
