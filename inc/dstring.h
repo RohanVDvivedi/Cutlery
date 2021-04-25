@@ -44,6 +44,9 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 // append_to_dstring_formatted is a snprintf implementation for dstrings
 void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
+// append count number of chr char at the end of the dstring str_p
+void sprint_chars(dstring* str_p, char chr, unsigned int count);
+
 // marcos for io using dstring
 #define printf_dstring(str_p)				(((str_p)->cstring != NULL && (str_p)->bytes_occupied > 0) ? printf("%.*s", (str_p)->bytes_occupied, (str_p)->cstring) : 0)
 

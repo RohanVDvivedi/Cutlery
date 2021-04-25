@@ -106,6 +106,12 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 	va_end(var_args);
 }
 
+void sprint_chars(dstring* str_p, char chr, unsigned int count)
+{
+	for(int i = 0; i < count; i++)
+		snprintf_dstring(str_p, "%c", chr);
+}
+
 #define toLowercaseChar(c) ((('A' <= (c)) && ((c) <= 'Z')) ? ((c) - 'A' + 'a') : (c))
 void toLowercase(dstring* str_p)
 {
