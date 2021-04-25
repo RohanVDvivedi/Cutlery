@@ -1,6 +1,6 @@
 #include<heap.h>
 
-#include<stdio.h>
+#include<cutlery_stds.h>
 
 // utility : gets index of the parent data to the data at index = child
 static unsigned int get_parent_index(unsigned int child)
@@ -266,26 +266,30 @@ void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned
 	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
 }
 
-void print_heap(const heap* heap_p, void (*print_element)(const void* data))
+void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
 {
+	sprint_chars(append_str, '\t', tabs++);
 	switch(heap_p->type)
 	{
 		case MIN_HEAP :
-		{	printf("heap : MIN_HEAP\n");break;	}
+		{snprintf_dstring(append_str, "heap (MIN_HEAP)\n");break;}
 		case MAX_HEAP :
-		{	printf("heap : MAX_HEAP\n");break;	}
+		{snprintf_dstring(append_str, "heap (MAX_HEAP)\n");break;}
 	}
 
-	printf("\telements in heap : %u\n", heap_p->element_count);
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "element_count : %u\n", heap_p->element_count);
 
-	printf("\theap array : \n");
-	//print_array(&(heap_p->heap_holder), print_element);
-	printf("\n");
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "heap_holder : \n");
+	sprint_array(append_str, &(heap_p->heap_holder), sprint_element, tabs + 1);
+	snprintf_dstring(append_str, "\n");
 
-	printf("\tthe top element of this heap : ");
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "top : ");
 	if(get_top_heap(heap_p) != NULL)
-		print_element(get_top_heap(heap_p));
+		sprint_element(append_str, get_top_heap(heap_p));
 	else
-		printf("NULL");
-	printf("\n");
+		snprintf_dstring(append_str, "NULL");
+	snprintf_dstring(append_str, "\n");
 }
