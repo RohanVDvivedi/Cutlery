@@ -276,17 +276,17 @@ void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_el
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "first_index : %u\n", al->first_index);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "element_count : %u\n", al->element_count);
 	
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "arraylist_holder : \n\t");
-	sprint_array(append_str, &(al->arraylist_holder), sprint_element, tabs);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "arraylist_holder : \n");
+	sprint_array(append_str, &(al->arraylist_holder), sprint_element, tabs + 1);
 	snprintf_dstring(append_str, "\n");
 	
 	const void* front_element = get_front(al);
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "the front element : ");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "front : ");
 	(front_element != NULL) ? sprint_element(append_str, front_element) : snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");
 
 	const void* back_element = get_back(al);
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "the back element : ");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "back  : ");
 	(back_element != NULL) ? sprint_element(append_str, back_element) : snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");
 }
