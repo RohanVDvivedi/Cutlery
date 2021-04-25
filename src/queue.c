@@ -77,7 +77,7 @@ void sprint_queue(dstring* append_str, const queue* queue_p, void (*sprint_eleme
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "queue : \n");
 
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "queue_holder : \n");
-	sprint_arraylist(append_str, &(queue_p->queue_holder), sprint_element, tabs);
+	sprint_arraylist(append_str, &(queue_p->queue_holder), sprint_element, tabs + 1);
 	snprintf_dstring(append_str, "\n");
 
 	sprint_chars(append_str, '\t', tabs); 
