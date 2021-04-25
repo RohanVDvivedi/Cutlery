@@ -75,7 +75,7 @@ void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, uns
 void print_queue(const queue* queue_p, void (*print_element)(const void* data_p))
 {
 	printf("queue : \n\t");
-	print_arraylist(&(queue_p->queue_holder), print_element);
+	//print_arraylist(&(queue_p->queue_holder), print_element);
 	printf("\n");
 	printf("\tthe top element of this queue : ");
 	if(get_top_queue(queue_p)!=NULL)

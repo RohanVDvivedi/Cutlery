@@ -75,7 +75,7 @@ void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, uns
 void print_stack(const stack* stack_p, void (*print_element)(const void* data_p))
 {
 	printf("stack : \n\t");
-	print_arraylist(&(stack_p->stack_holder), print_element);
+	//print_arraylist(&(stack_p->stack_holder), print_element);
 	printf("\n");
 	printf("\tthe top element of this stack : ");
 	if(get_top_stack(stack_p)!=NULL)

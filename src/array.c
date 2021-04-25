@@ -2,8 +2,6 @@
 
 #include<cutlery_stds.h>
 
-#include<stdio.h>
-
 // this is the factor and the constant amount, by which the size of data_p_p will be expanded or shrunk
 #define EXPANSION_FACTR 1.8
 #define EXPANSION_CONST 2
