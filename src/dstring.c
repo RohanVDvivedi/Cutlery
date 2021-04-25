@@ -95,7 +95,7 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 
 	va_copy(var_args_dummy, var_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
-	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy);
+	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1;
 	va_end(var_args_dummy);
 
 	// expand str_p as needed
