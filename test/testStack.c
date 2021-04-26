@@ -10,7 +10,22 @@ struct teststruct
 
 void print_ts(const void* tsv)
 {
-	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+	printf("%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
+void sprint_ts(dstring* append_str, const void* tsv)
+{
+	snprintf_dstring(append_str, "%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
+void print_ts_stack(stack* stack_p)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_stack(&str, stack_p, sprint_ts, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+	printf("\n");
 }
 
 void push_stack_SAFE(stack* stack_p, const void* data_p)
@@ -33,97 +48,97 @@ int main()
 	stack* stack_p = &stack_temp;
 	initialize_stack(stack_p, 3);
 	
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){1, "one"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){2, "two"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){3, "three"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){4, "four"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){5, "five"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){6, "six"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){7, "seven"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){8, "eight"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){9, "nine"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){10, "ten"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){11, "eleven"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){12, "twelve"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){13, "thirteen"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	push_stack_SAFE(stack_p, &((ts){14, "fourteen"}));
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_stack(stack_p, print_ts);
+	print_ts_stack(stack_p);
 
 	deinitialize_stack(stack_p);
 	return 0;
