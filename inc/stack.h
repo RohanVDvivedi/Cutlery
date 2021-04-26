@@ -59,7 +59,7 @@ int shrink_stack(stack* stack_p);
 // for each element of the stack, perform the given operation
 void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
-// prints the stack
-void print_stack(const stack* stack_p, void (*print_element)(const void* data_p));
+// serializes the stack, and appends the serialized form to the dstring
+void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs);
 
 #endif
