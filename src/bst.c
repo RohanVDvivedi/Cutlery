@@ -357,7 +357,7 @@ static void print_tree(const bst* bst_p, const bstnode* node_p, void (*print_ele
 
 void print_bst(const bst* bst_p, void (*print_element)(const void* data))
 {
-	printf("BINARY SEARCH TREE\n");
+	printf("binary_search_tree\n");
 	switch(bst_p->type)
 	{
 		case NON_SELF_BALANCING :

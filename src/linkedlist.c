@@ -269,7 +269,7 @@ static void print_linkedlist_wrapper(const linkedlist* ll, const llnode* node_p,
 
 void print_linkedlist(const linkedlist* ll, void (*print_element)(const void* data_p))
 {
-	printf("LINKED LIST\n");
+	printf("linkedlist\n");
 	printf("node_offset : [%u]\n", ll->node_offset);
 	printf("head : [%p]\n", ll->head);
 	if(!is_empty_linkedlist(ll))
