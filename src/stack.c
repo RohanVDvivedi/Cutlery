@@ -1,6 +1,6 @@
 #include<stack.h>
 
-#include<stdio.h>
+#include<cutlery_stds.h>
 
 void initialize_stack(stack* stack_p, unsigned int initial_size)
 {
@@ -72,15 +72,19 @@ void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, uns
 	for_each_in_arraylist(&(stack_p->stack_holder), operation, additional_params);
 }
 
-void print_stack(const stack* stack_p, void (*print_element)(const void* data_p))
+void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	printf("stack : \n\t");
-	//print_arraylist(&(stack_p->stack_holder), print_element);
-	printf("\n");
-	printf("\tthe top element of this stack : ");
-	if(get_top_stack(stack_p)!=NULL)
-		print_element(get_top_stack(stack_p));
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "stack : \n");
+
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "stack_holder : \n");
+	sprint_arraylist(append_str, &(stack_p->stack_holder), sprint_element, tabs + 1);
+	snprintf_dstring(append_str, "\n");
+
+	sprint_chars(append_str, '\t', tabs); 
+	snprintf_dstring(append_str, "top : ");
+	if(get_top_stack(stack_p) != NULL)
+		sprint_element(append_str, get_top_stack(stack_p));
 	else
-		printf("NULL");
-	printf("\n");
+		snprintf_dstring(append_str, "NULL");
+	snprintf_dstring(append_str, "\n");
 }
