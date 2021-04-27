@@ -1,6 +1,8 @@
 #ifndef BST_H
 #define BST_H
 
+#include<dstring.h>
+
 /*
 ** 	BST is short for Binary Search Tree
 */
@@ -138,8 +140,5 @@ void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)
 
 // print complete binary search tree
 void sprint_bst(dstring* append_str, const bst* bst_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs);
-
-// PRINT NODE REFERENCES TO DEBUG YOUR APP
-void print_bstnode_debug(bstnode* node_p);
 
 #endif
