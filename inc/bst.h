@@ -137,7 +137,7 @@ enum bsttraversal{PRE_ORDER, IN_ORDER, POST_ORDER};
 void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
 
 // print complete binary search tree
-void print_bst(const bst* bst_p, void (*print_element)(const void* data));
+void sprint_bst(dstring* append_str, const bst* bst_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs);
 
 // PRINT NODE REFERENCES TO DEBUG YOUR APP
 void print_bstnode_debug(bstnode* node_p);
