@@ -20,6 +20,16 @@ void print_ts(const void* tsv)
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
+void sprint_ts(dstring* append_str, const void* tsv)
+{
+	if(tsv == NULL)
+	{
+		snprintf_dstring(append_str, "NULL");
+		return;
+	}
+	snprintf_dstring(append_str, "%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
 int test_compare(const void* a, const void* b)
 {
 	if(a==NULL || b==NULL)
@@ -32,6 +42,16 @@ int test_compare(const void* a, const void* b)
 	}
 }
 
+void print_ts_linkedlist(linkedlist* ll)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_linkedlist(&str, ll, sprint_ts, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+	printf("\n");
+}
+
 int main()
 {
 	linkedlist llist;
@@ -40,30 +60,30 @@ int main()
 
 	printf("Error on attempt to remove head : %d, or tail : %d, from an empty linkedlist\n\n", remove_head(ll), remove_tail(ll));
 
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	insert_head(ll, &((ts){2, "two", {NULL, NULL}}));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	insert_head(ll, &((ts){1, "one", {NULL, NULL}}));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	insert_tail(ll, &((ts){5, "five", {NULL, NULL}}));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	insert_tail(ll, &((ts){6, "six", {NULL, NULL}}));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	print_ts(get_nth_from_head(ll, 1));
 
 	insert_after(ll, get_nth_from_head(ll, 1), &((ts){3, "three", {NULL, NULL}}));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	insert_before(ll, get_nth_from_tail(ll, 1), &((ts){4, "four", {NULL, NULL}}));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	insert_before(ll, get_nth_from_tail(ll, 2), &((ts){-1, "minus one", {NULL, NULL}}));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	// check get next and prev functionality
 	{
@@ -88,27 +108,27 @@ int main()
 	// **** 
 
 	remove_head(ll);
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	remove_tail(ll);
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	const ts* temp = get_nth_from_head(ll, 2);
 
 	remove_from_linkedlist(ll, temp);
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	printf("Error on removing a not existing node twice %d\n", remove_from_linkedlist(ll, temp));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	printf("Error on inserting before a not existing node %d\n", insert_before(ll, temp, &((ts){-1, "minus one", {NULL, NULL}})));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	insert_after(ll, get_nth_from_head(ll, 1), temp);
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	printf("Error on inserting an existing node %d\n", insert_before(ll, temp, get_nth_from_tail(ll, 3)));
-	print_linkedlist(ll, print_ts);
+	print_ts_linkedlist(ll);
 
 	printf("Searching for structure with a = 4\n");
 	print_ts(find_equals_in_linkedlist(ll, &((ts){4}), test_compare));
