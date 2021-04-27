@@ -263,7 +263,7 @@ static void sprint_linkedlist_wrapper(dstring* append_str, const linkedlist* ll,
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "node : [%p]\n", node_p);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "prev : [%p]\n", node_p->prev);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "data : "); sprint_element(append_str, get_data(node_p)); snprintf_dstring(append_str, "\n");
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "next : [%p]\n", node_p->next);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "next : [%p]\n\n", node_p->next);
 }
 
 void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
