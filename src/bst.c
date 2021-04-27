@@ -306,36 +306,25 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 	{
 		sprint_chars(append_str, '\t', tabs++);
 		if(is_root_node(node_p))
-			snprintf_dstring(append_str, "node ROOT  : [%p]", node_p);
+			snprintf_dstring(append_str, "node ROOT  : [%p]\n", node_p);
 		else if(is_leaf_node(node_p))
-			snprintf_dstring(append_str, "node LEAF  : [%p]", node_p);
+			snprintf_dstring(append_str, "node LEAF  : [%p]\n", node_p);
 		else if(is_internal_node(node_p))
-			snprintf_dstring(append_str, "node INTER : [%p]", node_p);
+			snprintf_dstring(append_str, "node INTER : [%p]\n", node_p);
 
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "data : ");
 		sprint_element(append_str, get_data(node_p));
 		snprintf_dstring(append_str, " (%d)\n", node_p->node_property);
 
-		if( !is_root_node(node_p) )
-		{
-			sprint_chars(append_str, '\t', tabs);
-			snprintf_dstring(append_str, "parent : [%p]\n", node_p->parent);
-		}
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "parent : [%p]\n", node_p->parent);
 
-		if( !is_leaf_node(node_p) )
-		{
-			if(node_p->left != NULL)
-			{
-				sprint_chars(append_str, '\t', tabs);
-				snprintf_dstring(append_str, "left  : [%p]\n", node_p->left);
-			}
-			if(node_p->right != NULL)
-			{
-				sprint_chars(append_str, '\t', tabs);
-				snprintf_dstring(append_str, "right : [%p]\n", node_p->right);
-			}
-		}
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "left  :  [%p]\n", node_p->left);
+			
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "right :  [%p]\n\n", node_p->right);
 	}
 }
 
