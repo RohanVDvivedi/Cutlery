@@ -1,6 +1,6 @@
 #include<linkedlist.h>
 
-#include<stdio.h>
+#include<cutlery_stds.h>
 
 // get data from llnode
 #define get_data(node_p) 	(((const void*)(node_p)) - ll->node_offset)
@@ -258,29 +258,27 @@ void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* 
 	while(node_p != ll->head);
 }
 
-static void print_linkedlist_wrapper(const linkedlist* ll, const llnode* node_p, void (*print_element)(const void* data_p))
+static void sprint_linkedlist_wrapper(dstring* append_str, const linkedlist* ll, const llnode* node_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	printf("\tprev => %p\n", node_p->prev);
-	printf("\t\tnode => %p\n", node_p);
-	printf("\t\tdata => ");print_element(get_data(node_p));printf("\n");
-	printf("\tnext => %p\n", node_p->next);
-	printf("\n");
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "node : [%p]\n", node_p);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "prev : [%p]\n", node_p->prev);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "data : "); sprint_element(append_str, get_data(node_p)); snprintf_dstring(append_str, "\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "next : [%p]\n", node_p->next);
 }
 
-void print_linkedlist(const linkedlist* ll, void (*print_element)(const void* data_p))
+void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	printf("linkedlist\n");
-	printf("node_offset : [%u]\n", ll->node_offset);
-	printf("head : [%p]\n", ll->head);
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "linkedlist\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%u]\n", ll->node_offset);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "head : [%p]\n", ll->head);
 	if(!is_empty_linkedlist(ll))
 	{
 		llnode* node_p = ll->head;
 		do
 		{
-			print_linkedlist_wrapper(ll, node_p, print_element);
+			sprint_linkedlist_wrapper(append_str, ll, node_p, sprint_element, tabs + 1);
 			node_p = node_p->next;
 		}
 		while(node_p != ll->head);
 	}
-	printf("--\n\n\n");
 }

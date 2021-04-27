@@ -485,14 +485,14 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 				case ELEMENTS_AS_LINKEDLIST :
 				{
 					ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
-					print_linkedlist(&ll, print_element);
+					//print_linkedlist(&ll, print_element);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
 					bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
-					print_bst(&bstt, print_element);
+					//print_bst(&bstt, print_element);
 					break;
 				}
 				default :

@@ -1,6 +1,8 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include<dstring.h>
+
 // LINKEDLIST is a doubly circular linkedlist
 
 typedef struct llnode llnode;
@@ -70,7 +72,7 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 // the function is designed well, you may call free on your data, in the provided operation function
 void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
-// prints complete linked list
-void print_linkedlist(const linkedlist* ll, void (*print_element)(const void* data_p));
+// serializes the linkedlist, and appends the serialized form to the dstring
+void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs);
 
 #endif
