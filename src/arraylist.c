@@ -272,7 +272,7 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 
 void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "arraylist : \n");
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "arraylist :\n");
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "first_index : %u\n", al->first_index);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "element_count : %u\n", al->element_count);
 	

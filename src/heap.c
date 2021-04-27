@@ -272,9 +272,9 @@ void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)
 	switch(heap_p->type)
 	{
 		case MIN_HEAP :
-		{snprintf_dstring(append_str, "heap (MIN_HEAP)\n");break;}
+		{snprintf_dstring(append_str, "heap (MIN_HEAP) :\n");break;}
 		case MAX_HEAP :
-		{snprintf_dstring(append_str, "heap (MAX_HEAP)\n");break;}
+		{snprintf_dstring(append_str, "heap (MAX_HEAP) :\n");break;}
 	}
 
 	sprint_chars(append_str, '\t', tabs);
