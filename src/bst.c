@@ -5,7 +5,7 @@
 #include<bst_redblack.h>
 #include<bst_util.h>
 
-#include<stdio.h>
+#include<cutlery_stds.h>
 
 void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
 {
@@ -304,44 +304,38 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 {
 	if(node_p != NULL)
 	{
+		sprint_chars(append_str, '\t', tabs++);
 		if(is_root_node(node_p))
-			printf("  ROOT  ");
+			snprintf_dstring(append_str, "node ROOT  : [%p]", node_p);
 		else if(is_leaf_node(node_p))
-			printf("  LEAF  ");
+			snprintf_dstring(append_str, "node LEAF  : [%p]", node_p);
 		else if(is_internal_node(node_p))
-			printf("  INTER ");
+			snprintf_dstring(append_str, "node INTER : [%p]", node_p);
 
-		printf("\t\t[%p]", node_p);
-		print_element(get_data(node_p));
-		printf("(%d)\n", node_p->node_property);
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "data : ");
+		sprint_element(append_str, get_data(node_p));
+		snprintf_dstring(append_str, " (%d)\n", node_p->node_property);
 
 		if( !is_root_node(node_p) )
 		{
-			if(is_left_of_its_parent(node_p))
-				printf("    LEFT  of");
-			else if(is_right_of_its_parent(node_p))
-				printf("    RIGHT of");
-			printf(" \t\t[%p]", node_p->parent);
-			print_element(get_data(node_p->parent));
-			printf("\n");
+			sprint_chars(append_str, '\t', tabs);
+			snprintf_dstring(append_str, "parent : [%p]\n", node_p->parent);
 		}
 
 		if( !is_leaf_node(node_p) )
 		{
 			if(node_p->left != NULL)
 			{
-				printf("    has LEFT  \t\t[%p]", node_p->left);
-				print_element(get_data(node_p->left));
-				printf("\n");
+				sprint_chars(append_str, '\t', tabs);
+				snprintf_dstring(append_str, "left  : [%p]\n", node_p->left);
 			}
 			if(node_p->right != NULL)
 			{
-				printf("    has RIGHT \t\t[%p]", node_p->right);
-				print_element(get_data(node_p->right));
-				printf("\n");
+				sprint_chars(append_str, '\t', tabs);
+				snprintf_dstring(append_str, "right : [%p]\n", node_p->right);
 			}
 		}
-		printf("\n");
 	}
 }
 
@@ -349,9 +343,9 @@ static void print_tree(dstring* append_str, const bst* bst_p, const bstnode* nod
 {
 	if(node_p != NULL)
 	{
-		print_tree(bst_p, node_p->left, sprint_element);
+		print_tree(append_str, bst_p, node_p->left, sprint_element, tabs);
 		print_node(append_str, bst_p, node_p, sprint_element, tabs);
-		print_tree(bst_p, node_p->right, sprint_element);
+		print_tree(append_str, bst_p, node_p->right, sprint_element, tabs);
 	}
 }
 
@@ -372,13 +366,4 @@ void sprint_bst(dstring* append_str, const bst* bst_p, void (*sprint_element)(ds
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "root : [%p]\n", bst_p->root);
 
 	print_tree(append_str, bst_p, bst_p->root, sprint_element, tabs + 1);
-}
-
-void print_bstnode_debug(bstnode* node_p)
-{
-	printf("DEBUG -> self[%p] ", node_p);
-	if(node_p != NULL)
-		printf("parent[%p], left[%p], right[%p], node_property = %d\n", node_p->parent, node_p->left, node_p->right, node_p->node_property);
-	else
-		printf("\n");
 }
