@@ -74,7 +74,7 @@ void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, uns
 
 void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
 {
-	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "stack : \n");
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "stack :\n");
 
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "stack_holder : \n");
 	sprint_arraylist(append_str, &(stack_p->stack_holder), sprint_element, tabs + 1);
