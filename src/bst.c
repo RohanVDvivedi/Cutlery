@@ -300,7 +300,7 @@ void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)
 	}
 }
 
-static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_element)(const void* data))
+static void print_node(dstring* append_str, const bst* bst_p, const bstnode* node_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
 {
 	if(node_p != NULL)
 	{
@@ -326,7 +326,7 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 			printf("\n");
 		}
 
-		if( (!is_leaf_node(node_p)) )
+		if( !is_leaf_node(node_p) )
 		{
 			if(node_p->left != NULL)
 			{
@@ -345,42 +345,33 @@ static void print_node(const bst* bst_p, const bstnode* node_p, void (*print_ele
 	}
 }
 
-static void print_tree(const bst* bst_p, const bstnode* node_p, void (*print_element)(const void* data))
+static void print_tree(dstring* append_str, const bst* bst_p, const bstnode* node_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
 {
 	if(node_p != NULL)
-		print_tree(bst_p, node_p->left, print_element);
-	print_node(bst_p, node_p, print_element);
-	printf("\n");
-	if(node_p != NULL)
-		print_tree(bst_p, node_p->right, print_element);
+	{
+		print_tree(bst_p, node_p->left, sprint_element);
+		print_node(append_str, bst_p, node_p, sprint_element, tabs);
+		print_tree(bst_p, node_p->right, sprint_element);
+	}
 }
 
-void print_bst(const bst* bst_p, void (*print_element)(const void* data))
+void sprint_bst(dstring* append_str, const bst* bst_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
 {
-	printf("binary_search_tree :\n");
+	sprint_chars(append_str, '\t', tabs++);
 	switch(bst_p->type)
 	{
 		case NON_SELF_BALANCING :
-		{
-			printf("NON_SELF_BALANCING\n");
-			break;
-		}
+		{snprintf_dstring(append_str, "bst (NON_SELF_BALANCING) :\n"); break; }
 		case AVL_TREE :
-		{
-			printf("AVL_TREE\n");
-			break;
-		}
+		{snprintf_dstring(append_str, "bst (AVL_TREE) :\n"); break; }
 		case RED_BLACK_TREE :
-		{
-			printf("RED_BLACK_TREE\n");
-			break;
-		}
+		{snprintf_dstring(append_str, "bst (RED_BLACK_TREE) :\n"); break; }
 	}
-	printf("node_offset : [%u]\n", bst_p->node_offset);
-	printf("root : [%p]\n", bst_p->root);
 
-	print_tree(bst_p, bst_p->root, print_element);
-	printf("--\n\n\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%u]\n", bst_p->node_offset);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "root : [%p]\n", bst_p->root);
+
+	print_tree(append_str, bst_p, bst_p->root, sprint_element, tabs + 1);
 }
 
 void print_bstnode_debug(bstnode* node_p)
