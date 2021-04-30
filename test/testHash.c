@@ -31,13 +31,27 @@ int cmp(const void* data1, const void* data2)
 void print_ts(const void* tsv)
 {
 	if(tsv == NULL)
-	{
 		printf("(null)");
-	}
 	else
-	{
 		printf("%d, %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
-	}
+}
+
+void sprint_ts(dstring* append_str, const void* tsv)
+{
+	if(tsv == NULL)
+		snprintf_dstring(append_str, "(null)");
+	else
+		snprintf_dstring(append_str, "%d, %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
+print_ts_hashmap(hashmap* hashmap_p)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_hashmap(&str, hashmap_p, sprint_ts, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+	printf("\n");
 }
 
 const collision_resolution_policy POLICY_USED = ROBINHOOD_HASHING /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
@@ -58,35 +72,35 @@ int main()
 
 	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, NODE_OFFSET);
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){1, 100, "one"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){2, 200, "two"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){4, 400, "four"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){5, 500, "five"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){6, 600, "six"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){7, 700, "seven"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	printf("We want to update the data with key = 3\n");
 
@@ -107,15 +121,15 @@ int main()
 	{
 		printf("-> we couldn't find the data in the hashmap\n\n");
 	}
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){8, 800, "eight"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){9, 900, "nine"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	printf("\nStarting to remove few entries\n\n");
 
@@ -145,7 +159,7 @@ int main()
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	// this is exactly how we remove by finding the object from the hashmap first
 	temp = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){6}));
@@ -171,7 +185,7 @@ int main()
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
-	print_hashmap(hashmap_p, print_ts);nodes_deleted = 0;
+	print_ts_hashmap(hashmap_p);nodes_deleted = 0;
 
 	temp = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){9}));
 	if(temp != NULL)
@@ -181,21 +195,21 @@ int main()
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
-	print_hashmap(hashmap_p, print_ts);nodes_deleted = 0;
+	print_ts_hashmap(hashmap_p);nodes_deleted = 0;
 
 	printf("\nCompleted removing entries\n\n");
 
 	insert_in_hashmap(hashmap_p, &((ts){60, 6000, "sixty"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){70, 7000, "seventy"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){56, 5600, "fifty six"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	// this is how you update, unless you want to update the key of the object
 	// in which case you would have to remove the element completely and reinsert
@@ -211,19 +225,19 @@ int main()
 		printf("Update failed; key = 70 absent\n\n");
 	}
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){80, 8000, "eighty"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){20, 2000, "twenty"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	insert_in_hashmap(hashmap_p, &((ts){40, 4000, "forty"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	// this is how you update, unless you want to update the key of the object
 	// in which case you would have to remove the element completely and reinsert
@@ -239,7 +253,7 @@ int main()
 		printf("Update failed; key = 70 absent\n\n");
 	}
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	printf("Deleting key-value at 80, if found\n\n");
 	ts* temp_80 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){80}));
@@ -252,7 +266,7 @@ int main()
 		printf("key-value at 80 not found\n\n");
 	}
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	printf("Deleting key-value at 60, if found\n\n");
 	ts* temp_60 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){60}));
@@ -265,7 +279,7 @@ int main()
 		printf("key-value at 60 not found\n\n");
 	}
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	printf("Now finding value corresponding to key 20\n\n");
 	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){20})));printf("\n\n");
@@ -287,35 +301,35 @@ int main()
 		insert_in_hashmap(hashmap_p, temp_60);
 	}
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	printf("Inserting key-value at 90\n");
 	insert_in_hashmap(hashmap_p, &((ts){90, 9000, "ninety"}));
 
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	printf("\n\nBefore rehashing - 16\n");
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	resize_hashmap(hashmap_p, 16);
 
 	printf("\n\nAfter rehashing - 16\n");
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	resize_hashmap(hashmap_p, 20);
 
 	printf("\n\nAfter rehashing - 20\n");
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	expand_hashmap(hashmap_p, 1.2);
 
 	printf("\n\nAfter rehashing - 20 * 1.2\n");
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	resize_hashmap(hashmap_p, 10);
 
 	printf("\n\nAfter rehashing - 10\n");
-	print_hashmap(hashmap_p, print_ts);
+	print_ts_hashmap(hashmap_p);
 
 	deinitialize_hashmap(hashmap_p);
 
