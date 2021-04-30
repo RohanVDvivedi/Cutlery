@@ -4,8 +4,9 @@
 #include<bst.h>
 #include<queue.h>
 
-#include<stdio.h>
-#include<stdlib.h>
+#include<dstring.h>
+
+#include<cutlery_stds.h>
 
 void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
@@ -434,34 +435,39 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 		resize_hashmap(hashmap_p, expand_factor * get_bucket_count_hashmap(hashmap_p));
 }
 
-void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* data))
+void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
 {
-	printf("HASHMAP : ");
+	sprint_chars(append_str, '\t', tabs++);
+	snprintf_dstring(append_str, "hashmap ");
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			printf("ROBINHOOD_HASHING\n");
+			snprintf_dstring(append_str, "(robinhood_hashing) :\n");
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
 		{
-			printf("ELEMENTS_AS_LINKEDLIST\n");
+			snprintf_dstring(append_str, "(elements_as_linkedlist) :\n");
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		{
-			printf("ELEMENTS_AS_AVL_BST\n");
+			snprintf_dstring(append_str, "(elements_as_avl_bst) :\n");
 			break;
 		}
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			printf("ELEMENTS_AS_RED_BLACK_BST\n");
+			snprintf_dstring(append_str, "(elements_as_red_black_bst) :\n");
 			break;
 		}
 	}
-	printf("node_offset : %u\n", hashmap_p->node_offset);
-	printf("element_count : %u\n", hashmap_p->element_count);
+
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "node_offset : %u\n", hashmap_p->node_offset);
+
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "element_count : %u\n", hashmap_p->element_count);
 
 	linkedlist ll; init_data_structure(hashmap_p, &ll);
 	bst bstt; init_data_structure(hashmap_p, &bstt);
@@ -469,7 +475,8 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 	// iterate over all the buckets in the hashmap_p
 	for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 	{
-		printf("index = %u\n", index);
+		sprint_chars(append_str, '\t', tabs + 1);
+		snprintf_dstring(append_str, "bucket_id = %u\n", index);
 
 		if(get_element(&(hashmap_p->hashmap_holder), index) != NULL)
 		{
@@ -477,22 +484,22 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 			{
 				case ROBINHOOD_HASHING :
 				{
-					printf("  \t -> ");
-					print_element(get_element(&(hashmap_p->hashmap_holder), index));
-					printf("\n");
+					sprint_chars(append_str, '\t', tabs + 2);
+					sprint_element(append_str, get_element(&(hashmap_p->hashmap_holder), index));
+					snprintf_dstring(append_str, "\n");
 					break;
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
 					ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
-					//print_linkedlist(&ll, print_element);
+					sprint_linkedlist(append_str, &ll, sprint_element, tabs + 2);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
 					bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
-					//print_bst(&bstt, print_element);
+					sprint_bst(append_str, &bstt, sprint_element, tabs + 2);
 					break;
 				}
 				default :
@@ -502,9 +509,11 @@ void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* d
 			}
 		}
 		else
-			printf("\tEMPTY\n");
+		{
+			sprint_chars(append_str, '\t', tabs + 2);
+			snprintf_dstring(append_str, "EMPTY\n");
+		}
 	}
-	printf("\n\n");
 }
 
 void deinitialize_hashmap(hashmap* hashmap_p)

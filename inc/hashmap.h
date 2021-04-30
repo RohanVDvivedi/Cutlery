@@ -100,8 +100,8 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor);
 // the same hashmap can be reused by calling initialize_hashmap function, after it is deinitialized
 void deinitialize_hashmap(hashmap* hashmap_p);
 
-// print complete hashmap
-void print_hashmap(const hashmap* hashmap_p, void (*print_element)(const void* data));
+// serializes the hashmap, and appends the serialized form to the dstring
+void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs);
 
 // perform operation on all the elements of the hashmap
 // the function is designed well, you may call free on your data, in the provided operation function
