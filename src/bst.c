@@ -313,8 +313,8 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 			snprintf_dstring(append_str, "node INTER : [%p]\n", node_p);
 
 		sprint_chars(append_str, '\t', tabs);
-		snprintf_dstring(append_str, "data : ");
-		sprint_element(append_str, get_data(node_p), tabs);
+		snprintf_dstring(append_str, "data :\n");
+		sprint_element(append_str, get_data(node_p), tabs + 1);
 		snprintf_dstring(append_str, " (%d)\n", node_p->node_property);
 
 		sprint_chars(append_str, '\t', tabs);
