@@ -48,6 +48,16 @@ find_result check_if_inserted_in_bloomfilter(const char* str)
 	return fresult ? MAY_BE_PRESENT : NOT_PRESENT;
 }
 
+void print_bitmap(const char* bitmap, unsigned int bitmap_complete_size)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_bitmap(&str, bitmap, bitmap_complete_size, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+	printf("\n");
+}
+
 void print_bloomfilter()
 {
 	printf("bitmap 0 : ");

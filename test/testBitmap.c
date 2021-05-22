@@ -1,5 +1,17 @@
 #include<stdio.h>
 
+#include<bitmap.h>
+
+void print_bitmap(const char* bitmap, unsigned int bitmap_complete_size)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_bitmap(&str, bitmap, bitmap_complete_size, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+	printf("\n");
+}
+
 int main()
 {
 	char bitmap[5];
