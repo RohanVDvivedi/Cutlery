@@ -99,7 +99,7 @@ void print_int(const void* data)
 
 void sprint_int(dstring* append_str, const void* data, unsigned int tabs)
 {
-	sprint_chars(append_str, '\t', tabs);
+	sprint_chars(append_str, '\t', tabs + 1);
 	if(data != NULL)
 		snprintf_dstring(append_str, "%d", *((int*)data));
 	else
