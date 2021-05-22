@@ -484,8 +484,7 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 			{
 				case ROBINHOOD_HASHING :
 				{
-					sprint_chars(append_str, '\t', tabs + 2);
-					sprint_element(append_str, get_element(&(hashmap_p->hashmap_holder), index), tabs);
+					sprint_element(append_str, get_element(&(hashmap_p->hashmap_holder), index), tabs + 2);
 					snprintf_dstring(append_str, "\n");
 					break;
 				}

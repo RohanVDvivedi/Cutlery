@@ -140,7 +140,7 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 	for(unsigned int i = 0; i < array_p->total_size; i++)
 	{
 		sprint_chars(append_str, '\t', tabs);
-		snprintf_dstring(append_str, "index_id %u\n", i);
+		snprintf_dstring(append_str, "index_id = %u\n", i);
 
 		const void* element = get_element(array_p, i);
 		if(element != NULL)
