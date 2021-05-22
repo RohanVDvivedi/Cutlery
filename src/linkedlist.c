@@ -258,15 +258,15 @@ void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* 
 	while(node_p != ll->head);
 }
 
-static void sprint_linkedlist_wrapper(dstring* append_str, const linkedlist* ll, const llnode* node_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
+static void sprint_linkedlist_wrapper(dstring* append_str, const linkedlist* ll, const llnode* node_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "node : [%p]\n", node_p);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "prev : [%p]\n", node_p->prev);
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "data : "); sprint_element(append_str, get_data(node_p)); snprintf_dstring(append_str, "\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "data : "); sprint_element(append_str, get_data(node_p), tabs); snprintf_dstring(append_str, "\n");
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "next : [%p]\n\n", node_p->next);
 }
 
-void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
+void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "linkedlist :\n");
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%u]\n", ll->node_offset);

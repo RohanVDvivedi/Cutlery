@@ -73,6 +73,6 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
 
 // serializes the linkedlist, and appends the serialized form to the dstring
-void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs);
+void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
 
 #endif
