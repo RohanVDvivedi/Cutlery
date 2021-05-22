@@ -1,6 +1,5 @@
 #include<bitmap.h>
 
-#include<stdio.h>
 #include<string.h>
 
 int get_bit(const char* bitmap, unsigned int index)
@@ -52,15 +51,16 @@ void reset_all_bits(char* bitmap, unsigned int size)
 		reset_bit(bitmap, i);
 }
 
-void print_bitmap(const char* bitmap, unsigned int size)
+void sprint_bitmap(dstring* append_str, const char* bitmap, unsigned int size, unsigned int tabs)
 {
+	sprint_chars(append_str, '\t', tabs);
 	for(unsigned int i = 0; i < size; i++)
 	{
 		if(i)
-			printf(" ");
-		printf("%d", get_bit(bitmap, i));
+			snprintf_dstring(append_str, " ");
+		snprintf_dstring(append_str, "%d", get_bit(bitmap, i));
 	}
-	printf("\n");
+	snprintf_dstring(append_str, "\n");
 }
 
 unsigned int bitmap_size_in_bytes(unsigned int size)

@@ -1,6 +1,8 @@
 #ifndef BITMAP_H
 #define BITMAP_H
 
+#include<dstring.h>
+
 // char* bitmap      => first pointer adddress of the bitmap
 // unsigned int size => size of the bitmap in number of bits
 // unsigned int index => bit location in the bitmap (starting with 0)
@@ -15,7 +17,7 @@ void set_all_bits(char* bitmap, unsigned int size);
 
 void reset_all_bits(char* bitmap, unsigned int size);
 
-void print_bitmap(const char* bitmap, unsigned int size);
+void sprint_bitmap(dstring* append_str, const char* bitmap, unsigned int size, unsigned int tabs);
 
 unsigned int bitmap_size_in_bytes(unsigned int size);
 
