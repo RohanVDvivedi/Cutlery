@@ -24,7 +24,7 @@ void print_ts(const void* tsv)
 
 void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 {
-	sprint_chars(append_str, '\t', tabs);
+	sprint_chars(append_str, '\t', tabs + 1);
 	snprintf_dstring(append_str, "%d %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
