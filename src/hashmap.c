@@ -435,7 +435,7 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 		resize_hashmap(hashmap_p, expand_factor * get_bucket_count_hashmap(hashmap_p));
 }
 
-void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
+void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++);
 	snprintf_dstring(append_str, "hashmap ");
@@ -485,7 +485,7 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 				case ROBINHOOD_HASHING :
 				{
 					sprint_chars(append_str, '\t', tabs + 2);
-					sprint_element(append_str, get_element(&(hashmap_p->hashmap_holder), index));
+					sprint_element(append_str, get_element(&(hashmap_p->hashmap_holder), index), tabs);
 					snprintf_dstring(append_str, "\n");
 					break;
 				}

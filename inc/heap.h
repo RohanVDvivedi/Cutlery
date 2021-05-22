@@ -95,6 +95,6 @@ int shrink_heap(heap* heap_p);
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
 
 // serializes the array, and appends the serialized form to the dstring
-void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs);
+void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs);
 
 #endif

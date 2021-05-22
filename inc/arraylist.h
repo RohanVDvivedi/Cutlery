@@ -84,7 +84,7 @@ const void* find_equals_in_arraylist(const arraylist* al, const void* data, int 
 void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
 // serializes the arraylist, and appends the serialized form to the dstring
-void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs);
+void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
 
 void deinitialize_arraylist(arraylist* al);
 

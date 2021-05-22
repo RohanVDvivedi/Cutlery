@@ -270,7 +270,7 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 	for_each_non_null_in_array(&(al->arraylist_holder), operation, additional_params);
 }
 
-void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
+void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "arraylist :\n");
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "first_index : %u\n", al->first_index);
@@ -282,12 +282,12 @@ void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_el
 	
 	const void* front_element = get_front(al);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "front : ");
-	(front_element != NULL) ? sprint_element(append_str, front_element) : snprintf_dstring(append_str, "NULL");
+	(front_element != NULL) ? sprint_element(append_str, front_element, 0) : snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");
 
 	const void* back_element = get_back(al);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "back  : ");
-	(back_element != NULL) ? sprint_element(append_str, back_element) : snprintf_dstring(append_str, "NULL");
+	(back_element != NULL) ? sprint_element(append_str, back_element, 0) : snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");
 }
 

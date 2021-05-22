@@ -72,7 +72,7 @@ void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, uns
 	for_each_in_arraylist(&(stack_p->stack_holder), operation, additional_params);
 }
 
-void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_element)(dstring* append_str, const void* data_p), unsigned int tabs)
+void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "stack :\n");
 
@@ -83,7 +83,7 @@ void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_eleme
 	sprint_chars(append_str, '\t', tabs); 
 	snprintf_dstring(append_str, "top : ");
 	if(get_top_stack(stack_p) != NULL)
-		sprint_element(append_str, get_top_stack(stack_p));
+		sprint_element(append_str, get_top_stack(stack_p), 0);
 	else
 		snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");

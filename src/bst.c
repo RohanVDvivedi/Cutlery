@@ -300,7 +300,7 @@ void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)
 	}
 }
 
-static void print_node(dstring* append_str, const bst* bst_p, const bstnode* node_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
+static void print_node(dstring* append_str, const bst* bst_p, const bstnode* node_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
 {
 	if(node_p != NULL)
 	{
@@ -314,7 +314,7 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "data : ");
-		sprint_element(append_str, get_data(node_p));
+		sprint_element(append_str, get_data(node_p), tabs);
 		snprintf_dstring(append_str, " (%d)\n", node_p->node_property);
 
 		sprint_chars(append_str, '\t', tabs);
@@ -328,7 +328,7 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 	}
 }
 
-static void print_tree(dstring* append_str, const bst* bst_p, const bstnode* node_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
+static void print_tree(dstring* append_str, const bst* bst_p, const bstnode* node_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
 {
 	if(node_p != NULL)
 	{
@@ -338,7 +338,7 @@ static void print_tree(dstring* append_str, const bst* bst_p, const bstnode* nod
 	}
 }
 
-void sprint_bst(dstring* append_str, const bst* bst_p, void (*sprint_element)(dstring* append_str, const void* data), unsigned int tabs)
+void sprint_bst(dstring* append_str, const bst* bst_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++);
 	switch(bst_p->type)
