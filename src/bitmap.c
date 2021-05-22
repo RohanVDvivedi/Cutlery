@@ -58,6 +58,8 @@ void sprint_bitmap(dstring* append_str, const char* bitmap, unsigned int size, u
 	{
 		if(i)
 			snprintf_dstring(append_str, " ");
+		else
+			snprintf_dstring(append_str, "Bitmap: ");
 		snprintf_dstring(append_str, "%d", get_bit(bitmap, i));
 	}
 	snprintf_dstring(append_str, "\n");
