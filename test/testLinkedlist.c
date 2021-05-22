@@ -20,8 +20,9 @@ void print_ts(const void* tsv)
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-void sprint_ts(dstring* append_str, const void* tsv)
+void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 {
+	sprint_chars(append_str, '\t', tabs);
 	if(tsv == NULL)
 	{
 		snprintf_dstring(append_str, "NULL");
