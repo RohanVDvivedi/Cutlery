@@ -60,19 +60,24 @@ int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
 	return 1;
 }
 
-void expand_dstring(dstring* str_p, unsigned int additional_allocation)
+int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
-	dstring expanded_dstring = {.bytes_occupied = str_p->bytes_occupied, .bytes_allocated = str_p->bytes_occupied + additional_allocation};
+	unsigned int new_allocated_size = str_p->bytes_occupied + additional_allocation;
 
-	// if expanded dstring does not result in real expansion, than just exit
-	if(expanded_dstring.bytes_allocated <= str_p->bytes_allocated)
-		return;
+	// if expansion is not resulting in expansion
+	if(new_allocated_size <= str_p->bytes_allocated)
+		return 0;
 
-	expanded_dstring.cstring = allocate(DSTRING_mem_alloc, expanded_dstring.bytes_allocated);
-	memory_move(expanded_dstring.cstring, str_p->cstring, str_p->bytes_occupied);
+	void* new_cstring = reallocate(DSTRING_mem_alloc, str_p->cstring, str_p->bytes_allocated, new_allocated_size);
 
-	deinit_dstring(str_p);
-	(*str_p) = expanded_dstring;
+	if(new_cstring != NULL)
+	{
+		str_p->cstring = new_cstring;
+		str_p->bytes_allocated = new_allocated_size;
+		return 1;
+	}
+	else
+		return 0;
 }
 
 int shrink_dstring(dstring* str_p)
@@ -87,7 +92,7 @@ int shrink_dstring(dstring* str_p)
 	{
 		str_p->cstring = new_cstring;
 		str_p->bytes_allocated = new_allocated_size;
-		return 1
+		return 1;
 	}
 	else
 		return 0;

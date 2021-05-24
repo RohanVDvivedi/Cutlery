@@ -37,7 +37,7 @@ int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
 // increases the size of dstring by additional_size number of bytes
-void expand_dstring(dstring* str_p, unsigned int additional_size);
+int expand_dstring(dstring* str_p, unsigned int additional_size);
 // shrinks dstring to its bytes_occupied size
 int shrink_dstring(dstring* str_p);
 
