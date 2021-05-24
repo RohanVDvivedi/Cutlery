@@ -70,14 +70,13 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 
 	void* new_cstring = reallocate(DSTRING_mem_alloc, str_p->cstring, str_p->bytes_allocated, new_allocated_size);
 
-	if(new_cstring != NULL)
-	{
-		str_p->cstring = new_cstring;
-		str_p->bytes_allocated = new_allocated_size;
-		return 1;
-	}
-	else
+	// failed allocation
+	if(new_cstring == NULL && new_allocated_size > 0)
 		return 0;
+
+	str_p->cstring = new_cstring;
+	str_p->bytes_allocated = new_allocated_size;
+	return 1;
 }
 
 int shrink_dstring(dstring* str_p)
@@ -88,14 +87,13 @@ int shrink_dstring(dstring* str_p)
 	unsigned int new_allocated_size = str_p->bytes_occupied;
 	void* new_cstring = reallocate(DSTRING_mem_alloc, str_p->cstring, str_p->bytes_allocated, new_allocated_size);
 
-	if(new_cstring != NULL)
-	{
-		str_p->cstring = new_cstring;
-		str_p->bytes_allocated = new_allocated_size;
-		return 1;
-	}
-	else
+	// failed allocation
+	if(new_cstring == NULL && new_allocated_size > 0)
 		return 0;
+
+	str_p->cstring = new_cstring;
+	str_p->bytes_allocated = new_allocated_size;
+	return 1;
 }
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
