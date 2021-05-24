@@ -12,17 +12,18 @@ memory_allocator DSTRING_mem_alloc = STD_C_mem_allocator;
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 {
-	if(data == NULL || data_size == 0)
-	{
-		str_p->bytes_occupied = 0;
-		str_p->bytes_allocated = 0;
-		str_p->cstring = NULL;
-		return;
-	}
 	str_p->bytes_occupied = data_size;
 	str_p->bytes_allocated = data_size;
 	str_p->cstring = allocate(DSTRING_mem_alloc, data_size);
-	memory_move(str_p->cstring, data, data_size);
+	if(data != NULL && data_size > 0)
+		memory_move(str_p->cstring, data, data_size);
+}
+
+void init_empty_dstring(dstring* str_p, unsigned int init_size)
+{
+	str_p->bytes_occupied = 0;
+	str_p->bytes_allocated = init_size;
+	str_p->cstring = allocate(DSTRING_mem_alloc, init_size);
 }
 
 void make_dstring_empty(dstring* str_p)
@@ -72,6 +73,24 @@ void expand_dstring(dstring* str_p, unsigned int additional_allocation)
 
 	deinit_dstring(str_p);
 	(*str_p) = expanded_dstring;
+}
+
+int shrink_dstring(dstring* str_p)
+{
+	if(str_p->bytes_allocated <= str_p->bytes_occupied)
+		return 0;
+
+	unsigned int new_allocated_size = str_p->bytes_occupied;
+	void* new_cstring = reallocate(DSTRING_mem_alloc, str_p->cstring, str_p->bytes_allocated, new_allocated_size);
+
+	if(new_cstring != NULL)
+	{
+		str_p->cstring = new_cstring;
+		str_p->bytes_allocated = new_allocated_size;
+		return 1
+	}
+	else
+		return 0;
 }
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
