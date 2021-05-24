@@ -29,6 +29,7 @@ struct dstring
 #define dstring_DUMMY_CSTRING(cstr)         &((const dstring){.cstring = ((char*)(cstr)), .bytes_occupied = strlen((cstr)), .bytes_allocated = 0})
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
+void init_empty_dstring(dstring* str_p, unsigned int init_size);
 
 void make_dstring_empty(dstring* str_p);
 
@@ -37,6 +38,8 @@ int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
 // increases the size of dstring by additional_size number of bytes
 void expand_dstring(dstring* str_p, unsigned int additional_size);
+// shrinks dstring to its bytes_occupied size
+int shrink_dstring(dstring* str_p);
 
 // concatenates str_p2 to str_p1
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
