@@ -10,7 +10,8 @@
 // result of this function is required for using KMP algorithm (pass suffix_prefix_match_length in contains_dstring function)
 void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length);
 
-// returns char pointer to the position of first substring match, else it returns NULL
+// returns char pointer to the position of first substring match inside the str, else it returns NULL
+// this function is equivalent to strnstr in c
 char* contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length);
 // KMP (Knuth–Morris–Pratt) O(m+n) will be used if you provide a non-NULL value for suffix_prefix_match_length (result of get_prefix_suffix_match_lengths)
 // else it will use standard O(m*n) sub string algorithm
