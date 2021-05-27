@@ -32,10 +32,10 @@ void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_pr
 	}
 }
 // KMP implementation for substring position in a given string
-unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length_for_sub_str)
+char* contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length_for_sub_str)
 {
 	if(str->bytes_occupied < sub_str->bytes_occupied)
-		return SUBSTRING_NOT_FOUND;
+		return NULL;
 
 	// use KMP algorithm O(m + n)
 	if(suffix_prefix_match_length_for_sub_str != NULL) {
@@ -50,7 +50,7 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 					i++;
 				}
 				else
-					return i - (sub_str->bytes_occupied - 1);
+					return str->cstring + i - (sub_str->bytes_occupied - 1);
 			}
 			else if(substring_iter == 0)
 				i++;
@@ -72,11 +72,11 @@ unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsign
 				}
 			}
 			if(found)
-				return i;
+				return str->cstring + i;
 		}
 	}
 
-	return SUBSTRING_NOT_FOUND;
+	return NULL;
 }
 
 int is_prefix(const dstring* string_p, const dstring* prefix_p)

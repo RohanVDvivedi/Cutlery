@@ -3,8 +3,6 @@
 
 #include<dstring.h>
 
-#define SUBSTRING_NOT_FOUND (~0U)
-
 // returns suffix_prefix_match_length
 // if for first i characters of str, the prefix of str equals the suffix of str
 // then its length is stored in suffix_prefix_match_length[i]
@@ -12,8 +10,8 @@
 // result of this function is required for using KMP algorithm (pass suffix_prefix_match_length in contains_dstring function)
 void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length);
 
-// returns index to the position of first substring match, else SUBSTRING_NOT_FOUND
-unsigned int contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length);
+// returns char pointer to the position of first substring match, else it returns NULL
+char* contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length);
 // KMP (Knuth–Morris–Pratt) O(m+n) will be used if you provide a non-NULL value for suffix_prefix_match_length (result of get_prefix_suffix_match_lengths)
 // else it will use standard O(m*n) sub string algorithm
 
