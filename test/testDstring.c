@@ -93,34 +93,34 @@ int main()
 
 	{
 		char* temp = "Hello World";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 
 		temp = "Rohan";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "said by";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "said byt";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "rHello World";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "sRohan";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "Hello Worldp";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "Rohano";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "Hellyo World";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 		
 		temp = "Rohhan";
-		printf("Testing contains function for \"%s\" in str => %d\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
+		printf("Testing contains function for \"%s\" in str => %p\n\n", temp, contains_dstring(&str, dstring_DUMMY_CSTRING(temp), NULL));
 	}
 
 	printf("\n\nsubstring using std and KMP algorithm\n");
@@ -132,22 +132,22 @@ int main()
 	slize = dstring_DUMMY_CSTRING("AFFA");
 	cache = alloca(sizeof(unsigned int) * (slize->bytes_occupied+1));get_prefix_suffix_match_lengths(slize, cache);
 	for(unsigned int i = 0; i <= slize->bytes_occupied; i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
 
 	slize = dstring_DUMMY_CSTRING("BBCBBD");
 	cache = alloca(sizeof(unsigned int) * (slize->bytes_occupied+1));get_prefix_suffix_match_lengths(slize, cache);
 	for(unsigned int i = 0; i <= slize->bytes_occupied; i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
 
 	slize = dstring_DUMMY_CSTRING("AABAACAABAA");
 	cache = alloca(sizeof(unsigned int) * (slize->bytes_occupied+1));get_prefix_suffix_match_lengths(slize, cache);
 	for(unsigned int i = 0; i <= slize->bytes_occupied; i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
 
 	slize = dstring_DUMMY_CSTRING("AAACAAAAAC");
 	cache = alloca(sizeof(unsigned int) * (slize->bytes_occupied+1));get_prefix_suffix_match_lengths(slize, cache);
 	for(unsigned int i = 0; i <= slize->bytes_occupied; i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %d, O(m+n): %d\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
 
 	toLowercase(&str);
 	printf("To lowercase str : ");
