@@ -292,10 +292,12 @@ int main()
 
 	print_all_lesser_than_equals(bst_p, 3, ASCENDING_ORDERED, 3);
 	print_all_lesser_than_equals(bst_p, 3, DESCENDING_ORDERED, 3);
+	print_all_lesser_than_equals(bst_p, -1, ASCENDING_ORDERED, 3);
 	print_all_in_range(bst_p, 5, 15, ASCENDING_ORDERED, 7);
 	print_all_in_range(bst_p, 5, 15, DESCENDING_ORDERED, 7);
 	print_all_greater_than_equals(bst_p, 14, ASCENDING_ORDERED, 5);
 	print_all_greater_than_equals(bst_p, 14, DESCENDING_ORDERED, 5);
+	print_all_greater_than_equals(bst_p, 20, DESCENDING_ORDERED, 5);
 
 	printf("COMPLETED INSERTING NODES\n");
 
