@@ -88,7 +88,15 @@ void print_preceding_equals(const bst* bst_p, int k)
 	printf("\n");
 }
 
-void print_accumulate(const void* data, const void* additional_params){print_ts(data);printf("\n");}
+int print_accumulate(const void* data, const void* additional_params)
+{
+	print_ts(data);printf("\n");
+
+	// return of 1 (non-zero) means continue receiving results
+	return 1;
+	// return of 0 means to stop
+	//return 0;
+}
 
 void print_all_in_range(const bst* bst_p, int small, int large, sort_direction sd, unsigned int count)
 {
