@@ -113,9 +113,12 @@ unsigned int find_all_in_range(
 						unsigned int max_result_count,	// this is the maximum in-range results to find.
 							// TO GET ALL THE RESULTS => max_result_count = 0xffffffff (maximum unsigned int)
 
-						// result_accumulator is a function that will be called for a maximum of max_result_count number of times
+						// result_accumulator is a function that will be called for a maximum of max_result_count number of times, as long as it returns 1
 						// it will be called once for each element found, with parameters; data and additional_params
-						void (*result_accumulator)(const void* data, const void* additional_params),
+						// once the result_accumulator returns 0, no further elements would be accumulated
+						// i.e. to stop accumulating any more results, the result_accumulator must return a 0
+						// and to continue receiving the next result the result_accumulator must return a 1 (or any non-zero value)
+						int (*result_accumulator)(const void* data, const void* additional_params),
 						const void* additional_params
 					);
 // The above function can also be used as a for_each_in_range function, to perform a give operation on all the data elements in a given range
