@@ -73,7 +73,7 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 
 int expand_array(array* array_p)
 {
-	// can not shrink if the allocator is NULL
+	// can not expand if the allocator is NULL
 	if(array_p->array_mem_allocator == NULL)
 		return 0;
 
