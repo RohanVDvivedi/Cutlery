@@ -36,7 +36,6 @@ int left_rotate_tree(bst* bst_p, bstnode* A)
 			else if( is_left_of_its_parent(A) )
 			{
 				parent_of_tree->left = B;
-				
 			}
 		}
 		B->parent = parent_of_tree;
