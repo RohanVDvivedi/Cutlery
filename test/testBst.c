@@ -149,6 +149,28 @@ int main()
 
 	int error = 0;
 
+	error = insert_in_bst(bst_p, &((ts){2, 2, "ttwwoo"}));
+	printf("node inserted = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = insert_in_bst(bst_p, &((ts){1, 1, "oonnee"}));
+	printf("node inserted = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = insert_in_bst(bst_p, &((ts){4, 4, "ffoouurr"}));
+	printf("node inserted = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = insert_in_bst(bst_p, &((ts){3, 3, "tthhrreeee"}));
+	printf("node inserted = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){1})));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	// ------- simple tree test case ----
+
 	error = insert_in_bst(bst_p, &((ts){18, 18, "eighteen"}));
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
