@@ -28,11 +28,11 @@ static void update_max_height(bstnode* node_p)
 // handle imbalance occuring in avl tree, starting at given input_node_p
 static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 {
-	// maintain a reference that traces
-	// all the nodes from  node_p to root
+	// start iterationf from the input unbalanced node until you reach the root
 	bstnode* unbalanced_node = input_node_p;
-	bstnode* prev_unbalanced_node = input_node_p;
-	bstnode* prev_prev_unbalanced_node = input_node_p;
+
+	bstnode* unbalanced_node_child = NULL;
+	bstnode* unbalanced_node_grand_child = NULL;
 
 	// loop untill you reach the root
 	while(unbalanced_node != NULL)
@@ -61,7 +61,6 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 			// after rotation the height of the unbalanced_node or
 			// any of its new current parent can not be trusted
 			unbalanced_node->node_property = 0;
-			unbalanced_node->parent->node_property = 0;
 		}
 		// if right tree height is more, do left rotate
 		else if(right_tree_max_height - left_tree_max_height >= 2)
@@ -83,12 +82,9 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 			// after rotation the height of the unbalanced_node or
 			// any of its new current parent can not be trusted
 			unbalanced_node->node_property = 0;
-			unbalanced_node->parent->node_property = 0;
 		}
 
-		// update the references
-		prev_prev_unbalanced_node = prev_unbalanced_node;
-		prev_unbalanced_node = unbalanced_node;
+		// update the unbalanced node
 		unbalanced_node = unbalanced_node->parent;
 	}
 }
