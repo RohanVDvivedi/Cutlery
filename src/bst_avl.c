@@ -7,22 +7,18 @@
 
 // trivial
 #define max(a,b) ((a)>(b)?(a):(b))
-#define min(a,b) ((a)<(b)?(a):(b))
 
-// macro to avoid recusive call, by making extensive checks and make recursive call only if we must 
-#define get_max_height_re(node_p) ((node_p==NULL)?0:((node_p->node_property>0)?node_p->node_property:get_max_height(node_p)))
-
-// gets max nodes from itself to any NULL, including itself, in an avl tree
+// gets max height including all nodes from itself to leaf, including itself and the leaf node, in an avl tree
 static int get_max_height(bstnode* node_p)
 {
 	if(node_p == NULL)
 		return 0;
-	else if(node_p->node_property == 0)
-		node_p->node_property = max(get_max_height_re(node_p->left), get_max_height_re(node_p->right)) + 1;
+	if(node_p->node_property == 0)
+		node_p->node_property = max(get_max_height(node_p->left), get_max_height(node_p->right)) + 1;
 	return node_p->node_property;
 }
 
-// updates max height of the node, in an avl tree
+// force update max height of the node, in an avl tree
 static void update_max_height(bstnode* node_p)
 {
 	node_p->node_property = 0;
@@ -105,7 +101,7 @@ void insert_node_in_avl_tree(bst* bst_p, bstnode* node_p)
 	// insert this node as if it is getting inserted in a non self balancing tree
 	insert_node_in_non_self_balancing_tree(bst_p, node_p);
 
-	// handle the imbalance in the red balck tree introduced by inserting the node
+	// handle the imbalance in the avl tree introduced by inserting the node
 	handle_imbalance_in_avl_tree(bst_p, node_p);
 }
 
