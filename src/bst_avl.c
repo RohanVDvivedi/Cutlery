@@ -45,7 +45,7 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 			bstnode* unbalanced_node_grand_child = unbalanced_node_child->left;
 
 			// LR rotation case, else R rotation case
-			if(unbalanced_node_grand_child == NULL)
+			if(get_max_height(unbalanced_node_grand_child) < get_max_height(unbalanced_node_child->right))
 			{
 				// after the rotation, sub tree heights can not be trusted
 				unbalanced_node_child->node_property = 0;
@@ -71,7 +71,7 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 			bstnode* unbalanced_node_grand_child = unbalanced_node_child->right;
 
 			// RL rotation case else L rotation
-			if(unbalanced_node_grand_child == NULL)
+			if(get_max_height(unbalanced_node_grand_child) < get_max_height(unbalanced_node_child->left))
 			{
 				// after the rotation, sub tree heights can not be trusted
 				unbalanced_node_child->node_property = 0;
