@@ -7,18 +7,18 @@
 **      A                               B
 **     / \                             / \
 **    X   B        left rotation      A   Z
-**       / \        --------->>      / \
+**       / \       --------->>       / \
 **      Y   Z                       X   Y
 **
-** returns true(1) if rotation was successfull*/
+** returns true(1) if rotation was successfull
+*/
 int left_rotate_tree(bst* bst_p, bstnode* A)
 {
-	bstnode* parent_of_tree = A->parent;
-
 	bstnode* B = A->right;
 	if( B == NULL )
 		return 0;
 
+	bstnode* parent_of_tree = A->parent;
 	bstnode* Y = B->left;
 
 	if( is_root_node(A) )
@@ -38,56 +38,47 @@ int left_rotate_tree(bst* bst_p, bstnode* A)
 
 	B->left = A;
 	A->parent = B;
+
 	return 1;
 }
 
-/*           A                                 _B_
-**         /   \                              /   \
-**       B      W      right rotation        C     A
-**     /   \             --------->>        / \   /  \
-**   C      X                              Z   Y  X   W
-**  / \
-** Z   Y
-** returns true if rotation was successfull*/
+/*
+**       A                                B
+**      / \                              / \
+**     B   X      right rotation        Z   A
+**    / \         --------->>              / \
+**   Z   Y                                Y   X
+**
+** returns true if rotation was successfull
+*/
 int right_rotate_tree(bst* bst_p, bstnode* A)
 {
-	bstnode* parent_of_tree = A->parent;
 	bstnode* B = A->left;
 	if( B == NULL )
-	{
 		return 0;
-	}
+
+	bstnode* parent_of_tree = A->parent;
+	bstnode* Y = B->right;
+
+	if( is_root_node(A) )
+		bst_p->root = B;
 	else
 	{
-		bstnode* X = B->right;
-
-		if( is_root_node(A) )
-		{
-			bst_p->root = B;
-		}
-		else
-		{
-			if( is_right_of_its_parent(A) )
-			{
-				parent_of_tree->right = B;
-			}
-			else if( is_left_of_its_parent(A) )
-			{
-				parent_of_tree->left = B;
-			}
-		}
-		B->parent = parent_of_tree;
-
-		A->left = X;
-		if(X != NULL)
-		{
-			X->parent = A;
-		}
-
-		B->right = A;
-		A->parent = B;
-		return 1;
+		if( is_right_of_its_parent(A) )
+			parent_of_tree->right = B;
+		else if( is_left_of_its_parent(A) )
+			parent_of_tree->left = B;
 	}
+	B->parent = parent_of_tree;
+
+	A->left = Y;
+	if(Y != NULL)
+		Y->parent = A;
+
+	B->right = A;
+	A->parent = B;
+
+	return 1;
 }
 
 void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
