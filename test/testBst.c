@@ -457,6 +457,18 @@ int main()
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){2})));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){3})));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){4})));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
