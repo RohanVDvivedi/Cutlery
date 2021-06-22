@@ -31,9 +31,6 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 	// start iterationf from the input unbalanced node until you reach the root
 	bstnode* unbalanced_node = input_node_p;
 
-	bstnode* unbalanced_node_child = NULL;
-	bstnode* unbalanced_node_grand_child = NULL;
-
 	// loop untill you reach the root
 	while(unbalanced_node != NULL)
 	{
@@ -44,45 +41,57 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 		// if left tree height is more, do right rotate
 		if(left_tree_max_height - right_tree_max_height >= 2)
 		{
-			// if it is not a left left case, make it a left left case
-			// below logic resolves the left right case with one more rotation in the child of unbalanced node
-			if(is_right_of_its_parent(prev_prev_unbalanced_node))
-			{
-				left_rotate_tree(bst_p, prev_unbalanced_node);
+			bstnode* unbalanced_node_child = unbalanced_node->left;
+			bstnode* unbalanced_node_grand_child = unbalanced_node_child->left;
 
-				// after above rotation, left left sub tree height can not be trusted
-				prev_unbalanced_node->node_property = 0;
-				prev_prev_unbalanced_node->node_property = 0;
+			// LR rotation case, else R rotation case
+			if(unbalanced_node_grand_child == NULL)
+			{
+				// after the rotation, sub tree heights can not be trusted
+				unbalanced_node_child->node_property = 0;
+				unbalanced_node_child->right->node_property = 0;
+
+				left_rotate_tree(bst_p, unbalanced_node_child);
 			}
+
+			unbalanced_node_child = unbalanced_node->left;
+			unbalanced_node_grand_child = unbalanced_node_child->left;
+
+			// after the rotation, sub tree heights can not be trusted
+			unbalanced_node->node_property = 0;
+			unbalanced_node_child->node_property = 0;
 
 			// for a left left case, just right rotate
 			right_rotate_tree(bst_p, unbalanced_node);
-
-			// after rotation the height of the unbalanced_node or
-			// any of its new current parent can not be trusted
-			unbalanced_node->node_property = 0;
 		}
 		// if right tree height is more, do left rotate
 		else if(right_tree_max_height - left_tree_max_height >= 2)
 		{
-			// if it is not a right right case, make it a right right case
-			// below logic resolves the right left case with one more rotation in the child of unbalanced node
-			if(is_left_of_its_parent(prev_prev_unbalanced_node))
-			{
-				right_rotate_tree(bst_p, prev_unbalanced_node);
+			bstnode* unbalanced_node_child = unbalanced_node->right;
+			bstnode* unbalanced_node_grand_child = unbalanced_node_child->right;
 
-				// after above rotation, right right sub tree height can not be trusted
-				prev_unbalanced_node->node_property = 0;
-				prev_prev_unbalanced_node->node_property = 0;
+			// RL rotation case else L rotation
+			if(unbalanced_node_grand_child == NULL)
+			{
+				// after the rotation, sub tree heights can not be trusted
+				unbalanced_node_child->node_property = 0;
+				unbalanced_node_child->left->node_property = 0;
+
+				right_rotate_tree(bst_p, unbalanced_node_child);
 			}
+
+			unbalanced_node_child = unbalanced_node->right;
+			unbalanced_node_grand_child = unbalanced_node_child->right;
+
+			// after the rotation, sub tree heights can not be trusted
+			unbalanced_node->node_property = 0;
+			unbalanced_node_child->node_property = 0;
 
 			// for a right right case, just right rotate
 			left_rotate_tree(bst_p, unbalanced_node);
-
-			// after rotation the height of the unbalanced_node or
-			// any of its new current parent can not be trusted
-			unbalanced_node->node_property = 0;
 		}
+		else
+			break;
 
 		// update the unbalanced node
 		unbalanced_node = unbalanced_node->parent;
