@@ -90,8 +90,6 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 			// for a right right case, just right rotate
 			left_rotate_tree(bst_p, unbalanced_node);
 		}
-		else
-			break;
 
 		// update the unbalanced node
 		unbalanced_node = unbalanced_node->parent;
