@@ -7,7 +7,7 @@
  	 * if function f has to be applied on N integers to form a final result R, then the order in which we apply f must not alter the result R
  	examples of such functions are min, max, sum, product(multiplication), bitwise-and, bitwise-or, bitwise-xor etc
 
- 	* for an array of size n => we need a segment tree with ( 2 * n - 2 + (number of bits set in n)) number of nodes
+ 	* for an array of size n => we need a segment tree with ( 2 * n - 1) number of nodes (managed as an array of completely filled binary tree)
  	* for a tree with parent p index -> its children have indices 2 * p + 1 and 2 * p + 2 just like the heap array
  	* for any child with index c -> its parent is at ( (c - 1) / 2 ) index
  	* if the range of a node is (l ,h) this means the integer value at this node = f(A[l...h]) (incuding l and h)
