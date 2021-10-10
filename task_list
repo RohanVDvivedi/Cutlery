@@ -25,10 +25,13 @@
  * refactor memmove to not cross provided address boundaries
 
  * refactor binary search to some thing like:
-arr = [1,3,5,7,9,11,13,15,17,19,21]
+arr = [1,3,9,11,13,13,15,15,15,19,19,19,21,23,33,55]
 
-find = 2
+find = 7
+
+lesser_index = -1
 found_index = -1
+greater_index = -1
 
 l = 0
 h = len(arr) - 1
@@ -37,14 +40,26 @@ if(arr[l] <= find and find <= arr[h]):
         m = l + int((h-l)/2)
         print("l : " + str(l) + ", m : " + str(m) + ", h : " + str(h))
         if(arr[m] < find):
-            # found_index = m
+            lesser_index = m
             l = m+1
         elif(arr[m] > find):
-            # found_index = m
+            greater_index = m
             h = m-1
         else:
             found_index = m
             break
     print("l : " + str(l) + ", h : " + str(h))
+else:
+    if(find < arr[l]):
+        greater_index = l
+    elif(arr[h] < find):
+        lesser_index = h
+
+if(found_index == -1 and lesser_index != -1):
+    print("lesser - " + str(lesser_index) + " - " + str(arr[lesser_index]))
+if(found_index != -1):
+    print("found - " + str(found_index) + " - " + str(arr[found_index]))
+if(found_index == -1 and greater_index != -1):
+    print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
 
 
