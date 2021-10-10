@@ -15,7 +15,36 @@
  	  * here m = largest power of 2 lesser than h - l + 1
  	* the range of root node is always is (0, n-1) for n number of elements
 
+	* segment tree must be coded using iterative approach
+
  * additional functionality for bst
    * find_succeeding
    * find_preceeding
    * add test cases for this
+
+ * refactor memmove to not cross provided address boundaries
+
+ * refactor binary search to some thing like:
+arr = [1,3,5,7,9,11,13,15,17,19,21]
+
+find = 2
+found_index = -1
+
+l = 0
+h = len(arr) - 1
+if(arr[l] <= find and find <= arr[h]):
+    while(l<=h):
+        m = l + int((h-l)/2)
+        print("l : " + str(l) + ", m : " + str(m) + ", h : " + str(h))
+        if(arr[m] < find):
+            # found_index = m
+            l = m+1
+        elif(arr[m] > find):
+            # found_index = m
+            h = m-1
+        else:
+            found_index = m
+            break
+    print("l : " + str(l) + ", h : " + str(h))
+
+
