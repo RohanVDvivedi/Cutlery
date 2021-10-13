@@ -67,3 +67,10 @@ if(found_index == -1 and greater_index != -1):
 
  * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
  * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
+
+ * provide implementation for splay trees in bst
+ * convert int in node_property to an unsigned int
+
+ * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list just like heap
+ * ll_node must be a union of sll_node and dcll_node
+ * use singly linked list to replace linked lists used in hashmap and binomial/fibonacci heap implementation
