@@ -64,3 +64,6 @@ if(found_index == -1 and greater_index != -1):
 
  * add insert_all method in heap implementation to build the heap from a given array, use the bottom up bubble down implementation to do this in O(n) time
  * also update heap_sort method to use this implementation for faster sort although this wont decrease time complexity of the heap sort function
+
+ * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
+ * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
