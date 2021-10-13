@@ -62,4 +62,5 @@ if(found_index != -1):
 if(found_index == -1 and greater_index != -1):
     print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
 
-
+ * add insert_all method in heap implementation to build the heap from a given array, use the bottom up bubble down implementation to do this in O(n) time
+ * also update heap_sort method to use this implementation for faster sort although this wont decrease time complexity of the heap sort function
