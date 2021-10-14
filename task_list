@@ -70,6 +70,9 @@ if(found_index == -1 and greater_index != -1):
 
  * provide implementation for splay trees in bst
  * convert int in node_property to an unsigned int
+ * implement and provide a method for is_bst_empty for bst, replacing the is_balancedbst_empty macro
+
+ * encapsulate all macro params with ()
 
  * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list just like heap
  * ll_node must be a union of sll_node and dcll_node
