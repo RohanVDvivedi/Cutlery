@@ -62,6 +62,10 @@ if(found_index != -1):
 if(found_index == -1 and greater_index != -1):
     print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
 
+ * is_reordering_required method let compare function handle null values, and add comments accordingly
+ * in bubble down method add more comments
+ * refactor heap to reduce redundant bracket scopes
+ * bug in remove function as we may require to bubble up or down right until common ancestor
  * add insert_all method in heap implementation to build the heap from a given array, use the bottom up bubble down implementation to do this in O(n) time
  * also update heap_sort method to use this implementation for faster sort although this wont decrease time complexity of the heap sort function
 
