@@ -89,3 +89,19 @@ if(found_index == -1 and greater_index != -1):
  * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list just like heap
  * ll_node must be a union of sll_node and dcll_node
  * use singly linked list to replace linked lists used in hashmap and binomial/fibonacci heap implementation
+
+ * implement dstring_get_char function returning a character at a given index
+ * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
+
+ * implement and add a stream buffer interface that acts as a queue of strings or serialized objects, this can be used for implementation of network stacks, server request response buffering, parsers and compression algorithms
+
+ * implement a redix tree data structure i.e. a trie data structure that is defined as
+struct trie_node
+{
+	dstring partial_string;
+	int prefix_count; // total number of strings in the complete trie structure that have the prefic ending at partial string
+	void* value;
+	hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
+};
+ * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
+
