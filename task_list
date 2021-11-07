@@ -75,7 +75,7 @@ if(found_index == -1 and greater_index != -1):
  * also update heap_sort method to use this implementation for faster sort although this wont decrease time complexity of the heap sort function
 
  * provide get first occurence and get last occurence if found in the search functions (binary or linear search functions) of the array
- * implement and provide a non copy iterative quick sort implementation for the part of the array
+ * implement and provide a non copy iterative quick sort implementation (using stack of unsigned int for upper and lower bound) for the part of the array
 
  * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
  * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
@@ -105,3 +105,4 @@ struct trie_node
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
+ * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring
