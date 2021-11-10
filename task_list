@@ -110,4 +110,4 @@ struct trie_node
 
  * modify hashmap's % function to something of the sort of bitwise operation to speed it instead of hash % N use something like bitwise(x, N) => [0,N) range
 
- * implement flat_array and flat_map that use void* to array of structs instead of void** to array of pointers to structs
+ * implement flat_array and flat_map (using robinhood hashing) that use void* to array of structs instead of void** to array of pointers to structs
