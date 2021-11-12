@@ -119,3 +119,5 @@ struct trie_node
  * provide reasons explicitly for all such descissions, do not replace to flat map or flat array while handling user provided structures
 
  * add remove all functionality for all data structures
+
+ * add functinality to append 2 linkedlists and make the 2nd linked list contain 0 elements
