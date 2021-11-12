@@ -111,3 +111,9 @@ struct trie_node
  * modify hashmap's % function to something of the sort of bitwise operation to speed it instead of hash % N use something like bitwise(x, N) => [0,N) range
 
  * implement flat_array and flat_map (using robinhood hashing) that use void* to array of structs instead of void** to array of pointers to structs
+
+ * implement rabin krap and boyer moore substring comparison algorithm, use flat map and flat array for its tables, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
+ * provide a better interface for selecting between all the 4 substring matching algorithms
+
+ * check and re evaluate what all algorithms can be moved to using flat array and flat map for better cache utilization and replace them
+ * provide reasons explicitly for all such descissions, do not replace to flat map or flat array while handling user provided structures
