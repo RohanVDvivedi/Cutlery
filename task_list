@@ -117,3 +117,5 @@ struct trie_node
 
  * check and re evaluate what all algorithms can be moved to using flat array and flat map for better cache utilization and replace them
  * provide reasons explicitly for all such descissions, do not replace to flat map or flat array while handling user provided structures
+
+ * add remove all functionality for all data structures
