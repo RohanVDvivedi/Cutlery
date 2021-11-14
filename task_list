@@ -121,3 +121,6 @@ struct trie_node
  * add remove all functionality for all data structures
 
  * add functinality to append 2 linkedlists and make the 2nd linked list contain 0 elements
+
+ * to calculate the bitmap size in bytes
+        use (size + 7) / 8
