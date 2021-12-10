@@ -106,6 +106,9 @@ struct trie_node
  * to calculate the bitmap size in bytes
         use (size + 7) / 8
 
+ * enable the memory allocator to have a context
+   * this context should be used to hold anything from the memory region or parameters of the allocator, like page size to be mmaped or NULL for a generic allocator or the allocator type to use based on size requested etc
+
  * use int or unsigned int for below functionality yet to decide on that
  * use flatmap or direct array for the below functionality yet to decide on that as well
  * implement segment tree for any array A and function f such that
