@@ -132,3 +132,7 @@ struct trie_node
 
  * implement fenwick tree => for addition, product(multiplication), bitwise-xor => the functions for which their inverse exists
  * implement sparse table => max, min, lcm, hcf => the functions for which f(a,b,c,d,e) = f(f(a,b,c), f(b,c,d,e))
+
+* probablistic datastructure tasks
+ * implement bloom filter, build it with approximate unique count
+ * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
