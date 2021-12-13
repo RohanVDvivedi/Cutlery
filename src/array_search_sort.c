@@ -116,6 +116,11 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_
 	}
 }
 
+void quick_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
+{
+	
+}
+
 void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, unsigned int (*get_sort_attribute)(const void* data))
 {
 	if(start_index > end_index || end_index >= array_p->total_size)
