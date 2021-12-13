@@ -101,15 +101,27 @@ const void* find_equals_in_bst(const bst* bst_p, const void* data)
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
+const void* find_preceding(const bst* bst_p, const void* data)
+{
+	bstnode* node_p = find_node_preceding(bst_p, data);
+	return (node_p != NULL) ? get_data(node_p) : NULL;
+}
+
 const void* find_preceding_or_equals(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_preceding_or_equals(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
+const void* find_succeeding(const bst* bst_p, const void* data)
+{
+	bstnode* node_p = find_node_succeeding(bst_p, data);
+	return (node_p != NULL) ? get_data(node_p) : NULL;
+}
+
 const void* find_succeeding_or_equals(const bst* bst_p, const void* data)
 {
-	const bstnode* node_p = find_node_succeeding_or_equals(bst_p, data);
+	bstnode* node_p = find_node_succeeding_or_equals(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
