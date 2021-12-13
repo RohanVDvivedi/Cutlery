@@ -7,7 +7,7 @@
 
 #define get_right_child_index(parent_index)		((2 * (parent_index)) + 2)
 
-#define get_sibling_index(sibling_index)		((((sibling_index) - 1) ^ 1) + 1)
+#define get_sibling_index(sibling_index)		((((sibling_index) + 1) ^ 1) - 1)
 
 /*
 	This file is used by following data structures
