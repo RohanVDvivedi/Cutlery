@@ -96,29 +96,26 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_
 
 	// create a max heap
 	heap sort_heap;
-	initialize_heap(&sort_heap, 0, MAX_HEAP, compare, NULL, NULL);
-	sort_heap.heap_holder.data_p_p = array_p->data_p_p + start_index;
-	sort_heap.heap_holder.total_size = total_elements;
+	initialize_heap(&sort_heap, total_elements, MIN_HEAP, compare, NULL, NULL);
 
-	// push all the elements in the max heap
-	for(unsigned int i = start_index; i <= end_index; i++)
-		push_heap(&sort_heap, get_element(array_p, i));
+	// push all the elements that we need to sort in the min heap (sort_heap)
+	push_all_from_array_heap(&sort_heap, array_p, start_index, end_index);
 
 	// place the top of the heap element in the array, then pop heap
-	for(unsigned int i = end_index; ; i--)
+	for(unsigned int i = 0; i < total_elements; i++)
 	{
-		const void* max_data = get_top_heap(&sort_heap);
+		const void* min_data = get_top_heap(&sort_heap);
 		pop_heap(&sort_heap);
-		set_element(array_p, max_data, i);
-
-		if(i == start_index)
-			break;
+		set_element(array_p, min_data, start_index + i);
 	}
+
+	// deinitialize the sort_heap
+	deinitialize_heap(&sort_heap);
 }
 
 void quick_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
 {
-	
+
 }
 
 void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, unsigned int (*get_sort_attribute)(const void* data))
