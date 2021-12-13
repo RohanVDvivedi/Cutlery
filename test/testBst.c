@@ -33,13 +33,9 @@ void print_smallest(const bst* bst_p)
 	printf("the value for the smallest key is : ");
 	const void* result = find_smallest(bst_p);
 	if(result != NULL)
-	{
 		print_ts(result);
-	}
 	else
-	{
 		printf("NULL");
-	}
 	printf("\n");
 }
 
@@ -48,13 +44,20 @@ void print_largest(const bst* bst_p)
 	printf("the value for the largest key is : ");
 	const void* result = find_largest(bst_p);
 	if(result != NULL)
-	{
 		print_ts(result);
-	}
 	else
-	{
 		printf("NULL");
-	}
+	printf("\n");
+}
+
+void print_succeeding(const bst* bst_p, int k)
+{
+	printf("the value succeeding %d is : ", k);
+	const void* result = find_succeeding(bst_p, &k);
+	if(result != NULL)
+		print_ts(result);
+	else
+		printf("NULL");
 	printf("\n");
 }
 
@@ -63,13 +66,20 @@ void print_succeeding_equals(const bst* bst_p, int k)
 	printf("the value succeeding or equals %d is : ", k);
 	const void* result = find_succeeding_or_equals(bst_p, &k);
 	if(result != NULL)
-	{
 		print_ts(result);
-	}
 	else
-	{
 		printf("NULL");
-	}
+	printf("\n");
+}
+
+void print_preceding(const bst* bst_p, int k)
+{
+	printf("the value preceding %d is : ", k);
+	const void* result = find_preceding(bst_p, &k);
+	if(result != NULL)
+		print_ts(result);
+	else
+		printf("NULL");
 	printf("\n");
 }
 
@@ -78,13 +88,9 @@ void print_preceding_equals(const bst* bst_p, int k)
 	printf("the value preceding or equals %d is : ", k);
 	const void* result = find_preceding_or_equals(bst_p, &k);
 	if(result != NULL)
-	{
 		print_ts(result);
-	}
 	else
-	{
 		printf("NULL");
-	}
 	printf("\n");
 }
 
@@ -142,8 +148,14 @@ int main()
 
 	printf("COMPLETED INITIALIZING BALANCED BINARY SEARCH TREE\n");
 
+	print_preceding(bst_p, 7);
+	print_preceding_equals(bst_p, 7);
+	print_succeeding_equals(bst_p, 7);
+	print_succeeding(bst_p, 7);
+
 	print_smallest(bst_p);
 	print_largest(bst_p);
+	printf("\n");
 
 	printf("STARTING TO INSERT NODES\n");
 
@@ -187,10 +199,15 @@ int main()
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
 
+	print_preceding(bst_p, 12);
 	print_preceding_equals(bst_p, 12);
 	print_succeeding_equals(bst_p, 12);
+	print_succeeding(bst_p, 12);
+
+	print_preceding(bst_p, 19);
 	print_preceding_equals(bst_p, 19);
 	print_succeeding_equals(bst_p, 19);
+	print_succeeding(bst_p, 19);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
@@ -207,14 +224,25 @@ int main()
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
 
+	print_preceding(bst_p, 11);
 	print_preceding_equals(bst_p, 11);
 	print_succeeding_equals(bst_p, 11);
+	print_succeeding(bst_p, 11);
+
+	print_preceding(bst_p, 12);
 	print_preceding_equals(bst_p, 12);
 	print_succeeding_equals(bst_p, 12);
+	print_succeeding(bst_p, 12);
+
+	print_preceding(bst_p, 15);
 	print_preceding_equals(bst_p, 15);
 	print_succeeding_equals(bst_p, 15);
+	print_succeeding(bst_p, 15);
+
+	print_preceding(bst_p, 19);
 	print_preceding_equals(bst_p, 19);
 	print_succeeding_equals(bst_p, 19);
+	print_succeeding(bst_p, 19);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
@@ -239,12 +267,20 @@ int main()
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
 
+	print_preceding(bst_p, 0);
 	print_preceding_equals(bst_p, 0);
 	print_succeeding_equals(bst_p, 0);
+	print_succeeding(bst_p, 0);
+
+	print_preceding(bst_p, 2);
 	print_preceding_equals(bst_p, 2);
 	print_succeeding_equals(bst_p, 2);
+	print_succeeding(bst_p, 2);
+
+	print_preceding(bst_p, 3);
 	print_preceding_equals(bst_p, 3);
 	print_succeeding_equals(bst_p, 3);
+	print_succeeding(bst_p, 3);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
@@ -276,8 +312,10 @@ int main()
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
 
+	print_preceding(bst_p, 7);
 	print_preceding_equals(bst_p, 7);
 	print_succeeding_equals(bst_p, 7);
+	print_succeeding(bst_p, 7);
 
 	error = insert_in_bst(bst_p, &((ts){7, 7, "seven"}));
 	printf("node inserted = %d\n", error);
@@ -305,8 +343,10 @@ int main()
 	printf("-> Trying to insert the same data (node) again in the bst : return = %d\n", insert_in_bst(bst_p, to_update));
 	print_ts_bst(bst_p);
 
+	print_preceding(bst_p, 19);
 	print_preceding_equals(bst_p, 19);
 	print_succeeding_equals(bst_p, 19);
+	print_succeeding(bst_p, 19);
 
 	error = insert_in_bst(bst_p, &((ts){9, 9, "nine-lol"}));
 	printf("node inserted = %d\n", error);
@@ -407,18 +447,35 @@ int main()
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
+	print_preceding(bst_p, 0);
 	print_preceding_equals(bst_p, 0);
 	print_succeeding_equals(bst_p, 0);
+	print_succeeding(bst_p, 0);
+
+	print_preceding(bst_p, 3);
 	print_preceding_equals(bst_p, 3);
 	print_succeeding_equals(bst_p, 3);
+	print_succeeding(bst_p, 3);
+
+	print_preceding(bst_p, 6);
 	print_preceding_equals(bst_p, 6);
 	print_succeeding_equals(bst_p, 6);
+	print_succeeding(bst_p, 6);
+
+	print_preceding(bst_p, 9);
 	print_preceding_equals(bst_p, 9);
 	print_succeeding_equals(bst_p, 9);
+	print_succeeding(bst_p, 9);
+
+	print_preceding(bst_p, 15);
 	print_preceding_equals(bst_p, 15);
 	print_succeeding_equals(bst_p, 15);
+	print_succeeding(bst_p, 15);
+
+	print_preceding(bst_p, 19);
 	print_preceding_equals(bst_p, 19);
 	print_succeeding_equals(bst_p, 19);
+	print_succeeding(bst_p, 19);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
