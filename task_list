@@ -40,7 +40,6 @@ if(found_index == -1 and greater_index != -1):
     print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
 
  * provide get first occurence and get last occurence if found in the search functions (binary or linear search functions) of the array
- * implement and provide a non copy iterative quick sort implementation (using stack of unsigned int for upper and lower bound) for the part of the array
 
  * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
  * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
@@ -119,3 +118,7 @@ struct trie_node
 * probablistic datastructure tasks
  * implement bloom filter, build it with approximate unique count
  * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
+
+* sort optimizations
+* heap sort to directly utilize the memory area of the array
+* quick sort refactor to use itertion instead of recursion
