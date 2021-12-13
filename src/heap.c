@@ -179,8 +179,10 @@ int remove_from_heap(heap* heap_p, unsigned int index)
 	// and set the last to NULL, and decrement the element_count of the heap
 	set_element(&(heap_p->heap_holder), NULL, --heap_p->element_count);
 
-	// bubble down the element at index 0
-	bubble_down(heap_p, index);
+	// if the heap is not empty
+	// call heapify at index, to appropriately call bubble up or bubble down
+	if(!is_empty_heap(heap_p))
+		heapify_at(heap_p, index);
 
 	return 1;
 }
