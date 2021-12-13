@@ -155,7 +155,8 @@ int main()
 	printf("Array initialized\n\n");print_ts_array(array_p);printf("\n\n");
 
 //#define MERGE_SORT
-#define HEAP_SORT
+//#define HEAP_SORT
+#define QUICK_SORT
 //#define RADIX_SORT
 
 #if defined MERGE_SORT
@@ -164,6 +165,9 @@ int main()
 #elif defined HEAP_SORT
 	printf("Sorting %u to %u using HEAP_SORT\n\n", start_index, end_index);
 	heap_sort_array(array_p, start_index, end_index, test_compare);
+#elif defined QUICK_SORT
+	printf("Sorting %u to %u using QUICK_SORT\n\n", start_index, end_index);
+	quick_sort_array(array_p, start_index, end_index, test_compare);
 #elif defined RADIX_SORT
 	printf("Sorting %u to %u using RADIX_SORT\n\n", start_index, end_index);
 	radix_sort_array(array_p, start_index, end_index, get_radix_sort_attr);
