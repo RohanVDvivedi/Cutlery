@@ -34,9 +34,9 @@ int is_empty_bst(const bst* bst_p)
 }
 
 
-#define is_greater(compare_A_with_B) 	(compare_A_with_B > 0)
-#define is_lesser(compare_A_with_B)		(compare_A_with_B < 0)
-#define is_equal(compare_A_with_B)		(compare_A_with_B == 0)
+#define is_greater(compare_A_with_B) 	((compare_A_with_B) > 0)
+#define is_lesser(compare_A_with_B)		((compare_A_with_B) < 0)
+#define is_equal(compare_A_with_B)		((compare_A_with_B) == 0)
 
 // searches for bstnode that holds data equal to the given data
 static bstnode* find_node(const bst* bst_p, const void* data)
