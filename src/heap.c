@@ -152,6 +152,36 @@ int push_heap(heap* heap_p, const void* data)
 	return 1;
 }
 
+int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int end_index)
+{
+	// number of elements to be inserted from start_index to end_index (both inclusive)
+	unsigned int elements_to_insert = end_index - start_index + 1;
+
+	if(get_total_size_heap(heap_p) < (get_element_count_heap(heap_p) + elements_to_insert))
+		return 0;
+
+	// insert all the elements from array [start_index to  end_index] to the heap_p
+	for(unsigned int i = 0; i < elements_to_insert; i++)
+		set_element(&(heap_p->heap_holder), get_element(array_p, start_index + i), heap_p->element_count++);
+
+	unsigned int index = get_element_count_heap(heap_p);
+
+	while(1)
+	{
+		// bubble_down at all the elements in reverse order
+		bubble_down(heap_p, index);
+
+		// if the last index processed was at 0, then return
+		if(index == 0)
+			break;
+
+		// else decrement and continue
+		index--;
+	}
+
+	return 1;
+}
+
 int pop_heap(heap* heap_p)
 {
 	// remove the 0th element from the heap
