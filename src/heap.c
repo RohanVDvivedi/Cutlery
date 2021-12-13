@@ -187,7 +187,7 @@ int remove_from_heap(heap* heap_p, unsigned int index)
 
 void heapify_at(heap* heap_p, unsigned int index)
 {
-	// do not provide out of heap-bound index
+	// return if index is out-of-bounds
 	if(index >= heap_p->element_count)
 		return;
 
@@ -197,12 +197,13 @@ void heapify_at(heap* heap_p, unsigned int index)
 	unsigned int right_child_index = get_right_child_index(index);
 
 	// if re-ordering is required at the parent side, we bubble up
-	if(is_reordering_required(heap_p, parent_index, index))
+	if((index != 0) && is_reordering_required(heap_p, parent_index, index))
 		bubble_up(heap_p, index);
 
 	// else if the re ordering is required at any of the children's side we bubble down
-	else if(is_reordering_required(heap_p, index, left_child_index) || 
-			is_reordering_required(heap_p, index, right_child_index))
+	else if(
+		((left_child_index  < heap_p->element_count) && is_reordering_required(heap_p, index,  left_child_index)) 
+	||	((right_child_index < heap_p->element_count) && is_reordering_required(heap_p, index, right_child_index)))
 		bubble_down(heap_p, index);
 }
 
