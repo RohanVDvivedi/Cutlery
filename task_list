@@ -1,8 +1,3 @@
- * additional functionality for bst
-   * find_succeeding
-   * find_preceeding
-   * add test cases for this
-
  * refactor memmove to not cross provided address boundaries
 
  * refactor binary search to some thing like:
