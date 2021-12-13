@@ -39,7 +39,6 @@ if(found_index != -1):
 if(found_index == -1 and greater_index != -1):
     print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
 
- * in bubble down method add more comments, and initialize new parent index to index instead of -1
  * refactor heap to reduce redundant bracket scopes
  * bug in remove function as we may require to bubble up or down right until common ancestor
    * and do not bubble up or down if heap element count is 0 after removal, i.e. when heap is empty bubble up and bubble down must be a nop
