@@ -62,8 +62,6 @@ if(found_index == -1 and greater_index != -1):
  * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
 
  * provide implementation for splay trees in bst
- * convert int in node_property to an unsigned int
- * implement and provide a method for is_bst_empty for bst, replacing the is_balancedbst_empty macro
  * point parent of root node of the bst to some thing other than null to identify a new_node from a single node bst root node
 
  * encapsulate all macro params with ()
