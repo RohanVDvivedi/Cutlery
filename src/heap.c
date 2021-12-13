@@ -154,6 +154,10 @@ int push_heap(heap* heap_p, const void* data)
 
 int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int end_index)
 {
+	// fail if the indexes provided in the array are invalid
+	if(start_index > end_index)
+		return 0;
+
 	// number of elements to be inserted from start_index to end_index (both inclusive)
 	unsigned int elements_to_insert = end_index - start_index + 1;
 
