@@ -47,8 +47,6 @@ if(found_index == -1 and greater_index != -1):
  * provide implementation for splay trees in bst
  * point parent of root node of the bst to some thing other than null to identify a new_node from a single node bst root node
 
- * encapsulate all macro params with ()
-
  * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list just like heap
  * ll_node must be a union of sll_node and dcll_node
  * use singly linked list to replace linked lists used in hashmap and binomial/fibonacci heap implementation
