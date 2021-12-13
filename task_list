@@ -87,6 +87,7 @@ struct trie_node
 
  * add functinality to append 2 linkedlists and make the 2nd linked list contain 0 elements
 
+ * optimize bitmap accesses x % 8 to x & 7 and x / 8 to x >> 3
  * to calculate the bitmap size in bytes
         use (size + 7) / 8
 
