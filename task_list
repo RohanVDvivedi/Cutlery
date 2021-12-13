@@ -39,8 +39,6 @@ if(found_index != -1):
 if(found_index == -1 and greater_index != -1):
     print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
 
- * also update heap_sort method to use push_all_from_array_heap for faster sort although this wont decrease time complexity of the heap sort function
-
  * provide get first occurence and get last occurence if found in the search functions (binary or linear search functions) of the array
  * implement and provide a non copy iterative quick sort implementation (using stack of unsigned int for upper and lower bound) for the part of the array
 
@@ -61,7 +59,7 @@ if(found_index == -1 and greater_index != -1):
 
  * implement and add a stream buffer interface that acts as a queue of strings or serialized objects, this can be used for implementation of network stacks, server request response buffering, parsers and compression algorithms
 
- * implement a redix tree data structure i.e. a trie data structure that is defined as
+ * implement a radix tree data structure i.e. a trie data structure that is defined as
 struct trie_node
 {
 	dstring partial_string;
@@ -81,11 +79,11 @@ struct trie_node
  * provide a better interface for selecting between all the 4 substring matching algorithms
 
  * check and re evaluate what all algorithms can be moved to using flat array and flat map for better cache utilization and replace them
- * provide reasons explicitly for all such descissions, do not replace to flat map or flat array while handling user provided structures
+ * provide reasons explicitly for all such decisions, do not replace to flat map or flat array while handling user provided structures
 
  * add remove all functionality for all data structures
 
- * add functinality to append 2 linkedlists and make the 2nd linked list contain 0 elements
+ * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements
 
  * optimize bitmap accesses x % 8 to x & 7 and x / 8 to x >> 3
  * to calculate the bitmap size in bytes
