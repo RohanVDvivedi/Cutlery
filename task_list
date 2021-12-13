@@ -1,9 +1,6 @@
-* CUTLERY_STDS tasks
- * refactor memmove to not cross provided address boundaries
- * enable the memory allocator to have a context
- * this context should be used to hold anything from the memory region or parameters of the allocator, like page size to be mmaped or NULL for a generic allocator or the allocator type to use based on size requested etc
+HIGH PRIORITY TASKS START
 
-* SEARCH tasks
+SEARCH tasks
  * refactor binary search to some thing like:
  * make binary search and linear search functions take a flag parameter to return either first or last occurrence of the given element.
 arr = [1,3,9,11,13,13,15,15,15,19,19,19,21,23,33,55]
@@ -43,19 +40,15 @@ if(found_index != -1):
 if(found_index == -1 and greater_index != -1):
     print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
 
-HEAP subdivision tasks
- * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
- * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
+BITMAP optimization task
+ * optimize bitmap accesses x % 8 to x & 7 and x / 8 to x >> 3
+ * to calculate the bitmap size in bytes
+        use (size + 7) / 8
 
-BST tasks
- * provide implementation for splay trees in bst (* not yet decided, if it will be implemented)
- * point parent of root node of the bst to some thing other than null to identify a new_node from a single node bst root node
-
-LINKEDLIST tasks
- * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list just like heap
- * ll_node must be a union of sll_node and dcll_node
- * use singly linked list to replace linked lists used in hashmap and binomial/fibonacci heap implementation
- * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements
+CUTLERY_STDS tasks
+ * refactor memmove to not cross provided address boundaries
+ * enable the memory allocator to have a context
+ * this context should be used to hold anything from the memory region or parameters of the allocator, like page size to be mmaped or NULL for a generic allocator or the allocator type to use based on size requested etc
 
 DSTRING tasks
  * implement dstring_get_char function returning a character at a given index
@@ -63,35 +56,38 @@ DSTRING tasks
  * implement rabin krap and boyer moore substring comparison algorithm, use flat map and flat array for its tables, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
  * provide a better interface for selecting between all the 4 substring matching algorithms
 
-BYTESTREAM tasks
+HIGH PRIORITY TASKS END
+
+BYTESTREAM tasks (NEW DATASTRUCTURE)
  * implement and add a stream buffer interface that acts as a queue of strings or serialized objects, this can be used for implementation of network stacks, server request response buffering, parsers and compression algorithms
 
-RADIX_TREE tasks
+RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
 struct trie_node
 {
-	dstring partial_string;
-	int prefix_count; // total number of strings in the complete trie structure that have the prefic ending at partial string
-	void* value;
-	hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
+    dstring partial_string;
+    int prefix_count; // total number of strings in the complete trie structure that have the prefic ending at partial string
+    void* value;
+    hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
-HASHMAP optimization tasks
- * modify hashmap's % function to something of the sort of bitwise operation to speed it instead of hash % N use something like bitwise(x, N) => [0,N) range
+HEAP subdivision tasks (NEW DATASTRUCTURE inclusion)
+ * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
+ * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
 
-FLAT datastructure tasks
- * implement flat_array and flat_map (using robinhood hashing) that use void* to array of structs instead of void** to array of pointers to structs
- * check and re evaluate what all algorithms can be moved to using flat array and flat map for better cache utilization and replace them
- * provide reasons explicitly for all such decisions, do not replace to flat map or flat array while handling user provided structures
+BST tasks (NEW DATASTRUCTURE inclusion)
+ * provide implementation for splay trees in bst (* not yet decided, if it will be implemented)
+ * point parent of root node of the bst to some thing other than null to identify a new_node from a single node bst root node
+
+LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
+ * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list just like heap
+ * ll_node must be a union of sll_node and dcll_node
+ * use singly linked list to replace linked lists used in hashmap and binomial/fibonacci heap implementation
+ * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements
 
 COMMON to all datastructures tasks
  * add remove all functionality for all data structures
-
-BITMAP optimization task
- * optimize bitmap accesses x % 8 to x & 7 and x / 8 to x >> 3
- * to calculate the bitmap size in bytes
-        use (size + 7) / 8
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use int or unsigned int for below functionality yet to decide on that
@@ -118,10 +114,20 @@ RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * implement fenwick tree => for addition, product(multiplication), bitwise-xor => the functions for which their inverse exists
  * implement sparse table => max, min, lcm, hcf => the functions for which f(a,b,c,d,e) = f(f(a,b,c), f(b,c,d,e))
 
- * PROBABLISTIC datastructure tasks
-  * implement bloom filter, build it with approximate unique count
-  * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
+LEAST PRIORITY TASKS BELOW
 
- * SORT optimizations tasks
-  * heap sort to directly utilize the memory area of the array
-  * quick sort refactor to use itertion instead of recursion
+FLAT datastructure tasks (NEW DATASTRUCTURE)
+ * implement flat_array and flat_map (using robinhood hashing) that use void* to array of structs instead of void** to array of pointers to structs
+ * check and re evaluate what all algorithms can be moved to using flat array and flat map for better cache utilization and replace them
+ * provide reasons explicitly for all such decisions, do not replace to flat map or flat array while handling user provided structures
+
+PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
+ * implement bloom filter, build it with approximate unique count
+ * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
+
+SORT optimizations tasks
+ * heap sort to directly utilize the memory area of the array
+ * quick sort refactor to use itertion instead of recursion
+
+HASHMAP optimization tasks
+ * modify hashmap's % function to something of the sort of bitwise operation to speed it instead of hash % N use something like bitwise(x, N) => [0,N) range
