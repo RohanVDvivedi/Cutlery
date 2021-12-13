@@ -22,20 +22,12 @@ static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, uns
 // hence, this function can be used to test if the order could be made correct
 static int is_reordering_required(const heap* heap_p, unsigned int parent_index, unsigned int child_index)
 {
+	// we dont allow reordering if, parent index or child index are out of bounds of element_count
 	if(parent_index >= heap_p->element_count || child_index >= heap_p->element_count)
-	{
-		// we dont allow reordering if, parent index or child index are out of bounds of element_count
 		return 0;
-	}
 
 	const void* parent = get_element(&(heap_p->heap_holder), parent_index);
 	const void* child  = get_element(&(heap_p->heap_holder), child_index );
-
-	// if the child or parent is NULL, you can not reorder 
-	if(child == NULL || parent == NULL)
-	{
-		return 0;
-	}
 
 	int reordering_required = 0;
 
@@ -46,9 +38,7 @@ static int is_reordering_required(const heap* heap_p, unsigned int parent_index,
 			// in min heap, parent has to be smaller than or equal to the child
 			// we have an issue if parent is greater than child 
 			if(heap_p->compare(parent, child) > 0)
-			{
 				reordering_required = 1;
-			}
 			break;
 		}
 		case MAX_HEAP :
@@ -56,9 +46,7 @@ static int is_reordering_required(const heap* heap_p, unsigned int parent_index,
 			// in max heap, parent has to be greater than or equal to the child
 			// we have an issue if parent is smaller than child 
 			if(heap_p->compare(parent, child) < 0)
-			{
 				reordering_required = 1;
-			}
 			break;
 		}
 	}
