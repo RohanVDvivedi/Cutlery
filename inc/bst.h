@@ -75,21 +75,30 @@ int is_empty_bst(const bst* bst_p);
 ** i.e. it must have all the fields/attributes of the struct that are used in "bst_p->compare(,)".
 */
 
-// find data in tree, whose data compares equal to data provided
+// find data in bst_p (given in parameter), that compares equal to data (given in parameter)
+// returns NULL, if not found
 const void* find_equals_in_bst(const bst* bst_p, const void* data);
 
-// find data in tree, with the biggest value which is smaller than or equal to data
-// returns NULL, if data is smaller than the smallest data
+// find data in bst_p (given in parameter), with the biggest value which is smaller than data (given in parameter)
+// returns NULL, if data (given in parameter) is smaller than or equal to the smallest existing data in bst_p (given in parameter)
+const void* find_preceding(const bst* bst_p, const void* data);
+
+// find data in bst_p (given in parameter), with the biggest value which is smaller than or equal to data (given in parameter)
+// returns NULL, if data (given in parameter) is smaller than the smallest existing data in bst_p (given in parameter)
 const void* find_preceding_or_equals(const bst* bst_p, const void* data);
 
-// find data in tree, with the smallest value which is bigger than or equal to data
-// returns NULL, if data is bigger than the biggest data value in tree
+// find data in bst_p (given in parameter), with the smallest value which is bigger than data (given in parameter)
+// returns NULL, if data (given in parameter) is bigger than or equla to the biggest existing data in bst_p (given in parameter)
+const void* find_succeeding(const bst* bst_p, const void* data);
+
+// find data in bst_p (given in parameter), with the smallest value which is bigger than or equal to data (given in parameter)
+// returns NULL, if data (given in parameter) is bigger than the biggest existing data in bst_p (given in parameter)
 const void* find_succeeding_or_equals(const bst* bst_p, const void* data);
 
-// find data in tree, with the smallest value
+// find data in bst_p (given in parameter), with the smallest value
 const void* find_smallest(const bst* bst_p);
 
-// find data in tree, with the biggest value
+// find data in bst_p (given in parameter), with the biggest value
 const void* find_largest(const bst* bst_p);
 
 typedef enum sort_direction sort_direction;
