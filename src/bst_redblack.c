@@ -225,10 +225,8 @@ void remove_node_from_red_black_tree(bst* bst_p, bstnode* node_p)
 
 	// we can not balance an empty tree
 	// hence return if the tree is empty after deletion
-	if(is_balancedbst_empty(bst_p))
-	{
+	if(is_empty_bst(bst_p))
 		return;
-	}
 
 	// only if the node that is removed is a black node
 	// the black height of the tree reduces in one of its branch and we need imbalance handling

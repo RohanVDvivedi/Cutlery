@@ -28,6 +28,11 @@ int is_new_bstnode(const bst* bst_p, const bstnode* node_p)
 		&& (bst_p->root != node_p));
 }
 
+int is_empty_bst(const bst* bst_p)
+{
+	return (bst_p->root == NULL);
+}
+
 
 #define is_greater(compare_A_with_B) 	(compare_A_with_B > 0)
 #define is_lesser(compare_A_with_B)		(compare_A_with_B < 0)
@@ -198,7 +203,7 @@ int insert_in_bst(bst* bst_p, const void* data)
 		return 0;
 
 	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
-	if(is_balancedbst_empty(bst_p))
+	if(is_empty_bst(bst_p))
 	{
 		bst_p->root = node_p;
 		node_p->parent = NULL;

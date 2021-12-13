@@ -38,11 +38,4 @@
 #define is_right_of_its_parent(node_p)							\
 	((!(is_root_node(node_p))) && (node_p->parent->right == node_p))
 
-/*
-*	MARCOS TO CHECK WHETHER TREE IS EMPTY
-*/
-
-#define is_balancedbst_empty(bst_p)						\
-	(bst_p->root == NULL)
-
 #endif

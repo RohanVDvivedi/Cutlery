@@ -112,12 +112,13 @@ void remove_node_from_avl_tree(bst* bst_p, bstnode* node_p)
 	remove_node_from_non_self_balancing_tree(bst_p, node_p);
 
 	// we can not balance an empty tree
-	if(!is_balancedbst_empty(bst_p))
-	{
-		// the imbalance is always in the parent node of the node currently going to be deleted
-		bstnode* imbalance_node_p = node_p->parent;
+	// hence return if the tree is empty after deletion
+	if(is_empty_bst(bst_p))
+		return;
 
-		// remove the imbalance and remove it
-		handle_imbalance_in_avl_tree(bst_p, imbalance_node_p);
-	}
+	// the imbalance is always in the parent node of the node currently going to be deleted
+	bstnode* imbalance_node_p = node_p->parent;
+
+	// remove the imbalance and remove it
+	handle_imbalance_in_avl_tree(bst_p, imbalance_node_p);
 }

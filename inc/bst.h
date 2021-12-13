@@ -62,9 +62,7 @@ void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*co
 // always initialize your bstnode before using it
 void initialize_bstnode(bstnode* node_p);
 
-// inserts given data in the tree
-// returns 0, and fails if bstnode of data is not a new node
-int insert_in_bst(bst* bst_p, const void* data);
+int is_empty_bst(const bst* bst_p);
 
 /*
 **		NOTE FOR USING ALL THE FIND FUNCTIONS BELOW
@@ -123,6 +121,10 @@ unsigned int find_all_in_range(
 					);
 // The above function can also be used as a for_each_in_range function, to perform a give operation on all the data elements in a given range
 // the return value of this function is equal to the number of times the result_accumulator was called (or the number of data elements found)
+
+// inserts given data in the tree
+// returns 0, and fails if bstnode of data is not a new node
+int insert_in_bst(bst* bst_p, const void* data);
 
 // remove data from the given tree
 // returns 0, and fails if bstnode of data is a new node
