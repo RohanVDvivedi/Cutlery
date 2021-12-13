@@ -2,23 +2,7 @@
 
 #include<cutlery_stds.h>
 
-// utility : gets index of the parent data to the data at index = child
-static unsigned int get_parent_index(unsigned int child)
-{
-	return (child-1)/2;
-}
-
-// utility : gets index of the left child to the data at index = parent
-static unsigned int get_left_child_index(unsigned int parent)
-{
-	return (2 * parent) + 1;
-}
-
-// utility : gets index of the right child to the data at index = parent
-static unsigned int get_right_child_index(unsigned int parent)
-{
-	return (2 * parent) + 2;
-}
+#include<binary_tree_as_array_util.h>
 
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, unsigned int i2)
