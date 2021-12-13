@@ -6,10 +6,10 @@
 #include<cutlery_stds.h>
 
 #define is_red_node(node_p)					\
-	((node_p != NULL) && (node_p->node_property == 0))
+	(((node_p) != NULL) && ((node_p)->node_property == 0))
 
 #define is_black_node(node_p)				\
-	((node_p == NULL) || (node_p->node_property == 1))
+	(((node_p) == NULL) || ((node_p)->node_property == 1))
 
 static void make_node_red(bstnode* node_p)
 {
