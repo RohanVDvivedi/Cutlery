@@ -55,6 +55,24 @@ static bstnode* find_node(const bst* bst_p, const void* data)
 	return NULL;
 }
 
+static bstnode* find_node_preceding(const bst* bst_p, const void* data)
+{
+	bstnode* result = NULL;
+	bstnode* node_p = bst_p->root;
+	while(node_p != NULL)
+	{
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		if(is_equal(compared_data_with_current_node) || is_lesser(compared_data_with_current_node))
+			node_p = node_p->left;
+		else if(is_greater(compared_data_with_current_node))
+		{
+			result = node_p;
+			node_p = node_p->right;
+		}
+	}
+	return result;
+}
+
 static bstnode* find_node_preceding_or_equals(const bst* bst_p, const void* data)
 {
 	bstnode* result = NULL;
@@ -70,6 +88,24 @@ static bstnode* find_node_preceding_or_equals(const bst* bst_p, const void* data
 		{
 			result = node_p;
 			node_p = node_p->right;
+		}
+	}
+	return result;
+}
+
+static bstnode* find_node_succeeding(const bst* bst_p, const void* data)
+{
+	bstnode* result = NULL;
+	bstnode* node_p = bst_p->root;
+	while(node_p != NULL)
+	{
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		if(is_equal(compared_data_with_current_node) || is_greater(compared_data_with_current_node))
+			node_p = node_p->right;
+		else if(is_lesser(compared_data_with_current_node))
+		{
+			result = node_p;
+			node_p = node_p->left;
 		}
 	}
 	return result;
