@@ -9,4 +9,10 @@
 
 #define get_sibling_index(sibling_index)		((((sibling_index) - 1) ^ 1) + 1)
 
+/*
+	This file is used by following data structures
+	* binary heap (current in cutlery as heap)
+	* segment tree (future)
+*/
+
 #endif
