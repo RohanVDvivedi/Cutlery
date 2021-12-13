@@ -126,7 +126,7 @@ void quick_sort_array(array* array_p, unsigned int start_index, unsigned int end
 	// always picking the last element as the pivot
 	const void* pivot = get_element(array_p, end_index);
 
-	unsigned int all_greater_than_pivot_start_index = 0;
+	unsigned int all_greater_than_pivot_start_index = start_index;
 
 	// position pivot element at its correct index
 	for(unsigned int i = start_index; i <= end_index; i++)
