@@ -5,6 +5,10 @@
 	#define NULL ((void*)0)
 #endif
 
+#define INVALID_INDEX (~((unsigned int)(0)))
+// any array (struct array, struct dstring, c array or char array ) will never have this address
+// INVALID_INDEX is used to report error (or a lack of result) to the user
+
 /* this is cutlery specific memory move implementation
    this is the function to be used in place of memcpy/memmove std library functions
    features : 	
