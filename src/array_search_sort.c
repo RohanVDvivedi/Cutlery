@@ -190,25 +190,44 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end
 }
 
 
-unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
+	// check for valid start and end indexes
 	if(start_index > end_index || end_index >= array_p->total_size)
-		return array_p->total_size;
+		return INVALID_INDEX;
 
-	for(unsigned int i = start_index; i <= end_index; i++)
+	switch(occurence_type)
 	{
-		if(compare(get_element(array_p, i), data_p) == 0)
-			return i;
+		case FIRST_OCCURENCE:
+		{
+			for(unsigned int i = start_index; i <= end_index; i++)
+			{
+				if(compare(get_element(array_p, i), data_p) == 0)
+					return i;
+			}
+			break;
+		}
+		case LAST_OCCURENCE:
+		{
+			for(unsigned int i = end_index; ; i++)
+			{
+				if(compare(get_element(array_p, i), data_p) == 0)
+					return i;
+				if(i == start_index)
+					break;
+			}
+			break;
+		}
 	}
 
 	// we return answer or return an element out of bounds
-	return array_p->total_size;
+	return INVALID_INDEX;
 }
 
-unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	if(start_index > end_index || end_index >= array_p->total_size)
-		return array_p->total_size;
+		return INVALID_INDEX;
 
 	if(compare(get_element(array_p, start_index), data_p) >= 0)
 		return start_index;
