@@ -226,32 +226,75 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 
 unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
+	// check for valid start and end indexes
 	if(start_index > end_index || end_index >= array_p->total_size)
 		return INVALID_INDEX;
 
-	if(compare(get_element(array_p, start_index), data_p) >= 0)
-		return start_index;
+	// binary search low and high range variables
+	unsigned int l = start_index;
+	unsigned int h = end_index;
 
-	if(compare(get_element(array_p, end_index), data_p) <= 0)
-		return end_index;
+	// result from performing binary search
+	unsigned int result_index = INVALID_INDEX;
+	int result_found = 0;
 
-	unsigned int mid = (start_index + end_index) / 2;
-	while(start_index < end_index)
+	switch(occurence_type)
 	{
-		int cmp = compare(get_element(array_p, mid), data_p);
-		if(cmp > 0)
-			end_index = mid;
-		else if(cmp < 0)
-			start_index = mid;
-		else
-			return mid;
+		case FIRST_OCCURENCE :
+		{
+			if(compare(get_element(array_p, start_index), data_p) > 0)
+				return INVALID_INDEX;
 
-		mid = (start_index + end_index) / 2;
+			if(compare(get_element(array_p, end_index), data_p) < 0)
+				return end_index;
 
-		if(mid == start_index || mid == end_index)
+			while(l <= h)
+			{
+				unsigned int m = l + ((h - l) / 2);
+				if(compare(get_element(array_p, m), data_p) > 0)
+				{
+
+				}
+				else if(compare(get_element(array_p, m), data_p) < 0)
+				{
+
+				}
+				else
+				{
+
+				}
+			}
+
 			break;
+		}
+		case LAST_OCCURENCE :
+		{
+			if(compare(get_element(array_p, start_index), data_p) > 0)
+				return start_index;
+
+			if(compare(get_element(array_p, end_index), data_p) < 0)
+				return INVALID_INDEX;
+
+			while(l <= h)
+			{
+				unsigned int m = l + ((h - l) / 2);
+				if(compare(get_element(array_p, m), data_p) > 0)
+				{
+
+				}
+				else if(compare(get_element(array_p, m), data_p) < 0)
+				{
+
+				}
+				else
+				{
+
+				}
+			}
+
+			break;
+		}
 	}
 
-	// we return answer else return some other element closer to it
-	return mid;
+	return result_index;
 }
