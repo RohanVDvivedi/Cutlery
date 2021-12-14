@@ -45,10 +45,20 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end
 
 // These functions return an index to the array element, that compares equals to the data provided
 // The data provided as parameter for equality checking may or may not be pointing to the element, already existing in array
+// if the element is not found an INVALID_INDEX is returned
+// the search_occurence parameter suggests whether we are looking for first or the last occurence that compares equal
+
+
+enum search_occurence
+{
+	FIRST_OCCURENCE = 0,
+	LAST_OCCURENCE
+};
+typedef enum search_occurence search_occurence;
 
 // performs linear search in array from start_index to end_index, both inclusive,
-// if no such element is found, then the function returns the total_size of array (which will not be indexable, INDEX_OUT_OF_BOUNDS)
-unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data, int (*compare)(const void* data1, const void* data2));
+// returns INVALID_INDEX, if the element is not found
+unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
 
 
@@ -62,7 +72,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 // it returns the element that when compared to data equals to 0
 // if no such element is found, we return the index which holds element, which is closest to data in the array
 // if the indexes provided are inappropriate to begin with, the function returns the total_size of array (which is not indexable, INDEX_OUT_OF_BOUNDS)
-unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data, int (*compare)(const void* data1, const void* data2));
+unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
 
 #endif
