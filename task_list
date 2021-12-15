@@ -1,7 +1,6 @@
 HIGH PRIORITY TASKS START
 
 SORT & SEARCH tasks
- * refactor end_index to last_index, wherever end_index is inclusive (i.e. almost everywhere in the array_search_sort.c & .h file file)
  * provide functionality for insertion point fnding in the array_search_sort source file
 
 CUTLERY_STDS tasks
