@@ -3,6 +3,7 @@
 COMMON to all datastructures tasks
  * add remove all functionality for all data structures
  * change total_size to capacity for all cutlery containers
+ * expand_atleast to resize the array to atleast a specific capacity
 
 DSTRING tasks
  * implement dstring_get_char function returning a character at a given index
