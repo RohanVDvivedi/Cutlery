@@ -1,8 +1,5 @@
 HIGH PRIORITY TASKS START
 
-SORT & SEARCH tasks
- * provide functionality for insertion point fnding in the array_search_sort source file
-
 CUTLERY_STDS tasks
  * refactor memmove to not cross provided address boundaries
  * enable the memory allocator to have a context
@@ -32,7 +29,7 @@ struct trie_node
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
-HEAP subdivision tasks (NEW DATASTRUCTURE inclusion)
+HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
  * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
 
@@ -75,6 +72,9 @@ RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * implement sparse table => max, min, lcm, hcf => the functions for which f(a,b,c,d,e) = f(f(a,b,c), f(b,c,d,e))
 
 LEAST PRIORITY TASKS BELOW
+
+SORT & SEARCH tasks
+ * provide functionality for insertion point fnding in the array_search_sort source file
 
 FLAT datastructure tasks (NEW DATASTRUCTURE)
  * implement flat_array and flat_map (using robinhood hashing) that use void* to array of structs instead of void** to array of pointers to structs
