@@ -15,6 +15,8 @@ DSTRING tasks
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
  * implement rabin krap and boyer moore substring comparison algorithm, use flat map and flat array for its tables, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
  * provide a better interface for selecting between all the 4 substring matching algorithms
+ * provide a struct to access values in multidimensional array
+ * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
 HIGH PRIORITY TASKS END
 
