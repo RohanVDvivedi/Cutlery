@@ -1,7 +1,6 @@
 HIGH PRIORITY TASKS START
 
 SORT & SEARCH tasks
- * use the allocator used in the array for allocating additional memory used by heap_sort, merge_sort and radix_sort, if containers are used then use the same allocator as in the array to create them
  * refactor end_index to last_index, wherever end_index is inclusive (i.e. almost everywhere in the array_search_sort.c & .h file file)
  * provide functionality for insertion point fnding in the array_search_sort source file
 
