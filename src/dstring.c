@@ -8,7 +8,7 @@
 #include<string.h>
 
 // default memory allocator for dstring is the STD_C memory allocator
-memory_allocator DSTRING_mem_alloc = STD_C_mem_allocator;
+memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 {
