@@ -5,8 +5,6 @@
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
-#include<stdlib.h>
-
 void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > end_index || end_index >= array_p->total_size)
@@ -19,7 +17,7 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end
 
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
 	const void** src  = array_p->data_p_p + start_index;
-	const void** dest = malloc(sizeof(void*) * total_elements);
+	const void** dest = allocate(array_p->array_mem_allocator, sizeof(void*) * total_elements);
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	unsigned int sort_chunk_size = 1;
@@ -76,11 +74,11 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end
 
 	// free the extra memory
 	if((array_p->data_p_p + start_index) == src)
-		free(dest);
+		deallocate(array_p->array_mem_allocator, dest, sizeof(void*) * total_elements);
 	else
 	{
 		memory_move(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
-		free(src);
+		deallocate(array_p->array_mem_allocator, src, sizeof(void*) * total_elements);
 	}
 }
 
@@ -96,7 +94,7 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_
 
 	// create a max heap
 	heap sort_heap;
-	initialize_heap(&sort_heap, total_elements, MIN_HEAP, compare, NULL, NULL);
+	initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, compare, NULL, NULL, array_p->array_mem_allocator);
 
 	// push all the elements that we need to sort in the min heap (sort_heap)
 	push_all_from_array_heap(&sort_heap, array_p, start_index, end_index);
@@ -157,8 +155,8 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end
 
 	// construct temporary queues for 0 and 1 bit containing elements
 	queue sort_queue[2];
-	initialize_queue(&(sort_queue[0]), total_elements);
-	initialize_queue(&(sort_queue[1]), total_elements);
+	initialize_queue_with_allocator(&(sort_queue[0]), total_elements, array_p->array_mem_allocator);
+	initialize_queue_with_allocator(&(sort_queue[1]), total_elements, array_p->array_mem_allocator);
 
 	for(unsigned int i = 0; i < 32; i++)
 	{
