@@ -3,7 +3,15 @@
 #include<stdlib.h>
 #include<string.h>
 
-void* STD_C_mem_allocator(void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization)
+// declaration for STD_C_mem_allocator->allocator_function
+void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
+struct memory_allocator STD_C_memory_allocator = {
+	.allocator_context = NULL,
+	.allocator_function = STD_C_mem_allocator_function,
+};
+memory_allocator STD_C_mem_allocator = &STD_C_memory_allocator;
+
+void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization)
 {
 	int new_memory_allocation_failed = 0;
 	void* new_memory = NULL;
