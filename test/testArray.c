@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+#include<cutlery_stds.h>
 #include<array.h>
 
 typedef struct teststruct ts;
@@ -127,9 +128,7 @@ int main()
 	ts to_find = {444, "lol"};
 	printf("Finding data where a = %d\n", to_find.a);
 	printf("Linear search : ");
-	print_ts(get_element(array_p, linear_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare)));
-	printf("\nBinary search : ");
-	print_ts(get_element(array_p, binary_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare)));
+	print_ts(get_element(array_p, linear_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE)));
 	printf("\n");
 
 
@@ -186,22 +185,48 @@ int main()
 		unsigned int index;
 		printf("Finding data where a = %d\n", to_find.a);
 
-		printf("Linear search : ");
-		index = linear_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
-		printf("%u : ", index);
-		if(index != array_p->total_size)
+		printf("Linear search (First occurence) : ");
+		index = linear_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
 			print_ts(get_element(array_p, index));
+		}
 		else
 			printf("Not found");
+		printf("\n");
 
-		printf("\nBinary search : ");
-		index = binary_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
-		printf("%u : ", index);
-		if(index != array_p->total_size)
+		printf("Binary search (First occurence) : ");
+		index = binary_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
 			print_ts(get_element(array_p, index));
+		}
 		else
 			printf("Not found");
+		printf("\n\n");
 
+		printf("Linear search (Last occurence) : ");
+		index = linear_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, LAST_OCCURENCE);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
+			print_ts(get_element(array_p, index));
+		}
+		else
+			printf("Not found");
+		printf("\n");
+
+		printf("Binary search (Last occurence) : ");
+		index = binary_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, LAST_OCCURENCE);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
+			print_ts(get_element(array_p, index));
+		}
+		else
+			printf("Not found");
 		printf("\n\n");
 	}
 
