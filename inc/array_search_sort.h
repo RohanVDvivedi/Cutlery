@@ -70,8 +70,8 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 
 // performs binary search in array from start_index to end_index, both inclusive,
 // it returns the element that when compared to data equals to 0
-// if no such element is found, we return the index which holds element, which is closest to data in the array
-// if the indexes provided are inappropriate to begin with, the function returns the total_size of array (which is not indexable, INDEX_OUT_OF_BOUNDS)
+// if no such element is found, we return INVALID_INDEX
+// if the indexes provided are inappropriate to begin with, the function returns INVALID_INDEX
 unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
 
