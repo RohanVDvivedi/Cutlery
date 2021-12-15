@@ -1,4 +1,4 @@
-1. Miscelaneous tasks and string/byte array tasks
+1. Miscelaneous tasks and string/byte array tasks (*now)
 
 COMMON to all datastructures tasks
  * add remove all functionality for all data structures
@@ -10,8 +10,6 @@ DSTRING tasks
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
  * implement rabin krap and boyer moore substring comparison algorithm, use flat map and flat array for its tables, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
  * provide a better interface for selecting between all the 4 substring matching algorithms
- * provide a struct to access values in multidimensional array
- * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
 BYTESTREAM tasks (NEW DATASTRUCTURE)
  * implement and add a stream buffer interface that acts as a queue of strings or serialized objects, this can be used for implementation of network stacks, server request response buffering, parsers and compression algorithms
@@ -30,11 +28,13 @@ struct trie_node
 CUTLERY_STDS tasks
  * refactor memmove to not cross provided address boundaries
  * in memory allocator interface replace new_size from int to int* allowing the allocator to return more memory than what we asked for
+ * provide a struct to access values in multidimensional array
+ * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
 SORT & SEARCH tasks
  * provide functionality for insertion point fnding in the array_search_sort source file
 
-2. Add new datastructure types tasks
+2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
@@ -50,7 +50,7 @@ LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
  * use singly linked list to replace linked lists used in hashmap and binomial/fibonacci heap implementation
  * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements
 
-3. Competely new datastructure tasks
+3. Competely new datastructure tasks (*future)
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use int or unsigned int for below functionality yet to decide on that
@@ -86,7 +86,7 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
  * implement bloom filter, build it with approximate unique count
  * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
 
-4. Optimization tasks
+4. Optimization tasks (*later - procrastinated due to their lower priority)
 
 SORT optimizations tasks
  * heap sort to directly utilize the memory area of the array
