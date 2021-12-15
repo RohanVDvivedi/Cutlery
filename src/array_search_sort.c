@@ -257,24 +257,20 @@ unsigned int binary_search_in_array(const array* array_p, unsigned int start_ind
 			{
 				case FIRST_OCCURENCE:
 				{
+					result_index = m;
 					if(m == start_index)
 						break_loop = 1;
 					else
-					{
-						result_index = m;
 						h = m - 1;
-					}
 					break;
 				}
 				case LAST_OCCURENCE:
 				{
+					result_index = m;
 					if(m == end_index)
 						break_loop = 1;
 					else
-					{
-						result_index = m;
 						l = m + 1;
-					}
 					break;
 				}
 			}
