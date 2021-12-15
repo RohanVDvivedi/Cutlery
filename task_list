@@ -5,11 +5,6 @@ SORT & SEARCH tasks
  * refactor end_index to last_index, wherever end_index is inclusive (i.e. almost everywhere in the array_search_sort.c & .h file file)
  * provide functionality for insertion point fnding in the array_search_sort source file
 
-BITMAP optimization task
- * optimize bitmap accesses x % 8 to x & 7 and x / 8 to x >> 3
- * to calculate the bitmap size in bytes
-        use (size + 7) / 8
-
 CUTLERY_STDS tasks
  * refactor memmove to not cross provided address boundaries
  * enable the memory allocator to have a context
