@@ -1,10 +1,5 @@
 HIGH PRIORITY TASKS START
 
-CUTLERY_STDS tasks
- * refactor memmove to not cross provided address boundaries
- * enable the memory allocator to have a context
- * this context should be used to hold anything from the memory region or parameters of the allocator, like page size to be mmaped or NULL for a generic allocator or the allocator type to use based on size requested etc
-
 DSTRING tasks
  * implement dstring_get_char function returning a character at a given index
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
@@ -72,6 +67,10 @@ RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * implement sparse table => max, min, lcm, hcf => the functions for which f(a,b,c,d,e) = f(f(a,b,c), f(b,c,d,e))
 
 LEAST PRIORITY TASKS BELOW
+
+CUTLERY_STDS tasks
+ * refactor memmove to not cross provided address boundaries
+ * in memory allocator interface replace new_size from int to int* allowing the allocator to return more memory than what we asked for
 
 SORT & SEARCH tasks
  * provide functionality for insertion point fnding in the array_search_sort source file
