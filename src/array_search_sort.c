@@ -236,63 +236,50 @@ unsigned int binary_search_in_array(const array* array_p, unsigned int start_ind
 
 	// result from performing binary search
 	unsigned int result_index = INVALID_INDEX;
-	int result_found = 0;
 
-	switch(occurence_type)
+	// if the element is lesser than the element at the start_index
+	// OR is greater than the element at the end_index, then return INVALID_INDEX
+	if(compare(get_element(array_p, start_index), data_p) > 0 || compare(get_element(array_p, end_index), data_p) < 0)
+		return INVALID_INDEX;
+
+	// perform binary search for first or last occurence
+	while(l <= h)
 	{
-		case FIRST_OCCURENCE :
+		unsigned int m = l + ((h - l) / 2);
+		if(compare(get_element(array_p, m), data_p) > 0)
+			h = m - 1;
+		else if(compare(get_element(array_p, m), data_p) < 0)
+			l = m + 1;
+		else
 		{
-			if(compare(get_element(array_p, start_index), data_p) > 0)
-				return INVALID_INDEX;
-
-			if(compare(get_element(array_p, end_index), data_p) < 0)
-				return end_index;
-
-			while(l <= h)
+			int break_loop = 0;
+			switch(occurence_type)
 			{
-				unsigned int m = l + ((h - l) / 2);
-				if(compare(get_element(array_p, m), data_p) > 0)
+				case FIRST_OCCURENCE:
 				{
-
+					if(m == start_index)
+						break_loop = 1;
+					else
+					{
+						result_index = m;
+						h = m - 1;
+					}
+					break;
 				}
-				else if(compare(get_element(array_p, m), data_p) < 0)
+				case LAST_OCCURENCE:
 				{
-
-				}
-				else
-				{
-
+					if(m == end_index)
+						break_loop = 1;
+					else
+					{
+						result_index = m;
+						l = m + 1;
+					}
+					break;
 				}
 			}
-
-			break;
-		}
-		case LAST_OCCURENCE :
-		{
-			if(compare(get_element(array_p, start_index), data_p) > 0)
-				return start_index;
-
-			if(compare(get_element(array_p, end_index), data_p) < 0)
-				return INVALID_INDEX;
-
-			while(l <= h)
-			{
-				unsigned int m = l + ((h - l) / 2);
-				if(compare(get_element(array_p, m), data_p) > 0)
-				{
-
-				}
-				else if(compare(get_element(array_p, m), data_p) < 0)
-				{
-
-				}
-				else
-				{
-
-				}
-			}
-
-			break;
+			if(break_loop)
+				break;
 		}
 	}
 
