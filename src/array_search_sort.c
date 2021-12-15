@@ -5,13 +5,13 @@
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
-void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
+void merge_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > end_index || end_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->total_size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = end_index - start_index + 1;
+	unsigned int total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
@@ -82,13 +82,13 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int end
 	}
 }
 
-void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
+void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > end_index || end_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->total_size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = end_index - start_index + 1;
+	unsigned int total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
@@ -97,7 +97,7 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_
 	initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, compare, NULL, NULL, array_p->array_mem_allocator);
 
 	// push all the elements that we need to sort in the min heap (sort_heap)
-	push_all_from_array_heap(&sort_heap, array_p, start_index, end_index);
+	push_all_from_array_heap(&sort_heap, array_p, start_index, last_index);
 
 	// place the top of the heap element in the array, then pop heap
 	for(unsigned int i = 0; i < total_elements; i++)
@@ -111,23 +111,23 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int end_
 	deinitialize_heap(&sort_heap);
 }
 
-void quick_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, int (*compare)(const void* data1, const void* data2))
+void quick_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > end_index || end_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->total_size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = end_index - start_index + 1;
+	unsigned int total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
 	// always picking the last element as the pivot
-	const void* pivot = get_element(array_p, end_index);
+	const void* pivot = get_element(array_p, last_index);
 
 	unsigned int all_greater_than_pivot_start_index = start_index;
 
 	// position pivot element at its correct index
-	for(unsigned int i = start_index; i <= end_index; i++)
+	for(unsigned int i = start_index; i <= last_index; i++)
 	{
 		if(compare(get_element(array_p, i), pivot) <= 0)
 			swap_elements(array_p, all_greater_than_pivot_start_index++, i);
@@ -139,17 +139,17 @@ void quick_sort_array(array* array_p, unsigned int start_index, unsigned int end
 	// perform recursive quick sort on the smaller arrays excluding the pivot element
 	if(pivot_index > start_index)
 		quick_sort_array(array_p, start_index, pivot_index - 1, compare);
-	if(pivot_index < end_index)
-		quick_sort_array(array_p, pivot_index + 1, end_index, compare);
+	if(pivot_index < last_index)
+		quick_sort_array(array_p, pivot_index + 1, last_index, compare);
 }
 
-void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end_index, unsigned int (*get_sort_attribute)(const void* data))
+void radix_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, unsigned int (*get_sort_attribute)(const void* data))
 {
-	if(start_index > end_index || end_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->total_size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = end_index - start_index + 1;
+	unsigned int total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
@@ -161,7 +161,7 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end
 	for(unsigned int i = 0; i < 32; i++)
 	{
 		unsigned index = start_index;
-		while(index <= end_index)
+		while(index <= last_index)
 		{
 			const void* data = get_element(array_p, index++);
 			unsigned int queue_index = (get_sort_attribute(data) >> i) & 1;
@@ -188,17 +188,17 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int end
 }
 
 
-unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and end indexes
-	if(start_index > end_index || end_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->total_size)
 		return INVALID_INDEX;
 
 	switch(occurence_type)
 	{
 		case FIRST_OCCURENCE:
 		{
-			for(unsigned int i = start_index; i <= end_index; i++)
+			for(unsigned int i = start_index; i <= last_index; i++)
 			{
 				if(compare(get_element(array_p, i), data_p) == 0)
 					return i;
@@ -207,7 +207,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 		}
 		case LAST_OCCURENCE:
 		{
-			for(unsigned int i = end_index; ; i--)
+			for(unsigned int i = last_index; ; i--)
 			{
 				if(compare(get_element(array_p, i), data_p) == 0)
 					return i;
@@ -222,22 +222,22 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 	return INVALID_INDEX;
 }
 
-unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int end_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and end indexes
-	if(start_index > end_index || end_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->total_size)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
 	unsigned int l = start_index;
-	unsigned int h = end_index;
+	unsigned int h = last_index;
 
 	// result from performing binary search
 	unsigned int result_index = INVALID_INDEX;
 
 	// if the element is lesser than the element at the start_index
-	// OR is greater than the element at the end_index, then return INVALID_INDEX
-	if(compare(get_element(array_p, start_index), data_p) > 0 || compare(get_element(array_p, end_index), data_p) < 0)
+	// OR is greater than the element at the last_index, then return INVALID_INDEX
+	if(compare(get_element(array_p, start_index), data_p) > 0 || compare(get_element(array_p, last_index), data_p) < 0)
 		return INVALID_INDEX;
 
 	// perform binary search for first or last occurence
@@ -265,7 +265,7 @@ unsigned int binary_search_in_array(const array* array_p, unsigned int start_ind
 				case LAST_OCCURENCE:
 				{
 					result_index = m;
-					if(m == end_index)
+					if(m == last_index)
 						break_loop = 1;
 					else
 						l = m + 1;
