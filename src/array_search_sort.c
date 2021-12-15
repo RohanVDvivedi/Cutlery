@@ -209,7 +209,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 		}
 		case LAST_OCCURENCE:
 		{
-			for(unsigned int i = end_index; ; i++)
+			for(unsigned int i = end_index; ; i--)
 			{
 				if(compare(get_element(array_p, i), data_p) == 0)
 					return i;
