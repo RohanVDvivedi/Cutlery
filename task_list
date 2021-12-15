@@ -1,13 +1,17 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
 COMMON to all datastructures tasks
- * add remove all functionality for all data structures
+ * add remove_all functionality for all data structures
  * change total_size to capacity for all cutlery containers
+  * requires refactoring in other projects
+ * implement get_capacity method for all cutlery datastructures
  * expand_atleast to resize the array to atleast a specific capacity
 
 DSTRING tasks
  * typedef dstring to byte_array
- * implement dstring_get_char function returning a character at a given index
+ * implement get_char_dstring and set_char_dstring function returning a character at a given index
+ * and their get_byte_byte_array and set_byte_byte_array counterparts
+ * implement a function that returns the pointer to the first byte in dstring or byte_array
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
  * implement rabin krap and boyer moore substring comparison algorithm, use flat map and flat array for its tables, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
  * provide a better interface for selecting between all the 4 substring matching algorithms
