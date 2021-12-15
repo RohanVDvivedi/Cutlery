@@ -179,7 +179,7 @@ int main()
 
 	printf("Executing Search of all\n\n");
 
-	for(int i = 0; i < test_sort_size; i++)
+	for(int i = 0; i < sort_array_size; i++)
 	{
 		ts to_find = {i, "lol"};
 		unsigned int index;
