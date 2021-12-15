@@ -6,6 +6,7 @@ COMMON to all datastructures tasks
  * expand_atleast to resize the array to atleast a specific capacity
 
 DSTRING tasks
+ * typedef dstring to byte_array
  * implement dstring_get_char function returning a character at a given index
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
  * implement rabin krap and boyer moore substring comparison algorithm, use flat map and flat array for its tables, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
