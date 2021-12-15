@@ -1,44 +1,9 @@
 HIGH PRIORITY TASKS START
 
-SEARCH tasks
- * refactor binary search to some thing like:
- * make binary search and linear search functions take a flag parameter to return either first or last occurrence of the given element.
-arr = [1,3,9,11,13,13,15,15,15,19,19,19,21,23,33,55]
-
-find = 7
-
-lesser_index = -1
-found_index = -1
-greater_index = -1
-
-l = 0
-h = len(arr) - 1
-if(arr[l] <= find and find <= arr[h]):
-    while(l<=h):
-        m = l + int((h-l)/2)
-        print("l : " + str(l) + ", m : " + str(m) + ", h : " + str(h))
-        if(arr[m] < find):
-            lesser_index = m
-            l = m+1
-        elif(arr[m] > find):
-            greater_index = m
-            h = m-1
-        else:
-            found_index = m
-            break
-    print("l : " + str(l) + ", h : " + str(h))
-else:
-    if(find < arr[l]):
-        greater_index = l
-    elif(arr[h] < find):
-        lesser_index = h
-
-if(found_index == -1 and lesser_index != -1):
-    print("lesser - " + str(lesser_index) + " - " + str(arr[lesser_index]))
-if(found_index != -1):
-    print("found - " + str(found_index) + " - " + str(arr[found_index]))
-if(found_index == -1 and greater_index != -1):
-    print("greater - " + str(greater_index) + " - " + str(arr[greater_index]))
+SORT & SEARCH tasks
+ * use the allocator used in the array for allocating additional memory used by heap_sort, merge_sort and radix_sort, if containers are used then use the same allocator as in the array to create them
+ * refactor end_index to last_index, wherever end_index is inclusive (i.e. almost everywhere in the array_search_sort.c & .h file file)
+ * provide functionality for insertion point fnding in the array_search_sort source file
 
 BITMAP optimization task
  * optimize bitmap accesses x % 8 to x & 7 and x / 8 to x >> 3
