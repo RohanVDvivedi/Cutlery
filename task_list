@@ -32,12 +32,6 @@ CUTLERY_STDS tasks
  * provide a struct to access values in multidimensional array
  * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
-HASHMAP task
- * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
-
-LINKEDLIST task
- * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements
-
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
@@ -90,7 +84,15 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
  * implement bloom filter, build it with approximate unique count
  * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
 
-4. Optimization tasks (*later - procrastinated due to their way lower priority)
+4. SPECIFIC no direct use case tasks (*later - procrastinated due to their way lower priority)
+
+HASHMAP task
+ * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
+
+LINKEDLIST task
+ * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements, this is only possible if both the linkedlist nodes are at the same node_offset
+
+5. Optimization tasks (*later - procrastinated due to their way lower priority)
 
 SORT optimizations tasks
  * heap sort to directly utilize the memory area of the array
