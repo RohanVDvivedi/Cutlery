@@ -248,7 +248,7 @@ void deinitialize_heap(heap* heap_p)
 	deinitialize_array(&(heap_p->heap_holder));
 }
 
-unsigned int get_size_heap(const heap* heap_p)
+unsigned int get_capacity_heap(const heap* heap_p)
 {
 	return get_size_array(&(heap_p->heap_holder));
 }

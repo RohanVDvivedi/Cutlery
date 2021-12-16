@@ -156,7 +156,7 @@ int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n)
 	return set_element(&(al->arraylist_holder), data_p, (((al->first_index + al->element_count) - 1) - n) % get_size_array(&(al->arraylist_holder)));
 }
 
-unsigned int get_size_arraylist(const arraylist* al)
+unsigned int get_capacity_arraylist(const arraylist* al)
 {
 	return get_size_array(&(al->arraylist_holder));
 }

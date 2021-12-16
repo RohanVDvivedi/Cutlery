@@ -60,8 +60,8 @@ int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n);
 // set_nth_from_* functions will fail and return 0 if n is greater than the number of elements in the given arraylist
 // on success, these functions will return 1
 
-// returns size of the arraylist_holder, i.e. the maximum number of elements that can be accomodated in arraylist
-unsigned int get_size_arraylist(const arraylist* al);
+// returns capacity of the arraylist, i.e. the maximum number of elements that can be accomodated in arraylist
+unsigned int get_capacity_arraylist(const arraylist* al);
 // returns the number of elements inside the arraylist
 unsigned int get_element_count_arraylist(const arraylist* al);
 
