@@ -26,49 +26,74 @@ void init_empty_dstring(dstring* str_p, unsigned int init_size)
 	str_p->byte_array = allocate(DSTRING_mem_alloc, init_size);
 }
 
+dstring get_dstring(const char* data, unsigned int data_size)
+{
+	dstring str;
+	init_dstring(&str, data, data_size);
+	return str;
+}
+
+char* get_byte_array_dstring(const dstring* str_p)
+{
+	return str_p->byte_array;
+}
+
+unsigned int get_char_count_dstring(const dstring* str_p)
+{
+	return str_p->bytes_occupied;
+}
+
+unsigned int get_capacity_dstring(const dstring* str_p)
+{
+	return str_p->bytes_allocated;
+}
+
 void make_dstring_empty(dstring* str_p)
 {
 	str_p->bytes_occupied = 0;
 }
 
+// all the methods beyond this point must use the dstring accessor functions only
+
 int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
-	if(str_p1->bytes_occupied == str_p2->bytes_occupied)
-		return strncmp(str_p1->byte_array, str_p2->byte_array, str_p1->bytes_occupied);
+	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
+		return strncmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
 
-	unsigned int min_size = (str_p1->bytes_occupied < str_p2->bytes_occupied) ? str_p1->bytes_occupied : str_p2->bytes_occupied;
-	int cmp = strncmp(str_p1->byte_array, str_p2->byte_array, min_size);
+	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
+	int cmp = strncmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
 
 	if(cmp != 0)
 		return cmp;
-	if(min_size == str_p1->bytes_occupied)
+	if(min_size == get_char_count_dstring(str_p1))
 		return -1;
 	return 1;
 }
+
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
-	if(str_p1->bytes_occupied == str_p2->bytes_occupied)
-		return strncasecmp(str_p1->byte_array, str_p2->byte_array, str_p1->bytes_occupied);
+	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
+		return strncasecmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
 
-	unsigned int min_size = (str_p1->bytes_occupied < str_p2->bytes_occupied) ? str_p1->bytes_occupied : str_p2->bytes_occupied;
-	int cmp = strncasecmp(str_p1->byte_array, str_p2->byte_array, min_size);
+	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
+	int cmp = strncasecmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
 
 	if(cmp != 0)
 		return cmp;
-	if(min_size == str_p1->bytes_occupied)
+	if(min_size == get_char_count_dstring(str_p1))
 		return -1;
 	return 1;
 }
 
 int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
-	unsigned int new_allocated_size = str_p->bytes_occupied + additional_allocation;
+	unsigned int new_allocated_size = get_char_count_dstring(str_p) + additional_allocation;
 
 	// if expansion is not resulting in expansion
-	if(new_allocated_size <= str_p->bytes_allocated)
+	if(new_allocated_size <= get_capacity_dstring(str_p))
 		return 0;
 
-	void* new_byte_array = reallocate(DSTRING_mem_alloc, str_p->byte_array, str_p->bytes_allocated, new_allocated_size);
+	void* new_byte_array = reallocate(DSTRING_mem_alloc, get_byte_array_dstring(str_p), get_capacity_dstring(str_p), new_allocated_size);
 
 	// failed allocation
 	if(new_byte_array == NULL && new_allocated_size > 0)
@@ -81,11 +106,11 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 
 int shrink_dstring(dstring* str_p)
 {
-	if(str_p->bytes_allocated <= str_p->bytes_occupied)
+	if(get_capacity_dstring(str_p) <= get_char_count_dstring(str_p))
 		return 0;
 
-	unsigned int new_allocated_size = str_p->bytes_occupied;
-	void* new_byte_array = reallocate(DSTRING_mem_alloc, str_p->byte_array, str_p->bytes_allocated, new_allocated_size);
+	unsigned int new_allocated_size = get_char_count_dstring(str_p);
+	void* new_byte_array = reallocate(DSTRING_mem_alloc, get_byte_array_dstring(str_p), get_capacity_dstring(str_p), new_allocated_size);
 
 	// failed allocation
 	if(new_byte_array == NULL && new_allocated_size > 0)
@@ -98,15 +123,15 @@ int shrink_dstring(dstring* str_p)
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
-	if(str_p2->byte_array != NULL && str_p2->bytes_occupied > 0)
+	if(get_byte_array_dstring(str_p2) != NULL && get_char_count_dstring(str_p2) > 0)
 	{
 		// check if new data could fit, without expansion, else expand the dstring
-		if(str_p1->bytes_occupied + str_p2->bytes_occupied > str_p1->bytes_allocated)
-			expand_dstring(str_p1, str_p1->bytes_occupied + 2 * str_p2->bytes_occupied);
+		if(get_char_count_dstring(str_p1) + get_char_count_dstring(str_p2) > get_capacity_dstring(str_p1))
+			expand_dstring(str_p1, get_char_count_dstring(str_p1) + 2 * get_char_count_dstring(str_p2));
 
 		// do appending as normal now
-		memory_move(str_p1->byte_array + str_p1->bytes_occupied, str_p2->byte_array, str_p2->bytes_occupied);
-		str_p1->bytes_occupied += str_p2->bytes_occupied;
+		memory_move(get_byte_array_dstring(str_p1) + get_char_count_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
+		str_p1->bytes_occupied += get_char_count_dstring(str_p2);
 	}
 }
 
@@ -121,10 +146,10 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 	va_end(var_args_dummy);
 
 	// expand str_p as needed
-	if(size_extra_req + str_p->bytes_occupied > str_p->bytes_allocated)
-		expand_dstring(str_p, str_p->bytes_occupied + 2 * size_extra_req);
+	if(size_extra_req + get_char_count_dstring(str_p) > get_capacity_dstring(str_p))
+		expand_dstring(str_p, get_char_count_dstring(str_p) + 2 * size_extra_req);
 
-	str_p->bytes_occupied += vsnprintf(str_p->byte_array + str_p->bytes_occupied, str_p->bytes_allocated - str_p->bytes_occupied, cstr_format, var_args);
+	str_p->bytes_occupied += vsnprintf(get_byte_array_dstring(str_p) + get_char_count_dstring(str_p), get_capacity_dstring(str_p) - get_char_count_dstring(str_p), cstr_format, var_args);
 	va_end(var_args);
 }
 
@@ -137,8 +162,8 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count)
 #define toLowercaseChar(c) ((('A' <= (c)) && ((c) <= 'Z')) ? ((c) - 'A' + 'a') : (c))
 void toLowercase(dstring* str_p)
 {
-	char* stemp = str_p->byte_array;
-	while(stemp < str_p->byte_array + str_p->bytes_occupied)
+	char* stemp = get_byte_array_dstring(str_p);
+	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
 	{
 		*stemp = toLowercaseChar(*stemp);
 		stemp++;
@@ -148,8 +173,8 @@ void toLowercase(dstring* str_p)
 #define toUppercaseChar(c) ((('a' <= (c)) && ((c) <= 'z')) ? ((c) - 'a' + 'A') : (c))
 void toUppercase(dstring* str_p)
 {
-	char* stemp = str_p->byte_array;
-	while(stemp < str_p->byte_array + str_p->bytes_occupied)
+	char* stemp = get_byte_array_dstring(str_p);
+	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
 	{
 		*stemp = toUppercaseChar(*stemp);
 		stemp++;
