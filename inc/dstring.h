@@ -6,30 +6,24 @@
 typedef struct dstring dstring;
 struct dstring
 {
-	// actual string it does not terminate with '\0'
-	char* cstring;
-
-	// number of bytes in the string
+	// number of bytes in the byte_array
 	unsigned int bytes_occupied;
 
-	// this are the number of bytes that are allocated
-	// i.e you may reference cstring for this many no of bytes until seg fault
-	// yet this value is 0, for slize or slices
-	// slices are dstrings that point to other cstrings, and have cstring pointing to theinr data
-	// a slice could be used to represent a substring of a dstring 
+	// maxumum number of bytes at byte_array
 	unsigned int bytes_allocated;
-};
 
-// dstring_DUMMY_* macro below do not allocate any memory
-// they rather starts pointing to the data that you provided
-// deinitializing such a dstring will not and must not cause any error
-// so if you plan to hold a reference to even a dstring_DUMMY, 
-// please deinitialize it before the end of the scope or refrain from holding a reference to it or passing it to functions that could modify it
-#define dstring_DUMMY_DATA(data, data_size) &((const dstring){.cstring = ((char*)(data)), .bytes_occupied = (data_size),    .bytes_allocated = 0})
-#define dstring_DUMMY_CSTRING(cstr)         &((const dstring){.cstring = ((char*)(cstr)), .bytes_occupied = strlen((cstr)), .bytes_allocated = 0})
+	// non null terminating string
+	char* byte_array;
+};
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 void init_empty_dstring(dstring* str_p, unsigned int init_size);
+
+dstring get_dstring(const char* data, unsigned int data_size);
+
+char* get_byte_array_dstring(const dstring* str_p);
+unsigned int get_char_count_dstring(const dstring* str_p);
+unsigned int get_capacity_dstring(const dstring* str_p);
 
 void make_dstring_empty(dstring* str_p);
 
