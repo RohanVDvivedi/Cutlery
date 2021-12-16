@@ -60,14 +60,14 @@ int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n);
 // set_nth_from_* functions will fail and return 0 if n is greater than the number of elements in the given arraylist
 // on success, these functions will return 1
 
-// returns total_size of the arraylist_holder
-unsigned int get_total_size_arraylist(const arraylist* al);
+// returns size of the arraylist_holder, i.e. the maximum number of elements that can be accomodated in arraylist
+unsigned int get_size_arraylist(const arraylist* al);
 // returns the number of elements inside the arraylist
 unsigned int get_element_count_arraylist(const arraylist* al);
 
-// returns 1 if the arraylist is full (i.e. arraylist_holder.total_size == element_count), else returns 0
+// returns 1 if the arraylist is full (i.e. no new elements can be inserted before expanding), else returns 0
 int is_full_arraylist(const arraylist* al);
-// returns 1 if the arraylist is empty (i.e. element_count == 0), else returns 0
+// returns 1 if the arraylist is empty (i.e. no elements are present), else returns 0
 int is_empty_arraylist(const arraylist* al);
 
 // the below functions can be used tto expand or shring the arrayholder of the arraylist
