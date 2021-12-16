@@ -161,7 +161,7 @@ int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_in
 	// number of elements to be inserted from start_index to end_index (both inclusive)
 	unsigned int elements_to_insert = end_index - start_index + 1;
 
-	if(get_total_size_heap(heap_p) < (get_element_count_heap(heap_p) + elements_to_insert))
+	if(get_size_array(&(heap_p->heap_holder)) < (get_element_count_heap(heap_p) + elements_to_insert))
 		return 0;
 
 	// insert all the elements from array [start_index to  end_index] to the heap_p
@@ -248,9 +248,9 @@ void deinitialize_heap(heap* heap_p)
 	deinitialize_array(&(heap_p->heap_holder));
 }
 
-unsigned int get_total_size_heap(const heap* heap_p)
+unsigned int get_size_heap(const heap* heap_p)
 {
-	return heap_p->heap_holder.total_size;
+	return get_size_array(&(heap_p->heap_holder));
 }
 
 unsigned int get_element_count_heap(const heap* heap_p)
@@ -260,7 +260,7 @@ unsigned int get_element_count_heap(const heap* heap_p)
 
 int is_full_heap(const heap* heap_p)
 {
-	return heap_p->element_count == heap_p->heap_holder.total_size;
+	return heap_p->element_count == get_size_array(&(heap_p->heap_holder));
 }
 
 int is_empty_heap(const heap* heap_p)
