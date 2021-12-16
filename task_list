@@ -6,8 +6,7 @@ COMMON to all datastructures tasks
 
 DSTRING tasks
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
- * implement rabin karp and boyer moore substring comparison algorithm, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
- * provide a better interface for selecting between all the 4 substring matching algorithms
+ * implement rabin karp and boyer moore substring comparison algorithm, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash, also provide a better interface for selecting between all the 4 substring matching algorithms
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
@@ -21,8 +20,8 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 CUTLERY_STDS tasks
- * refactor memmove to not cross provided address boundaries
- * in memory allocator interface replace new_size from int to int* allowing the allocator to return more memory than what we asked for
+ * implement memcmp and optimize it
+ * refactor memset, memmove and memcmp to not cross provided address boundaries
  * provide a struct to access values in multidimensional array
  * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
@@ -85,6 +84,9 @@ HASHMAP task
 
 LINKEDLIST task
  * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements, this is only possible if both the linkedlist nodes are at the same node_offset
+
+CUTLERY_STDS tasks
+ * in memory allocator interface replace new_size from int to int* allowing the allocator to return more memory than what we asked for
 
 5. Optimization tasks (*later - procrastinated due to their way lower priority)
 
