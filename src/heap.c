@@ -113,21 +113,21 @@ static void bubble_down(heap* heap_p, unsigned int index)
 	}
 }
 
-void initialize_heap(heap* heap_p, unsigned int initial_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params)
+void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params)
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
-	initialize_array(&(heap_p->heap_holder), initial_size);
+	initialize_array(&(heap_p->heap_holder), capacity);
 	heap_p->element_count = 0;
 	heap_p->heap_index_update_callback = heap_index_update_callback;
 	heap_p->callback_params = callback_params;
 }
 
-void initialize_heap_with_allocator(heap* heap_p, unsigned int initial_size, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params, memory_allocator array_mem_allocator)
+void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params, memory_allocator mem_allocator)
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
-	initialize_array_with_allocator(&(heap_p->heap_holder), initial_size, array_mem_allocator);
+	initialize_array_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 	heap_p->element_count = 0;
 	heap_p->heap_index_update_callback = heap_index_update_callback;
 	heap_p->callback_params = callback_params;
@@ -161,7 +161,7 @@ int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_in
 	// number of elements to be inserted from start_index to end_index (both inclusive)
 	unsigned int elements_to_insert = end_index - start_index + 1;
 
-	if(get_size_array(&(heap_p->heap_holder)) < (get_element_count_heap(heap_p) + elements_to_insert))
+	if(get_capacity_heap(heap_p) < (get_element_count_heap(heap_p) + elements_to_insert))
 		return 0;
 
 	// insert all the elements from array [start_index to  end_index] to the heap_p
@@ -250,7 +250,7 @@ void deinitialize_heap(heap* heap_p)
 
 unsigned int get_capacity_heap(const heap* heap_p)
 {
-	return get_size_array(&(heap_p->heap_holder));
+	return get_capacity_array(&(heap_p->heap_holder));
 }
 
 unsigned int get_element_count_heap(const heap* heap_p)
@@ -260,7 +260,7 @@ unsigned int get_element_count_heap(const heap* heap_p)
 
 int is_full_heap(const heap* heap_p)
 {
-	return heap_p->element_count == get_size_array(&(heap_p->heap_holder));
+	return heap_p->element_count == get_capacity_heap(heap_p);
 }
 
 int is_empty_heap(const heap* heap_p)

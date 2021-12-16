@@ -2,14 +2,14 @@
 
 #include<cutlery_stds.h>
 
-void initialize_stack(stack* stack_p, unsigned int initial_size)
+void initialize_stack(stack* stack_p, unsigned int capacity)
 {
-	initialize_arraylist(&(stack_p->stack_holder), initial_size);
+	initialize_arraylist(&(stack_p->stack_holder), capacity);
 }
 
-void initialize_stack_with_allocator(stack* stack_p, unsigned int initial_size, memory_allocator array_mem_allocator)
+void initialize_stack_with_allocator(stack* stack_p, unsigned int capacity, memory_allocator mem_allocator)
 {
-	initialize_arraylist_with_allocator(&(stack_p->stack_holder), initial_size, array_mem_allocator);
+	initialize_arraylist_with_allocator(&(stack_p->stack_holder), capacity, mem_allocator);
 }
 
 int push_stack(stack* stack_p, const void* data_p)

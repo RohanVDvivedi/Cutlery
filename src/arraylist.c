@@ -2,16 +2,16 @@
 
 #include<cutlery_stds.h>
 
-void initialize_arraylist(arraylist* al, unsigned int initial_size)
+void initialize_arraylist(arraylist* al, unsigned int capacity)
 {
-	initialize_array(&(al->arraylist_holder), initial_size);
+	initialize_array(&(al->arraylist_holder), capacity);
 	al->first_index = 0;
 	al->element_count = 0;
 }
 
-void initialize_arraylist_with_allocator(arraylist* al, unsigned int initial_size, memory_allocator array_mem_allocator)
+void initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator)
 {
-	initialize_array_with_allocator(&(al->arraylist_holder), initial_size, array_mem_allocator);
+	initialize_array_with_allocator(&(al->arraylist_holder), capacity, mem_allocator);
 	al->first_index = 0;
 	al->element_count = 0;
 }
@@ -27,7 +27,7 @@ int push_front(arraylist* al, const void* data_p)
 	if(is_empty_arraylist(al))
 		al->first_index = 0;
 	else // else an index prior to the first index in the circular index scheme
-		al->first_index = ((al->first_index + get_size_array(&(al->arraylist_holder))) - 1) % get_size_array(&(al->arraylist_holder));
+		al->first_index = ((al->first_index + get_capacity_arraylist(al)) - 1) % get_capacity_arraylist(al);
 
 	// push to front of array list
 	set_element(&(al->arraylist_holder), data_p, al->first_index);
@@ -49,7 +49,7 @@ int push_back(arraylist* al, const void* data_p)
 		al->first_index = 0;
 
 	// end_index is the index to the position on the circular buffer, that is immediately after the last element
-	unsigned int end_index = (al->first_index + al->element_count) % get_size_array(&(al->arraylist_holder));
+	unsigned int end_index = (al->first_index + al->element_count) % get_capacity_arraylist(al);
 
 	// push to back of array list
 	set_element(&(al->arraylist_holder), data_p, end_index);
@@ -70,7 +70,7 @@ int pop_front(arraylist* al)
 	set_element(&(al->arraylist_holder), NULL, al->first_index);
 
 	// update the first index
-	al->first_index = (al->first_index + 1) % get_size_array(&(al->arraylist_holder));
+	al->first_index = (al->first_index + 1) % get_capacity_arraylist(al);
 
 	// decrement the element counter
 	al->element_count--;
@@ -85,7 +85,7 @@ int pop_back(arraylist* al)
 		return 0;
 
 	// find the index to the last element in the arraylist
-	unsigned int back_index = ((al->first_index + al->element_count) - 1) % get_size_array(&(al->arraylist_holder));
+	unsigned int back_index = ((al->first_index + al->element_count) - 1) % get_capacity_arraylist(al);
 
 	// pop an element from front of the arraylist
 	set_element(&(al->arraylist_holder), NULL, back_index);
@@ -113,7 +113,7 @@ const void* get_back(const arraylist* al)
 		return NULL;
 
 	// find back element of the arraylist
-	return get_element(&(al->arraylist_holder), (al->first_index + al->element_count - 1) % get_size_array(&(al->arraylist_holder)));
+	return get_element(&(al->arraylist_holder), (al->first_index + al->element_count - 1) % get_capacity_arraylist(al));
 }
 
 const void* get_nth_from_front(const arraylist* al, unsigned int n)
@@ -123,7 +123,7 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n)
 		return NULL;
 
 	// find nth element from front of the arraylist, and return it
-	return get_element(&(al->arraylist_holder), (al->first_index + n) % get_size_array(&(al->arraylist_holder)));
+	return get_element(&(al->arraylist_holder), (al->first_index + n) % get_capacity_arraylist(al));
 }
 
 const void* get_nth_from_back(const arraylist* al, unsigned int n)
@@ -133,7 +133,7 @@ const void* get_nth_from_back(const arraylist* al, unsigned int n)
 		return NULL;
 
 	// find nth element from back of the arraylist, and return it
-	return get_element(&(al->arraylist_holder), (((al->first_index + al->element_count) - 1) - n) % get_size_array(&(al->arraylist_holder)));
+	return get_element(&(al->arraylist_holder), (((al->first_index + al->element_count) - 1) - n) % get_capacity_arraylist(al));
 }
 
 int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n)
@@ -143,7 +143,7 @@ int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n)
 		return 0;
 
 	// set nth element from front of the arraylist to data_p
-	return set_element(&(al->arraylist_holder), data_p, (al->first_index + n) % get_size_array(&(al->arraylist_holder)));
+	return set_element(&(al->arraylist_holder), data_p, (al->first_index + n) % get_capacity_arraylist(al));
 }
 
 int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n)
@@ -153,12 +153,12 @@ int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n)
 		return 0;
 
 	// set nth element from back of the arraylist to data_p
-	return set_element(&(al->arraylist_holder), data_p, (((al->first_index + al->element_count) - 1) - n) % get_size_array(&(al->arraylist_holder)));
+	return set_element(&(al->arraylist_holder), data_p, (((al->first_index + al->element_count) - 1) - n) % get_capacity_arraylist(al));
 }
 
 unsigned int get_capacity_arraylist(const arraylist* al)
 {
-	return get_size_array(&(al->arraylist_holder));
+	return get_capacity_array(&(al->arraylist_holder));
 }
 
 unsigned int get_element_count_arraylist(const arraylist* al)
@@ -168,7 +168,7 @@ unsigned int get_element_count_arraylist(const arraylist* al)
 
 int is_full_arraylist(const arraylist* al)
 {
-	return al->element_count == get_size_array(&(al->arraylist_holder));
+	return al->element_count == get_capacity_arraylist(al);
 }
 
 int is_empty_arraylist(const arraylist* al)
@@ -181,12 +181,12 @@ int expand_arraylist(arraylist* al)
 	int data_movement_will_be_required = 1;
 
 	// on this condition, we can expand without any data movement
-	if(is_empty_arraylist(al) || (al->first_index + al->element_count) <= get_size_array(&(al->arraylist_holder)))
+	if(is_empty_arraylist(al) || (al->first_index + al->element_count) <= get_capacity_arraylist(al))
 		data_movement_will_be_required = 0;
 
 	// record size and first index for further use
 	unsigned int old_first_index = al->first_index;
-	unsigned int old_size = get_size_array(&(al->arraylist_holder));
+	unsigned int old_size = get_capacity_arraylist(al);
 
 	// expand the holder fearlessly
 	int has_holder_expanded = expand_array(&(al->arraylist_holder));
@@ -198,7 +198,7 @@ int expand_arraylist(arraylist* al)
 		unsigned int elements_to_move = old_size - old_first_index;
 
 		// calculate the new first index
-		unsigned int new_first_index = get_size_array(&(al->arraylist_holder)) - elements_to_move;
+		unsigned int new_first_index = get_capacity_arraylist(al) - elements_to_move;
 
 		// move data
 		memory_move(al->arraylist_holder.data_p_p + new_first_index,
@@ -224,7 +224,7 @@ int shrink_arraylist(arraylist* al)
 
 	// to be able to shrink an array, it must have a non-zero size
 	// and there is no rotation, i.e. elements are all contiguously placed at index after the first index
-	if((get_size_array(&(al->arraylist_holder)) > 0) && (is_empty_arraylist(al) || (al->first_index + al->element_count) <= get_size_array(&(al->arraylist_holder))))
+	if((get_capacity_arraylist(al) > 0) && (is_empty_arraylist(al) || (al->first_index + al->element_count) <= get_capacity_arraylist(al)))
 	{
 		if(!is_empty_arraylist(al) && al->first_index > 0)
 		{
@@ -257,7 +257,7 @@ const void* find_equals_in_arraylist(const arraylist* al, const void* data, int 
 {
 	for(unsigned int i = 0, index = al->first_index; i < al->element_count; i++, index++)
 	{
-		const void* found = get_element(&(al->arraylist_holder), index % get_size_array(&(al->arraylist_holder)));
+		const void* found = get_element(&(al->arraylist_holder), index % get_capacity_arraylist(al));
 		if(0 == compare(found, data))
 			return found;
 	}
