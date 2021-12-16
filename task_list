@@ -93,6 +93,3 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
 SORT optimizations tasks
  * heap sort to directly utilize the memory area of the array
  * quick sort refactor to use itertion instead of recursion
-
-HASHMAP optimization tasks
- * modify hashmap's % function to something of the sort of bitwise operation to speed it instead of hash % N use something like bitwise(x, N) => [0,N) range
