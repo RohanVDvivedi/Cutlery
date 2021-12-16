@@ -79,8 +79,8 @@ int remove_from_heap(heap* heap_p, unsigned int index);
 
 void deinitialize_heap(heap* heap_p);
 
-// returns total_size of the heap
-unsigned int get_total_size_heap(const heap* heap_p);
+// returns size of the heap_holder, i.e. the maximum number of elements that can be accomodated in heap
+unsigned int get_size_heap(const heap* heap_p);
 
 // returns the number of elements inside the heap
 unsigned int get_element_count_heap(const heap* heap_p);
