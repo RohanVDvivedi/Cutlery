@@ -3,9 +3,6 @@
 COMMON to all datastructures tasks
  * add remove_all functionality for all data structures
  * expand_atleast to resize the array to atleast a specific size
- * change initial_size to capacity
- * change size in array to capacity
- * use only datastructure functions in and outside the datastructure
 
 DSTRING tasks
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
