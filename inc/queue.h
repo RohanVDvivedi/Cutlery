@@ -33,8 +33,8 @@ const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n);
 // the same queue can be reused by calling initialize_queue function, after it is deinitialized
 void deinitialize_queue(queue* queue_p);
 
-// returns total_size of the queue
-unsigned int get_total_size_queue(const queue* queue_p);
+// returns size of the queue, i.e. the maximum number of elements that can be accomodated in queue
+unsigned int get_size_queue(const queue* queue_p);
 
 // returns the number of elements inside the queue
 unsigned int get_element_count_queue(const queue* queue_p);

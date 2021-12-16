@@ -37,9 +37,9 @@ void deinitialize_queue(queue* queue_p)
 	deinitialize_arraylist(&(queue_p->queue_holder));
 }
 
-unsigned int get_total_size_queue(const queue* queue_p)
+unsigned int get_size_queue(const queue* queue_p)
 {
-	return get_total_size_arraylist(&(queue_p->queue_holder));
+	return get_size_arraylist(&(queue_p->queue_holder));
 }
 
 unsigned int get_element_count_queue(const queue* queue_p)
