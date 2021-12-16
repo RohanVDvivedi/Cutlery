@@ -32,9 +32,6 @@ CUTLERY_STDS tasks
  * provide a struct to access values in multidimensional array
  * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
-SORT & SEARCH tasks
- * provide functionality for insertion point fnding in the array_search_sort source file
-
 HASHMAP task
  * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
 
