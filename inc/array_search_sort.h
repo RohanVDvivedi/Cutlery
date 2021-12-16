@@ -57,7 +57,7 @@ typedef enum search_occurence search_occurence;
 
 // performs linear search in array from start_index to last_index, both inclusive,
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
 
 
@@ -69,7 +69,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 
 // performs binary search in array from start_index to last_index, both inclusive,
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
 
 
@@ -86,6 +86,6 @@ unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int st
 // performs binary search in array from start_index to last_index, both inclusive, to find an dex at which the given element data can be inserted
 // it usually returns the index that is one more than the index of the largest element that is also lesser than or equal to the data (given as parameter)
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2));
+unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
 
 #endif

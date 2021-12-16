@@ -280,7 +280,7 @@ unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int st
 	return result_index;
 }
 
-unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2))
+unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and end indexes
 	if(start_index > last_index || last_index >= array_p->size)
