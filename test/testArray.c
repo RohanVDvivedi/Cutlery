@@ -197,7 +197,7 @@ int main()
 		printf("\n");
 
 		printf("Binary search (First occurence) : ");
-		index = binary_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE);
+		index = binary_search_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE);
 		if(index != INVALID_INDEX)
 		{
 			printf("%u : ", index);
@@ -219,7 +219,7 @@ int main()
 		printf("\n");
 
 		printf("Binary search (Last occurence) : ");
-		index = binary_search_in_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, LAST_OCCURENCE);
+		index = binary_search_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare, LAST_OCCURENCE);
 		if(index != INVALID_INDEX)
 		{
 			printf("%u : ", index);
@@ -227,6 +227,12 @@ int main()
 		}
 		else
 			printf("Not found");
+		printf("\n\n");
+
+		printf("Find insertion index : ");
+		index = find_insertion_index_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		printf("%u : ", index);
+		print_ts(get_element(array_p, index));
 		printf("\n\n");
 	}
 
