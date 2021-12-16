@@ -45,7 +45,7 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 void sprint_chars(dstring* str_p, char chr, unsigned int count);
 
 // marcos for io using dstring
-#define printf_dstring(str_p)				(((str_p)->cstring != NULL && (str_p)->bytes_occupied > 0) ? printf("%.*s", (str_p)->bytes_occupied, (str_p)->cstring) : 0)
+#define printf_dstring(str_p)				(((str_p)->byte_array != NULL && (str_p)->bytes_occupied > 0) ? printf("%.*s", (str_p)->bytes_occupied, (str_p)->byte_array) : 0)
 
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
