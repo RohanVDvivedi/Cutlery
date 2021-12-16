@@ -5,11 +5,8 @@ COMMON to all datastructures tasks
  * expand_atleast to resize the array to atleast a specific size
 
 DSTRING tasks
- * implement get_char_dstring and set_char_dstring function returning a character at a given index
- * implement a function that returns the pointer to the first byte in dstring
- * change cstring to byte_array
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
- * implement rabin krap and boyer moore substring comparison algorithm, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
+ * implement rabin karp and boyer moore substring comparison algorithm, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
  * provide a better interface for selecting between all the 4 substring matching algorithms
 
 DSTREAM tasks (NEW DATASTRUCTURE)
