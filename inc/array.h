@@ -11,16 +11,16 @@ struct array
 	const void** data_p_p;
 
 	// this many element pointers (const void*) can be accomodated in array
-	unsigned int size;
+	unsigned int capacity;
 
 	// this is the memory_allocator that will be used for allocating memory for the array
 	// for expand or shrink, this function will be called
-	memory_allocator array_mem_allocator;
+	memory_allocator mem_allocator;
 };
 
 // initializes and gives necessary memory to manage internal element contents
-void initialize_array(array* array_p, unsigned int initial_size);
-void initialize_array_with_allocator(array* array_p, unsigned int initial_size, memory_allocator array_mem_allocator);
+void initialize_array(array* array_p, unsigned int capacity);
+void initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator);
 
 // returns pointer to the data at index = index
 const void* get_element(const array* array_p, unsigned int index);
@@ -36,17 +36,17 @@ void swap_elements(array* array_p, unsigned int i1, unsigned int i2);
 void deinitialize_array(array* array_p);
 
 // returns number of elements that can be accomodated in the array
-unsigned int get_size_array(const array* array_p);
+unsigned int get_capacity_array(const array* array_p);
 
 // it expands array
 // it returns 1, for success if the array container was successfull expanded,
 // else this function may fail with 0, to indicate a failure, from the memory allocator
 int expand_array(array* array_p);
 
-// shrinks the array, to a new_size
-// returns 1, if the array was shrunk to the new_size
-// else it returns 0 and fails, if it fails (the function fails if new_size >= old_size or if the allocation fails)
-int shrink_array(array* array_p, unsigned int new_size);
+// shrinks the array, to a new_capacity
+// returns 1, if the array was shrunk to the new_capacity
+// else it returns 0 and fails, if it fails (the function fails if new_capacity >= old_capacity or if the allocation fails)
+int shrink_array(array* array_p, unsigned int new_capacity);
 
 // perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);

@@ -2,14 +2,14 @@
 
 #include<cutlery_stds.h>
 
-void initialize_queue(queue* queue_p, unsigned int initial_size)
+void initialize_queue(queue* queue_p, unsigned int capacity)
 {
-	initialize_arraylist(&(queue_p->queue_holder), initial_size);
+	initialize_arraylist(&(queue_p->queue_holder), capacity);
 }
 
-void initialize_queue_with_allocator(queue* queue_p, unsigned int initial_size, memory_allocator array_mem_allocator)
+void initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memory_allocator mem_allocator)
 {
-	initialize_arraylist_with_allocator(&(queue_p->queue_holder), initial_size, array_mem_allocator);
+	initialize_arraylist_with_allocator(&(queue_p->queue_holder), capacity, mem_allocator);
 }
 
 int push_queue(queue* queue_p, const void* data_p)
