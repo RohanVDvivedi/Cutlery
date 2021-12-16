@@ -13,7 +13,7 @@ void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_pr
 		unsigned int prefix_length_old = suffix_prefix_match_length[string_length - 1];
 		while(1)
 		{
-			if(str->cstring[string_length-1] == str->cstring[prefix_length_old])
+			if(str->byte_array[string_length-1] == str->byte_array[prefix_length_old])
 			{
 				suffix_prefix_match_length[string_length] = prefix_length_old + 1;
 				break;
@@ -42,7 +42,7 @@ char* contains_dstring(const dstring* str, const dstring* sub_str, unsigned int*
 		// iterate over the string to find the substring location
 		for(unsigned int i = 0, substring_iter = 0; i < str->bytes_occupied;)
 		{
-			if(str->cstring[i] == sub_str->cstring[substring_iter])
+			if(str->byte_array[i] == sub_str->byte_array[substring_iter])
 			{
 				if(substring_iter < sub_str->bytes_occupied - 1)
 				{
@@ -50,7 +50,7 @@ char* contains_dstring(const dstring* str, const dstring* sub_str, unsigned int*
 					i++;
 				}
 				else
-					return str->cstring + i - (sub_str->bytes_occupied - 1);
+					return str->byte_array + i - (sub_str->bytes_occupied - 1);
 			}
 			else if(substring_iter == 0)
 				i++;
@@ -65,14 +65,14 @@ char* contains_dstring(const dstring* str, const dstring* sub_str, unsigned int*
 			unsigned int found = 1;
 			for(unsigned int j = 0; j < sub_str->bytes_occupied; j++)
 			{
-				if(str->cstring[i + j] != sub_str->cstring[j])
+				if(str->byte_array[i + j] != sub_str->byte_array[j])
 				{
 					found = 0;
 					break;
 				}
 			}
 			if(found)
-				return str->cstring + i;
+				return str->byte_array + i;
 		}
 	}
 
@@ -83,6 +83,6 @@ int is_prefix(const dstring* string_p, const dstring* prefix_p)
 {
 	// prefix must have a length smaller than or equal to provided main string
 	if(string_p->bytes_occupied >= prefix_p->bytes_occupied)
-		return 0 == strncmp(string_p->cstring, prefix_p->cstring, prefix_p->bytes_occupied);
+		return 0 == strncmp(string_p->byte_array, prefix_p->byte_array, prefix_p->bytes_occupied);
 	return 0;
 }
