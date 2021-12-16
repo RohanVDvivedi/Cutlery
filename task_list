@@ -2,7 +2,7 @@
 
 COMMON to all datastructures tasks
  * add remove_all functionality for all data structures
- * expand_atleast to resize the array to atleast a specific capacity
+ * expand_atleast to resize the array to atleast a specific size
 
 DSTRING tasks
  * typedef dstring to byte_array
@@ -36,6 +36,12 @@ CUTLERY_STDS tasks
 SORT & SEARCH tasks
  * provide functionality for insertion point fnding in the array_search_sort source file
 
+HASHMAP task
+ * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
+
+LINKEDLIST task
+ * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements
+
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
@@ -47,10 +53,10 @@ BST tasks (NEW DATASTRUCTURE inclusion)
  * point parent of root node of the bst to some thing other than null to identify a new_node from a single node bst root node
 
 LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
- * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list just like heap
+ * provide implementation for singly linked list also, and rename the linkedlist to doubly circular linked list, provide a single linkedlist interface to access both the linked list (singly and doubly circular)
  * ll_node must be a union of sll_node and dcll_node
  * use singly linked list to replace linked lists used in hashmap and binomial/fibonacci heap implementation
- * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements
+ * also implement stack and queue using singly linkedlist
 
 3. Competely new datastructure tasks (*future)
 
@@ -88,7 +94,7 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
  * implement bloom filter, build it with approximate unique count
  * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
 
-4. Optimization tasks (*later - procrastinated due to their lower priority)
+4. Optimization tasks (*later - procrastinated due to their way lower priority)
 
 SORT optimizations tasks
  * heap sort to directly utilize the memory area of the array
