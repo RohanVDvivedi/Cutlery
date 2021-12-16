@@ -63,13 +63,29 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 
 
 // NOTE :::
-// the binary_search_in_array function can be called on the array, only if
+// the binary_search_in_sorted_array function can be called on the array, only if
 // your data in the array is sorted in ascending order in accordance to the compare function provided as parameter
 // , (sorted) for all indices from start_index to last_index, both inclusive
 
 // performs binary search in array from start_index to last_index, both inclusive,
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
+
+
+
+//------------------------------------------------------------------------------
+//                          INSERTION FUNCTIONS ON SORTED ARRAY
+//------------------------------------------------------------------------------
+
+// NOTE :::
+// the find_insertion_index_in_array function can be called on the array, only if
+// your data in the array is sorted in ascending order in accordance to the compare function provided as parameter
+// , (sorted) for all indices from start_index to last_index, both inclusive
+
+// performs binary search in array from start_index to last_index, both inclusive, to find an dex at which the given element data can be inserted
+// it usually returns the index that is one more than the index of the largest element that is also lesser than or equal to the data (given as parameter)
+// returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
+unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2));
 
 #endif
