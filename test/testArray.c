@@ -128,7 +128,7 @@ int main()
 	ts to_find = {444, "lol"};
 	printf("Finding data where a = %d\n", to_find.a);
 	printf("Linear search : ");
-	print_ts(get_element(array_p, linear_search_in_array(array_p, 0, array_p->total_size - 1, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE)));
+	print_ts(get_element(array_p, linear_search_in_array(array_p, 0, get_size_array(array_p) - 1, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE)));
 	printf("\n");
 
 
@@ -141,7 +141,7 @@ int main()
 	#define end_index       (start_index + test_sort_size - 1)
 
 	// expand existing array
-	while(array_p->total_size < sort_array_size)
+	while(get_size_array(array_p) < sort_array_size)
 		expand_array(array_p);
 	// initialize array
 	ts ts_ss[sort_array_size];
