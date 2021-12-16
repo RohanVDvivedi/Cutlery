@@ -5,7 +5,6 @@ COMMON to all datastructures tasks
  * expand_atleast to resize the array to atleast a specific size
 
 DSTRING tasks
- * typedef dstring to byte_array
  * implement get_char_dstring and set_char_dstring function returning a character at a given index
  * and their get_byte_byte_array and set_byte_byte_array counterparts
  * implement a function that returns the pointer to the first byte in dstring or byte_array
@@ -13,7 +12,7 @@ DSTRING tasks
  * implement rabin krap and boyer moore substring comparison algorithm, use flat map and flat array for its tables, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash.
  * provide a better interface for selecting between all the 4 substring matching algorithms
 
-BYTESTREAM tasks (NEW DATASTRUCTURE)
+DSTREAM tasks (NEW DATASTRUCTURE)
  * implement and add a stream buffer interface that acts as a queue of strings or serialized objects, this can be used for implementation of network stacks, server request response buffering, parsers and compression algorithms
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
