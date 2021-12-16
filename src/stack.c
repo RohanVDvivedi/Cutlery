@@ -37,9 +37,9 @@ void deinitialize_stack(stack* stack_p)
 	deinitialize_arraylist(&(stack_p->stack_holder));
 }
 
-unsigned int get_size_stack(const stack* stack_p)
+unsigned int get_capacity_stack(const stack* stack_p)
 {
-	return get_size_arraylist(&(stack_p->stack_holder));
+	return get_capacity_arraylist(&(stack_p->stack_holder));
 }
 
 unsigned int get_element_count_stack(const stack* stack_p)
