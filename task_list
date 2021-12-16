@@ -2,9 +2,6 @@
 
 COMMON to all datastructures tasks
  * add remove_all functionality for all data structures
- * change total_size to capacity for all cutlery containers
-  * requires refactoring in other projects
- * implement get_capacity method for all cutlery datastructures
  * expand_atleast to resize the array to atleast a specific capacity
 
 DSTRING tasks
