@@ -33,13 +33,13 @@ static unsigned int* iterator(array_2d* arr, unsigned int i1, unsigned int i0)
 unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 {
 	array_2d arr;
-	arr.dim_0_size = str0->bytes_occupied + 1;
-	arr.dim_1_size = str1->bytes_occupied + 1;
+	arr.dim_0_size = get_char_count_dstring(str0) + 1;
+	arr.dim_1_size = get_char_count_dstring(str1) + 1;
 	arr.holder = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 
-	for(unsigned int i = 0; i <= str1->bytes_occupied; i++)
+	for(unsigned int i = 0; i <= get_char_count_dstring(str1); i++)
 	{
-		for(unsigned int j = 0; j <= str0->bytes_occupied; j++)
+		for(unsigned int j = 0; j <= get_char_count_dstring(str0); j++)
 		{
 			if(i == 0)
 				(*(iterator(&arr, i, j))) = j;
@@ -47,7 +47,7 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 				(*(iterator(&arr, i, j))) = i;
 			else
 			{
-				if(str1->byte_array[i - 1] == str0->byte_array[j - 1])
+				if(get_byte_array_dstring(str1)[i - 1] == get_byte_array_dstring(str0)[j - 1])
 					(*(iterator(&arr, i, j))) = (*(iterator(&arr, i - 1, j - 1)));
 				else
 					(*(iterator(&arr, i, j))) = minimum_of( 1 + (*(iterator(&arr, i - 1, j - 1))),	// replace
@@ -57,7 +57,7 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 		}
 	}
 
-	unsigned int result = (*(iterator(&arr, str1->bytes_occupied, str0->bytes_occupied)));
+	unsigned int result = (*(iterator(&arr, get_char_count_dstring(str1), get_char_count_dstring(str0))));
 	deallocate(DSTRING_mem_alloc, arr.holder, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 	return result;
 }
@@ -65,13 +65,13 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 unsigned int length_of_longest_common_subsequence(const dstring* str0, const dstring* str1)
 {
 	array_2d arr;
-	arr.dim_0_size = str0->bytes_occupied + 1;
-	arr.dim_1_size = str1->bytes_occupied + 1;
+	arr.dim_0_size = get_char_count_dstring(str0) + 1;
+	arr.dim_1_size = get_char_count_dstring(str1) + 1;
 	arr.holder = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 
-	for(unsigned int i = 0; i <= str1->bytes_occupied; i++)
+	for(unsigned int i = 0; i <= get_char_count_dstring(str1); i++)
 	{
-		for(unsigned int j = 0; j <= str0->bytes_occupied; j++)
+		for(unsigned int j = 0; j <= get_char_count_dstring(str0); j++)
 		{
 			if(i == 0)
 				(*(iterator(&arr, i, j))) = 0;
@@ -79,7 +79,7 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 				(*(iterator(&arr, i, j))) = 0;
 			else
 			{
-				if(str1->byte_array[i - 1] == str0->byte_array[j - 1])
+				if(get_byte_array_dstring(str1)[i - 1] == get_byte_array_dstring(str0)[j - 1])
 					(*(iterator(&arr, i, j))) = 1 + (*(iterator(&arr, i - 1, j - 1)));
 				else
 					(*(iterator(&arr, i, j))) = maximum_of( (*(iterator(&arr, i - 1, j - 1))),
@@ -89,7 +89,7 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 		}
 	}
 
-	unsigned int result = (*(iterator(&arr, str1->bytes_occupied, str0->bytes_occupied)));
+	unsigned int result = (*(iterator(&arr, get_char_count_dstring(str1), get_char_count_dstring(str0))));
 	deallocate(DSTRING_mem_alloc, arr.holder, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
 	return result;
 }
