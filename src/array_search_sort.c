@@ -222,10 +222,15 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 	return INVALID_INDEX;
 }
 
-unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and end indexes
 	if(start_index > last_index || last_index >= array_p->size)
+		return INVALID_INDEX;
+
+	// if the element is lesser than the element at the start_index
+	// OR is greater than the element at the last_index, then return INVALID_INDEX
+	if(compare(get_element(array_p, start_index), data_p) > 0 || compare(get_element(array_p, last_index), data_p) < 0)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
@@ -234,11 +239,6 @@ unsigned int binary_search_in_array(const array* array_p, unsigned int start_ind
 
 	// result from performing binary search
 	unsigned int result_index = INVALID_INDEX;
-
-	// if the element is lesser than the element at the start_index
-	// OR is greater than the element at the last_index, then return INVALID_INDEX
-	if(compare(get_element(array_p, start_index), data_p) > 0 || compare(get_element(array_p, last_index), data_p) < 0)
-		return INVALID_INDEX;
 
 	// perform binary search for first or last occurence
 	while(l <= h)
@@ -275,6 +275,53 @@ unsigned int binary_search_in_array(const array* array_p, unsigned int start_ind
 			if(break_loop)
 				break;
 		}
+	}
+
+	return result_index;
+}
+
+unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data, int (*compare)(const void* data1, const void* data2))
+{
+	// check for valid start and end indexes
+	if(start_index > last_index || last_index >= array_p->size)
+		return INVALID_INDEX;
+
+	// if the element is lesser than the element at the start_index, then return start_index
+	if(compare(get_element(array_p, start_index), data_p) > 0)
+		return start_index;
+
+	// binary search low and high range variables
+	unsigned int l = start_index;
+	unsigned int h = last_index + 1;
+
+	// result from performing binary search
+	unsigned int result_index = INVALID_INDEX;
+
+	// perform binary search for first or last occurence
+	while(l <= h)
+	{
+		unsigned int m = l + ((h - l) / 2);
+
+		// if the mid has crossed the last_index,
+		// then the last element is more than or equal to the data,
+		// that we are comparing with
+		if(m == last_index + 1)
+		{
+			result_index = m;
+			break;
+		}
+
+		// if the element at m in the array is lesser,
+		// then update the result_index (since it could be the answer) and shorten the search range
+		if(compare(get_element(array_p, m), data_p) > 0)
+		{
+			result_index = m;
+			h = m - 1;
+		}
+		// if the element at m in the array is more than or equal to given parameter (data),
+		// then just shorten the search range on the left, since no element at index lesser than m can be the answer
+		else
+			l = m + 1;
 	}
 
 	return result_index;
