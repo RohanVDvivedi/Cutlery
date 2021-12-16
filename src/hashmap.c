@@ -30,7 +30,7 @@ void initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_
 
 unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p)
 {
-	return hashmap_p->hashmap_holder.total_size;
+	return get_size_array(&(hashmap_p->hashmap_holder));
 }
 
 unsigned int get_element_count_hashmap(const hashmap* hashmap_p)
