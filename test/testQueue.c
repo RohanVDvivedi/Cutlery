@@ -39,7 +39,7 @@ void push_queue_SAFE(queue* queue_p, const void* data_p)
 void pop_queue_OPTIMUM_MEMORY(queue* queue_p)
 {
 	pop_queue(queue_p);
-	if(get_total_size_queue(queue_p) > 1.5 * get_element_count_queue(queue_p))
+	if(get_capacity_queue(queue_p) > 1.5 * get_element_count_queue(queue_p))
 		shrink_queue(queue_p);
 }
 

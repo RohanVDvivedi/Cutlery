@@ -39,7 +39,7 @@ void push_stack_SAFE(stack* stack_p, const void* data_p)
 void pop_stack_OPTIMUM_MEMORY(stack* stack_p)
 {
 	pop_stack(stack_p);
-	if(get_total_size_stack(stack_p) > 1.5 * get_element_count_stack(stack_p))
+	if(get_capacity_stack(stack_p) > 1.5 * get_element_count_stack(stack_p))
 		shrink_stack(stack_p);
 }
 
