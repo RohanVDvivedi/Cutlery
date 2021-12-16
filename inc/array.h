@@ -10,8 +10,8 @@ struct array
 	// we maintain array of pointers each of which point to actual data
 	const void** data_p_p;
 
-	// this many elements can be accomodated in array, without expanding
-	unsigned int total_size;
+	// this many element pointers (const void*) can be accomodated in array
+	unsigned int size;
 
 	// this is the memory_allocator that will be used for allocating memory for the array
 	// for expand or shrink, this function will be called
@@ -35,6 +35,9 @@ void swap_elements(array* array_p, unsigned int i1, unsigned int i2);
 // the same array can be reused by calling initialize_array function, after it is deinitialized
 void deinitialize_array(array* array_p);
 
+// returns number of elements that can be accomodated in the array
+unsigned int get_size_array(const array* array_p);
+
 // it expands array
 // it returns 1, for success if the array container was successfull expanded,
 // else this function may fail with 0, to indicate a failure, from the memory allocator
@@ -42,8 +45,8 @@ int expand_array(array* array_p);
 
 // shrinks the array, to a new_size
 // returns 1, if the array was shrunk to the new_size
-// else it returns 0 and fails, if it fails (the function fails if new_total_size >= old_total_size or if the allocation fails)
-int shrink_array(array* array_p, unsigned int new_total_size);
+// else it returns 0 and fails, if it fails (the function fails if new_size >= old_size or if the allocation fails)
+int shrink_array(array* array_p, unsigned int new_size);
 
 // perform operation on all the elements of the array, the method operation takes in 2 params, the data_p to operation on and its index
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);

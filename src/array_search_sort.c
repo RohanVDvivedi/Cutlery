@@ -7,7 +7,7 @@
 
 void merge_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > last_index || last_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -84,7 +84,7 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 
 void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > last_index || last_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -113,7 +113,7 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last
 
 void quick_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > last_index || last_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -145,7 +145,7 @@ void quick_sort_array(array* array_p, unsigned int start_index, unsigned int las
 
 void radix_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, unsigned int (*get_sort_attribute)(const void* data))
 {
-	if(start_index > last_index || last_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->size)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -191,7 +191,7 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and end indexes
-	if(start_index > last_index || last_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->size)
 		return INVALID_INDEX;
 
 	switch(occurence_type)
@@ -225,7 +225,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 unsigned int binary_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and end indexes
-	if(start_index > last_index || last_index >= array_p->total_size)
+	if(start_index > last_index || last_index >= array_p->size)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
