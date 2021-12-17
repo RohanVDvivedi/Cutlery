@@ -42,6 +42,6 @@ void memory_set(void* dest_start, char byte_value, unsigned int size);
 		-1 if data1[0:(size-1)] < data2[0:(size-1)]
 		0 if data1[0:(size-1)] == data2[0:(size-1)]
 */
-int memory_compare(void* data1, const void* data2, unsigned int size);
+int memory_compare(const void* data1, const void* data2, unsigned int size);
 
 #endif

@@ -3,7 +3,7 @@
 #include<stdio.h>
 
 static const unsigned int int_size = sizeof(int); // we assume that int is always 2^n bytes in size, i.e. 1,2,4,8 etc
-static const unsigned int int_bits_size = sizeof(int) * 8;
+static const unsigned int int_bits_size = sizeof(int) * CHAR_BIT; // CHAR_BIT must be 8
 static const unsigned int int_alignment_bit_mask = -((int)sizeof(int));	// 0b 111...111 000...000 where 0s represent alignment
 
 // on a 32 bit int system
@@ -168,4 +168,86 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 	// finish up remaining with an old fashioned byte-by-byte copy
 	while( dest <= ((char*)(dest_last)) )
 		*(dest++) = byte_value;
+}
+
+int memory_compare(const void* data1_start, const void* data2_start, unsigned int size)
+{
+	// if they are the same memory locations, or if the size if 0, then they are equal
+	if(data1_start == data2_start || size == 0)
+		return 0;
+
+	// compute the last src and dest byte address that needs to be copied
+	const void* data1_last = data1_start + (size - 1);
+	const void* data2_last = data2_start + (size - 1);
+
+	// intialize our iterators for forward copy
+	const char* data1 = data1_start;
+	const char* data2 = data2_start;
+
+	// check if int compare is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
+	if( (size >= 3 * int_size) &&
+		(
+			(((long int)data1_start) & ~int_alignment_bit_mask) == (((long int)data2_start) & ~int_alignment_bit_mask)
+		)
+	)
+	{
+		// perform a byte-by-byte compare until the addresses are int aligned
+		while( ( ((long int)data1) & ~int_alignment_bit_mask ) )
+		{
+			if((*data1) > (*data2))
+				return 1;
+			else if((*data1) == (*data2))
+				return -1;
+			else
+			{
+				data1++;
+				data2++;
+			}
+		}
+
+		// perform an int-by-int compare in this scope
+		// data1_int and data2_int must not leave this scope
+		// they must equal the data1 and data2, right before and right after this scope
+		{
+			const int* data1_int = (int*)data1;
+			const int* data2_int = (int*)data2;
+
+			// additonal bytes that you might have to compare after completing the int copy
+			unsigned long int additional_bytes = ((unsigned long int)(data1_last + 1)) & ~int_alignment_bit_mask;
+
+			// this is the address of the last byte that must be compared under the int-by-int compare loop
+			const int* data1_last_int = data1_last - additional_bytes;
+
+			// int-by-int compare loop
+			while( data1_int <= data1_last_int )
+			{
+				if( *(data2_int) == *(data1_int) )
+				{
+					data1_int++;
+					data2_int++;
+				}
+				else
+					break;
+			}
+
+			data1 = (char*)data1_int;
+			data2 = (char*)data2_int;
+		}
+	}
+
+	// finish up remaining with an old fashioned byte-by-byte compare loop
+	while( data1 <= ((char*)(data1_last)) )
+	{
+		if((*data1) > (*data2))
+			return 1;
+		else if((*data1) == (*data2))
+			return -1;
+		else
+		{
+			data1++;
+			data2++;
+		}
+	}
+
+	return 0;
 }
