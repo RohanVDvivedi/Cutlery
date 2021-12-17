@@ -196,7 +196,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 		{
 			if((*data1) > (*data2))
 				return 1;
-			else if((*data1) == (*data2))
+			else if((*data1) < (*data2))
 				return -1;
 			else
 			{
@@ -240,7 +240,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	{
 		if((*data1) > (*data2))
 			return 1;
-		else if((*data1) == (*data2))
+		else if((*data1) < (*data2))
 			return -1;
 		else
 		{
