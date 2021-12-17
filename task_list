@@ -79,6 +79,9 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
 
 4. SPECIFIC no direct use case tasks (*later - procrastinated due to their way lower priority)
 
+ARRAYLIST task
+ * implement circular access indexing for arraylist to cover and use complete range of unsigned int
+
 HASHMAP task
  * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
 
