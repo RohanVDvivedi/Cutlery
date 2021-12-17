@@ -51,7 +51,7 @@ FLAT datastructure tasks (NEW DATASTRUCTURE)
 
 PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
  * implement bloom filter, build it with approximate unique count
- * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
+ * implement count min sketch, with alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
 
 4. SPECIFIC no direct use case tasks (*later - procrastinated due to their way lower priority)
  
