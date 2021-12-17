@@ -166,7 +166,7 @@ int main()
 	{
 		const dstring* s0 = &get_literal_cstring("TRACE");
 		const dstring* s1 = &get_literal_cstring("CRATE");
-		printf("leven-dist(\"%s\", \"%s\") = %u\n\n", s0->cstring, s1->cstring, levenshtein_distance(s0, s1));
-		printf("len-of-lcs(\"%s\", \"%s\") = %u\n\n", s0->cstring, s1->cstring, length_of_longest_common_subsequence(s0, s1));
+		printf("leven-dist(\"" printf_dstring_format "\", \"" printf_dstring_format "\") = %u\n\n", printf_dstring_params(s0), printf_dstring_params(s1), levenshtein_distance(s0, s1));
+		printf("len-of-lcs(\"" printf_dstring_format "\", \"" printf_dstring_format "\") = %u\n\n", printf_dstring_params(s0), printf_dstring_params(s1), length_of_longest_common_subsequence(s0, s1));
 	}
 }
