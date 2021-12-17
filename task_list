@@ -19,9 +19,6 @@ struct trie_node
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
-CUTLERY_STDS tasks
- * provide a struct to access values in multidimensional array
-
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
