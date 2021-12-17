@@ -5,6 +5,7 @@ COMMON to all datastructures tasks
  * expand_atleast to resize the array to atleast a specific size
 
 DSTRING tasks
+ * use memory_compare in dstring.c and multi_dim_array_util in dstring_diff.c files
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
  * implement rabin karp and boyer moore substring comparison algorithm, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash, also provide a better interface for selecting between all the 4 substring matching algorithms
 
