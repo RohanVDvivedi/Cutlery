@@ -21,7 +21,6 @@ struct trie_node
 
 CUTLERY_STDS tasks
  * implement memcmp and optimize it
- * refactor memset, memmove and memcmp to not cross provided address boundaries
  * provide a struct to access values in multidimensional array
  * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
@@ -79,9 +78,10 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
 
 4. SPECIFIC no direct use case tasks (*later - procrastinated due to their way lower priority)
 
-ARRAYLIST task
- * implement circular access indexing for arraylist to cover and use complete range of unsigned int
-
+COMMON to all datastructures tasks
+ * implement strict unsigned int range indexing
+ * refactor memset, memmove and memcmp to not cross provided address boundaries
+ 
 HASHMAP task
  * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
 
@@ -89,7 +89,7 @@ LINKEDLIST task
  * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements, this is only possible if both the linkedlist nodes are at the same node_offset
 
 CUTLERY_STDS tasks
- * in memory allocator interface replace new_size from int to int* allowing the allocator to return more memory than what we asked for
+ * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
 
 5. Optimization tasks (*later - procrastinated due to their way lower priority)
 
