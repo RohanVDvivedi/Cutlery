@@ -20,7 +20,7 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 CUTLERY_STDS tasks
- * implement memcmp and optimize it
+ * implement memory_compare with int based comparison
  * provide a struct to access values in multidimensional array
 
 2. Add new datastructure types tasks (*future)
@@ -58,10 +58,6 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
  * implement count min sketch, alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
 
 4. SPECIFIC no direct use case tasks (*later - procrastinated due to their way lower priority)
-
-COMMON to all datastructures tasks
- * implement strict unsigned int range indexing
- * refactor memset, memmove and memcmp to not cross provided address boundaries
  
 HASHMAP task
  * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
@@ -77,3 +73,7 @@ CUTLERY_STDS tasks
 SORT optimizations tasks
  * heap sort to directly utilize the memory area of the array
  * quick sort refactor to use itertion instead of recursion
+
+COMMON to all datastructures tasks
+ * implement strict unsigned int range indexing for all cutlery datastructures
+ * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
