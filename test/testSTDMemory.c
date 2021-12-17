@@ -116,7 +116,7 @@ int main()
 				init_rand_memory(memory_data1 + i, MEMORY_OPERATION_SIZE);
 				init_rand_memory(memory_data2 + j, MEMORY_OPERATION_SIZE);
 
-				memory_move(memory_data1 + j, memory_data2 + i, rand() % MEMORY_OPERATION_SIZE);
+				memory_move(memory_data1 + i, memory_data2 + j, rand() % MEMORY_OPERATION_SIZE);
 
 				printf("\nInitial : \n");
 				printf("data1 :");
@@ -124,7 +124,7 @@ int main()
 				printf("data2:");
 				print_memory(memory_data2 + j, MEMORY_OPERATION_SIZE);
 
-				int result = memory_compare(memory_data1 + j, memory_data2 + i, MEMORY_OPERATION_SIZE);
+				int result = memory_compare(memory_data1 + i, memory_data2 + j, MEMORY_OPERATION_SIZE);
 
 				printf("Result : %d\n", result);
 
