@@ -30,4 +30,18 @@ void memory_move(void* dest, const void* src, unsigned int size);
 */
 void memory_set(void* dest_start, char byte_value, unsigned int size);
 
+/*
+	this is cutlery specific memory compare implementation
+	this is the function to be used in place of memcmp std library function
+	features : 	
+		* it sets size number of bytes at the dest pointer with the given byte_value
+		* it sets processor accessible word side if and when possible
+		  * this function compares unsigned int instead of unsigned char where ever possible
+	return2
+		1 if data1[0:(size-1)] > data2[0:(size-1)]
+		-1 if data1[0:(size-1)] < data2[0:(size-1)]
+		0 if data1[0:(size-1)] == data2[0:(size-1)]
+*/
+int memory_compare(void* data1, const void* data2, unsigned int size);
+
 #endif
