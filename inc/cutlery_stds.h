@@ -5,6 +5,10 @@
 	#define NULL ((void*)0)
 #endif
 
+#ifndef CHAR_BIT
+	#define CHAR_BIT (8)
+#endif
+
 #define INVALID_INDEX (~((unsigned int)(0)))
 // any array (struct array, struct dstring, c array or char array ) will never have this address
 // INVALID_INDEX is used to report error (or a lack of result) to the user

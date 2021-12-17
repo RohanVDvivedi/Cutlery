@@ -176,9 +176,9 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	if(data1_start == data2_start || size == 0)
 		return 0;
 
-	// compute the last src and dest byte address that needs to be copied
+	// compute the last data1 and data2 byte address that needs to be copied
 	const void* data1_last = data1_start + (size - 1);
-	const void* data2_last = data2_start + (size - 1);
+	//const void* data2_last = data2_start + (size - 1);
 
 	// intialize our iterators for forward copy
 	const char* data1 = data1_start;
