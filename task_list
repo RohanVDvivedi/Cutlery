@@ -1,9 +1,5 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
-COMMON to all datastructures tasks
- * add remove_all functionality for all data structures
- * expand_atleast to resize the array to atleast a specific size
-
 DSTRING tasks
  * use memory_compare in dstring.c and multi_dim_array_util in dstring_diff.c files
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
@@ -19,6 +15,23 @@ struct trie_node
     hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
+
+COMMON to all datastructures tasks
+ * add remove_all functionality for all data structures (bst, linkedlist, arraylist (stack and queue), heap and hashmap)
+ * expand_atleast to resize the array to atleast a specific size, and support it in heap, arraylist (stack and queue)
+
+HEAP task
+ * implement heapify_all function => bubble_down from last_index to 0
+
+HASHMAP task
+ * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
+
+LINKEDLIST task
+ * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements, this is only possible if both the linkedlist nodes are at the same node_offset
+
+SORT tasks
+ * heap sort to directly utilize the memory area of the array, using heapify_all function
+ * quick sort refactor to use itertion instead of recursion
 
 2. Add new datastructure types tasks (*future)
 
@@ -54,22 +67,12 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
  * implement bloom filter, build it with approximate unique count
  * implement count min sketch, with alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
 
-4. SPECIFIC no direct use case tasks (*later - procrastinated due to their way lower priority)
- 
-HASHMAP task
- * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
-
-LINKEDLIST task
- * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements, this is only possible if both the linkedlist nodes are at the same node_offset
+4. SPECIFIC no direct use case as of now, tasks (*later - procrastinated due to their way lower priority)
 
 CUTLERY_STDS tasks
  * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
 
-5. Optimization tasks (*later - procrastinated due to their way lower priority)
-
-SORT optimizations tasks
- * heap sort to directly utilize the memory area of the array
- * quick sort refactor to use itertion instead of recursion
+5. Optimization/correctness in indexing tasks (*later - procrastinated due to their way lower priority)
 
 COMMON to all datastructures tasks
  * implement strict unsigned int range indexing for all cutlery datastructures
