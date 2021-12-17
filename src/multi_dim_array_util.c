@@ -25,4 +25,12 @@ unsigned int get_max_index_in_multi_dim_array(unsigned int dim_no, const unsigne
 	return dims[dim_no] - 1;
 }
 
-int get_indices_from_accessor(unsigned int* indices, unsigned int accessor, const unsigned int* dims, unsigned int dims_count);
+void get_indices_from_accessor(unsigned int* indices, unsigned int accessor, const unsigned int* dims, unsigned int dims_count)
+{
+	unsigned int elements_under_ith_dimension = 1;
+	for(unsigned int dim = 0; dim < dims_count; dim++)
+	{
+		indices[dim] = (accessor / elements_under_ith_dimension) % dims[dim];
+		elements_under_ith_dimension *= dims[dim];
+	}
+}
