@@ -48,6 +48,33 @@ int main()
 	}
 
 	{
+		char memory_data1[BUFFER_SIZE];
+		char memory_data2[BUFFER_SIZE];
+		printf("TEST MEM CMP FORWARD COPY\n\n");
+		for(int i = 0; i < sizeof(int); i++)
+		{
+			for(int j = 0; j < sizeof(int); j++)
+			{
+				init_rand_memory(memory_data1 + i, MEMORY_OPERATION_SIZE);
+				init_rand_memory(memory_data2 + j, MEMORY_OPERATION_SIZE);
+
+				printf("\nInitial : \n");
+				printf("src :");
+				print_memory(memory_data1 + i, MEMORY_OPERATION_SIZE);
+				printf("dest:");
+				print_memory(memory_data2 + j, MEMORY_OPERATION_SIZE);
+
+				int result = memory_compare(memory_data1 + j, memory_data2 + i, MEMORY_OPERATION_SIZE);
+
+				printf("Result : %d\n", result);
+
+				printf("\n");
+			}
+		}
+		printf("\n\n");
+	}
+
+	{
 		char memory_dest[BUFFER_SIZE];
 		char memory_src[BUFFER_SIZE];
 		printf("TEST MEM MOVE FORWARD COPY\n\n");
