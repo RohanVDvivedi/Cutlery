@@ -22,7 +22,7 @@ void init_empty_dstring(dstring* str_p, unsigned int init_size);
 dstring get_dstring(const char* data, unsigned int data_size);
 
 #define get_literal_dstring(data, data_size) \
-	((const dstring){.byte_array = (data), .bytes_occupied = (data_size), .bytes_allocated = 0})
+	((const dstring){.byte_array = ((const char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
 #define get_literal_cstring(cstr) get_literal_dstring((cstr), strlen((cstr)))
 
 char* get_byte_array_dstring(const dstring* str_p);
