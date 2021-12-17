@@ -7,7 +7,7 @@ DOWNLOAD_DIR:=/usr/local
 # we may download all the public headers
 
 # list of public api headers (only these headers will be installed)
-PUBLIC_HEADERS:=cutlery_stds.h array.h array_search_sort.h arraylist.h stack.h queue.h heap.h linkedlist.h bst.h hashmap.h dstring.h dstring_substring.h dstring_diff.h bitmap.h memory_allocator_interface.h
+PUBLIC_HEADERS:=cutlery_stds.h array.h array_search_sort.h arraylist.h stack.h queue.h heap.h linkedlist.h bst.h hashmap.h dstring.h dstring_substring.h dstring_diff.h bitmap.h memory_allocator_interface.h multi_dim_array_util.h
 # the library, which we will create
 LIBRARY:=lib${PROJECT_NAME}.a
 # the binary, which will use the created library
