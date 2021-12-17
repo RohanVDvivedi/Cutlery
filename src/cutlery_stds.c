@@ -148,7 +148,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 
 			// generate the int_value that we could copy to the int locations int-by-int
 			int int_value = 0;
-			for(unsigned int i = 0; i < int_bits_size; i += 8)
+			for(unsigned int i = 0; i < int_bits_size; i += CHAR_BIT)
 				int_value |= ( (((int)byte_value) & 0xff) << i );
 
 			// additonal bytes that you might have to copy after completing the int copy
