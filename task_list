@@ -43,27 +43,9 @@ LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
 3. Competely new datastructure tasks (*future)
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
- * use int or unsigned int for below functionality yet to decide on that
- * use flatmap or direct array for the below functionality yet to decide on that as well
- * implement segment tree for any array A and function f such that
-    f[i ... k] = f( f(A[i ... j-1]) , f(A[j ... k]) )
-    function f must be of signature int f(int a, int b)
-    and also must follow properties like
-     * f(a,b) = f(b,a)
-     * f(a,f(b,c)) = f(f(a,b),c) = f(f(a,c),b)
-     * if function f has to be applied on N integers to form a final result R, then the order in which we apply f must not alter the result R
-    examples of such functions are min, max, sum, product(multiplication), bitwise-and, bitwise-or, bitwise-xor, lcm and hcf etc
-
-    * for an array of size n => we need a segment tree with ( 2 * n - 1) number of nodes (managed as an array of completely filled binary tree)
-    * for a tree with parent p index -> its children have indices 2 * p + 1 and 2 * p + 2 just like the heap array
-    * for any child with index c -> its parent is at ( (c - 1) / 2 ) index
-    * if the range of a node is (l ,h) this means the integer value at this node = f(A[l...h]) (incuding l and h)
-    * if the range of the parent is (l, h), then its childred have ranges (l, m-1) and (m, h)
-      * here m = largest power of 2 lesser than h - l + 1
-    * the range of root node is always is (0, n-1) for n number of elements
-
-    * segment tree must be coded using iterative approach
-
+ * use int or unsigned int for below functionality and implement their itrative approaches only
+ * access methods must be insert, update, find_range
+ * implement segment tree => for min, max, sum, product(multiplication), bitwise-and, bitwise-or, bitwise-xor, lcm and hcf
  * implement fenwick tree => for addition, product(multiplication), bitwise-xor => the functions for which their inverse exists
  * implement sparse table => max, min, lcm, hcf => the functions for which f(a,b,c,d,e) = f(f(a,b,c), f(b,c,d,e))
 
