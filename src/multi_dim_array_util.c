@@ -14,7 +14,7 @@ unsigned int get_accessor_from_indices(const unsigned int* indices, const unsign
 	unsigned int elements_under_ith_dimension = 1;
 	for(unsigned int dim = 0; dim < dims_count; dim++)
 	{
-		accessor += (elements_under_ith_dimension * dim[indices[dim]]);
+		accessor += (elements_under_ith_dimension * dims[indices[dim]]);
 		elements_under_ith_dimension *= dims[dim];
 	}
 	return accessor;
