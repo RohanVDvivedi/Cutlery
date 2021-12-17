@@ -22,7 +22,6 @@ struct trie_node
 CUTLERY_STDS tasks
  * implement memcmp and optimize it
  * provide a struct to access values in multidimensional array
- * provide methods to get next multiple of a number and a previous multiple of a number and mul, div and mod with powers of 2
 
 2. Add new datastructure types tasks (*future)
 
