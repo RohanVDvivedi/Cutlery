@@ -20,9 +20,6 @@ COMMON to all datastructures tasks
  * add remove_all functionality for all data structures (bst, linkedlist, arraylist (stack and queue), heap and hashmap)
  * expand_atleast to resize the array to atleast a specific size, and support it in heap, arraylist (stack and queue)
 
-HEAP task
- * implement heapify_all function => bubble_down from last_index to 0
-
 HASHMAP task
  * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
 
