@@ -2,9 +2,8 @@
 
 DSTRING tasks
  * test lcs and lehvenshtein test cases
- * ease in accessing byte_array and bytes_occupied using caching instead of accessor methods
- * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
- * implement rabin karp and boyer moore substring comparison algorithm, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash, also provide a better interface for selecting between all the 4 substring matching algorithms
+ * test NAIVE, KMP and RK contains_dstring functions 
+ * SSO (short string optimization) for dstring
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
@@ -65,6 +64,9 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
 
 CUTLERY_STDS tasks
  * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
+
+DSTRING tasks
+ * implement boyer moore substring finding algorithm
 
 5. Optimization/correctness in indexing tasks (*later - procrastinated due to their way lower priority)
 
