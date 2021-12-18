@@ -24,7 +24,7 @@ void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffi
 **
 **  params : str is the base large string, sub_str is the sub string that we need to find in the str
 **
-**  return : index to the position of first sub string (sub_str) match inside the str, else it returns INVALID_INDEX
+**  return : first index to the position of first sub string (sub_str) match inside the str, else it returns INVALID_INDEX
 */
 
 unsigned int contains_dstring_NAIVE(const dstring* str, const dstring* sub_str);
