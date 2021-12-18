@@ -94,12 +94,13 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 	if(sub_str_size == 0)
 		return 0;
 
-	// KMP
-	// iterate over the string str to find the substring location
+	// Knuth Morris Pratt
+	// iterate over the string str form i => 0 to (str_size - 1) both inclusive
 	for(unsigned int i = 0, substring_iter = 0; i < str_size;)
 	{
 		if(str_data[i] == sub_str_data[substring_iter])
 		{
+			// unless last character match, increment both the iters
 			if(substring_iter < sub_str_size - 1)
 			{
 				substring_iter++;
@@ -108,8 +109,11 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 			else
 				return i - (sub_str_size - 1);
 		}
+		// increment string iter i, if substring_iter == 0
+		// i.e. unmatch on the first character
 		else if(substring_iter == 0)
 			i++;
+		// else find the next substring_iter to continue from
 		else
 			substring_iter = suffix_prefix_match_length_for_sub_str[substring_iter];
 	}
@@ -118,7 +122,28 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 	return INVALID_INDEX;
 }
 
-unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str);
+unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
+{
+	const char* str_data = get_byte_array_dstring(str);
+	unsigned int str_size = get_char_count_dstring(str);
+
+	const char* sub_str_data = get_byte_array_dstring(str);
+	unsigned int sub_str_size = get_char_count_dstring(str);
+
+	// sub_string to be found can not be smaller than the string
+	// also the string to find the substring in can not be empty
+	if(str_size < sub_str_size || str_size == 0)
+		return INVALID_INDEX;
+
+	// if the substring is empty then any result would suffice
+	if(sub_str_size == 0)
+		return 0;
+
+	// Rabin Krap
+
+	// substring sub_str does not occur in the str
+	return INVALID_INDEX;
+}
 
 unsigned int contains_dstring_BM(const dstring* str, const dstring* sub_str);
 
