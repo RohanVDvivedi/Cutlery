@@ -117,15 +117,21 @@ int shrink_dstring(dstring* str_p)
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
-	if(get_byte_array_dstring(str_p2) != NULL && get_char_count_dstring(str_p2) > 0)
+	const char* str2_data = get_byte_array_dstring(str_p2);
+	unsigned int str2_size = get_char_count_dstring(str_p2);
+
+	if(str2_data != NULL && str2_size > 0)
 	{
 		// check if new data could fit, without expansion, else expand the dstring
-		if(get_char_count_dstring(str_p1) + get_char_count_dstring(str_p2) > get_capacity_dstring(str_p1))
-			expand_dstring(str_p1, get_char_count_dstring(str_p1) + 2 * get_char_count_dstring(str_p2));
+		if(str2_size > get_unused_capacity_dstring(str_p1))
+			expand_dstring(str_p1, 2 * str2_size);
+
+		const char* str1_data = get_byte_array_dstring(str_p1);
+		unsigned int str1_size = get_char_count_dstring(str_p1);
 
 		// do appending as normal now
-		memory_move(get_byte_array_dstring(str_p1) + get_char_count_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
-		str_p1->bytes_occupied += get_char_count_dstring(str_p2);
+		memory_move(str1_data + str1_size, str2_data, str2_size);
+		increment_char_count_dstring(str_p1, str2_size);
 	}
 }
 
@@ -246,20 +252,16 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1;
 	va_end(var_args_dummy);
 
-	// call all accessor methods of dstring
-	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
-	unsigned int str_capacity = get_capacity_dstring(str_p);
-
 	// expand str_p as needed
-	if(size_extra_req + str_size > str_capacity)
-		expand_dstring(str_p, str_size + 2 * size_extra_req);
+	if(size_extra_req > get_unused_capacity_dstring(str_p))
+		expand_dstring(str_p, 2 * size_extra_req);
 
 	// call all accessor methods of dstring again after expanding
-	str_data = get_byte_array_dstring(str_p);
-	str_size = get_char_count_dstring(str_p);
-	str_capacity = get_capacity_dstring(str_p);
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
 
-	str_p->bytes_occupied += vsnprintf(str_data + str_size, str_capacity - str_size, cstr_format, var_args);
+	size_extra_req = vsnprintf(str_data + str_size, get_unused_capacity_dstring(str_p), cstr_format, var_args);
+	increment_char_count_dstring(str_p, size_extra_req);
+
 	va_end(var_args);
 }
