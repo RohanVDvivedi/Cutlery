@@ -1,6 +1,6 @@
 #include<dstring_substring.h>
 
-#include<string.h>
+#include<cutlery_stds.h>
 
 void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length)
 {
@@ -83,6 +83,6 @@ int is_prefix(const dstring* string_p, const dstring* prefix_p)
 {
 	// prefix must have a length smaller than or equal to provided main string
 	if(get_char_count_dstring(string_p) >= get_char_count_dstring(prefix_p))
-		return 0 == strncmp(get_byte_array_dstring(string_p), get_byte_array_dstring(prefix_p), get_char_count_dstring(prefix_p));
+		return 0 == memory_compare(get_byte_array_dstring(string_p), get_byte_array_dstring(prefix_p), get_char_count_dstring(prefix_p));
 	return 0;
 }

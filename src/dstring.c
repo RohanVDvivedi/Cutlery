@@ -3,10 +3,6 @@
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
-#include<stdio.h>
-#include<stdarg.h>
-#include<string.h>
-
 // default memory allocator for dstring is the STD_C memory allocator
 memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
@@ -53,36 +49,13 @@ void make_dstring_empty(dstring* str_p)
 	str_p->bytes_occupied = 0;
 }
 
-// all the methods beyond this point must use the dstring accessor functions only
-
-int compare_dstring(const dstring* str_p1, const dstring* str_p2)
+void deinit_dstring(dstring* str_p)
 {
-	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
-		return strncmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
-
-	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
-	int cmp = strncmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
-
-	if(cmp != 0)
-		return cmp;
-	if(min_size == get_char_count_dstring(str_p1))
-		return -1;
-	return 1;
-}
-
-int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
-{
-	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
-		return strncasecmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
-
-	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
-	int cmp = strncasecmp(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
-
-	if(cmp != 0)
-		return cmp;
-	if(min_size == get_char_count_dstring(str_p1))
-		return -1;
-	return 1;
+	if(str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
+		deallocate(DSTRING_mem_alloc, str_p->byte_array, str_p->bytes_allocated);
+	str_p->byte_array = NULL;
+	str_p->bytes_allocated = 0;
+	str_p->bytes_occupied = 0;
 }
 
 int expand_dstring(dstring* str_p, unsigned int additional_allocation)
@@ -135,6 +108,95 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 	}
 }
 
+// converts a char to uppercase macro
+#define toLowercaseChar(c) ((('A' <= (c)) && ((c) <= 'Z')) ? ((c) - 'A' + 'a') : (c))
+
+void toLowercase(dstring* str_p)
+{
+	char* stemp = get_byte_array_dstring(str_p);
+	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
+	{
+		*stemp = toLowercaseChar(*stemp);
+		stemp++;
+	}
+}
+
+// converts a char to uppercase macro
+#define toUppercaseChar(c) ((('a' <= (c)) && ((c) <= 'z')) ? ((c) - 'a' + 'A') : (c))
+
+void toUppercase(dstring* str_p)
+{
+	char* stemp = get_byte_array_dstring(str_p);
+	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
+	{
+		*stemp = toUppercaseChar(*stemp);
+		stemp++;
+	}
+}
+
+int compare_dstring(const dstring* str_p1, const dstring* str_p2)
+{
+	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
+		return memory_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
+
+	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
+	int cmp = memory_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
+
+	if(cmp != 0)
+		return cmp;
+	if(min_size == get_char_count_dstring(str_p1))
+		return -1;
+	return 1;
+}
+
+static int memory_case_compare(const char* data1, const char* data2, unsigned int size)
+{
+	if(data1 == data2 || size == 0)
+		return 0;
+	while(size)
+	{
+		char c1 = toLowercaseChar((*data1));
+		char c2 = toLowercaseChar((*data2));
+		if(c1 > c2)
+			return 1;
+		else if(c1 < c2)
+			return -1;
+		else
+		{
+			data1++;
+			data2++;
+		}
+		size--;
+	}
+	return 0;
+}
+
+int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
+{
+	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
+		return memory_case_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
+
+	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
+	int cmp = memory_case_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
+
+	if(cmp != 0)
+		return cmp;
+	if(min_size == get_char_count_dstring(str_p1))
+		return -1;
+	return 1;
+}
+
+void sprint_chars(dstring* str_p, char chr, unsigned int count)
+{
+	for(unsigned int i = 0; i < count; i++)
+		snprintf_dstring(str_p, "%c", chr);
+}
+
+// all method below this point are non permanent methods of dstring of cutlery library
+
+#include<stdio.h>
+#include<stdarg.h>
+
 void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 {
 	va_list var_args, var_args_dummy;
@@ -151,41 +213,4 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 
 	str_p->bytes_occupied += vsnprintf(get_byte_array_dstring(str_p) + get_char_count_dstring(str_p), get_capacity_dstring(str_p) - get_char_count_dstring(str_p), cstr_format, var_args);
 	va_end(var_args);
-}
-
-void sprint_chars(dstring* str_p, char chr, unsigned int count)
-{
-	for(unsigned int i = 0; i < count; i++)
-		snprintf_dstring(str_p, "%c", chr);
-}
-
-#define toLowercaseChar(c) ((('A' <= (c)) && ((c) <= 'Z')) ? ((c) - 'A' + 'a') : (c))
-void toLowercase(dstring* str_p)
-{
-	char* stemp = get_byte_array_dstring(str_p);
-	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
-	{
-		*stemp = toLowercaseChar(*stemp);
-		stemp++;
-	}
-}
-
-#define toUppercaseChar(c) ((('a' <= (c)) && ((c) <= 'z')) ? ((c) - 'a' + 'A') : (c))
-void toUppercase(dstring* str_p)
-{
-	char* stemp = get_byte_array_dstring(str_p);
-	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
-	{
-		*stemp = toUppercaseChar(*stemp);
-		stemp++;
-	}
-}
-
-void deinit_dstring(dstring* str_p)
-{
-	if(str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
-		deallocate(DSTRING_mem_alloc, str_p->byte_array, str_p->bytes_allocated);
-	str_p->byte_array = NULL;
-	str_p->bytes_allocated = 0;
-	str_p->bytes_occupied = 0;
 }
