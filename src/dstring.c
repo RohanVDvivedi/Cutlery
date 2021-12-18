@@ -83,18 +83,23 @@ void deinit_dstring(dstring* str_p)
 
 int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
-	unsigned int new_allocated_size = get_char_count_dstring(str_p) + additional_allocation;
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
+	unsigned int str_capacity = get_capacity_dstring(str_p);
 
-	// if expansion is not resulting in expansion
-	if(new_allocated_size <= get_capacity_dstring(str_p))
+	unsigned int new_allocated_size = str_size + additional_allocation;
+
+	// if expansion is not resulting in expansion, then return 0 (failure)
+	if(new_allocated_size <= str_capacity)
 		return 0;
 
-	void* new_byte_array = reallocate(DSTRING_mem_alloc, get_byte_array_dstring(str_p), get_capacity_dstring(str_p), new_allocated_size);
+	char* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, new_allocated_size);
 
 	// failed allocation
 	if(new_byte_array == NULL && new_allocated_size > 0)
 		return 0;
 
+	// update with new allocation array and its size
 	str_p->byte_array = new_byte_array;
 	str_p->bytes_allocated = new_allocated_size;
 	return 1;
@@ -102,11 +107,15 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 
 int shrink_dstring(dstring* str_p)
 {
-	if(get_capacity_dstring(str_p) <= get_char_count_dstring(str_p))
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
+	unsigned int str_capacity = get_capacity_dstring(str_p);
+
+	if(str_capacity <= str_size)
 		return 0;
 
-	unsigned int new_allocated_size = get_char_count_dstring(str_p);
-	void* new_byte_array = reallocate(DSTRING_mem_alloc, get_byte_array_dstring(str_p), get_capacity_dstring(str_p), new_allocated_size);
+	unsigned int new_allocated_size = str_size;
+	void* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, new_allocated_size);
 
 	// failed allocation
 	if(new_byte_array == NULL && new_allocated_size > 0)
@@ -130,7 +139,7 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 		if(str2_size > get_unused_capacity_dstring(str_p1))
 			expand_dstring(str_p1, 2 * str2_size);
 
-		const char* str1_data = get_byte_array_dstring(str_p1);
+		char* str1_data = get_byte_array_dstring(str_p1);
 		unsigned int str1_size = get_char_count_dstring(str_p1);
 
 		// do appending as normal now
