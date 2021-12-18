@@ -27,7 +27,6 @@ LINKEDLIST task
  * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements, this is only possible if both the linkedlist nodes are at the same node_offset
 
 SORT tasks
- * heap sort to directly utilize the memory area of the array, using heapify_all function
  * quick sort refactor to use itertion instead of recursion
 
 2. Add new datastructure types tasks (*future)
