@@ -47,12 +47,12 @@ void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_ty
 // O(log(N)) operation
 int push_heap(heap* heap_p, const void* data);
 
-// pushes all the elements from the array_p from start_index to end_index (both inclusive) to the heap_p
+// pushes all the elements from the array_p from start_index to last_index (both inclusive) to the heap_p
 // returns 1, if the operation was successfull
 // returns 0, if the total_size of the heap was smaller than size necessary
 // upon the return of this function, either all the elements are inserted or no elements are inserted
 // O(N) operation
-int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int end_index);
+int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index);
 
 // pop the top element from the heap
 // pop returns 1, if an element is successfully popped
@@ -66,9 +66,17 @@ const void* get_top_heap(const heap* heap_p);
 
 // the below function is to be called when you doubt if the heap properties are being maintained at the given index
 // or because you changed the attributes of the data, which changed its ordering
-// if your doubt turns out to be true and the heap property is being violated, the heap property would be restored at that place
+// if your doubt turns out to be true and the heap property is being violated,
+// then this function would restore the heap property for that index
 // O(log(N)) operation
 void heapify_at(heap* heap_p, unsigned int index);
+
+// the below function is to be called when you doubt if the heap properties are being maintained at multiple indices of the heap
+// or because you changed the attributes of the data, which changed its ordering
+// if your doubt turns out to be true and the heap property is being violated at multiple indices of heap,
+// then this function would restore the heap property throughout the heap
+// O(N) operation
+void heapify_all(heap* heap_p);
 
 // this function removes an eelement from the heap, at a particular index
 // it returns 0, if no element was removed, else it returns 1
