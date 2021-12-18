@@ -2,6 +2,7 @@
 
 DSTRING tasks
  * test lcs and lehvenshtein test cases
+ * ease in accessing byte_array and bytes_occupied using caching instead of accessor methods
  * provide an ability to store the dstring on the stack itself when the strlen(string) < sizeof(dstring) i.e. use dstring as a union of char[] and dstring (current definition)
  * implement rabin karp and boyer moore substring comparison algorithm, also use rabin krap hash function as summation of (index * string[index]) for all characters of the string to encapsulate position information of the string in the hash, also provide a better interface for selecting between all the 4 substring matching algorithms
 
