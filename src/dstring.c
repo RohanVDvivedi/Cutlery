@@ -6,6 +6,8 @@
 // default memory allocator for dstring is the STD_C memory allocator
 memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
+// BASE METHODS START
+
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 {
 	str_p->bytes_occupied = data_size;
@@ -114,6 +116,8 @@ int shrink_dstring(dstring* str_p)
 	str_p->bytes_allocated = new_allocated_size;
 	return 1;
 }
+
+// BASE METHODS END
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {

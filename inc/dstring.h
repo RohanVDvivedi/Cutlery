@@ -16,6 +16,9 @@ struct dstring
 	char* byte_array;
 };
 
+// BASE METHODS START
+// only BASE methods are allowed to directly access the dstring struct
+
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 void init_empty_dstring(dstring* str_p, unsigned int init_size);
 
@@ -40,6 +43,8 @@ void make_dstring_empty(dstring* str_p);
 int expand_dstring(dstring* str_p, unsigned int additional_size);
 // shrinks dstring to its bytes_occupied size
 int shrink_dstring(dstring* str_p);
+
+// BASE METHODS END
 
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
