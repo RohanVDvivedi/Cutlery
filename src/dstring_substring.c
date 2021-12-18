@@ -4,8 +4,8 @@
 
 void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffix_prefix_match_length)
 {
-	const char* sub_str_data = get_byte_array_dstring(str);
-	unsigned int sub_str_size = get_char_count_dstring(str);
+	const char* sub_str_data = get_byte_array_dstring(sub_str);
+	unsigned int sub_str_size = get_char_count_dstring(sub_str);
 
 	for(unsigned int string_length = 0; ; string_length++)
 	{
@@ -115,7 +115,7 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 			i++;
 		// else find the next substring_iter to continue from
 		else
-			substring_iter = suffix_prefix_match_length_for_sub_str[substring_iter];
+			substring_iter = suffix_prefix_match_length[substring_iter];
 	}
 
 	// substring sub_str does not occur in the str
@@ -140,6 +140,50 @@ unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 		return 0;
 
 	// Rabin Krap
+	// hash(str) => summation of all ((i + 1) * str_data[i]) form i = 0 to (str_size - 1)
+
+	// find the hash and char_sum of the sub_str,
+	// and hash of first sub_str_size characters of str
+	// and the sum of first sub_str_size characters of str
+	unsigned int sub_str_hash = 0;
+	unsigned int sub_str_char_sum = 0;
+	unsigned int str_hash_rolling = 0;
+	unsigned int str_char_sum_rolling = 0;
+	for(unsigned int i = 0; i < sub_str_size; i++)
+	{
+		sub_str_hash += ((i+1) * ((unsigned int)sub_str_data[i]));
+		sub_str_char_sum += ((unsigned int)sub_str_data[i]);
+		str_hash_rolling += ((i + 1) * ((unsigned int)str_data[i]));
+		str_char_sum_rolling += ((unsigned int)str_data[i]);
+	}
+
+	for(unsigned int i = 0; ; i++)
+	{
+		if(sub_str_hash == str_hash_rolling && sub_str_char_sum == str_char_sum_rolling)
+		{
+			int found = 1;
+			for(unsigned int j = 0; j < sub_str_size; j++)
+			{
+				if(str_data[i + j] != sub_str_data[j])
+				{
+					found = 0;
+					break;
+				}
+			}
+			if(found)
+				return i;
+		}
+
+		// except when it is the last iteration
+		if(i == str_size - sub_str_size)
+			break;
+
+		// prepare str_hash_rolling and str_sum_rolling for the next iteration
+		str_hash_rolling -= str_char_sum_rolling;
+		str_hash_rolling += (str_size * ((unsigned int)str_data[i + sub_str_size - 1]));
+		str_char_sum_rolling -= ((unsigned int)str_data[i]);
+		str_char_sum_rolling += ((unsigned int)str_data[i + sub_str_size - 1]);
+	}
 
 	// substring sub_str does not occur in the str
 	return INVALID_INDEX;
