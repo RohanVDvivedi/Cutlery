@@ -152,36 +152,25 @@ int push_heap(heap* heap_p, const void* data)
 	return 1;
 }
 
-int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int end_index)
+int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index)
 {
 	// fail if the indexes provided in the array are invalid
-	if(start_index > end_index)
+	if(start_index > last_index)
 		return 0;
 
-	// number of elements to be inserted from start_index to end_index (both inclusive)
-	unsigned int elements_to_insert = end_index - start_index + 1;
+	// number of elements to be inserted from start_index to last_index (both inclusive)
+	unsigned int elements_to_insert = last_index - start_index + 1;
 
+	// if the capacity of heap is not enough to hold all the elements then return with a failure
 	if(get_capacity_heap(heap_p) < (get_element_count_heap(heap_p) + elements_to_insert))
 		return 0;
 
-	// insert all the elements from array [start_index to  end_index] to the heap_p
+	// insert all the elements from array [start_index to last_index] to the heap_p
 	for(unsigned int i = 0; i < elements_to_insert; i++)
 		set_element(&(heap_p->heap_holder), get_element(array_p, start_index + i), heap_p->element_count++);
 
-	unsigned int index = get_element_count_heap(heap_p);
-
-	while(1)
-	{
-		// bubble_down at all the elements in reverse order
-		bubble_down(heap_p, index);
-
-		// if the last index processed was at 0, then return
-		if(index == 0)
-			break;
-
-		// else decrement and continue
-		index--;
-	}
+	// heapify all the elements of the heap
+	heapify_all(heap_p);
 
 	return 1;
 }
@@ -241,6 +230,28 @@ void heapify_at(heap* heap_p, unsigned int index)
 		((left_child_index  < heap_p->element_count) && is_reordering_required(heap_p, index,  left_child_index)) 
 	||	((right_child_index < heap_p->element_count) && is_reordering_required(heap_p, index, right_child_index)))
 		bubble_down(heap_p, index);
+}
+
+void heapify_all(heap* heap_p)
+{
+	if(is_empty_heap(heap_p))
+		return;
+
+	// initially make index point to last index in heap
+	unsigned int index = get_element_count_heap(heap_p) - 1;
+
+	// bubble_down at all the elements in reverse order staring with index
+	while(1)
+	{
+		bubble_down(heap_p, index);
+
+		// if the last index processed was at 0, then return
+		if(index == 0)
+			break;
+
+		// else decrement and continue
+		index--;
+	}
 }
 
 void deinitialize_heap(heap* heap_p)
