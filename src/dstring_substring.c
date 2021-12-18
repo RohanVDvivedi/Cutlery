@@ -2,18 +2,23 @@
 
 #include<cutlery_stds.h>
 
-void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_prefix_match_length)
+void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffix_prefix_match_length)
 {
-	// build the cache for the substring calculation
-	suffix_prefix_match_length[0] = 0;
-	suffix_prefix_match_length[1] = 0;
-	unsigned int string_length = 2;
-	while(string_length <= get_char_count_dstring(str))
+	const char* sub_str_data = get_byte_array_dstring(str);
+	unsigned int sub_str_size = get_char_count_dstring(str);
+
+	for(unsigned int string_length = 0; ; string_length++)
 	{
+		if(string_length <= 1)
+		{
+			suffix_prefix_match_length[string_length] = 0;
+			continue;
+		}
+
 		unsigned int prefix_length_old = suffix_prefix_match_length[string_length - 1];
 		while(1)
 		{
-			if(get_byte_array_dstring(str)[string_length-1] == get_byte_array_dstring(str)[prefix_length_old])
+			if(sub_str_data[string_length-1] == sub_str_data[prefix_length_old])
 			{
 				suffix_prefix_match_length[string_length] = prefix_length_old + 1;
 				break;
@@ -28,56 +33,94 @@ void get_prefix_suffix_match_lengths(const dstring* str, unsigned int* suffix_pr
 				}
 			}
 		}
-		string_length++;
+
+		// when all the possible lengths of sub_str have been processed then quit the loop
+		if(string_length == sub_str_size)
+			break;
 	}
 }
-// KMP implementation for substring position in a given string
-char* contains_dstring(const dstring* str, const dstring* sub_str, unsigned int* suffix_prefix_match_length_for_sub_str)
+
+unsigned int contains_dstring_NAIVE(const dstring* str, const dstring* sub_str)
 {
-	if(get_char_count_dstring(str) < get_char_count_dstring(sub_str))
-		return NULL;
+	const char* str_data = get_byte_array_dstring(str);
+	unsigned int str_size = get_char_count_dstring(str);
 
-	// use KMP algorithm O(m + n)
-	if(suffix_prefix_match_length_for_sub_str != NULL) {
-		// iterate over the string to find the substring location
-		for(unsigned int i = 0, substring_iter = 0; i < get_char_count_dstring(str);)
-		{
-			if(get_byte_array_dstring(str)[i] == get_byte_array_dstring(sub_str)[substring_iter])
-			{
-				if(substring_iter < get_char_count_dstring(sub_str) - 1)
-				{
-					substring_iter++;
-					i++;
-				}
-				else
-					return get_byte_array_dstring(str) + i - (get_char_count_dstring(sub_str) - 1);
-			}
-			else if(substring_iter == 0)
-				i++;
-			else
-				substring_iter = suffix_prefix_match_length_for_sub_str[substring_iter];
-		}
-	}
-	else // use standard algorithm O(m * n)
+	const char* sub_str_data = get_byte_array_dstring(str);
+	unsigned int sub_str_size = get_char_count_dstring(str);
+
+	// sub_string to be found can not be smaller than the string
+	// also the string to find the substring in can not be empty
+	if(str_size < sub_str_size || str_size == 0)
+		return INVALID_INDEX;
+
+	// if the substring is empty then any result would suffice
+	if(sub_str_size == 0)
+		return 0;
+
+	// in the str dstring iterate from i => 0 to (str_size - sub_str_size) both inclusive
+	for(unsigned int i = 0; i <= str_size - sub_str_size; i++)
 	{
-		for(unsigned int i = 0; i <= get_char_count_dstring(str) - get_char_count_dstring(sub_str); i++)
+		int found = 1;
+		for(unsigned int j = 0; j < sub_str_size; j++)
 		{
-			unsigned int found = 1;
-			for(unsigned int j = 0; j < get_char_count_dstring(sub_str); j++)
+			if(str_data[i + j] != sub_str_data[j])
 			{
-				if(get_byte_array_dstring(str)[i + j] != get_byte_array_dstring(sub_str)[j])
-				{
-					found = 0;
-					break;
-				}
+				found = 0;
+				break;
 			}
-			if(found)
-				return get_byte_array_dstring(str) + i;
 		}
+		if(found)
+			return i;
 	}
 
-	return NULL;
+	// substring sub_str does not occur in the str
+	return INVALID_INDEX;
 }
+
+unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, const unsigned int* suffix_prefix_match_length)
+{
+	const char* str_data = get_byte_array_dstring(str);
+	unsigned int str_size = get_char_count_dstring(str);
+
+	const char* sub_str_data = get_byte_array_dstring(str);
+	unsigned int sub_str_size = get_char_count_dstring(str);
+
+	// sub_string to be found can not be smaller than the string
+	// also the string to find the substring in can not be empty
+	if(str_size < sub_str_size || str_size == 0 || suffix_prefix_match_length == NULL)
+		return INVALID_INDEX;
+
+	// if the substring is empty then any result would suffice
+	if(sub_str_size == 0)
+		return 0;
+
+	// KMP
+	// iterate over the string str to find the substring location
+	for(unsigned int i = 0, substring_iter = 0; i < str_size;)
+	{
+		if(str_data[i] == sub_str_data[substring_iter])
+		{
+			if(substring_iter < sub_str_size - 1)
+			{
+				substring_iter++;
+				i++;
+			}
+			else
+				return i - (sub_str_size - 1);
+		}
+		else if(substring_iter == 0)
+			i++;
+		else
+			substring_iter = suffix_prefix_match_length_for_sub_str[substring_iter];
+	}
+
+	// substring sub_str does not occur in the str
+	return INVALID_INDEX;
+}
+
+unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str);
+
+unsigned int contains_dstring_BM(const dstring* str, const dstring* sub_str);
 
 int is_prefix(const dstring* string_p, const dstring* prefix_p)
 {
