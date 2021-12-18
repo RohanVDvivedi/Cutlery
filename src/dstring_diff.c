@@ -67,49 +67,53 @@ static unsigned int maximum_of(unsigned int a, unsigned int b, unsigned int c)
 	return (max_a_b > c) ? max_a_b : c;
 }
 
-typedef struct array_2d array_2d;
-struct array_2d
-{
-	unsigned int dim_0_size;
-	unsigned int dim_1_size;
-	unsigned int* holder;
-};
-
-static unsigned int* iterator(array_2d* arr, unsigned int i1, unsigned int i0)
-{
-	if((i1 >= arr->dim_1_size) || (i0 >= arr->dim_0_size))
-		return NULL;
-	return arr->holder + (i1 * arr->dim_0_size) + i0;
-}
-
 unsigned int length_of_longest_common_subsequence(const dstring* str0, const dstring* str1)
 {
-	array_2d arr;
-	arr.dim_0_size = get_char_count_dstring(str0) + 1;
-	arr.dim_1_size = get_char_count_dstring(str1) + 1;
-	arr.holder = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
+	const char* str0_data = get_byte_array_dstring(str0);
+	unsigned int str0_len = get_char_count_dstring(str0);
 
-	for(unsigned int i = 0; i <= get_char_count_dstring(str1); i++)
+	const char* str1_data = get_byte_array_dstring(str1);
+	unsigned int str1_len = get_char_count_dstring(str1);
+
+	unsigned int dp_dims[] = {str0_len + 1, str1_len + 1};
+	unsigned int* dp = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * dp_dims[0] * dp_dims[1]);
+
+	for(unsigned int i = 0; i < dp_dims[1]; i++)
 	{
-		for(unsigned int j = 0; j <= get_char_count_dstring(str0); j++)
+		for(unsigned int j = 0; j < dp_dims[0]; j++)
 		{
+			unsigned int curr_indices[] = {j, i};
+			unsigned int curr = get_accessor_from_indices(curr_indices, dp_dims, 2);
+
 			if(i == 0)
-				(*(iterator(&arr, i, j))) = 0;
+				dp[curr] = 0;
 			else if(j == 0)
-				(*(iterator(&arr, i, j))) = 0;
+				dp[curr] = 0;
 			else
 			{
-				if(get_byte_array_dstring(str1)[i - 1] == get_byte_array_dstring(str0)[j - 1])
-					(*(iterator(&arr, i, j))) = 1 + (*(iterator(&arr, i - 1, j - 1)));
+				unsigned int top_left_indices[] = {j-1, i-1};
+				unsigned int top_left = get_accessor_from_indices(top_left_indices, dp_dims, 2);
+
+				unsigned int top_indices[] = {j, i-1};
+				unsigned int top = get_accessor_from_indices(top_indices, dp_dims, 2);
+
+				unsigned int left_indices[] = {j-1, i};
+				unsigned int left = get_accessor_from_indices(left_indices, dp_dims, 2);
+
+				if(str1_data[i - 1] == str0_data[j - 1])
+					dp[curr] = 1 + dp[top_left];
 				else
-					(*(iterator(&arr, i, j))) = maximum_of( (*(iterator(&arr, i - 1, j - 1))),
-															(*(iterator(&arr, i - 1, j    ))),
-															(*(iterator(&arr, i    , j - 1))));
+					dp[curr] = maximum_of(  dp[top_left],
+											dp[top],
+											dp[left] );
 			}
 		}
 	}
 
-	unsigned int result = (*(iterator(&arr, get_char_count_dstring(str1), get_char_count_dstring(str0))));
-	deallocate(DSTRING_mem_alloc, arr.holder, sizeof(unsigned int) * arr.dim_0_size * arr.dim_1_size);
+	// result at the last element
+	unsigned int result = dp[(dp_dims[0] * dp_dims[1]) - 1];
+
+	deallocate(DSTRING_mem_alloc, dp, sizeof(unsigned int) * dp_dims[0] * dp_dims[1]);
+
 	return result;
 }
