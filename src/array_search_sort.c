@@ -92,19 +92,22 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last
 	if(total_elements <= 1)
 		return;
 
-	// create a max heap
+	// create a max heap that points to the array_p's contents that need to be sorted
 	heap sort_heap;
-	initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, compare, NULL, NULL, array_p->mem_allocator);
+	initialize_heap_with_allocator(&sort_heap, 0, MAX_HEAP, compare, NULL, NULL, NULL);
+	sort_heap.heap_holder.data_p_p = array_p->data_p_p + start_index;
+	sort_heap.heap_holder.capacity = total_elements;
+	sort_heap.element_count = total_elements;
 
-	// push all the elements that we need to sort in the min heap (sort_heap)
-	push_all_from_array_heap(&sort_heap, array_p, start_index, last_index);
+	// now max heapify all elements that we need to sort
+	heapify_all(&sort_heap);
 
 	// place the top of the heap element in the array, then pop heap
-	for(unsigned int i = 0; i < total_elements; i++)
+	for(unsigned int i = total_elements; i > 0; i--)
 	{
-		const void* min_data = get_top_heap(&sort_heap);
+		const void* max_data = get_top_heap(&sort_heap);
 		pop_heap(&sort_heap);
-		set_element(array_p, min_data, start_index + i);
+		set_element(array_p, max_data, start_index + i - 1);
 	}
 
 	// deinitialize the sort_heap
