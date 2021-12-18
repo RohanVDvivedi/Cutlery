@@ -39,9 +39,30 @@ unsigned int get_char_count_dstring(const dstring* str_p)
 	return str_p->bytes_occupied;
 }
 
+int increment_char_count_dstring(dstring* str_p, unsigned int increment_by)
+{
+	if(increment_by > get_unused_capacity_dstring(str_p))
+		return 0;
+	str_p->bytes_occupied += increment_by;
+	return 1;
+}
+
+int decrement_char_count_dstring(dstring* str_p, unsigned int decrement_by)
+{
+	if(decrement_by > get_char_count_dstring(str_p))
+		return 0;
+	str_p->bytes_occupied -= decrement_by;
+	return 1;
+}
+
 unsigned int get_capacity_dstring(const dstring* str_p)
 {
 	return str_p->bytes_allocated;
+}
+
+unsigned int get_unused_capacity_dstring(const dstring* str_p)
+{
+	return str_p->bytes_allocated - str_p->bytes_occupied;
 }
 
 void make_dstring_empty(dstring* str_p)
@@ -113,11 +134,14 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 
 void toLowercase(dstring* str_p)
 {
-	char* stemp = get_byte_array_dstring(str_p);
-	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
+
+	while(str_size)
 	{
-		*stemp = toLowercaseChar(*stemp);
-		stemp++;
+		*str_data = toLowercaseChar(*str_data);
+		str_data++;
+		str_size--;
 	}
 }
 
@@ -126,25 +150,34 @@ void toLowercase(dstring* str_p)
 
 void toUppercase(dstring* str_p)
 {
-	char* stemp = get_byte_array_dstring(str_p);
-	while(stemp < get_byte_array_dstring(str_p) + get_char_count_dstring(str_p))
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
+
+	while(str_size)
 	{
-		*stemp = toUppercaseChar(*stemp);
-		stemp++;
+		*str_data = toUppercaseChar(*str_data);
+		str_data++;
+		str_size--;
 	}
 }
 
 int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
-	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
-		return memory_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
+	const char* str1_data = get_byte_array_dstring(str_p1);
+	unsigned int str1_size = get_char_count_dstring(str_p1);
 
-	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
-	int cmp = memory_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
+	const char* str2_data = get_byte_array_dstring(str_p2);
+	unsigned int str2_size = get_char_count_dstring(str_p2);
+
+	if(str1_size == str2_size)
+		return memory_compare(str1_data, str2_data, str1_size);
+
+	unsigned int min_size = (str1_size < str2_size) ? str1_size : str2_size;
+	int cmp = memory_compare(str1_data, str2_data, min_size);
 
 	if(cmp != 0)
 		return cmp;
-	if(min_size == get_char_count_dstring(str_p1))
+	if(min_size == str1_size)
 		return -1;
 	return 1;
 }
@@ -173,15 +206,21 @@ static int memory_case_compare(const char* data1, const char* data2, unsigned in
 
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
-	if(get_char_count_dstring(str_p1) == get_char_count_dstring(str_p2))
-		return memory_case_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), get_char_count_dstring(str_p2));
+	const char* str1_data = get_byte_array_dstring(str_p1);
+	unsigned int str1_size = get_char_count_dstring(str_p1);
 
-	unsigned int min_size = (get_char_count_dstring(str_p1) < get_char_count_dstring(str_p2)) ? get_char_count_dstring(str_p1) : get_char_count_dstring(str_p2);
-	int cmp = memory_case_compare(get_byte_array_dstring(str_p1), get_byte_array_dstring(str_p2), min_size);
+	const char* str2_data = get_byte_array_dstring(str_p2);
+	unsigned int str2_size = get_char_count_dstring(str_p2);
+
+	if(str1_size == str2_size)
+		return memory_case_compare(str1_data, str2_data, str1_size);
+
+	unsigned int min_size = (str1_size < str2_size) ? str1_size : str2_size;
+	int cmp = memory_case_compare(str1_data, str2_data, min_size);
 
 	if(cmp != 0)
 		return cmp;
-	if(min_size == get_char_count_dstring(str_p1))
+	if(min_size == str1_size)
 		return -1;
 	return 1;
 }
@@ -207,10 +246,20 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1;
 	va_end(var_args_dummy);
 
-	// expand str_p as needed
-	if(size_extra_req + get_char_count_dstring(str_p) > get_capacity_dstring(str_p))
-		expand_dstring(str_p, get_char_count_dstring(str_p) + 2 * size_extra_req);
+	// call all accessor methods of dstring
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
+	unsigned int str_capacity = get_capacity_dstring(str_p);
 
-	str_p->bytes_occupied += vsnprintf(get_byte_array_dstring(str_p) + get_char_count_dstring(str_p), get_capacity_dstring(str_p) - get_char_count_dstring(str_p), cstr_format, var_args);
+	// expand str_p as needed
+	if(size_extra_req + str_size > str_capacity)
+		expand_dstring(str_p, str_size + 2 * size_extra_req);
+
+	// call all accessor methods of dstring again after expanding
+	str_data = get_byte_array_dstring(str_p);
+	str_size = get_char_count_dstring(str_p);
+	str_capacity = get_capacity_dstring(str_p);
+
+	str_p->bytes_occupied += vsnprintf(str_data + str_size, str_capacity - str_size, cstr_format, var_args);
 	va_end(var_args);
 }

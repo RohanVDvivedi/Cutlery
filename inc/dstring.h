@@ -25,19 +25,24 @@ dstring get_dstring(const char* data, unsigned int data_size);
 	((const dstring){.byte_array = ((const char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
 #define get_literal_cstring(cstr) get_literal_dstring((cstr), strlen((cstr)))
 
+void deinit_dstring(dstring* str_p);
+
 char* get_byte_array_dstring(const dstring* str_p);
 unsigned int get_char_count_dstring(const dstring* str_p);
+int increment_char_count_dstring(dstring* str_p, unsigned int increment_by);
+int decrement_char_count_dstring(dstring* str_p, unsigned int decrement_by);
 unsigned int get_capacity_dstring(const dstring* str_p);
+unsigned int get_unused_capacity_dstring(const dstring* str_p);
 
 void make_dstring_empty(dstring* str_p);
-
-int compare_dstring(const dstring* str_p1, const dstring* str_p2);
-int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
 // increases the size of dstring by additional_size number of bytes
 int expand_dstring(dstring* str_p, unsigned int additional_size);
 // shrinks dstring to its bytes_occupied size
 int shrink_dstring(dstring* str_p);
+
+int compare_dstring(const dstring* str_p1, const dstring* str_p2);
+int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
 // concatenates str_p2 to str_p1
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
@@ -60,8 +65,6 @@ void toUppercase(dstring* str_p);
 
 #include<dstring_substring.h>
 #include<dstring_diff.h>
-
-void deinit_dstring(dstring* str_p);
 
 // This is the global memory allocator that will be used for contents 
 // of every dstring that ever gets created/modified
