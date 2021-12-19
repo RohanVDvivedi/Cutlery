@@ -1,8 +1,6 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
 DSTRING tasks
- * test lcs and lehvenshtein test cases
- * test NAIVE, KMP and RK contains_dstring functions 
  * SSO (short string optimization) for dstring
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
