@@ -1,7 +1,7 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
 DSTRING tasks
- * SSO (short string optimization) for dstring
+ * SSO (short string optimization) for dstring implement expand and shrink dstring
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
