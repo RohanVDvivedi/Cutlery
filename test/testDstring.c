@@ -33,6 +33,8 @@ int main()
 
 		for(int i = 0; i < temp_size; i++)
 			printf("prefix %s %d\n", temp[i], is_prefix(&str, &get_literal_cstring(temp[i])));
+
+		printf("\n\n");
 	}
 
 	snprintf_dstring(&str, "iNt no : %d, strIng : %s, floAT : %f", 336, "Heello Worlds!! =+", 35.49);
@@ -102,8 +104,10 @@ int main()
 			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
 			printf("KMP   : %u\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
 
-			printf("RK    : %u\n", contains_dstring_RK(&str, temp_dstr));
+			printf("RK    : %u\n\n", contains_dstring_RK(&str, temp_dstr));
 		}
+
+		printf("\n\n");
 	}
 
 	printf("str : " printf_dstring_format "\n", printf_dstring_params(&str));
@@ -112,9 +116,9 @@ int main()
 		char* temp[] = {
 			"AFFA",
 			"BBCBBD",
-			"ABCXXXABC"
-			"ABCABCABC"
-			"AAACAAAAAC";
+			"ABCXXXABC",
+			"ABCABCABC",
+			"AAACAAAAAC",
 			"AABAACAABAA",
 		};
 
@@ -131,13 +135,15 @@ int main()
 
 			printf("SUFFIX_PREFIX_MATCH_LENGTHS : \n");
 			for(unsigned int i = 0; i <= get_char_count_dstring(temp_dstr); i++)
-				printf(printf_dstring_format " -> %u\n", printf_dstring_format(&get_literal_dstring(temp, i)), cache[i]);
+				printf(printf_dstring_format " -> %u\n", printf_dstring_params(&get_literal_dstring(temp, i)), suffix_prefix_match_length[i]);
 			printf("\n");
 
 			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
 			printf("KMP   : %u\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
-			printf("RK    : %u\n", contains_dstring_RK(&str, temp_dstr));
+			printf("RK    : %u\n\n", contains_dstring_RK(&str, temp_dstr));
 		}
+
+		printf("\n\n");
 	}
 
 	printf("str : " printf_dstring_format "\n", printf_dstring_params(&str));
@@ -168,5 +174,7 @@ int main()
 			printf("leven-dist(\"%s\", \"%s\") = %u\n", temp[i][0], temp[i][1], levenshtein_distance(s0, s1));
 			printf("len-of-lcs(\"%s\", \"%s\") = %u\n\n\n", temp[i][0], temp[i][1], length_of_longest_common_subsequence(s0, s1));
 		}
+
+		printf("\n\n");
 	}
 }
