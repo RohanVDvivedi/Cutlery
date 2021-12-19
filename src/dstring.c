@@ -21,7 +21,7 @@ void init_empty_dstring(dstring* str_p, unsigned int capacity)
 {
 	str_p->bytes_occupied = 0;
 	str_p->bytes_allocated = capacity;
-	str_p->byte_array = allocate(DSTRING_mem_alloc, init_size);
+	str_p->byte_array = allocate(DSTRING_mem_alloc, capacity);
 }
 
 char* get_byte_array_dstring(const dstring* str_p)
@@ -130,6 +130,13 @@ dstring get_dstring(const char* data, unsigned int data_size)
 {
 	dstring str;
 	init_dstring(&str, data, data_size);
+	return str;
+}
+
+dstring get_copy_dstring(const dstring* init_copy_from)
+{
+	dstring str;
+	init_copy_dstring(&str, init_copy_from);
 	return str;
 }
 
