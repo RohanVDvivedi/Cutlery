@@ -25,8 +25,7 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 	{
 		for(unsigned int j = 0; j < dp_dims[0]; j++)
 		{
-			unsigned int curr_indices[] = {j, i};
-			unsigned int curr = get_accessor_from_indices(curr_indices, dp_dims, 2);
+			unsigned int curr = get_accessor_from_indices((unsigned int[]){j, i}, dp_dims, 2);
 
 			if(i == 0)
 				dp[curr] = j;
@@ -34,14 +33,9 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 				dp[curr] = i;
 			else
 			{
-				unsigned int top_left_indices[] = {j-1, i-1};
-				unsigned int top_left = get_accessor_from_indices(top_left_indices, dp_dims, 2);
-
-				unsigned int top_indices[] = {j, i-1};
-				unsigned int top = get_accessor_from_indices(top_indices, dp_dims, 2);
-
-				unsigned int left_indices[] = {j-1, i};
-				unsigned int left = get_accessor_from_indices(left_indices, dp_dims, 2);
+				unsigned int top_left = get_accessor_from_indices((unsigned int[]){j-1, i-1}, dp_dims, 2);
+				unsigned int top = get_accessor_from_indices((unsigned int[]){j, i-1}, dp_dims, 2);
+				unsigned int left = get_accessor_from_indices((unsigned int[]){j-1, i}, dp_dims, 2);
 
 				if(str1_data[i - 1] == str0_data[j - 1])
 					dp[curr] = dp[top_left];
@@ -82,8 +76,7 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 	{
 		for(unsigned int j = 0; j < dp_dims[0]; j++)
 		{
-			unsigned int curr_indices[] = {j, i};
-			unsigned int curr = get_accessor_from_indices(curr_indices, dp_dims, 2);
+			unsigned int curr = get_accessor_from_indices((unsigned int[]){j, i}, dp_dims, 2);
 
 			if(i == 0)
 				dp[curr] = 0;
@@ -91,14 +84,9 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 				dp[curr] = 0;
 			else
 			{
-				unsigned int top_left_indices[] = {j-1, i-1};
-				unsigned int top_left = get_accessor_from_indices(top_left_indices, dp_dims, 2);
-
-				unsigned int top_indices[] = {j, i-1};
-				unsigned int top = get_accessor_from_indices(top_indices, dp_dims, 2);
-
-				unsigned int left_indices[] = {j-1, i};
-				unsigned int left = get_accessor_from_indices(left_indices, dp_dims, 2);
+				unsigned int top_left = get_accessor_from_indices((unsigned int[]){j-1, i-1}, dp_dims, 2);
+				unsigned int top = get_accessor_from_indices((unsigned int[]){j, i-1}, dp_dims, 2);
+				unsigned int left = get_accessor_from_indices((unsigned int[]){j-1, i}, dp_dims, 2);
 
 				if(str1_data[i - 1] == str0_data[j - 1])
 					dp[curr] = 1 + dp[top_left];
