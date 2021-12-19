@@ -106,31 +106,39 @@ int main()
 		}
 	}
 
-	printf("\n\nsubstring using std and KMP algorithm\n");
-	printf_dstring(&str);
-	printf("\n\n");
+	printf("str : " printf_dstring_format "\n", printf_dstring_params(&str));
 
-	unsigned int* cache = NULL;
+	{
+		char* temp[] = {
+			"AFFA",
+			"BBCBBD",
+			"ABCXXXABC"
+			"ABCABCABC"
+			"AAACAAAAAC";
+			"AABAACAABAA",
+		};
 
-	slize = &get_literal_cstring("AFFA");
-	cache = alloca(sizeof(unsigned int) * (get_char_count_dstring(slize)+1));get_prefix_suffix_match_lengths(slize, cache);
-	for(unsigned int i = 0; i <= get_char_count_dstring(slize); i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+		int temp_size = sizeof(temp) / sizeof(char*);
 
-	slize = &get_literal_cstring("BBCBBD");
-	cache = alloca(sizeof(unsigned int) * (get_char_count_dstring(slize)+1));get_prefix_suffix_match_lengths(slize, cache);
-	for(unsigned int i = 0; i <= get_char_count_dstring(slize); i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+		for(int i = 0; i < temp_size; i++)
+		{
+			printf("contains_dstring : %s\n", temp[i]);
 
-	slize = &get_literal_cstring("AABAACAABAA");
-	cache = alloca(sizeof(unsigned int) * (get_char_count_dstring(slize)+1));get_prefix_suffix_match_lengths(slize, cache);
-	for(unsigned int i = 0; i <= get_char_count_dstring(slize); i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+			dstring* temp_dstr = &get_literal_cstring(temp[i]);
 
-	slize = &get_literal_cstring("AAACAAAAAC");
-	cache = alloca(sizeof(unsigned int) * (get_char_count_dstring(slize)+1));get_prefix_suffix_match_lengths(slize, cache);
-	for(unsigned int i = 0; i <= get_char_count_dstring(slize); i++){printf("%u -> %u\n", i, cache[i]);}
-	printf("\nslize : \"");printf_dstring(slize);printf("\"  O(m*n): %p, O(m+n): %p\n\n", contains_dstring(&str, slize, NULL), contains_dstring(&str, slize, cache));
+			unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * (get_char_count_dstring(temp_dstr) + 1));
+			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
+
+			printf("SUFFIX_PREFIX_MATCH_LENGTHS : \n");
+			for(unsigned int i = 0; i <= get_char_count_dstring(temp_dstr); i++)
+				printf(printf_dstring_format " -> %u\n", temp, i, cache[i]);
+			printf("\n");
+
+			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
+			printf("KMP   : %u\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
+			printf("RK    : %u\n", contains_dstring_RK(&str, temp_dstr));
+		}
+	}
 
 	printf("str : " printf_dstring_format "\n", printf_dstring_params(&str));
 
