@@ -159,7 +159,7 @@ unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 
 	for(unsigned int i = 0; ; i++)
 	{
-		if(sub_str_hash == str_hash_rolling && sub_str_char_sum == str_char_sum_rolling)
+		if(sub_str_char_sum == str_char_sum_rolling && sub_str_hash == str_hash_rolling)
 		{
 			int found = 1;
 			for(unsigned int j = 0; j < sub_str_size; j++)
