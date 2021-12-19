@@ -32,7 +32,10 @@ int main()
 		int temp_size = sizeof(temp) / sizeof(char*);
 
 		for(int i = 0; i < temp_size; i++)
+		{
 			printf("prefix %s %d\n", temp[i], is_prefix(&str, &get_literal_cstring(temp[i])));
+			printf("\n\n");
+		}
 
 		printf("\n\n");
 	}
@@ -103,7 +106,9 @@ int main()
 			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
 			printf("KMP   : %u\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
 
-			printf("RK    : %u\n\n", contains_dstring_RK(&str, temp_dstr));
+			printf("RK    : %u\n", contains_dstring_RK(&str, temp_dstr));
+
+			printf("\n\n");
 		}
 
 		printf("\n\n");
@@ -133,19 +138,21 @@ int main()
 			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
 
 			printf("SUFFIX_PREFIX_MATCH_LENGTHS : \n");
-			for(unsigned int i = 0; i <= get_char_count_dstring(temp_dstr); i++)
-				printf(printf_dstring_format " -> %u\n", printf_dstring_params(&get_literal_dstring(temp, i)), suffix_prefix_match_length[i]);
+			for(unsigned int l = 0; l <= get_char_count_dstring(temp_dstr); l++)
+				printf(printf_dstring_format " -> %u\n", printf_dstring_params(&get_literal_dstring(temp[i], l)), suffix_prefix_match_length[l]);
 			printf("\n");
 
 			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
 			printf("KMP   : %u\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
-			printf("RK    : %u\n\n", contains_dstring_RK(&str, temp_dstr));
+			printf("RK    : %u\n", contains_dstring_RK(&str, temp_dstr));
+
+			printf("\n\n");
 		}
 
 		printf("\n\n");
 	}
 
-	printf("str : " printf_dstring_format "\n\n", printf_dstring_params(&str));
+	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
 	toLowercase(&str);
 	printf("To lowercase str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
@@ -171,7 +178,8 @@ int main()
 			const dstring* s0 = &get_literal_cstring(temp[i][0]);
 			const dstring* s1 = &get_literal_cstring(temp[i][1]);
 			printf("leven-dist(\"%s\", \"%s\") = %u\n", temp[i][0], temp[i][1], levenshtein_distance(s0, s1));
-			printf("len-of-lcs(\"%s\", \"%s\") = %u\n\n\n", temp[i][0], temp[i][1], length_of_longest_common_subsequence(s0, s1));
+			printf("len-of-lcs(\"%s\", \"%s\") = %u\n", temp[i][0], temp[i][1], length_of_longest_common_subsequence(s0, s1));
+			printf("\n\n");
 		}
 
 		printf("\n\n");
