@@ -5,16 +5,16 @@
 int main()
 {
 	dstring str = get_dstring(NULL, 0);
-	printf("str : \"" printf_dstring_format "\"\n", printf_dstring_params(&str));
+	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
 	concatenate_dstring(&str, &get_literal_cstring("Hello "));
-	printf("str : \"" printf_dstring_format "\"\n", printf_dstring_params(&str));
+	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
 	{
 		const dstring* tempstr = &get_literal_cstring("World, as said by Rohan AAACAAAAAC BBCBBD BBCBBD");
 		printf("concatenate str with tempstr : \"" printf_dstring_format "\"\n", printf_dstring_params(tempstr));
 		concatenate_dstring(&str, tempstr);
-		printf("str : \"" printf_dstring_format "\"\n", printf_dstring_params(&str));
+		printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 	}
 
 	{
@@ -38,8 +38,7 @@ int main()
 	}
 
 	snprintf_dstring(&str, "iNt no : %d, strIng : %s, floAT : %f", 336, "Heello Worlds!! =+", 35.49);
-	printf("str : \"" printf_dstring_format "\"\n", printf_dstring_params(&str));
-	printf("\n\n");
+	printf("str : \"" printf_dstring_format "\"\n\n\n", printf_dstring_params(&str));
 
 	printf("Created a literal dstring : " printf_dstring_format "\n\n", printf_dstring_params(&get_literal_dstring(get_byte_array_dstring(&str) + 4, 10)));
 
@@ -74,7 +73,7 @@ int main()
 
 	printf("\n\nCONTAINS_DSTRING algorithms with str\n\n");
 
-	printf("str : " printf_dstring_format "\n", printf_dstring_params(&str));
+	printf("str : " printf_dstring_format "\n\n", printf_dstring_params(&str));
 
 	{
 		char* temp[] = {
@@ -110,7 +109,7 @@ int main()
 		printf("\n\n");
 	}
 
-	printf("str : " printf_dstring_format "\n", printf_dstring_params(&str));
+	printf("str : " printf_dstring_format "\n\n", printf_dstring_params(&str));
 
 	{
 		char* temp[] = {
@@ -146,7 +145,7 @@ int main()
 		printf("\n\n");
 	}
 
-	printf("str : " printf_dstring_format "\n", printf_dstring_params(&str));
+	printf("str : " printf_dstring_format "\n\n", printf_dstring_params(&str));
 
 	toLowercase(&str);
 	printf("To lowercase str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
