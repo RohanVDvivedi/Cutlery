@@ -6,6 +6,10 @@
 // default memory allocator for dstring is the STD_C memory allocator
 memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
+// accessor for dstring attribute type_n_SS_size
+#define get_dstr_type(type_n_SS_size)		(((type_n_SS_size) >> 6) & 0x3)
+#define get_dstr_SS_size(type_n_SS_size)	((type_n_SS_size) & 0x3f)
+
 // BASE METHODS START
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
