@@ -180,7 +180,7 @@ unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 
 		// prepare str_hash_rolling and str_sum_rolling for the next iteration
 		str_hash_rolling -= str_char_sum_rolling;
-		str_hash_rolling += (str_size * ((unsigned int)str_data[i + sub_str_size - 1]));
+		str_hash_rolling += (sub_str_size * ((unsigned int)str_data[i + sub_str_size - 1]));
 		str_char_sum_rolling -= ((unsigned int)str_data[i]);
 		str_char_sum_rolling += ((unsigned int)str_data[i + sub_str_size - 1]);
 	}
