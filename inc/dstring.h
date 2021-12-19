@@ -3,13 +3,13 @@
 
 #include<memory_allocator_interface.h>
 
+typedef enum dstring_type dstring_type;
 enum dstring_type
 {
 	LARGE_DSTR = 0x11,	// dstring that is allocated at byte_array (using size bytes_occipied from bytes_occupied)
 	SHORT_DSTR = 0x00,  // dstring that is stored in the dstring struct itself after type_n_SS_size (does not require allocation)
 	POINT_DSTR = 0x01,  // dstring that uses byte_array and bytes_occupied, but points to another dstring's allocation (does not manage its own memory)
 };
-typedef enum dstring_type dstring_type;
 
 typedef struct dstring dstring;
 struct dstring
