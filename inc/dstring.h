@@ -31,11 +31,7 @@ struct dstring
 // only BASE methods are allowed to directly access the dstring struct
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
-void init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
 void init_empty_dstring(dstring* str_p, unsigned int capacity);
-
-dstring get_dstring(const char* data, unsigned int data_size);
-dstring get_copy_dstring(const dstring* init_copy_from);
 
 #define get_literal_dstring(data, data_size) \
 	((dstring){.byte_array = ((char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
@@ -59,6 +55,12 @@ int shrink_dstring(dstring* str_p);
 
 // BASE METHODS END
 
+void init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
+
+dstring get_dstring(const char* data, unsigned int data_size);
+dstring get_copy_dstring(const dstring* init_copy_from);
+
+// compare 2 dstrings
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
