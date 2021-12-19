@@ -5,9 +5,9 @@
 
 enum dstring_type
 {
-	LARGE_DSTR = 0x00,	// dstring that is allocated at byte_array (using size bytes_occipied from bytes_occupied)
-	SHORT_DSTR = 0x01,  // dstring that is stored in the dstring struct itself after type_n_SS_size (does not require allocation)
-	POINT_DSTR = 0x11,  // dstring that uses byte_array and bytes_occupied, but points to another dstring's allocation (does not manage its own memory)
+	LARGE_DSTR = 0x11,	// dstring that is allocated at byte_array (using size bytes_occipied from bytes_occupied)
+	SHORT_DSTR = 0x00,  // dstring that is stored in the dstring struct itself after type_n_SS_size (does not require allocation)
+	POINT_DSTR = 0x01,  // dstring that uses byte_array and bytes_occupied, but points to another dstring's allocation (does not manage its own memory)
 };
 typedef enum dstring_type dstring_type;
 
@@ -30,11 +30,10 @@ struct dstring
 // BASE METHODS START
 // only BASE methods are allowed to directly access the dstring struct
 
-void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 void init_empty_dstring(dstring* str_p, unsigned int capacity);
 
 #define get_literal_dstring(data, data_size) \
-	((dstring){.byte_array = ((char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
+	((dstring){.type_n_SS_size = POINT_DSTR, .byte_array = ((char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
 #define get_literal_cstring(cstr) get_literal_dstring((cstr), strlen((cstr)))
 
 void deinit_dstring(dstring* str_p);
@@ -55,6 +54,7 @@ int shrink_dstring(dstring* str_p);
 
 // BASE METHODS END
 
+void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 void init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
 
 dstring get_dstring(const char* data, unsigned int data_size);

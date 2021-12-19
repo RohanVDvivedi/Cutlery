@@ -7,72 +7,86 @@
 memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
 // accessor for dstring attribute type_n_SS_size
-#define get_dstr_type(type_n_SS_size)		(((type_n_SS_size) >> 6) & 0x3)
-#define get_dstr_SS_size(type_n_SS_size)	((type_n_SS_size) & 0x3f)
+#define get_dstr_type(type_n_SS_size)		((type_n_SS_size) & 0x3)
+#define get_dstr_SS_size(type_n_SS_size)	(((type_n_SS_size) >> 2) & 0x3f)
+
+#define set_dstr_SS_size(type_n_SS_size, SS_size)	(type_n_SS_size) = ((((SS_size) << 2) & 0xfc) | ((type_n_SS_size) & 0x3))
+
+#define SS_data_offset		((unsigned long int)((&(((dstring*)0)->type_n_SS_size))+sizeof(unsigned char)))
+#define SS_capacity			(sizeof(dstring)-SS_data_offset)
 
 // BASE METHODS START
 
-void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
-{
-	str_p->bytes_occupied = data_size;
-	str_p->bytes_allocated = data_size;
-	str_p->byte_array = allocate(DSTRING_mem_alloc, data_size);
-	if(data != NULL && data_size > 0)
-		memory_move(str_p->byte_array, data, data_size);
-}
-
 void init_empty_dstring(dstring* str_p, unsigned int capacity)
 {
-	str_p->bytes_occupied = 0;
-	str_p->bytes_allocated = capacity;
-	str_p->byte_array = allocate(DSTRING_mem_alloc, capacity);
+	if(capacity > SS_capacity)
+	{
+		str_p->type_n_SS_size = LARGE_DSTR;
+		str_p->bytes_occupied = 0;
+		str_p->bytes_allocated = capacity;
+		str_p->byte_array = allocate(DSTRING_mem_alloc, capacity);
+	}
+	else 	// return a short dstring with size 0
+		str_p->type_n_SS_size = SHORT_DSTR;
 }
 
 char* get_byte_array_dstring(const dstring* str_p)
 {
-	return str_p->byte_array;
+	if(get_dstr_type(str_p->type_n_SS_size) != SHORT_DSTR)
+		return str_p->byte_array;
+	return ((char*)str_p) + SS_data_offset;
 }
 
 unsigned int get_char_count_dstring(const dstring* str_p)
 {
-	return str_p->bytes_occupied;
+	if(get_dstr_type(str_p->type_n_SS_size) != SHORT_DSTR)
+		return str_p->bytes_occupied;
+	return get_dstr_SS_size(str_p->type_n_SS_size);
 }
 
 int increment_char_count_dstring(dstring* str_p, unsigned int increment_by)
 {
-	if(increment_by > get_unused_capacity_dstring(str_p))
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR || increment_by > get_unused_capacity_dstring(str_p))
 		return 0;
-	str_p->bytes_occupied += increment_by;
+	unsigned int new_SS_size = get_char_count_dstring(str_p) + increment_by;
+	set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
 	return 1;
 }
 
 int decrement_char_count_dstring(dstring* str_p, unsigned int decrement_by)
 {
-	if(decrement_by > get_char_count_dstring(str_p))
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR || decrement_by > get_char_count_dstring(str_p))
 		return 0;
-	str_p->bytes_occupied -= decrement_by;
+	unsigned int new_SS_size = get_char_count_dstring(str_p) + decrement_by;
+	set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
 	return 1;
+}
+
+void make_dstring_empty(dstring* str_p)
+{
+	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+		set_dstr_SS_size(str_p->type_n_SS_size, 0);
+	else
+		str_p->bytes_occupied = 0;
 }
 
 unsigned int get_capacity_dstring(const dstring* str_p)
 {
+	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+		return SS_capacity;
 	return str_p->bytes_allocated;
 }
 
 unsigned int get_unused_capacity_dstring(const dstring* str_p)
 {
-	return str_p->bytes_allocated - str_p->bytes_occupied;
-}
-
-void make_dstring_empty(dstring* str_p)
-{
-	str_p->bytes_occupied = 0;
+	return get_capacity_dstring(str_p) - get_char_count_dstring(str_p);
 }
 
 void deinit_dstring(dstring* str_p)
 {
-	if(str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
+	if(get_dstr_type(str_p->type_n_SS_size) == LARGE_DSTR && str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
 		deallocate(DSTRING_mem_alloc, str_p->byte_array, str_p->bytes_allocated);
+	str_p->type_n_SS_size = SHORT_DSTR;
 	str_p->byte_array = NULL;
 	str_p->bytes_allocated = 0;
 	str_p->bytes_occupied = 0;
@@ -80,6 +94,10 @@ void deinit_dstring(dstring* str_p)
 
 int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
+	// if it is a POINT_DSTR it can not be expanded or shrunk
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+		return 0;
+
 	char* str_data = get_byte_array_dstring(str_p);
 	unsigned int str_size = get_char_count_dstring(str_p);
 	unsigned int str_capacity = get_capacity_dstring(str_p);
@@ -104,6 +122,10 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 
 int shrink_dstring(dstring* str_p)
 {
+	// if it is a POINT_DSTR it can not be expanded or shrunk
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+		return 0;
+
 	char* str_data = get_byte_array_dstring(str_p);
 	unsigned int str_size = get_char_count_dstring(str_p);
 	unsigned int str_capacity = get_capacity_dstring(str_p);
@@ -124,6 +146,13 @@ int shrink_dstring(dstring* str_p)
 }
 
 // BASE METHODS END
+
+void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
+{
+	init_empty_dstring(str_p, data_size);
+	if(data != NULL && data_size > 0)
+		memory_move(get_byte_array_dstring(str_p), data, data_size);
+}
 
 void init_copy_dstring(dstring* str_p, const dstring* init_copy_from)
 {
