@@ -32,7 +32,7 @@ struct dstring
 
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 void init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
-void init_empty_dstring(dstring* str_p, unsigned int init_size);
+void init_empty_dstring(dstring* str_p, unsigned int capacity);
 
 dstring get_dstring(const char* data, unsigned int data_size);
 dstring get_copy_dstring(const dstring* init_copy_from);

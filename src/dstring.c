@@ -17,18 +17,11 @@ void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 		memory_move(str_p->byte_array, data, data_size);
 }
 
-void init_empty_dstring(dstring* str_p, unsigned int init_size)
+void init_empty_dstring(dstring* str_p, unsigned int capacity)
 {
 	str_p->bytes_occupied = 0;
-	str_p->bytes_allocated = init_size;
+	str_p->bytes_allocated = capacity;
 	str_p->byte_array = allocate(DSTRING_mem_alloc, init_size);
-}
-
-dstring get_dstring(const char* data, unsigned int data_size)
-{
-	dstring str;
-	init_dstring(&str, data, data_size);
-	return str;
 }
 
 char* get_byte_array_dstring(const dstring* str_p)
@@ -127,6 +120,18 @@ int shrink_dstring(dstring* str_p)
 }
 
 // BASE METHODS END
+
+void init_copy_dstring(dstring* str_p, const dstring* init_copy_from)
+{
+	init_dstring(str_p, get_byte_array_dstring(init_copy_from), get_char_count_dstring(init_copy_from));
+}
+
+dstring get_dstring(const char* data, unsigned int data_size)
+{
+	dstring str;
+	init_dstring(&str, data, data_size);
+	return str;
+}
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
