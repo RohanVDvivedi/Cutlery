@@ -76,7 +76,7 @@ int main()
 
 	printf("\n\nCONTAINS_DSTRING algorithms with str\n\n");
 
-	printf("str : " printf_dstring_format "\n\n", printf_dstring_params(&str));
+	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
 	{
 		char* temp[] = {
