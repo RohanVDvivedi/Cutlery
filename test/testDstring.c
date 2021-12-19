@@ -169,9 +169,29 @@ int main()
 				"TRACE",
 				"CRATE",
 			},
+			{
+				"kitten",
+				"sitten",
+			},
+			{
+				"sitten",
+				"sittin",
+			},
+			{
+				"sittin",
+				"sitting",
+			},
+			{
+				"HONDA",
+				"HYUNDAI",
+			},
+			{
+				"rohan",
+				"krina",
+			},
 		};
 
-		int test_count = sizeof(temp) / (sizeof(int) * sizeof(temp[0]));
+		int test_count = sizeof(temp) / (sizeof(temp[0]));
 
 		for(int i = 0; i < test_count; i++)
 		{
