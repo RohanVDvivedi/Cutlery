@@ -45,8 +45,8 @@ unsigned int contains_dstring_NAIVE(const dstring* str, const dstring* sub_str)
 	const char* str_data = get_byte_array_dstring(str);
 	unsigned int str_size = get_char_count_dstring(str);
 
-	const char* sub_str_data = get_byte_array_dstring(str);
-	unsigned int sub_str_size = get_char_count_dstring(str);
+	const char* sub_str_data = get_byte_array_dstring(sub_str);
+	unsigned int sub_str_size = get_char_count_dstring(sub_str);
 
 	// sub_string to be found can not be smaller than the string
 	// also the string to find the substring in can not be empty
@@ -82,8 +82,8 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 	const char* str_data = get_byte_array_dstring(str);
 	unsigned int str_size = get_char_count_dstring(str);
 
-	const char* sub_str_data = get_byte_array_dstring(str);
-	unsigned int sub_str_size = get_char_count_dstring(str);
+	const char* sub_str_data = get_byte_array_dstring(sub_str);
+	unsigned int sub_str_size = get_char_count_dstring(sub_str);
 
 	// sub_string to be found can not be smaller than the string
 	// also the string to find the substring in can not be empty
@@ -127,8 +127,8 @@ unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 	const char* str_data = get_byte_array_dstring(str);
 	unsigned int str_size = get_char_count_dstring(str);
 
-	const char* sub_str_data = get_byte_array_dstring(str);
-	unsigned int sub_str_size = get_char_count_dstring(str);
+	const char* sub_str_data = get_byte_array_dstring(sub_str);
+	unsigned int sub_str_size = get_char_count_dstring(sub_str);
 
 	// sub_string to be found can not be smaller than the string
 	// also the string to find the substring in can not be empty
