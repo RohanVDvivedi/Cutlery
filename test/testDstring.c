@@ -131,7 +131,7 @@ int main()
 
 			printf("SUFFIX_PREFIX_MATCH_LENGTHS : \n");
 			for(unsigned int i = 0; i <= get_char_count_dstring(temp_dstr); i++)
-				printf(printf_dstring_format " -> %u\n", temp, i, cache[i]);
+				printf(printf_dstring_format " -> %u\n", printf_dstring_format(&get_literal_dstring(temp, i)), cache[i]);
 			printf("\n");
 
 			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
