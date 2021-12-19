@@ -45,7 +45,7 @@ int main()
 
 	printf("Created a literal dstring : " printf_dstring_format "\n\n", printf_dstring_params(&get_literal_dstring(get_byte_array_dstring(&str) + 4, 10)));
 
-	const dstring* slize = &get_literal_dstring(get_byte_array_dstring(&str), get_char_count_dstring(&str));
+	dstring* slize = &get_literal_dstring(get_byte_array_dstring(&str), get_char_count_dstring(&str));
 	printf("Created a literal dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
 	printf("on compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, slize));
 
