@@ -6,9 +6,9 @@
 typedef enum dstring_type dstring_type;
 enum dstring_type
 {
-	LARGE_DSTR = 0x11,	// dstring that is allocated at byte_array (using size bytes_occipied from bytes_occupied)
-	SHORT_DSTR = 0x00,  // dstring that is stored in the dstring struct itself after type_n_SS_size (does not require allocation)
-	POINT_DSTR = 0x01,  // dstring that uses byte_array and bytes_occupied, but points to another dstring's allocation (does not manage its own memory)
+	LARGE_DSTR = 0b11,	// dstring that is allocated at byte_array (using size bytes_occipied from bytes_occupied)
+	SHORT_DSTR = 0b00,  // dstring that is stored in the dstring struct itself after type_n_SS_size (does not require allocation)
+	POINT_DSTR = 0b01,  // dstring that uses byte_array and bytes_occupied, but points to another dstring's allocation (does not manage its own memory)
 };
 
 typedef struct dstring dstring;
@@ -81,7 +81,7 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count);
 #define STRINGIFY(X) STRINGIFY2(X)
 #define printf_dstring_format				STRINGIFY(%.*s)
 #define printf_dstring_params(str_p)		get_char_count_dstring((str_p)), get_byte_array_dstring((str_p))
-#define printf_dstring(str_p)				((get_byte_array_dstring((str_p)) != NULL && get_char_count_dstring((str_p)) > 0) ? printf(printf_dstring_format, printf_dstring_params(str_p)) : 0)
+#define printf_dstring(str_p)				((get_byte_array_dstring((str_p)) != NULL && get_char_count_dstring((str_p)) > 0) ? printf(printf_dstring_format, printf_dstring_params((str_p))) : 0)
 
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
