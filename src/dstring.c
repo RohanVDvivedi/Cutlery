@@ -48,8 +48,13 @@ int increment_char_count_dstring(dstring* str_p, unsigned int increment_by)
 {
 	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR || increment_by > get_unused_capacity_dstring(str_p))
 		return 0;
-	unsigned int new_SS_size = get_char_count_dstring(str_p) + increment_by;
-	set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
+	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	{
+		unsigned int new_SS_size = get_char_count_dstring(str_p) + increment_by;
+		set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
+	}
+	else
+		str_p->bytes_occupied += increment_by;
 	return 1;
 }
 
@@ -57,8 +62,13 @@ int decrement_char_count_dstring(dstring* str_p, unsigned int decrement_by)
 {
 	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR || decrement_by > get_char_count_dstring(str_p))
 		return 0;
-	unsigned int new_SS_size = get_char_count_dstring(str_p) + decrement_by;
-	set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
+	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	{
+		unsigned int new_SS_size = get_char_count_dstring(str_p) - decrement_by;
+		set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
+	}
+	else
+		str_p->bytes_occupied -= decrement_by;
 	return 1;
 }
 
