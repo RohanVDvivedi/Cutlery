@@ -33,7 +33,7 @@ struct dstring
 void init_empty_dstring(dstring* str_p, unsigned int capacity);
 
 #define get_literal_dstring(data, data_size) \
-	((dstring){.type_n_SS_size = POINT_DSTR, .byte_array = ((char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
+	((const dstring){.type_n_SS_size = POINT_DSTR, .byte_array = ((char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
 #define get_literal_cstring(cstr) get_literal_dstring((cstr), strlen((cstr)))
 
 void deinit_dstring(dstring* str_p);
@@ -63,6 +63,9 @@ dstring get_copy_dstring(const dstring* init_copy_from);
 // compare 2 dstrings
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
+
+// discard chars in dstring between start_index and last_index both inclusive
+int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index);
 
 // concatenates str_p2 to str_p1
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2);

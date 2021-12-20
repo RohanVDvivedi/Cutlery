@@ -226,6 +226,22 @@ dstring get_copy_dstring(const dstring* init_copy_from)
 	return str;
 }
 
+int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index)
+{
+	// check that the ranges of start_index and last_index are valid
+	if(start_index > last_index || last_index >= get_char_count_dstring(str_p))
+		return 0;
+
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
+
+	// move the characters after the last_index to the position at start_index
+	memory_move(str_data + start_index, str_data + last_index + 1, str2_size - (last_index + 1));
+
+	// decrement the char_count of the dstring
+	decrement_char_count_dstring(str_p1, last_index - start_index + 1);
+}
+
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
 	const char* str2_data = get_byte_array_dstring(str_p2);
