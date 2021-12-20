@@ -102,21 +102,43 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 	unsigned int str_size = get_char_count_dstring(str_p);
 	unsigned int str_capacity = get_capacity_dstring(str_p);
 
-	unsigned int new_allocated_size = str_size + additional_allocation;
+	// compute the new capacity
+	unsigned int new_capacity = str_size + additional_allocation;
+	if(new_capacity < SS_capacity)
+		new_capacity = SS_capacity;
 
 	// if expansion is not resulting in expansion, then return 0 (failure)
-	if(new_allocated_size <= str_capacity)
+	if(new_capacity <= str_capacity)
 		return 0;
 
-	char* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, new_allocated_size);
+	// you might have to make a large dstring larger
+	if(get_dstr_type(str_p->type_n_SS_size) == LARGE_DSTR)
+	{
+		char* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, new_capacity);
 
-	// failed allocation
-	if(new_byte_array == NULL && new_allocated_size > 0)
-		return 0;
+		// failed allocation
+		if(new_byte_array == NULL && new_capacity > 0)
+			return 0;
 
-	// update with new allocation array and its size
-	str_p->byte_array = new_byte_array;
-	str_p->bytes_allocated = new_allocated_size;
+		// update with new allocation array and its size
+		str_p->byte_array = new_byte_array;
+		str_p->bytes_allocated = new_capacity;
+	}
+	// or convert a short dstring in to a large dstring
+	else if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	{
+		// create a new LARGE_DSTR of new_capacity as its capacity
+		dstring str_large_p = &((dstring){});
+		init_empty_dstring(str_large_p, new_capacity);
+
+		// append str_p's data to the str_large_p
+		memory_move(get_byte_array_dstring(str_large_p), get_byte_array_dstring(str_p), get_char_count_dstring(str_p));
+		increment_char_count_dstring(str_large_p, get_char_count_dstring(str_p));
+
+		// copy contents of str_large_p to str_p
+		*str_p = *str_large_p;
+	}
+
 	return 1;
 }
 
@@ -130,18 +152,49 @@ int shrink_dstring(dstring* str_p)
 	unsigned int str_size = get_char_count_dstring(str_p);
 	unsigned int str_capacity = get_capacity_dstring(str_p);
 
-	if(str_capacity <= str_size)
+	// compute the new capacity
+	unsigned int new_capacity = str_size;
+	if(new_capacity <= SS_capacity)
+		new_capacity = SS_capacity;
+
+	// if the new_capacity is more than or equal to the old capacity
+	// i.e. resulting in no skrinking then return 0 (failure to shrik the string)
+	// this condition will weed out if str_p is a SHORT_DSTR
+	if(new_capacity >= str_capacity)
 		return 0;
 
-	unsigned int new_allocated_size = str_size;
-	void* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, new_allocated_size);
+	// str_p can only be a LARGE_DSTR, from here onwards
 
-	// failed allocation
-	if(new_byte_array == NULL && new_allocated_size > 0)
-		return 0;
+	// an already LARGE_DSTR getting converted to a smaller LARGE_DSTR
+	if(new_capacity > SS_capacity)
+	{
+		void* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, new_capacity);
 
-	str_p->byte_array = new_byte_array;
-	str_p->bytes_allocated = new_allocated_size;
+		// failed allocation
+		if(new_byte_array == NULL && new_capacity > 0)
+			return 0;
+
+		str_p->byte_array = new_byte_array;
+		str_p->bytes_allocated = new_capacity;
+	}
+	// an LARGE_DSTR getting converted to a SHORT_DSTR
+	else if(new_capacity == SS_capacity)
+	{
+		// create a new SHORT_DSTR
+		dstring* str_short_p = &((dstring){});
+		init_empty_dstring(str_short_p, new_capacity);
+
+		// copy contents/data from str_p to str_short_p
+		memory_move(get_byte_array_dstring(str_short_p), get_byte_array_dstring(str_p), get_char_count_dstring(str_p));
+		increment_char_count_dstring(str_short_p, get_char_count_dstring(str_p));
+
+		// deinitialize str_p
+		deinit_dstring(str_p);
+
+		// and copy str_short_p to str_p
+		*str_p = *str_short_p;
+	}
+
 	return 1;
 }
 
