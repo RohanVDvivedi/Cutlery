@@ -1,16 +1,5 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
-RADIX_TREE tasks (NEW DATASTRUCTURE)
- * implement a radix tree data structure i.e. a trie data structure that is defined as
-struct trie_node
-{
-    dstring partial_string;
-    int prefix_count; // total number of strings in the complete trie structure that have the prefic ending at partial string
-    void* value;
-    hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
-};
- * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
-
 COMMON to all datastructures tasks
  * add remove_all functionality for all data structures (bst, linkedlist, arraylist (stack and queue), heap and hashmap)
  * expand_atleast to resize the array to atleast a specific size, and support it in heap, arraylist (stack and queue)
@@ -39,6 +28,17 @@ LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
  * also implement stack and queue using singly linkedlist
 
 3. Competely new datastructure tasks (*future)
+
+RADIX_TREE tasks (NEW DATASTRUCTURE)
+ * implement a radix tree data structure i.e. a trie data structure that is defined as
+struct trie_node
+{
+    dstring partial_string;
+    int prefix_count; // total number of strings in the complete trie structure that have the prefic ending at partial string
+    void* value;
+    hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
+};
+ * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use int or unsigned int for below functionality and implement their itrative approaches only
