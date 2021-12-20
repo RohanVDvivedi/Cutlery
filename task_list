@@ -17,6 +17,7 @@ COMMON to all datastructures tasks
 
 HASHMAP task
  * for_each_in_bucket_in_hashmap to apply an operation on all elements in a given bucket (given by bucket_id)
+ * remove_all_in_bucket_in_hashmap to remove all elements going to a specific bucket in hashmap
 
 LINKEDLIST task
  * add functionality to append 2 linkedlists and make the 2nd linked list contain 0 elements, this is only possible if both the linkedlist nodes are at the same node_offset
