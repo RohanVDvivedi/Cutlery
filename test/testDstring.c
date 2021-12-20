@@ -160,6 +160,12 @@ int main()
 	toUppercase(&str);
 	printf("To uppercase str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
+	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
+
+	discard_chars_dstring(&str, 15, 45);
+
+	printf("str (discard_chars 15 to 45) : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
+
 	deinit_dstring(&str);
 
 	// levenshtein distance formula and length of longest common sub sequence
