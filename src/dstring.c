@@ -128,7 +128,7 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 	else if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
 	{
 		// create a new LARGE_DSTR of new_capacity as its capacity
-		dstring str_large_p = &((dstring){});
+		dstring* str_large_p = &((dstring){});
 		init_empty_dstring(str_large_p, new_capacity);
 
 		// append str_p's data to the str_large_p
