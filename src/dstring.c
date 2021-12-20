@@ -236,10 +236,12 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 	unsigned int str_size = get_char_count_dstring(str_p);
 
 	// move the characters after the last_index to the position at start_index
-	memory_move(str_data + start_index, str_data + last_index + 1, str2_size - (last_index + 1));
+	memory_move(str_data + start_index, str_data + last_index + 1, str_size - (last_index + 1));
 
 	// decrement the char_count of the dstring
-	decrement_char_count_dstring(str_p1, last_index - start_index + 1);
+	decrement_char_count_dstring(str_p, last_index - start_index + 1);
+
+	return 1;
 }
 
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
