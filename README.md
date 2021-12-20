@@ -25,6 +25,7 @@ A C (standard C99) library that provides configurable data structures, serving a
 ## Using The library
  * add `-lcutlery` linker flag, while compiling your application
  * do not forget to include appropriate public api headers as and when needed. this includes
+   * `#include<cutlery_stds.h>`
    * `#include<array.h>`
    * `#include<arraylist.h>`
    * `#include<stack.h>`
