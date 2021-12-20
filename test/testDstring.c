@@ -45,7 +45,7 @@ int main()
 
 	printf("Created a literal dstring : " printf_dstring_format "\n\n", printf_dstring_params(&get_literal_dstring(get_byte_array_dstring(&str) + 4, 10)));
 
-	dstring* slize = &get_literal_dstring(get_byte_array_dstring(&str), get_char_count_dstring(&str));
+	const dstring* slize = &get_literal_dstring(get_byte_array_dstring(&str), get_char_count_dstring(&str));
 	printf("Created a literal dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
 	printf("on compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, slize));
 
@@ -66,13 +66,13 @@ int main()
 	printf("on compare to str = case_compare(str,slize) = %d\n", case_compare_dstring(&str, slize));
 	printf("on compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, slize));
 
-	slize = &((dstring){});
-	init_dstring(slize, get_byte_array_dstring(&str), get_char_count_dstring(&str));
-	toUppercase(slize);
-	printf("Created an uppercase dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
-	printf("on compare to str = case_compare(str,slize) = %d\n", case_compare_dstring(&str, slize));
-	printf("on compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, slize));
-	deinit_dstring(slize);
+	dstring* slize2 = &((dstring){});
+	init_dstring(slize2, get_byte_array_dstring(&str), get_char_count_dstring(&str));
+	toUppercase(slize2);
+	printf("Created an uppercase dstring (slize2) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize2));
+	printf("on compare to str = case_compare(str,slize2) = %d\n", case_compare_dstring(&str, slize2));
+	printf("on compare to str = compare(str,slize2) = %d\n\n", compare_dstring(&str, slize2));
+	deinit_dstring(slize2);
 
 	printf("\n\nCONTAINS_DSTRING algorithms with str\n\n");
 
@@ -98,7 +98,7 @@ int main()
 		{
 			printf("contains_dstring : %s\n", temp[i]);
 
-			dstring* temp_dstr = &get_literal_cstring(temp[i]);
+			const dstring* temp_dstr = &get_literal_cstring(temp[i]);
 
 			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
 
@@ -132,7 +132,7 @@ int main()
 		{
 			printf("contains_dstring : %s\n", temp[i]);
 
-			dstring* temp_dstr = &get_literal_cstring(temp[i]);
+			const dstring* temp_dstr = &get_literal_cstring(temp[i]);
 
 			unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * (get_char_count_dstring(temp_dstr) + 1));
 			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
