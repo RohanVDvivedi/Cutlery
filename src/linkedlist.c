@@ -182,12 +182,31 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 // for the functions insert_all_nodes_*, node_p must be in ll linkedlist and new_nodes_head must be the head of the doubly circular linkedlist (different linkedlist than the one provided i.e. different from ll)
 static void insert_all_nodes_before(linkedlist* ll, llnode* node_p, llnode* new_nodes_head)
 {
+	llnode* new_nodes_tail = new_nodes_head->prev;
 
+	// fix pointers of the new_nodes first
+	new_nodes_head->prev = node_p->prev;
+	new_nodes_tail->next = node_p;
+
+	// self explanatory
+	new_nodes_head->prev->next = new_nodes_head;
+	new_nodes_tail->next->prev = new_nodes_tail;
+
+	if(node_p == ll->head)
+		ll->head = new_nodes_head;
 }
 
 static void insert_all_nodes_after(linkedlist* ll, llnode* node_p, llnode* new_nodes_head)
 {
+	llnode* new_nodes_tail = new_nodes_head->prev;
 
+	// fix pointers of the new_nodes first
+	new_nodes_head->prev = node_p;
+	new_nodes_tail->next = node_p->next;
+
+	// self explanatory
+	new_nodes_head->prev->next = new_nodes_head;
+	new_nodes_tail->next->prev = new_nodes_tail;
 }
 
 int insert_all_at_head(linkedlist* ll, linkedlist* insert_from_ll)
