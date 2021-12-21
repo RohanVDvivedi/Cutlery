@@ -76,6 +76,7 @@ int main()
 	print_ts_linkedlist(ll);
 
 	print_ts(get_nth_from_head(ll, 1));
+	printf("\n\n");
 
 	insert_after(ll, get_nth_from_head(ll, 1), &((ts){3, "three", {NULL, NULL}}));
 	print_ts_linkedlist(ll);
