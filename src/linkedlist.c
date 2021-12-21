@@ -47,7 +47,7 @@ const void* get_nth_from_head(const linkedlist* ll, unsigned int n)
 		return NULL;
 	llnode* head = ll->head;
 	if(n == 0)
-		return head;
+		return get_data(head);
 	llnode* node_p = head;
 	do
 	{
@@ -64,7 +64,7 @@ const void* get_nth_from_tail(const linkedlist* ll, unsigned int n)
 		return NULL;
 	llnode* tail = ll->head->prev;
 	if(n == 0)
-		return tail;
+		return get_data(tail);
 	llnode* node_p = tail;
 	do
 	{
