@@ -45,7 +45,7 @@ void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 		snprintf_dstring(append_str, "%d, %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-print_ts_hashmap(hashmap* hashmap_p)
+void print_ts_hashmap(hashmap* hashmap_p)
 {
 	dstring str;
 	init_dstring(&str, "", 0);
@@ -330,6 +330,11 @@ int main()
 	resize_hashmap(hashmap_p, 10);
 
 	printf("\n\nAfter rehashing - 10\n");
+	print_ts_hashmap(hashmap_p);
+
+	remove_all_from_hashmap(hashmap_p);
+
+	printf("\n\nAfter removing all elements\n");
 	print_ts_hashmap(hashmap_p);
 
 	deinitialize_hashmap(hashmap_p);
