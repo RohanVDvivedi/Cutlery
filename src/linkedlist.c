@@ -85,6 +85,7 @@ const void* get_prev_of(const linkedlist* ll, const void* data_xist)
 	return get_data(((llnode*)(get_node(data_xist)))->prev);
 }
 
+// for the functions insert_node_*, node_p must be in ll linkedlist and new_node must not be part of any linkedlist (i.e. is_new_llnode(new_node) == 1)
 static void insert_node_before(linkedlist* ll, llnode* node_p, llnode* new_node)
 {
 	// first update the new_node's prev and next references
@@ -178,6 +179,7 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 	return 1;
 }
 
+// for the functions insert_all_nodes_*, node_p must be in ll linkedlist and new_nodes_head must be the head of the doubly circular linkedlist (different linkedlist than the one provided i.e. different from ll)
 static void insert_all_nodes_before(linkedlist* ll, llnode* node_p, llnode* new_nodes_head)
 {
 
