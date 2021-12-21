@@ -46,7 +46,7 @@ const void* get_nth_from_head(const linkedlist* ll, unsigned int n)
 	if(is_empty_linkedlist(ll))
 		return NULL;
 	
-	llnode* node_p = head;
+	llnode* node_p = ll->head;
 	do
 	{
 		if(n == 0)
@@ -54,7 +54,7 @@ const void* get_nth_from_head(const linkedlist* ll, unsigned int n)
 		node_p = node_p->next;
 		n--;
 	}
-	while(node_p != head);
+	while(node_p != ll->head);
 
 	// if not found in the loop return NULL
 	return NULL;
