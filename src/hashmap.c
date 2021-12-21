@@ -337,6 +337,56 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 	return deleted;
 }
 
+void remove_all_from_hashmap(hashmap* hashmap_p)
+{
+	// iterate over all the buckets in the hashmap_p and removing all the elements
+	switch(hashmap_p->hashmap_policy)
+	{
+		case ROBINHOOD_HASHING :
+		{
+			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+				set_element(&(hashmap_p->hashmap_holder), NULL, index);
+			break;
+		}
+		case ELEMENTS_AS_LINKEDLIST :
+		{
+			linkedlist ll; init_data_structure(hashmap_p, &ll);
+			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			{
+				ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				remove_all_from_linkedlist(&ll);
+			}
+			break;
+		}
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			bst bstt; init_data_structure(hashmap_p, &bstt);
+			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			{
+				bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				remove_all_from_bst(&bstt);
+			}
+			break;
+		}
+		default :
+		{
+			break;
+		}
+	}
+
+	hashmap_p->element_count = 0;
+}
+
+void deinitialize_hashmap(hashmap* hashmap_p)
+{
+	remove_all_from_hashmap(hashmap_p);
+	deinitialize_array(&(hashmap_p->hashmap_holder));
+	hashmap_p->hash_function = NULL;
+	hashmap_p->compare = NULL;
+	hashmap_p->node_offset = 0;
+}
+
 void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
 	linkedlist ll; init_data_structure(hashmap_p, &ll);
@@ -513,9 +563,4 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 			snprintf_dstring(append_str, "EMPTY\n");
 		}
 	}
-}
-
-void deinitialize_hashmap(hashmap* hashmap_p)
-{
-	deinitialize_array(&(hashmap_p->hashmap_holder));
 }
