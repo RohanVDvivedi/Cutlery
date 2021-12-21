@@ -53,6 +53,14 @@ int insert_tail(linkedlist* ll, const void* data);
 int insert_before(linkedlist* ll, const void* data_xist, const void* data);
 int insert_after(linkedlist* ll, const void* data_xist, const void* data);
 
+// insert all from another linkedlist
+// both the linkedlists must have the same node_offset
+// after this operation insert_from_ll would be an empty linkedlist
+int insert_all_at_head(linkedlist* ll, linkedlist* insert_from_ll);
+int insert_all_at_tail(linkedlist* ll, linkedlist* insert_from_ll);
+int insert_all_before(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll);
+int insert_all_after(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll);
+
 // removes will return 0, and fail if llnode of data is a new node or if llnode does not exist in this linkedlist
 int remove_head(linkedlist* ll);
 int remove_tail(linkedlist* ll);
