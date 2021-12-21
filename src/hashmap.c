@@ -533,6 +533,9 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 	sprint_chars(append_str, '\t', tabs);
 	snprintf_dstring(append_str, "element_count : %u\n", hashmap_p->element_count);
 
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "bucket_count : %u\n", get_bucket_count_hashmap(hashmap_p));
+
 	linkedlist ll; init_data_structure(hashmap_p, &ll);
 	bst bstt; init_data_structure(hashmap_p, &bstt);
 
