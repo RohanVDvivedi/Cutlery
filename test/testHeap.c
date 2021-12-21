@@ -270,6 +270,12 @@ int main()
 	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x"}));
 	print_ts_heap(heap_p);
 
+	remove_all_from_heap(heap_p);
+	print_ts_heap(heap_p);
+
+	push_heap_SAFE(heap_p, &((ts){0, 0, "000"}));
+	print_ts_heap(heap_p);
+
 	deinitialize_heap(heap_p);
 
 	return 0;
