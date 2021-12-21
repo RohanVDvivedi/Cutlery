@@ -3,7 +3,7 @@
 
 #include<dstring.h>
 
-// LINKEDLIST is a doubly circular linkedlist
+// LINKEDLIST is a circular doubly linkedlist
 
 typedef struct llnode llnode;
 struct llnode
@@ -21,9 +21,9 @@ struct linkedlist
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
 	unsigned int node_offset;
 
-	// head->next->...->next = tail // ->next is called n-2 times, n being the number of elements
-	// tail->prev->...->prev = head // ->prev is called n-2 times, n being the number of elements
-	// always head->prev = tail but tail->next = head
+	// head->next->...->next = tail // ->next is called n-1 times, n being the number of elements
+	// tail->prev->...->prev = head // ->prev is called n-1 times, n being the number of elements
+	// and always head->prev = tail and tail->next = head
 	llnode* head;
 };
 
