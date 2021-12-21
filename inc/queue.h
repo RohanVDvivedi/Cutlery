@@ -32,7 +32,7 @@ const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n);
 // removes all the elements from queue queue_p
 // after a call to this function the queue contains 0 elements (get_element_count() == 0)
 // it does not affect the capacity of the queue
-void remove_all_queue(queue* queue_p);
+void remove_all_from_queue(queue* queue_p);
 
 // frees all the data being held by the queue, this function, does not release memory of the actual queue structure, only the memory of the components
 // the same queue can be reused by calling initialize_queue function, after it is deinitialized

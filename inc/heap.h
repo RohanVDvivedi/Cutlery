@@ -88,7 +88,7 @@ int remove_from_heap(heap* heap_p, unsigned int index);
 // removes all the elements from heap heap_p
 // after a call to this function the heap contains 0 elements (get_element_count() == 0)
 // it does not affect the capacity of the heap
-void remove_all_heap(heap* heap_p);
+void remove_all_from_heap(heap* heap_p);
 
 void deinitialize_heap(heap* heap_p);
 

@@ -89,7 +89,7 @@ void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_el
 // removes all the elements from arraylist al
 // after a call to this function the arraylist contains 0 elements (get_element_count() == 0)
 // it does not affect the capacity of the arraylist
-void remove_all_arraylist(arraylist* al);
+void remove_all_from_arraylist(arraylist* al);
 
 void deinitialize_arraylist(arraylist* al);
 
