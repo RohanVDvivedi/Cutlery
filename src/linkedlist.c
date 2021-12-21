@@ -178,6 +178,84 @@ int insert_after(linkedlist* ll, const void* data_xist, const void* data)
 	return 1;
 }
 
+static void insert_all_nodes_before(linkedlist* ll, llnode* node_p, llnode* new_nodes_head)
+{
+
+}
+
+static void insert_all_nodes_after(linkedlist* ll, llnode* node_p, llnode* new_nodes_head)
+{
+
+}
+
+int insert_all_at_head(linkedlist* ll, linkedlist* insert_from_ll)
+{
+	// if the node_offsets are different OR if insert_from_ll is empty then we fail
+	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
+		return 0;
+
+	if(is_empty_linkedlist(ll))	// steal its head pointer
+	{
+		ll->head = insert_from_ll->head;
+		insert_from_ll->head = NULL;
+	}
+	else
+		insert_all_nodes_before(ll, ll->head, insert_from_ll->head);
+
+	return 1;
+}
+
+int insert_all_at_tail(linkedlist* ll, linkedlist* insert_from_ll)
+{
+	// if the node_offsets are different OR if insert_from_ll is empty OR if both the linkedlists are the same, then we fail
+	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
+		return 0;
+
+	if(is_empty_linkedlist(ll))	// steal its head pointer
+	{
+		ll->head = insert_from_ll->head;
+		insert_from_ll->head = NULL;
+	}
+	else
+		insert_all_nodes_after(ll, ll->head->prev, insert_from_ll->head);
+
+	return 1;
+}
+
+int insert_all_before(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll)
+{
+	// if the node_offsets are different OR if insert_from_ll is empty OR if both the linkedlists are the same, then we fail
+	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
+		return 0;
+
+	llnode* node_xist = get_node(data_xist);
+
+	// insert only after a node that exists
+	if(is_new_llnode(ll, node_xist))
+		return 0;
+
+	insert_all_nodes_after(ll, node_xist, insert_from_ll->head);
+
+	return 1;
+}
+
+int insert_all_after(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll)
+{
+	// if the node_offsets are different OR if insert_from_ll is empty OR if both the linkedlists are the same, then we fail
+	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
+		return 0;
+
+	llnode* node_xist = get_node(data_xist);
+
+	// insert only after a node that exists
+	if(is_new_llnode(ll, node_xist))
+		return 0;
+
+	insert_all_nodes_before(ll, node_xist, insert_from_ll->head);
+
+	return 1;
+}
+
 static void remove_node(linkedlist* ll, llnode* node_p)
 {
 	// first update next and prev nodes of node_p
