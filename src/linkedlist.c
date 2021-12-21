@@ -45,34 +45,40 @@ const void* get_nth_from_head(const linkedlist* ll, unsigned int n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
-	llnode* head = ll->head;
-	if(n == 0)
-		return get_data(head);
+	
 	llnode* node_p = head;
 	do
 	{
-		n--;
+		if(n == 0)
+			return get_data(node_p);
 		node_p = node_p->next;
+		n--;
 	}
-	while(node_p != head && n > 0);
-	return (node_p == head) ? NULL : get_data(node_p);
+	while(node_p != head);
+
+	// if not found in the loop return NULL
+	return NULL;
 }
 
 const void* get_nth_from_tail(const linkedlist* ll, unsigned int n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
+
 	llnode* tail = ll->head->prev;
-	if(n == 0)
-		return get_data(tail);
+
 	llnode* node_p = tail;
 	do
 	{
-		n--;
+		if(n == 0)
+			return get_data(node_p);
 		node_p = node_p->prev;
+		n--;
 	}
-	while(node_p != tail && n > 0);
-	return (node_p == tail) ? NULL : get_data(node_p);
+	while(node_p != tail);
+
+	// if not found in the loop return NULL
+	return NULL;
 }
 
 const void* get_next_of(const linkedlist* ll, const void* data_xist)
