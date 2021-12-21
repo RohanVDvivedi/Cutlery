@@ -66,6 +66,9 @@ int remove_head(linkedlist* ll);
 int remove_tail(linkedlist* ll);
 int remove_from_linkedlist(linkedlist* ll, const void* data);
 
+// removes all the elements from linkedlist
+void remove_all_linkedlist(linkedlist* ll);
+
 // This function returns true(1),
 // if a llnode is insertable in the given linkedlist ll
 // i.e. next and prev pointers are NULL and it is not at the head of ll linkedlist

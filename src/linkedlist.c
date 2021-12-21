@@ -327,6 +327,25 @@ int remove_from_linkedlist(linkedlist* ll, const void* data)
 	return 1;
 }
 
+void remove_all_linkedlist(linkedlist* ll)
+{
+	if(is_empty_linkedlist(ll))
+		return;
+
+	// initialize all nodes in linkedlist
+	llnode* temp = ll->head;
+	do
+	{
+		llnode* temp_next = temp->next;
+		initialize_llnode(temp);
+		temp = temp_next;
+	}
+	while(temp != ll->head);
+
+	// set linkedlist head to NULL
+	ll->head = NULL;
+}
+
 const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2))
 {
 	if(is_empty_linkedlist(ll))
