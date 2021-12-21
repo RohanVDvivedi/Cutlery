@@ -291,9 +291,14 @@ void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_el
 	snprintf_dstring(append_str, "\n");
 }
 
-void deinitialize_arraylist(arraylist* al)
+void remove_all_arraylist(arraylist* al)
 {
-	deinitialize_array(&(al->arraylist_holder));
 	al->first_index = 0;
 	al->element_count = 0;
+}
+
+void deinitialize_arraylist(arraylist* al)
+{
+	remove_all_arraylist(al);
+	deinitialize_array(&(al->arraylist_holder));
 }
