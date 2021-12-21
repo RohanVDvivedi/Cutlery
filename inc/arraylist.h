@@ -86,6 +86,11 @@ void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, 
 // serializes the arraylist, and appends the serialized form to the dstring
 void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
 
+// removes all the elements from arraylist al
+// after a call to this function the arraylist contains 0 elements (get_element_count() == 0)
+// it does not affect the capacity of the arraylist
+void remove_all_arraylist(arraylist* al);
+
 void deinitialize_arraylist(arraylist* al);
 
 #endif
