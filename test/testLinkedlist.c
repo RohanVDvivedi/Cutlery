@@ -154,6 +154,24 @@ int main()
 
 	printf("Searching for structure with a = 5\n");
 	print_ts(find_equals_in_linkedlist(ll, &((ts){5}), test_compare));
+	printf("\n\n");
+
+	printf("Testing get_nth_from_head\n");
+	for(unsigned int i = 0; i < 7; i++)
+	{
+		printf("get_(%u)_th_from_head : ", i);
+		print_ts(get_nth_from_head(ll, i));
+		printf("\n");
+	}
+	printf("\n");
+
+	printf("Testing get_nth_from_tail\n");
+	for(unsigned int i = 0; i < 7; i++)
+	{
+		printf("get_(%u)_th_from_tail : ", i);
+		print_ts(get_nth_from_tail(ll, i));
+		printf("\n");
+	}
 	printf("\n");
 
 	print_ts_linkedlist(ll);
@@ -190,6 +208,27 @@ int main()
 
 	insert_all_after(ll, get_nth_from_head(ll, 2), testInsertAllAfter);
 	print_ts_linkedlist(ll);
+
+	printf("\n\nremoving all from linkedlist\n\n");
+	remove_all_linkedlist(ll);
+
+	printf("Testing get_nth_from_head\n");
+	for(unsigned int i = 0; i < 2; i++)
+	{
+		printf("get_(%u)_th_from_head : ", i);
+		print_ts(get_nth_from_head(ll, i));
+		printf("\n");
+	}
+	printf("\n");
+
+	printf("Testing get_nth_from_tail\n");
+	for(unsigned int i = 0; i < 2; i++)
+	{
+		printf("get_(%u)_th_from_tail : ", i);
+		print_ts(get_nth_from_tail(ll, i));
+		printf("\n");
+	}
+	printf("\n");
 
 	return 0;
 }
