@@ -362,6 +362,8 @@ static void for_each_node_post_order(const bst* bst_p, const bstnode* node_p, vo
 
 void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
+	if(is_empty_bst(bst_p))
+		return;
 	switch(traversal)
 	{
 		case PRE_ORDER :
