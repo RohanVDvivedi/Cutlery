@@ -254,9 +254,18 @@ void heapify_all(heap* heap_p)
 	}
 }
 
+void remove_all_heap(heap* heap_p)
+{
+	heap_p->element_count = 0;
+}
+
 void deinitialize_heap(heap* heap_p)
 {
+	remove_all_heap(heap_p);
 	deinitialize_array(&(heap_p->heap_holder));
+	heap_p->compare = NULL;
+	heap_p->heap_index_update_callback = NULL;
+	heap_p->callback_params = NULL;
 }
 
 unsigned int get_capacity_heap(const heap* heap_p)
