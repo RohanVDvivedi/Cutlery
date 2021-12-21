@@ -29,6 +29,11 @@ int pop_stack(stack* stack_p);
 const void* get_top_stack(const stack* stack_p);
 const void* get_nth_from_top_stack(const stack* stack_p, unsigned int n);
 
+// removes all the elements from stack stack_p
+// after a call to this function the stack contains 0 elements (get_element_count() == 0)
+// it does not affect the capacity of the stack
+void remove_all_stack(stack* stack_p);
+
 // frees all the data being held by the stack, this function, does not release memory of the actual stack structure, only the memory of the components
 // the same stack can be reused by calling initialize_stack function, after it is deinitialized
 void deinitialize_stack(stack* stack_p);
