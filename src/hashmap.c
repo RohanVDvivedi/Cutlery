@@ -389,39 +389,42 @@ void deinitialize_hashmap(hashmap* hashmap_p)
 
 void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
-	linkedlist ll; init_data_structure(hashmap_p, &ll);
-	bst bstt; init_data_structure(hashmap_p, &bstt);
-
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+	switch(hashmap_p->hashmap_policy)
 	{
-		if(get_element(&(hashmap_p->hashmap_holder), index) != NULL)
+		case ROBINHOOD_HASHING :
 		{
-			switch(hashmap_p->hashmap_policy)
+			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				case ROBINHOOD_HASHING :
-				{
+				if(get_element(&(hashmap_p->hashmap_holder), index) != NULL)
 					operation(get_element(&(hashmap_p->hashmap_holder), index), additional_params);
-					break;
-				}
-				case ELEMENTS_AS_LINKEDLIST :
-				{
-					ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
-					for_each_in_linkedlist(&ll, operation, additional_params);
-					break;
-				}
-				case ELEMENTS_AS_AVL_BST :
-				case ELEMENTS_AS_RED_BLACK_BST :
-				{
-					bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
-					for_each_in_bst(&bstt, POST_ORDER, operation, additional_params);
-					break;
-				}
-				default :
-				{
-					break;
-				}
 			}
+			break;
+		}
+		case ELEMENTS_AS_LINKEDLIST :
+		{
+			linkedlist ll; init_data_structure(hashmap_p, &ll);
+			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			{
+				ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				for_each_in_linkedlist(&ll, operation, additional_params);
+			}
+			break;
+		}
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			bst bstt; init_data_structure(hashmap_p, &bstt);
+			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			{
+				bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				for_each_in_bst(&bstt, POST_ORDER, operation, additional_params);
+			}
+			break;
+		}
+		default :
+		{
+			break;
 		}
 	}
 }
