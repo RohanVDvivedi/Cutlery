@@ -317,6 +317,22 @@ int remove_from_bst(bst* bst_p, const void* data)
 	return 1;
 }
 
+// a post order function to re-initialize_bstnode all the bstnodes in the bst
+static void remove_all_bst_helper(bstnode* node_p)
+{
+	if(node_p == NULL)
+		return;
+	remove_all_bst_helper(node_p->left);
+	remove_all_bst_helper(node_p->right);
+	initialize_bstnode(node_p);
+}
+
+void remove_all_bst(bst* bst_p)
+{
+	remove_all_bst_helper(bst_p->root);
+	bst_p->head = NULL;
+}
+
 static void for_each_node_pre_order(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
 	if(node_p == NULL)

@@ -139,6 +139,10 @@ int insert_in_bst(bst* bst_p, const void* data);
 // returns 0, and fails if bstnode of data is a new node
 int remove_from_bst(bst* bst_p, const void* data);
 
+// removes all the elements from the bst
+// and reinitializes their embedded bstnode
+void remove_all_bst(bst* bst_p);
+
 // This function returns true(1),
 // if a bstnode is insertable in the given bst bst_p
 // i.e. left, right and parent pointers are NULL and it is not at the root of bst_p bst
