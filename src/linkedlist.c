@@ -272,7 +272,7 @@ int insert_all_after(linkedlist* ll, const void* data_xist, linkedlist* insert_f
 	if(is_new_llnode(ll, node_xist))
 		return 0;
 
-	insert_all_nodes_before(ll, node_xist, insert_from_ll->head);
+	insert_all_nodes_after(ll, node_xist, insert_from_ll->head);
 
 	return 1;
 }
