@@ -68,7 +68,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data);
 
 // removes all the elements from linkedlist
 // and reinitializes their embedded llnode
-void remove_all_linkedlist(linkedlist* ll);
+void remove_all_from_linkedlist(linkedlist* ll);
 
 // This function returns true(1),
 // if a llnode is insertable in the given linkedlist ll

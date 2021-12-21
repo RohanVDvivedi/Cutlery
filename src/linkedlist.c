@@ -333,7 +333,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data)
 	return 1;
 }
 
-void remove_all_linkedlist(linkedlist* ll)
+void remove_all_from_linkedlist(linkedlist* ll)
 {
 	if(is_empty_linkedlist(ll))
 		return;

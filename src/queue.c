@@ -32,14 +32,14 @@ const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n)
 	return get_nth_from_front(&(queue_p->queue_holder), n);
 }
 
-void remove_all_queue(queue* queue_p)
+void remove_all_from_queue(queue* queue_p)
 {
-	remove_all_arraylist(&(queue_p->queue_holder));
+	remove_all_from_arraylist(&(queue_p->queue_holder));
 }
 
 void deinitialize_queue(queue* queue_p)
 {
-	remove_all_queue(queue_p);
+	remove_all_from_queue(queue_p);
 	deinitialize_arraylist(&(queue_p->queue_holder));
 }
 

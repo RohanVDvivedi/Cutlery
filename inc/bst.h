@@ -141,7 +141,7 @@ int remove_from_bst(bst* bst_p, const void* data);
 
 // removes all the elements from the bst
 // and reinitializes their embedded bstnode
-void remove_all_bst(bst* bst_p);
+void remove_all_from_bst(bst* bst_p);
 
 // This function returns true(1),
 // if a bstnode is insertable in the given bst bst_p

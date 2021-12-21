@@ -32,14 +32,14 @@ const void* get_nth_from_top_stack(const stack* stack_p, unsigned int n)
 	return get_nth_from_back(&(stack_p->stack_holder), n);
 }
 
-void remove_all_stack(stack* stack_p)
+void remove_all_from_stack(stack* stack_p)
 {
-	remove_all_arraylist(&(stack_p->stack_holder));
+	remove_all_from_arraylist(&(stack_p->stack_holder));
 }
 
 void deinitialize_stack(stack* stack_p)
 {
-	remove_all_arraylist(&(stack_p->stack_holder));
+	remove_all_from_arraylist(&(stack_p->stack_holder));
 	deinitialize_arraylist(&(stack_p->stack_holder));
 }
 
