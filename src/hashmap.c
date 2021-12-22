@@ -344,9 +344,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			// just mark all buckets as empty
-			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
-				set_element(&(hashmap_p->hashmap_holder), NULL, index);
+			// nothing needs to be done here
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST :
@@ -358,9 +356,6 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 
 				// remove all elements from the linkedlist bucket
 				remove_all_from_linkedlist(&ll);
-
-				// then mark the bucket as empty
-				set_element(&(hashmap_p->hashmap_holder), NULL, index);
 			}
 			break;
 		}
@@ -374,9 +369,6 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 
 				// remove all elements from the bst bucket
 				remove_all_from_bst(&bstt);
-
-				// then mark the bucket as empty
-				set_element(&(hashmap_p->hashmap_holder), NULL, index);
 			}
 			break;
 		}
@@ -386,6 +378,10 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 		}
 	}
 
+	// mark all the buckets as NULL
+	remove_all_from_array(&(hashmap_p->hashmap_holder));
+
+	// then update element_count to 0
 	hashmap_p->element_count = 0;
 }
 
