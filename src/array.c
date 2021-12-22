@@ -25,15 +25,6 @@ void initialize_array_with_allocator(array* array_p, unsigned int capacity, memo
 	array_p->capacity = (array_p->data_p_p != NULL) ? capacity : 0;
 }
 
-void deinitialize_array(array* array_p)
-{
-	if(array_p->mem_allocator != NULL && array_p->capacity > 0 && array_p->data_p_p != NULL)
-		deallocate(array_p->mem_allocator, array_p->data_p_p, array_p->capacity * sizeof(void*));
-	array_p->mem_allocator = NULL;
-	array_p->data_p_p = NULL;
-	array_p->capacity = 0;
-}
-
 const void* get_element(const array* array_p, unsigned int index)
 {
 	return (index < array_p->capacity) ? array_p->data_p_p[index] : NULL;
@@ -54,6 +45,25 @@ void swap_elements(array* array_p, unsigned int i1, unsigned int i2)
 	const void* data_temp_i1 = get_element(array_p, i1);
 	set_element(array_p, get_element(array_p, i2), i1);
 	set_element(array_p, data_temp_i1, i2);
+}
+
+void remove_all_from_array(array* array_p)
+{
+	memory_set(array_p->data_p_p, 0, array_p->capacity * sizeof(void*));
+	/*
+		the above memory_set is equivalent to the below loop
+		for(unsigned int i = 0; i < array_p->capacity; i++)
+			set_element(array_p, NULL, i);
+	*/
+}
+
+void deinitialize_array(array* array_p)
+{
+	if(array_p->mem_allocator != NULL && array_p->capacity > 0 && array_p->data_p_p != NULL)
+		deallocate(array_p->mem_allocator, array_p->data_p_p, array_p->capacity * sizeof(void*));
+	array_p->mem_allocator = NULL;
+	array_p->data_p_p = NULL;
+	array_p->capacity = 0;
 }
 
 unsigned int get_capacity_array(const array* array_p)

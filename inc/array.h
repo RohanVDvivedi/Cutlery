@@ -31,6 +31,10 @@ int set_element(array* array_p, const void* data_p, unsigned int index);
 // swap elements of array at given indexes
 void swap_elements(array* array_p, unsigned int i1, unsigned int i2);
 
+// removes all the elements from array array_p
+// this function effectively NULLs out all the pointers stored within data_p_p
+void remove_all_from_array(array* array_p);
+
 // frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
 // the same array can be reused by calling initialize_array function, after it is deinitialized
 void deinitialize_array(array* array_p);
