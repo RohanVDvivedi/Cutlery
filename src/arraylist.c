@@ -186,7 +186,7 @@ int expand_arraylist(arraylist* al)
 
 	// record size and first index for further use
 	unsigned int old_first_index = al->first_index;
-	unsigned int old_size = get_capacity_arraylist(al);
+	unsigned int old_capacity = get_capacity_arraylist(al);
 
 	// expand the holder fearlessly
 	int has_holder_expanded = expand_array(&(al->arraylist_holder));
@@ -194,8 +194,14 @@ int expand_arraylist(arraylist* al)
 	// move data if necessary conditions meet
 	if(data_movement_will_be_required && has_holder_expanded)
 	{
+		// in this if condition 
+		// we move elements that were at old_first_index to (old_capacity - 1) (both inclusive)
+		// to the indices at new_first_index to (new_capacity - 1) (both inclusive),
+		// only then we update the al->first_index to new_first_index
+		// additionally we NULL all the old_indices that are not used
+
 		// move partial data, that was at the end of the array
-		unsigned int elements_to_move = old_size - old_first_index;
+		unsigned int elements_to_move = old_capacity - old_first_index;
 
 		// calculate the new first index
 		unsigned int new_first_index = get_capacity_arraylist(al) - elements_to_move;
@@ -205,7 +211,7 @@ int expand_arraylist(arraylist* al)
 					al->arraylist_holder.data_p_p + old_first_index,
 					elements_to_move * sizeof(void*));
 
-		// mem set all old positions in the array as NULL
+		// mem set all old unused positions in the array as NULL (only if they previously were in use and are not in use now)
 		unsigned int elements_to_NULL = new_first_index - old_first_index;
 		elements_to_NULL = (elements_to_NULL > elements_to_move) ? elements_to_move : elements_to_NULL;
 		memory_set(al->arraylist_holder.data_p_p + old_first_index, 0,
