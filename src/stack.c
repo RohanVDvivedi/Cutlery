@@ -72,6 +72,11 @@ int shrink_stack(stack* stack_p)
 	return shrink_arraylist(&(stack_p->stack_holder));
 }
 
+int reserve_capacity_stack(stack* stack_p, unsigned int atleast_capacity)
+{
+	return reserve_capacity_arraylist(&(stack_p->stack_holder), atleast_capacity);
+}
+
 void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
 	for_each_in_arraylist(&(stack_p->stack_holder), operation, additional_params);
