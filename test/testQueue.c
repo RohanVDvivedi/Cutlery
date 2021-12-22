@@ -272,6 +272,9 @@ int main()
 	push_queue_SAFE(queue_p, &((ts){36, "thirty six"}));
 	printf("-> %d\n", iter++);print_ts_queue(queue_p); // 73
 
+	remove_all_from_queue(queue_p);
+	printf("-> %d\n", iter++);print_ts_queue(queue_p); // 74
+
 	deinitialize_queue(queue_p);
 
 	return 0;
