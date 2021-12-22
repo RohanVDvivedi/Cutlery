@@ -301,6 +301,11 @@ int shrink_heap(heap* heap_p)
 	return shrink_array(&(heap_p->heap_holder), heap_p->element_count);
 }
 
+int reserve_capacity_heap(heap* heap_p, unsigned int atleast_capacity)
+{
+	return reserve_capacity_array(&(heap_p->heap_holder), atleast_capacity);
+}
+
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params)
 {
 	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);

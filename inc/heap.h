@@ -115,6 +115,10 @@ int expand_heap(heap* heap_p);
 // you may call this function at regular intervals, to keep the heap size in check
 int shrink_heap(heap* heap_p);
 
+// expands heap to atleast the capacity of atleast_capacity
+// returns 1, only if the heap was expanded
+int reserve_capacity_heap(heap* heap_p, unsigned int atleast_capacity);
+
 // perform an operation on all the key value pairs for the heap
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
 
