@@ -78,12 +78,20 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, uns
 
 int expand_array(array* array_p)
 {
+	unsigned int new_capacity = get_new_capacity(array_p->capacity);
+
+	// expand array to atleast the new_capacity
+	return reserve_capacity_array(array_p, new_capacity);
+}
+
+int reserve_capacity_array(array* array_p, unsigned int atleast_capacity)
+{
 	// can not expand if the allocator is NULL
 	if(array_p->mem_allocator == NULL)
 		return 0;
 
 	// compute new_capacity to expand to
-	unsigned int new_capacity = get_new_capacity(array_p->capacity);
+	unsigned int new_capacity = atleast_capacity;
 
 	// new_capacity must be greater than the old_capacity
 	if(new_capacity <= array_p->capacity)
