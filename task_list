@@ -1,8 +1,5 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
-COMMON to all datastructures tasks
- * reserve_capacity_* to resize the array to atleast a specific size, and support it in heap, arraylist (stack and queue)
-
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
