@@ -1,5 +1,34 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
+UTILity implementation
+ * implement circular_buffer_indexing_util.h
+   * where 0 <= i1 , i2 < buffer_capacity 
+   * unsigned int add_indexes_for_circular_indexed_buffers(unsigned int i1, unsigned int i2, unsigned int buffer_capacity)
+   {
+        if(buffer_capacity - i1 > i2)
+            return i1 + i2;
+        else
+            return i2 - (buffer_capacity - i1);
+   }
+   * above function is equivalent to (i1 + i2) % buffer_capacity, but without overflow of underflow errors and without % operator (i.e. faster)
+   * unsigned int sub_indexes_for_circular_indexed_buffers(unsigned int i1, unsigned int i2, unsigned int buffer_capacity)
+   {
+        if(i1 + 1 > i2)
+            return i1 - i2;
+        else
+            return (buffer_capacity - 1) - (i2 - (i1 + 1));
+   }
+   * above function is equivalent to (buffer_capacity + i1 - i2) % buffer_capacity, but without overflow of underflow errors and without % operator (i.e. faster)
+   * use above function to get end_index, last_index and curcular_next circular_previous indexing in arraylist
+ * add to binary_tree_as_array_util.h
+   * add utils
+     * is_root(i)       ((i) == 0)
+     * has_parent(i)    (!(is_root(i)))
+     * has_any_child(i) ((i) < (UINT_MAX>>1))
+
+COMMON to all datastructures tasks
+ * implement strict unsigned int range indexing for all cutlery datastructures (heap and arraylist)
+
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
@@ -56,31 +85,4 @@ DSTRING tasks
 5. Optimization/correctness in indexing tasks (*later - procrastinated due to their way lower priority)
 
 COMMON to all datastructures tasks
- * implement strict unsigned int range indexing for all cutlery datastructures (heap and arraylist)
  * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
-
-UTILity implementation
- * implement circular_buffer_indexing_util.h
-   * where 0 <= i1 , i2 < buffer_capacity 
-   * unsigned int add_indexes_for_circular_indexed_buffers(unsigned int i1, unsigned int i2, unsigned int buffer_capacity)
-   {
-        if(buffer_capacity - i1 > i2)
-            return i1 + i2;
-        else
-            return i2 - (buffer_capacity - i1);
-   }
-   * above function is equivalent to (i1 + i2) % buffer_capacity, but without overflow of underflow errors and without % operator (i.e. faster)
-   * unsigned int sub_indexes_for_circular_indexed_buffers(unsigned int i1, unsigned int i2, unsigned int buffer_capacity)
-   {
-        if(i1 + 1 > i2)
-            return i1 - i2;
-        else
-            return (buffer_capacity - 1) - (i2 - (i1 + 1));
-   }
-   * above function is equivalent to (buffer_capacity + i1 - i2) % buffer_capacity, but without overflow of underflow errors and without % operator (i.e. faster)
-   * use above function to get end_index, last_index and curcular_next circular_previous indexing in arraylist
- * add to binary_tree_as_array_util.h
-   * add utils
-     * is_root(i)       ((i) == 0)
-     * has_parent(i)    (!(is_root(i)))
-     * has_any_child(i) ((i) < (UINT_MAX>>1))
