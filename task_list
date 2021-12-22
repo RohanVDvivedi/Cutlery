@@ -82,3 +82,8 @@ UTILity implementation
    }
    * above function is equivalent to (buffer_capacity + i1 - i2) % buffer_capacity, but without overflow of underflow errors and without % operator (i.e. faster)
    * use above function to get end_index, last_index and curcular_next circular_previous indexing in arraylist
+ * add to binary_tree_as_array_util.h
+   * add utils
+     * is_root(i)       ((i) == 0)
+     * has_parent(i)    (!(is_root(i)))
+     * has_any_child(i) ((i) < (UINT_MAX>>1))
