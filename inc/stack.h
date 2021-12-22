@@ -61,6 +61,10 @@ int expand_stack(stack* stack_p);
 // you may call this function at regular intervals, to keep the stack size in check
 int shrink_stack(stack* stack_p);
 
+// expands stack to atleast the capacity of atleast_capacity
+// returns 1, only if the stack was expanded
+int reserve_capacity_stack(stack* stack_p, unsigned int atleast_capacity);
+
 // for each element of the stack, perform the given operation
 void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
