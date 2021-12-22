@@ -39,7 +39,6 @@ void remove_all_from_queue(queue* queue_p)
 
 void deinitialize_queue(queue* queue_p)
 {
-	remove_all_from_queue(queue_p);
 	deinitialize_arraylist(&(queue_p->queue_holder));
 }
 

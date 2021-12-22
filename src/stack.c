@@ -39,7 +39,6 @@ void remove_all_from_stack(stack* stack_p)
 
 void deinitialize_stack(stack* stack_p)
 {
-	remove_all_from_arraylist(&(stack_p->stack_holder));
 	deinitialize_arraylist(&(stack_p->stack_holder));
 }
 
