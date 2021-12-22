@@ -387,8 +387,8 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 
 void deinitialize_hashmap(hashmap* hashmap_p)
 {
-	remove_all_from_hashmap(hashmap_p);
 	deinitialize_array(&(hashmap_p->hashmap_holder));
+	hashmap_p->element_count = 0;
 	hashmap_p->hash_function = NULL;
 	hashmap_p->compare = NULL;
 	hashmap_p->node_offset = 0;
