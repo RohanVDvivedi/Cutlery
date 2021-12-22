@@ -301,10 +301,14 @@ void remove_all_from_arraylist(arraylist* al)
 {
 	al->first_index = 0;
 	al->element_count = 0;
+	
+	// then NULL out all the array -> this step can be ignored
+	remove_all_from_array(&(al->arraylist_holder));
 }
 
 void deinitialize_arraylist(arraylist* al)
 {
-	remove_all_from_arraylist(al);
 	deinitialize_array(&(al->arraylist_holder));
+	al->first_index = 0;
+	al->element_count = 0;
 }
