@@ -70,11 +70,15 @@ int is_full_arraylist(const arraylist* al);
 // returns 1 if the arraylist is empty (i.e. no elements are present), else returns 0
 int is_empty_arraylist(const arraylist* al);
 
-// the below functions can be used tto expand or shring the arrayholder of the arraylist
+// the below functions can be used to expand or shring the arrayholder of the arraylist
 // these functions will return 1, if they succeeds
 // else they return 0 on failure
 int expand_arraylist(arraylist* al);
 int shrink_arraylist(arraylist* al);
+
+// expands arraylist to atleast the capacity of atleast_capacity
+// returns 1, only if the arraylist was expanded
+int reserve_capacity_arraylist(arraylist* al, unsigned int atleast_capacity);
 
 // get the data from the arraylist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the arraylist that compares equal (i.e. compare function returns 0)

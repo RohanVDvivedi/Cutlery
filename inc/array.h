@@ -48,6 +48,7 @@ unsigned int get_capacity_array(const array* array_p);
 int expand_array(array* array_p);
 
 // expand array such that it has atleast_capacity after expansion
+// returns 1, only if the array was expanded
 // returns 0, to indicate a failure from the memory allocator
 // this functions may also fail if the array already has capacity more than or equal to atleast_capacity
 int reserve_capacity_array(array* array_p, unsigned int atleast_capacity);
