@@ -72,6 +72,11 @@ int shrink_queue(queue* queue_p)
 	return shrink_arraylist(&(queue_p->queue_holder));
 }
 
+int reserve_capacity_queue(queue* queue_p, unsigned int atleast_capacity)
+{
+	return reserve_capacity_arraylist(&(queue_p->queue_holder), atleast_capacity);
+}
+
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
 	for_each_in_arraylist(&(queue_p->queue_holder), operation, additional_params);

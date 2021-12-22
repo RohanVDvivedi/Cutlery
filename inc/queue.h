@@ -61,6 +61,10 @@ int expand_queue(queue* queue_p);
 // you may call this function at regular intervals, to keep the queue size in check
 int shrink_queue(queue* queue_p);
 
+// expands queue to atleast the capacity of atleast_capacity
+// returns 1, only if the queue was expanded
+int reserve_capacity_queue(queue* queue_p, unsigned int atleast_capacity);
+
 // for each function, to iteration over all non null elements to perform an operation
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
 
