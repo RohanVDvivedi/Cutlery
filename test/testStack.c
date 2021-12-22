@@ -126,13 +126,7 @@ int main()
 	pop_stack_OPTIMUM_MEMORY(stack_p);
 	print_ts_stack(stack_p);
 
-	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_ts_stack(stack_p);
-
-	pop_stack_OPTIMUM_MEMORY(stack_p);
-	print_ts_stack(stack_p);
-
-	pop_stack_OPTIMUM_MEMORY(stack_p);
+	remove_all_from_stack(stack_p);
 	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
