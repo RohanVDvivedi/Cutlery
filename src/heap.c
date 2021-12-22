@@ -257,12 +257,15 @@ void heapify_all(heap* heap_p)
 void remove_all_from_heap(heap* heap_p)
 {
 	heap_p->element_count = 0;
+
+	// then NULL out all the array -> this step can be ignored
+	remove_all_from_array(&(heap_p->heap_holder));
 }
 
 void deinitialize_heap(heap* heap_p)
 {
-	remove_all_from_heap(heap_p);
 	deinitialize_array(&(heap_p->heap_holder));
+	heap_p->element_count = 0;
 	heap_p->compare = NULL;
 	heap_p->heap_index_update_callback = NULL;
 	heap_p->callback_params = NULL;
