@@ -1,5 +1,12 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
+DSTRING tasks
+ * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
+
+COMMON to all datastructures tasks
+ * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
+ * check that upon expansion of array, the final updated capacity is not overflowing
+
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
@@ -49,11 +56,3 @@ PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
 
 CUTLERY_STDS tasks
  * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
-
-DSTRING tasks
- * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
-
-5. Optimization/correctness in indexing tasks (*later - procrastinated due to their way lower priority)
-
-COMMON to all datastructures tasks
- * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
