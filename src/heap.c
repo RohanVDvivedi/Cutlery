@@ -58,7 +58,7 @@ static int is_reordering_required(const heap* heap_p, unsigned int parent_index,
 static void bubble_up(heap* heap_p, unsigned int index)
 {
 	// exit at index 0, or thew index is out of range
-	while(index != 0 && index < heap_p->element_count)
+	while(has_parent(index) && index < heap_p->element_count)
 	{
 		unsigned int parent_index = get_parent_index(index);
 
@@ -75,7 +75,7 @@ static void bubble_up(heap* heap_p, unsigned int index)
 static void bubble_down(heap* heap_p, unsigned int index)
 {
 	// we can not bubble down the last node
-	while(index < heap_p->element_count)
+	while(can_have_any_children(index) && index < heap_p->element_count)
 	{
 		unsigned int left_child_index = get_left_child_index(index);
 		unsigned int right_child_index = get_right_child_index(index);
@@ -222,11 +222,11 @@ void heapify_at(heap* heap_p, unsigned int index)
 	unsigned int right_child_index = get_right_child_index(index);
 
 	// if re-ordering is required at the parent side, we bubble up
-	if((index != 0) && is_reordering_required(heap_p, parent_index, index))
+	if(has_parent(index) && is_reordering_required(heap_p, parent_index, index))
 		bubble_up(heap_p, index);
 
 	// else if the re ordering is required at any of the children's side we bubble down
-	else if(
+	else if(can_have_any_children(index)
 		((left_child_index  < heap_p->element_count) && is_reordering_required(heap_p, index,  left_child_index)) 
 	||	((right_child_index < heap_p->element_count) && is_reordering_required(heap_p, index, right_child_index)))
 		bubble_down(heap_p, index);
