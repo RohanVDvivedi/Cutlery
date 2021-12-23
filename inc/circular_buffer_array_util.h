@@ -35,12 +35,13 @@ static inline unsigned int sub_indexes(unsigned int i1, unsigned int i2, unsigne
 **	for all below functions 
 **		0 <= i, first_index < buffer_capacity
 **		1 <= element_count <= buffer_capacity
+** and buffer_capacity >= 1
 **
 **	first_index and element_count will have meanings as their (so obvious) names depict in the respective functions
 */
 
 #define get_circular_next(i, buffer_capacity) add_indexes(i, 1, buffer_capacity)
-#define get_circular_prev(i, buffer_capacity) sub_indexes(i, buffer_capacity-1, buffer_capacity)
+#define get_circular_prev(i, buffer_capacity) sub_indexes(i, 1, buffer_capacity)
 
 #define get_last_index(first_index, element_count, buffer_capacity) \
 			add_indexes(first_index, element_count - 1, buffer_capacity)
