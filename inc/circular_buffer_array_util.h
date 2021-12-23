@@ -43,7 +43,7 @@ static inline unsigned int sub_indexes(unsigned int i1, unsigned int i2, unsigne
 #define get_circular_prev(i, buffer_capacity) sub_indexes(i, buffer_capacity-1, buffer_capacity)
 
 #define get_last_index(first_index, element_count, buffer_capacity) \
-			add_indexes(i, element_count - 1, buffer_capacity)
+			add_indexes(first_index, element_count - 1, buffer_capacity)
 
 #define get_end_index(first_index, element_count, buffer_capacity) \
 			get_circular_next(get_last_index(first_index, element_count, buffer_capacity), buffer_capacity)
