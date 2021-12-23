@@ -35,4 +35,12 @@ static inline unsigned int sub_indexes(unsigned int i1, unsigned int i2, unsigne
 
 // OTHER METHODS
 
+
+/*
+	This file is used by following data structures
+	* arraylist
+	* circular queue (implemented as queue in cutlery, but in the backend its just an arraylist)
+	* circular buffers used for network stacks (future)
+*/
+
 #endif
