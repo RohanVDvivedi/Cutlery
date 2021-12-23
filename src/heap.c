@@ -226,9 +226,10 @@ void heapify_at(heap* heap_p, unsigned int index)
 		bubble_up(heap_p, index);
 
 	// else if the re ordering is required at any of the children's side we bubble down
-	else if(can_have_any_children(index)
-		((left_child_index  < heap_p->element_count) && is_reordering_required(heap_p, index,  left_child_index)) 
-	||	((right_child_index < heap_p->element_count) && is_reordering_required(heap_p, index, right_child_index)))
+	else if(can_have_any_children(index) &&
+	(	((left_child_index  < heap_p->element_count) && is_reordering_required(heap_p, index,  left_child_index)) 
+	||	((right_child_index < heap_p->element_count) && is_reordering_required(heap_p, index, right_child_index))
+	)	)
 		bubble_down(heap_p, index);
 }
 
