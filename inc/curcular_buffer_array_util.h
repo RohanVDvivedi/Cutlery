@@ -31,6 +31,22 @@ static inline unsigned int sub_indexes(unsigned int i1, unsigned int i2, unsigne
 
 // ==== OTHER FUNCTIONS
 
+/*
+**	for all below functions 
+**		0 <= i, first_index < buffer_capacity
+**		1 <= element_count <= buffer_capacity
+**
+**	first_index and element_count will have meanings as their (so obvious) names depict in the respective functions
+*/
+
+#define get_circular_next(i, buffer_capacity) add_indexes(i, 1, buffer_capacity)
+#define get_circular_prev(i, buffer_capacity) sub_indexes(i, buffer_capacity-1, buffer_capacity)
+
+#define get_last_index(first_index, element_count, buffer_capacity) \
+			add_indexes(i, element_count - 1, buffer_capacity)
+
+#define get_end_index(first_index, element_count, buffer_capacity) \
+			get_circular_next(get_last_index(first_index, element_count, buffer_capacity), buffer_capacity)
 
 /*
 	This file is used by following data structures
