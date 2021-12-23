@@ -1,9 +1,7 @@
 #ifndef CIRCULAR_BUFFER_ARRAY_UTIL_H
 #define CIRCULAR_BUFFER_ARRAY_UTIL_H
 
-
-
-// BASE FUNTIONS START
+// ==== BASE FUNTIONS START ====
 
 /*
 **	For all base functions
@@ -29,11 +27,9 @@ static inline unsigned int sub_indexes(unsigned int i1, unsigned int i2, unsigne
 		return (buffer_capacity - 1) - (i2 - (i1 + 1));
 }
 
-// BASE FUNCTIONS END
+// ==== BASE FUNCTIONS END ====
 
-
-
-// OTHER METHODS
+// ==== OTHER FUNCTIONS
 
 
 /*
