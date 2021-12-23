@@ -2,6 +2,8 @@
 
 #include<cutlery_stds.h>
 
+#include<circular_buffer_array_util.h>
+
 void initialize_arraylist(arraylist* al, unsigned int capacity)
 {
 	initialize_array(&(al->arraylist_holder), capacity);
