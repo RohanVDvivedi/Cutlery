@@ -9,8 +9,12 @@
 	#define CHAR_BIT (8)
 #endif
 
-#define INVALID_INDEX (~((unsigned int)(0)))
-// any array (struct array, struct dstring, c array or char array ) will never have this address
+#ifndef UINT_MAX
+	#define UINT_MAX (~((unsigned int)(0)))
+#endif
+
+#define INVALID_INDEX UINT_MAX
+// any array (struct array, struct dstring, c array or char array ) will never have this index
 // INVALID_INDEX is used to report error (or a lack of result) to the user
 
 /* this is cutlery specific memory move implementation
