@@ -299,12 +299,12 @@ int shrink_arraylist(arraylist* al)
 {
 	int has_holder_shrunk = 0;
 
-	if(get_capacity_arraylist(al) > 0)
+	if(get_capacity_arraylist(al) == 0)
 		return has_holder_shrunk;
 
 	// to be able to shrink an arraylist, it must have a non-zero size
 	// and there is no rotation, i.e. elements are all contiguously placed at index after the first index
-	if(is_empty_arraylist(al) ||  al->first_index <= get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al)))
+	if(is_empty_arraylist(al) || al->first_index <= get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al)))
 	{
 		if(!is_empty_arraylist(al) && al->first_index > 0)
 		{
