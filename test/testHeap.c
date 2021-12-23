@@ -108,10 +108,10 @@ int main()
 	push_heap_SAFE(heap_p, &((ts){6, 6, "six"}));
 	print_ts_heap(heap_p);
 
-	change_key(heap_p, heap_p->element_count/2, -2000);
+	change_key(heap_p, get_element_count_heap(heap_p)/2, -2000);
 	print_ts_heap(heap_p);
 
-	change_key(heap_p, heap_p->element_count/2, +2000);
+	change_key(heap_p, get_element_count_heap(heap_p)/2, +2000);
 	print_ts_heap(heap_p);
 
 	pop_heap_OPTIMUM_MEMORY(heap_p);
