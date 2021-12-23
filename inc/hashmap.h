@@ -80,7 +80,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 // fails with 0, if the data provided does not exist in this hashmap
 int remove_from_hashmap(hashmap* hashmap_p, const void* data);
 
-// returns bucket_count of the hashmap;;; i.e. total_size of the hashmap_holder
+// returns bucket_count of the hashmap
 unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p);
 // returns the number of elements inside the hashmap
 unsigned int get_element_count_hashmap(const hashmap* hashmap_p);
@@ -93,7 +93,7 @@ int is_empty_hashmap(const hashmap* hashmap_p);
 // else it returns 1 on successfully resizing
 int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count);
 // below function works similarly to resize_hashmap
-// it fails with return 0, when expand_factor < 1.0
+// it fails with return 0, when expand_factor <= 1.0
 int expand_hashmap(hashmap* hashmap_p, float expand_factor);
 
 // removes all the elements from the hashmap hashmap_p
