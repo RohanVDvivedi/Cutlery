@@ -1,8 +1,5 @@
 1. Miscelaneous tasks and string/byte array tasks (*now)
 
-COMMON to all datastructures tasks
- * implement strict unsigned int range indexing for cutlery arraylist datastructure
-
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
