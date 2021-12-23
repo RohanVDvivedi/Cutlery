@@ -29,7 +29,7 @@ int push_front(arraylist* al, const void* data_p)
 	if(is_empty_arraylist(al))
 		al->first_index = 0;
 	else // else an index prior to the first index in the circular index scheme
-		al->first_index = ((al->first_index + get_capacity_arraylist(al)) - 1) % get_capacity_arraylist(al);
+		al->first_index = get_circular_prev(al->first_index, get_capacity_arraylist(al));
 
 	// push to front of array list
 	set_element(&(al->arraylist_holder), data_p, al->first_index);
@@ -48,13 +48,20 @@ int push_back(arraylist* al, const void* data_p)
 
 	// if empty push the element at 0th index
 	if(is_empty_arraylist(al))
+	{
 		al->first_index = 0;
 
-	// end_index is the index to the position on the circular buffer, that is immediately after the last element
-	unsigned int end_index = (al->first_index + al->element_count) % get_capacity_arraylist(al);
+		// push to back of array list
+		set_element(&(al->arraylist_holder), data_p, al->first_index);
+	}
+	else
+	{
+		// end_index is the index to the position on the circular buffer, that is immediately after the last element
+		unsigned int end_index = get_end_index(al->first_index, al->element_count, get_capacity_arraylist(al));
 
-	// push to back of array list
-	set_element(&(al->arraylist_holder), data_p, end_index);
+		// push to back of array list
+		set_element(&(al->arraylist_holder), data_p, end_index);
+	}
 
 	// increment the element counter
 	al->element_count++;
@@ -72,7 +79,7 @@ int pop_front(arraylist* al)
 	set_element(&(al->arraylist_holder), NULL, al->first_index);
 
 	// update the first index
-	al->first_index = (al->first_index + 1) % get_capacity_arraylist(al);
+	al->first_index = get_circular_next(al->first_index, get_capacity_arraylist(al));
 
 	// decrement the element counter
 	al->element_count--;
@@ -87,10 +94,10 @@ int pop_back(arraylist* al)
 		return 0;
 
 	// find the index to the last element in the arraylist
-	unsigned int back_index = ((al->first_index + al->element_count) - 1) % get_capacity_arraylist(al);
+	unsigned int last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
 
-	// pop an element from front of the arraylist
-	set_element(&(al->arraylist_holder), NULL, back_index);
+	// pop an element from back of the arraylist
+	set_element(&(al->arraylist_holder), NULL, last_index);
 
 	// decrement the element counter
 	al->element_count--;
@@ -115,7 +122,7 @@ const void* get_back(const arraylist* al)
 		return NULL;
 
 	// find back element of the arraylist
-	return get_element(&(al->arraylist_holder), (al->first_index + al->element_count - 1) % get_capacity_arraylist(al));
+	return get_element(&(al->arraylist_holder), get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al)));
 }
 
 const void* get_nth_from_front(const arraylist* al, unsigned int n)
@@ -124,8 +131,11 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n)
 	if(is_empty_arraylist(al) || n >= al->element_count)
 		return NULL;
 
-	// find nth element from front of the arraylist, and return it
-	return get_element(&(al->arraylist_holder), (al->first_index + n) % get_capacity_arraylist(al));
+	// find the index of our concern
+	unsigned int index_concerned = add_indexes(al->first_index, n, get_capacity_arraylist(al));
+
+	// find the concerned element and return it
+	return get_element(&(al->arraylist_holder), index_concerned);
 }
 
 const void* get_nth_from_back(const arraylist* al, unsigned int n)
@@ -134,8 +144,12 @@ const void* get_nth_from_back(const arraylist* al, unsigned int n)
 	if(is_empty_arraylist(al) || n >= al->element_count)
 		return NULL;
 
-	// find nth element from back of the arraylist, and return it
-	return get_element(&(al->arraylist_holder), (((al->first_index + al->element_count) - 1) - n) % get_capacity_arraylist(al));
+	// find the index of our concern
+	unsigned int last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
+	unsigned int index_concerned = sub_indexes(last_index , n, get_capacity_arraylist(al));
+
+	// find the concerned element and return it
+	return get_element(&(al->arraylist_holder), index_concerned);
 }
 
 int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n)
@@ -144,8 +158,11 @@ int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n)
 	if(is_empty_arraylist(al) || n >= al->element_count)
 		return 0;
 
-	// set nth element from front of the arraylist to data_p
-	return set_element(&(al->arraylist_holder), data_p, (al->first_index + n) % get_capacity_arraylist(al));
+	// find the index of our concern
+	unsigned int index_concerned = add_indexes(al->first_index, n, get_capacity_arraylist(al));
+
+	// find the concerned element and set it
+	return set_element(&(al->arraylist_holder), data_p, index_concerned);
 }
 
 int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n)
@@ -154,8 +171,12 @@ int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n)
 	if(is_empty_arraylist(al) || n >= al->element_count)
 		return 0;
 
-	// set nth element from back of the arraylist to data_p
-	return set_element(&(al->arraylist_holder), data_p, (((al->first_index + al->element_count) - 1) - n) % get_capacity_arraylist(al));
+	// find the index of our concern
+	unsigned int last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
+	unsigned int index_concerned = sub_indexes(last_index , n, get_capacity_arraylist(al));
+
+	// find the concerned element and return it
+	return set_element(&(al->arraylist_holder), data_p, index_concerned);
 }
 
 unsigned int get_capacity_arraylist(const arraylist* al)
@@ -301,9 +322,10 @@ int shrink_arraylist(arraylist* al)
 
 const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* data1, const void* data2))
 {
-	for(unsigned int i = 0, index = al->first_index; i < al->element_count; i++, index++)
+	for(unsigned int i = 0; i < al->element_count; i++)
 	{
-		const void* found = get_element(&(al->arraylist_holder), index % get_capacity_arraylist(al));
+		unsigned int al_index = add_indexes(al->first_index, i, get_capacity_arraylist(al));
+		const void* found = get_element(&(al->arraylist_holder), al_index);
 		if(0 == compare(found, data))
 			return found;
 	}
