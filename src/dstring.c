@@ -279,11 +279,6 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 	}
 }
 
-void concatenate_c_string(dstring* str_p1, const char* c_string)
-{
-	concatenate_dstring(str_p1, &get_literal_cstring(c_string));
-}
-
 void concatenate_char(dstring* str_p1, char chr)
 {
 	concatenate_dstring(str_p1, &get_literal_dstring(&chr, 1));
@@ -418,4 +413,11 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 	increment_char_count_dstring(str_p, size_extra_req);
 
 	va_end(var_args);
+}
+
+#include<string.h>
+
+void concatenate_c_string(dstring* str_p1, const char* c_string)
+{
+	concatenate_dstring(str_p1, &get_literal_cstring(c_string));
 }
