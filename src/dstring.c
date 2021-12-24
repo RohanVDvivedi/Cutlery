@@ -214,7 +214,10 @@ void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
 {
 	init_empty_dstring(str_p, data_size);
 	if(data != NULL && data_size > 0)
+	{
 		memory_move(get_byte_array_dstring(str_p), data, data_size);
+		increment_char_count_dstring(str_p, data_size);
+	}
 }
 
 void init_copy_dstring(dstring* str_p, const dstring* init_copy_from)
