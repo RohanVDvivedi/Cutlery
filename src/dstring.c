@@ -236,6 +236,11 @@ dstring get_copy_dstring(const dstring* init_copy_from)
 	return str;
 }
 
+int is_empty_dstring(const dstring* str_p)
+{
+	return 0 == get_char_count_dstring(str_p);
+}
+
 int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index)
 {
 	// check that the ranges of start_index and last_index are valid
@@ -272,6 +277,16 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 		memory_move(str1_data + str1_size, str2_data, str2_size);
 		increment_char_count_dstring(str_p1, str2_size);
 	}
+}
+
+void concatenate_c_string(dstring* str_p1, const char* c_string)
+{
+	concatenate_dstring(str_p1, &get_literal_cstring(c_string));
+}
+
+void concatenate_char(dstring* str_p1, char chr)
+{
+	concatenate_dstring(str_p1, &get_literal_dstring(&chr, 1));
 }
 
 // converts a char to uppercase macro

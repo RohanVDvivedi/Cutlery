@@ -60,6 +60,10 @@ void init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
 dstring get_dstring(const char* data, unsigned int data_size);
 dstring get_copy_dstring(const dstring* init_copy_from);
 
+// checks if the dstring is empty, returns 1 if it is empty
+// equivalent to get_char_count(str_p) == 0
+int is_empty_dstring(const dstring* str_p);
+
 // compare 2 dstrings
 int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
@@ -69,6 +73,8 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 
 // concatenates str_p2 to str_p1
 void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
+void concatenate_c_string(dstring* str_p1, const char* c_string);
+void concatenate_char(dstring* str_p1, char chr);
 
 // append_to_dstring_formatted is a snprintf implementation for dstrings
 void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
