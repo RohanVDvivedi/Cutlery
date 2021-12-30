@@ -211,6 +211,7 @@ int main()
 
 	printf("\n\nremoving all from linkedlist\n\n");
 	remove_all_from_linkedlist(ll);
+	print_ts_linkedlist(ll);
 
 	printf("Testing get_nth_from_head\n");
 	for(unsigned int i = 0; i < 2; i++)
