@@ -18,16 +18,16 @@ void initialize_stack_with_allocator(stack* stack_p, unsigned int capacity, memo
 // push returns 1, if data_p is successfully pushed
 // push returns 0 and fails if the stack container is full
 // if push fails you must expand_stack before pushing any new elements
-int push_stack(stack* stack_p, const void* data_p);
+int push_to_stack(stack* stack_p, const void* data_p);
 
 // pop the last inserted element from the stack
 // pop returns 1, if an element is successfully popped
 // pop returns 0 and fails if the stack container is already empty and does not have any elements to pop
-int pop_stack(stack* stack_p);
+int pop_from_stack(stack* stack_p);
 
 // returns pointer to the top element data pointer, (i.e. data pointer to the last inserted element) 
-const void* get_top_stack(const stack* stack_p);
-const void* get_nth_from_top_stack(const stack* stack_p, unsigned int n);
+const void* get_top_of_stack(const stack* stack_p);
+const void* get_nth_from_top_of_stack(const stack* stack_p, unsigned int n);
 
 // removes all the elements from stack stack_p
 // after a call to this function the stack contains 0 elements (get_element_count() == 0)
@@ -63,7 +63,7 @@ int shrink_stack(stack* stack_p);
 
 // expands stack to atleast the capacity of atleast_capacity
 // returns 1, only if the stack was expanded
-int reserve_capacity_stack(stack* stack_p, unsigned int atleast_capacity);
+int reserve_capacity_for_stack(stack* stack_p, unsigned int atleast_capacity);
 
 // for each element of the stack, perform the given operation
 void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);

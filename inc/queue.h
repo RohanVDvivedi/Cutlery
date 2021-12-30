@@ -18,16 +18,16 @@ void initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memo
 // push returns 1, if data_p is successfully pushed
 // push returns 0 and fails if the queue container is full
 // if push fails you must expand_queue before pushing any new elements
-int push_queue(queue* queue_p, const void* data_p);
+int push_to_queue(queue* queue_p, const void* data_p);
 
 // pop the element from the queue which was inserted earliest of all other elements
 // pop returns 1, if an element is successfully popped
 // pop returns 0 and fails if the queue container is already empty and does not have any elements to pop
-int pop_queue(queue* queue_p);
+int pop_from_queue(queue* queue_p);
 
 // returns pointer to the top element data pointer, (i.e. data pointer to the earliest inserted element) 
-const void* get_top_queue(const queue* queue_p);
-const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n);
+const void* get_top_of_queue(const queue* queue_p);
+const void* get_nth_from_top_of_queue(const queue* queue_p, unsigned int n);
 
 // removes all the elements from queue queue_p
 // after a call to this function the queue contains 0 elements (get_element_count() == 0)
@@ -63,7 +63,7 @@ int shrink_queue(queue* queue_p);
 
 // expands queue to atleast the capacity of atleast_capacity
 // returns 1, only if the queue was expanded
-int reserve_capacity_queue(queue* queue_p, unsigned int atleast_capacity);
+int reserve_capacity_for_queue(queue* queue_p, unsigned int atleast_capacity);
 
 // for each function, to iteration over all non null elements to perform an operation
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);

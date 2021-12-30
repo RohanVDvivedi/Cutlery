@@ -45,24 +45,24 @@ void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_ty
 // push returns 0 and fails if the heap container is full
 // if push fails you must expand_heap before pushing any new elements
 // O(log(N)) operation
-int push_heap(heap* heap_p, const void* data);
+int push_to_heap(heap* heap_p, const void* data);
 
 // pushes all the elements from the array_p from start_index to last_index (both inclusive) to the heap_p
 // returns 1, if the operation was successfull
 // returns 0, if the total_size of the heap was smaller than size necessary
 // upon the return of this function, either all the elements are inserted or no elements are inserted
 // O(N) operation
-int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index);
+int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index);
 
 // pop the top element from the heap
 // pop returns 1, if an element is successfully popped
 // pop returns 0 and fails if the heap container is already empty and does not have any elements to pop
 // O(log(N)) operation
-int pop_heap(heap* heap_p);
+int pop_from_heap(heap* heap_p);
 
 // returns pointer to the top data element of the heap, returns NULL if the heap is empty
 // O(1) operation
-const void* get_top_heap(const heap* heap_p);
+const void* get_top_of_heap(const heap* heap_p);
 
 // the below function is to be called when you doubt if the heap properties are being maintained at the given index
 // or because you changed the attributes of the data, which changed its ordering
@@ -117,7 +117,7 @@ int shrink_heap(heap* heap_p);
 
 // expands heap to atleast the capacity of atleast_capacity
 // returns 1, only if the heap was expanded
-int reserve_capacity_heap(heap* heap_p, unsigned int atleast_capacity);
+int reserve_capacity_for_heap(heap* heap_p, unsigned int atleast_capacity);
 
 // perform an operation on all the key value pairs for the heap
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);

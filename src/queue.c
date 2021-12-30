@@ -12,22 +12,22 @@ void initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memo
 	initialize_arraylist_with_allocator(&(queue_p->queue_holder), capacity, mem_allocator);
 }
 
-int push_queue(queue* queue_p, const void* data_p)
+int push_to_queue(queue* queue_p, const void* data_p)
 {
 	return push_back(&(queue_p->queue_holder), data_p);
 }
 
-int pop_queue(queue* queue_p)
+int pop_from_queue(queue* queue_p)
 {
 	return pop_front(&(queue_p->queue_holder));
 }
 
-const void* get_top_queue(const queue* queue_p)
+const void* get_top_of_queue(const queue* queue_p)
 {
 	return get_front(&(queue_p->queue_holder));
 }
 
-const void* get_nth_from_top_queue(const queue* queue_p, unsigned int n)
+const void* get_nth_from_top_of_queue(const queue* queue_p, unsigned int n)
 {
 	return get_nth_from_front(&(queue_p->queue_holder), n);
 }
@@ -72,7 +72,7 @@ int shrink_queue(queue* queue_p)
 	return shrink_arraylist(&(queue_p->queue_holder));
 }
 
-int reserve_capacity_queue(queue* queue_p, unsigned int atleast_capacity)
+int reserve_capacity_for_queue(queue* queue_p, unsigned int atleast_capacity)
 {
 	return reserve_capacity_arraylist(&(queue_p->queue_holder), atleast_capacity);
 }
@@ -92,8 +92,8 @@ void sprint_queue(dstring* append_str, const queue* queue_p, void (*sprint_eleme
 
 	sprint_chars(append_str, '\t', tabs); 
 	snprintf_dstring(append_str, "top : ");
-	if(get_top_queue(queue_p) != NULL)
-		sprint_element(append_str, get_top_queue(queue_p), 0);
+	if(get_top_of_queue(queue_p) != NULL)
+		sprint_element(append_str, get_top_of_queue(queue_p), 0);
 	else
 		snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");

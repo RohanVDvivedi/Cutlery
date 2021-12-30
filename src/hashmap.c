@@ -437,7 +437,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 }
 
 // utility function used by resize_hashmap function only
-static void push_to_queue_wrapper(const void* hashmap_data, const void* queue_p) {	push_queue((queue*)(queue_p), hashmap_data);	}
+static void push_to_queue_wrapper(const void* hashmap_data, const void* queue_p) {	push_to_queue((queue*)(queue_p), hashmap_data);	}
 
 int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count)
 {
@@ -471,12 +471,12 @@ int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count)
 		// pop elements in the queue 1 by 1 and transfer them from one hashmap to another
 		while(!is_empty_queue(&q))
 		{
-			const void* data = get_top_queue(&q);
+			const void* data = get_top_of_queue(&q);
 
 			remove_from_hashmap(hashmap_p, data);
 			insert_in_hashmap(&new_hashmap, data);
 
-			pop_queue(&q);
+			pop_from_queue(&q);
 		}
 
 		deinitialize_queue(&q);
