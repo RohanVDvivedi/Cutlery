@@ -18,7 +18,7 @@ void initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, m
 	al->element_count = 0;
 }
 
-int push_front(arraylist* al, const void* data_p)
+int push_front_to_arraylist(arraylist* al, const void* data_p)
 {
 	// if full, you can't push to arraylist
 	if(is_full_arraylist(al))
@@ -40,7 +40,7 @@ int push_front(arraylist* al, const void* data_p)
 	return 1;
 }
 
-int push_back(arraylist* al, const void* data_p)
+int push_back_to_arraylist(arraylist* al, const void* data_p)
 {
 	// if full, you can't push to arraylist
 	if(is_full_arraylist(al))
@@ -69,7 +69,7 @@ int push_back(arraylist* al, const void* data_p)
 	return 1;
 }
 
-int pop_front(arraylist* al)
+int pop_front_from_arraylist(arraylist* al)
 {
 	// if empty you can't pop from the arraylist
 	if(is_empty_arraylist(al))
@@ -87,7 +87,7 @@ int pop_front(arraylist* al)
 	return 1;
 }
 
-int pop_back(arraylist* al)
+int pop_back_from_arraylist(arraylist* al)
 {
 	// if empty you can't pop from the arraylist
 	if(is_empty_arraylist(al))
@@ -105,7 +105,7 @@ int pop_back(arraylist* al)
 	return 1;
 }
 
-const void* get_front(const arraylist* al)
+const void* get_front_of_arraylist(const arraylist* al)
 {
 	// if empty, return NULL
 	if(is_empty_arraylist(al))
@@ -115,7 +115,7 @@ const void* get_front(const arraylist* al)
 	return get_from_array(&(al->arraylist_holder), al->first_index);
 }
 
-const void* get_back(const arraylist* al)
+const void* get_back_of_arraylist(const arraylist* al)
 {
 	// if empty, return NULL
 	if(is_empty_arraylist(al))
@@ -125,7 +125,7 @@ const void* get_back(const arraylist* al)
 	return get_from_array(&(al->arraylist_holder), get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al)));
 }
 
-const void* get_nth_from_front(const arraylist* al, unsigned int n)
+const void* get_nth_from_front_of_arraylist(const arraylist* al, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
 	if(is_empty_arraylist(al) || n >= al->element_count)
@@ -138,7 +138,7 @@ const void* get_nth_from_front(const arraylist* al, unsigned int n)
 	return get_from_array(&(al->arraylist_holder), index_concerned);
 }
 
-const void* get_nth_from_back(const arraylist* al, unsigned int n)
+const void* get_nth_from_back_of_arraylist(const arraylist* al, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
 	if(is_empty_arraylist(al) || n >= al->element_count)
@@ -152,7 +152,7 @@ const void* get_nth_from_back(const arraylist* al, unsigned int n)
 	return get_from_array(&(al->arraylist_holder), index_concerned);
 }
 
-int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n)
+int set_nth_from_front_in_arraylist(arraylist* al, const void* data_p, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
 	if(is_empty_arraylist(al) || n >= al->element_count)
@@ -165,7 +165,7 @@ int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n)
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
 }
 
-int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n)
+int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, unsigned int n)
 {
 	// arraylist must not be empty and the index-n must be lesser than the element-count
 	if(is_empty_arraylist(al) || n >= al->element_count)
@@ -247,7 +247,7 @@ int expand_arraylist(arraylist* al)
 	return has_holder_expanded;
 }
 
-int reserve_capacity_arraylist(arraylist* al, unsigned int atleast_capacity)
+int reserve_capacity_for_arraylist(arraylist* al, unsigned int atleast_capacity)
 {
 	int data_movement_will_be_required = 1;
 
@@ -351,12 +351,12 @@ void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_el
 	sprint_array(append_str, &(al->arraylist_holder), sprint_element, tabs + 1);
 	snprintf_dstring(append_str, "\n");
 	
-	const void* front_element = get_front(al);
+	const void* front_element = get_front_of_arraylist(al);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "front : ");
 	(front_element != NULL) ? sprint_element(append_str, front_element, 0) : snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");
 
-	const void* back_element = get_back(al);
+	const void* back_element = get_back_of_arraylist(al);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "back  : ");
 	(back_element != NULL) ? sprint_element(append_str, back_element, 0) : snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");
