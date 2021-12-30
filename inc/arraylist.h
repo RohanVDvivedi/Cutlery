@@ -25,37 +25,32 @@ struct arraylist
 void initialize_arraylist(arraylist* al, unsigned int capacity);
 void initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator);
 
-// push_front functions will push data_p to the front of the arraylist, and will return 1 on success
+// push_* functions will push data_p to the front/back of the arraylist, and will return 1 on success
 int push_front(arraylist* al, const void* data_p);
-// push_back functions will push data_p to the back of the arraylist, and will return 1 on success
 int push_back(arraylist* al, const void* data_p);
-// push_* functions will fail and return 0, if the number of elements in the arraylist is equal to the arraylist_holder.total_size
+// push_* functions will fail and return 0, if the arraylist if_full
 // this happens because the arraylist does not have additional space to store the new element
 // if this happens you may call expand_arraylist to  expand the arrayholder of the arraylist
 
-// pop_front functions will pop a data element from the front of the arraylist, and will return 1 on success
+// pop_* functions will pop a data element from the front/back of the arraylist, and will return 1 on success
 int pop_front(arraylist* al);
-// pop_back functions will pop a data element from the front of the arraylist, and will return 1 on success
 int pop_back(arraylist* al);
 // pop_* functions will fail and return 0, if no element was popped from the arraylist 
 // This happens if the number of elements in the given arraylist is 0
 
-// returns an element at the front of the arraylist, this is also the element at the first_index
-// it fails and returns NULL, if the 
+// returns an element at the front/back of the arraylist
+// it fails and returns NULL, if the arraylist is empty
 const void* get_front(const arraylist* al);
-// returns an element at the back of the arraylist, this is also the element at the first_index + ((element_count - 1) % arraylist_holder.total_size)
 const void* get_back(const arraylist* al);
 // get_* functions will fail and return NULL if the number of elements in the given arraylist is 0
 
-// to get nth element from the front of the arraylist
+// to get nth element from the front/back of the arraylist
 const void* get_nth_from_front(const arraylist* al, unsigned int n);
-// to get nth element from the back of the arraylist
 const void* get_nth_from_back(const arraylist* al, unsigned int n);
 // get_nth_from_* functions will fail and return NULL if n is greater than the number of elements in the given arraylist
 
-// to set nth element from front in the arraylist to data_p pointer
+// to set nth element from front/back in the arraylist to data_p pointer
 int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n);
-// to set nth element from back in the arraylist to data_p pointer
 int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n);
 // set_nth_from_* functions will fail and return 0 if n is greater than the number of elements in the given arraylist
 // on success, these functions will return 1
@@ -65,9 +60,9 @@ unsigned int get_capacity_arraylist(const arraylist* al);
 // returns the number of elements inside the arraylist
 unsigned int get_element_count_arraylist(const arraylist* al);
 
-// returns 1 if the arraylist is full (i.e. no new elements can be inserted before expanding), else returns 0
+// returns 1 if the arraylist is full, else returns 0
 int is_full_arraylist(const arraylist* al);
-// returns 1 if the arraylist is empty (i.e. no elements are present), else returns 0
+// returns 1 if the arraylist is empty, else returns 0
 int is_empty_arraylist(const arraylist* al);
 
 // the below functions can be used to expand or shring the arrayholder of the arraylist
