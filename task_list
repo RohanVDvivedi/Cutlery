@@ -6,7 +6,6 @@ DSTRING tasks
 COMMON to all datastructures tasks
  * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
  * check that upon expansion of array, the final updated capacity is not overflowing
- * linkedlist and arraylist need name mangling
 
 2. Add new datastructure types tasks (*future)
 
