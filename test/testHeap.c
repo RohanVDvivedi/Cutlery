@@ -40,12 +40,12 @@ void push_heap_SAFE(heap* heap_p, const void* data_p)
 {
 	if(is_full_heap(heap_p))
 		expand_heap(heap_p);
-	push_heap(heap_p, data_p);
+	push_to_heap(heap_p, data_p);
 }
 
 void pop_heap_OPTIMUM_MEMORY(heap* heap_p)
 {
-	pop_heap(heap_p);
+	pop_from_heap(heap_p);
 	if(get_capacity_heap(heap_p) > 1.5 * get_element_count_heap(heap_p))
 		shrink_heap(heap_p);
 }
