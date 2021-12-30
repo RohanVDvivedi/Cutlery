@@ -25,34 +25,34 @@ struct arraylist
 void initialize_arraylist(arraylist* al, unsigned int capacity);
 void initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator);
 
-// push_* functions will push data_p to the front/back of the arraylist, and will return 1 on success
-int push_front(arraylist* al, const void* data_p);
-int push_back(arraylist* al, const void* data_p);
-// push_* functions will fail and return 0, if the arraylist if_full
+// push_*_to_arraylist functions will push data_p to the front/back of the arraylist, and will return 1 on success
+int push_front_to_arraylist(arraylist* al, const void* data_p);
+int push_back_to_arraylist(arraylist* al, const void* data_p);
+// push_*_to_arraylist functions will fail and return 0, if the arraylist if_full
 // this happens because the arraylist does not have additional space to store the new element
 // if this happens you may call expand_arraylist to  expand the arrayholder of the arraylist
 
-// pop_* functions will pop a data element from the front/back of the arraylist, and will return 1 on success
-int pop_front(arraylist* al);
-int pop_back(arraylist* al);
-// pop_* functions will fail and return 0, if no element was popped from the arraylist 
+// pop_*_from_arraylist functions will pop a data element from the front/back of the arraylist, and will return 1 on success
+int pop_front_from_arraylist(arraylist* al);
+int pop_back_from_arraylist(arraylist* al);
+// pop_*_from_arraylist functions will fail and return 0, if no element was popped from the arraylist 
 // This happens if the number of elements in the given arraylist is 0
 
 // returns an element at the front/back of the arraylist
 // it fails and returns NULL, if the arraylist is empty
-const void* get_front(const arraylist* al);
-const void* get_back(const arraylist* al);
-// get_* functions will fail and return NULL if the number of elements in the given arraylist is 0
+const void* get_front_of_arraylist(const arraylist* al);
+const void* get_back_of_arraylist(const arraylist* al);
+// get_*_of_arraylist functions will fail and return NULL if the number of elements in the given arraylist is 0
 
 // to get nth element from the front/back of the arraylist
-const void* get_nth_from_front(const arraylist* al, unsigned int n);
-const void* get_nth_from_back(const arraylist* al, unsigned int n);
-// get_nth_from_* functions will fail and return NULL if n is greater than the number of elements in the given arraylist
+const void* get_nth_from_front_of_arraylist(const arraylist* al, unsigned int n);
+const void* get_nth_from_back_of_arraylist(const arraylist* al, unsigned int n);
+// get_nth_from_*_of_arraylist functions will fail and return NULL if n is greater than the number of elements in the given arraylist
 
 // to set nth element from front/back in the arraylist to data_p pointer
-int set_nth_from_front(arraylist* al, const void* data_p, unsigned int n);
-int set_nth_from_back(arraylist* al, const void* data_p, unsigned int n);
-// set_nth_from_* functions will fail and return 0 if n is greater than the number of elements in the given arraylist
+int set_nth_from_front_in_arraylist(arraylist* al, const void* data_p, unsigned int n);
+int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, unsigned int n);
+// set_nth_from_*_in_arraylist functions will fail and return 0 if n is greater than the number of elements in the given arraylist
 // on success, these functions will return 1
 
 // returns capacity of the arraylist, i.e. the maximum number of elements that can be accomodated in arraylist
@@ -73,7 +73,7 @@ int shrink_arraylist(arraylist* al);
 
 // expands arraylist to atleast the capacity of atleast_capacity
 // returns 1, only if the arraylist was expanded
-int reserve_capacity_arraylist(arraylist* al, unsigned int atleast_capacity);
+int reserve_capacity_for_arraylist(arraylist* al, unsigned int atleast_capacity);
 
 // get the data from the arraylist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the arraylist that compares equal (i.e. compare function returns 0)
