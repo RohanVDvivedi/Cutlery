@@ -70,7 +70,7 @@ int main()
 
 	print_ts_array(array_p);
 
-	set_element(array_p, &((ts){111, "def"}), 1);
+	set_in_array(array_p, &((ts){111, "def"}), 1);
 
 	print_ts_array(array_p);
 
@@ -79,22 +79,22 @@ int main()
 
 	print_ts_array(array_p);
 
-	set_element(array_p, &((ts){333, "jkl"}), 3);
-	set_element(array_p, &((ts){222, "ghi"}), 2);
+	set_in_array(array_p, &((ts){333, "jkl"}), 3);
+	set_in_array(array_p, &((ts){222, "ghi"}), 2);
 
 	print_ts_array(array_p);
 
-	set_element(array_p, &((ts){555, "one 0 3"}), 5);
-	set_element(array_p, &((ts){100, "abc"}), 0);
+	set_in_array(array_p, &((ts){555, "one 0 3"}), 5);
+	set_in_array(array_p, &((ts){100, "abc"}), 0);
 
 	print_ts_array(array_p);
 
-	set_element(array_p, &((ts){444, "mno"}), 4);
-	set_element(array_p, &((ts){555, "pqr"}), 5);
+	set_in_array(array_p, &((ts){444, "mno"}), 4);
+	set_in_array(array_p, &((ts){555, "pqr"}), 5);
 
 	print_ts_array(array_p);
 
-	set_element(array_p, &((ts){666, "stu"}), 6);
+	set_in_array(array_p, &((ts){666, "stu"}), 6);
 
 	print_ts_array(array_p);
 
@@ -103,8 +103,8 @@ int main()
 
 	print_ts_array(array_p);
 
-	set_element(array_p, &((ts){777, "7 th"}), 7);
-	set_element(array_p, &((ts){888, "8 th"}), 8);
+	set_in_array(array_p, &((ts){777, "7 th"}), 7);
+	set_in_array(array_p, &((ts){888, "8 th"}), 8);
 
 	print_ts_array(array_p);
 
@@ -120,7 +120,7 @@ int main()
 	ts to_find = {444, "lol"};
 	printf("Finding data where a = %d\n", to_find.a);
 	printf("Linear search : ");
-	print_ts(get_element(array_p, linear_search_in_array(array_p, 0, get_capacity_array(array_p) - 1, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE)));
+	print_ts(get_from_array(array_p, linear_search_in_array(array_p, 0, get_capacity_array(array_p) - 1, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE)));
 	printf("\n");
 
 
@@ -140,7 +140,7 @@ int main()
 	for(int i = 0; i < sort_array_size; i++)
 	{
 		ts_ss[i] = ((ts){rand() % sort_array_size, "XXX-dont care"});
-		set_element(array_p, ts_ss + i, i);
+		set_in_array(array_p, ts_ss + i, i);
 	}
 
 	printf("Array initialized\n\n");print_ts_array(array_p);printf("\n\n");
@@ -182,7 +182,7 @@ int main()
 		if(index != INVALID_INDEX)
 		{
 			printf("%u : ", index);
-			print_ts(get_element(array_p, index));
+			print_ts(get_from_array(array_p, index));
 		}
 		else
 			printf("Not found");
@@ -193,7 +193,7 @@ int main()
 		if(index != INVALID_INDEX)
 		{
 			printf("%u : ", index);
-			print_ts(get_element(array_p, index));
+			print_ts(get_from_array(array_p, index));
 		}
 		else
 			printf("Not found");
@@ -204,7 +204,7 @@ int main()
 		if(index != INVALID_INDEX)
 		{
 			printf("%u : ", index);
-			print_ts(get_element(array_p, index));
+			print_ts(get_from_array(array_p, index));
 		}
 		else
 			printf("Not found");
@@ -215,7 +215,7 @@ int main()
 		if(index != INVALID_INDEX)
 		{
 			printf("%u : ", index);
-			print_ts(get_element(array_p, index));
+			print_ts(get_from_array(array_p, index));
 		}
 		else
 			printf("Not found");
@@ -224,7 +224,7 @@ int main()
 		printf("Find insertion index : ");
 		index = find_insertion_index_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
 		printf("%u : ", index);
-		print_ts(get_element(array_p, index));
+		print_ts(get_from_array(array_p, index));
 		printf("\n\n");
 	}
 

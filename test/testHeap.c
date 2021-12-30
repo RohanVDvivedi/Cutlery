@@ -54,7 +54,7 @@ void change_key(heap* heap_p, unsigned int index, int new_key)
 {
 	if(index <= heap_p->element_count - 1)
 	{
-		((ts*)get_element(&(heap_p->heap_holder), index))->key = new_key;
+		((ts*)get_from_array(&(heap_p->heap_holder), index))->key = new_key;
 		heapify_at(heap_p, index);
 	}
 }
