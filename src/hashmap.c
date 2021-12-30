@@ -111,7 +111,7 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 
 	while(probe_sequence_length < get_bucket_count_hashmap(hashmap_p))
 	{
-		data_at_index = get_element(&(hashmap_p->hashmap_holder), expected_index);
+		data_at_index = get_from_array(&(hashmap_p->hashmap_holder), expected_index);
 
 		if(data_at_index != NULL)
 		{
@@ -151,7 +151,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 		{
 			unsigned int index = get_actual_index(hashmap_p, data);
 
-			const void* data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
+			const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
 			
 			if(data_at_index != NULL && hashmap_p->compare(data, data_at_index) == 0)
 				return data_at_index;
@@ -163,7 +163,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			unsigned int index = get_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			
-			ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 			return find_equals_in_linkedlist(&ll, data, hashmap_p->compare);
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -172,7 +172,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			unsigned int index = get_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
-			bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 			return find_equals_in_bst(&bstt, data);
 		}
 		default :
@@ -205,11 +205,11 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 
 			while(1)
 			{
-				const void* data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
+				const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
 			
 				if(data_at_index == NULL)
 				{
-					set_element(&(hashmap_p->hashmap_holder), data, index);
+					set_in_array(&(hashmap_p->hashmap_holder), data, index);
 					inserted = 1;
 					break;
 				}
@@ -225,7 +225,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 					if(probe_sequence_length > probe_sequence_length_data_at_index)
 					{
 						// steal the slot
-						set_element(&(hashmap_p->hashmap_holder), data, index);
+						set_in_array(&(hashmap_p->hashmap_holder), data, index);
 						data = data_at_index;
 						probe_sequence_length = probe_sequence_length_data_at_index;
 					}
@@ -244,9 +244,9 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			unsigned int index = get_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
-			ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 			inserted = insert_head(&ll, data);
-			set_element(&(hashmap_p->hashmap_holder), ll.head, index);
+			set_in_array(&(hashmap_p->hashmap_holder), ll.head, index);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -255,9 +255,9 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			unsigned int index = get_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
-			bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 			inserted = insert_in_bst(&bstt, data);
-			set_element(&(hashmap_p->hashmap_holder), bstt.root, index);
+			set_in_array(&(hashmap_p->hashmap_holder), bstt.root, index);
 			break;
 		}
 	}
@@ -282,28 +282,28 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		{
 			unsigned int index = get_actual_index(hashmap_p, data);
 
-			const void* data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
+			const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
 			
 			// if the given element does not exist in the hashmap we can not remove it
 			if(data_at_index != data)
 				break;
 
-			set_element(&(hashmap_p->hashmap_holder), NULL, index);
+			set_in_array(&(hashmap_p->hashmap_holder), NULL, index);
 			deleted = 1;
 
 			unsigned int previousIndex = index;
 			index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
-			data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
+			data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
 			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
 			{
 				// shift null downwards
 				{
-					set_element(&(hashmap_p->hashmap_holder), get_element(&(hashmap_p->hashmap_holder), index), previousIndex);
-					set_element(&(hashmap_p->hashmap_holder), NULL, index);
+					set_in_array(&(hashmap_p->hashmap_holder), get_from_array(&(hashmap_p->hashmap_holder), index), previousIndex);
+					set_in_array(&(hashmap_p->hashmap_holder), NULL, index);
 				}
 				previousIndex = index;
 				index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
-				data_at_index = get_element(&(hashmap_p->hashmap_holder), index);
+				data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
 			}
 
 			break;
@@ -313,9 +313,9 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			unsigned int index = get_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
-			ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 			deleted = remove_from_linkedlist(&ll, data);
-			set_element(&(hashmap_p->hashmap_holder), ll.head, index);
+			set_in_array(&(hashmap_p->hashmap_holder), ll.head, index);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -324,9 +324,9 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			unsigned int index = get_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
-			bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 			deleted = remove_from_bst(&bstt, data);
-			set_element(&(hashmap_p->hashmap_holder), bstt.root, index);
+			set_in_array(&(hashmap_p->hashmap_holder), bstt.root, index);
 			break;
 		}
 	}
@@ -352,7 +352,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
 				// remove all elements from the linkedlist bucket
 				remove_all_from_linkedlist(&ll);
@@ -365,7 +365,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
 				// remove all elements from the bst bucket
 				remove_all_from_bst(&bstt);
@@ -403,8 +403,8 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 		{
 			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				if(get_element(&(hashmap_p->hashmap_holder), index) != NULL)
-					operation(get_element(&(hashmap_p->hashmap_holder), index), additional_params);
+				if(get_from_array(&(hashmap_p->hashmap_holder), index) != NULL)
+					operation(get_from_array(&(hashmap_p->hashmap_holder), index), additional_params);
 			}
 			break;
 		}
@@ -413,7 +413,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 				for_each_in_linkedlist(&ll, operation, additional_params);
 			}
 			break;
@@ -424,7 +424,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 				for_each_in_bst(&bstt, POST_ORDER, operation, additional_params);
 			}
 			break;
@@ -541,26 +541,26 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 		sprint_chars(append_str, '\t', tabs + 1);
 		snprintf_dstring(append_str, "bucket_id = %u\n", index);
 
-		if(get_element(&(hashmap_p->hashmap_holder), index) != NULL)
+		if(get_from_array(&(hashmap_p->hashmap_holder), index) != NULL)
 		{
 			switch(hashmap_p->hashmap_policy)
 			{
 				case ROBINHOOD_HASHING :
 				{
-					sprint_element(append_str, get_element(&(hashmap_p->hashmap_holder), index), tabs + 2);
+					sprint_element(append_str, get_from_array(&(hashmap_p->hashmap_holder), index), tabs + 2);
 					snprintf_dstring(append_str, "\n");
 					break;
 				}
 				case ELEMENTS_AS_LINKEDLIST :
 				{
-					ll.head = (llnode*) get_element(&(hashmap_p->hashmap_holder), index);
+					ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 					sprint_linkedlist(append_str, &ll, sprint_element, tabs + 2);
 					break;
 				}
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
-					bstt.root = (bstnode*) get_element(&(hashmap_p->hashmap_holder), index);
+					bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 					sprint_bst(append_str, &bstt, sprint_element, tabs + 2);
 					break;
 				}
