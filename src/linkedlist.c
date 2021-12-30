@@ -31,17 +31,17 @@ int is_empty_linkedlist(const linkedlist* ll)
 	return (ll->head == NULL);
 }
 
-const void* get_head(const linkedlist* ll)
+const void* get_head_of_linkedlist(const linkedlist* ll)
 {
 	return ((ll->head == NULL) ? NULL : get_data(ll->head));
 }
 
-const void* get_tail(const linkedlist* ll)
+const void* get_tail_of_linkedlist(const linkedlist* ll)
 {
 	return ((ll->head == NULL) ? NULL : get_data(ll->head->prev));
 }
 
-const void* get_nth_from_head(const linkedlist* ll, unsigned int n)
+const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, unsigned int n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
@@ -60,7 +60,7 @@ const void* get_nth_from_head(const linkedlist* ll, unsigned int n)
 	return NULL;
 }
 
-const void* get_nth_from_tail(const linkedlist* ll, unsigned int n)
+const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, unsigned int n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
@@ -81,12 +81,12 @@ const void* get_nth_from_tail(const linkedlist* ll, unsigned int n)
 	return NULL;
 }
 
-const void* get_next_of(const linkedlist* ll, const void* data_xist)
+const void* get_next_of_in_linkedlist(const linkedlist* ll, const void* data_xist)
 {
 	return get_data(((llnode*)(get_node(data_xist)))->next);
 }
 
-const void* get_prev_of(const linkedlist* ll, const void* data_xist)
+const void* get_prev_of_in_linkedlist(const linkedlist* ll, const void* data_xist)
 {
 	return get_data(((llnode*)(get_node(data_xist)))->prev);
 }
@@ -117,7 +117,7 @@ static void insert_node_after(linkedlist* ll, llnode* node_p, llnode* new_node)
 	new_node->next->prev = new_node;
 }
 
-int insert_head(linkedlist* ll, const void* data_p)
+int insert_head_in_linkedlist(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p);
 
@@ -137,7 +137,7 @@ int insert_head(linkedlist* ll, const void* data_p)
 	return 1;
 }
 
-int insert_tail(linkedlist* ll, const void* data_p)
+int insert_tail_in_linkedlist(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p);
 
@@ -157,7 +157,7 @@ int insert_tail(linkedlist* ll, const void* data_p)
 	return 1;
 }
 
-int insert_before(linkedlist* ll, const void* data_xist, const void* data)
+int insert_before_in_linkedlist(linkedlist* ll, const void* data_xist, const void* data)
 {
 	llnode* node_xist = get_node(data_xist);
 	llnode* new_node = get_node(data);
@@ -171,7 +171,7 @@ int insert_before(linkedlist* ll, const void* data_xist, const void* data)
 	return 1;
 }
 
-int insert_after(linkedlist* ll, const void* data_xist, const void* data)
+int insert_after_in_linkedlist(linkedlist* ll, const void* data_xist, const void* data)
 {
 	llnode* node_xist = get_node(data_xist);
 	llnode* new_node = get_node(data);
@@ -215,7 +215,7 @@ static void insert_all_nodes_after(linkedlist* ll, llnode* node_p, llnode* new_n
 	new_nodes_tail->next->prev = new_nodes_tail;
 }
 
-int insert_all_at_head(linkedlist* ll, linkedlist* insert_from_ll)
+int insert_all_at_head_in_linkedlist(linkedlist* ll, linkedlist* insert_from_ll)
 {
 	// if the node_offsets are different OR if insert_from_ll is empty then we fail
 	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
@@ -232,7 +232,7 @@ int insert_all_at_head(linkedlist* ll, linkedlist* insert_from_ll)
 	return 1;
 }
 
-int insert_all_at_tail(linkedlist* ll, linkedlist* insert_from_ll)
+int insert_all_at_tail_in_linkedlist(linkedlist* ll, linkedlist* insert_from_ll)
 {
 	// if the node_offsets are different OR if insert_from_ll is empty OR if both the linkedlists are the same, then we fail
 	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
@@ -249,7 +249,7 @@ int insert_all_at_tail(linkedlist* ll, linkedlist* insert_from_ll)
 	return 1;
 }
 
-int insert_all_before(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll)
+int insert_all_before_in_linkedlist(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll)
 {
 	// if the node_offsets are different OR if insert_from_ll is empty OR if both the linkedlists are the same, then we fail
 	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
@@ -266,7 +266,7 @@ int insert_all_before(linkedlist* ll, const void* data_xist, linkedlist* insert_
 	return 1;
 }
 
-int insert_all_after(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll)
+int insert_all_after_in_linkedlist(linkedlist* ll, const void* data_xist, linkedlist* insert_from_ll)
 {
 	// if the node_offsets are different OR if insert_from_ll is empty OR if both the linkedlists are the same, then we fail
 	if(ll->node_offset != insert_from_ll->node_offset || is_empty_linkedlist(insert_from_ll) || ll == insert_from_ll)
@@ -300,7 +300,7 @@ static void remove_node(linkedlist* ll, llnode* node_p)
 	node_p->prev = NULL;
 }
 
-int remove_head(linkedlist* ll)
+int remove_head_from_linkedlist(linkedlist* ll)
 {
 	if(is_empty_linkedlist(ll))	// remove fails with 0, if linkedlist is empty
 		return 0;
@@ -310,7 +310,7 @@ int remove_head(linkedlist* ll)
 	return 1;
 }
 
-int remove_tail(linkedlist* ll)
+int remove_tail_from_linkedlist(linkedlist* ll)
 {
 	if(is_empty_linkedlist(ll))	// remove fails with 0, if linkedlist is empty
 		return 0;
