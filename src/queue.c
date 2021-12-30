@@ -14,22 +14,22 @@ void initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memo
 
 int push_to_queue(queue* queue_p, const void* data_p)
 {
-	return push_back(&(queue_p->queue_holder), data_p);
+	return push_back_to_arraylist(&(queue_p->queue_holder), data_p);
 }
 
 int pop_from_queue(queue* queue_p)
 {
-	return pop_front(&(queue_p->queue_holder));
+	return pop_front_from_arraylist(&(queue_p->queue_holder));
 }
 
 const void* get_top_of_queue(const queue* queue_p)
 {
-	return get_front(&(queue_p->queue_holder));
+	return get_front_of_arraylist(&(queue_p->queue_holder));
 }
 
 const void* get_nth_from_top_of_queue(const queue* queue_p, unsigned int n)
 {
-	return get_nth_from_front(&(queue_p->queue_holder), n);
+	return get_nth_from_front_of_arraylist(&(queue_p->queue_holder), n);
 }
 
 void remove_all_from_queue(queue* queue_p)
@@ -74,7 +74,7 @@ int shrink_queue(queue* queue_p)
 
 int reserve_capacity_for_queue(queue* queue_p, unsigned int atleast_capacity)
 {
-	return reserve_capacity_arraylist(&(queue_p->queue_holder), atleast_capacity);
+	return reserve_capacity_for_arraylist(&(queue_p->queue_holder), atleast_capacity);
 }
 
 void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
