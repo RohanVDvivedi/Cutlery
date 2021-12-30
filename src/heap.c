@@ -133,7 +133,7 @@ void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_ty
 	heap_p->callback_params = callback_params;
 }
 
-int push_heap(heap* heap_p, const void* data)
+int push_to_heap(heap* heap_p, const void* data)
 {
 	// fail, heap is full
 	if(is_full_heap(heap_p))
@@ -152,7 +152,7 @@ int push_heap(heap* heap_p, const void* data)
 	return 1;
 }
 
-int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index)
+int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index)
 {
 	// fail if the indexes provided in the array are invalid
 	if(start_index > last_index)
@@ -175,13 +175,13 @@ int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_in
 	return 1;
 }
 
-int pop_heap(heap* heap_p)
+int pop_from_heap(heap* heap_p)
 {
 	// remove the 0th element from the heap
 	return remove_from_heap(heap_p, 0);
 }
 
-const void* get_top_heap(const heap* heap_p)
+const void* get_top_of_heap(const heap* heap_p)
 {
 	// ther is no top element, if there are no elements in the heap
 	if(is_empty_heap(heap_p))
@@ -302,7 +302,7 @@ int shrink_heap(heap* heap_p)
 	return shrink_array(&(heap_p->heap_holder), heap_p->element_count);
 }
 
-int reserve_capacity_heap(heap* heap_p, unsigned int atleast_capacity)
+int reserve_capacity_for_heap(heap* heap_p, unsigned int atleast_capacity)
 {
 	return reserve_capacity_array(&(heap_p->heap_holder), atleast_capacity);
 }
@@ -333,8 +333,8 @@ void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)
 
 	sprint_chars(append_str, '\t', tabs);
 	snprintf_dstring(append_str, "top : ");
-	if(get_top_heap(heap_p) != NULL)
-		sprint_element(append_str, get_top_heap(heap_p), 0);
+	if(get_top_of_heap(heap_p) != NULL)
+		sprint_element(append_str, get_top_of_heap(heap_p), 0);
 	else
 		snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");

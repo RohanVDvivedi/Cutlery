@@ -105,8 +105,8 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last
 	// place the top of the heap element in the array, then pop heap
 	for(unsigned int i = total_elements; i > 0; i--)
 	{
-		const void* max_data = get_top_heap(&sort_heap);
-		pop_heap(&sort_heap);
+		const void* max_data = get_top_of_heap(&sort_heap);
+		pop_from_heap(&sort_heap);
 		set_in_array(array_p, max_data, start_index + i - 1);
 	}
 
@@ -168,21 +168,21 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 		{
 			const void* data = get_from_array(array_p, index++);
 			unsigned int queue_index = (get_sort_attribute(data) >> i) & 1;
-			push_queue(&(sort_queue[queue_index]), data);
+			push_to_queue(&(sort_queue[queue_index]), data);
 		}
 
 		index = start_index;
 		while(!is_empty_queue(&(sort_queue[0])))
 		{
-			const void* data = get_top_queue(&(sort_queue[0]));
+			const void* data = get_top_of_queue(&(sort_queue[0]));
 			set_in_array(array_p, data, index++);
-			pop_queue(&(sort_queue[0]));
+			pop_from_queue(&(sort_queue[0]));
 		}
 		while(!is_empty_queue(&(sort_queue[1])))
 		{
-			const void* data = get_top_queue(&(sort_queue[1]));
+			const void* data = get_top_of_queue(&(sort_queue[1]));
 			set_in_array(array_p, data, index++);
-			pop_queue(&(sort_queue[1]));
+			pop_from_queue(&(sort_queue[1]));
 		}
 	}
 

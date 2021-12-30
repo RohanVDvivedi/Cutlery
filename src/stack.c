@@ -12,22 +12,22 @@ void initialize_stack_with_allocator(stack* stack_p, unsigned int capacity, memo
 	initialize_arraylist_with_allocator(&(stack_p->stack_holder), capacity, mem_allocator);
 }
 
-int push_stack(stack* stack_p, const void* data_p)
+int push_to_stack(stack* stack_p, const void* data_p)
 {
 	return push_back(&(stack_p->stack_holder), data_p);
 }
 
-int pop_stack(stack* stack_p)
+int pop_from_stack(stack* stack_p)
 {
 	return pop_back(&(stack_p->stack_holder));
 }
 
-const void* get_top_stack(const stack* stack_p)
+const void* get_top_of_stack(const stack* stack_p)
 {
 	return get_back(&(stack_p->stack_holder));
 }
 
-const void* get_nth_from_top_stack(const stack* stack_p, unsigned int n)
+const void* get_nth_from_top_of_stack(const stack* stack_p, unsigned int n)
 {
 	return get_nth_from_back(&(stack_p->stack_holder), n);
 }
@@ -72,7 +72,7 @@ int shrink_stack(stack* stack_p)
 	return shrink_arraylist(&(stack_p->stack_holder));
 }
 
-int reserve_capacity_stack(stack* stack_p, unsigned int atleast_capacity)
+int reserve_capacity_for_stack(stack* stack_p, unsigned int atleast_capacity)
 {
 	return reserve_capacity_arraylist(&(stack_p->stack_holder), atleast_capacity);
 }
@@ -92,8 +92,8 @@ void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_eleme
 
 	sprint_chars(append_str, '\t', tabs); 
 	snprintf_dstring(append_str, "top : ");
-	if(get_top_stack(stack_p) != NULL)
-		sprint_element(append_str, get_top_stack(stack_p), 0);
+	if(get_top_of_stack(stack_p) != NULL)
+		sprint_element(append_str, get_top_of_stack(stack_p), 0);
 	else
 		snprintf_dstring(append_str, "NULL");
 	snprintf_dstring(append_str, "\n");
