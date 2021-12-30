@@ -108,7 +108,7 @@ int main()
 
 	print_ts_array(array_p);
 
-	reserve_capacity_array(array_p, 105);
+	reserve_capacity_for_array(array_p, 105);
 
 	print_ts_array(array_p);
 
@@ -133,7 +133,7 @@ int main()
 	#define end_index       (start_index + test_sort_size - 1)
 
 	// expand existing array, to atleast_capacity of sort_array_size
-	reserve_capacity_array(array_p, sort_array_size);
+	reserve_capacity_for_array(array_p, sort_array_size);
 
 	// initialize array
 	ts ts_ss[sort_array_size];
