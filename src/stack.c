@@ -14,22 +14,22 @@ void initialize_stack_with_allocator(stack* stack_p, unsigned int capacity, memo
 
 int push_to_stack(stack* stack_p, const void* data_p)
 {
-	return push_back(&(stack_p->stack_holder), data_p);
+	return push_back_to_arraylist(&(stack_p->stack_holder), data_p);
 }
 
 int pop_from_stack(stack* stack_p)
 {
-	return pop_back(&(stack_p->stack_holder));
+	return pop_back_from_arraylist(&(stack_p->stack_holder));
 }
 
 const void* get_top_of_stack(const stack* stack_p)
 {
-	return get_back(&(stack_p->stack_holder));
+	return get_back_of_arraylist(&(stack_p->stack_holder));
 }
 
 const void* get_nth_from_top_of_stack(const stack* stack_p, unsigned int n)
 {
-	return get_nth_from_back(&(stack_p->stack_holder), n);
+	return get_nth_from_back_of_arraylist(&(stack_p->stack_holder), n);
 }
 
 void remove_all_from_stack(stack* stack_p)
@@ -74,7 +74,7 @@ int shrink_stack(stack* stack_p)
 
 int reserve_capacity_for_stack(stack* stack_p, unsigned int atleast_capacity)
 {
-	return reserve_capacity_arraylist(&(stack_p->stack_holder), atleast_capacity);
+	return reserve_capacity_for_arraylist(&(stack_p->stack_holder), atleast_capacity);
 }
 
 void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
