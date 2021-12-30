@@ -32,33 +32,33 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		case PUSH_FRONT :
 		{
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
-			printf("PUSH_FRONT : %d :: %d\n", *data, push_front(al, data));
+			printf("PUSH_FRONT : %d :: %d\n", *data, push_front_to_arraylist(al, data));
 			break;
 		}
 
 		case PUSH_BACK :
 		{
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
-			printf("PUSH_BACK : %d :: %d\n", *data, push_back(al, data));
+			printf("PUSH_BACK : %d :: %d\n", *data, push_back_to_arraylist(al, data));
 			break;
 		}
 
 		case POP_FRONT :
 		{
-			printf("POP_FRONT :: %d\n", pop_front(al));
+			printf("POP_FRONT :: %d\n", pop_front_from_arraylist(al));
 			break;
 		}
 
 		case POP_BACK :
 		{
-			printf("POP_BACK :: %d\n", pop_back(al));
+			printf("POP_BACK :: %d\n", pop_back_from_arraylist(al));
 			break;
 		}
 
 		case GET_NTH_FRONT :
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
-			const int* data = get_nth_from_front(al, index);
+			const int* data = get_nth_from_front_of_arraylist(al, index);
 			printf("GET %u TH_FRONT : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
 			break;
 		}
@@ -66,7 +66,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		case GET_NTH_BACK :
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
-			const int* data = get_nth_from_back(al, index);
+			const int* data = get_nth_from_back_of_arraylist(al, index);
 			printf("GET %u TH_BACK : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
 			break;
 		}
@@ -75,7 +75,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
-			printf("SET %u TH_FRONT : %d : %d\n", index, *data, set_nth_from_front(al, data, index));
+			printf("SET %u TH_FRONT : %d : %d\n", index, *data, set_nth_from_front_in_arraylist(al, data, index));
 			break;
 		}
 
@@ -83,7 +83,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
-			printf("SET %u TH_BACK : %d : %d\n", index, *data, set_nth_from_back(al, data, index));
+			printf("SET %u TH_BACK : %d : %d\n", index, *data, set_nth_from_back_in_arraylist(al, data, index));
 			break;
 		}
 	}
