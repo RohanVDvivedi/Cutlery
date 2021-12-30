@@ -245,7 +245,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
-			inserted = insert_head(&ll, data);
+			inserted = insert_head_in_linkedlist(&ll, data);
 			set_in_array(&(hashmap_p->hashmap_holder), ll.head, index);
 			break;
 		}
