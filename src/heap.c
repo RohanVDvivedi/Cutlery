@@ -7,13 +7,13 @@
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, unsigned int i2)
 {
-	swap_elements(&(heap_p->heap_holder), i1, i2);
+	swap_in_array(&(heap_p->heap_holder), i1, i2);
 
 	// once the elements have been interchanged we call update index on the elements
 	if(heap_p->heap_index_update_callback != NULL)
 	{
-		heap_p->heap_index_update_callback(get_element(&(heap_p->heap_holder), i1), i1, heap_p->callback_params);
-		heap_p->heap_index_update_callback(get_element(&(heap_p->heap_holder), i2), i2, heap_p->callback_params);
+		heap_p->heap_index_update_callback(get_from_array(&(heap_p->heap_holder), i1), i1, heap_p->callback_params);
+		heap_p->heap_index_update_callback(get_from_array(&(heap_p->heap_holder), i2), i2, heap_p->callback_params);
 	}
 }
 
@@ -27,8 +27,8 @@ static int is_reordering_required(const heap* heap_p, unsigned int parent_index,
 		return 0;
 
 	// retrieve parent and child pointers
-	const void* parent = get_element(&(heap_p->heap_holder), parent_index);
-	const void* child  = get_element(&(heap_p->heap_holder), child_index );
+	const void* parent = get_from_array(&(heap_p->heap_holder), parent_index);
+	const void* child  = get_from_array(&(heap_p->heap_holder), child_index );
 
 	int reordering_required = 0;
 
@@ -140,7 +140,7 @@ int push_heap(heap* heap_p, const void* data)
 		return 0;
 
 	// insert new element to the heap_holder at the last index + 1 and increment element_count
-	set_element(&(heap_p->heap_holder), data, heap_p->element_count++);
+	set_in_array(&(heap_p->heap_holder), data, heap_p->element_count++);
 
 	// after insertion we need to make a callback, to notify element index has been updated
 	if(heap_p->heap_index_update_callback != NULL)
@@ -167,7 +167,7 @@ int push_all_from_array_heap(heap* heap_p, array* array_p, unsigned int start_in
 
 	// insert all the elements from array [start_index to last_index] to the heap_p
 	for(unsigned int i = 0; i < elements_to_insert; i++)
-		set_element(&(heap_p->heap_holder), get_element(array_p, start_index + i), heap_p->element_count++);
+		set_in_array(&(heap_p->heap_holder), get_from_array(array_p, start_index + i), heap_p->element_count++);
 
 	// heapify all the elements of the heap
 	heapify_all(heap_p);
@@ -187,7 +187,7 @@ const void* get_top_heap(const heap* heap_p)
 	if(is_empty_heap(heap_p))
 		return NULL;
 
-	return (void*)get_element(&(heap_p->heap_holder), 0);
+	return (void*)get_from_array(&(heap_p->heap_holder), 0);
 }
 
 int remove_from_heap(heap* heap_p, unsigned int index)
@@ -200,7 +200,7 @@ int remove_from_heap(heap* heap_p, unsigned int index)
 	inter_change_elements_for_indexes(heap_p, index, heap_p->element_count - 1);
 
 	// and set the last to NULL, and decrement the element_count of the heap
-	set_element(&(heap_p->heap_holder), NULL, --heap_p->element_count);
+	set_in_array(&(heap_p->heap_holder), NULL, --heap_p->element_count);
 
 	// if the heap is not empty
 	// call heapify at index, to appropriately call bubble up or bubble down

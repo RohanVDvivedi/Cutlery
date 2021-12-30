@@ -25,12 +25,12 @@ void initialize_array_with_allocator(array* array_p, unsigned int capacity, memo
 	array_p->capacity = (array_p->data_p_p != NULL) ? capacity : 0;
 }
 
-const void* get_element(const array* array_p, unsigned int index)
+const void* get_from_array(const array* array_p, unsigned int index)
 {
 	return (index < array_p->capacity) ? array_p->data_p_p[index] : NULL;
 }
 
-int set_element(array* array_p, const void* data_p, unsigned int index)
+int set_in_array(array* array_p, const void* data_p, unsigned int index)
 {
 	if(index < array_p->capacity)
 	{
@@ -40,11 +40,11 @@ int set_element(array* array_p, const void* data_p, unsigned int index)
 	return 0;
 }
 
-void swap_elements(array* array_p, unsigned int i1, unsigned int i2)
+void swap_in_array(array* array_p, unsigned int i1, unsigned int i2)
 {
-	const void* data_temp_i1 = get_element(array_p, i1);
-	set_element(array_p, get_element(array_p, i2), i1);
-	set_element(array_p, data_temp_i1, i2);
+	const void* data_temp_i1 = get_from_array(array_p, i1);
+	set_in_array(array_p, get_from_array(array_p, i2), i1);
+	set_in_array(array_p, data_temp_i1, i2);
 }
 
 void remove_all_from_array(array* array_p)
@@ -53,7 +53,7 @@ void remove_all_from_array(array* array_p)
 	/*
 		the above memory_set is equivalent to the below loop
 		for(unsigned int i = 0; i < array_p->capacity; i++)
-			set_element(array_p, NULL, i);
+			set_in_array(array_p, NULL, i);
 	*/
 }
 
@@ -75,15 +75,15 @@ void for_each_non_null_in_array(const array* array_p, void (*operation)(void* da
 {
 	for(unsigned int i = 0; i < array_p->capacity; i++)
 	{
-		if(get_element(array_p, i) != NULL)
-			operation(((void*)get_element(array_p, i)), i, additional_params);
+		if(get_from_array(array_p, i) != NULL)
+			operation(((void*)get_from_array(array_p, i)), i, additional_params);
 	}
 }
 
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
 {
 	for(unsigned int i = 0; i < array_p->capacity; i++)
-		operation(((void*)get_element(array_p, i)), i, additional_params);
+		operation(((void*)get_from_array(array_p, i)), i, additional_params);
 }
 
 int expand_array(array* array_p)
@@ -165,7 +165,7 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "index_id = %u\n", i);
 
-		const void* element = get_element(array_p, i);
+		const void* element = get_from_array(array_p, i);
 		if(element != NULL)
 			sprint_element(append_str, element, tabs + 1);
 		else

@@ -107,7 +107,7 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last
 	{
 		const void* max_data = get_top_heap(&sort_heap);
 		pop_heap(&sort_heap);
-		set_element(array_p, max_data, start_index + i - 1);
+		set_in_array(array_p, max_data, start_index + i - 1);
 	}
 
 	// deinitialize the sort_heap
@@ -125,15 +125,15 @@ void quick_sort_array(array* array_p, unsigned int start_index, unsigned int las
 		return;
 
 	// always picking the last element as the pivot
-	const void* pivot = get_element(array_p, last_index);
+	const void* pivot = get_from_array(array_p, last_index);
 
 	unsigned int all_greater_than_pivot_start_index = start_index;
 
 	// position pivot element at its correct index
 	for(unsigned int i = start_index; i <= last_index; i++)
 	{
-		if(compare(get_element(array_p, i), pivot) <= 0)
-			swap_elements(array_p, all_greater_than_pivot_start_index++, i);
+		if(compare(get_from_array(array_p, i), pivot) <= 0)
+			swap_in_array(array_p, all_greater_than_pivot_start_index++, i);
 	}
 
 	// index of the pivot element
@@ -166,7 +166,7 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 		unsigned index = start_index;
 		while(index <= last_index)
 		{
-			const void* data = get_element(array_p, index++);
+			const void* data = get_from_array(array_p, index++);
 			unsigned int queue_index = (get_sort_attribute(data) >> i) & 1;
 			push_queue(&(sort_queue[queue_index]), data);
 		}
@@ -175,13 +175,13 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 		while(!is_empty_queue(&(sort_queue[0])))
 		{
 			const void* data = get_top_queue(&(sort_queue[0]));
-			set_element(array_p, data, index++);
+			set_in_array(array_p, data, index++);
 			pop_queue(&(sort_queue[0]));
 		}
 		while(!is_empty_queue(&(sort_queue[1])))
 		{
 			const void* data = get_top_queue(&(sort_queue[1]));
-			set_element(array_p, data, index++);
+			set_in_array(array_p, data, index++);
 			pop_queue(&(sort_queue[1]));
 		}
 	}
@@ -203,7 +203,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 		{
 			for(unsigned int i = start_index; i <= last_index; i++)
 			{
-				if(compare(get_element(array_p, i), data_p) == 0)
+				if(compare(get_from_array(array_p, i), data_p) == 0)
 					return i;
 			}
 			break;
@@ -212,7 +212,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 		{
 			for(unsigned int i = last_index; ; i--)
 			{
-				if(compare(get_element(array_p, i), data_p) == 0)
+				if(compare(get_from_array(array_p, i), data_p) == 0)
 					return i;
 				if(i == start_index)
 					break;
@@ -233,7 +233,7 @@ unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int st
 
 	// if the element is lesser than the element at the start_index
 	// OR is greater than the element at the last_index, then return INVALID_INDEX
-	if(compare(get_element(array_p, start_index), data_p) > 0 || compare(get_element(array_p, last_index), data_p) < 0)
+	if(compare(get_from_array(array_p, start_index), data_p) > 0 || compare(get_from_array(array_p, last_index), data_p) < 0)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
@@ -247,9 +247,9 @@ unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int st
 	while(l <= h)
 	{
 		unsigned int m = l + ((h - l) / 2);
-		if(compare(get_element(array_p, m), data_p) > 0)
+		if(compare(get_from_array(array_p, m), data_p) > 0)
 			h = m - 1;
-		else if(compare(get_element(array_p, m), data_p) < 0)
+		else if(compare(get_from_array(array_p, m), data_p) < 0)
 			l = m + 1;
 		else
 		{
@@ -290,7 +290,7 @@ unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned
 		return INVALID_INDEX;
 
 	// if the element is lesser than the element at the start_index, then return start_index
-	if(compare(get_element(array_p, start_index), data_p) > 0)
+	if(compare(get_from_array(array_p, start_index), data_p) > 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -316,7 +316,7 @@ unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned
 
 		// if the element at m in the array is lesser,
 		// then update the result_index (since it could be the answer) and shorten the search range
-		if(compare(get_element(array_p, m), data_p) > 0)
+		if(compare(get_from_array(array_p, m), data_p) > 0)
 		{
 			result_index = m;
 			h = m - 1;
