@@ -91,10 +91,10 @@ int expand_array(array* array_p)
 	unsigned int new_capacity = get_new_capacity(array_p->capacity);
 
 	// expand array to atleast the new_capacity
-	return reserve_capacity_array(array_p, new_capacity);
+	return reserve_capacity_for_array(array_p, new_capacity);
 }
 
-int reserve_capacity_array(array* array_p, unsigned int atleast_capacity)
+int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
 {
 	// can not expand if the allocator is NULL
 	if(array_p->mem_allocator == NULL)

@@ -51,7 +51,7 @@ int expand_array(array* array_p);
 // returns 1, only if the array was expanded
 // returns 0, to indicate a failure from the memory allocator
 // this functions may also fail if the array already has capacity more than or equal to atleast_capacity
-int reserve_capacity_array(array* array_p, unsigned int atleast_capacity);
+int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity);
 
 // shrinks the array, to a new_capacity
 // returns 1, if the array was shrunk to the new_capacity

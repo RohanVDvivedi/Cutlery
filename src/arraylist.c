@@ -260,7 +260,7 @@ int reserve_capacity_for_arraylist(arraylist* al, unsigned int atleast_capacity)
 	unsigned int old_capacity = get_capacity_arraylist(al);
 
 	// expand the holder fearlessly
-	int has_holder_expanded = reserve_capacity_array(&(al->arraylist_holder), atleast_capacity);
+	int has_holder_expanded = reserve_capacity_for_array(&(al->arraylist_holder), atleast_capacity);
 
 	// move data if necessary conditions meet
 	if(data_movement_will_be_required && has_holder_expanded)
