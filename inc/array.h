@@ -23,13 +23,13 @@ void initialize_array(array* array_p, unsigned int capacity);
 void initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator);
 
 // returns pointer to the data at index = index
-const void* get_element(const array* array_p, unsigned int index);
+const void* get_from_array(const array* array_p, unsigned int index);
 
 // returns 1 for success, and fails with a return of 0 for index out of bounds
-int set_element(array* array_p, const void* data_p, unsigned int index);
+int set_in_array(array* array_p, const void* data_p, unsigned int index);
 
 // swap elements of array at given indexes
-void swap_elements(array* array_p, unsigned int i1, unsigned int i2);
+void swap_in_array(array* array_p, unsigned int i1, unsigned int i2);
 
 // removes all the elements from array array_p
 // this function effectively NULLs out all the pointers stored within data_p_p
