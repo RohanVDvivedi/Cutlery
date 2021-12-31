@@ -57,8 +57,8 @@ int shrink_dstring(dstring* str_p);
 void init_dstring(dstring* str_p, const char* data, unsigned int data_size);
 void init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
 
-dstring get_dstring(const char* data, unsigned int data_size);
-dstring get_copy_dstring(const dstring* init_copy_from);
+dstring new_dstring(const char* data, unsigned int data_size);
+dstring new_copy_dstring(const dstring* init_copy_from);
 
 // checks if the dstring is empty, returns 1 if it is empty
 // equivalent to get_char_count(str_p) == 0
