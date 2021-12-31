@@ -4,7 +4,7 @@
 
 int main()
 {
-	dstring str = get_dstring(NULL, 0);
+	dstring str = new_dstring(NULL, 0);
 	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
 	concatenate_dstring(&str, &get_literal_cstring("Hello "));
