@@ -225,14 +225,14 @@ void init_copy_dstring(dstring* str_p, const dstring* init_copy_from)
 	init_dstring(str_p, get_byte_array_dstring(init_copy_from), get_char_count_dstring(init_copy_from));
 }
 
-dstring get_dstring(const char* data, unsigned int data_size)
+dstring new_dstring(const char* data, unsigned int data_size)
 {
 	dstring str;
 	init_dstring(&str, data, data_size);
 	return str;
 }
 
-dstring get_copy_dstring(const dstring* init_copy_from)
+dstring new_copy_dstring(const dstring* init_copy_from)
 {
 	dstring str;
 	init_copy_dstring(&str, init_copy_from);
