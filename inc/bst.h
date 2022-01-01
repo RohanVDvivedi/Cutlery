@@ -81,32 +81,32 @@ const void* find_equals_in_bst(const bst* bst_p, const void* data);
 
 // find data in bst_p (given in parameter), with the biggest value which is smaller than data (given in parameter)
 // returns NULL, if data (given in parameter) is smaller than or equal to the smallest existing data in bst_p (given in parameter)
-const void* find_preceding(const bst* bst_p, const void* data);
+const void* find_preceding_in_bst(const bst* bst_p, const void* data);
 
 // find data in bst_p (given in parameter), with the biggest value which is smaller than or equal to data (given in parameter)
 // returns NULL, if data (given in parameter) is smaller than the smallest existing data in bst_p (given in parameter)
-const void* find_preceding_or_equals(const bst* bst_p, const void* data);
+const void* find_preceding_or_equals_in_bst(const bst* bst_p, const void* data);
 
 // find data in bst_p (given in parameter), with the smallest value which is bigger than data (given in parameter)
 // returns NULL, if data (given in parameter) is bigger than or equla to the biggest existing data in bst_p (given in parameter)
-const void* find_succeeding(const bst* bst_p, const void* data);
+const void* find_succeeding_in_bst(const bst* bst_p, const void* data);
 
 // find data in bst_p (given in parameter), with the smallest value which is bigger than or equal to data (given in parameter)
 // returns NULL, if data (given in parameter) is bigger than the biggest existing data in bst_p (given in parameter)
-const void* find_succeeding_or_equals(const bst* bst_p, const void* data);
+const void* find_succeeding_or_equals_in_bst(const bst* bst_p, const void* data);
 
 // find data in bst_p (given in parameter), with the smallest value
-const void* find_smallest(const bst* bst_p);
+const void* find_smallest_in_bst(const bst* bst_p);
 
 // find data in bst_p (given in parameter), with the biggest value
-const void* find_largest(const bst* bst_p);
+const void* find_largest_in_bst(const bst* bst_p);
 
 typedef enum sort_direction sort_direction;
 enum sort_direction{ASCENDING_ORDERED, DESCENDING_ORDERED};
 // find all (or atleast max_result_count number of) data pointers in the bst,
 // which compare >= lower_bound and <= upper_bound,
 // and accumulate them in the sort_direction order (either ASCENDING or DESCENDING order).
-unsigned int find_all_in_range(	
+unsigned int find_all_in_range_in_bst(	
 						const bst* bst_p,				// binary search tree to search in
 						
 						const void* lower_bound,		// if(lower_bound != NULL), then find all data >= lower_bound, else find all ignoring the lower_bound

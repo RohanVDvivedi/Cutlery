@@ -137,37 +137,37 @@ const void* find_equals_in_bst(const bst* bst_p, const void* data)
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-const void* find_preceding(const bst* bst_p, const void* data)
+const void* find_preceding_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_preceding(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-const void* find_preceding_or_equals(const bst* bst_p, const void* data)
+const void* find_preceding_or_equals_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_preceding_or_equals(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-const void* find_succeeding(const bst* bst_p, const void* data)
+const void* find_succeeding_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_succeeding(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-const void* find_succeeding_or_equals(const bst* bst_p, const void* data)
+const void* find_succeeding_or_equals_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_succeeding_or_equals(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-const void* find_smallest(const bst* bst_p)
+const void* find_smallest_in_bst(const bst* bst_p)
 {
 	bstnode* node_p = get_smallest_node_from_node(bst_p->root);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
 }
 
-const void* find_largest(const bst* bst_p)
+const void* find_largest_in_bst(const bst* bst_p)
 {
 	bstnode* node_p = get_largest_node_from_node(bst_p->root);
 	return (node_p != NULL) ? get_data(node_p) : NULL;
@@ -232,7 +232,7 @@ static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode*
 	return results_accumulated;
 }
 
-unsigned int find_all_in_range(const bst* bst_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, unsigned int max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
+unsigned int find_all_in_range_in_bst(const bst* bst_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, unsigned int max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
 	// errror in providing values 
 	// if both of the lower and upper bounds are provided, then lower_bound must not be greater than upper bound
