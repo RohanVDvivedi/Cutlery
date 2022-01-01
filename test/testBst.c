@@ -31,7 +31,7 @@ void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 void print_smallest(const bst* bst_p)
 {
 	printf("the value for the smallest key is : ");
-	const void* result = find_smallest(bst_p);
+	const void* result = find_smallest_in_bst(bst_p);
 	if(result != NULL)
 		print_ts(result);
 	else
@@ -42,7 +42,7 @@ void print_smallest(const bst* bst_p)
 void print_largest(const bst* bst_p)
 {
 	printf("the value for the largest key is : ");
-	const void* result = find_largest(bst_p);
+	const void* result = find_largest_in_bst(bst_p);
 	if(result != NULL)
 		print_ts(result);
 	else
@@ -53,7 +53,7 @@ void print_largest(const bst* bst_p)
 void print_succeeding(const bst* bst_p, int k)
 {
 	printf("the value succeeding %d is : ", k);
-	const void* result = find_succeeding(bst_p, &k);
+	const void* result = find_succeeding_in_bst(bst_p, &k);
 	if(result != NULL)
 		print_ts(result);
 	else
@@ -64,7 +64,7 @@ void print_succeeding(const bst* bst_p, int k)
 void print_succeeding_equals(const bst* bst_p, int k)
 {
 	printf("the value succeeding or equals %d is : ", k);
-	const void* result = find_succeeding_or_equals(bst_p, &k);
+	const void* result = find_succeeding_or_equals_in_bst(bst_p, &k);
 	if(result != NULL)
 		print_ts(result);
 	else
@@ -75,7 +75,7 @@ void print_succeeding_equals(const bst* bst_p, int k)
 void print_preceding(const bst* bst_p, int k)
 {
 	printf("the value preceding %d is : ", k);
-	const void* result = find_preceding(bst_p, &k);
+	const void* result = find_preceding_in_bst(bst_p, &k);
 	if(result != NULL)
 		print_ts(result);
 	else
@@ -86,7 +86,7 @@ void print_preceding(const bst* bst_p, int k)
 void print_preceding_equals(const bst* bst_p, int k)
 {
 	printf("the value preceding or equals %d is : ", k);
-	const void* result = find_preceding_or_equals(bst_p, &k);
+	const void* result = find_preceding_or_equals_in_bst(bst_p, &k);
 	if(result != NULL)
 		print_ts(result);
 	else
@@ -107,21 +107,21 @@ int print_accumulate(const void* data, const void* additional_params)
 void print_all_in_range(const bst* bst_p, int small, int large, sort_direction sd, unsigned int count)
 {
 	printf("Atleast %u values in range [%d, %d] as %s are : \n", count, small, large, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	unsigned int n = find_all_in_range(bst_p, &small, &large, sd, count, print_accumulate, NULL);
+	unsigned int n = find_all_in_range_in_bst(bst_p, &small, &large, sd, count, print_accumulate, NULL);
 	printf("total : %u\n\n", n);
 }
 
 void print_all_greater_than_equals(const bst* bst_p, int k, sort_direction sd, unsigned int count)
 {
 	printf("Atleast %u values in range [%d, infinity) as %s are : \n", count, k, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	unsigned int n = find_all_in_range(bst_p, &k, NULL, sd, count, print_accumulate, NULL);
+	unsigned int n = find_all_in_range_in_bst(bst_p, &k, NULL, sd, count, print_accumulate, NULL);
 	printf("total : %u\n\n", n);
 }
 
 void print_all_lesser_than_equals(const bst* bst_p, int k, sort_direction sd, unsigned int count)
 {
 	printf("Atleast %u values in range (-infinity, %d] %s are : \n", count, k, (sd == ASCENDING_ORDERED) ? "ASCENDING_ORDERED" : "DESCENDING_ORDERED");
-	unsigned int n = find_all_in_range(bst_p, NULL, &k, sd, count, print_accumulate, NULL);
+	unsigned int n = find_all_in_range_in_bst(bst_p, NULL, &k, sd, count, print_accumulate, NULL);
 	printf("total : %u\n\n", n);
 }
 
