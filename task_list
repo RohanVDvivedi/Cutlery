@@ -11,6 +11,9 @@ COMMON to all datastructures tasks
 HEAP tasks
  * make heap into embedded node based datastructure, where an embedded node is optional and you may pass in INVALID_INDEX if you do not want to use the embedded node, embedded node only stores an unsigned int suggesting the index of the element in the heap
 
+ARRAY tasks
+ * provide implementations for find_preceding_in_sorted_array, find_preceding_or_equals_in_sorted_array, find_succeeding_in_sorted_array and find_succeeding_or_equals_in_sorted_array
+
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
