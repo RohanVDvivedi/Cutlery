@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stddef.h>
 #include<bst.h>
 
 typedef struct teststruct ts;
@@ -143,7 +144,7 @@ int main()
 
 	bst my_bst;
 	bst* bst_p = &my_bst;
-	initialize_bst(bst_p, TREE_TYPE_TO_USE, cmp, (unsigned long long int)(&(((ts*)0)->bst_embed_node)));
+	initialize_bst(bst_p, TREE_TYPE_TO_USE, cmp, offsetof(ts, bst_embed_node));
 	print_ts_bst(bst_p);
 
 	printf("COMPLETED INITIALIZING BALANCED BINARY SEARCH TREE\n");
