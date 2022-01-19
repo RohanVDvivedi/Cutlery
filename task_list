@@ -7,6 +7,7 @@ COMMON to all datastructures tasks
  * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
  * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
  * check that upon expansion of array, the final updated capacity is not overflowing
+ * cutlery stds needs its own offsetof macro
 
 HEAP tasks
  * make heap into embedded node based datastructure, where an embedded node is optional and you may pass in INVALID_INDEX if you do not want to use the embedded node, embedded node only stores an unsigned int suggesting the index of the element in the heap
