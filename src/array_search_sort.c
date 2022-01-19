@@ -94,7 +94,7 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last
 
 	// create a max heap that points to the array_p's contents that need to be sorted
 	heap sort_heap;
-	initialize_heap_with_allocator(&sort_heap, 0, MAX_HEAP, compare, NULL, NULL, NULL);
+	initialize_heap_with_allocator(&sort_heap, 0, MAX_HEAP, compare, NO_HEAP_NODE_OFFSET, NULL);
 	sort_heap.heap_holder.data_p_p = array_p->data_p_p + start_index;
 	sort_heap.heap_holder.capacity = total_elements;
 	sort_heap.element_count = total_elements;
