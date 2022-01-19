@@ -239,7 +239,7 @@ int remove_at_index_from_heap(heap* heap_p, unsigned int index)
 
 	// re-initialize heap_index of the (last) element that we are going to remove
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		initialize_hpnode(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1));
+		initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1)));
 
 	// and set the last to NULL, and decrement the element_count of the heap
 	set_in_array(&(heap_p->heap_holder), NULL, --heap_p->element_count);
