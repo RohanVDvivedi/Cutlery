@@ -297,11 +297,19 @@ void heapify_all(heap* heap_p)
 	}
 }
 
+static void initialize_node_wrapper(void* data, unsigned int heap_index, const void* additional_params)
+{
+	const heap* heap_p = additional_params;
+	initialize_hpnode(get_node(data));
+}
+
 void remove_all_from_heap(heap* heap_p)
 {
 	heap_p->element_count = 0;
 
 	// re initialize all the hpnodes
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
+		for_each_in_heap(heap_p, initialize_node_wrapper, heap_p);
 
 	// then NULL out all the array -> this step can be ignored
 	remove_all_from_array(&(heap_p->heap_holder));
