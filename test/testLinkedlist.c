@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stddef.h>
 #include<linkedlist.h>
 
 typedef struct teststruct ts;
@@ -57,7 +58,7 @@ int main()
 {
 	linkedlist llist;
 	linkedlist* ll = &llist;
-	initialize_linkedlist(ll, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
+	initialize_linkedlist(ll, offsetof(ts, ll_embed_node));
 
 	printf("Error on attempt to remove head : %d, or tail : %d, from an empty linkedlist\n\n", remove_head_from_linkedlist(ll), remove_tail_from_linkedlist(ll));
 

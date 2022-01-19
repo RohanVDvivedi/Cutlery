@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stddef.h>
 #include<hashmap.h>
 
 #include<linkedlist.h>
@@ -59,8 +60,6 @@ const collision_resolution_policy POLICY_USED = ROBINHOOD_HASHING /*ELEMENTS_AS_
 
 unsigned int HASH_BUCKETS = 4;
 
-unsigned int NODE_OFFSET = (unsigned long long int)(&(((ts*)0)->embedded_nodes));
-
 int main()
 {
 	hashmap hashmap_temp;
@@ -71,7 +70,7 @@ int main()
 		HASH_BUCKETS = 10;
 	}
 
-	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, NODE_OFFSET);
+	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, offsetof(ts, embedded_nodes));
 
 	print_ts_hashmap(hashmap_p);
 

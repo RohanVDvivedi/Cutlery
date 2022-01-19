@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stddef.h>
 #include<heap.h>
 
 typedef struct teststruct ts;
@@ -7,7 +8,8 @@ struct teststruct
 	int key;
 	int a;
 	char* s;
-	int index;
+
+	hpnode hp_embed_node;
 };
 
 int cmp(const void* data1, const void* data2)
@@ -59,16 +61,11 @@ void change_key(heap* heap_p, unsigned int index, int new_key)
 	}
 }
 
-void update_index_callback(const void* data, unsigned int heap_index, const void* additional_params)
-{
-	((ts*)data)->index = heap_index;
-}
-
 int main()
 {
 	heap heap_temp;
 	heap* heap_p = &heap_temp;
-	initialize_heap(heap_p, 5, MIN_HEAP, cmp, update_index_callback, NULL);
+	initialize_heap(heap_p, 5, MIN_HEAP, cmp, offsetof(ts, hp_embed_node));
 
 	print_ts_heap(heap_p);
 
