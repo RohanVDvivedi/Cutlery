@@ -10,6 +10,16 @@ enum heap_type
 	MAX_HEAP
 };
 
+typedef struct hpnode hpnode;
+struct hpnode
+{
+	// an embedded heap node is used to define the index of that element in the heap
+	unsigned int heap_index;
+};
+
+// you can use heap, without embedded a hpnode
+#define NO_HEAP_NODE_OFFSET INVALID_INDEX
+
 typedef struct heap heap;
 struct heap
 {
@@ -21,24 +31,23 @@ struct heap
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
 	int (*compare)(const void* data1, const void* data2);
 
+	// defines the address of the data, with respect to the heap node
+	// this is how we reach node addresses from provided user's structure data addresses and viceversa
+	unsigned int node_offset;
+
 	// to store pointers to the elements of the heap
 	array heap_holder;
 	
 	// number of elements in the heap
 	unsigned int element_count;
-
-	// heap_index_update
-	// everytime heap updates the position/index of a data in heap, it will make a call to this function
-	// it can be provided as NULL as well, if you do not need this functionality
-	// you may use this functionality to cache the heap_index of any element, and later call heapify on the index, to restore heap property, after updating the index
-	// please keep this method as small as possible, to ensure overall O(log(n)) push and pop execution costs
-	void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params);
-	const void* callback_params;
 };
 
 // initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params);
-void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params, memory_allocator mem_allocator);
+void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
+void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator);
+
+// always initialize your hpnode before using it
+void initialize_hpnode(hpnode* node_p);
 
 // push a new data element to the heap
 // push returns 1, if data_p is successfully pushed
@@ -78,12 +87,21 @@ void heapify_at(heap* heap_p, unsigned int index);
 // O(N) operation
 void heapify_all(heap* heap_p);
 
-// this function removes an eelement from the heap, at a particular index
+// this function removes an element from the heap, at a particular index
 // it returns 0, if no element was removed, else it returns 1
 // this functions fails with 0 returns, if the index provided is greater than the elements in the heap
 // i.e. fails if index is out of bounds, else if the element was removed it will return 1
 // O(log(N)) operation
-int remove_from_heap(heap* heap_p, unsigned int index);
+int remove_at_index_from_heap(heap* heap_p, unsigned int index);
+
+// this function can be called only if you are using the embedded hpnode in your data
+// it figures out the heap_index from the hpnode of the data and 
+// then internally calls remove_at_index_from_heap()
+// please do not use this function if you are not using hpnode in your datastructure
+// this functions fails with 0 returns, if the element provided does not exist in this heap
+// i.e. fails if index is out of bounds, else if the element was removed it will return 1
+// O(log(N)) operation
+int remove_from_heap(heap* heap_p, const void* data);
 
 // removes all the elements from heap heap_p
 // after a call to this function the heap contains 0 elements (get_element_count() == 0)
