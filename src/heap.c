@@ -4,16 +4,24 @@
 
 #include<binary_tree_as_array_util.h>
 
+// utility : 
+/*
+*	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
+*/
+#define get_data(node_p) 	(((const void*)(node_p)) - heap_p->node_offset)
+#define get_node(data_p) 	(((void*)(data_p)) + heap_p->node_offset)
+
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, unsigned int i2)
 {
 	swap_in_array(&(heap_p->heap_holder), i1, i2);
 
-	// once the elements have been interchanged we call update index on the elements
-	if(heap_p->heap_index_update_callback != NULL)
+	// once the elements have been interchanged we update the heap_index of those elements
+	// heap_index is in their embedded nodes (hpnode)
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
 	{
-		heap_p->heap_index_update_callback(get_from_array(&(heap_p->heap_holder), i1), i1, heap_p->callback_params);
-		heap_p->heap_index_update_callback(get_from_array(&(heap_p->heap_holder), i2), i2, heap_p->callback_params);
+		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i1))))->heap_index = i1;
+		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i2))))->heap_index = i2;
 	}
 }
 
@@ -113,24 +121,28 @@ static void bubble_down(heap* heap_p, unsigned int index)
 	}
 }
 
-void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params)
+void initialize_hpnode(hpnode* node_p)
 {
-	heap_p->type = type;
-	heap_p->compare = compare;
-	initialize_array(&(heap_p->heap_holder), capacity);
-	heap_p->element_count = 0;
-	heap_p->heap_index_update_callback = heap_index_update_callback;
-	heap_p->callback_params = callback_params;
+	// reset the heap_index to an INVALID_INDEX, i.e. out of bounds for any heap
+	node_p->heap_index = INVALID_INDEX;
 }
 
-void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), void (*heap_index_update_callback)(const void* data, unsigned int heap_index, const void* callback_params), const void* callback_params, memory_allocator mem_allocator)
+void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
+	heap_p->node_offset = node_offset;
+	initialize_array(&(heap_p->heap_holder), capacity);
+	heap_p->element_count = 0;
+}
+
+void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator)
+{
+	heap_p->type = type;
+	heap_p->compare = compare;
+	heap_p->node_offset = node_offset;
 	initialize_array_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 	heap_p->element_count = 0;
-	heap_p->heap_index_update_callback = heap_index_update_callback;
-	heap_p->callback_params = callback_params;
 }
 
 int push_to_heap(heap* heap_p, const void* data)
@@ -139,12 +151,12 @@ int push_to_heap(heap* heap_p, const void* data)
 	if(is_full_heap(heap_p))
 		return 0;
 
-	// insert new element to the heap_holder at the last index + 1 and increment element_count
+	// insert new element to the heap_holder at the last index + 1 and then increment element_count
 	set_in_array(&(heap_p->heap_holder), data, heap_p->element_count++);
 
-	// after insertion we need to make a callback, to notify element index has been updated
-	if(heap_p->heap_index_update_callback != NULL)
-		heap_p->heap_index_update_callback(data, heap_p->element_count - 1, heap_p->callback_params);
+	// update its heap index
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
+		((hpnode*)(get_node(data)))->heap_index = heap_p->element_count - 1;
 
 	// bubble up the newly added element at index heap_p->element_count - 1, to its desired place
 	bubble_up(heap_p, heap_p->element_count - 1);
@@ -167,7 +179,17 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start
 
 	// insert all the elements from array [start_index to last_index] to the heap_p
 	for(unsigned int i = 0; i < elements_to_insert; i++)
-		set_in_array(&(heap_p->heap_holder), get_from_array(array_p, start_index + i), heap_p->element_count++);
+	{
+		// get the data element that needs to be inserted
+		const void* data = get_from_array(array_p, start_index + i);
+
+		// insert data and then update element count
+		set_in_array(&(heap_p->heap_holder), data, heap_p->element_count++);
+		
+		// update its heap index
+		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
+			((hpnode*)(get_node(data)))->heap_index = heap_p->element_count - 1;
+	}
 
 	// heapify all the elements of the heap
 	heapify_all(heap_p);
@@ -177,20 +199,36 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start
 
 int pop_from_heap(heap* heap_p)
 {
+	// can not pop, if there are no elements in the heap
+	if(is_empty_heap(heap_p))
+		return 0;
+
 	// remove the 0th element from the heap
-	return remove_from_heap(heap_p, 0);
+	return remove_at_index_from_heap(heap_p, 0);
 }
 
 const void* get_top_of_heap(const heap* heap_p)
 {
-	// ther is no top element, if there are no elements in the heap
+	// there is no top element, if there are no elements in the heap
 	if(is_empty_heap(heap_p))
 		return NULL;
 
 	return (void*)get_from_array(&(heap_p->heap_holder), 0);
 }
 
-int remove_from_heap(heap* heap_p, unsigned int index)
+int remove_from_heap(heap* heap_p, const void* data)
+{
+	if(is_empty_heap(heap_p) || heap_p->node_offset == NO_HEAP_NODE_OFFSET)
+		return 0;
+
+	// figure out the index to call remove at
+	unsigned int index_to_remove_at = ((hpnode*)(get_node(data)))->heap_index;
+
+	// remove the ith element from the heap
+	return remove_at_index_from_heap(heap_p, index_to_remove_at);
+}
+
+int remove_at_index_from_heap(heap* heap_p, unsigned int index)
 {
 	// an element can be removed, only if heap is not empty, and the index provided is within bounds
 	if(is_empty_heap(heap_p) || index >= heap_p->element_count)
@@ -198,6 +236,10 @@ int remove_from_heap(heap* heap_p, unsigned int index)
 
 	// put the indexed element at last and last element to indexed place
 	inter_change_elements_for_indexes(heap_p, index, heap_p->element_count - 1);
+
+	// re-initialize heap_index of the (last) element that we are going to remove
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
+		initialize_hpnode(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1));
 
 	// and set the last to NULL, and decrement the element_count of the heap
 	set_in_array(&(heap_p->heap_holder), NULL, --heap_p->element_count);
@@ -259,6 +301,8 @@ void remove_all_from_heap(heap* heap_p)
 {
 	heap_p->element_count = 0;
 
+	// re initialize all the hpnodes
+
 	// then NULL out all the array -> this step can be ignored
 	remove_all_from_array(&(heap_p->heap_holder));
 }
@@ -268,8 +312,7 @@ void deinitialize_heap(heap* heap_p)
 	deinitialize_array(&(heap_p->heap_holder));
 	heap_p->element_count = 0;
 	heap_p->compare = NULL;
-	heap_p->heap_index_update_callback = NULL;
-	heap_p->callback_params = NULL;
+	heap_p->node_offset = NO_HEAP_NODE_OFFSET;
 }
 
 unsigned int get_capacity_heap(const heap* heap_p)

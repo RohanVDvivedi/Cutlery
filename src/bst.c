@@ -7,7 +7,7 @@
 
 #include<cutlery_stds.h>
 
-void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*compare)(const void* data1, const void* data2))
+void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	bst_p->type = type;
 	bst_p->compare = compare;

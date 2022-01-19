@@ -57,7 +57,7 @@ struct bst
 */
 
 // initializes as if a new bst, may be to reuse
-void initialize_bst(bst* bst_p, bsttype type, unsigned int node_offset, int (*compare)(const void* data1, const void* data2));
+void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
 
 // always initialize your bstnode before using it
 void initialize_bstnode(bstnode* node_p);
