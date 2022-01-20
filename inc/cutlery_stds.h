@@ -17,6 +17,10 @@
 // any array (struct array, struct dstring, c array or char array ) will never have this index
 // INVALID_INDEX is used to report error (or a lack of result) to the user
 
+#ifndef offsetof
+	#define offsetof(structure, attribute) ((unsigned int)(((structure*)(0))->attribute))
+#endif
+
 /* this is cutlery specific memory move implementation
    this is the function to be used in place of memcpy/memmove std library functions
    features : 	

@@ -7,7 +7,6 @@ COMMON to all datastructures tasks
  * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
  * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
  * check that upon expansion of array, the final updated capacity is not overflowing
- * cutlery stds needs its own offsetof macro
 
 ARRAY tasks
  * provide implementations for find_preceding_in_sorted_array, find_preceding_or_equals_in_sorted_array, find_succeeding_in_sorted_array and find_succeeding_or_equals_in_sorted_array
