@@ -271,6 +271,24 @@ int remove_at_index_from_heap(heap* heap_p, unsigned int index)
 	return 1;
 }
 
+void heapify_for(heap* heap_p, const void* data)
+{
+	// can not heahify at an index, if the heap is empty OR if we can not get index for the provided data
+	if(is_empty_heap(heap_p) || heap_p->node_offset == NO_HEAP_NODE_OFFSET)
+		return ;
+
+	// figure out the index to call heapify at
+	unsigned int index_to_heapify_at = ((hpnode*)(get_node(data)))->heap_index;
+
+	// we can not heapify if the data is a new node OR if the data does not exist in heap at the desired index
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
+		(is_new_hpnode(heap_p, get_node(data)) || data != get_from_array(&(heap_p->heap_holder), index_to_heapify_at)))
+			return ;
+
+	// heapify at the ith element of the heap
+	return heapify_at(heap_p, index_to_heapify_at);
+}
+
 void heapify_at(heap* heap_p, unsigned int index)
 {
 	// return if index is out-of-bounds
