@@ -21,13 +21,13 @@ int cmp(const void* data1, const void* data2)
 
 void print_ts(const void* tsv)
 {
-	printf(" %d, %d, %s =<HEAP_INDEX>=> %d", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
+	printf(" %d, %d, %s =<HEAP_INDEX>=> %u", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
 }
 
 void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs + 1);
-	snprintf_dstring(append_str, "%d, %d, %s =<HEAP_INDEX>=> %d", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
+	snprintf_dstring(append_str, "%d, %d, %s =<HEAP_INDEX>=> %u", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
 }
 
 void print_ts_heap(heap* heap_p)
@@ -238,8 +238,17 @@ int main()
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
+	printf("TOP before pop : \n");
+	const ts* top = get_top_of_heap(heap_p);
+	print_ts(top);
+	printf("\n\n\n");
+
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
+
+	printf("old-TOP after pop : \n");
+	print_ts(top);
+	printf("\n\n\n");
 
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
@@ -271,8 +280,17 @@ int main()
 	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
+	printf("TOP before remove all : \n");
+	top = get_top_of_heap(heap_p);
+	print_ts(top);
+	printf("\n\n\n");
+
 	remove_all_from_heap(heap_p);
 	print_ts_heap(heap_p);
+
+	printf("TOP after remove all : \n");
+	print_ts(top);
+	printf("\n\n\n");
 
 	push_heap_SAFE(heap_p, &((ts){0, 0, "000", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
