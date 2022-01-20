@@ -18,7 +18,7 @@
 // INVALID_INDEX is used to report error (or a lack of result) to the user
 
 #ifndef offsetof
-	#define offsetof(structure, attribute) ((unsigned int)(((structure*)(0))->attribute))
+	#define offsetof(structure, attribute) ((unsigned int)(&(((structure*)(0))->attribute)))
 #endif
 
 /* this is cutlery specific memory move implementation
