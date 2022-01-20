@@ -9,11 +9,12 @@ COMMON to all datastructures tasks
  * check that upon expansion of array, the final updated capacity is not overflowing
  * cutlery stds needs its own offsetof macro
 
-HEAP tasks
- * make heap into embedded node based datastructure, where an embedded node is optional and you may pass in INVALID_INDEX if you do not want to use the embedded node, embedded node only stores an unsigned int suggesting the index of the element in the heap
-
 ARRAY tasks
  * provide implementations for find_preceding_in_sorted_array, find_preceding_or_equals_in_sorted_array, find_succeeding_in_sorted_array and find_succeeding_or_equals_in_sorted_array
+
+LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
+ * implement a separate data structure singlylist, a singly non circular linkedlist
+ * implement all possible functions of linkedlist for this singly list data structure
 
 2. Add new datastructure types tasks (*future)
 
@@ -25,9 +26,7 @@ BST tasks (NEW DATASTRUCTURE inclusion)
  * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
 
 LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
- * implement a separate data structure singlylist, a singly non circular linkedlist
- * implement all possible functions of linkedlist for this singly list data structure
- * also implement hashmap, stack and queue using singly linkedlist
+ * implement hashmap, stack and queue using singly linkedlist
 
 3. Competely new datastructure tasks (*future)
 
