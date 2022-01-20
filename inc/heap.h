@@ -80,6 +80,15 @@ const void* get_top_of_heap(const heap* heap_p);
 // O(log(N)) operation
 void heapify_at(heap* heap_p, unsigned int index);
 
+// this function can be called only if you are using the embedded hpnode in your data
+// it figures out the heap_index from the hpnode of the data and 
+// then internally calls heapify_at()
+// please do not use this function if you are not using hpnode in your datastructure
+// this functions fails with 0 returns, if the element provided does not exist in this heap
+// else if the element was removed it will return 1
+// O(log(N)) operation
+void heapify_for(heap* heap_p, const void* data);
+
 // the below function is to be called when you doubt if the heap properties are being maintained at multiple indices of the heap
 // or because you changed the attributes of the data, which changed its ordering
 // if your doubt turns out to be true and the heap property is being violated at multiple indices of heap,
@@ -99,7 +108,7 @@ int remove_at_index_from_heap(heap* heap_p, unsigned int index);
 // then internally calls remove_at_index_from_heap()
 // please do not use this function if you are not using hpnode in your datastructure
 // this functions fails with 0 returns, if the element provided does not exist in this heap
-// i.e. fails if index is out of bounds, else if the element was removed it will return 1
+// else if the element was removed it will return 1
 // O(log(N)) operation
 int remove_from_heap(heap* heap_p, const void* data);
 
