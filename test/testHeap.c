@@ -2,6 +2,8 @@
 #include<stddef.h>
 #include<heap.h>
 
+#include<cutlery_stds.h>
+
 typedef struct teststruct ts;
 struct teststruct
 {
@@ -61,6 +63,8 @@ void change_key(heap* heap_p, unsigned int index, int new_key)
 	}
 }
 
+#define NEW_HP_NODE {INVALID_INDEX}
+
 int main()
 {
 	heap heap_temp;
@@ -69,40 +73,40 @@ int main()
 
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){1, 1, "one"}));
+	push_heap_SAFE(heap_p, &((ts){1, 1, "one", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){2, 2, "two"}));
+	push_heap_SAFE(heap_p, &((ts){2, 2, "two", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){5, 3, "three"}));
-	print_ts_heap(heap_p);
-
-	pop_heap_OPTIMUM_MEMORY(heap_p);
-	print_ts_heap(heap_p);
-
-	push_heap_SAFE(heap_p, &((ts){4, 4, "four"}));
+	push_heap_SAFE(heap_p, &((ts){5, 3, "three", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){4, 4, "four-x"}));
+	push_heap_SAFE(heap_p, &((ts){4, 4, "four", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){3, 3, "three-x"}));
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){2, 2, "two-x"}));
+	push_heap_SAFE(heap_p, &((ts){4, 4, "four-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){1, 1, "one-x"}));
+	push_heap_SAFE(heap_p, &((ts){3, 3, "three-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){5, 5, "five"}));
+	push_heap_SAFE(heap_p, &((ts){2, 2, "two-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){6, 6, "six"}));
+	push_heap_SAFE(heap_p, &((ts){1, 1, "one-x", NEW_HP_NODE}));
+	print_ts_heap(heap_p);
+
+	push_heap_SAFE(heap_p, &((ts){5, 5, "five", NEW_HP_NODE}));
+	print_ts_heap(heap_p);
+
+	push_heap_SAFE(heap_p, &((ts){6, 6, "six", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	change_key(heap_p, get_element_count_heap(heap_p)/2, -2000);
@@ -120,31 +124,28 @@ int main()
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){7, 7, "seven"}));
+	push_heap_SAFE(heap_p, &((ts){7, 7, "seven", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){8, 8, "eight"}));
+	push_heap_SAFE(heap_p, &((ts){8, 8, "eight", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen"}));
+	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen"}));
+	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve"}));
+	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){11, 11, "eleven"}));
+	push_heap_SAFE(heap_p, &((ts){11, 11, "eleven", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){9, 9, "nine"}));
+	push_heap_SAFE(heap_p, &((ts){9, 9, "nine", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){10, 10, "ten"}));
-	print_ts_heap(heap_p);
-
-	pop_heap_OPTIMUM_MEMORY(heap_p);
+	push_heap_SAFE(heap_p, &((ts){10, 10, "ten", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	pop_heap_OPTIMUM_MEMORY(heap_p);
@@ -156,37 +157,40 @@ int main()
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){2, 2, "two-xx"}));
+	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){1, 1, "one-xx"}));
+	push_heap_SAFE(heap_p, &((ts){2, 2, "two-xx", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){5, 5, "five-x"}));
+	push_heap_SAFE(heap_p, &((ts){1, 1, "one-xx", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){6, 6, "six-x"}));
+	push_heap_SAFE(heap_p, &((ts){5, 5, "five-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){11, 11, "eleven-x"}));
+	push_heap_SAFE(heap_p, &((ts){6, 6, "six-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){5, 5, "five-xx"}));
+	push_heap_SAFE(heap_p, &((ts){11, 11, "eleven-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){6, 6, "six-xx"}));
+	push_heap_SAFE(heap_p, &((ts){5, 5, "five-xx", NEW_HP_NODE}));
+	print_ts_heap(heap_p);
+
+	push_heap_SAFE(heap_p, &((ts){6, 6, "six-xx", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x"}));
+	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen-x"}));
+	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x"}));
+	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	change_key(heap_p, 12, 3);
@@ -198,7 +202,7 @@ int main()
 	change_key(heap_p, 5, 2);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){9, 9, "nine-x"}));
+	push_heap_SAFE(heap_p, &((ts){9, 9, "nine-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	pop_heap_OPTIMUM_MEMORY(heap_p);
@@ -258,19 +262,19 @@ int main()
 	pop_heap_OPTIMUM_MEMORY(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x"}));
+	push_heap_SAFE(heap_p, &((ts){14, 14, "fourteen-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen-x"}));
+	push_heap_SAFE(heap_p, &((ts){13, 13, "thirteen-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x"}));
+	push_heap_SAFE(heap_p, &((ts){12, 12, "twelve-x", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	remove_all_from_heap(heap_p);
 	print_ts_heap(heap_p);
 
-	push_heap_SAFE(heap_p, &((ts){0, 0, "000"}));
+	push_heap_SAFE(heap_p, &((ts){0, 0, "000", NEW_HP_NODE}));
 	print_ts_heap(heap_p);
 
 	deinitialize_heap(heap_p);
