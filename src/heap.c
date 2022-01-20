@@ -127,6 +127,11 @@ void initialize_hpnode(hpnode* node_p)
 	node_p->heap_index = INVALID_INDEX;
 }
 
+static int is_new_hpnode(const heap* heap_p, const hpnode* node_p)
+{
+	return node_p->heap_index == INVALID_INDEX;
+}
+
 void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	heap_p->type = type;
@@ -149,6 +154,10 @@ int push_to_heap(heap* heap_p, const void* data)
 {
 	// fail, heap is full
 	if(is_full_heap(heap_p))
+		return 0;
+
+	// if embedded hpnode is being used, then the hpnode must be a new node
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data)))
 		return 0;
 
 	// insert new element to the heap_holder at the last index + 1 and then increment element_count
@@ -182,6 +191,10 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start
 	{
 		// get the data element that needs to be inserted
 		const void* data = get_from_array(array_p, start_index + i);
+
+		// if embedded hpnode is being used, then the hpnode must be a new node
+		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data)))
+			continue;
 
 		// insert data and then update element count
 		set_in_array(&(heap_p->heap_holder), data, heap_p->element_count++);
@@ -218,11 +231,17 @@ const void* get_top_of_heap(const heap* heap_p)
 
 int remove_from_heap(heap* heap_p, const void* data)
 {
+	// can not remove from heap if the heap is empty OR if we can not get index for the provided data
 	if(is_empty_heap(heap_p) || heap_p->node_offset == NO_HEAP_NODE_OFFSET)
 		return 0;
 
 	// figure out the index to call remove at
 	unsigned int index_to_remove_at = ((hpnode*)(get_node(data)))->heap_index;
+
+	// we can not remove if the data is a new node OR the data does not exist in heap at the desired index
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
+		(is_new_hpnode(heap_p, get_node(data)) || data != get_from_array(&(heap_p->heap_holder), index_to_remove_at)))
+			return 0;
 
 	// remove the ith element from the heap
 	return remove_at_index_from_heap(heap_p, index_to_remove_at);
