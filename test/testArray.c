@@ -221,6 +221,50 @@ int main()
 			printf("Not found");
 		printf("\n\n");
 
+		printf("Find preceding : ");
+		index = find_preceding_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
+			print_ts(get_from_array(array_p, index));
+		}
+		else
+			printf("Not found");
+		printf("\n\n");
+
+		printf("Find preceding or equals : ");
+		index = find_preceding_or_equals_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
+			print_ts(get_from_array(array_p, index));
+		}
+		else
+			printf("Not found");
+		printf("\n\n");
+
+		printf("Find succeeding : ");
+		index = find_succeeding_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
+			print_ts(get_from_array(array_p, index));
+		}
+		else
+			printf("Not found");
+		printf("\n\n");
+
+		printf("Find succeeding or equals : ");
+		index = find_succeeding_or_equals_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		if(index != INVALID_INDEX)
+		{
+			printf("%u : ", index);
+			print_ts(get_from_array(array_p, index));
+		}
+		else
+			printf("Not found");
+		printf("\n\n");
+
 		printf("Find insertion index : ");
 		index = find_insertion_index_in_sorted_array(array_p, start_index, end_index, ((void*)(&to_find)), test_compare);
 		printf("%u : ", index);
