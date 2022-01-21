@@ -30,32 +30,32 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 		unsigned int dest_index = 0;
 		while(dest_index < total_elements)
 		{
-			// start and end indices of chunk 1
+			// start and last indices of chunk 1
 			unsigned int a_start = dest_index;
-			unsigned int a_end = a_start + sort_chunk_size - 1;
+			unsigned int a_last = a_start + sort_chunk_size - 1;
 
-			// start and end indices of chunk 2
-			unsigned int b_start = a_end + 1;
-			unsigned int b_end = b_start + sort_chunk_size - 1;
+			// start and last indices of chunk 2
+			unsigned int b_start = a_last + 1;
+			unsigned int b_last = b_start + sort_chunk_size - 1;
 
-			// *_start and *_end are both inclusive indices
+			// *_start and *_last are both inclusive indices
 
 			if(b_start > total_elements - 1)
 			{
-				if(a_end > total_elements - 1)
-					a_end = total_elements - 1;
+				if(a_last > total_elements - 1)
+					a_last = total_elements - 1;
 
-				memory_move(dest + dest_index, src + a_start, (a_end - a_start + 1) * sizeof(void*));
+				memory_move(dest + dest_index, src + a_start, (a_last - a_start + 1) * sizeof(void*));
 				break;
 			}
 			else
 			{
-				if(b_end > total_elements - 1)
-					b_end = total_elements - 1;
+				if(b_last > total_elements - 1)
+					b_last = total_elements - 1;
 
-				while(dest_index <= b_end)
+				while(dest_index <= b_last)
 				{
-					if((b_start > b_end) || (a_start <= a_end && compare(src[a_start], src[b_start]) < 0))
+					if((b_start > b_last) || (a_start <= a_last && compare(src[a_start], src[b_start]) < 0))
 						dest[dest_index++] = src[a_start++];
 					else
 						dest[dest_index++] = src[b_start++];
@@ -193,7 +193,7 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 
 unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
-	// check for valid start and end indexes
+	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
@@ -227,7 +227,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 
 unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
-	// check for valid start and end indexes
+	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
@@ -285,7 +285,7 @@ unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int st
 
 unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
-	// check for valid start and end indexes
+	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
