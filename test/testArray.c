@@ -270,6 +270,10 @@ int main()
 		printf("%u : ", index);
 		print_ts(get_from_array(array_p, index));
 		printf("\n\n");
+
+		printf("\n\n");
+		printf("-----------------------------------------------------------------\n\n");
+		printf("\n\n");
 	}
 
 	deinitialize_array(array_p);
