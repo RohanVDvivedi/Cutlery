@@ -71,7 +71,17 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
 unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
+// NOTE :::
+// the find_*_in_sorted_array function can be called on the array, only if
+// your data in the array is sorted in ascending order in accordance to the compare function provided as parameter
+// , (sorted) for all indices from start_index to last_index, both inclusive
 
+// These functions performs binary search in array from start_index to last_index, both inclusive,
+// returns INVALID_INDEX, if no result is not found, or the indexes provided are invalid
+unsigned int find_preceding_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+unsigned int find_succeeding_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
 
 
 //------------------------------------------------------------------------------
