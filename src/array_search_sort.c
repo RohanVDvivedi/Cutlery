@@ -325,7 +325,7 @@ unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, unsi
 
 	// if the element is lesser than or equal to the element at the start_index
 	// then there is no element in array lesser than it, so return INVALID_INDEX
-	if(compare(get_from_array(array_p, start_index), data_p) >= 0)
+	if(compare(get_from_array(array_p, start_index), data_p) > 0)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
@@ -347,7 +347,10 @@ unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, unsi
 			l = m + 1;
 		}
 		else
-			h = m - 1;
+		{
+			result_index = m;
+			break;
+		}
 	}
 
 	return result_index;
@@ -395,7 +398,7 @@ unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, uns
 
 	// if the element is lesser than the element at the start_index
 	// then its succeeding is the start_indexed element, so return start_index
-	if(compare(get_from_array(array_p, start_index), data_p) > 0)
+	if(compare(get_from_array(array_p, start_index), data_p) >= 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -417,7 +420,10 @@ unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, uns
 		else if(compare(get_from_array(array_p, m), data_p) < 0)
 			l = m + 1;
 		else
-			l = m + 1;
+		{
+			result_index = m;
+			break;
+		}
 	}
 
 	return result_index;
