@@ -33,26 +33,20 @@ void initialize_linkedlist(linkedlist* ll, unsigned int node_offset);
 // always initialize your linkedlist node before using it
 void initialize_llnode(llnode* node_p);
 
-// This function returns true(1),
-// if a llnode is insertable in the given linkedlist ll
-// i.e. next and prev pointers are NULL and it is not at the head of ll linkedlist
-// please try and avoid using this function in user application
-int is_new_llnode(const linkedlist* ll, const llnode* node_p);
-
 int is_empty_linkedlist(const linkedlist* ll);
 
-// simply gets nth from head or tail node's data
+// simply gets head, tail or nth from head or tail data
 const void* get_head_of_linkedlist(const linkedlist* ll);
 const void* get_tail_of_linkedlist(const linkedlist* ll);
 const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, unsigned int n);
 const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, unsigned int n);
 
-// get next or previous node's data of a given data element of the linkedlist
+// get next or previous element's data of a given data element of the linkedlist
 // data_xist must be a valid data pointer existing in the linkedlist
 const void* get_next_of_in_linkedlist(const linkedlist* ll, const void* data_xist);
 const void* get_prev_of_in_linkedlist(const linkedlist* ll, const void* data_xist);
 
-// inserts will return 0, and fail if llnode of data is not a new node
+// insert will return 0, and fail if llnode of data is not a new node
 // data_xist must be a valid data pointer existing in the linkedlist
 int insert_head_in_linkedlist(linkedlist* ll, const void* data);
 int insert_tail_in_linkedlist(linkedlist* ll, const void* data);
