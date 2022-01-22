@@ -1,0 +1,78 @@
+#ifndef singlylist_H
+#define singlylist_H
+
+#include<dstring.h>
+
+// SINGLYLIST is a singly non-circular linkedlist
+
+typedef struct slnode slnode;
+struct slnode
+{
+	// the next node in the singly linkedlist
+	slnode* next;
+};
+
+// it is a singly non-circular linkedlist
+typedef struct singlylist singlylist;
+struct singlylist
+{
+	// defines the address of the data, with respect to the singlylist node (slnode)
+	// this is how we reach node addresses from provided user's structure data addresses and viceversa
+	unsigned int node_offset;
+
+	// head->next->...->next = tail // ->next is called n-1 times, n being the number of elements
+	// tail->next = NULL
+	slnode* head;
+	slnode* tail;
+};
+
+// initializes to a new singlylist
+void initialize_singlylist(singlylist* ll, unsigned int node_offset);
+
+// always initialize your singlylist node before using it
+void initialize_slnode(slnode* node_p);
+
+int is_empty_singlylist(const singlylist* ll);
+
+// simply gets head, tail or nth from head data
+const void* get_head_of_singlylist(const singlylist* ll);
+const void* get_tail_of_singlylist(const singlylist* ll);
+const void* get_nth_from_head_of_singlylist(const singlylist* ll, unsigned int n);
+
+// get next element's data of a given data element of the singlylist
+// data_xist must be a valid data pointer existing in the singlylist
+const void* get_next_of_in_singlylist(const singlylist* ll, const void* data_xist);
+
+// insert will return 0, and fail if slnode of data is not a new node
+// data_xist must be a valid data pointer existing in the singlylist
+int insert_head_in_singlylist(singlylist* ll, const void* data);
+int insert_tail_in_singlylist(singlylist* ll, const void* data);
+int insert_after_in_singlylist(singlylist* ll, const void* data_xist, const void* data);
+
+// insert all from another singlylist
+// both the singlylists must have the same node_offset
+// after this operation insert_from_ll would be an empty singlylist
+int insert_all_at_head_in_singlylist(singlylist* ll, singlylist* insert_from_ll);
+int insert_all_at_tail_in_singlylist(singlylist* ll, singlylist* insert_from_ll);
+int insert_all_after_in_singlylist(singlylist* ll, const void* data_xist, singlylist* insert_from_ll);
+
+// removes will return 0, and fail if slnode of data is a new node or if slnode does not exist in this singlylist
+int remove_head_from_singlylist(singlylist* ll);
+int remove_next_of_from_singlylist(singlylist* ll, const void* data_xist);
+
+// removes all the elements from singlylist
+// and reinitializes their embedded slnode
+void remove_all_from_singlylist(singlylist* ll);
+
+// get the data from the singlylist, that equals data, based on the comparator provided
+// it will return the pointer to the data contained in the singlylist that compares equal (i.e. compare function returns 0)
+const void* find_equals_in_singlylist(const singlylist* ll, const void* data, int (*compare)(const void* data1, const void* data2));
+
+// perform operation on all the elements of the linked list
+// the function is designed well, you may call free on your data, in the provided operation function
+void for_each_in_singlylist(const singlylist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
+
+// serializes the singlylist, and appends the serialized form to the dstring
+void sprint_singlylist(dstring* append_str, const singlylist* ll, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
+
+#endif
