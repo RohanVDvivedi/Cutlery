@@ -9,7 +9,7 @@
 
 // utility
 // to check if a node is new
-int is_new_llnode(const linkedlist* ll, const llnode* node_p)
+static int is_new_llnode(const linkedlist* ll, const llnode* node_p)
 {
 	return ((node_p->next == NULL) && (node_p->prev == NULL) && (ll->head != node_p));
 }
