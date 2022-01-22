@@ -32,6 +32,7 @@ A C (standard C99) library that provides configurable data structures, serving a
    * `#include<queue.h>`
    * `#include<heap.h>`
    * `#include<linkedlist.h>`
+   * `#include<singlylist.h>`
    * `#include<bst.h>`
    * `#include<hashmap.h>`
    * `#include<dstring.h>`
