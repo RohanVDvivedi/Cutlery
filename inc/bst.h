@@ -143,12 +143,6 @@ int remove_from_bst(bst* bst_p, const void* data);
 // and reinitializes their embedded bstnode
 void remove_all_from_bst(bst* bst_p);
 
-// This function returns true(1),
-// if a bstnode is insertable in the given bst bst_p
-// i.e. left, right and parent pointers are NULL and it is not at the root of bst_p bst
-// please try and avoid using this function in user application
-int is_new_bstnode(const bst* bst_p, const bstnode* node_p);
-
 // traversals possible in the tree
 typedef enum bsttraversal bsttraversal;
 enum bsttraversal{PRE_ORDER, IN_ORDER, POST_ORDER};
