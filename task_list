@@ -1,4 +1,4 @@
-1. Miscelaneous tasks and string/byte array tasks (*now)
+1. Tasks picked (*now)
 
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
