@@ -64,28 +64,28 @@ int main()
 
 	print_ts_linkedlist(ll);
 
-	insert_head_in_linkedlist(ll, &((ts){2, "two", {NULL, NULL}}));
+	insert_head_in_linkedlist(ll, &((ts){2, "two"}));
 	print_ts_linkedlist(ll);
 
-	insert_head_in_linkedlist(ll, &((ts){1, "one", {NULL, NULL}}));
+	insert_head_in_linkedlist(ll, &((ts){1, "one"}));
 	print_ts_linkedlist(ll);
 
-	insert_tail_in_linkedlist(ll, &((ts){5, "five", {NULL, NULL}}));
+	insert_tail_in_linkedlist(ll, &((ts){5, "five"}));
 	print_ts_linkedlist(ll);
 
-	insert_tail_in_linkedlist(ll, &((ts){6, "six", {NULL, NULL}}));
+	insert_tail_in_linkedlist(ll, &((ts){6, "six"}));
 	print_ts_linkedlist(ll);
 
 	print_ts(get_nth_from_head_of_linkedlist(ll, 1));
 	printf("\n\n");
 
-	insert_after_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 1), &((ts){3, "three", {NULL, NULL}}));
+	insert_after_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 1), &((ts){3, "three"}));
 	print_ts_linkedlist(ll);
 
-	insert_before_in_linkedlist(ll, get_nth_from_tail_of_linkedlist(ll, 1), &((ts){4, "four", {NULL, NULL}}));
+	insert_before_in_linkedlist(ll, get_nth_from_tail_of_linkedlist(ll, 1), &((ts){4, "four"}));
 	print_ts_linkedlist(ll);
 
-	insert_before_in_linkedlist(ll, get_nth_from_tail_of_linkedlist(ll, 2), &((ts){-1, "minus one", {NULL, NULL}}));
+	insert_before_in_linkedlist(ll, get_nth_from_tail_of_linkedlist(ll, 2), &((ts){-1, "minus one"}));
 	print_ts_linkedlist(ll);
 
 	// check get next and prev functionality
@@ -124,7 +124,7 @@ int main()
 	printf("Error on removing a not existing node twice %d\n", remove_from_linkedlist(ll, temp));
 	print_ts_linkedlist(ll);
 
-	printf("Error on inserting before a not existing node %d\n", insert_before_in_linkedlist(ll, temp, &((ts){-1, "minus one", {NULL, NULL}})));
+	printf("Error on inserting before a not existing node %d\n", insert_before_in_linkedlist(ll, temp, &((ts){-1, "minus one"})));
 	print_ts_linkedlist(ll);
 
 	insert_after_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 1), temp);
@@ -178,10 +178,10 @@ int main()
 	print_ts_linkedlist(ll);
 
 	linkedlist* testInsertAllHead = &(linkedlist){};
-	initialize_linkedlist(testInsertAllHead, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
-	insert_head_in_linkedlist(testInsertAllHead, &((ts){100, "1 0 0", {NULL, NULL}}));
-	insert_head_in_linkedlist(testInsertAllHead, &((ts){101, "1 0 1", {NULL, NULL}}));
-	insert_head_in_linkedlist(testInsertAllHead, &((ts){102, "1 0 2", {NULL, NULL}}));
+	initialize_linkedlist(testInsertAllHead, offsetof(ts, ll_embed_node));
+	insert_head_in_linkedlist(testInsertAllHead, &((ts){100, "1 0 0"}));
+	insert_head_in_linkedlist(testInsertAllHead, &((ts){101, "1 0 1"}));
+	insert_head_in_linkedlist(testInsertAllHead, &((ts){102, "1 0 2"}));
 
 	printf("testInsertAllHead: \n");
 	print_ts_linkedlist(testInsertAllHead);
@@ -193,10 +193,10 @@ int main()
 	print_ts_linkedlist(testInsertAllHead);
 
 	linkedlist* testInsertAllTail = &(linkedlist){};
-	initialize_linkedlist(testInsertAllTail, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
-	insert_head_in_linkedlist(testInsertAllTail, &((ts){103, "1 0 3", {NULL, NULL}}));
-	insert_head_in_linkedlist(testInsertAllTail, &((ts){104, "1 0 4", {NULL, NULL}}));
-	insert_head_in_linkedlist(testInsertAllTail, &((ts){105, "1 0 5", {NULL, NULL}}));
+	initialize_linkedlist(testInsertAllTail, offsetof(ts, ll_embed_node));
+	insert_head_in_linkedlist(testInsertAllTail, &((ts){103, "1 0 3"}));
+	insert_head_in_linkedlist(testInsertAllTail, &((ts){104, "1 0 4"}));
+	insert_head_in_linkedlist(testInsertAllTail, &((ts){105, "1 0 5"}));
 
 	printf("testInsertAllTail: \n");
 	print_ts_linkedlist(testInsertAllTail);
@@ -208,9 +208,9 @@ int main()
 	print_ts_linkedlist(testInsertAllTail);
 
 	linkedlist* testInsertAllBefore = &(linkedlist){};
-	initialize_linkedlist(testInsertAllBefore, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
-	insert_head_in_linkedlist(testInsertAllBefore, &((ts){106, "1 0 6", {NULL, NULL}}));
-	insert_head_in_linkedlist(testInsertAllBefore, &((ts){107, "1 0 7", {NULL, NULL}}));
+	initialize_linkedlist(testInsertAllBefore, offsetof(ts, ll_embed_node));
+	insert_head_in_linkedlist(testInsertAllBefore, &((ts){106, "1 0 6"}));
+	insert_head_in_linkedlist(testInsertAllBefore, &((ts){107, "1 0 7"}));
 
 	printf("testInsertAllBefore: \n");
 	print_ts_linkedlist(testInsertAllBefore);
@@ -222,8 +222,8 @@ int main()
 	print_ts_linkedlist(testInsertAllBefore);
 
 	linkedlist* testInsertAllAfter = &(linkedlist){};
-	initialize_linkedlist(testInsertAllAfter, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
-	insert_head_in_linkedlist(testInsertAllAfter, &((ts){108, "1 0 8", {NULL, NULL}}));
+	initialize_linkedlist(testInsertAllAfter, offsetof(ts, ll_embed_node));
+	insert_head_in_linkedlist(testInsertAllAfter, &((ts){108, "1 0 8"}));
 
 	printf("testInsertAllAfter: \n");
 	print_ts_linkedlist(testInsertAllAfter);
