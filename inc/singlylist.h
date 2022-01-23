@@ -58,7 +58,9 @@ int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singly
 
 // removes will return 0, and fail if slnode of data is a new node or if slnode does not exist in this singlylist
 int remove_head_from_singlylist(singlylist* sl);
-int remove_next_of_from_singlylist(singlylist* sl, const void* data_xist);
+
+// it returns the pointer to removed data, else on failure it returns NULL
+const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist);
 
 // removes all the elements from singlylist
 // and reinitializes their embedded slnode
