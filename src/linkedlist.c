@@ -222,12 +222,12 @@ int insert_all_at_head_in_linkedlist(linkedlist* ll, linkedlist* insert_from_ll)
 		return 0;
 
 	if(is_empty_linkedlist(ll))	// steal its head pointer
-	{
 		ll->head = insert_from_ll->head;
-		insert_from_ll->head = NULL;
-	}
 	else
 		insert_all_nodes_before(ll, ll->head, insert_from_ll->head);
+
+	// mark the insert_from_ll linkedlist as empty
+	insert_from_ll->head = NULL;
 
 	return 1;
 }
@@ -239,12 +239,12 @@ int insert_all_at_tail_in_linkedlist(linkedlist* ll, linkedlist* insert_from_ll)
 		return 0;
 
 	if(is_empty_linkedlist(ll))	// steal its head pointer
-	{
 		ll->head = insert_from_ll->head;
-		insert_from_ll->head = NULL;
-	}
 	else
 		insert_all_nodes_after(ll, ll->head->prev, insert_from_ll->head);
+
+	// mark the insert_from_ll linkedlist as empty
+	insert_from_ll->head = NULL;
 
 	return 1;
 }
@@ -263,6 +263,9 @@ int insert_all_before_in_linkedlist(linkedlist* ll, const void* data_xist, linke
 
 	insert_all_nodes_before(ll, node_xist, insert_from_ll->head);
 
+	// mark the insert_from_ll linkedlist as empty
+	insert_from_ll->head = NULL;
+
 	return 1;
 }
 
@@ -279,6 +282,9 @@ int insert_all_after_in_linkedlist(linkedlist* ll, const void* data_xist, linked
 		return 0;
 
 	insert_all_nodes_after(ll, node_xist, insert_from_ll->head);
+
+	// mark the insert_from_ll linkedlist as empty
+	insert_from_ll->head = NULL;
 
 	return 1;
 }
