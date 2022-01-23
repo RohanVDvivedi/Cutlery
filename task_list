@@ -10,6 +10,7 @@ COMMON to all datastructures tasks
 
 LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
  * implement testcases for singlylist
+ * implement stack and queue using singlylist
 
 2. Add new datastructure types tasks (*future)
 
@@ -19,9 +20,6 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
 
 BST tasks (NEW DATASTRUCTURE inclusion)
  * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
-
-LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
- * implement hashmap, stack and queue using singly linkedlist
 
 3. Competely new datastructure tasks (*future)
 
