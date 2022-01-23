@@ -125,8 +125,52 @@ int insert_after_in_singlylist(singlylist* sl, const void* data_xist, const void
 	return 1;
 }
 
-int insert_all_at_head_in_singlylist(singlylist* sl, singlylist* insert_from_sl);
-int insert_all_at_tail_in_singlylist(singlylist* sl, singlylist* insert_from_sl);
+int insert_all_at_head_in_singlylist(singlylist* sl, singlylist* insert_from_sl)
+{
+	// if the node_offsets are different OR if insert_from_sl is empty then we fail
+	if(sl->node_offset != insert_from_sl->node_offset || is_empty_linkedlist(insert_from_sl) || sl == insert_from_sl)
+		return 0;
+
+	if(is_empty_singlylist(sl))
+	{
+		sl->head = insert_from_sl->head;
+		sl->tail = insert_from_sl->tail;
+	}
+	else
+	{
+		insert_from_sl->tail->next = sl->head;
+		sl->head = insert_from_sl->head;
+	}
+
+	insert_from_sl->head = NULL;
+	insert_from_sl->tail = NULL;
+
+	return 1;
+}
+
+int insert_all_at_tail_in_singlylist(singlylist* sl, singlylist* insert_from_sl)
+{
+	// if the node_offsets are different OR if insert_from_sl is empty then we fail
+	if(sl->node_offset != insert_from_sl->node_offset || is_empty_linkedlist(insert_from_sl) || sl == insert_from_sl)
+		return 0;
+
+	if(is_empty_singlylist(sl))
+	{
+		sl->head = insert_from_sl->head;
+		sl->tail = insert_from_sl->tail;
+	}
+	else
+	{
+		sl->tail->next = insert_from_sl->head;
+		sl->tail = insert_from_sl->tail;
+	}
+
+	insert_from_sl->head = NULL;
+	insert_from_sl->tail = NULL;
+
+	return 1;
+}
+
 int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singlylist* insert_from_sl);
 
 int remove_head_from_singlylist(singlylist* sl)
