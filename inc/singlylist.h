@@ -52,9 +52,9 @@ int insert_after_in_singlylist(singlylist* sl, const void* data_xist, const void
 // insert all from another singlylist
 // both the singlylists must have the same node_offset
 // after this operation insert_from_ll would be an empty singlylist
-int insert_all_at_head_in_singlylist(singlylist* sl, singlylist* insert_from_ll);
-int insert_all_at_tail_in_singlylist(singlylist* sl, singlylist* insert_from_ll);
-int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singlylist* insert_from_ll);
+int insert_all_at_head_in_singlylist(singlylist* sl, singlylist* insert_from_sl);
+int insert_all_at_tail_in_singlylist(singlylist* sl, singlylist* insert_from_sl);
+int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singlylist* insert_from_sl);
 
 // removes will return 0, and fail if slnode of data is a new node or if slnode does not exist in this singlylist
 int remove_head_from_singlylist(singlylist* sl);
