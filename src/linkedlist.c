@@ -356,7 +356,7 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
-	llnode* node_p = ll->head;
+	const llnode* node_p = ll->head;
 	do
 	{
 		const void* data_at_node = get_data(node_p);
@@ -372,7 +372,7 @@ void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* 
 {
 	if(is_empty_linkedlist(ll))
 		return;
-	llnode* node_p = ll->head;
+	const llnode* node_p = ll->head;
 	do
 	{
 		llnode* next = node_p->next;
@@ -398,7 +398,7 @@ void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "head : [%p]\n", ll->head);
 	if(!is_empty_linkedlist(ll))
 	{
-		llnode* node_p = ll->head;
+		const llnode* node_p = ll->head;
 		do
 		{
 			sprint_linkedlist_wrapper(append_str, ll, node_p, sprint_element, tabs + 1);
