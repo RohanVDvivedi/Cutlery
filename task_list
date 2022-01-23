@@ -9,8 +9,7 @@ COMMON to all datastructures tasks
  * check that upon expansion of array, the final updated capacity is not overflowing
 
 LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
- * implement a separate data structure singlylist, a singly non circular linkedlist
- * implement all possible functions of linkedlist for this singly list data structure
+ * implement testcases for singlylist
 
 2. Add new datastructure types tasks (*future)
 
