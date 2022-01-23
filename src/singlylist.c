@@ -2,6 +2,8 @@
 
 #include<cutlery_stds.h>
 
+#include<stdio.h>
+
 // get data from slnode
 #define get_data(node_p) 	(((const void*)(node_p)) - sl->node_offset)
 // get slnode from data
@@ -66,7 +68,7 @@ int insert_head_in_singlylist(singlylist* sl, const void* data)
 	slnode* node_p = get_node(data);
 
 	// insert only a new node to the singlylist
-	if(!is_new_slnode(sl, data))
+	if(!is_new_slnode(sl, node_p))
 		return 0;
 
 	if(is_empty_singlylist(sl))
@@ -88,7 +90,7 @@ int insert_tail_in_singlylist(singlylist* sl, const void* data)
 	slnode* node_p = get_node(data);
 
 	// insert only a new node to the singlylist
-	if(!is_new_slnode(sl, data))
+	if(!is_new_slnode(sl, node_p))
 		return 0;
 
 	if(is_empty_singlylist(sl))
