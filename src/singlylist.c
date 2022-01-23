@@ -169,10 +169,63 @@ int remove_next_of_from_singlylist(singlylist* sl, const void* data_xist)
 	return 1;
 }
 
-void remove_all_from_singlylist(singlylist* sl);
+void remove_all_from_singlylist(singlylist* sl)
+{
+	slnode* node_p = sl->head;
+	while(node_p != NULL)
+	{
+		slnode* node_p_next = node_p->next;
+		initialize_slnode(node_p);
+		node_p = node_p_next;
+	}
+	
+	sl->head = NULL;
+	sl->tail = NULL;
+}
 
-const void* find_equals_in_singlylist(const singlylist* sl, const void* data, int (*compare)(const void* data1, const void* data2));
+const void* find_equals_in_singlylist(const singlylist* sl, const void* data, int (*compare)(const void* data1, const void* data2))
+{
+	const slnode* node_p = sl->head;
+	while(node_p != NULL)
+	{
+		if(compare(data, get_data(node_p)) == 0)
+			return get_data(node_p);
+		node_p = node_p->next;
+	}
+	return NULL;
+}
 
-void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);
+void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
+{
+	const slnode* node_p = sl->head;
+	while(node_p != NULL)
+	{
+		operation(get_data(node_p), additional_params);
+		node_p = node_p->next;
+	}
+}
 
-void sprint_singlylist(dstring* append_str, const singlylist* sl, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
+static void sprint_singlylist_wrapper(dstring* append_str, const singlylist* sl, const slnode* node_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
+{
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "node : [%p]\n", node_p);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "data :\n");
+	sprint_element(append_str, get_data(node_p), tabs + 1); snprintf_dstring(append_str, "\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "next : [%p]\n\n", node_p->next);
+}
+
+void sprint_singlylist(dstring* append_str, const singlylist* sl, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
+{
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "singlylist :\n");
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%u]\n", sl->node_offset);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "head : [%p]\n", sl->head);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "tail : [%p]\n", sl->tail);
+	if(!is_empty_singlylist(sl))
+	{
+		const slnode* node_p = sl->head;
+		while(node_p != NULL)
+		{
+			sprint_singlylist_wrapper(append_str, sl, node_p, sprint_element, tabs + 1);
+			node_p = node_p->next;
+		}
+	}
+}
