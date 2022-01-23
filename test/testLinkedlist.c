@@ -183,8 +183,14 @@ int main()
 	insert_head_in_linkedlist(testInsertAllHead, &((ts){101, "1 0 1", {NULL, NULL}}));
 	insert_head_in_linkedlist(testInsertAllHead, &((ts){102, "1 0 2", {NULL, NULL}}));
 
+	printf("testInsertAllHead: \n");
+	print_ts_linkedlist(testInsertAllHead);
+
 	insert_all_at_head_in_linkedlist(ll, testInsertAllHead);
 	print_ts_linkedlist(ll);
+
+	printf("testInsertAllHead: \n");
+	print_ts_linkedlist(testInsertAllHead);
 
 	linkedlist* testInsertAllTail = &(linkedlist){};
 	initialize_linkedlist(testInsertAllTail, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
@@ -192,23 +198,41 @@ int main()
 	insert_head_in_linkedlist(testInsertAllTail, &((ts){104, "1 0 4", {NULL, NULL}}));
 	insert_head_in_linkedlist(testInsertAllTail, &((ts){105, "1 0 5", {NULL, NULL}}));
 
+	printf("testInsertAllTail: \n");
+	print_ts_linkedlist(testInsertAllTail);
+
 	insert_all_at_tail_in_linkedlist(ll, testInsertAllTail);
 	print_ts_linkedlist(ll);
+
+	printf("testInsertAllTail: \n");
+	print_ts_linkedlist(testInsertAllTail);
 
 	linkedlist* testInsertAllBefore = &(linkedlist){};
 	initialize_linkedlist(testInsertAllBefore, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
 	insert_head_in_linkedlist(testInsertAllBefore, &((ts){106, "1 0 6", {NULL, NULL}}));
 	insert_head_in_linkedlist(testInsertAllBefore, &((ts){107, "1 0 7", {NULL, NULL}}));
 
+	printf("testInsertAllBefore: \n");
+	print_ts_linkedlist(testInsertAllBefore);
+
 	insert_all_before_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 0), testInsertAllBefore);
 	print_ts_linkedlist(ll);
+
+	printf("testInsertAllBefore: \n");
+	print_ts_linkedlist(testInsertAllBefore);
 
 	linkedlist* testInsertAllAfter = &(linkedlist){};
 	initialize_linkedlist(testInsertAllAfter, (unsigned long long int)(&(((ts*)0)->ll_embed_node)));
 	insert_head_in_linkedlist(testInsertAllAfter, &((ts){108, "1 0 8", {NULL, NULL}}));
 
+	printf("testInsertAllAfter: \n");
+	print_ts_linkedlist(testInsertAllAfter);
+
 	insert_all_after_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 2), testInsertAllAfter);
 	print_ts_linkedlist(ll);
+
+	printf("testInsertAllAfter: \n");
+	print_ts_linkedlist(testInsertAllAfter);
 
 	printf("\n\nremoving all from linkedlist\n\n");
 	remove_all_from_linkedlist(ll);
