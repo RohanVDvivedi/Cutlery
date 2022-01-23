@@ -211,16 +211,16 @@ int remove_head_from_singlylist(singlylist* sl)
 	return 1;
 }
 
-int remove_next_of_from_singlylist(singlylist* sl, const void* data_xist)
+const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist)
 {
 	if(is_empty_singlylist(sl))
-		return 0;
+		return NULL;
 
 	slnode* node_xist = get_node(data_xist);
 
 	// node_xist must not be a new node
 	if(is_new_slnode(sl, node_xist))
-		return 0;
+		return NULL;
 
 	slnode* to_be_removed = node_xist->next;
 
@@ -232,7 +232,7 @@ int remove_next_of_from_singlylist(singlylist* sl, const void* data_xist)
 
 	initialize_slnode(to_be_removed);
 
-	return 1;
+	return get_data(to_be_removed);
 }
 
 void remove_all_from_singlylist(singlylist* sl)
