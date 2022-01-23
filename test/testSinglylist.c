@@ -89,7 +89,7 @@ int main()
 		printf("\nnext : ");print_ts(get_next_of_in_singlylist(sl, head_data));
 		printf("\n\n");
 
-		const ts* mid_data = find_equals_in_singlylist(sl, &((ts){-1}), test_compare);
+		const ts* mid_data = find_equals_in_singlylist(sl, &((ts){3}), test_compare);
 		printf("\nnode : ");print_ts(mid_data);
 		printf("\nnext : ");print_ts(get_next_of_in_singlylist(sl, mid_data));
 		printf("\n\n");
