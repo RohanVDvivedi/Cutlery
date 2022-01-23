@@ -15,8 +15,7 @@ LINKEDLIST tasks (NEW DATASTRUCTURE inclusion)
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
- * implement a node based binomial heap and fibonacci heap (implement them as an embedded node based data structure like linked_list and bst, such that this embedded node consists of leftmost_child, parent and right_sibling pointers only), rename heap to binary heap
- * build an abstraction layer over all the three heaps and name it heap and make all methods available from it
+ * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery, implemented as enums like FIBONACCI_HEAP and BINOMIAL_HEAP
 
 BST tasks (NEW DATASTRUCTURE inclusion)
  * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
