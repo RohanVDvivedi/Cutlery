@@ -34,35 +34,29 @@ void reset_bit(char* bitmap, unsigned int index)
 
 void set_all_bits(char* bitmap, unsigned int size)
 {
-	unsigned int bitmap_byte_size = bitmap_size_in_bytes(size);
-	
-	// chop off the partial byte
-	if(X_mod_8(bitmap_byte_size))
-		bitmap_byte_size -= 1;
+	// number of whole bytes in the bitmap
+	unsigned int bitmap_whole_byte_size = X_div_8(size);
 	
 	// set all bits in the complete bytes
-	for(unsigned int i = 0; i < bitmap_byte_size; i++)
+	for(unsigned int i = 0; i < bitmap_whole_byte_size; i++)
 		bitmap[i] = 0xff;
 
 	// set necessary bits in the last partial byte
-	for(unsigned int i = X_mul_8(bitmap_byte_size); i < size; i++)
+	for(unsigned int i = X_mul_8(bitmap_whole_byte_size); i < size; i++)
 		set_bit(bitmap, i);
 }
 
 void reset_all_bits(char* bitmap, unsigned int size)
 {
-	unsigned int bitmap_byte_size = bitmap_size_in_bytes(size);
-	
-	// chop off the partial byte
-	if(X_mod_8(bitmap_byte_size))
-		bitmap_byte_size -= 1;
+	// number of whole bytes in the bitmap
+	unsigned int bitmap_whole_byte_size = X_div_8(size);
 	
 	// reset all bits in the complete bytes
-	for(unsigned int i = 0; i < bitmap_byte_size; i++)
+	for(unsigned int i = 0; i < bitmap_whole_byte_size; i++)
 		bitmap[i] = 0x00;
 
 	// set necessary bits in the last partial byte
-	for(unsigned int i = X_mul_8(bitmap_byte_size); i < size; i++)
+	for(unsigned int i = X_mul_8(bitmap_whole_byte_size); i < size; i++)
 		reset_bit(bitmap, i);
 }
 
