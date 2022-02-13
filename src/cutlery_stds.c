@@ -18,11 +18,11 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		return;
 
 	// compute the last src and dest byte address that needs to be copied
-	const void* src_last = src_start + (size - 1);
-	void* dest_last = dest_start + (size - 1);
+	const void* src_end = src_start + size;
+	void* dest_end = dest_start + size;
 
 	// this conditions may arise if we happen to be at edge of the memory
-	if(src_start > src_last || dest_start > dest_last)
+	if(src_start >= src_end || dest_start >= dest_end)
 		return;
 
 	// decide to make a forward pass or backward pass 
@@ -54,13 +54,13 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 				int* dest_int = (int*)dest;
 
 				// additonal bytes that you might have to copy after completing the int copy
-				unsigned long int additional_bytes = ((unsigned long int)(src_last + 1)) & ~int_alignment_bit_mask;
+				unsigned long int additional_bytes = ((unsigned long int)(src_end)) & ~int_alignment_bit_mask;
 
 				// this is the address of the last byte that must be copied under the int-by-int copy loop
-				const int* src_last_int = src_last - additional_bytes;
+				const int* src_end_int = src_end - additional_bytes;
 
 				// int-by-int copy loop
-				while( src_int <= src_last_int )
+				while( src_int != src_end_int )
 					*(dest_int++) = *(src_int++);
 
 				src = (char*)src_int;
@@ -69,15 +69,15 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		}
 
 		// finish up remaining with an old fashioned byte-by-byte copy loop
-		while( src <= ((char*)(src_last)) )
+		while( src != ((char*)(src_end)) )
 			*(dest++) = *(src++);
 	}
 	// else make backward pass
 	else
 	{
 		// intialize our iterators for backward copy
-		const char* src = src_last;
-		char* dest = dest_last;
+		const char* src = src_end;
+		char* dest = dest_end;
 
 		// check if int copy is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
 		if( (size >= 3 * int_size) &&
@@ -87,12 +87,8 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 		)
 		{
 			// perform a byte-by-byte copy until the addresses are int - 1 aligned
-			while( ( ((long int)src) & ~int_alignment_bit_mask ) != ( ~int_alignment_bit_mask ) )
-				*(dest--) = *(src--);
-
-			// point src and dest to next int that needs to be copied
-			src -= (int_size - 1);
-			dest -= (int_size - 1);
+			while( ( ((long int)src) & ~int_alignment_bit_mask ) )
+				*(--dest) = *(--src);
 
 			// perform an int-by-int transfer in this scope
 			// dest_int and src_int must not leave this scope
@@ -108,20 +104,17 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 				const int* src_start_int = src_start + additional_bytes;
 
 				// int-by-int copy loop
-				while( src_int >= src_start_int )
-					*(dest_int--) = *(src_int--);
+				while( src_int != src_start_int )
+					*(--dest_int) = *(--src_int);
 
 				src = (char*)src_int;
 				dest = (char*)dest_int;
 			}
-
-			src += (int_size - 1);
-			dest += (int_size - 1);
 		}
 
 		// finish up remaining with an old fashioned byte-by-byte copy loop
-		while( src >= ((char*)(src_start)) )
-			*(dest--) = *(src--);
+		while( src != ((char*)(src_start)) )
+			*(--dest) = *(--src);
 	}
 }
 
@@ -190,7 +183,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 
 	// this conditions may arise if we happen to be at edge of the memory
 	if(data1_start > data1_last || data2_start > data2_last)
-		return;
+		return 0;
 
 	// intialize our iterators for forward copy
 	const char* data1 = data1_start;
