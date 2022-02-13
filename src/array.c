@@ -6,11 +6,16 @@
 #define EXPANSION_FACTR 1.5
 #define EXPANSION_CONST 2
 
+#define MAX_CAPACITY (~((unsigned int)(0)))
+
 // new_capacity of data_p_p = (old_capacity of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next capacity (on expansion) for the given array, if it's current capacity is current_capacity
 static unsigned int get_new_capacity(unsigned int current_capacity)
 {
-	return (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
+	unsigned int new_capacity = (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
+
+	// on over flow return max capacity
+	return (new_capacity < current_capacity) ? MAX_CAPACITY : new_capacity;
 }
 
 void initialize_array(array* array_p, unsigned int capacity)
