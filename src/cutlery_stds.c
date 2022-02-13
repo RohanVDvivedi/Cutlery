@@ -21,6 +21,10 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 	const void* src_last = src_start + (size - 1);
 	void* dest_last = dest_start + (size - 1);
 
+	// this conditions may arise if we happen to be at edge of the memory
+	if(src_start > src_last || dest_start > dest_last)
+		return;
+
 	// decide to make a forward pass or backward pass 
 	// based on whether the pass could corrupt the src memory address before we could copy it
 
@@ -130,6 +134,10 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 	// compute the last dest byte address that needs to be copied
 	void* dest_last = dest_start + (size - 1);
 
+	// this conditions may arise if we happen to be at edge of the memory
+	if(dest_start > dest_last)
+		return;
+
 	// intialize our iterators for the copy operation
 	char* dest = dest_start;
 
@@ -178,7 +186,11 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 
 	// compute the last data1 and data2 byte address that needs to be copied
 	const void* data1_last = data1_start + (size - 1);
-	//const void* data2_last = data2_start + (size - 1);
+	const void* data2_last = data2_start + (size - 1);
+
+	// this conditions may arise if we happen to be at edge of the memory
+	if(data1_start > data1_last || data2_start > data2_last)
+		return;
 
 	// intialize our iterators for forward copy
 	const char* data1 = data1_start;
