@@ -178,11 +178,11 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 		return 0;
 
 	// compute the last data1 and data2 byte address that needs to be copied
-	const void* data1_last = data1_start + (size - 1);
-	const void* data2_last = data2_start + (size - 1);
+	const void* data1_end = data1_start + size;
+	const void* data2_end = data2_start + size;
 
 	// this conditions may arise if we happen to be at edge of the memory
-	if(data1_start > data1_last || data2_start > data2_last)
+	if(data1_start >= data1_end || data2_start >= data2_end)
 		return 0;
 
 	// intialize our iterators for forward copy
@@ -218,13 +218,13 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 			const int* data2_int = (int*)data2;
 
 			// additonal bytes that you might have to compare after completing the int copy
-			unsigned long int additional_bytes = ((unsigned long int)(data1_last + 1)) & ~int_alignment_bit_mask;
+			unsigned long int additional_bytes = ((unsigned long int)(data1_end)) & ~int_alignment_bit_mask;
 
 			// this is the address of the last byte that must be compared under the int-by-int compare loop
-			const int* data1_last_int = data1_last - additional_bytes;
+			const int* data1_end_int = data1_end - additional_bytes;
 
 			// int-by-int compare loop
-			while( data1_int <= data1_last_int )
+			while( data1_int != data1_end_int )
 			{
 				if( *(data2_int) == *(data1_int) )
 				{
@@ -241,7 +241,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	}
 
 	// finish up remaining with an old fashioned byte-by-byte compare loop
-	while( data1 <= ((char*)(data1_last)) )
+	while( data1 != ((char*)(data1_end)) )
 	{
 		if((*data1) > (*data2))
 			return 1;
