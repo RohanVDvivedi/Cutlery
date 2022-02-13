@@ -4,7 +4,6 @@ DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
 COMMON to all datastructures tasks
- * refactor memory_set, memmory_move and memory_compare to not cross provided address boundaries
  * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
  * check that upon expansion of array, the final updated capacity is not overflowing
  * allow initialization of cutlery datastructures using stack allocated/custom allocated memory (not using the allocator)
