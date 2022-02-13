@@ -3,9 +3,6 @@
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
-COMMON to all datastructures tasks
- * in memory allocator interface replace new_size from unsigned int to unsigned int* allowing the allocator to return more memory than what we asked for
-
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
