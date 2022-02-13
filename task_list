@@ -10,6 +10,7 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
 
 BST tasks (NEW DATASTRUCTURE inclusion)
  * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
+ * add unsigned int node_size the number of nodes in sub tree rooted at the given node to provide functions to get nth smallest or largest in the bst (* far future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
