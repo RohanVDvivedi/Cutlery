@@ -26,8 +26,9 @@ void initialize_array(array* array_p, unsigned int capacity)
 void initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator)
 {
 	array_p->mem_allocator = mem_allocator;
-	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, capacity * sizeof(void*)) : NULL;
-	array_p->capacity = (array_p->data_p_p != NULL) ? capacity : 0;
+	unsigned int bytes_allocated = capacity * sizeof(void*);
+	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, &bytes_allocated) : NULL;
+	array_p->capacity = (array_p->data_p_p != NULL) ? (bytes_allocated / sizeof(void*)) : 0;
 }
 
 void initialize_array_with_memory(array* array_p, unsigned int capacity, const void* data_ps[])
@@ -119,15 +120,22 @@ int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
 	if(new_capacity <= array_p->capacity)
 		return 0;
 
+	// number of bytes to be allocated
+	unsigned int bytes_allocated = new_capacity * sizeof(void*);
+
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
 										array_p->capacity * sizeof(void*),
-										new_capacity * sizeof(void*));
+										&bytes_allocated);
 
 	// since memory allocation failed, return 0
 	if(new_data_p_p == NULL && new_capacity > 0)
 		return 0;
+
+	// the new capacity may be more than what you asked for
+	// so calculate the bytes that were allocated
+	new_capacity = bytes_allocated / sizeof(void*);
 
 	// set all new pointers to NULL i.e. from old_capacity to new_capacity
 	memory_set(new_data_p_p + array_p->capacity, 0,
@@ -150,15 +158,22 @@ int shrink_array(array* array_p, unsigned int new_capacity)
 	if(new_capacity >= array_p->capacity)
 		return 0;
 
+	// number of bytes to be allocated
+	unsigned int bytes_allocated = new_capacity * sizeof(void*);
+
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
 										array_p->capacity * sizeof(void*),
-										new_capacity * sizeof(void*));
+										&bytes_allocated);
 
 	// since memory allocation failed, return 0
 	if(new_data_p_p == NULL && new_capacity > 0)
 		return 0;
+
+	// the new capacity may be more than what you asked for
+	// so calculate the bytes that were allocated
+	new_capacity = bytes_allocated / sizeof(void*);
 
 	// new assignment to data_p_p and its capacity
 	array_p->data_p_p = new_data_p_p;

@@ -67,16 +67,16 @@ typedef const struct memory_allocator* memory_allocator;
 **	memory_allocator ma;
 **
 **	malloc like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, &new_size, 0, DONT_CARE);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, new_size, 0, DONT_CARE);
 **
 **	calloc like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, &new_size, 0, ZERO);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, new_size, 0, ZERO);
 **
 **	realloc like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, old_memory, old_size, &new_size, 0, PRESERVE);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, old_memory, old_size, new_size, 0, PRESERVE);
 **
 **	aligned_alloc/posix_memalign like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, &new_size, new_alignment, DONT_CARE);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, new_size, new_alignment, DONT_CARE);
 **
 **	free like usage
 **	ma->allocator_function(ma->allocator_context, old_memory, old_size, NULL, 0, DONT_CARE);
@@ -98,11 +98,11 @@ typedef const struct memory_allocator* memory_allocator;
 // these are the most basic usecases that it must suffice
 
 // first and foremost calls to the memory allocator
-#define allocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, &new_size, 0, DONT_CARE)
-#define zallocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, &new_size, 0, ZERO)
+#define allocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, 0, DONT_CARE)
+#define zallocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, 0, ZERO)
 
 // subsequent reallocation calls to the memory allocator
-#define reallocate(mem_allocator, old_memory, old_size, new_size) 	mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, &new_size, 0, PRESERVE)
+#define reallocate(mem_allocator, old_memory, old_size, new_size) 	mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, new_size, 0, PRESERVE)
 
 // final deallocate / free call to the memory allocator
 #define deallocate(mem_allocator, old_memory, old_size)				mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, NULL, 0, DONT_CARE)
