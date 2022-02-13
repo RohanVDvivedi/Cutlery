@@ -24,6 +24,7 @@ struct arraylist
 
 void initialize_arraylist(arraylist* al, unsigned int capacity);
 void initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator);
+void initialize_arraylist_with_memory(arraylist* al, unsigned int capacity, const void* data_ps[]);
 
 // push_*_to_arraylist functions will push data_p to the front/back of the arraylist, and will return 1 on success
 int push_front_to_arraylist(arraylist* al, const void* data_p);

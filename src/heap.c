@@ -150,6 +150,15 @@ void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_ty
 	heap_p->element_count = 0;
 }
 
+void initialize_heap_with_memory(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* data_ps[])
+{
+	heap_p->type = type;
+	heap_p->compare = compare;
+	heap_p->node_offset = node_offset;
+	initialize_array_with_memory(&(heap_p->heap_holder), capacity, data_ps);
+	heap_p->element_count = 0;
+}
+
 int push_to_heap(heap* heap_p, const void* data)
 {
 	// fail, heap is full

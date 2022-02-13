@@ -45,6 +45,7 @@ struct heap
 // initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
 void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
 void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator);
+void initialize_heap_with_memory(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* data_ps[]);
 
 // always initialize your hpnode before using it
 void initialize_hpnode(hpnode* node_p);
