@@ -4,19 +4,19 @@
 #include<string.h>
 
 // declaration for STD_C_mem_allocator->allocator_function
-void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
+void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int* new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
 struct memory_allocator STD_C_memory_allocator = {
 	.allocator_context = NULL,
 	.allocator_function = STD_C_mem_allocator_function,
 };
 memory_allocator STD_C_mem_allocator = &STD_C_memory_allocator;
 
-void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization)
+void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int* new_size, unsigned int new_alignment, memory_allocator_initialization initialization)
 {
 	int new_memory_allocation_failed = 0;
 	void* new_memory = NULL;
 
-	if(new_size > 0)	// a new memory allocation is required
+	if(new_size != NULL && (*new_size) > 0)	// a new memory allocation is required
 	{
 		if(new_alignment == 0 || new_alignment == 1)	// case : no alignment constraint
 		{
@@ -24,19 +24,19 @@ void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, un
 			{
 				case DONT_CARE :
 				{
-					new_memory = malloc(new_size);
+					new_memory = malloc((*new_size));
 					break;
 				}
 				case ZERO :
 				{
-					new_memory = calloc(new_size, 1);
+					new_memory = calloc((*new_size), 1);
 					break;
 				}
 				case PRESERVE :
 				{
 					if(old_memory != NULL && old_size > 0)
 					{
-						new_memory = realloc(old_memory, new_size);
+						new_memory = realloc(old_memory, (*new_size));
 						if(new_memory != NULL)	// a successfull allocation suggests the old_memory was freed
 						{	// this if statement, protects you from double free errors, fatal on some systems
 							old_memory = NULL;
@@ -44,7 +44,7 @@ void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, un
 						}
 					}
 					else
-						new_memory = malloc(new_size);
+						new_memory = malloc((*new_size));
 					break;
 				}
 				default:{break;}
@@ -52,20 +52,20 @@ void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, un
 		}
 		else	// case : fixed alignment on return address
 		{
-			new_memory = aligned_alloc(new_alignment, new_size);
+			new_memory = aligned_alloc(new_alignment, (*new_size));
 			if(new_memory != NULL)
 			{
 				switch(initialization)
 				{
 					case ZERO :
 					{
-						memset(new_memory, 0, new_size);
+						memset(new_memory, 0, (*new_size));
 						break;
 					}
 					case PRESERVE :
 					{
 						if(old_memory != NULL && old_size > 0)
-							memcpy(new_memory, old_memory, ((new_size < old_size) ? new_size : old_size));
+							memcpy(new_memory, old_memory, (((*new_size) < old_size) ? (*new_size) : old_size));
 						break;
 					}
 					default:{break;}
