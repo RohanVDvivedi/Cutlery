@@ -12,7 +12,7 @@
 
 // for building a custom memory allocator to use with Cutlery-containers, please read this header file thoroughly and follow the conventions defined
 
-// the enum defined below defines the few ways your allocated memory is returned
+// the enum defined below defines the few ways your allocated memory is initialized before being returned
 typedef enum memory_allocator_initialization memory_allocator_initialization;
 enum memory_allocator_initialization
 {
@@ -31,7 +31,7 @@ enum memory_allocator_initialization
 ** allocator_context : context to this memory allocator
 ** old_memory        : memory allocated in the past, that you no longer require, this memory must/will be freed
 ** old_size          : size of memory pointed to by old_allocation (your custom allocator may or may not use this value)
-** new_size          : size of new memory that you want
+** new_size          : size of new memory that you want (this is a pointer hence the actual allocated size is returned)
 ** new_alignment     : the alignment required for the new memory (0 or 1 represents no memory alignment requirements)
 ** initialization    : check enum memory_allocator_initialization
 **
@@ -42,6 +42,7 @@ enum memory_allocator_initialization
 **		and these "new_size" number of bytes must be initialized according to "initialization" enum memory_allocator_initialization parameter
 **
 ** 		The returned memory pointer must point to atleast new_size number of bytes
+**			the actual size is retunred in the new_size parameter
 **		The returned memory pointer may or may not point to the same old_memory
 **			and Cutlery algorithms and datastructures will not make any such assumptions about implementation details of the memory allocator provided to them
 **
@@ -49,7 +50,7 @@ enum memory_allocator_initialization
 **		inclusive but not limited to 
 **			* memory allocation failure due to excessive memory utilization
 */
-typedef void* (*memory_allocator_function)(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
+typedef void* (*memory_allocator_function)(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int* new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
 
 struct memory_allocator
 {
@@ -66,25 +67,27 @@ typedef const struct memory_allocator* memory_allocator;
 **	memory_allocator ma;
 **
 **	malloc like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, new_size, 0, DONT_CARE);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, &new_size, 0, DONT_CARE);
 **
 **	calloc like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, new_size, 0, ZERO);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, &new_size, 0, ZERO);
 **
 **	realloc like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, old_memory, old_size, new_size, 0, PRESERVE);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, old_memory, old_size, &new_size, 0, PRESERVE);
 **
 **	aligned_alloc/posix_memalign like usage
-**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, new_size, new_alignment, DONT_CARE);
+**	void* new_memory = ma->allocator_function(ma->allocator_context, NULL, 0, &new_size, new_alignment, DONT_CARE);
 **
 **	free like usage
-**	ma->allocator_function(ma->allocator_context, old_memory, old_size, 0, 0, DONT_CARE);
+**	ma->allocator_function(ma->allocator_context, old_memory, old_size, NULL, 0, DONT_CARE);
+**		to just free the memory, the new_size must be 0 or NULL
 **
 **	as you can see the memory_allocator suffices all specific usecases according to the parameters passed
 **	please note that this are just stdlib c specific usecases, a custom memory allocator interface must provide implementation of all possible usecases
 **	and return NULL on an allocation failure
 **
 **	When the memory allocation fails (return value = NULL) the Cutlery datastructures assume that old_memory is not freed and can still be used
+**		in this case the parameter new_size is returned unchanged
 */
 
 // BELOW ARE SIMPLIFIED MEMORY ALLOCATOR CALLS
@@ -95,14 +98,14 @@ typedef const struct memory_allocator* memory_allocator;
 // these are the most basic usecases that it must suffice
 
 // first and foremost calls to the memory allocator
-#define allocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, 0, DONT_CARE)
-#define zallocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, 0, ZERO)
+#define allocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, &new_size, 0, DONT_CARE)
+#define zallocate(mem_allocator, new_size) 							mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, &new_size, 0, ZERO)
 
 // subsequent reallocation calls to the memory allocator
-#define reallocate(mem_allocator, old_memory, old_size, new_size) 	mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, new_size, 0, PRESERVE)
+#define reallocate(mem_allocator, old_memory, old_size, new_size) 	mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, &new_size, 0, PRESERVE)
 
 // final deallocate / free call to the memory allocator
-#define deallocate(mem_allocator, old_memory, old_size)				mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, 0, 0, DONT_CARE)
+#define deallocate(mem_allocator, old_memory, old_size)				mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, NULL, 0, DONT_CARE)
 
 // the memory allocator interface for a STD_C library functions like malloc, calloc, aligned_alloc, and free
 extern struct memory_allocator STD_C_memory_allocator;
