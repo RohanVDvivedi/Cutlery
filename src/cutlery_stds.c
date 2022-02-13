@@ -125,10 +125,10 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 		return;
 
 	// compute the last dest byte address that needs to be copied
-	void* dest_last = dest_start + (size - 1);
+	void* dest_end = dest_start + size;
 
 	// this conditions may arise if we happen to be at edge of the memory
-	if(dest_start > dest_last)
+	if(dest_start >= dest_end)
 		return;
 
 	// intialize our iterators for the copy operation
@@ -153,13 +153,13 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 				int_value |= ( (((int)byte_value) & 0xff) << i );
 
 			// additonal bytes that you might have to copy after completing the int copy
-			unsigned long int additional_bytes = ((unsigned long int)(dest_last + 1)) & ~int_alignment_bit_mask;
+			unsigned long int additional_bytes = ((unsigned long int)(dest_end)) & ~int_alignment_bit_mask;
 
 			// this is the address of the last byte that must be copied under the int-by-int copy loop
-			const int* dest_last_int = dest_last - additional_bytes;
+			const int* dest_end_int = dest_end - additional_bytes;
 
 			// int-by-int copy loop
-			while( dest_int <= dest_last_int )
+			while( dest_int != dest_end_int )
 				*(dest_int++) = int_value;
 
 			dest = (char*)dest_int;
@@ -167,7 +167,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 	}
 
 	// finish up remaining with an old fashioned byte-by-byte copy
-	while( dest <= ((char*)(dest_last)) )
+	while( dest != ((char*)(dest_end)) )
 		*(dest++) = byte_value;
 }
 
