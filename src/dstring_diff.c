@@ -19,7 +19,8 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 	unsigned int str1_len = get_char_count_dstring(str1);
 
 	unsigned int dp_dims[] = {str0_len + 1, str1_len + 1};
-	unsigned int* dp = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * dp_dims[0] * dp_dims[1]);
+	unsigned int dp_bytes = sizeof(unsigned int) * dp_dims[0] * dp_dims[1];
+	unsigned int* dp = allocate(DSTRING_mem_alloc, dp_bytes);
 
 	for(unsigned int i = 0; i < dp_dims[1]; i++)
 	{
@@ -70,7 +71,8 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 	unsigned int str1_len = get_char_count_dstring(str1);
 
 	unsigned int dp_dims[] = {str0_len + 1, str1_len + 1};
-	unsigned int* dp = allocate(DSTRING_mem_alloc, sizeof(unsigned int) * dp_dims[0] * dp_dims[1]);
+	unsigned int dp_bytes = sizeof(unsigned int) * dp_dims[0] * dp_dims[1];
+	unsigned int* dp = allocate(DSTRING_mem_alloc, dp_bytes);
 
 	for(unsigned int i = 0; i < dp_dims[1]; i++)
 	{
