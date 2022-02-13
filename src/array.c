@@ -30,6 +30,13 @@ void initialize_array_with_allocator(array* array_p, unsigned int capacity, memo
 	array_p->capacity = (array_p->data_p_p != NULL) ? capacity : 0;
 }
 
+void initialize_array_with_memory(array* array_p, unsigned int capacity, const void* data_ps[])
+{
+	array_p->mem_allocator = NULL;
+	array_p->data_p_p = data_ps;
+	array_p->capacity = capacity;
+}
+
 const void* get_from_array(const array* array_p, unsigned int index)
 {
 	return (index < array_p->capacity) ? array_p->data_p_p[index] : NULL;

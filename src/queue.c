@@ -12,6 +12,11 @@ void initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memo
 	initialize_arraylist_with_allocator(&(queue_p->queue_holder), capacity, mem_allocator);
 }
 
+void initialize_queue_with_memory(queue* queue_p, unsigned int capacity, const void* data_ps[])
+{
+	initialize_arraylist_with_memory(&(queue_p->queue_holder), capacity, data_ps);
+}
+
 int push_to_queue(queue* queue_p, const void* data_p)
 {
 	return push_back_to_arraylist(&(queue_p->queue_holder), data_p);

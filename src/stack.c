@@ -12,6 +12,11 @@ void initialize_stack_with_allocator(stack* stack_p, unsigned int capacity, memo
 	initialize_arraylist_with_allocator(&(stack_p->stack_holder), capacity, mem_allocator);
 }
 
+void initialize_stack_with_memory(stack* stack_p, unsigned int capacity, const void* data_ps[])
+{
+	initialize_arraylist_with_memory(&(stack_p->stack_holder), capacity, data_ps);
+}
+
 int push_to_stack(stack* stack_p, const void* data_p)
 {
 	return push_back_to_arraylist(&(stack_p->stack_holder), data_p);

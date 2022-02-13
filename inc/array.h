@@ -21,6 +21,7 @@ struct array
 // initializes and gives necessary memory to manage internal element contents
 void initialize_array(array* array_p, unsigned int capacity);
 void initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator);
+void initialize_array_with_memory(array* array_p, unsigned int capacity, const void* data_ps[]);
 
 // returns pointer to the data at index = index
 const void* get_from_array(const array* array_p, unsigned int index);
