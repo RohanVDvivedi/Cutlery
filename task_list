@@ -9,6 +9,7 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery, implemented as enums like FIBONACCI_HEAP and BINOMIAL_HEAP
 
 BST tasks (NEW DATASTRUCTURE inclusion)
+ * implement insert_in_non_balancing_bst using a double pointer storing the location where the current node position is stored. this reduces the code length of the function.
  * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
  * add unsigned int subtree_size the number of nodes in sub tree rooted at the given node to provide functions to get nth smallest or largest in the bst. This variable is 0 in a node that is not in bst. Changes only required to subtree_size in rotation, exchange_positions and insert (make subtree_size = 1) and delete (make subtree_size = 0) functionality. Add functionality to get number of elements greater than x and lesser than x, OR get_element_count in bst and get_subtree_element_count (internal function).
  * provide an iterator for bst.
