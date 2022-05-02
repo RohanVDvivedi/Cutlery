@@ -26,6 +26,10 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 3. Competely new datastructure tasks (*future)
+UNION FIND datastructure
+ * implement union find data structure. consisting of embedded nodes.
+ * no need of any parent structure to hold the data, use only embedded nodes.
+ * each embedded node consists of parent*, rank and sub_tree_element_count for each embedded node
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use int or unsigned int for below functionality and implement their itrative approaches only
