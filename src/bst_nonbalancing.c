@@ -30,33 +30,35 @@ bstnode* get_largest_node_from_node(bstnode* node_p)
 
 void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 {
-	bstnode* curr = bst_p->root;
-	while(curr != NULL)
+	// pointer to the node that will be node_p's parent
+	bstnode* node_p_parent = NULL;
+
+	// find the pointer to the position, where the node_p should be installed
+	// start this search from the root
+	bstnode** insertion_point = &(bst_p->root);
+
+	// insertion_point points to the left or right pointer of the node_p_parent
+	// unless insertion_point points to the position of the root
+
+	while((*insertion_point) != NULL)
 	{
-		int compare_result = bst_p->compare(get_data(node_p), get_data(curr));
+		// if insertion point is not empty/NULL
+		// then it could be new possible parent of the node_p
+		node_p_parent = *insertion_point;
+
+		// compare the bstnode* at the insertion point
+		int compare_result = bst_p->compare(get_data(node_p), get_data((*insertion_point)));
+
+		// new insertion point would be at the left or right of the current insertion point
 		if(compare_result < 0)
-		{
-			if(curr->left == NULL)
-			{
-				curr->left = node_p;
-				node_p->parent = curr;
-				return;
-			}
-			else
-				curr = curr->left;
-		}
+			insertion_point = &((*insertion_point)->left);
 		else if(compare_result >= 0)
-		{
-			if(curr->right == NULL)
-			{
-				curr->right = node_p;
-				node_p->parent = curr;
-				return;
-			}
-			else
-				curr = curr->right;
-		}
+			insertion_point = &((*insertion_point)->right);
 	}
+
+	// install the new node_p
+	*insertion_point = node_p;
+	node_p->parent = node_p_parent;
 }
 
 // the below function only detaches the node that has to be removed, it does not unintialize it
