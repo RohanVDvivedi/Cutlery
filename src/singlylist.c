@@ -26,12 +26,12 @@ int is_empty_singlylist(const singlylist* sl)
 
 const void* get_head_of_singlylist(const singlylist* sl)
 {
-	return (sl->head == NULL) ? NULL : get_data(sl->head);
+	return (sl->head == NULL) ? NULL : get_data(sl->head, sl);
 }
 
 const void* get_tail_of_singlylist(const singlylist* sl)
 {
-	return (sl->tail == NULL) ? NULL : get_data(sl->tail);
+	return (sl->tail == NULL) ? NULL : get_data(sl->tail, sl);
 }
 
 const void* get_nth_from_head_of_singlylist(const singlylist* sl, unsigned int n)
@@ -42,23 +42,23 @@ const void* get_nth_from_head_of_singlylist(const singlylist* sl, unsigned int n
 		node_p = node_p->next;
 		n--;
 	}
-	return (node_p == NULL) ? NULL : get_data(node_p);
+	return (node_p == NULL) ? NULL : get_data(node_p, sl);
 }
 
 const void* get_next_of_in_singlylist(const singlylist* sl, const void* data_xist)
 {
-	const slnode* node_xist = get_node(data_xist);
+	const slnode* node_xist = get_node(data_xist, sl);
 
 	// the data_xist must not be a new node
 	if(is_new_slnode(sl, node_xist))
 		return NULL;
 	
-	return (node_xist->next == NULL) ? NULL : get_data(node_xist);
+	return (node_xist->next == NULL) ? NULL : get_data(node_xist, sl);
 }
 
 int insert_head_in_singlylist(singlylist* sl, const void* data)
 {
-	slnode* node_p = get_node(data);
+	slnode* node_p = get_node(data, sl);
 
 	// insert only a new node to the singlylist
 	if(!is_new_slnode(sl, node_p))
@@ -80,7 +80,7 @@ int insert_head_in_singlylist(singlylist* sl, const void* data)
 
 int insert_tail_in_singlylist(singlylist* sl, const void* data)
 {
-	slnode* node_p = get_node(data);
+	slnode* node_p = get_node(data, sl);
 
 	// insert only a new node to the singlylist
 	if(!is_new_slnode(sl, node_p))
@@ -102,8 +102,8 @@ int insert_tail_in_singlylist(singlylist* sl, const void* data)
 
 int insert_after_in_singlylist(singlylist* sl, const void* data_xist, const void* data)
 {
-	slnode* node_xist = get_node(data_xist);
-	slnode* node_p = get_node(data);
+	slnode* node_xist = get_node(data_xist, sl);
+	slnode* node_p = get_node(data, sl);
 
 	// node_xist must not be a new node and node_p must be a new node
 	if(is_new_slnode(sl, node_xist) || !is_new_slnode(sl, node_p))
@@ -172,7 +172,7 @@ int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singly
 	if(sl->node_offset != insert_from_sl->node_offset || is_empty_singlylist(insert_from_sl) || sl == insert_from_sl)
 		return 0;
 
-	slnode* node_xist = get_node(data_xist);
+	slnode* node_xist = get_node(data_xist, sl);
 
 	// insert only after a node that exists
 	if(is_new_slnode(sl, node_xist))
@@ -211,7 +211,7 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 	if(is_empty_singlylist(sl))
 		return NULL;
 
-	slnode* node_xist = get_node(data_xist);
+	slnode* node_xist = get_node(data_xist, sl);
 
 	// node_xist must not be a new node
 	if(is_new_slnode(sl, node_xist))
@@ -227,7 +227,7 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 
 	initialize_slnode(to_be_removed);
 
-	return get_data(to_be_removed);
+	return get_data(to_be_removed, sl);
 }
 
 void remove_all_from_singlylist(singlylist* sl)
@@ -249,8 +249,8 @@ const void* find_equals_in_singlylist(const singlylist* sl, const void* data, in
 	const slnode* node_p = sl->head;
 	while(node_p != NULL)
 	{
-		if(compare(data, get_data(node_p)) == 0)
-			return get_data(node_p);
+		if(compare(data, get_data(node_p, sl)) == 0)
+			return get_data(node_p, sl);
 		node_p = node_p->next;
 	}
 	return NULL;
@@ -261,7 +261,7 @@ void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* 
 	const slnode* node_p = sl->head;
 	while(node_p != NULL)
 	{
-		operation(get_data(node_p), additional_params);
+		operation(get_data(node_p, sl), additional_params);
 		node_p = node_p->next;
 	}
 }
@@ -270,7 +270,7 @@ static void sprint_singlylist_wrapper(dstring* append_str, const singlylist* sl,
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "node : [%p]\n", node_p);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "data :\n");
-	sprint_element(append_str, get_data(node_p), tabs + 1); snprintf_dstring(append_str, "\n");
+	sprint_element(append_str, get_data(node_p, sl), tabs + 1); snprintf_dstring(append_str, "\n");
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "next : [%p]\n\n", node_p->next);
 }
 
