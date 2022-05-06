@@ -2,11 +2,6 @@
 
 #include<cutlery_stds.h>
 
-// get data from llnode
-#define get_data(node_p) 	(((const void*)(node_p)) - ll->node_offset)
-// get llnode from data
-#define get_node(data_p) 	(((void*)(data_p)) + ll->node_offset)
-
 // utility
 // to check if a node is new
 static int is_new_llnode(const linkedlist* ll, const llnode* node_p)

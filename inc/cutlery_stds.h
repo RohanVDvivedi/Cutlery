@@ -21,6 +21,14 @@
 	#define offsetof(structure, attribute) ((unsigned int)(&(((structure*)(0))->attribute)))
 #endif
 
+/*
+*	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
+*  This is only used by embedded node based data structures
+*/
+#define get_data(node_p, ds_p) 	(((const void*)(node_p)) - ((ds_p)->node_offset))
+
+#define get_node(data_p, ds_p) 	(((void*)(data_p)) + ((ds_p)->node_offset))
+
 /* this is cutlery specific memory move implementation
    this is the function to be used in place of memcpy/memmove std library functions
    features : 	

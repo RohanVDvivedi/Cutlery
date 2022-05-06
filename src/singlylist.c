@@ -2,13 +2,6 @@
 
 #include<cutlery_stds.h>
 
-#include<stdio.h>
-
-// get data from slnode
-#define get_data(node_p) 	(((const void*)(node_p)) - sl->node_offset)
-// get slnode from data
-#define get_node(data_p) 	(((void*)(data_p)) + sl->node_offset)
-
 void initialize_singlylist(singlylist* sl, unsigned int node_offset)
 {
 	sl->node_offset = node_offset;
