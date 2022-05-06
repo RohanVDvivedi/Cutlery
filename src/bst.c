@@ -44,7 +44,7 @@ static bstnode* find_node(const bst* bst_p, const void* data)
 	bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node))
 			return node_p;
 		else if(is_lesser(compared_data_with_current_node))
@@ -61,7 +61,7 @@ static bstnode* find_node_preceding(const bst* bst_p, const void* data)
 	bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node) || is_lesser(compared_data_with_current_node))
 			node_p = node_p->left;
 		else if(is_greater(compared_data_with_current_node))
@@ -79,7 +79,7 @@ static bstnode* find_node_preceding_or_equals(const bst* bst_p, const void* data
 	bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node))
 			return node_p;
 		else if(is_lesser(compared_data_with_current_node))
@@ -99,7 +99,7 @@ static bstnode* find_node_succeeding(const bst* bst_p, const void* data)
 	bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node) || is_greater(compared_data_with_current_node))
 			node_p = node_p->right;
 		else if(is_lesser(compared_data_with_current_node))
@@ -117,7 +117,7 @@ static bstnode* find_node_succeeding_or_equals(const bst* bst_p, const void* dat
 	bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p));
+		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node))
 			return node_p;
 		else if(is_lesser(compared_data_with_current_node))
@@ -134,43 +134,43 @@ static bstnode* find_node_succeeding_or_equals(const bst* bst_p, const void* dat
 const void* find_equals_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node(bst_p, data);
-	return (node_p != NULL) ? get_data(node_p) : NULL;
+	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_preceding_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_preceding(bst_p, data);
-	return (node_p != NULL) ? get_data(node_p) : NULL;
+	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_preceding_or_equals_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_preceding_or_equals(bst_p, data);
-	return (node_p != NULL) ? get_data(node_p) : NULL;
+	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_succeeding_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_succeeding(bst_p, data);
-	return (node_p != NULL) ? get_data(node_p) : NULL;
+	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_succeeding_or_equals_in_bst(const bst* bst_p, const void* data)
 {
 	bstnode* node_p = find_node_succeeding_or_equals(bst_p, data);
-	return (node_p != NULL) ? get_data(node_p) : NULL;
+	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_smallest_in_bst(const bst* bst_p)
 {
 	bstnode* node_p = get_smallest_node_from_node(bst_p->root);
-	return (node_p != NULL) ? get_data(node_p) : NULL;
+	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_largest_in_bst(const bst* bst_p)
 {
 	bstnode* node_p = get_largest_node_from_node(bst_p->root);
-	return (node_p != NULL) ? get_data(node_p) : NULL;
+	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode* node_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, unsigned int max_result_count, int* accumulator_stop, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
@@ -180,7 +180,7 @@ static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode*
 
 	unsigned int results_accumulated = 0;
 
-	const void* data_p = get_data(node_p);
+	const void* data_p = get_data(node_p, bst_p);
 
 	int lower_bound_check = (lower_bound != NULL) ? (bst_p->compare(lower_bound, data_p) <= 0) : 1;
 	int upper_bound_check = (upper_bound != NULL) ? (bst_p->compare(upper_bound, data_p) >= 0) : 1;
@@ -245,7 +245,7 @@ unsigned int find_all_in_range_in_bst(const bst* bst_p, const void* lower_bound,
 
 int insert_in_bst(bst* bst_p, const void* data)
 {
-	bstnode* node_p = get_node(data);
+	bstnode* node_p = get_node(data, bst_p);
 	
 	if(!is_new_bstnode(bst_p, node_p))	// insert only a new node
 		return 0;
@@ -287,7 +287,7 @@ int insert_in_bst(bst* bst_p, const void* data)
 
 int remove_from_bst(bst* bst_p, const void* data)
 {
-	bstnode* node_p = get_node(data);
+	bstnode* node_p = get_node(data, bst_p);
 
 	if(is_new_bstnode(bst_p, node_p))	// for attempting to remove the node, it must be present in bst, i.e. not a new node
 		return 0;
@@ -337,7 +337,7 @@ static void for_each_node_pre_order(const bst* bst_p, const bstnode* node_p, voi
 {
 	if(node_p == NULL)
 		return;
-	operation(get_data(node_p), additional_params);
+	operation(get_data(node_p, bst_p), additional_params);
 	for_each_node_pre_order(bst_p, node_p->left, operation, additional_params);
 	for_each_node_pre_order(bst_p, node_p->right, operation, additional_params);
 }
@@ -347,7 +347,7 @@ static void for_each_node_in_order(const bst* bst_p, const bstnode* node_p, void
 	if(node_p == NULL)
 		return;
 	for_each_node_in_order(bst_p, node_p->left, operation, additional_params);
-	operation(get_data(node_p), additional_params);
+	operation(get_data(node_p, bst_p), additional_params);
 	for_each_node_in_order(bst_p, node_p->right, operation, additional_params);
 }
 
@@ -357,7 +357,7 @@ static void for_each_node_post_order(const bst* bst_p, const bstnode* node_p, vo
 		return;
 	for_each_node_post_order(bst_p, node_p->left, operation, additional_params);
 	for_each_node_post_order(bst_p, node_p->right, operation, additional_params);
-	operation(get_data(node_p), additional_params);
+	operation(get_data(node_p, bst_p), additional_params);
 }
 
 void for_each_in_bst(const bst* bst_p, bsttraversal traversal, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
@@ -389,7 +389,7 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "data :\n");
-		sprint_element(append_str, get_data(node_p), tabs + 1);
+		sprint_element(append_str, get_data(node_p, bst_p), tabs + 1);
 		snprintf_dstring(append_str, " (%d)\n", node_p->node_property);
 
 		sprint_chars(append_str, '\t', tabs);
