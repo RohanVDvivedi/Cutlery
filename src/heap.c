@@ -13,8 +13,8 @@ static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, uns
 	// heap_index is in their embedded nodes (hpnode)
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
 	{
-		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i1))))->heap_index = i1;
-		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i2))))->heap_index = i2;
+		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i1), heap_p)))->heap_index = i1;
+		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i2), heap_p)))->heap_index = i2;
 	}
 }
 
@@ -159,7 +159,7 @@ int push_to_heap(heap* heap_p, const void* data)
 		return 0;
 
 	// if embedded hpnode is being used, then the hpnode must be a new node
-	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data)))
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data, heap_p)))
 		return 0;
 
 	// insert new element to the heap_holder at the last index + 1 and then increment element_count
@@ -167,7 +167,7 @@ int push_to_heap(heap* heap_p, const void* data)
 
 	// update its heap index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		((hpnode*)(get_node(data)))->heap_index = heap_p->element_count - 1;
+		((hpnode*)(get_node(data, heap_p)))->heap_index = heap_p->element_count - 1;
 
 	// bubble up the newly added element at index heap_p->element_count - 1, to its desired place
 	bubble_up(heap_p, heap_p->element_count - 1);
@@ -195,7 +195,7 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start
 		const void* data = get_from_array(array_p, start_index + i);
 
 		// if embedded hpnode is being used, then the hpnode must be a new node
-		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data)))
+		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data, heap_p)))
 			continue;
 
 		// insert data and then update element count
@@ -203,7 +203,7 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start
 		
 		// update its heap index
 		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-			((hpnode*)(get_node(data)))->heap_index = heap_p->element_count - 1;
+			((hpnode*)(get_node(data, heap_p)))->heap_index = heap_p->element_count - 1;
 	}
 
 	// heapify all the elements of the heap
@@ -238,11 +238,11 @@ int remove_from_heap(heap* heap_p, const void* data)
 		return 0;
 
 	// figure out the index to call remove at
-	unsigned int index_to_remove_at = ((hpnode*)(get_node(data)))->heap_index;
+	unsigned int index_to_remove_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
 
 	// we can not remove if the data is a new node OR the data does not exist in heap at the desired index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
-		(is_new_hpnode(heap_p, get_node(data)) || data != get_from_array(&(heap_p->heap_holder), index_to_remove_at)))
+		(is_new_hpnode(heap_p, get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_remove_at)))
 			return 0;
 
 	// remove the ith element from the heap
@@ -260,7 +260,7 @@ int remove_at_index_from_heap(heap* heap_p, unsigned int index)
 
 	// re-initialize heap_index of the (last) element that we are going to remove
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1)));
+		initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1), heap_p));
 
 	// and set the last to NULL, and decrement the element_count of the heap
 	set_in_array(&(heap_p->heap_holder), NULL, --heap_p->element_count);
@@ -280,11 +280,11 @@ void heapify_for(heap* heap_p, const void* data)
 		return ;
 
 	// figure out the index to call heapify at
-	unsigned int index_to_heapify_at = ((hpnode*)(get_node(data)))->heap_index;
+	unsigned int index_to_heapify_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
 
 	// we can not heapify if the data is a new node OR if the data does not exist in heap at the desired index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
-		(is_new_hpnode(heap_p, get_node(data)) || data != get_from_array(&(heap_p->heap_holder), index_to_heapify_at)))
+		(is_new_hpnode(heap_p, get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_heapify_at)))
 			return ;
 
 	// heapify at the ith element of the heap
@@ -339,7 +339,7 @@ void heapify_all(heap* heap_p)
 static void initialize_node_wrapper(void* data, unsigned int heap_index, const void* additional_params)
 {
 	const heap* heap_p = additional_params;
-	initialize_hpnode(get_node(data));
+	initialize_hpnode(get_node(data, heap_p));
 }
 
 void remove_all_from_heap(heap* heap_p)
