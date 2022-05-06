@@ -2,7 +2,6 @@
 
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
- * implement a function to remove n characters starting at a character in the dstring
 
 2. Add new datastructure types tasks (*future)
 
