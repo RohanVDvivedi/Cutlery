@@ -4,13 +4,6 @@
 
 #include<binary_tree_as_array_util.h>
 
-// utility : 
-/*
-*	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
-*/
-#define get_data(node_p) 	(((const void*)(node_p)) - heap_p->node_offset)
-#define get_node(data_p) 	(((void*)(data_p)) + heap_p->node_offset)
-
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, unsigned int i2)
 {
