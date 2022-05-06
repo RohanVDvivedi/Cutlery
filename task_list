@@ -1,8 +1,5 @@
 1. Tasks picked
 
-MISC
- * make get_node and get_data macros global to all the node based data structures and allow them to take themselves as parameter
-
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
