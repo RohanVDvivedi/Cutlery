@@ -76,6 +76,9 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 void concatenate_c_string(dstring* str_p1, const char* c_string);
 void concatenate_char(dstring* str_p1, char chr);
 
+// removes chars_count_to_remove number of characters from dstring str_p starting at start_at
+int remove_chars_dstring(dstring* str_p, unsigned int start_at, unsigned int chars_count_to_remove);
+
 // append_to_dstring_formatted is a snprintf implementation for dstrings
 void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
