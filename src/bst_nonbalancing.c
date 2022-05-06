@@ -47,7 +47,7 @@ void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 		node_p_parent = *insertion_point;
 
 		// compare the bstnode* at the insertion point
-		int compare_result = bst_p->compare(get_data(node_p), get_data((*insertion_point)));
+		int compare_result = bst_p->compare(get_data(node_p, bst_p), get_data((*insertion_point), bst_p));
 
 		// new insertion point would be at the left or right of the current insertion point
 		if(compare_result < 0)
