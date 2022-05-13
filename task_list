@@ -1,8 +1,5 @@
 1. Tasks picked
 
-HASHMAP
- * refactor get_actual_index function that is being used for robinhood hashing
-
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
