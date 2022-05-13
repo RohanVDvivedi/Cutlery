@@ -493,7 +493,7 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 	// calculate the new bucket count
 	unsigned int new_bucket_count = expand_factor * get_bucket_count_hashmap(hashmap_p);
 	// handle over flow, of unsigned int
-	if(new_bucket_count < (~((unsigned int)(0))))
+	if(new_bucket_count < get_bucket_count_hashmap(hashmap_p))
 		new_bucket_count = (~((unsigned int)(0)));
 
 	// if new_bucket_count is not greater than the current bucket_count, then this is no longer an expansion
