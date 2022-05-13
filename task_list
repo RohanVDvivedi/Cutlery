@@ -1,5 +1,9 @@
 1. Tasks picked
 
+HASHMAP
+ * refactor get_actual_index function that is being used for robinhood hashing
+ * implement get_next_expansion_size and compare it with current bucket_count of the hashmap before resizing
+
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
