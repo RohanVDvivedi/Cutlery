@@ -491,8 +491,22 @@ int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count)
 
 int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 {
-	return (expand_factor <= 1.0) ? 0 : 
-		resize_hashmap(hashmap_p, expand_factor * get_bucket_count_hashmap(hashmap_p));
+	// if expansion factor is lesser than 1 then it is not an expansion
+	if(expand_factor <= 1.0)
+		return 0;
+
+	// calculate the new bucket count
+	unsigned int new_bucket_count = expand_factor * get_bucket_count_hashmap(hashmap_p);
+	// handle over flow, of unsigned int
+	if(new_bucket_count < (~((unsigned int)(0))))
+		new_bucket_count = (~((unsigned int)(0)));
+
+	// if new_bucket_count is not greater than the current bucket_count, then this is no longer an expansion
+	if(new_bucket_count <= get_bucket_count_hashmap(hashmap_p))
+		return 0;
+
+	// call resize_hashmap and see if it succeeds
+	return resize_hashmap(hashmap_p, new_bucket_count);
 }
 
 void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
