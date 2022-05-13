@@ -104,39 +104,35 @@ static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const vo
 // function used for ROBINHOOD_HASHING only
 static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 {
-	unsigned int expected_index = get_index(hashmap_p, data);
+	unsigned int index = get_index(hashmap_p, data);
 	unsigned int probe_sequence_length = 0;
 
 	const void* data_at_index = NULL;
 
 	while(probe_sequence_length < get_bucket_count_hashmap(hashmap_p))
 	{
-		data_at_index = get_from_array(&(hashmap_p->hashmap_holder), expected_index);
+		data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
 
-		if(data_at_index != NULL)
-		{
-			if(data != data_at_index && hashmap_p->compare(data, data_at_index) != 0)
-			{
-				if(probe_sequence_length > get_probe_sequence_length(hashmap_p, data_at_index, expected_index))
-				{
-					break;
-				}
-			}
-			else
-			{
-				break;
-			}
-		}
-		else
-		{
+		// bucket is empty
+		// find : the data is not in the hashmap
+		if(data_at_index == NULL)
 			break;
-		}
 
-		expected_index = (expected_index + 1) % get_bucket_count_hashmap(hashmap_p);
+		// data and the data_at_index compares equals
+		// find : the data we are looking for has been found
+		if(data == data_at_index || hashmap_p->compare(data, data_at_index) == 0)
+			break;
+
+		// we have a greater probe sequence length for data
+		// find : this element if not found until now, can not be any further than this index
+		if(probe_sequence_length > get_probe_sequence_length(hashmap_p, data_at_index, index))
+			break;
+
+		index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
 		probe_sequence_length++;
 	}
 
-	return expected_index;
+	return index;
 }
 
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
@@ -229,11 +225,10 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 						data = data_at_index;
 						probe_sequence_length = probe_sequence_length_data_at_index;
 					}
-					else
-					{
-						index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
-						probe_sequence_length++;
-					}
+
+					// prepare for next iteration
+					index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
+					probe_sequence_length++;
 				}
 			}
 
@@ -296,9 +291,9 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
 			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
 			{
-				// shift null downwards
+				// shift null downwards, and data_at_index to previousIndex
 				{
-					set_in_array(&(hashmap_p->hashmap_holder), get_from_array(&(hashmap_p->hashmap_holder), index), previousIndex);
+					set_in_array(&(hashmap_p->hashmap_holder), data_at_index, previousIndex);
 					set_in_array(&(hashmap_p->hashmap_holder), NULL, index);
 				}
 				previousIndex = index;
