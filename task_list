@@ -3,6 +3,7 @@
 HASHMAP
  * refactor get_actual_index function that is being used for robinhood hashing
  * implement get_next_expansion_size and compare it with current bucket_count of the hashmap before resizing
+ * same goes with arraylist, heap and all other data structures that expand from array. this will allow unnecesary movement of data.
 
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
