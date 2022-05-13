@@ -255,6 +255,18 @@ int main()
 
 	print_ts_hashmap(hashmap_p);
 
+	printf("Now finding value corresponding to key 56\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){56})));printf("\n\n");
+
+	printf("Now finding value corresponding to key 57\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){57})));printf("\n\n");
+
+	printf("Now finding value corresponding to key 60\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){60})));printf("\n\n");
+
+	printf("Now finding value corresponding to key 10\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){10})));printf("\n\n");
+
 	printf("Deleting key-value at 80, if found\n\n");
 	ts* temp_80 = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){80}));
 	if(temp_80 != NULL)
@@ -287,6 +299,18 @@ int main()
 	printf("Now finding value corresponding to key 40\n\n");
 	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){40})));printf("\n\n");
 
+	printf("Now finding value corresponding to key 56\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){56})));printf("\n\n");
+
+	printf("Now finding value corresponding to key 57\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){57})));printf("\n\n");
+
+	printf("Now finding value corresponding to key 60\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){60})));printf("\n\n");
+
+	printf("Now finding value corresponding to key 10\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){10})));printf("\n\n");
+
 	if(temp_80 != NULL)
 	{
 		printf("Reinserting key-value at 80\n");
@@ -307,6 +331,9 @@ int main()
 	insert_in_hashmap(hashmap_p, &((ts){90, 9000, "ninety"}));
 
 	print_ts_hashmap(hashmap_p);
+
+	printf("Now finding value corresponding to key 1\n\n");
+	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){1})));printf("\n\n");
 
 	printf("\n\nBefore rehashing - 16\n");
 	print_ts_hashmap(hashmap_p);
