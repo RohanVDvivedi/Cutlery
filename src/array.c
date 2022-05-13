@@ -103,6 +103,10 @@ int expand_array(array* array_p)
 {
 	unsigned int new_capacity = get_new_capacity(array_p->capacity);
 
+	// new_capacity upon expansion must be greater than the current capacity
+	if(new_capacity <= array_p->capacity)
+		return 0;
+
 	// expand array to atleast the new_capacity
 	return reserve_capacity_for_array(array_p, new_capacity);
 }
