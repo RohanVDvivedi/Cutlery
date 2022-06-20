@@ -21,10 +21,10 @@ static inline unsigned int add_indexes(unsigned int i1, unsigned int i2, unsigne
 // equivalent to => (buffer_capacity + i1 - i2) % buffer_capacity
 static inline unsigned int sub_indexes(unsigned int i1, unsigned int i2, unsigned int buffer_capacity)
 {
-	if(i1 + 1 > i2)
+	if(i1 >= i2)
 		return i1 - i2;
 	else
-		return (buffer_capacity - 1) - (i2 - (i1 + 1));
+		return buffer_capacity - (i2 - i1);
 }
 
 // ==== BASE FUNCTIONS END ====
