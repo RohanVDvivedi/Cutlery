@@ -78,6 +78,6 @@ int memory_compare(const void* data1, const void* data2, unsigned int size);
 		1 if success
 		0 if memory locations overlap each other
 */
-int memory_swap(const void* data1, const void* data2, unsigned int size);
+int memory_swap(void* data1, void* data2, unsigned int size);
 
 #endif

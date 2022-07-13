@@ -177,7 +177,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	if(data1_start == data2_start || size == 0)
 		return 0;
 
-	// compute the last data1 and data2 byte address that needs to be copied
+	// compute the end of data1 and data2 byte
 	const void* data1_end = data1_start + size;
 	const void* data2_end = data2_start + size;
 
@@ -185,7 +185,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	if(data1_start >= data1_end || data2_start >= data2_end)
 		return 0;
 
-	// intialize our iterators for forward copy
+	// intialize our iterators for forward compare
 	const char* data1 = data1_start;
 	const char* data2 = data2_start;
 
@@ -255,4 +255,84 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	}
 
 	return 0;
+}
+
+int memory_swap(void* data1_start, void* data2_start, unsigned int size)
+{
+	// if they are the same memory locations, or if the size if 0, then swap can not be performed
+	if(data1_start == data2_start || size == 0)
+		return 0;
+
+	// compute the end of data1 and data2 byte address
+	void* data1_end = data1_start + size;
+	void* data2_end = data2_start + size;
+
+	// this conditions may arise if we happen to be at edge of the memory
+	if(data1_start >= data1_end || data2_start >= data2_end)
+		return 0;
+
+	// make sure there is no overlap in data1 and data2
+	if((data1_start <= data2_start && data2_start < data1_end) || (data2_start <= data1_start && data1_start < data2_end))
+		return 0;
+
+	// intialize our iterators for forward swap
+	char* data1 = data1_start;
+	char* data2 = data2_start;
+
+	// check if int compare is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
+	if( (size >= 3 * int_size) &&
+		(
+			(((long int)data1_start) & ~int_alignment_bit_mask) == (((long int)data2_start) & ~int_alignment_bit_mask)
+		)
+	)
+	{
+		// perform a byte-by-byte swap until the addresses are int aligned
+		while( ( ((long int)data1) & ~int_alignment_bit_mask ) )
+		{
+			(*data1) ^= (*data2);
+			(*data2) ^= (*data1);
+			(*data1) ^= (*data2);
+			data1++;
+			data2++;
+		}
+
+		// perform an int-by-int compare in this scope
+		// data1_int and data2_int must not leave this scope
+		// they must equal the data1 and data2, right before and right after this scope
+		{
+			int* data1_int = (int*)data1;
+			int* data2_int = (int*)data2;
+
+			// additonal bytes that you might have to compare after completing the int copy
+			unsigned long int additional_bytes = ((unsigned long int)(data1_end)) & ~int_alignment_bit_mask;
+
+			// this is the address of the last byte that must be compared under the int-by-int compare loop
+			const int* data1_end_int = data1_end - additional_bytes;
+
+			// int-by-int compare loop
+			while( data1_int != data1_end_int )
+			{
+				(*data1_int) ^= (*data2_int);
+				(*data2_int) ^= (*data1_int);
+				(*data1_int) ^= (*data2_int);
+				data1_int++;
+				data2_int++;
+			}
+
+			data1 = (char*)data1_int;
+			data2 = (char*)data2_int;
+		}
+	}
+
+	// finish up remaining with an old fashioned byte-by-byte compare loop
+	while( data1 != ((char*)(data1_end)) )
+	{
+		(*data1) ^= (*data2);
+		(*data2) ^= (*data1);
+		(*data1) ^= (*data2);
+		data1++;
+		data2++;
+	}
+
+	return 1;
 }
