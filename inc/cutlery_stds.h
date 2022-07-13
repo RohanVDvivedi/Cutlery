@@ -56,8 +56,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size);
 	this is cutlery specific memory compare implementation
 	this is the function to be used in place of memcmp std library function
 	features : 	
-		* it sets size number of bytes at the dest pointer with the given byte_value
-		* it sets processor accessible word side if and when possible
+		* it accesses processor accessible word size if and when possible
 		  * this function compares unsigned int instead of unsigned char where ever possible
 	return2
 		1 if data1[0:(size-1)] > data2[0:(size-1)]
@@ -65,5 +64,20 @@ void memory_set(void* dest_start, char byte_value, unsigned int size);
 		0 if data1[0:(size-1)] == data2[0:(size-1)]
 */
 int memory_compare(const void* data1, const void* data2, unsigned int size);
+
+/*
+	this is cutlery specific memory swap implementation
+	there is not std library replacement for this function
+	this function swaps size number of bytes at the given memory locations
+	it uses XOR-style in-place (no additional memory) for this swap
+	it fails with a 0 if the memory locations are overlapping
+	features : 	
+		* it swaps processor accessible word size if and when possible
+		  * this function swaps unsigned int instead of unsigned char where ever possible
+	return2
+		1 if success
+		0 if memory locations overlap each other
+*/
+int memory_swap(const void* data1, const void* data2, unsigned int size);
 
 #endif
