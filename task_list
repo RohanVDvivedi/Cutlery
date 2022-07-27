@@ -10,7 +10,12 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
 
 BST tasks (NEW DATASTRUCTURE inclusion)
  * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
- * add unsigned int subtree_size the number of nodes in sub tree rooted at the given node to provide functions to get nth smallest or largest in the bst. This variable is 0 in a node that is not in bst. Changes only required to subtree_size in rotation, exchange_positions and insert (make subtree_size = 1) and delete (make subtree_size = 0) functionality. Add functionality to get number of elements greater than x and lesser than x, OR get_element_count in bst and get_subtree_element_count (internal function).
+ * add unsigned int subtree_size giving the number of nodes in sub tree rooted at the given node 
+   * to provide functionality to get nth smallest or largest in the bst
+   * this variable is 0 in a node that is not in bst.
+   * changes only required to subtree_size in rotation, exchange_positions and insert (make subtree_size = 1) and delete (make subtree_size = 0) functionality.
+   * it will also get number of elements greater than x and lesser than x, OR get_element_count in bst and get_subtree_element_count (internal function).
+   * exists_in_bst -> this will allow us to know if a node is in any of the bst (if subtree_size == 0, means it does not exist in any of the bsts ever)
  * provide an iterator for bst.
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
@@ -18,7 +23,7 @@ RADIX_TREE tasks (NEW DATASTRUCTURE)
 struct trie_node
 {
     dstring partial_string;
-    int prefix_count; // total number of strings in the complete trie structure that have the prefic ending at partial string
+    int prefix_count; // total number of strings in the complete trie structure that have the prefix (or are equal-to) of partial_string
     void* value;
     hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
 };
