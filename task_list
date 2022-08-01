@@ -1,6 +1,7 @@
 (new tasks): (yet to be prioritized and ordered)
 * implement dstream that can be used in connman aswell.
 * optimization in cutlery's expand_arraylist, reserve_capacity_for_arraylist. move the tail if there are more elements in remnant head than the tail. current implementation only moves the head elements to the lower end of the newly allocated memory.
+* arraylist new functions for remove n from front and remove n from tail.
 
 1. Tasks picked
 
