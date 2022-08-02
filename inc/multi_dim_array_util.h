@@ -25,6 +25,20 @@
 **  this source and header file provides you utility functions
 **  to convert from accessor to indices and again from indices to accessor
 **
+** Note. :: the dimension-0 (the dimension refered to at index 0 in dims and indices array) is the lowest dimension
+**       :: and dimension-(dims_count - 1) (i.e. the dimension referred to the last index in dims and indices array) is the highest/greated/outermost dimension
+**
+** i.e. to compare usage for an array of dimensions (3,2,4) -> 3 being the outermost most dimension and 4 being the inner most dimension, then
+**
+**	standard stack allocated static multi-dimensional array      |   array supported by multi_dim_array_util.h
+**                                                               |
+**  declaration:                                                 |   declaration:
+**               int arr[3][2][4] = {};                          |                int arr[3 * 2 * 4] = {};   OR   int* arr = calloc(3 * 2 * 4, sizeof(int));
+**                                                               |
+**  element access: @ (2,0,3)                                    |   element access @ (2,0,3)
+**               arr[2][0][3]                                    |                arr[ get_accessor_from_indices( &((int[]){4,2,3}), &((int[]){3,0,2}),3) ]
+**
+**	Notice the reverse order in supplying the dimensions and indices array ???
 */
 
 // total number of elements in multi dimension array
