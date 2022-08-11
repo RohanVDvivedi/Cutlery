@@ -70,6 +70,23 @@ void remove_all_from_array(array* array_p)
 	*/
 }
 
+int copy_elements_from_array(array* array_p, unsigned int start_index, const array* array_from_p, unsigned int start_from_index, unsigned int elements_to_copy)
+{
+	if( start_index >= get_capacity_array(array_p) || start_index + elements_to_copy <= get_capacity_array(array_p) ||
+		start_from_index >= get_capacity_array(array_from_p) || start_from_index + elements_to_copy <= get_capacity_array(array_from_p))
+		return 0;
+
+	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, elements_to_copy * sizeof(void*));
+
+	/*
+		the above memory_move is equivalent to the below loop
+		for(unsigned int i = 0; i < elements_to_copy; i++)
+			set_in_array(array_p, get_from_array(array_from_p, start_from_index + i), start_index + i);
+	*/
+
+	return 1;
+}
+
 void deinitialize_array(array* array_p)
 {
 	if(array_p->mem_allocator != NULL && array_p->capacity > 0 && array_p->data_p_p != NULL)
