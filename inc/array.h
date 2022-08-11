@@ -36,6 +36,11 @@ void swap_in_array(array* array_p, unsigned int i1, unsigned int i2);
 // this function effectively NULLs out all the pointers stored within data_p_p
 void remove_all_from_array(array* array_p);
 
+// it either copies all the elements (returning 1) or it does not copy any elements (returning 0)
+// array_p and array_from_p can be the same arrays
+// this function fails if we may get out of bounds while accessing any of the elements, that we are suppossed to access
+int copy_elements_from_array(array* array_p, unsigned int start_index, const array* array_from_p, unsigned int start_from_index, unsigned int elements_to_copy);
+
 // frees all the data being held by the array, this function, does not release memory of the actual array structure, only the memory of the components
 // the same array can be reused by calling initialize_array function, after it is deinitialized
 void deinitialize_array(array* array_p);
