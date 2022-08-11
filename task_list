@@ -6,6 +6,11 @@ ARRAYLIST tasks (optimization and new tasks)
 * expand test cases of arraylist to accomodate the new functionality and test things vigorously.
 * implement similar remove functions for stack and queue - easy peasy
 
+ARRAY
+* store some elements of the arraylist directly on the structure on the stack, by default start with "#define MIN_CAPACITY 1" elements.
+* union{const void** data; const void* data_arr[MIN_CAPACITY];}; inside the array struct, this allows recuding malloc calls for small arrays as long as the array size os small, this also saves us from 0 array capcities.
+* use get_element everywhere, avoid using data[] operators directly
+
 2. Add new datastructure types tasks (*future)
 
 DSTRING tasks
