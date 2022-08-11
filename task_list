@@ -1,15 +1,15 @@
-(new tasks): (yet to be prioritized and ordered)
-* implement dstream that can be used in connman aswell.
+1. Tasks picked
+
+ARRAYLIST tasks (optimization and new tasks)
 * optimization in cutlery's expand_arraylist, reserve_capacity_for_arraylist. move the tail if there are more elements in remnant head than the tail. current implementation only moves the head elements to the lower end of the newly allocated memory.
-* arraylist new functions for remove n from front and remove n from tail.
+* arraylist new functions for remove n from front and remove n from tail, fail if there are lesser than n elements.
+* expand test cases of arraylist to accomodate the new functionality and test things vigorously.
 * implement similar remove functions for stack and queue - easy peasy
 
-1. Tasks picked
+2. Add new datastructure types tasks (*future)
 
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
-
-2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery, implemented as enums like FIBONACCI_HEAP and BINOMIAL_HEAP
