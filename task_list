@@ -7,6 +7,7 @@ ARRAYLIST tasks (optimization and new tasks)
 * implement similar remove functions for stack and queue - easy peasy
 
 ARRAY
+* implement copy_element_from_array function to copy elements from 1 array to nother array.
 * store some elements of the arraylist directly on the structure on the stack, by default start with "#define MIN_CAPACITY 1" elements.
 * union{const void** data; const void* data_arr[MIN_CAPACITY];}; inside the array struct, this allows recuding malloc calls for small arrays as long as the array size os small, this also saves us from 0 array capcities.
 * use get_element everywhere, avoid using data[] operators directly
