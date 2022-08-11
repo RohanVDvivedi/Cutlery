@@ -14,7 +14,7 @@ struct array
 	unsigned int capacity;
 
 	// this is the memory_allocator that will be used for allocating memory for the array
-	// for expand or shrink, this function will be called
+	// for expand or shrink, allocation functions pointed to by this allocator will be called
 	memory_allocator mem_allocator;
 };
 
