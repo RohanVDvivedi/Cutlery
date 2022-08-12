@@ -208,34 +208,68 @@ int is_empty_arraylist(const arraylist* al)
 
 static void linearlize_arraylist_upon_expansion(arraylist* al, unsigned int old_capacity)
 {
+	// element_count remains the same, it is indifferent to re-linearizing the data in this function
+	unsigned int element_count = get_element_count_arraylist(al);
+
+	// quit if there are no elements to be linearized
+	if(element_count == 0)
+		return ;
+
 	// this is the first index before we started our data management and linearization task
 	unsigned int old_first_index = al->first_index;
 
-	// in this if condition 
-	// we move elements that were at old_first_index to (old_capacity - 1) (both inclusive)
-	// to the indices at new_first_index to (new_capacity - 1) (both inclusive),
-	// only then we update the al->first_index to new_first_index
-	// additionally we NULL all the old_indices that are not used
+	// check if the arraylist does need linearization
+	// i.e. linearization is required only if the arraylist was wrapping arround its holder
+	if(old_first_index <= get_last_index(old_first_index, element_count, old_capacity))
+		return ;
 
-	// move partial data, that was at the end of the array
-	unsigned int elements_to_move = old_capacity - old_first_index;
+	// reaching this place implies that the arraylist is wrapped around and has 2 parts: a head and a tail
+	// lets calculate the number of elements in the head and tail
+	unsigned int elements_in_head = old_capacity - old_first_index;   // elements from old_first_index until old_capacity - 1
+	unsigned int elements_in_tail = element_count - elements_in_head; // elements from 0 to last_index == element_count - elements_in_head
 
-	// calculate the new first index
-	unsigned int new_first_index = get_capacity_arraylist(al) - elements_to_move;
+	if(elements_in_head <= elements_in_tail)
+	{
+		// in this case
+		// we move the elements in the head to the end of the arraylist holder
 
-	// move data
-	memory_move(al->arraylist_holder.data_p_p + new_first_index,
-				al->arraylist_holder.data_p_p + old_first_index,
-				elements_to_move * sizeof(void*));
+		// calculate the new first index
+		unsigned int new_first_index = get_capacity_arraylist(al) - elements_in_head;
 
-	// mem set all old unused positions in the array as NULL (only if they previously were in use and are not in use now)
-	unsigned int elements_to_NULL = new_first_index - old_first_index;
-	elements_to_NULL = (elements_to_NULL > elements_to_move) ? elements_to_move : elements_to_NULL;
-	memory_set(al->arraylist_holder.data_p_p + old_first_index, 0,
-				elements_to_NULL * sizeof(void*));
+		// move all elements in head to the end of the arraylist holder
+		copy_elements_from_array(&(al->arraylist_holder), new_first_index, &(al->arraylist_holder), old_first_index, elements_in_head);
 
-	// update the new first_index
-	al->first_index = new_first_index;
+		// mem set all old unused positions in the array as NULL (only if they previously were in use and are not in use now)
+		unsigned int elements_to_NULL = new_first_index - old_first_index;
+		elements_to_NULL = (elements_to_NULL > elements_to_move) ? elements_to_move : elements_to_NULL;
+		memory_set(al->arraylist_holder.data_p_p + old_first_index, 0, elements_to_NULL * sizeof(void*));
+
+		// update the new first_index
+		al->first_index = new_first_index;
+	}
+	else
+	{
+		// in this case
+		// we move as many elements as we can to the new slots available at the end
+		// then we move the remaining tail elements to the index 0
+		// and now we can set the unused slots to NULLs
+
+		// this is the number of elements by which the capacity of arraylist increased
+		// this is also the maximum number of elements that can be moved from tail to bottom part of head
+		unsigned int new_slots_added = get_capacity_arraylist(al) - old_capacity;
+
+		unsigned int tail_elements_to_relocate = new_slots_added;
+		if(elements_in_tail < new_slots_added)
+			tail_elements_to_relocate = elements_in_tail;
+
+		copy_elements_from_array(&(al->arraylist_holder), old_capacity, &(al->arraylist_holder), 0, tail_elements_to_relocate);
+
+		unsigned int tail_elements_to_shift = elements_in_tail - tail_elements_to_relocate;
+		if(tail_elements_to_shift > 0)
+			copy_elements_from_array(&(al->arraylist_holder), 0, &(al->arraylist_holder), tail_elements_to_relocate, tail_elements_to_shift);
+
+		memory_set(al->arraylist_holder.data_p_p + tail_elements_to_shift, 0, tail_elements_to_relocate * sizeof(void*));
+	}
 }
 
 int expand_arraylist(arraylist* al)
