@@ -1,9 +1,5 @@
 1. Tasks picked
 
-ARRAY
-* union{const void** data_p_p; const void* data;}; for a array_capacity == 1, you do not need to call malloc
-* use get_element/set_element everywhere, avoid using data[] operators directly
-
 2. Add new datastructure types tasks (*future)
 
 DSTRING tasks
