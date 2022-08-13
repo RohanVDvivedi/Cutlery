@@ -1,9 +1,9 @@
 1. Tasks picked
 
 ARRAY
-* store some elements of the arraylist directly on the structure on the stack, by default start with "#define MIN_CAPACITY 1" elements.
-* union{const void** data_p_p; const void* data_arr[MIN_CAPACITY];}; inside the array struct, this allows recuding malloc calls for small arrays as long as the array size os small, this also saves us from 0 array capcities.
+* union{const void** data_p_p; const void* data;}; for a array_capacity == 1, you do not need to call malloc
 * use get_element/set_element everywhere, avoid using data[] operators directly
+* quit sorting on the array if the number of elements to sort is 0 or 1
 
 2. Add new datastructure types tasks (*future)
 
