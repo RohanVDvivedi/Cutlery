@@ -60,9 +60,23 @@ void swap_in_array(array* array_p, unsigned int i1, unsigned int i2)
 	set_in_array(array_p, data_temp_i1, i2);
 }
 
-void remove_all_from_array(array* array_p)
+void set_all_NULL_in_array(array* array_p)
 {
-	memory_set(array_p->data_p_p, 0, array_p->capacity * sizeof(void*));
+	set_NULLs_in_array(array_p, 0, get_capacity_array(array_p));
+}
+
+int set_NULLs_in_array(array* array_p, unsigned int start_index, unsigned int element_count_to_NULL);
+{
+	// if no elements are to be set to NULL then return success
+	if(element_count_to_NULL == 0)
+		return 1;
+
+	// make sure that all the indices from [start_index, start_index + element_count_to_NULL - 1) are accessible and in range of the array_p
+	if(start_index >= get_capacity_array(array_p) || start_index + element_count_to_NULL > get_capacity_array(array_p))
+		return 0;
+
+	memory_set(array_p->data_p_p + start_index, 0, element_count_to_NULL * sizeof(void*));
+	return 1;
 	/*
 		the above memory_set is equivalent to the below loop
 		for(unsigned int i = 0; i < array_p->capacity; i++)
@@ -72,8 +86,8 @@ void remove_all_from_array(array* array_p)
 
 int copy_elements_from_array(array* array_p, unsigned int start_index, const array* array_from_p, unsigned int start_from_index, unsigned int elements_to_copy)
 {
-	if( start_index >= get_capacity_array(array_p) || start_index + elements_to_copy <= get_capacity_array(array_p) ||
-		start_from_index >= get_capacity_array(array_from_p) || start_from_index + elements_to_copy <= get_capacity_array(array_from_p))
+	if( start_index >= get_capacity_array(array_p) || start_index + elements_to_copy > get_capacity_array(array_p) ||
+		start_from_index >= get_capacity_array(array_from_p) || start_from_index + elements_to_copy > get_capacity_array(array_from_p))
 		return 0;
 
 	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, elements_to_copy * sizeof(void*));

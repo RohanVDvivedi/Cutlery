@@ -32,9 +32,13 @@ int set_in_array(array* array_p, const void* data_p, unsigned int index);
 // swap elements of array at given indexes
 void swap_in_array(array* array_p, unsigned int i1, unsigned int i2);
 
-// removes all the elements from array array_p
 // this function effectively NULLs out all the pointers stored within data_p_p
-void remove_all_from_array(array* array_p);
+void set_all_NULL_in_array(array* array_p);
+
+// this function effectively NULLs out the "element_count_to_NULL" number of pointers, starting at start_index in array_p
+// it returns 0 and fails, if any of the indices from start_index to (start_index + element_count_to_NULL - 1) are out of bounds
+// upon failure none of the elements are NULLed
+int set_NULLs_in_array(array* array_p, unsigned int start_index, unsigned int element_count_to_NULL);
 
 // it either copies all the elements (returning 1) or it does not copy any elements (returning 0)
 // array_p and array_from_p can be the same arrays
