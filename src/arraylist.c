@@ -241,8 +241,8 @@ static void linearlize_arraylist_upon_expansion(arraylist* al, unsigned int old_
 
 		// mem set all old unused positions in the array as NULL (only if they previously were in use and are not in use now)
 		unsigned int elements_to_NULL = new_first_index - old_first_index;
-		elements_to_NULL = (elements_to_NULL > elements_to_move) ? elements_to_move : elements_to_NULL;
-		memory_set(al->arraylist_holder.data_p_p + old_first_index, 0, elements_to_NULL * sizeof(void*));
+		elements_to_NULL = (elements_to_NULL > elements_in_head) ? elements_in_head : elements_to_NULL;
+		set_NULLs_in_array(&(al->arraylist_holder), old_first_index, elements_to_NULL);
 
 		// update the new first_index
 		al->first_index = new_first_index;
@@ -268,7 +268,7 @@ static void linearlize_arraylist_upon_expansion(arraylist* al, unsigned int old_
 		if(tail_elements_to_shift > 0)
 			copy_elements_from_array(&(al->arraylist_holder), 0, &(al->arraylist_holder), tail_elements_to_relocate, tail_elements_to_shift);
 
-		memory_set(al->arraylist_holder.data_p_p + tail_elements_to_shift, 0, tail_elements_to_relocate * sizeof(void*));
+		set_NULLs_in_array(&(al->arraylist_holder), tail_elements_to_shift, tail_elements_to_relocate);
 	}
 }
 
