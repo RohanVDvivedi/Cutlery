@@ -60,6 +60,11 @@ void swap_in_array(array* array_p, unsigned int i1, unsigned int i2)
 	set_in_array(array_p, data_temp_i1, i2);
 }
 
+void remove_all_from_array(array* array_p)
+{
+	set_all_NULL_in_array(array_p);
+}
+
 void set_all_NULL_in_array(array* array_p)
 {
 	set_NULLs_in_array(array_p, 0, get_capacity_array(array_p));

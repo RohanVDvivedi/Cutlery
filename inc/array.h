@@ -33,6 +33,7 @@ int set_in_array(array* array_p, const void* data_p, unsigned int index);
 void swap_in_array(array* array_p, unsigned int i1, unsigned int i2);
 
 // this function effectively NULLs out all the pointers stored within data_p_p
+void remove_all_from_array(array* array_p);
 void set_all_NULL_in_array(array* array_p);
 
 // this function effectively NULLs out the "element_count_to_NULL" number of pointers, starting at start_index in array_p
