@@ -276,6 +276,14 @@ int main()
 		printf("\n\n");
 	}
 
+	printf("before removing all from array\n");
+	print_ts_array(array_p);
+
+	remove_all_from_array(array_p);
+
+	printf("after removing all from array\n");
+	print_ts_array(array_p);
+
 	deinitialize_array(array_p);
 
 	return 0;
