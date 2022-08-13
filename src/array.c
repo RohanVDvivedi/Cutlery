@@ -70,7 +70,7 @@ void set_all_NULL_in_array(array* array_p)
 	set_NULLs_in_array(array_p, 0, get_capacity_array(array_p));
 }
 
-int set_NULLs_in_array(array* array_p, unsigned int start_index, unsigned int element_count_to_NULL);
+int set_NULLs_in_array(array* array_p, unsigned int start_index, unsigned int element_count_to_NULL)
 {
 	// if no elements are to be set to NULL then return success
 	if(element_count_to_NULL == 0)
@@ -81,25 +81,28 @@ int set_NULLs_in_array(array* array_p, unsigned int start_index, unsigned int el
 		return 0;
 
 	memory_set(array_p->data_p_p + start_index, 0, element_count_to_NULL * sizeof(void*));
-	return 1;
 	/*
 		the above memory_set is equivalent to the below loop
 		for(unsigned int i = 0; i < array_p->capacity; i++)
 			set_in_array(array_p, NULL, i);
 	*/
+
+	return 1;
 }
 
-int copy_elements_from_array(array* array_p, unsigned int start_index, const array* array_from_p, unsigned int start_from_index, unsigned int elements_to_copy)
+int copy_elements_from_array(array* array_p, unsigned int start_index, const array* array_from_p, unsigned int start_from_index, unsigned int element_count_to_copy)
 {
-	if( start_index >= get_capacity_array(array_p) || start_index + elements_to_copy > get_capacity_array(array_p) ||
-		start_from_index >= get_capacity_array(array_from_p) || start_from_index + elements_to_copy > get_capacity_array(array_from_p))
+	if(element_count_to_copy == 0)
+		return 1;
+
+	if( start_index >= get_capacity_array(array_p) || start_index + element_count_to_copy > get_capacity_array(array_p) ||
+		start_from_index >= get_capacity_array(array_from_p) || start_from_index + element_count_to_copy > get_capacity_array(array_from_p))
 		return 0;
 
-	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, elements_to_copy * sizeof(void*));
-
+	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, element_count_to_copy * sizeof(void*));
 	/*
 		the above memory_move is equivalent to the below loop
-		for(unsigned int i = 0; i < elements_to_copy; i++)
+		for(unsigned int i = 0; i < element_count_to_copy; i++)
 			set_in_array(array_p, get_from_array(array_from_p, start_from_index + i), start_index + i);
 	*/
 
