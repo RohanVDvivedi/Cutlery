@@ -328,9 +328,7 @@ int shrink_arraylist(arraylist* al)
 		if(!is_empty_arraylist(al) && al->first_index > 0)
 		{
 			// move the arraylist to the complete front, i.e. first_index = 0
-			memory_move(al->arraylist_holder.data_p_p,
-						al->arraylist_holder.data_p_p + al->first_index,
-						al->element_count * sizeof(void*));
+			copy_elements_from_array(&(al->arraylist_holder), 0, &(al->arraylist_holder), al->first_index, al->element_count);
 
 			// update first_index of arraylist to 0
 			al->first_index = 0;
