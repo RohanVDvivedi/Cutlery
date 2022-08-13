@@ -3,7 +3,6 @@
 ARRAY
 * union{const void** data_p_p; const void* data;}; for a array_capacity == 1, you do not need to call malloc
 * use get_element/set_element everywhere, avoid using data[] operators directly
-* quit sorting on the array if the number of elements to sort is 0 or 1
 
 2. Add new datastructure types tasks (*future)
 
