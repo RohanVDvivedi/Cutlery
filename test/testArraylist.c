@@ -161,6 +161,27 @@ int main()
 		}
 	}
 
+	// static tests to reserve capacity
+	operate_on_arraylist(al, POP_BACK);
+	print_int_arraylist(al);
+	printf("\n\n");
+
+	operate_on_arraylist(al, PUSH_FRONT);
+	print_int_arraylist(al);
+	printf("\n\n");
+
+	operate_on_arraylist(al, PUSH_FRONT);
+	print_int_arraylist(al);
+	printf("\n\n");
+
+	operate_on_arraylist(al, PUSH_FRONT);
+	print_int_arraylist(al);
+	printf("\n\n");
+
+	printf("RESERVING ARRAYLIST : %d\n", reserve_capacity_for_arraylist(al, 7));
+	print_int_arraylist(al);
+	printf("\n\n");
+
 	deinitialize_arraylist(al);
 	return 0;
 }
