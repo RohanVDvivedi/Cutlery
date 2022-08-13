@@ -343,15 +343,10 @@ unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, unsi
 		unsigned int m = l + ((h - l) / 2);
 		if(compare(get_from_array(array_p, m), data_p) > 0)
 			h = m - 1;
-		else if(compare(get_from_array(array_p, m), data_p) < 0)
-		{
-			result_index = m;
-			l = m + 1;
-		}
 		else
 		{
 			result_index = m;
-			break;
+			l = m + 1;
 		}
 	}
 
@@ -414,17 +409,12 @@ unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, uns
 	while(l <= h)
 	{
 		unsigned int m = l + ((h - l) / 2);
-		if(compare(get_from_array(array_p, m), data_p) > 0)
-		{
-			result_index = m;
-			h = m - 1;
-		}
-		else if(compare(get_from_array(array_p, m), data_p) < 0)
+		if(compare(get_from_array(array_p, m), data_p) < 0)
 			l = m + 1;
 		else
 		{
 			result_index = m;
-			break;
+			h = m - 1;
 		}
 	}
 
