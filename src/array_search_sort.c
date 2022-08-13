@@ -452,14 +452,14 @@ unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned
 			break;
 		}
 
-		// if the element at m in the array is lesser,
+		// if the element at m in the array is greater,
 		// then update the result_index (since it could be the answer) and shorten the search range
 		if(compare(get_from_array(array_p, m), data_p) > 0)
 		{
 			result_index = m;
 			h = m - 1;
 		}
-		// if the element at m in the array is more than or equal to given parameter (data),
+		// if the element at m in the array is lesser than or equal to given parameter (data),
 		// then just shorten the search range on the left, since no element at index lesser than m can be the answer
 		else
 			l = m + 1;
