@@ -351,7 +351,7 @@ void remove_all_from_heap(heap* heap_p)
 		for_each_in_heap(heap_p, initialize_node_wrapper, heap_p);
 
 	// then NULL out all the array -> this step can be ignored
-	remove_all_from_array(&(heap_p->heap_holder));
+	set_all_NULL_in_array(&(heap_p->heap_holder));
 }
 
 void deinitialize_heap(heap* heap_p)

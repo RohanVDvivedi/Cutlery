@@ -374,7 +374,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 	}
 
 	// mark all the buckets as NULL
-	remove_all_from_array(&(hashmap_p->hashmap_holder));
+	set_all_NULL_in_array(&(hashmap_p->hashmap_holder));
 
 	// then update element_count to 0
 	hashmap_p->element_count = 0;
