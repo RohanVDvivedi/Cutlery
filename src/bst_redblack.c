@@ -1,4 +1,4 @@
-#include<bst_nonbalancing.h>
+#include<bst_core.h>
 #include<bst_rotations.h>
 #include<bst_redblack.h>
 #include<bst_util.h>
@@ -101,7 +101,7 @@ void insert_node_in_red_black_tree(bst* bst_p, bstnode* node_p)
 	node_p->node_property = 0;
 
 	// insert this node as if it is getting inserted in a non self balancing tree
-	insert_node_in_non_self_balancing_tree(bst_p, node_p);
+	insert_node_in_bst(bst_p, node_p);
 
 	// handle the imbalance in the red balck tree introduced by inserting the node
 	handle_imbalance_in_red_black_tree(bst_p, node_p);
@@ -221,7 +221,7 @@ static void handle_black_height_imbalance(bst* bst_p, bstnode* double_black_node
 void remove_node_from_red_black_tree(bst* bst_p, bstnode* node_p)
 {
 	// remove the node as if it is a normal tree
-	remove_node_from_non_self_balancing_tree(bst_p, node_p);
+	remove_node_from_bst(bst_p, node_p);
 
 	// we can not balance an empty tree
 	// hence return if the tree is empty after deletion
