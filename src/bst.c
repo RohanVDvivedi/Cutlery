@@ -21,12 +21,13 @@ void initialize_bstnode(bstnode* node_p)
 	node_p->parent = NULL;
 	node_p->left = NULL;
 	node_p->right = NULL;
+	node_p->node_property = 0;
 }
 
 static int is_new_bstnode(const bst* bst_p, const bstnode* node_p)
 {
-	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) 
-		&& (bst_p->root != node_p));
+	// note: node_property of a new_bstnode is 0
+	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->node_property == 0));
 }
 
 int is_empty_bst(const bst* bst_p)
@@ -251,35 +252,23 @@ int insert_in_bst(bst* bst_p, const void* data)
 	if(!is_new_bstnode(bst_p, node_p))	// insert only a new node
 		return 0;
 
-	// if the root of the tree is NULL, i.e. the tree is empty, add a new root to the tree
-	if(is_empty_bst(bst_p))
+	// else insert node as per the balancing that this tree uses
+	switch(bst_p->type)
 	{
-		bst_p->root = node_p;
-		node_p->parent = NULL;
-
-		// if avl => 1 : number of nodes to reach NULL node, if red-black => root is always black, (black = 1)
-		node_p->node_property = (bst_p->type == NON_SELF_BALANCING) ? 0 : 1;
-	}
-	else
-	{
-		// else insert node as per the balancing that this tree uses
-		switch(bst_p->type)
+		case NON_SELF_BALANCING:
 		{
-			case NON_SELF_BALANCING:
-			{
-				insert_node_in_non_self_balancing_tree(bst_p, node_p);
-				break;
-			}
-			case RED_BLACK_TREE :
-			{
-				insert_node_in_red_black_tree(bst_p, node_p);
-				break;
-			}
-			case AVL_TREE :
-			{
-				insert_node_in_avl_tree(bst_p, node_p);
-				break;
-			}
+			insert_node_in_non_self_balancing_tree(bst_p, node_p);
+			break;
+		}
+		case RED_BLACK_TREE :
+		{
+			insert_node_in_red_black_tree(bst_p, node_p);
+			break;
+		}
+		case AVL_TREE :
+		{
+			insert_node_in_avl_tree(bst_p, node_p);
+			break;
 		}
 	}
 
