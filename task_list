@@ -1,5 +1,16 @@
 1. Tasks picked
 
+UNION FIND datastructure
+ * implement union find data structure, consisting of embedded nodes.
+ * each embedded node consists of parent*, rank and sub_tree_size for each embedded node, a reset function sets all of them to 0s
+ * find will directly attach the node to its parent, union merges based on rank or subtree size
+ * and only for root->parent == NULL. set/union identifier is the pointer to the root element, we call this unification_id, which can be compared to check if two elements are in same group. typedef void* unification_id
+ * no collection will be used to maintain all the unions, we dont care about
+
+PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
+ * implement bloom filter, build it with approximate unique count
+ * implement count min sketch, with alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
+
 2. Add new datastructure types tasks (*future)
 
 DSTRING tasks
@@ -30,12 +41,7 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 3. Competely new datastructure tasks (*future)
-UNION FIND datastructure
- * implement union find data structure, consisting of embedded nodes.
- * each embedded node consists of parent*, rank and sub_tree_size for each embedded node, a reset function sets all of them to 0s
- * find will directly attach the node to its parent, union merges based on rank or subtree size
- * and only for root->parent == NULL. set/union identifier is the pointer to the root element, we call this unification_id, which can be compared to check if two elements are in same group. typedef void* unification_id
- * no collection will be used to maintain all the unions, we dont care about
+
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use int or unsigned int for below functionality and implement their itrative approaches only
@@ -43,12 +49,3 @@ RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * implement segment tree => for min, max, sum, product(multiplication), bitwise-and, bitwise-or, bitwise-xor, lcm and hcf
  * implement fenwick tree => for addition, product(multiplication), bitwise-xor => the functions for which their inverse exists
  * implement sparse table => max, min, lcm, hcf => the functions for which f(a,b,c,d,e) = f(f(a,b,c), f(b,c,d,e))
-
-FLAT datastructure tasks (NEW DATASTRUCTURE)
- * implement flat_array and flat_map (using robinhood hashing) that use void* to array of structs instead of void** to array of pointers to structs
- * check and re evaluate what all algorithms can be moved to using flat array and flat map for better cache utilization and replace them
- * provide reasons explicitly for all such decisions, do not replace to flat map or flat array while handling user provided structures
-
-PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
- * implement bloom filter, build it with approximate unique count
- * implement count min sketch, with alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
