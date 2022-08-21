@@ -4,9 +4,7 @@
 #include<bst_util.h>
 
 #include<cutlery_stds.h>
-
-// trivial
-#define max(a,b) ((a)>(b)?(a):(b))
+#include<cutlery_math.h>
 
 // gets max height including all nodes from itself to leaf, including itself and the leaf node, in an avl tree
 static int get_max_height(bstnode* node_p)
