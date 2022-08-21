@@ -5,26 +5,27 @@
 
 #include<cutlery_stds.h>
 
+// below 2 values can not be 0
+// because node_property of 0 implies a node that does not exist in any bst :: (i.e. a new node that passes is_new_bstnode as true)
+#define RED_NODE     1
+#define BLACK_NODE   2
+
 #define is_red_node(node_p)					\
-	(((node_p) != NULL) && ((node_p)->node_property == 0))
+	(((node_p) != NULL) && ((node_p)->node_property == RED_NODE))
 
 #define is_black_node(node_p)				\
-	(((node_p) == NULL) || ((node_p)->node_property == 1))
+	(((node_p) == NULL) || ((node_p)->node_property == BLACK_NODE))
 
 static void make_node_red(bstnode* node_p)
 {
 	if(node_p != NULL)
-	{
-		node_p->node_property = 0;
-	}
+		node_p->node_property = RED_NODE;
 }
 
 static void make_node_black(bstnode* node_p)
 {
 	if(node_p != NULL)
-	{
-		node_p->node_property = 1;
-	}
+		node_p->node_property = BLACK_NODE;
 }
 
 static void exchange_colours(bstnode* node_p1, bstnode* node_p2)
@@ -97,8 +98,8 @@ static void handle_imbalance_in_red_black_tree(bst* bst_p, bstnode* node_p)
 // neither root nor node_p params are suppossed to be NULL in the function below
 void insert_node_in_red_black_tree(bst* bst_p, bstnode* node_p)
 {
-	// this is a red node
-	node_p->node_property = 0;
+	// every node starts with being a red node
+	make_node_red(node_p);
 
 	// insert this node as if it is getting inserted in a non self balancing tree
 	insert_node_in_bst(bst_p, node_p);
@@ -225,23 +226,23 @@ void remove_node_from_red_black_tree(bst* bst_p, bstnode* node_p)
 
 	// we can not balance an empty tree
 	// hence return if the tree is empty after deletion
-	if(is_empty_bst(bst_p))
-		return;
-
-	// only if the node that is removed is a black node
-	// the black height of the tree reduces in one of its branch and we need imbalance handling
-	if(is_black_node(node_p))
+	if(!is_empty_bst(bst_p))
 	{
-		// handle height imbalance
-		bstnode* imbalance_node = (node_p->right != NULL) ? node_p->right : node_p->left;
-		bstnode* imbalance_parent = node_p->parent;
-		if(is_red_node(imbalance_node))
+		// only if the node that is removed is a black node
+		// the black height of the tree reduces in one of its branch and we need imbalance handling
+		if(is_black_node(node_p))
 		{
-			make_node_black(imbalance_node);
-		}
-		else
-		{
-			handle_black_height_imbalance(bst_p, imbalance_node, imbalance_parent);
+			// handle height imbalance
+			bstnode* imbalance_node = (node_p->right != NULL) ? node_p->right : node_p->left;
+			bstnode* imbalance_parent = node_p->parent;
+
+			if(is_red_node(imbalance_node))
+				make_node_black(imbalance_node);
+			else
+				handle_black_height_imbalance(bst_p, imbalance_node, imbalance_parent);
 		}
 	}
+
+	// this node does not exist in the bst hence its node_property is set to 0
+	node_p->node_property = 0;
 }
