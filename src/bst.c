@@ -1,5 +1,6 @@
 #include<bst.h>
 
+#include<bst_core.h>
 #include<bst_nonbalancing.h>
 #include<bst_avl.h>
 #include<bst_redblack.h>
