@@ -13,6 +13,7 @@ BST tasks (NEW DATASTRUCTURE inclusion)
  * in avl the leaf node is already having a height of 1, so now we can use node_property = 0, to identify nodes that are not in any bst, these are the only nodes that can be inserted. also #define INITIAL_INVALID_NODE_PROPERTY as 0
  * non-balanced bst inserts then sets node_property to 1. a node_property of 0 implies a node that does not exist in any bst OR that if we are sure of the node to be in bst then the node_property is invalid and must be fixed (like its height).
  * make node_property as an unsigned int, fix avl comparison to not use int based substractions.
+ * set node_property to 0 on remove from bst and set it to 1 on insert to bst in non-balancing bst. segregate functionsality of jsut insert in bst vs insert in non-balancing and remove from bst vs remove from non-balancing bst. node property must not be altered in the core functions. similarly the parent left and right child must not be altered in the core functions and not even in the tree type specific functions.
  * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
  * add unsigned int subtree_size giving the number of nodes in sub tree rooted at the given node 
    * to provide functionality to get nth smallest or largest in the bst
