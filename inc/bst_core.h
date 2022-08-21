@@ -18,4 +18,8 @@ void insert_node_in_bst(bst* bst_p, bstnode* node_p);
 // node_property of all the nodes remain untouched (including the removed node)
 void remove_node_from_bst(bst* bst_p, bstnode* node_p);
 
+// note ::
+// the above remove function only detaches the node that has to be removed, it does not unintialize it
+// you must make all its attributes NULL and 0 (for node property), so it gets identified as not existing in any bst
+
 #endif

@@ -62,7 +62,7 @@ void insert_node_in_bst(bst* bst_p, bstnode* node_p)
 }
 
 // the below function only detaches the node that has to be removed, it does not unintialize it
-// you must make it NULL, so it is identified as not existing in any bst
+// you must make all its attributes NULL and 0 (for node property), so it gets identified as not existing in any bst
 void remove_node_from_bst(bst* bst_p, bstnode* node_p)
 {
 	// we can only remove the node if atleast one of the node child is NULL
