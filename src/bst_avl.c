@@ -90,11 +90,11 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 
 void insert_node_in_avl_tree(bst* bst_p, bstnode* node_p)
 {
-	// the new node will be inserted any where, hence we mark it's node_property for recalculation
-	node_p->node_property = 0;
-
 	// insert this node as if it is getting inserted in a non self balancing tree
 	insert_node_in_bst(bst_p, node_p);
+
+	// the new node could have been inserted any where, hence we mark it's node_property for recalculation
+	node_p->node_property = 0;
 
 	// handle the imbalance in the avl tree introduced by inserting the node
 	handle_imbalance_in_avl_tree(bst_p, node_p);
@@ -106,6 +106,9 @@ void remove_node_from_avl_tree(bst* bst_p, bstnode* node_p)
 {
 	// remove the node as if it is a normal tree
 	remove_node_from_bst(bst_p, node_p);
+
+	// this node now is't a part of the tree hence its node_property must be zeroed out
+	node_p->node_property = 0;
 
 	// we can not balance an empty tree
 	// hence return if the tree is empty after deletion
