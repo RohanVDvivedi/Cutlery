@@ -28,10 +28,11 @@ struct bstnode
 	bstnode* left;					bstnode* right;
 
 	// the property of the node that will be used to help balance the tree
-	// if bsttype == NON_SELF_BALANCING then node property is ignored
-	// else if bsttype == AVL_TREE then node_property = max( right_tree->node_property, left_tree->node_property)
-	// else if bsttype == RED_BLACK_TREE then node_property = is_red_node? ? 0 : 1; (1 is black node) 
-	// it must be a signed integer, do not change this datatype
+	// a node_property == 0 -> implies that the given node does not exist in any bst
+	// for a node that is in the bst,
+	// bsttype == NON_SELF_BALANCING => node_property = 1 (always)
+	// bsttype == AVL_TREE           => node_property = max( right_tree->node_property, left_tree->node_property) + 1 ( node_property of a NULL node is 0)
+	// bsttype == RED_BLACK_TREE     => node_property = is_red_node? ? RED_NODE : BLACK_NODE; ( RED_NODE and BLACK_NODE are defined in the corresponsing header files and are not 0)
 	int node_property;
 };
 
