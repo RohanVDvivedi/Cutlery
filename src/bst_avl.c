@@ -7,7 +7,7 @@
 #include<cutlery_math.h>
 
 // gets max height including all nodes from itself to leaf, including itself and the leaf node, in an avl tree
-static int get_max_height(bstnode* node_p)
+static unsigned int get_max_height(bstnode* node_p)
 {
 	if(node_p == NULL)
 		return 0;
@@ -33,11 +33,9 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 	while(unbalanced_node != NULL)
 	{
 		update_max_height(unbalanced_node);
-		int left_tree_max_height = get_max_height(unbalanced_node->left);
-		int right_tree_max_height = get_max_height(unbalanced_node->right);
 
 		// if left tree height is more, do right rotate
-		if(left_tree_max_height - right_tree_max_height >= 2)
+		if(get_max_height(unbalanced_node->left) >= get_max_height(unbalanced_node->right) + 2)
 		{
 			bstnode* unbalanced_node_child = unbalanced_node->left;
 
@@ -61,7 +59,7 @@ static void handle_imbalance_in_avl_tree(bst* bst_p, bstnode* input_node_p)
 			right_rotate_tree(bst_p, unbalanced_node);
 		}
 		// if right tree height is more, do left rotate
-		else if(right_tree_max_height - left_tree_max_height >= 2)
+		else if(get_max_height(unbalanced_node->right) >= get_max_height(unbalanced_node->left) + 2)
 		{
 			bstnode* unbalanced_node_child = unbalanced_node->right;
 
