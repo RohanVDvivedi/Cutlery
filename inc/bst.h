@@ -33,7 +33,7 @@ struct bstnode
 	// bsttype == NON_SELF_BALANCING => node_property = 1 (always)
 	// bsttype == AVL_TREE           => node_property = max( right_tree->node_property, left_tree->node_property) + 1 ( node_property of a NULL node is 0)
 	// bsttype == RED_BLACK_TREE     => node_property = is_red_node? ? RED_NODE : BLACK_NODE; ( RED_NODE and BLACK_NODE are defined in the corresponsing header files and are not 0)
-	int node_property;
+	unsigned int node_property;
 };
 
 struct bst
