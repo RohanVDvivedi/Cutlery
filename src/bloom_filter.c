@@ -77,7 +77,7 @@ bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const voi
 	return result;
 }
 
-double get_percentage_bloom_filter_bits_set(const bloom_filter* bf_p)
+double get_fraction_of_bloom_filter_bits_set(const bloom_filter* bf_p)
 {
 	unsigned int total_bits = get_bitmap_size_in_bits_for_bloom_filter(bf_p);
 

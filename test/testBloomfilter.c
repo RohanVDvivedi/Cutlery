@@ -60,5 +60,7 @@ int main()
 
 	print_exists_in_bloom_filter(bf_p, "dvivedi");
 
+	printf("percentage 1s in bloom_filter = %lf\n", get_fraction_of_bloom_filter_bits_set(bf_p));
+
 	return 0;
 }
