@@ -21,7 +21,7 @@ static unsigned int get_bitmap_size_in_bytes_for_bloom_filter(const bloom_filter
 	return bitmap_size_in_bytes(bits_in_bitmap);
 }
 
-void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, data_hash_func* data_hash_functions)
+void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func* data_hash_functions)
 {
 	bf_p->bucket_count = bucket_count;
 

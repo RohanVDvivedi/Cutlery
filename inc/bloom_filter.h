@@ -24,7 +24,7 @@ struct bloom_filter
 	char* bitmap;
 };
 
-void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, data_hash_func* data_hash_functions);
+void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func* data_hash_functions);
 
 void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, unsigned int data_size);
 
