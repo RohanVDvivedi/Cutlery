@@ -106,7 +106,6 @@ void sprint_bloom_filter_bitmap(dstring* append_str, const bloom_filter* bf_p, u
 		}
 		snprintf_dstring(append_str, "\n");
 	}
-	snprintf_dstring(append_str, "\n");
 }
 
 void deinitialize_bloom_filter(bloom_filter* bf_p)
