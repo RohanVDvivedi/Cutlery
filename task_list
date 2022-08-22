@@ -1,7 +1,7 @@
 1. Tasks picked
 
 PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
- * test bloom filter (build it with approximate unique count)
+ * bloom filter (build it with approximate unique count) *** look up  what the thing in bracket means
  * implement count min sketch, increment only the min bucket of all the hash functions
  * provide separate with-alocator initialization functions for bloom_filter and count_min_sketch
 
