@@ -18,6 +18,15 @@ int get_tens_digit(int num)
 	return (num / 10) % 10;
 }
 
+void print_node_details(data_element* e, int print_root, union_find* uf_p)
+{
+	printf("%d at (@ %p, ufnode @ %p): parent : %p", e->num, e, &(e->uf_embed_node), e->uf_embed_node.parent);
+	if(print_root)
+		printf("and root : %p\n", find_root_in_union_find(uf_p, e));
+	else
+		printf("\n");
+}
+
 int main()
 {
 	// initialize all data elements
@@ -54,20 +63,33 @@ int main()
 		}
 	}
 
-	printf("parent of %d => %p\n", elements[0].num, elements[0].uf_embed_node.parent);
-	printf("parent of %d => %p\n", elements[8].num, elements[8].uf_embed_node.parent);
+	printf("\n");
+
+	print_node_details(elements + 0, 0, uf_p);
+	print_node_details(elements + 8, 0, uf_p);
+
+	printf("\n");
 
 	printf("merge %d and %d\n", elements[0].num, elements[8].num);
 	merge_groups_in_union_find(uf_p, elements + 0, elements + 8);
 
-	printf("parent of %d => %p\n", elements[0].num, elements[0].uf_embed_node.parent);
-	printf("parent of %d => %p\n", elements[8].num, elements[8].uf_embed_node.parent);
+	printf("\n");
 
-	printf("find root of %d\n", elements[8].num);
-	find_root_in_union_find(uf_p, elements + 8);
+	print_node_details(elements + 0, 0, uf_p);
+	print_node_details(elements + 8, 0, uf_p);
 
-	printf("parent of %d => %p\n", elements[0].num, elements[0].uf_embed_node.parent);
-	printf("parent of %d => %p\n", elements[8].num, elements[8].uf_embed_node.parent);
+	printf("\n");
+
+	print_node_details(elements + 7, 0, uf_p);
+
+	printf("\n");
+
+	printf("find root of %d\n", elements[7].num);
+	find_root_in_union_find(uf_p, elements + 7);
+
+	printf("\n");
+
+	print_node_details(elements + 7, 0, uf_p);
 
 	printf("path shortening tested\n");
 
