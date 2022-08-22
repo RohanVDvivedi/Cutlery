@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * add test cases for union find
-
 PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
  * implement bloom filter, build it with approximate unique count
  * implement count min sketch, with alternatives like INCREMENT_ALL vs INCREMENT_MIN_ONLY
