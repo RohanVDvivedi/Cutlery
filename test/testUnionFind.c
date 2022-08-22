@@ -54,5 +54,22 @@ int main()
 		}
 	}
 
+	printf("parent of %d => %p\n", elements[0].num, elements[0].uf_embed_node.parent);
+	printf("parent of %d => %p\n", elements[8].num, elements[8].uf_embed_node.parent);
+
+	printf("merge %d and %d\n", elements[0].num, elements[8].num);
+	merge_groups_in_union_find(uf_p, elements + 0, elements + 8);
+
+	printf("parent of %d => %p\n", elements[0].num, elements[0].uf_embed_node.parent);
+	printf("parent of %d => %p\n", elements[8].num, elements[8].uf_embed_node.parent);
+
+	printf("find root of %d\n", elements[8].num);
+	find_root_in_union_find(uf_p, elements + 8);
+
+	printf("parent of %d => %p\n", elements[0].num, elements[0].uf_embed_node.parent);
+	printf("parent of %d => %p\n", elements[8].num, elements[8].uf_embed_node.parent);
+
+	printf("path shortening tested\n");
+
 	return 0;
 }
