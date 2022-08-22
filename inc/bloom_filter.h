@@ -3,7 +3,7 @@
 
 #include<array.h>
 
-#include<probablistic_data_structure_util.h>
+#include<probabilistic_data_structure_util.h>
 
 typedef struct bloom_filter bloom_filter;
 struct bloom_filter
