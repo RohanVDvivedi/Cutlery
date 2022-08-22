@@ -43,12 +43,12 @@ int merge_groups_in_union_find(const union_find* uf_p, const void* data1, const 
 
 	if(root1_p->rank >= root2_p->rank)
 	{
-		root2_p->parent = root1_p->parent;
+		root2_p->parent = root1_p;
 		root1_p->rank = max(root1_p->rank, root2_p->rank + 1);
 	}
 	else
 	{
-		root1_p->parent = root2_p->parent;
+		root1_p->parent = root2_p;
 		root2_p->rank = max(root2_p->rank, root1_p->rank + 1);
 	}
 
