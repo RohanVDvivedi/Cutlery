@@ -35,12 +35,40 @@ void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsi
 
 void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, unsigned int data_size)
 {
-	// TODO
+	unsigned int hash_functions_count = get_capacity_array(&(bf_p->data_hash_functions));
+	unsigned int bucket_count = bf_p->bucket_count;
+
+	for(unsigned int h = 0; h < hash_functions_count; h++)
+	{
+		data_hash_func hash_function = get_from_array(&(bf_p->data_hash_functions), h);
+
+		unsigned int bucket_no = hash_function(data, data_size) % bucket_count;
+
+		unsigned int bit_index = get_accessor_from_indices((const unsigned int []){bucket_no, h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+
+		set_bit(bf_p->bitmap, bit_index);
+	}
 }
 
 bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const void* data, unsigned int data_size)
 {
-	// TODO
+	unsigned int hash_functions_count = get_capacity_array(&(bf_p->data_hash_functions));
+	unsigned int bucket_count = bf_p->bucket_count;
+
+	bloom_filter_presence result = MAY_BE_PRESENT;
+
+	for(unsigned int h = 0; (h < hash_functions_count) && (result == MAY_BE_PRESENT); h++)
+	{
+		data_hash_func hash_function = get_from_array(&(bf_p->data_hash_functions), h);
+
+		unsigned int bucket_no = hash_function(data, data_size) % bucket_count;
+
+		unsigned int bit_index = get_accessor_from_indices((const unsigned int []){bucket_no, h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+
+		result = result && get_bit(bf_p->bitmap, bit_index);
+	}
+
+	return result;
 }
 
 void deinitialize_bloom_filter(bloom_filter* bf_p)
