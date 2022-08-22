@@ -1,85 +1,64 @@
 #include<stdio.h>
 #include<string.h>
 
-#include<bitmap.h>
+#include<bloom_filter.h>
 
-#define BLOOM_FILTER_SIZE_IN_BITS     (16)
-#define BLOOM_FILTER_SIZE_IN_BYTES    ((BLOOM_FILTER_SIZE_IN_BITS / 8) + ((BLOOM_FILTER_SIZE_IN_BITS % 8) > 0 ? 1 : 0))
+#define BLOOM_FILTER_BUCKET_COUNT     (16)
 
-char bloomfilter_bitmap[2][BLOOM_FILTER_SIZE_IN_BYTES];
-
-unsigned int hash_f_1(const char* str)
+unsigned int hash_f_1(const void* data, unsigned int ununsed)
 {
-	return strlen(str) % BLOOM_FILTER_SIZE_IN_BITS;
+	const char* str = data;
+	return strlen(str);
 }
 
-unsigned int hash_f_2(const char* str)
+unsigned int hash_f_2(const void* data, unsigned int ununsed)
 {
+	const char* str = data;
 	unsigned int sum_chars = 0;
 	while((*str) != '\0')
 	{
 		sum_chars += (((unsigned int)(*str)) - ((('a'<=((unsigned int)(*str)))&&(((unsigned int)(*str))<='z'))?'a':'A'));
 		str++;
 	}
-	return sum_chars % BLOOM_FILTER_SIZE_IN_BITS;
+	return sum_chars;
 }
 
-enum find_result
-{
-	NOT_PRESENT     = 0,
-	MAY_BE_PRESENT  = 1
-};
-typedef enum find_result find_result;
+char* result_values[] = {"ABSENT", "MAY_BE_PRESENT"};
 
-void insert_in_bloomfilter(const char* str)
-{
-	unsigned int hash1 = hash_f_1(str);
-	unsigned int hash2 = hash_f_2(str);
-	printf("Bloom filter insert : %s\n\thash1 : %u\n\thash2 : %u\n\n", str, hash1, hash2);
-	set_bit(bloomfilter_bitmap[0], hash1);
-	set_bit(bloomfilter_bitmap[1], hash2);
-}
-
-find_result check_if_inserted_in_bloomfilter(const char* str)
-{
-	find_result fresult = get_bit(bloomfilter_bitmap[0], hash_f_1(str)) 
-						& get_bit(bloomfilter_bitmap[1], hash_f_2(str));
-	printf("Bloom filter check  : %s : %s\n\n", str, (fresult?"MAY_BE_PRESENT":"NOT_PRESENT"));
-	return fresult ? MAY_BE_PRESENT : NOT_PRESENT;
-}
-
-void print_bitmap(const char* bitmap, unsigned int bitmap_complete_size)
+void print_bloomfilter(const bloom_filter* bf_p)
 {
 	dstring str;
 	init_dstring(&str, "", 0);
-	sprint_bitmap(&str, bitmap, bitmap_complete_size, 0);
+	sprint_bloom_filter_bitmap(&str, bf_p, 0);
 	printf_dstring(&str);
 	deinit_dstring(&str);
 	printf("\n");
 }
 
-void print_bloomfilter()
+void print_exists_in_bloom_filter(const bloom_filter* bf_p, const char* str)
 {
-	printf("bitmap 0 : ");
-	print_bitmap(bloomfilter_bitmap[0], BLOOM_FILTER_SIZE_IN_BITS);
-	printf("bitmap 1 : ");
-	print_bitmap(bloomfilter_bitmap[1], BLOOM_FILTER_SIZE_IN_BITS);
-	printf("\n\n");
+	printf("%s -> %s\n", str, result_values[exists_in_bloom_filter(bf_p, str, -1)]);
+	printf("\n");
 }
 
 int main()
 {
-	insert_in_bloomfilter("hello");
+	bloom_filter bf_temp;
+	bloom_filter* bf_p = &bf_temp;
 
-	print_bloomfilter();
+	initialize_bloom_filter(bf_p, BLOOM_FILTER_BUCKET_COUNT, 2, (const data_hash_func[]){hash_f_1, hash_f_2});
 
-	check_if_inserted_in_bloomfilter("hello");
+	insert_in_bloom_filter(bf_p, "hello", -1);
 
-	check_if_inserted_in_bloomfilter("eeloo");
+	print_bloomfilter(bf_p);
 
-	check_if_inserted_in_bloomfilter("rohan");
+	print_exists_in_bloom_filter(bf_p, "hello");
 
-	check_if_inserted_in_bloomfilter("dvivedi");
+	print_exists_in_bloom_filter(bf_p, "eeloo");
+
+	print_exists_in_bloom_filter(bf_p, "rohan");
+
+	print_exists_in_bloom_filter(bf_p, "dvivedi");
 
 	return 0;
 }
