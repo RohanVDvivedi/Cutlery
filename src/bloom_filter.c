@@ -96,7 +96,7 @@ void sprint_bloom_filter_bitmap(dstring* append_str, const bloom_filter* bf_p, u
 
 	for(unsigned int h = 0; h < hash_functions_count; h++)
 	{
-		sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "h(%u) -> ", h);
+		sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "h(%u) -> ", h);
 
 		for(unsigned int b = 0; b < bucket_count; b++)
 		{
