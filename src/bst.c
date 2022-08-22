@@ -27,7 +27,7 @@ void initialize_bstnode(bstnode* node_p)
 static int is_new_bstnode(const bst* bst_p, const bstnode* node_p)
 {
 	// note: node_property of a new_bstnode is 0
-	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->node_property == 0));
+	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->node_property == 0) && (bst_p->root != node_p));
 }
 
 int is_empty_bst(const bst* bst_p)
