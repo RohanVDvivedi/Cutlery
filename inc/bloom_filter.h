@@ -40,6 +40,10 @@ enum bloom_filter_presence
 // or it may be present (it may be present or absent)
 bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const void* data, unsigned int data_size);
 
+double get_percentage_bloom_filter_bits_set(const bloom_filter* bf_p);
+
+void sprint_bloom_filter_bitmap(dstring* append_str, const bloom_filter* bf_p, unsigned int tabs);
+
 void deinitialize_bloom_filter(bloom_filter* bf_p);
 
 #endif
