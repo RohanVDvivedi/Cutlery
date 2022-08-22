@@ -4,7 +4,7 @@
 typedef struct ufnode ufnode;
 struct ufnode
 {
-	ufnode* parent; // == NULL, if it is the root of the group, else it points to its parent
+	ufnode* parent; // == self, if it is the root of the group, else it points to its immediate parent
 
 	unsigned int rank;
 };

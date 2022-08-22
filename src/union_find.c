@@ -10,14 +10,14 @@ void initialize_union_find(union_find* uf_p, unsigned int node_offset)
 
 void initialize_ufnode(ufnode* node_p)
 {
-	node_p->parent = NULL;
+	node_p->parent = node_p; // make it point to self
 	node_p->rank = 0;
 }
 
 static ufnode* get_root(ufnode* node_p)
 {
 	ufnode* root_p = node_p;
-	while(root_p->parent != NULL)
+	while(root_p->parent != root_p)
 		root_p = root_p->parent;
 	node_p->parent = root_p;
 	return root_p;
