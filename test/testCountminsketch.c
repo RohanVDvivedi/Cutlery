@@ -58,6 +58,12 @@ int main()
 
 	get_and_print_frequency(cms_p, "eeloo");
 
+	increment_and_print_frequency(cms_p, "hello");
+
+	get_and_print_frequency(cms_p, "hello");
+
+	get_and_print_frequency(cms_p, "eeloo");
+
 	get_and_print_frequency(cms_p, "rohan");
 
 	get_and_print_frequency(cms_p, "dvivedi");
