@@ -39,6 +39,7 @@ A C (standard C99) library that provides configurable data structures, serving a
    * `#include<bitmap.h>`
    * `#include<union_find.h>`
    * `#include<bloom_filter.h>`
+   * `#include<count_min_sketch.h>`
    * `#include<memory_allocator_interface.h>`
 
 ## Instructions for uninstalling library
