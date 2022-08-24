@@ -1,9 +1,8 @@
 1. Tasks picked
 
 PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
- * elaborate bloom_filter test cases
- * write test cases for count min sketch
- * provide separate with-alocator initialization functions for bloom_filter and count_min_sketch
+ * elaborate bloom_filter test cases, provide init.. function with array_allocator and bitmap allocator
+ * elaborate count min sketch test cases, provide init.. function with array_allocator and uint allocator
 
 2. Add new datastructure types tasks (*future)
 
