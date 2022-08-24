@@ -51,7 +51,21 @@ void reset_frequencies_in_count_min_sketch(count_min_sketch* cms_p)
 
 void sprint_count_min_sketch(dstring* append_str, const count_min_sketch* cms_p, unsigned int tabs)
 {
-	// TODO
+	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	unsigned int bucket_count = cms_p->bucket_count;
+
+	for(unsigned int h = 0; h < hash_functions_count; h++)
+	{
+		sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "h(%u) -> ", h);
+
+		for(unsigned int b = 0; b < bucket_count; b++)
+		{
+			unsigned int index = get_accessor_from_indices((const unsigned int []){b, h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+
+			snprintf_dstring(append_str, "%u ", cms_p->frequencies[index]);
+		}
+		snprintf_dstring(append_str, "\n");
+	}
 }
 
 void deinitialize_count_min_sketch(count_min_sketch* cms_p)
