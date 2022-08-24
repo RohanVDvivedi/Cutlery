@@ -10,7 +10,7 @@
 #endif
 
 #ifndef UINT_MAX
-	#define UINT_MAX (~((unsigned int)(0)))
+	#define UINT_MAX (~(0U))
 #endif
 
 #define INVALID_INDEX UINT_MAX
