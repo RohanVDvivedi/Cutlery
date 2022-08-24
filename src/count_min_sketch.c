@@ -47,7 +47,24 @@ void increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void
 
 unsigned int get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, unsigned int data_size)
 {
-	// TODO
+	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	unsigned int bucket_count = cms_p->bucket_count;
+
+	// result frequency
+	unsigned int result = UINT_MAX;
+
+	for(unsigned int h = 0; (h < hash_functions_count) && (result > 0); h++)
+	{
+		data_hash_func hash_function = get_from_array(&(cms_p->data_hash_functions), h);
+
+		unsigned int bucket_no = hash_function(data, data_size) % bucket_count;
+
+		unsigned int index = get_accessor_from_indices((const unsigned int []){bucket_no, h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+
+		result = min(result, cms_p->frequencies[index]);
+	}
+
+	return result;
 }
 
 void reset_frequencies_in_count_min_sketch(count_min_sketch* cms_p)
