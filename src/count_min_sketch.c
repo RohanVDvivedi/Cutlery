@@ -33,16 +33,57 @@ void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_co
 
 
 // incrementing frequency by 1, while avoiding overflow
-static unsigned int increment_frequecy_by_1(unsigned int frequency)
+static unsigned int increment_frequency_by_1(unsigned int frequency)
 {
 	if(frequency == UINT_MAX)
 		return frequency;
 	return frequency + 1;
 }
 
-void increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, unsigned int data_size)
+
+// returns frequency of a certain data element, and the bucket numbers concerned for each of the hash_functions
+// the bucket_nos must point to hash_functions_count number of unsigned ints
+static unsigned int get_frequency_and_concerned_bucket_nos_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, unsigned int data_size, unsigned int* bucket_nos)
 {
-	// TODO
+	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	unsigned int bucket_count = cms_p->bucket_count;
+
+	// result frequency
+	unsigned int result = UINT_MAX;
+
+	// we iterate over all the hash functions
+	for(unsigned int h = 0; (h < hash_functions_count); h++)
+	{
+		data_hash_func hash_function = get_from_array(&(cms_p->data_hash_functions), h);
+
+		bucket_nos[h] = hash_function(data, data_size) % bucket_count;
+
+		unsigned int index = get_accessor_from_indices((const unsigned int []){bucket_nos[h], h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+
+		result = min(result, cms_p->frequencies[index]);
+	}
+
+	return result;
+}
+
+unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, unsigned int data_size)
+{
+	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	unsigned int bucket_count = cms_p->bucket_count;
+
+	unsigned int* bucket_nos = malloc(sizeof(unsigned int) * hash_functions_count);
+	
+	// get the maximum frequency and the concerned bucket_nos
+	unsigned int max_frequency = get_frequency_and_concerned_bucket_nos_from_count_min_sketch(cms_p, data, data_size, bucket_nos);
+
+	// we iterate over all the hash functions, and increment frequency if it matches the max frequency
+	for(unsigned int h = 0; (h < hash_functions_count); h++)
+	{
+		if(cms_p->frequencies[h][bucket_nos[h]] == max_frequency)
+			cms_p->frequencies[h][bucket_nos[h]] = increment_frequency_by_1(cms_p->frequencies[h][bucket_nos[h]]);
+	}
+
+	return max_frequency + 1;
 }
 
 unsigned int get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, unsigned int data_size)
@@ -53,6 +94,8 @@ unsigned int get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, 
 	// result frequency
 	unsigned int result = UINT_MAX;
 
+	// in the below for loop, the minimum value result can have is 0
+	// hence we save some cycles by exiting the loop early if result == 0
 	for(unsigned int h = 0; (h < hash_functions_count) && (result > 0); h++)
 	{
 		data_hash_func hash_function = get_from_array(&(cms_p->data_hash_functions), h);
