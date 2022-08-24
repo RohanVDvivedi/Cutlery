@@ -5,6 +5,17 @@
 
 #include<probabilistic_data_structure_util.h>
 
+/*
+** Bloom Filter is a probablistic data structure
+** It intends to provide you with a check to see if an object/data has been seen by you or not
+** Since it is a probalistic data structure if may return false positives, But there are no false negatives
+** higher the total number of buckets (number of hash functions * bucket_count) higher is its accuracy
+** (with ofcourse better hash_functions with distributed and uniform over the range)
+**
+** you must call "insert_in_bloom_filter" to mark a data as seen
+** while you can call "exists_in_bloom_filter" any time to check if a piece of data was seen earlier. (i.e. was marked earlier as seen)
+*/
+
 typedef struct bloom_filter bloom_filter;
 struct bloom_filter
 {
