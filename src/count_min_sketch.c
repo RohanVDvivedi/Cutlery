@@ -4,6 +4,7 @@
 
 #include<dstring.h>
 #include<cutlery_stds.h>
+#include<cutlery_math.h>
 #include<memory_allocator_interface.h>
 
 static unsigned int get_total_bucket_count_for_count_min_sketch(const count_min_sketch* cms_p)
@@ -28,6 +29,15 @@ void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_co
 		cms_p->frequencies = NULL;
 	else
 		cms_p->frequencies = zallocate(STD_C_mem_allocator, &total_bytes_for_all_buckets);
+}
+
+
+// incrementing frequency by 1, while avoiding overflow
+static unsigned int increment_frequecy_by_1(unsigned int frequency)
+{
+	if(frequency == UINT_MAX)
+		return frequency;
+	return frequency + 1;
 }
 
 void increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, unsigned int data_size)
