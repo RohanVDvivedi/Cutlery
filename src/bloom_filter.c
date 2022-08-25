@@ -33,9 +33,8 @@ void initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int buc
 	for(unsigned int i = 0; i < hash_functions_count; i++)
 		set_in_array(&(bf_p->data_hash_functions), data_hash_functions[i], i);
 
-	bf_p->bitmap_allocator = bitmap_allocator;
-
 	bf_p->bucket_count = bucket_count;
+	bf_p->bitmap_allocator = bitmap_allocator;
 
 	// calculate  number of bytes required for storing the bitmap
 	unsigned int bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
@@ -44,6 +43,28 @@ void initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int buc
 		bf_p->bitmap = NULL;
 	else
 		bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &bytes_in_bitmap);
+}
+
+void initialize_bloom_filter_with_memory(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], char bitmap[])
+{
+	// initialize array with memory
+	initialize_array_with_memory(&(bf_p->data_hash_functions), hash_functions_count, data_hash_functions);
+
+	bf_p->bitmap_allocator = NULL;
+	bf_p->bucket_count = bucket_count;
+
+	// calculate  number of bytes required for storing the bitmap
+	unsigned int bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
+
+	if(bytes_in_bitmap == 0)
+		bf_p->bitmap = NULL;
+	else if(bitmap != NULL)
+		bf_p->bitmap = bitmap;
+	else
+	{
+		bf_p->bitmap_allocator = STD_C_mem_allocator;
+		bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &bytes_in_bitmap);
+	}
 }
 
 void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, unsigned int data_size)
