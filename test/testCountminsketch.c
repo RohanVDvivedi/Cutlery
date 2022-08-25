@@ -48,7 +48,13 @@ int main()
 	count_min_sketch cms_temp;
 	count_min_sketch* cms_p = &cms_temp;
 
-	initialize_count_min_sketch(cms_p, COUNT_MIN_SKETCH_BUCKET_COUNT, 2, (const data_hash_func[]){hash_f_1, hash_f_2});
+
+	//initialize_count_min_sketch(cms_p, COUNT_MIN_SKETCH_BUCKET_COUNT, 2, (const data_hash_func[]){hash_f_1, hash_f_2});
+
+	// OR to avoid a new array allocation for hash_functions inside the count_min_sketch, use below initialization
+
+	// observe how we can get away with passing NULL for frequencies (the last parameter)
+	initialize_count_min_sketch_with_memory(cms_p, COUNT_MIN_SKETCH_BUCKET_COUNT, 2, (const data_hash_func[]){hash_f_1, hash_f_2}, NULL);
 
 	increment_and_print_frequency(cms_p, "hello");
 
