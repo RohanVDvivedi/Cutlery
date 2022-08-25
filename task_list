@@ -1,9 +1,5 @@
 1. Tasks picked
 
-PROBABLISTIC datastructure tasks (NEW DATASTRUCTURE)
- * provide initialize function with array_allocator and bitmap allocator
- * provide initialize function with array_allocator and uint allocator
-
 2. Add new datastructure types tasks (*future)
 
 DSTRING tasks
