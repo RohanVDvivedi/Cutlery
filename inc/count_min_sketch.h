@@ -40,7 +40,7 @@ struct count_min_sketch
 	unsigned int* frequencies;
 };
 
-void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func* data_hash_functions);
+void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[]);
 
 // the below functions increments the frequency, and also returns the new frequency
 unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, unsigned int data_size);

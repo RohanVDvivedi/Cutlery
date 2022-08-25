@@ -12,7 +12,7 @@ static unsigned int get_total_bucket_count_for_count_min_sketch(const count_min_
 	return cms_p->bucket_count * get_capacity_array(&(cms_p->data_hash_functions));
 }
 
-void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func* data_hash_functions)
+void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[])
 {
 	cms_p->bucket_count = bucket_count;
 
