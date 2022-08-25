@@ -86,5 +86,7 @@ int main()
 
 	printf("percentage 1s in bloom_filter = %lf %%\n", 100.0 * get_fraction_of_bloom_filter_bits_set(bf_p));
 
+	deinitialize_bloom_filter(bf_p);
+
 	return 0;
 }
