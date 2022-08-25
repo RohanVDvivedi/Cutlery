@@ -39,9 +39,9 @@ struct bloom_filter
 	memory_allocator bitmap_allocator;
 };
 
-void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func* data_hash_functions);
+void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[]);
 
-void initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func* data_hash_functions, memory_allocator data_hash_functions_allocator, memory_allocator bitmap_allocator);
+void initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_allocator, memory_allocator bitmap_allocator);
 
 void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, unsigned int data_size);
 
