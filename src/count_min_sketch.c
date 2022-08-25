@@ -99,6 +99,10 @@ unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, co
 {
 	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
 
+	// we calculate the current max_frequency (of data)
+	// and additionally we cache all the buckets we touched in bucket_indices array
+	// this above caching allows us to avoid recalculation of all the hash functions and their corresponding accessible 2-d -> 1d coversion indices
+
 	unsigned int bucket_indices_size = sizeof(unsigned int) * hash_functions_count;
 	unsigned int* bucket_indices = allocate(STD_C_mem_allocator, &bucket_indices_size);
 	
@@ -111,6 +115,9 @@ unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, co
 		if(cms_p->frequencies[bucket_indices[h]] == max_frequency)
 			cms_p->frequencies[bucket_indices[h]] = increment_frequency_by_1(cms_p->frequencies[bucket_indices[h]]);
 	}
+
+	// deallocate bucket_indices
+	deallocate(STD_C_mem_allocator, bucket_indices, bucket_indices_size);
 
 	return max_frequency + 1;
 }
