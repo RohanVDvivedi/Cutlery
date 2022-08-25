@@ -52,13 +52,29 @@ int main()
 
 	increment_and_print_frequency(cms_p, "hello");
 
-	print_countminsketch(cms_p);
+	increment_and_print_frequency(cms_p, "hello");
 
-	get_and_print_frequency(cms_p, "hello");
-
-	get_and_print_frequency(cms_p, "eeloo");
+	increment_and_print_frequency(cms_p, "rohan");
 
 	increment_and_print_frequency(cms_p, "hello");
+
+	increment_and_print_frequency(cms_p, "rohan");
+
+	increment_and_print_frequency(cms_p, "dvivedi");
+
+	increment_and_print_frequency(cms_p, "rohan dvivedi");
+
+	increment_and_print_frequency(cms_p, "dvivedi");
+
+	increment_and_print_frequency(cms_p, "rupa");
+
+	increment_and_print_frequency(cms_p, "vipul");
+
+	increment_and_print_frequency(cms_p, "devashree");
+
+	increment_and_print_frequency(cms_p, "manan");
+
+	print_countminsketch(cms_p);
 
 	get_and_print_frequency(cms_p, "hello");
 
@@ -67,6 +83,39 @@ int main()
 	get_and_print_frequency(cms_p, "rohan");
 
 	get_and_print_frequency(cms_p, "dvivedi");
+
+	get_and_print_frequency(cms_p, "rohan dvivedi");
+
+	get_and_print_frequency(cms_p, "rupa");
+
+	get_and_print_frequency(cms_p, "vipul");
+
+	get_and_print_frequency(cms_p, "devashree");
+
+	get_and_print_frequency(cms_p, "manan");
+
+	printf("reseting frequencies\n");
+	reset_frequencies_in_count_min_sketch(cms_p);
+
+	print_countminsketch(cms_p);
+
+	get_and_print_frequency(cms_p, "hello");
+
+	get_and_print_frequency(cms_p, "eeloo");
+
+	get_and_print_frequency(cms_p, "rohan");
+
+	get_and_print_frequency(cms_p, "dvivedi");
+
+	get_and_print_frequency(cms_p, "rohan dvivedi");
+
+	get_and_print_frequency(cms_p, "rupa");
+
+	get_and_print_frequency(cms_p, "vipul");
+
+	get_and_print_frequency(cms_p, "devashree");
+
+	get_and_print_frequency(cms_p, "manan");
 
 	return 0;
 }
