@@ -37,6 +37,29 @@ void initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigne
 		cms_p->frequencies = zallocate(cms_p->uint_allocator, &total_bytes_for_all_buckets);
 }
 
+void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], unsigned int frequencies[])
+{
+	// initialize array with memory
+	initialize_array_with_memory(&(cms_p->data_hash_functions), hash_functions_count, data_hash_functions);
+
+	cms_p->uint_allocator = NULL;
+	cms_p->bucket_count = bucket_count;
+
+	// calculate total number of buckets required
+	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
+	unsigned int total_bytes_for_all_buckets = total_bucket_count * sizeof(unsigned int);
+
+	if(total_bytes_for_all_buckets == 0)
+		cms_p->frequencies = NULL;
+	else if(frequencies != NULL)
+		cms_p->frequencies = frequencies;
+	else
+	{
+		cms_p->uint_allocator = STD_C_mem_allocator;
+		cms_p->frequencies = zallocate(cms_p->uint_allocator, &total_bytes_for_all_buckets);
+	}
+}
+
 // incrementing frequency by 1, while avoiding overflow
 static unsigned int increment_frequency_by_1(unsigned int frequency)
 {

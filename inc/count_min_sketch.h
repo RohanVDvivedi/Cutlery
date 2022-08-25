@@ -47,6 +47,10 @@ void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_co
 
 void initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_allocator, memory_allocator uint_allocator);
 
+// in the initialize with_memory function the frequencies parameter (the last parameter) is optional
+// it can be provided as NULL, if you want to use STD_C_mem_allocator for allocating and maintaining frequencies
+void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], unsigned int frequencies[]);
+
 // the below functions increments the frequency, and also returns the new frequency
 unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, unsigned int data_size);
 
