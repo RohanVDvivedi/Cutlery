@@ -40,7 +40,7 @@ void initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigne
 void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], unsigned int frequencies[])
 {
 	// initialize array with memory
-	initialize_array_with_memory(&(cms_p->data_hash_functions), hash_functions_count, data_hash_functions);
+	initialize_array_with_memory(&(cms_p->data_hash_functions), hash_functions_count, (const void**)data_hash_functions);
 
 	cms_p->uint_allocator = NULL;
 	cms_p->bucket_count = bucket_count;
