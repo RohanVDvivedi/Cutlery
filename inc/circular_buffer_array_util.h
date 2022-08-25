@@ -6,7 +6,7 @@
 /*
 **	For all base functions
 **		0 <= i1, i2 < buffer_capacity
-**	i.e. i1 and i2 are indices of elements in a curcular array buffer with capacity of buffer_capacity
+**	i.e. i1 and i2 are indices of elements in a circular array buffer with capacity of buffer_capacity
 */
 
 // equivalent to => (i1 + i2) % buffer_capacity
