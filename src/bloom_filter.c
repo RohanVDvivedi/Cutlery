@@ -118,7 +118,9 @@ void sprint_bloom_filter_bitmap(dstring* append_str, const bloom_filter* bf_p, u
 void deinitialize_bloom_filter(bloom_filter* bf_p)
 {
 	unsigned int bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
-	deallocate(bf_p->bitmap_allocator, bf_p->bitmap, bytes_in_bitmap);
+
+	if(bf_p->bitmap_allocator != NULL && bytes_in_bitmap > 0)
+		deallocate(bf_p->bitmap_allocator, bf_p->bitmap, bytes_in_bitmap);
 
 	deinitialize_array(&(bf_p->data_hash_functions));
 }
