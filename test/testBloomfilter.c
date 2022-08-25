@@ -50,6 +50,18 @@ int main()
 
 	insert_in_bloom_filter(bf_p, "hello", -1);
 
+	insert_in_bloom_filter(bf_p, "rohan", -1);
+
+	insert_in_bloom_filter(bf_p, "dvivedi", -1);
+
+	insert_in_bloom_filter(bf_p, "rohan dvivedi", -1);
+
+	insert_in_bloom_filter(bf_p, "vipul", -1);
+
+	insert_in_bloom_filter(bf_p, "rupa", -1);
+
+	insert_in_bloom_filter(bf_p, "devashree", -1);
+
 	print_bloomfilter(bf_p);
 
 	print_exists_in_bloom_filter(bf_p, "hello");
@@ -59,6 +71,18 @@ int main()
 	print_exists_in_bloom_filter(bf_p, "rohan");
 
 	print_exists_in_bloom_filter(bf_p, "dvivedi");
+
+	print_exists_in_bloom_filter(bf_p, "rohan dvivedi");
+
+	print_exists_in_bloom_filter(bf_p, "rupa");
+
+	print_exists_in_bloom_filter(bf_p, "vipul");
+
+	print_exists_in_bloom_filter(bf_p, "vipulkumar");
+
+	print_exists_in_bloom_filter(bf_p, "devashree");
+
+	print_exists_in_bloom_filter(bf_p, "manan");
 
 	printf("percentage 1s in bloom_filter = %lf %%\n", 100.0 * get_fraction_of_bloom_filter_bits_set(bf_p));
 
