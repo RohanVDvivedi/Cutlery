@@ -46,7 +46,12 @@ int main()
 	bloom_filter bf_temp;
 	bloom_filter* bf_p = &bf_temp;
 
-	initialize_bloom_filter(bf_p, BLOOM_FILTER_BUCKET_COUNT, 2, (const data_hash_func[]){hash_f_1, hash_f_2});
+	//initialize_bloom_filter(bf_p, BLOOM_FILTER_BUCKET_COUNT, 2, (const data_hash_func[]){hash_f_1, hash_f_2});
+
+	// OR to avoid a new array allocation for hash_functions inside the bloom_filter, use below initialization
+
+	// observe how we can get away with passing NULL for bitmap (the last parameter)
+	initialize_bloom_filter_with_memory(bf_p, BLOOM_FILTER_BUCKET_COUNT, 2, (const data_hash_func[]){hash_f_1, hash_f_2}, NULL);
 
 	insert_in_bloom_filter(bf_p, "hello", -1);
 
