@@ -33,7 +33,7 @@ void print_countminsketch(const count_min_sketch* cms_p)
 	printf("\n");
 }
 
-void increment_and_print_frequency(const count_min_sketch* cms_p, char* str)
+void increment_and_print_frequency(count_min_sketch* cms_p, char* str)
 {
 	printf("%s -> %u\n", str, increment_frequency_in_count_min_sketch(cms_p, str, -1));
 }
