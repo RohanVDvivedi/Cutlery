@@ -117,5 +117,7 @@ int main()
 
 	get_and_print_frequency(cms_p, "manan");
 
+	deinitialize_count_min_sketch(cms_p);
+
 	return 0;
 }
