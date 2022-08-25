@@ -38,9 +38,14 @@ struct count_min_sketch
 	// but since c language does not allow dynamic-sized multidimentional arrays
 	// here we will use the functionality defined in multi_dim_array_util.h to access each of its elements
 	unsigned int* frequencies;
+
+	// uint_allocator is used for the above attribute frequencies,
+	memory_allocator uint_allocator;
 };
 
 void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[]);
+
+void initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_allocator, memory_allocator uint_allocator);
 
 // the below functions increments the frequency, and also returns the new frequency
 unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, unsigned int data_size);
