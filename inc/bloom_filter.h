@@ -41,7 +41,7 @@ struct bloom_filter
 
 void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[]);
 
-void initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_allocator, memory_allocator bitmap_allocator);
+void initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator bitmap_allocator);
 
 // in the initialize with_memory function the bitmap parameter (the last parameter) is optional
 // it can be provided as NULL, if you want to use STD_C_mem_allocator for allocating and maintaining bitmap

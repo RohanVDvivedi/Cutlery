@@ -14,13 +14,28 @@ static unsigned int get_total_bucket_count_for_count_min_sketch(const count_min_
 
 void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[])
 {
-	initialize_count_min_sketch_with_allocator(cms_p, bucket_count, hash_functions_count, data_hash_functions, STD_C_mem_allocator, STD_C_mem_allocator);
-}
-
-void initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_allocator, memory_allocator uint_allocator)
-{
 	// initialize array (of data_hash_func-s) and populate it with data_hash_functions
 	initialize_array(&(cms_p->data_hash_functions), hash_functions_count);
+	for(unsigned int i = 0; i < hash_functions_count; i++)
+		set_in_array(&(cms_p->data_hash_functions), data_hash_functions[i], i);
+
+	cms_p->bucket_count = bucket_count;
+	cms_p->uint_allocator = STD_C_mem_allocator;
+
+	// calculate total number of buckets required
+	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
+	unsigned int total_bytes_for_all_buckets = total_bucket_count * sizeof(unsigned int);
+
+	if(total_bytes_for_all_buckets == 0)
+		cms_p->frequencies = NULL;
+	else
+		cms_p->frequencies = zallocate(cms_p->uint_allocator, &total_bytes_for_all_buckets);
+}
+
+void initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator uint_allocator)
+{
+	// initialize array (of data_hash_func-s) and populate it with data_hash_functions
+	initialize_array_with_allocator(&(cms_p->data_hash_functions), hash_functions_count, data_hash_functions_array_allocator);
 	for(unsigned int i = 0; i < hash_functions_count; i++)
 		set_in_array(&(cms_p->data_hash_functions), data_hash_functions[i], i);
 

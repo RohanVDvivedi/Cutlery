@@ -23,7 +23,21 @@ static unsigned int get_bitmap_size_in_bytes_for_bloom_filter(const bloom_filter
 
 void initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[])
 {
-	initialize_bloom_filter_with_allocator(bf_p, bucket_count, hash_functions_count, data_hash_functions, STD_C_mem_allocator, STD_C_mem_allocator);
+	// initialize array (of data_hash_func-s) and populate it with data_hash_functions
+	initialize_array(&(bf_p->data_hash_functions), hash_functions_count);
+	for(unsigned int i = 0; i < hash_functions_count; i++)
+		set_in_array(&(bf_p->data_hash_functions), data_hash_functions[i], i);
+
+	bf_p->bucket_count = bucket_count;
+	bf_p->bitmap_allocator = STD_C_mem_allocator;
+
+	// calculate  number of bytes required for storing the bitmap
+	unsigned int bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
+
+	if(bytes_in_bitmap == 0)
+		bf_p->bitmap = NULL;
+	else
+		bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &bytes_in_bitmap);
 }
 
 void initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator bitmap_allocator)
