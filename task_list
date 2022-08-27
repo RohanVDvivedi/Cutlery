@@ -1,14 +1,19 @@
 1. Tasks picked
 
 DSTREAM (new data structure)
-	** here capacity must be larger than the largest data that you may try to write with type = ACCEPT_ALL_OR_NONE
+	** without external locking this data-structure is useless - add this in the header as first comment
+	** here, the capacity must be larger than the largest data that you may try to write with type = ACCEPT_ALL_OR_NONE
 	void initialize_dstream(dstream* strm, unsigned int capacity);
 	** here operation_type = ACCEPT_ALL_OR_NONE OR ACCEPT_PARTIAL
 	unsinged int write_to_dstream(dstream* strm, const void* data, unsigned int data_size, operation_type type);
 	unsigned int read_from_dstream(dstream* strm, void* data, unsigned int data_size, operation_type type);
-	void close_dstream_for_writer(dstream* strm);
-	void close_dstream_for_reader(dstream* strm);
-	void deinitialize_dstream(); // calls close on both the sides of dstream
+	int is_empty_dstream(const dstream* strm);
+	int is_full_dstream(const dstream* strm);
+	void close_dstream_for_writer(dstream* strm);     // after this call all write_* calls will return 0 immediately, i.e. failing
+	void close_dstream_for_reader(dstream* strm);     // after this call all write calls will return data_size i.e. all success; and all read calls will fail
+	int is_closed_for_writer(const dstream* strm);
+	int is_closed_for_reader(const dstream* strm);
+	void deinitialize_dstream();                      // calls close on both the sides of dstream
 
 2. Add new datastructure types tasks (*future)
 
