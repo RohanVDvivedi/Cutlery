@@ -4,6 +4,8 @@
 #include<circular_buffer_array_util.h>
 
 void initialize_dstream(dstream* strm, unsigned int capacity);
+void initialize_dstream_with_allocator(dstream* strm, unsigned int capacity, memory_allocator buffer_allocator);
+void initialize_dstream_with_memory(dstream* strm, unsigned int capacity, void* buffer);
 
 unsigned int write_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type)
 {

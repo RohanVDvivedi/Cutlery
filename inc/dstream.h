@@ -36,7 +36,7 @@ struct dstream
 	void* buffer;
 
 	// memory allocator for the buffer of dstream
-	memory_allocator mem_allocator;
+	memory_allocator buffer_allocator;
 };
 
 typedef enum dstream_operation_type dstream_operation_type;
@@ -47,6 +47,8 @@ enum dstream_operation_type
 };
 
 void initialize_dstream(dstream* strm, unsigned int capacity);
+void initialize_dstream_with_allocator(dstream* strm, unsigned int capacity, memory_allocator buffer_allocator);
+void initialize_dstream_with_memory(dstream* strm, unsigned int capacity, void* buffer);
 
 // write bytes to dstream ==> push_back_to_dstream
 unsigned int write_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
