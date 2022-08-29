@@ -48,13 +48,13 @@ enum dstream_operation_type
 
 void initialize_dstream(dstream* strm, unsigned int capacity);
 
-// write bytes to dstream
+// write bytes to dstream ==> push_back_to_dstream
 unsigned int write_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 
-// read next bytes from dstream
+// read next bytes from dstream ==> pop_front_from_dstream
 unsigned int read_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
 
-// unread given bytes (that we already read) back to the stream
+// unread given bytes (that we already read) back to the stream ==> push_front_to_dstream
 // the first byte at data will be read first upon calling read
 unsigned int unread_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 
