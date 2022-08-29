@@ -15,18 +15,27 @@
 typedef struct dstream dstream;
 struct dstream
 {
+	// total bytes currently allocated at buffer
 	unsigned int buffer_capacity;
 
-	unsigned int first_byte_index;
+	// the offset of the first byte in the buffer
+	// it is also the byte of the front of the dstream
+	unsigned int first_byte;
 
-	unsigned int bytes_occupied;
+	// number of bytes occupied in the buffer starting at first_byte
+	// remember this is a circular buffer
+	unsigned int byte_count;
 
+	// if the dstream is read_closed, no bytes can be read/popped from it
 	int read_closed:1;
 
+	// if the dstream is write_closed, no bytes can be written/pushed to it
 	int write_closed:1;
 
-	const void* buffer;
+	// actual storage of the data is at the buffer
+	void* buffer;
 
+	// memory allocator for the buffer of dstream
 	memory_allocator mem_allocator;
 };
 
