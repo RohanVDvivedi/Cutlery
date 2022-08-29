@@ -36,6 +36,7 @@ A C (standard C99) library that provides configurable data structures, serving a
    * `#include<bst.h>`
    * `#include<hashmap.h>`
    * `#include<dstring.h>`
+   * `#include<dstream.h>`
    * `#include<bitmap.h>`
    * `#include<union_find.h>`
    * `#include<bloom_filter.h>`
