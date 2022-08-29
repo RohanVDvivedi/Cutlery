@@ -52,6 +52,7 @@ unsigned int write_to_dstream(dstream* strm, const void* data, unsigned int data
 unsigned int read_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int unread_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 
+// use push and pop functions only if you know what you are doing
 unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
