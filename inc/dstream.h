@@ -46,4 +46,28 @@ enum dstream_operation_type
 	ACCEPT_PARTIAL,
 };
 
+void initialize_dstream(dstream* strm, unsigned int capacity);
+
+unsigned int write_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
+unsigned int read_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+unsigned int unread_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
+
+unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
+unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
+unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+
+int is_empty_dstream(const dstream* strm);
+int is_full_dstream(const dstream* strm);
+
+int resize_dstream(dstream* strm, unsigned int new_capacity);
+
+void close_dstream_for_writer(dstream* strm);
+void close_dstream_for_reader(dstream* strm);
+
+int is_closed_for_writer(const dstream* strm);
+int is_closed_for_reader(const dstream* strm);
+
+void deinitialize_dstream();
+
 #endif
