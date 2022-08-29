@@ -7,15 +7,9 @@ DSTREAM (new data structure)
 	** here operation_type = ACCEPT_ALL_OR_NONE OR ACCEPT_PARTIAL
 	unsinged int write_to_dstream(dstream* strm, const void* data, unsigned int data_size, operation_type type);
 	unsigned int read_from_dstream(dstream* strm, void* data, unsigned int data_size, operation_type type);
+  unsinged int unread_to_dstream(dstream* strm, const void* data, unsigned int data_size, operation_type type);
 	int is_empty_dstream(const dstream* strm);
 	int is_full_dstream(const dstream* strm);
-  // additional functionalities
-  unsinged int push_back_dstream(dstream* strm, const void* data, unsigned int data_size, operation_type type);
-  unsinged int push_front_dstream(dstream* strm, const void* data, unsigned int data_size, operation_type type);
-  unsigned int pop_back_dstream(dstream* strm, void* data, unsigned int data_size, operation_type type);
-  unsigned int pop_front_dstream(dstream* strm, void* data, unsigned int data_size, operation_type type);
-  write_to_dstream == push_back_dstream
-  read_from_dstream == pop_front_dstream
   int expand_dstream(dstream* strm);
   int resize_dstream(dstream* strm, unsigned int new_capacity);
 	void close_dstream_for_writer(dstream* strm);     // after this call all write_* calls will return 0 immediately, i.e. failing
