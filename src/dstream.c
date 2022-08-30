@@ -51,7 +51,7 @@ unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int
 	return get_front_of_dstream(strm, data, data_size, op_type);
 }
 
-static inline unsigned int circular_buffer_copy(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
+static inline unsigned int copy_from_circular_buffer(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
 {
 	// we can not read more than buffer_capacity number of bytes from buffer
 	bytes_to_read = min(bytes_to_read, buffer_capacity);
@@ -90,7 +90,7 @@ unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int 
 	unsigned int bytes_to_read = min(get_bytes_readable_in_dstream(strm), data_size);
 
 	// circular buffer copy starting at first_byte offset to be read
-	circular_buffer_copy(strm->buffer, strm->buffer_capacity, strm->first_byte, data, bytes_to_read);
+	copy_from_circular_buffer(strm->buffer, strm->buffer_capacity, strm->first_byte, data, bytes_to_read);
 
 	return bytes_to_read;
 }
@@ -110,7 +110,7 @@ unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int d
 
 	// circular buffer copy starting at first_byte offset to be read
 	unsigned int first_byte_offset = add_indexes(strm->first_byte, get_bytes_readable_in_dstream(strm) - bytes_to_read, strm->buffer_capacity);
-	circular_buffer_copy(strm->buffer, strm->buffer_capacity, first_byte_offset, data, bytes_to_read);
+	copy_from_circular_buffer(strm->buffer, strm->buffer_capacity, first_byte_offset, data, bytes_to_read);
 
 	return bytes_to_read;
 }
