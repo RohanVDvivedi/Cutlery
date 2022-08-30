@@ -54,9 +54,26 @@ unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int
 static inline unsigned int circular_buffer_copy(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
 {
 	// we can not read more than buffer_capacity number of bytes from buffer
-	bytes_to_read = min(bytes_read, buffer_capacity);
+	bytes_to_read = min(bytes_to_read, buffer_capacity);
 
-	// TODO
+	// return value
+	unsigned int bytes_read = bytes_to_read;
+
+	// bytes readable until the buffer_capacity boundary hits use
+	unsigned int bytes_readily_readable = min(bytes_to_read, buffer_capacity - offset);
+
+	// perform a copy and update data to point to next available byte to copy to
+	memory_move(data, buffer + offset, bytes_readily_readable);
+	data += bytes_readily_readable;
+
+	// update bytes_to_read
+	bytes_to_read -= bytes_readily_readable;
+
+	// read remaining bytes from first byte of the buffer i.e. buffer + 0
+	if(bytes_to_read > 0)
+		memory_move(data, buffer, bytes_to_read);
+
+	return bytes_read;
 }
 
 unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
