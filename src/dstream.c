@@ -63,14 +63,25 @@ unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int 
 
 	// actual reading begins
 
+	// calculate bytes that can be readily read
 	unsigned int bytes_read = min(data_size, min(strm->byte_count, strm->buffer_capacity - strm->first_byte));
+
+	// now perfrom a read into data
 	memory_move(data, strm->buffer + strm->first_byte, bytes_read);
 
+	// now update data to next available location to read into
+	// and update data_size with number of bytes we still can read
+	data += bytes_read;
+	data_size -= bytes_read;
+
 	// case when the dstream is wound up and there is additional bytes that we can read
-	if(bytes_read < data_size && strm->byte_count > bytes_read)
+	if(data_size > 0 && strm->byte_count > bytes_read)
 	{
-		unsigned int additional_bytes_to_read = min(data_size - bytes_read, strm->byte_count - bytes_read);
-		memory_move(data + bytes_read, strm->buffer, additional_bytes_to_read);
+		// the additional bytes we can read starting at offset 0 in buffer
+		unsigned int additional_bytes_to_read = min(data_size, strm->byte_count - bytes_read);
+
+		// we read these new availabel bytes and then increment the bytes_read
+		memory_move(data, strm->buffer, additional_bytes_to_read);
 		bytes_read += additional_bytes_to_read;
 	}
 
