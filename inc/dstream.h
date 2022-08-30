@@ -46,6 +46,12 @@ enum dstream_operation_type
 	ACCEPT_PARTIAL,
 };
 
+/*
+**	For every function here that takes data and data_size as parameters and returns an unsigned int
+**	The return value indicates what number of bytes were read/written from the given data,
+**	which will always be lesser than or equal to data_size
+*/
+
 void initialize_dstream(dstream* strm, unsigned int capacity);
 void initialize_dstream_with_allocator(dstream* strm, unsigned int capacity, memory_allocator buffer_allocator);
 void initialize_dstream_with_memory(dstream* strm, unsigned int capacity, void* buffer);
