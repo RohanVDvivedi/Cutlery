@@ -1,5 +1,6 @@
 #include<dstream.h>
 
+#include<cutlery_math.h>
 #include<cutlery_stds.h>
 #include<circular_buffer_array_util.h>
 
@@ -60,7 +61,20 @@ unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int 
 	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
 		return 0;
 
-	// TODO
+	// actual reading begins
+
+	unsigned int bytes_read = min(data_size, min(strm->byte_count, strm->buffer_capacity - strm->first_byte));
+	memory_move(data, strm->buffer + strm->first_byte, bytes_read);
+
+	// case when the dstream is wound up and there is additional bytes that we can read
+	if(bytes_read < data_size && strm->byte_count > bytes_read)
+	{
+		unsigned int additional_bytes_to_read = min(data_size - bytes_read, strm->byte_count - bytes_read);
+		memory_move(data + bytes_read, strm->buffer, additional_bytes_to_read);
+		bytes_read += additional_bytes_to_read;
+	}
+
+	return bytes_read;
 }
 
 unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
