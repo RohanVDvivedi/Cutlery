@@ -51,6 +51,11 @@ unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int
 	return get_front_of_dstream(strm, data, data_size, op_type);
 }
 
+static inline unsigned int circular_buffer_copy(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
+{
+	
+}
+
 unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is read_closed, then fail the read
@@ -61,31 +66,13 @@ unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int 
 	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
 		return 0;
 
-	// actual reading begins
+	// total_bytes to read
+	unsigned int bytes_to_read = min(get_bytes_readable_in_dstream(strm), data_size);
 
-	// calculate bytes that can be readily read
-	unsigned int bytes_read = min(data_size, min(strm->byte_count, strm->buffer_capacity - strm->first_byte));
+	// circular buffer copy starting at first_byte offset to be read
+	circular_buffer_copy(strm->buffer, strm->buffer_capacity, strm->first_byte, data, bytes_to_read);
 
-	// now perfrom a read into data
-	memory_move(data, strm->buffer + strm->first_byte, bytes_read);
-
-	// now update data to next available location to read into
-	// and update data_size with number of bytes we still can read
-	data += bytes_read;
-	data_size -= bytes_read;
-
-	// case when the dstream is wound up and there is additional bytes that we can read
-	if(data_size > 0 && strm->byte_count > bytes_read)
-	{
-		// the additional bytes we can read starting at offset 0 in buffer
-		unsigned int additional_bytes_to_read = min(data_size, strm->byte_count - bytes_read);
-
-		// we read these new availabel bytes and then increment the bytes_read
-		memory_move(data, strm->buffer, additional_bytes_to_read);
-		bytes_read += additional_bytes_to_read;
-	}
-
-	return bytes_read;
+	return bytes_to_read;
 }
 
 unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
@@ -98,7 +85,14 @@ unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int d
 	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
 		return 0;
 
-	// TODO
+	// total_bytes to read
+	unsigned int bytes_to_read = min(get_bytes_readable_in_dstream(strm), data_size);
+
+	// circular buffer copy starting at first_byte offset to be read
+	unsigned int first_byte_offset = add_indexes(strm->first_byte, get_bytes_readable_in_dstream(strm) - bytes_to_read, strm->buffer_capacity);
+	circular_buffer_copy(strm->buffer, strm->buffer_capacity, first_byte_offset, data, bytes_to_read);
+
+	return bytes_to_read;
 }
 
 unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type)
