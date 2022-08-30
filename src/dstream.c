@@ -22,10 +22,19 @@ unsigned int unread_to_dstream(dstream* strm, const void* data, unsigned int dat
 	return push_front_to_dstream(strm, data, data_size, op_type);
 }
 
+unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
+{
+	return get_front_of_dstream(strm, data, data_size, op_type);
+}
+
+unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+
+void remove_all_from_dstream(dstream* strm);
 
 int is_empty_dstream(const dstream* strm)
 {

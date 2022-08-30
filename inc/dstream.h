@@ -60,11 +60,19 @@ unsigned int read_from_dstream(dstream* strm, void* data, unsigned int data_size
 // the first byte at data will be read first upon calling read
 unsigned int unread_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 
-// use push and pop functions only if you know what you are doing
+// peek data_size number of bytes that will be read next ==> get_front_of_dstream
+unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+
+// use push, pop and get functions only if you know what you are doing
+unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
 unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type);
+
+// removes all bytes of the dstream i.e. makes byte_count and first_byte = 0
+void remove_all_from_dstream(dstream* strm);
 
 int is_empty_dstream(const dstream* strm);
 int is_full_dstream(const dstream* strm);
