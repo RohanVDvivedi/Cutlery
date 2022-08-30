@@ -53,7 +53,10 @@ unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int
 
 static inline unsigned int circular_buffer_copy(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
 {
-	
+	// we can not read more than buffer_capacity number of bytes from buffer
+	bytes_to_read = min(bytes_read, buffer_capacity);
+
+	// TODO
 }
 
 unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
