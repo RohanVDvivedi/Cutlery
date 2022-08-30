@@ -80,6 +80,10 @@ unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_
 // removes all bytes of the dstream i.e. makes byte_count and first_byte = 0
 void remove_all_from_dstream(dstream* strm);
 
+// returns, number of byte you can write or read, without any resize operation
+unsigned int get_bytes_writable_in_dstream(const dstream* strm);
+unsigned int get_bytes_readable_in_dstream(const dstream* strm);
+
 int is_empty_dstream(const dstream* strm);
 int is_full_dstream(const dstream* strm);
 
@@ -91,6 +95,6 @@ void close_dstream_for_reader(dstream* strm);
 int is_closed_for_writer(const dstream* strm);
 int is_closed_for_reader(const dstream* strm);
 
-void deinitialize_dstream();
+void deinitialize_dstream(dstream* strm);
 
 #endif

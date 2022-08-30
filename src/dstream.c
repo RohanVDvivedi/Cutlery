@@ -53,11 +53,11 @@ unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int
 unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is read_closed, then fail the write
-	if(strm->read_closed == 1)
+	if(is_closed_for_reader(strm))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
-	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
 		return 0;
 
 	// TODO
@@ -66,11 +66,11 @@ unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int 
 unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is read_closed, then fail the write
-	if(strm->read_closed == 1)
+	if(is_closed_for_reader(strm))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
-	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
 		return 0;
 
 	// TODO
@@ -79,12 +79,11 @@ unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int d
 unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is write_closed, then fail the write
-	if(strm->write_closed == 1)
+	if(is_closed_for_writer(strm))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
-	unsigned int vacant_bytes == strm->buffer_capacity - strm->byte_count;
-	if(op_type == ACCEPT_ALL_OR_NONE && vacant_bytes < data_size)
+	if(op_type == ALL_OR_NONE && get_bytes_writable_in_dstream(strm) < data_size)
 		return 0;
 
 	// TODO
@@ -93,12 +92,11 @@ unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int
 unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is write_closed, then fail the write
-	if(strm->write_closed == 1)
+	if(is_closed_for_writer(strm))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
-	unsigned int vacant_bytes == strm->buffer_capacity - strm->byte_count;
-	if(op_type == ACCEPT_ALL_OR_NONE && vacant_bytes < data_size)
+	if(op_type == ALL_OR_NONE && get_bytes_writable_in_dstream(strm) < data_size)
 		return 0;
 
 	// TODO
@@ -107,11 +105,11 @@ unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int 
 unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is read_closed, then fail the write
-	if(strm->read_closed == 1)
+	if(is_closed_for_reader(strm))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
-	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
 		return 0;
 
 	// TODO
@@ -120,11 +118,11 @@ unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data
 unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is read_closed, then fail the write
-	if(strm->read_closed == 1)
+	if(is_closed_for_reader(strm))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
-	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
 		return 0;
 
 	// TODO
@@ -134,6 +132,16 @@ void remove_all_from_dstream(dstream* strm)
 {
 	strm->first_byte = 0;
 	strm->byte_count = 0;
+}
+
+unsigned int get_bytes_writable_in_dstream(const dstream* strm)
+{
+	return strm->buffer_capacity - strm->byte_count;
+}
+
+unsigned int get_bytes_readable_in_dstream(const dstream* strm)
+{
+	return strm->byte_count;
 }
 
 int is_empty_dstream(const dstream* strm)
@@ -168,7 +176,7 @@ int is_closed_for_reader(const dstream* strm)
 	return strm->read_closed;
 }
 
-void deinitialize_dstream()
+void deinitialize_dstream(dstream* strm)
 {
 	is_closed_for_writer(strm);
 	is_closed_for_reader(strm);
