@@ -75,9 +75,15 @@ int is_full_dstream(const dstream* strm)
 
 int resize_dstream(dstream* strm, unsigned int new_capacity);
 
-void close_dstream_for_writer(dstream* strm);
+void close_dstream_for_writer(dstream* strm)
+{
+	strm->write_closed = 1;
+}
 
-void close_dstream_for_reader(dstream* strm);
+void close_dstream_for_reader(dstream* strm)
+{
+	strm->read_closed = 1;
+}
 
 int is_closed_for_writer(const dstream* strm)
 {
