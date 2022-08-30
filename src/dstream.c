@@ -118,28 +118,24 @@ unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int 
 
 unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
-	// if the stream is read_closed or is empty, then fail the read
-	if(is_closed_for_reader(strm) || is_empty_dstream(strm))
-		return 0;
+	// read bytes_read number of bytes from front of dstream into data (max capacity = data_size)
+	unsigned int bytes_read = get_front_of_dstream(strm, data, data_size, op_type);
 
-	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
-	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
-		return 0;
+	// update the offset to the first_byte
+	strm->first_byte = add_indexes(strm->first_byte, bytes_read, strm->buffer_capacity);
 
-	// TODO
+	return bytes_read;
 }
 
 unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
-	// if the stream is read_closed or is empty, then fail the read
-	if(is_closed_for_reader(strm) || is_empty_dstream(strm))
-		return 0;
+	// read bytes_read number of bytes from back of dstream into data (max capacity = data_size)
+	unsigned int bytes_read = get_back_of_dstream(strm, data, data_size, op_type);
 
-	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
-	if(op_type == ALL_OR_NONE && get_bytes_readable_in_dstream(strm) < data_size)
-		return 0;
+	// update the bytes available
+	strm->byte_count -= bytes_read;
 
-	// TODO
+	return bytes_read;
 }
 
 void remove_all_from_dstream(dstream* strm)
