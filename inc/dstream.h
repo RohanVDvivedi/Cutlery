@@ -42,8 +42,8 @@ struct dstream
 typedef enum dstream_operation_type dstream_operation_type;
 enum dstream_operation_type
 {
-	ACCEPT_ALL_OR_NONE,
-	ACCEPT_PARTIAL,
+	ALL_OR_NONE,
+	PARTIAL_ALLOWED,
 };
 
 /*

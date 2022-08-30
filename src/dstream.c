@@ -52,31 +52,81 @@ unsigned int peek_front_of_dstream(const dstream* strm, void* data, unsigned int
 
 unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
+	// if the stream is read_closed, then fail the write
+	if(strm->read_closed == 1)
+		return 0;
+
+	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
+	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+		return 0;
+
 	// TODO
 }
 
 unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
+	// if the stream is read_closed, then fail the write
+	if(strm->read_closed == 1)
+		return 0;
+
+	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
+	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+		return 0;
+
 	// TODO
 }
 
 unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type)
 {
+	// if the stream is write_closed, then fail the write
+	if(strm->write_closed == 1)
+		return 0;
+
+	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
+	unsigned int vacant_bytes == strm->buffer_capacity - strm->byte_count;
+	if(op_type == ACCEPT_ALL_OR_NONE && vacant_bytes < data_size)
+		return 0;
+
 	// TODO
 }
 
 unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type)
 {
+	// if the stream is write_closed, then fail the write
+	if(strm->write_closed == 1)
+		return 0;
+
+	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
+	unsigned int vacant_bytes == strm->buffer_capacity - strm->byte_count;
+	if(op_type == ACCEPT_ALL_OR_NONE && vacant_bytes < data_size)
+		return 0;
+
 	// TODO
 }
 
 unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
+	// if the stream is read_closed, then fail the write
+	if(strm->read_closed == 1)
+		return 0;
+
+	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
+	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+		return 0;
+
 	// TODO
 }
 
 unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
+	// if the stream is read_closed, then fail the write
+	if(strm->read_closed == 1)
+		return 0;
+
+	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
+	if(op_type == ACCEPT_ALL_OR_NONE && strm->byte_count < data_size)
+		return 0;
+
 	// TODO
 }
 
