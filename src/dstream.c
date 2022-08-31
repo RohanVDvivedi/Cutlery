@@ -78,7 +78,27 @@ static inline unsigned int copy_from_circular_buffer(const void* buffer, unsigne
 
 static inline unsigned int copy_to_circular_buffer(void* buffer, unsigned int buffer_capacity, unsigned int offset, const void* data, unsigned int bytes_to_write)
 {
+	// we can not write more than buffer_capacity number of bytes to the buffer
+	bytes_to_write = min(bytes_to_write, buffer_capacity);
 
+	// return value
+	unsigned int bytes_written = bytes_to_write;
+
+	// bytes writable until the buffer_capacity boundary hits use
+	unsigned int bytes_readily_writable = min(bytes_to_write, buffer_capacity - offset);
+
+	// perform a copy and update data to point to next available byte to copy from
+	memory_move(buffer + offset, data, bytes_readily_writable);
+	data += bytes_readily_writable;
+
+	// update bytes_to_write
+	bytes_to_write -= bytes_readily_writable;
+
+	// write remaining bytes to first byte of the buffer i.e. buffer + 0
+	if(bytes_to_write > 0)
+		memory_move(buffer, data, bytes_to_write);
+
+	return bytes_written;
 }
 
 unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
