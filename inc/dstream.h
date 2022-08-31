@@ -87,6 +87,7 @@ unsigned int get_bytes_readable_in_dstream(const dstream* strm);
 int is_empty_dstream(const dstream* strm);
 int is_full_dstream(const dstream* strm);
 
+// can be used to expand or shrink the dstream, the new_capacity becomes the new capacity
 int resize_dstream(dstream* strm, unsigned int new_capacity);
 
 void close_dstream_for_writer(dstream* strm);

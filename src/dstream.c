@@ -237,7 +237,10 @@ int is_full_dstream(const dstream* strm)
 	return strm->byte_count == strm->buffer_capacity;
 }
 
-int resize_dstream(dstream* strm, unsigned int new_capacity);
+int resize_dstream(dstream* strm, unsigned int new_capacity)
+{
+	
+}
 
 void close_dstream_for_writer(dstream* strm)
 {
