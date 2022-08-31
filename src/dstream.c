@@ -281,13 +281,33 @@ int resize_dstream(dstream* strm, unsigned int new_capacity)
 	else // expanding
 	{
 		strm->buffer = reallocate(strm->buffer_allocator, strm->buffer, strm->buffer_capacity, &new_capacity);
-		strm->buffer_capacity = new_capacity;
 
 		// if there is not wound around then resize is complete
 		if(strm->first_byte <= last_byte_offset)
+		{
+			strm->buffer_capacity = new_capacity;
 			return 1;
+		}
 
-		// TODO :: HANDLE WOUND AROUND 
+		unsigned int buffer_head_bytes = strm->buffer_capacity - strm->first_byte;
+		unsigned int buffer_tail_bytes = strm->byte_count - buffer_head;
+
+		if(buffer_head_bytes <= buffer_tail_bytes) // move buffer head to the end of the buffer
+		{
+			// move the buffer_head to the bottom of the buffer
+			unsigned int new_first_byte = new_capacity - buffer_head_bytes;
+			memory_move(strm->buffer + new_first_byte, strm->buffer + strm->first_byte, buffer_head_bytes);
+
+			// update the first byte
+			strm->first_byte = new_first_byte;
+		}
+		else // move part of buffer tail to the end of the buffer
+		{
+			// TODO
+		}
+
+		strm->buffer_capacity = new_capacity;
+		return 1;
 	}
 }
 
