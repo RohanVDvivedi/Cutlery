@@ -77,5 +77,28 @@ int main()
 
 	resize_dstream_wrapper(strm, 32);
 
+	resize_dstream_wrapper(strm, 16);
+
+	read_from_dstream_wrapper(strm, read_buff, 6, PARTIAL_ALLOWED);
+
+	write_to_dstream_wrapper(strm, "RohanVipul", ALL_OR_NONE);
+
+	resize_dstream_wrapper(strm, 0);
+
+	unsigned int bytes_popped_back = pop_back_from_dstream(strm, read_buff, 8, PARTIAL_ALLOWED);
+	printf("popped_back \"%.*s\" => %u\n\n", bytes_popped_back, read_buff, bytes_popped_back);
+
+	bytes_popped_back = pop_back_from_dstream(strm, read_buff, 8, PARTIAL_ALLOWED);
+	printf("popped_back \"%.*s\" => %u\n\n", bytes_popped_back, read_buff, bytes_popped_back);
+
+	write_to_dstream_wrapper(strm, "XXXXX", ALL_OR_NONE);
+
+	resize_dstream_wrapper(strm, 0);
+
+	remove_all_from_dstream(strm);
+	printf("removing all :: %d\n", strm->byte_count == 0);
+
+	deinitialize_dstream(strm);
+
 	return 0;
 }
