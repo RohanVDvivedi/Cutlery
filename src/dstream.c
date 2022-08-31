@@ -280,7 +280,14 @@ int resize_dstream(dstream* strm, unsigned int new_capacity)
 	}
 	else // expanding
 	{
-		// TODO
+		strm->buffer = reallocate(strm->buffer_allocator, strm->buffer, strm->buffer_capacity, &new_capacity);
+		strm->buffer_capacity = new_capacity;
+
+		// if there is not wound around then resize is complete
+		if(strm->first_byte <= last_byte_offset)
+			return 1;
+
+		// TODO :: HANDLE WOUND AROUND 
 	}
 }
 
