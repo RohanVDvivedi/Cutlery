@@ -197,6 +197,10 @@ unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data
 	strm->first_byte = add_indexes(strm->first_byte, bytes_read, strm->buffer_capacity);
 	strm->byte_count -= bytes_read;
 
+	// reset the first_byte, if the byte_count = 0
+	if(strm->byte_count == 0)
+		strm->first_byte = 0;
+
 	return bytes_read;
 }
 
@@ -207,6 +211,10 @@ unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_
 
 	// update the byte_count
 	strm->byte_count -= bytes_read;
+
+	// reset the first_byte, if the byte_count = 0
+	if(strm->byte_count == 0)
+		strm->first_byte = 0;
 
 	return bytes_read;
 }
@@ -239,7 +247,30 @@ int is_full_dstream(const dstream* strm)
 
 int resize_dstream(dstream* strm, unsigned int new_capacity)
 {
-	
+	// can not skrink, if the new capacity can not fit the bytes that dstream is holding
+	if(new_capacity < strm->byte_count)
+		return 0;
+
+	if(strm->buffer_capacity == new_capacity)
+		return 1;
+
+	// if the byte count is 0, then resize must be successfull
+	if(strm->byte_count == 0)
+	{
+		strm->buffer = reallocate(strm->buffer_allocator, strm->buffer, strm->buffer_capacity, &new_capacity);
+		strm->buffer_capacity = new_capacity;
+		strm->first_byte = 0;
+		return 1;
+	}
+
+	if(strm->buffer_capacity > new_capacity) // shrinking
+	{
+		// TODO
+	}
+	else // expanding
+	{
+		// TODO
+	}
 }
 
 void close_dstream_for_writer(dstream* strm)
