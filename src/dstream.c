@@ -303,7 +303,14 @@ int resize_dstream(dstream* strm, unsigned int new_capacity)
 		}
 		else // move part of buffer tail to the end of the buffer
 		{
-			// TODO
+			unsigned int new_bytes_available_post_head = strm->buffer_capacity - new_capacity;
+
+			unsigned int buffer_tail_bytes_to_move = min(buffer_tail_bytes, new_bytes_available_post_head);
+
+			memory_move(buffer + strm->buffer_capacity, buffer, buffer_tail_bytes_to_move);
+
+			// now move the remaining tail bytes to the 0th offset in the buffer
+			memory_move(buffer, buffer + buffer_tail_bytes_to_move, buffer_tail_bytes - buffer_tail_bytes_to_move);
 		}
 
 		strm->buffer_capacity = new_capacity;
