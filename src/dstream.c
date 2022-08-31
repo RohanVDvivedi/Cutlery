@@ -268,15 +268,21 @@ int resize_dstream(dstream* strm, unsigned int new_capacity)
 
 	if(strm->buffer_capacity > new_capacity) // shrinking
 	{
-		// if the dstream is not wound around and last_byte already falls in the new_capacity, then shrink
-		if(strm->first_byte <= last_byte_offset && last_byte_offset < new_capacity)
+		// if the dstream is not wound around, then shrink
+		if(strm->first_byte <= last_byte_offset)
 		{
+			if(last_byte_offset < new_capacity) //if last_byte falls out of the new_capacity upon a shrink, then move the dstream contents to offset 0, before shrinking
+			{
+				memory_move(strm->buffer, strm->buffer + strm->first_byte, strm->byte_count);
+				strm->first_byte = 0;
+			}
+
+			// shrink the dstream
 			strm->buffer = reallocate(strm->buffer_allocator, strm->buffer, strm->buffer_capacity, &new_capacity);
 			strm->buffer_capacity = new_capacity;
 			return 1;
 		}
-		else
-			return 0;
+		return 0; // else if we can't shrink
 	}
 	else // expanding
 	{
