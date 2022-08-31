@@ -76,6 +76,11 @@ static inline unsigned int copy_from_circular_buffer(const void* buffer, unsigne
 	return bytes_read;
 }
 
+static inline unsigned int copy_to_circular_buffer(void* buffer, unsigned int buffer_capacity, unsigned int offset, const void* data, unsigned int bytes_to_write)
+{
+
+}
+
 unsigned int get_front_of_dstream(const dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
 {
 	// if the stream is read_closed, then fail the read
@@ -109,8 +114,8 @@ unsigned int get_back_of_dstream(const dstream* strm, void* data, unsigned int d
 	unsigned int bytes_to_read = min(get_bytes_readable_in_dstream(strm), data_size);
 
 	// circular buffer copy starting at first_byte offset to be read
-	unsigned int first_byte_offset = add_indexes(strm->first_byte, get_bytes_readable_in_dstream(strm) - bytes_to_read, strm->buffer_capacity);
-	copy_from_circular_buffer(strm->buffer, strm->buffer_capacity, first_byte_offset, data, bytes_to_read);
+	unsigned int first_byte_to_read = add_indexes(strm->first_byte, get_bytes_readable_in_dstream(strm) - bytes_to_read, strm->buffer_capacity);
+	copy_from_circular_buffer(strm->buffer, strm->buffer_capacity, first_byte_to_read, data, bytes_to_read);
 
 	return bytes_to_read;
 }
@@ -125,7 +130,19 @@ unsigned int push_front_to_dstream(dstream* strm, const void* data, unsigned int
 	if(op_type == ALL_OR_NONE && get_bytes_writable_in_dstream(strm) < data_size)
 		return 0;
 
-	// TODO
+	// total_bytes to write
+	unsigned int bytes_to_write = min(get_bytes_writable_in_dstream(strm), data_size);
+
+	// update the new first_byte
+	strm->first_byte = sub_indexes(strm->first_byte, bytes_to_write, strm->buffer_capacity);
+
+	// copy the data to the first_byte in the buffer
+	copy_to_circular_buffer(strm->buffer, strm->buffer_capacity, strm->first_byte, data, bytes_to_write);
+
+	// increment byte_count
+	strm->byte_count += bytes_to_write;
+
+	return bytes_to_write;
 }
 
 unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int data_size, dstream_operation_type op_type)
@@ -138,7 +155,17 @@ unsigned int push_back_to_dstream(dstream* strm, const void* data, unsigned int 
 	if(op_type == ALL_OR_NONE && get_bytes_writable_in_dstream(strm) < data_size)
 		return 0;
 
-	// TODO
+	// total_bytes to write
+	unsigned int bytes_to_write = min(get_bytes_writable_in_dstream(strm), data_size);
+
+	// calculate the offset to end of the buffer and copy the data there
+	unsigned int end_offset = add_indexes(strm->first_byte, strm->byte_count, strm->buffer_capacity);
+	copy_to_circular_buffer(strm->buffer, strm->buffer_capacity, end_offset, data, bytes_to_write);
+
+	// increment byte_count
+	strm->byte_count += bytes_to_write;
+
+	return bytes_to_write;
 }
 
 unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data_size, dstream_operation_type op_type)
@@ -146,8 +173,9 @@ unsigned int pop_front_from_dstream(dstream* strm, void* data, unsigned int data
 	// read bytes_read number of bytes from front of dstream into data (max capacity = data_size)
 	unsigned int bytes_read = get_front_of_dstream(strm, data, data_size, op_type);
 
-	// update the offset to the first_byte
+	// update the first_byte and the byte_count
 	strm->first_byte = add_indexes(strm->first_byte, bytes_read, strm->buffer_capacity);
+	strm->byte_count -= bytes_read;
 
 	return bytes_read;
 }
@@ -157,7 +185,7 @@ unsigned int pop_back_from_dstream(dstream* strm, void* data, unsigned int data_
 	// read bytes_read number of bytes from back of dstream into data (max capacity = data_size)
 	unsigned int bytes_read = get_back_of_dstream(strm, data, data_size, op_type);
 
-	// update the bytes available
+	// update the byte_count
 	strm->byte_count -= bytes_read;
 
 	return bytes_read;
