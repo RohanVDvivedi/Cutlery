@@ -1,8 +1,6 @@
 1. Tasks picked
 
 DSTREAM (new data structure)
-	implement it
-  add call_back when read available OR call back when written to with a calling context
   write test cases
 
 2. Add new datastructure types tasks (*future)

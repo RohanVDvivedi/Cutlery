@@ -4,7 +4,8 @@
 #include<memory_allocator_interface.h>
 
 /*
-** This is a stream data type, it can be used to pass any data between a set of readers and writers
+** This is a effectively a unix pipe like data type, it can be used to pass any data between a set of readers and writers
+** It can be made to work like a stream if the readers and writers know what they are doing
 ** It can also be used as stack or a queue for your custom data structures
 ** It is mainly designed to stream bytes, and this allows it to be used even with other custom data types
 ** 
