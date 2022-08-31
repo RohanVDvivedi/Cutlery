@@ -263,9 +263,20 @@ int resize_dstream(dstream* strm, unsigned int new_capacity)
 		return 1;
 	}
 
+	// calculate the offset to last byte
+	unsigned int last_byte_offset = add_indexes(strm->first_byte, strm->byte_count - 1, strm->buffer_capacity);
+
 	if(strm->buffer_capacity > new_capacity) // shrinking
 	{
-		// TODO
+		// if the dstream is not wound around and last_byte already falls in the new_capacity, then shrink
+		if(strm->first_byte <= last_byte_offset && last_byte_offset < new_capacity)
+		{
+			strm->buffer = reallocate(strm->buffer_allocator, strm->buffer, strm->buffer_capacity, &new_capacity);
+			strm->buffer_capacity = new_capacity;
+			return 1;
+		}
+		else
+			return 0;
 	}
 	else // expanding
 	{
