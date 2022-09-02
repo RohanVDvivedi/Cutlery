@@ -1,5 +1,8 @@
 1. Tasks picked
 
+HASHMAP
+ * in the insert function take additional parameter to insert to head or tail
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
@@ -20,12 +23,13 @@ DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
 BST tasks (NEW DATASTRUCTURE inclusion)
- * provide implementation for splay trees, Treap, AA etc in bst (* not yet decided, if it will be implemented)
+ * provide implementation for splay trees, Treap, AA etc in bst
  * add unsigned int subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
-   * to provide functionality to get nth smallest or largest in the bst
-   * it will also get number of elements greater than x and lesser than x, OR get_element_count in bst and get_subtree_element_count (internal function).
-   * changes only required to subtree_size in rotation, exchange_positions and insert_node_in_bst (make subtree_size = 1) and remove_node_from_bst (make subtree_size = 0) functionality.
- * provide an iterator for bst.
+   * to provide functionality to get nth smallest or largest in the bst OR to get number of elements greater/lesser/equals than x, OR get_element_count in bst and get_subtree_element_count (internal function).
+   * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
+
+ITERATOR for linkedlist, singlylist, hashmap and bst
+ * provide an iterator for all the above mentioned cutlery data structures
 
 3. Competely new datastructure tasks (*future)
 
