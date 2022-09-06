@@ -85,6 +85,9 @@ void remove_all_from_dstream(dstream* strm);
 unsigned int get_bytes_writable_in_dstream(const dstream* strm);
 unsigned int get_bytes_readable_in_dstream(const dstream* strm);
 
+// returns number of bytes allocated at buffer in the stream
+unsigned int get_capacity_dstream(const dstream* strm);
+
 int is_empty_dstream(const dstream* strm);
 int is_full_dstream(const dstream* strm);
 

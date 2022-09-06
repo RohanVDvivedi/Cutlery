@@ -235,6 +235,11 @@ unsigned int get_bytes_readable_in_dstream(const dstream* strm)
 	return strm->byte_count;
 }
 
+unsigned int get_capacity_dstream(const dstream* strm)
+{
+	return strm->buffer_capacity;
+}
+
 int is_empty_dstream(const dstream* strm)
 {
 	return strm->byte_count == 0;
