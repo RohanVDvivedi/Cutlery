@@ -275,7 +275,7 @@ int remove_at_index_from_heap(heap* heap_p, unsigned int index)
 
 void heapify_for(heap* heap_p, const void* data)
 {
-	// can not heahify at an index, if the heap is empty OR if we can not get index for the provided data
+	// can not heapify at an index, if the heap is empty OR if we can not get index for the provided data
 	if(is_empty_heap(heap_p) || heap_p->node_offset == NO_HEAP_NODE_OFFSET)
 		return ;
 
