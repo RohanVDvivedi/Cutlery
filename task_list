@@ -1,6 +1,10 @@
 1. Tasks picked
 
+DSTRING
+ * fail a concatenation/append operation, if char_count crosses UINT_MAX
+
 HASHMAP
+ * add comment that element_count is only valid and used for robin hood hashing
  * in the insert function take additional parameter to insert to head or tail
 
 2. Add new datastructure types tasks (*future)
