@@ -262,7 +262,7 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 	return 1;
 }
 
-void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
+int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
 	const char* str2_data = get_byte_array_dstring(str_p2);
 	unsigned int str2_size = get_char_count_dstring(str_p2);
@@ -271,7 +271,20 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 	{
 		// check if new data could fit, without expansion, else expand the dstring
 		if(str2_size > get_unused_capacity_dstring(str_p1))
-			expand_dstring(str_p1, 2 * str2_size);
+		{
+			// try allocating atleast twice the original size and the size required to accomodate the new bytes
+			if(expand_dstring(str_p1, get_capacity_dstring(str_p1) +  str2_size))
+				goto EXP_SUCC;
+
+			// the previous call failed so now we try to callocate only the additional required bytes
+			if(expand_dstring(str_p1, str2_size - get_unused_capacity_dstring(str_p1)))
+				goto EXP_SUCC;
+
+			// concatenation failed
+			return 0;
+
+			EXP_SUCC:;
+		}
 
 		char* str1_data = get_byte_array_dstring(str_p1);
 		unsigned int str1_size = get_char_count_dstring(str_p1);
@@ -280,11 +293,13 @@ void concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 		memory_move(str1_data + str1_size, str2_data, str2_size);
 		increment_char_count_dstring(str_p1, str2_size);
 	}
+
+	return 1;
 }
 
-void concatenate_char(dstring* str_p1, char chr)
+int concatenate_char(dstring* str_p1, char chr)
 {
-	concatenate_dstring(str_p1, &get_literal_dstring(&chr, 1));
+	return concatenate_dstring(str_p1, &get_literal_dstring(&chr, 1));
 }
 
 // converts a char to uppercase macro
@@ -394,19 +409,32 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count)
 #include<stdio.h>
 #include<stdarg.h>
 
-void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
+int snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 {
 	va_list var_args, var_args_dummy;
 	va_start(var_args, cstr_format);
 
 	va_copy(var_args_dummy, var_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
-	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1;
+	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy);
 	va_end(var_args_dummy);
 
 	// expand str_p as needed
 	if(size_extra_req > get_unused_capacity_dstring(str_p))
-		expand_dstring(str_p, 2 * size_extra_req);
+	{
+		// try allocating atleast twice the original size and the size required to accomodate the new bytes
+		if(expand_dstring(str_p, get_capacity_dstring(str_p) + size_extra_req))
+			goto EXP_SUCC;
+
+		// the previous call failed so now we try to callocate only the additional required bytes
+		if(expand_dstring(str_p, size_extra_req - get_unused_capacity_dstring(str_p)))
+			goto EXP_SUCC;
+
+		// concatenation failed
+		return 0;
+
+		EXP_SUCC:;
+	}
 
 	// call all accessor methods of dstring again after expanding
 	char* str_data = get_byte_array_dstring(str_p);
@@ -416,11 +444,13 @@ void snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 	increment_char_count_dstring(str_p, size_extra_req);
 
 	va_end(var_args);
+
+	return 1;
 }
 
 #include<string.h>
 
-void concatenate_c_string(dstring* str_p1, const char* c_string)
+int concatenate_c_string(dstring* str_p1, const char* c_string)
 {
-	concatenate_dstring(str_p1, &get_literal_cstring(c_string));
+	return concatenate_dstring(str_p1, &get_literal_cstring(c_string));
 }

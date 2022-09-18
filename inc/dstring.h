@@ -71,13 +71,14 @@ int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 // discard chars in dstring between start_index and last_index both inclusive
 int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index);
 
-// concatenates str_p2 to str_p1
-void concatenate_dstring(dstring* str_p1, const dstring* str_p2);
-void concatenate_c_string(dstring* str_p1, const char* c_string);
-void concatenate_char(dstring* str_p1, char chr);
+// concatenates str_p2 to str_p1, this functions fail only if memory allocation fails (a worrysome situation)
+int concatenate_dstring(dstring* str_p1, const dstring* str_p2);
+int concatenate_c_string(dstring* str_p1, const char* c_string);
+int concatenate_char(dstring* str_p1, char chr);
 
 // append_to_dstring_formatted is a snprintf implementation for dstrings
-void snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
+// fails if the memory allocation calls fail
+int snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
 // append count number of chr char at the end of the dstring str_p
 void sprint_chars(dstring* str_p, char chr, unsigned int count);
