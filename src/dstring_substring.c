@@ -121,7 +121,7 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 	// substring sub_str does not occur in the str
 	return INVALID_INDEX;
 }
-#include<stdio.h>
+
 unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 {
 	const char* str_data = get_byte_array_dstring(str);
