@@ -52,6 +52,7 @@ struct hashmap
 	array hashmap_holder;
 
 	// element_count represents the number of elements in the hashmap
+	// this count is only valid for ROBINHOOD_HASHING OR if the actual element_count is lesser than UINT_MAX
 	unsigned int element_count;
 };
 
