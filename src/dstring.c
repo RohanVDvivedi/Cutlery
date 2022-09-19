@@ -273,7 +273,7 @@ int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 		if(str2_size > get_unused_capacity_dstring(str_p1))
 		{
 			// try allocating atleast twice the original size and the size required to accomodate the new bytes
-			if(expand_dstring(str_p1, get_capacity_dstring(str_p1) +  str2_size))
+			if(expand_dstring(str_p1, get_capacity_dstring(str_p1) + str2_size))
 				goto EXP_SUCC;
 
 			// the previous call failed so now we try to callocate only the additional required bytes
@@ -416,7 +416,7 @@ int snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 
 	va_copy(var_args_dummy, var_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
-	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy);
+	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1;
 	va_end(var_args_dummy);
 
 	// expand str_p as needed
