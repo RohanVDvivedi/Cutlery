@@ -56,7 +56,7 @@ void print_ts_hashmap(hashmap* hashmap_p)
 	printf("\n");
 }
 
-const collision_resolution_policy POLICY_USED = ROBINHOOD_HASHING /*ELEMENTS_AS_LINKEDLIST*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
+const collision_resolution_policy POLICY_USED = ROBINHOOD_HASHING /*ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD*/ /*ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL*/ /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
 
 unsigned int HASH_BUCKETS = 4;
 
