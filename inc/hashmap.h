@@ -11,17 +11,23 @@ enum collision_resolution_policy
 	// worst case search is O(n)
 	ROBINHOOD_HASHING = 0,
 
-	// each element if the hashmap is a linkedlist of buckets
+	// each element of the hashmap is a linkedlist of buckets
+	// each insert is done at the head of each of this linkedlist
 	// worst case search is O(n)
-	ELEMENTS_AS_LINKEDLIST = 1,
+	ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD = 1,
+
+	// each element of the hashmap is a linkedlist of buckets
+	// each insert is done at the head of each of this linkedlist
+	// worst case search is O(n)
+	ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL = 2,
 
 	// each element of the hashmap is a red black binary search tree of buckets
 	// worst case search is O(log(n))
-	ELEMENTS_AS_RED_BLACK_BST = 10,
+	ELEMENTS_AS_RED_BLACK_BST = 3,
 
 	// each element of the hashmap is a avl binary search tree of buckets
 	// worst case search is O(log(n))
-	ELEMENTS_AS_AVL_BST = 11
+	ELEMENTS_AS_AVL_BST = 4
 };
 
 // inserting comparatively equal data is allowed
@@ -52,7 +58,7 @@ struct hashmap
 	array hashmap_holder;
 
 	// element_count represents the number of elements in the hashmap
-	// this count is only valid for ROBINHOOD_HASHING OR if the actual element_count is lesser than UINT_MAX
+	// this count is only valid for ROBINHOOD_HASHING OR if the actual element_count is lesser than UINT_MAX (which must be the case)
 	unsigned int element_count;
 };
 

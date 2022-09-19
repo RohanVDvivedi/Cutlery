@@ -64,7 +64,8 @@ static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 {
 	switch(hashmap_p->hashmap_policy)
 	{
-		case ELEMENTS_AS_LINKEDLIST :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
 			initialize_linkedlist((linkedlist*)ds_p, hashmap_p->node_offset);
 			break;
@@ -154,7 +155,8 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 
 			return NULL;
 		}
-		case ELEMENTS_AS_LINKEDLIST :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
 			unsigned int index = get_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
@@ -234,13 +236,23 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 
 			break;
 		}
-		case ELEMENTS_AS_LINKEDLIST :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		{
 			unsigned int index = get_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 			inserted = insert_head_in_linkedlist(&ll, data);
+			set_in_array(&(hashmap_p->hashmap_holder), ll.head, index);
+			break;
+		}
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
+		{
+			unsigned int index = get_index(hashmap_p, data);
+			linkedlist ll; init_data_structure(hashmap_p, &ll);
+
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+			inserted = insert_tail_in_linkedlist(&ll, data);
 			set_in_array(&(hashmap_p->hashmap_holder), ll.head, index);
 			break;
 		}
@@ -303,7 +315,8 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 
 			break;
 		}
-		case ELEMENTS_AS_LINKEDLIST :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
 			unsigned int index = get_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
@@ -342,7 +355,8 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 			// nothing needs to be done here
 			break;
 		}
-		case ELEMENTS_AS_LINKEDLIST :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
@@ -403,7 +417,8 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 			}
 			break;
 		}
-		case ELEMENTS_AS_LINKEDLIST :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
@@ -515,9 +530,14 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 			snprintf_dstring(append_str, "(robinhood_hashing) :\n");
 			break;
 		}
-		case ELEMENTS_AS_LINKEDLIST :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		{
-			snprintf_dstring(append_str, "(elements_as_linkedlist) :\n");
+			snprintf_dstring(append_str, "(elements_as_linkedlist_insert_at_head) :\n");
+			break;
+		}
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
+		{
+			snprintf_dstring(append_str, "(elements_as_linkedlist_insert_at_tail) :\n");
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
@@ -560,7 +580,8 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 					snprintf_dstring(append_str, "\n");
 					break;
 				}
-				case ELEMENTS_AS_LINKEDLIST :
+				case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+				case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 				{
 					ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 					sprint_linkedlist(append_str, &ll, sprint_element, tabs + 2);
