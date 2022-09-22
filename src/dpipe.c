@@ -11,8 +11,7 @@ void initialize_dpipe(dpipe* pipe, unsigned int capacity)
 
 void initialize_dpipe_with_allocator(dpipe* pipe, unsigned int capacity, memory_allocator buffer_allocator)
 {
-	pipe->read_closed = 0;
-	pipe->write_closed = 0;
+	pipe->is_closed = 0;
 	pipe->buffer_capacity = capacity;
 	pipe->first_byte = 0;
 	pipe->byte_count = 0;
@@ -22,8 +21,7 @@ void initialize_dpipe_with_allocator(dpipe* pipe, unsigned int capacity, memory_
 
 void initialize_dpipe_with_memory(dpipe* pipe, unsigned int capacity, void* buffer)
 {
-	pipe->read_closed = 0;
-	pipe->write_closed = 0;
+	pipe->is_closed = 0;
 	pipe->buffer_capacity = capacity;
 	pipe->first_byte = 0;
 	pipe->byte_count = 0;
@@ -103,8 +101,8 @@ static inline unsigned int copy_to_circular_buffer(void* buffer, unsigned int bu
 
 unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
 {
-	// if the pipe is read_closed, then fail the read
-	if(is_dpipe_closed_for_reader(pipe) || is_empty_dpipe(pipe))
+	// if the pipe is empty, then fail the read
+	if(is_empty_dpipe(pipe))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
@@ -122,8 +120,8 @@ unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data
 
 unsigned int get_back_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
 {
-	// if the pipe is read_closed, then fail the read
-	if(is_dpipe_closed_for_reader(pipe) || is_empty_dpipe(pipe))
+	// if the pipe is empty, then fail the read
+	if(is_empty_dpipe(pipe))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
@@ -142,8 +140,8 @@ unsigned int get_back_of_dpipe(const dpipe* pipe, void* data, unsigned int data_
 
 unsigned int push_front_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type)
 {
-	// if the pipe is write_closed or id full, then fail the write
-	if(is_dpipe_closed_for_writer(pipe) || is_full_dpipe(pipe))
+	// if the pipe is closed or is full, then fail the write
+	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
@@ -167,8 +165,8 @@ unsigned int push_front_to_dpipe(dpipe* pipe, const void* data, unsigned int dat
 
 unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type)
 {
-	// if the pipe is write_closed, then fail the write
-	if(is_dpipe_closed_for_writer(pipe) || is_full_dpipe(pipe))
+	// if the pipe is closed or is full, then fail the write
+	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe))
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
@@ -329,30 +327,19 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 	}
 }
 
-void close_dpipe_for_writer(dpipe* pipe)
+void close_dpipe(dpipe* pipe)
 {
-	pipe->write_closed = 1;
+	pipe->is_closed = 1;
 }
 
-void close_dpipe_for_reader(dpipe* pipe)
+int is_dpipe_closed(const dpipe* pipe)
 {
-	pipe->read_closed = 1;
-}
-
-int is_dpipe_closed_for_writer(const dpipe* pipe)
-{
-	return pipe->write_closed;
-}
-
-int is_dpipe_closed_for_reader(const dpipe* pipe)
-{
-	return pipe->read_closed;
+	return pipe->is_closed;
 }
 
 void deinitialize_dpipe(dpipe* pipe)
 {
-	is_dpipe_closed_for_writer(pipe);
-	is_dpipe_closed_for_reader(pipe);
+	close_dpipe(pipe);
 	remove_all_from_dpipe(pipe);
 	if(pipe->buffer_capacity > 0 && pipe->buffer != NULL && pipe->buffer_allocator != NULL)
 		deallocate(pipe->buffer_allocator, pipe->buffer, pipe->buffer_capacity);

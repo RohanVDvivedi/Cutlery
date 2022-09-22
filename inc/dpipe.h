@@ -27,11 +27,9 @@ struct dpipe
 	// remember this is a circular buffer
 	unsigned int byte_count;
 
-	// if the dpipe is read_closed, no bytes can be read/popped from it
-	int read_closed:1;
-
-	// if the dpipe is write_closed, no bytes can be written/pushed to it
-	int write_closed:1;
+	// if the dpipe is closed, no bytes can be written/pushed to it
+	// BUT you can still read/pop bytes as long as get_bytes_readable_in_dpipe(pipe) > 0
+	int is_closed;
 
 	// actual storage of the data is at the buffer
 	void* buffer;
@@ -94,11 +92,9 @@ int is_full_dpipe(const dpipe* pipe);
 // can be used to expand or shrink the dpipe, the new_capacity becomes the new capacity
 int resize_dpipe(dpipe* pipe, unsigned int new_capacity);
 
-void close_dpipe_for_writer(dpipe* pipe);
-void close_dpipe_for_reader(dpipe* pipe);
+void close_dpipe(dpipe* pipe);
 
-int is_dpipe_closed_for_writer(const dpipe* pipe);
-int is_dpipe_closed_for_reader(const dpipe* pipe);
+int is_dpipe_closed(const dpipe* pipe);
 
 void deinitialize_dpipe(dpipe* pipe);
 
