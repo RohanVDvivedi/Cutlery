@@ -16,7 +16,7 @@ void initialize_dpipe_with_allocator(dpipe* pipe, unsigned int capacity, memory_
 	pipe->first_byte = 0;
 	pipe->byte_count = 0;
 	pipe->buffer_allocator = buffer_allocator;
-	pipe->buffer = allocate(pipe->buffer_allocator, &(pipe->buffer_capacity));
+	pipe->buffer = (pipe->buffer_capacity == 0) ? NULL : allocate(pipe->buffer_allocator, &(pipe->buffer_capacity));
 }
 
 void initialize_dpipe_with_memory(dpipe* pipe, unsigned int capacity, void* buffer)
