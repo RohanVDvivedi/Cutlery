@@ -20,10 +20,16 @@ DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
 BST tasks (NEW DATASTRUCTURE inclusion)
+ * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
+ * find_equals function to take in parameter to find the first or last that matches
+ * similarly find_greater_equals must find greater element or the first occurence that equals the given value, and viceversa for find_lesser_equals
  * provide implementation for splay trees, Treap, AA etc in bst
  * add unsigned int subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
    * to provide functionality to get nth smallest or largest in the bst OR to get number of elements greater/lesser/equals than x, OR get_element_count in bst and get_subtree_element_count (internal function).
    * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
+
+HASHMAP tasks
+ * implement get_next_equals for a found value
 
 ITERATOR for linkedlist, singlylist, hashmap and bst
  * provide an iterator for all the above mentioned cutlery data structures
