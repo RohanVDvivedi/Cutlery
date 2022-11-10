@@ -19,6 +19,9 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
+Union find
+ * while perfroming find, make all the nodes from the parameter to the parent to point to parent.
+
 BST tasks (NEW DATASTRUCTURE inclusion)
  * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
  * find_equals function to take in parameter to find the first or last that matches
