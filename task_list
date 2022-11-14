@@ -22,6 +22,9 @@ DSTRING tasks
 Union find
  * while perfroming find, make all the nodes from the parameter to the parent to point to parent.
 
+array_tree
+ * provide a simple implementation for an n way tree, parent and first child access (n * i + 1), check whether a node has a parent and whether it has child or not
+
 BST tasks (NEW DATASTRUCTURE inclusion)
  * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
  * find_equals function to take in parameter to find the first or last that matches
