@@ -178,7 +178,7 @@ int main()
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){1})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){1}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
@@ -334,7 +334,7 @@ int main()
 	printf("Updating key = 19 from 19 19 nineteen to 19 19 LOL\n");
 	printf("Demostrating update procedure\n");
 	printf("-> First find the data with key = 19 from the bst\n");
-	ts* to_update = (void*) find_equals_in_bst(bst_p, &((ts){19}));
+	ts* to_update = (void*) find_equals_in_bst(bst_p, &((ts){19}), FIRST_OCCURENCE);
 	printf("-> Then we removed the data (node) form the bst : return = %d\n", remove_from_bst(bst_p, to_update));
 	printf("-> Trying to remove the same data (node) again from the bst : return = %d\n", remove_from_bst(bst_p, to_update));
 	print_ts(to_update);printf("\n");
@@ -380,30 +380,30 @@ int main()
 	printf("\nFor all the below operations, we first call a find with equal data\n");
 	printf("And then on the found node, which exists in the bst, we call remove, and these operations will now succeed\n\n");
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){0})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){0}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){1})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){1}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){2})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){2}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){7})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){7}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){14})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){14}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){15})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){15}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
@@ -415,41 +415,41 @@ int main()
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){16})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){16}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){13})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){13}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){10})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){10}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){8})));
-	printf("node removed = %d\n", error);
-	print_ts_bst(bst_p);
-
-	print_smallest(bst_p);
-	print_largest(bst_p);
-
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){11})));
-	printf("node removed = %d\n", error);
-	print_ts_bst(bst_p);
-
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){12})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){8}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){3})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){11}), FIRST_OCCURENCE));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){12}), FIRST_OCCURENCE));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	print_smallest(bst_p);
+	print_largest(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){3}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
@@ -486,49 +486,49 @@ int main()
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){4})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){4}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){5})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){5}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){6})));
-	printf("node removed = %d\n", error);
-	print_ts_bst(bst_p);
-
-	print_smallest(bst_p);
-	print_largest(bst_p);
-
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){17})));
-	printf("node removed = %d\n", error);
-	print_ts_bst(bst_p);
-
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){18})));
-	printf("node removed = %d\n", error);
-	print_ts_bst(bst_p);
-
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){19})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){6}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){17}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){2})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){18}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){3})));
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){19}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
-	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){4})));
+	print_smallest(bst_p);
+	print_largest(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9}), FIRST_OCCURENCE));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){2}), FIRST_OCCURENCE));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){3}), FIRST_OCCURENCE));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){4}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
