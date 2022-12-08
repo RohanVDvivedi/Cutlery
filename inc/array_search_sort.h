@@ -1,6 +1,8 @@
 #ifndef SEARCH_SORT_ARRAY_H
 #define SEARCH_SORT_ARRAY_H
 
+#include<cutlery_stds.h>
+
 // NOTE NOTE NOTE
 // the sorting and searching is based on the compare function provided, 
 // which must be designed such that, int (*compare)(const void* data1, const void* data2)
@@ -45,15 +47,7 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 
 // These functions return an index to the array element, that compares equals to the data provided
 // The data provided as parameter for equality checking may or may not be pointing to the element, already existing in array
-// the search_occurence parameter suggests whether we are looking for first or the last occurence that compares equal
-
-
-enum search_occurence
-{
-	FIRST_OCCURENCE = 0,
-	LAST_OCCURENCE
-};
-typedef enum search_occurence search_occurence;
+// the search_occurence parameter suggests whether we are looking for first or the last occurence (parameter occurence_type) that compares equal
 
 // performs linear search in array from start_index to last_index, both inclusive,
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid

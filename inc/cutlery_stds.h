@@ -31,6 +31,15 @@
 #define get_data(node_p, ds_p) 	(((const void*)(node_p)) - ((ds_p)->node_offset))
 #define get_node(data_p, ds_p) 	(((void*)(data_p)) + ((ds_p)->node_offset))
 
+// in array or bst you can search an element that equals, returning first or last occurence
+// this is the enum that is used as parameter to those function
+typedef enum search_occurence search_occurence;
+enum search_occurence
+{
+	FIRST_OCCURENCE = 0,
+	LAST_OCCURENCE
+};
+
 /* this is cutlery specific memory move implementation
    this is the function to be used in place of memcpy/memmove std library functions
    features : 	
