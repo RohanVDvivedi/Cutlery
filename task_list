@@ -3,7 +3,6 @@
 BST tasks
   * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
   * find_equals function to take in parameter to find the first or last that matches
-  * similarly find_greater_equals must find greater element or the first occurence that equals the given value, and viceversa for find_lesser_equals, instead of any element that equals, it must be first or last occurence respectively
 
 2. Add new datastructure types tasks (*future)
 
