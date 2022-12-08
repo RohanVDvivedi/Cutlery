@@ -41,20 +41,36 @@ int is_empty_bst(const bst* bst_p)
 #define is_equal(compare_A_with_B)		((compare_A_with_B) == 0)
 
 // searches for bstnode that holds data equal to the given data
-static bstnode* find_node(const bst* bst_p, const void* data)
+static bstnode* find_node(const bst* bst_p, const void* data, search_occurence occurence_type)
 {
+	bstnode* result = NULL;
 	bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
 		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node))
-			return node_p;
+		{
+			result = node_p;
+			switch(occurence_type)
+			{
+				case FIRST_OCCURENCE :
+				{
+					node_p = node_p->left;
+					break;
+				}
+				case LAST_OCCURENCE :
+				{
+					node_p = node_p->right;
+					break;
+				}
+			}
+		}
 		else if(is_lesser(compared_data_with_current_node))
 			node_p = node_p->left;
 		else if(is_greater(compared_data_with_current_node))
 			node_p = node_p->right;
 	}
-	return NULL;
+	return result;
 }
 
 static bstnode* find_node_preceding(const bst* bst_p, const void* data)
@@ -129,9 +145,9 @@ static bstnode* find_node_succeeding_or_equals(const bst* bst_p, const void* dat
 	return result;
 }
 
-const void* find_equals_in_bst(const bst* bst_p, const void* data)
+const void* find_equals_in_bst(const bst* bst_p, const void* data, search_occurence occurence_type)
 {
-	bstnode* node_p = find_node(bst_p, data);
+	bstnode* node_p = find_node(bst_p, data, occurence_type);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 

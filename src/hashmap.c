@@ -171,7 +171,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
 			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
-			return find_equals_in_bst(&bstt, data);
+			return find_equals_in_bst(&bstt, data, FIRST_OCCURENCE);
 		}
 		default :
 		{

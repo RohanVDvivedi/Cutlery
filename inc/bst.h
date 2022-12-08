@@ -3,6 +3,8 @@
 
 #include<dstring.h>
 
+#include<cutlery_stds.h>
+
 /*
 ** 	BST is short for Binary Search Tree
 */
@@ -78,7 +80,7 @@ int is_empty_bst(const bst* bst_p);
 
 // find data in bst_p (given in parameter), that compares equal to data (given in parameter)
 // returns NULL, if not found
-const void* find_equals_in_bst(const bst* bst_p, const void* data);
+const void* find_equals_in_bst(const bst* bst_p, const void* data, search_occurence occurence_type);
 
 // find data in bst_p (given in parameter), with the biggest value which is smaller than data (given in parameter)
 // returns NULL, if data (given in parameter) is smaller than or equal to the smallest existing data in bst_p (given in parameter)
