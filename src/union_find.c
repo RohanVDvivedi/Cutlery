@@ -16,8 +16,6 @@ void initialize_ufnode(ufnode* node_p)
 
 static int is_root(const ufnode* node_p)
 {
-	if(node_p->parent == NULL)
-		initialize_ufnode(node_p);
 	return (node_p->parent == node_p);
 }
 
