@@ -305,6 +305,10 @@ int main()
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
 
+	error = insert_in_bst(bst_p, &((ts){9, 9, "nine-lol-2"}));
+	printf("node inserted = %d\n", error);
+	print_ts_bst(bst_p);
+
 	error = insert_in_bst(bst_p, &((ts){5, 5, "five"}));
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
@@ -349,7 +353,11 @@ int main()
 	print_succeeding_equals(bst_p, 19);
 	print_succeeding(bst_p, 19);
 
-	error = insert_in_bst(bst_p, &((ts){9, 9, "nine-lol"}));
+	error = insert_in_bst(bst_p, &((ts){9, 9, "nine-lol-0"}));
+	printf("node inserted = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = insert_in_bst(bst_p, &((ts){9, 9, "nine-lol-1"}));
 	printf("node inserted = %d\n", error);
 	print_ts_bst(bst_p);
 
@@ -427,7 +435,13 @@ int main()
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
+	printf("\nremoving first and last 9\n");
+
 	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9}), FIRST_OCCURENCE));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9}), LAST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
@@ -515,6 +529,12 @@ int main()
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
+
+	printf("\nremoving last and first 9\n");
+
+	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9}), LAST_OCCURENCE));
+	printf("node removed = %d\n", error);
+	print_ts_bst(bst_p);
 
 	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){9}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
