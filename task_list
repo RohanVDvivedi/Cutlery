@@ -2,7 +2,6 @@
 
 BST tasks
   * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
-  * find_equals function to take in parameter to find the first or last that matches
 
 2. Add new datastructure types tasks (*future)
 
