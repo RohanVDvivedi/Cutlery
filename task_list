@@ -23,21 +23,20 @@ array_tree
  * provide a simple implementation for an n way tree, parent and first child access (n * i + 1), check whether a node has a parent and whether it has child or not
  * the parent of i-th node in n way tree is always at floor((i-1)/n)
 
-BST tasks (NEW DATASTRUCTURE inclusion)
- * implement modification such that root points to itself instead of NULL, this also solves the is_new_node issues (issue of single node tree's root node being a new node, though it is already in use).
- * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
- * find_equals function to take in parameter to find the first or last that matches
- * similarly find_greater_equals must find greater element or the first occurence that equals the given value, and viceversa for find_lesser_equals, instead of any element that equals, it must be first or last occurence respectively
+BST tasks
+  * implement modification such that root points to itself instead of NULL, this also solves the is_new_node issues (issue of single node tree's root node being a new node, though it is already in use).
+  * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
+  * find_equals function to take in parameter to find the first or last that matches
+  * similarly find_greater_equals must find greater element or the first occurence that equals the given value, and viceversa for find_lesser_equals, instead of any element that equals, it must be first or last occurence respectively
+
+BST tasks (NEW DATASTRUCTURE inclusion * future)
  * provide implementation for splay trees, Treap, AA etc in bst
  * add unsigned int subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
    * to provide functionality to get nth smallest or largest in the bst OR to get number of elements greater/lesser/equals than x, OR get_element_count in bst and get_subtree_element_count (internal function).
    * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
 
 HASHMAP tasks
- * implement get_next_in_same_bucket.
-
-ITERATOR api for linkedlist, singlylist, hashmap(as shown above) and bst
- * api for get_next and get_prev on every element for the above data structures if possible
+ * implement get_next_in_same_bucket_of_hashmap.
 
 3. Competely new datastructure tasks (*future)
 
