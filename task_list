@@ -1,9 +1,5 @@
 1. Tasks picked
 
-Union find
- * while perfroming find, make all the nodes from the parameter to the parent to point to parent.
- * root of the tree points to itself instead of NULL, initialization of the node may be NULL.
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)

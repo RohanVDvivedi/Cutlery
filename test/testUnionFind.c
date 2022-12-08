@@ -58,7 +58,7 @@ int main()
 	{
 		for(int j = i + 1; j < sizeof(elements)/sizeof(data_element); j++)
 		{
-			if(find_root_in_union_find(uf_p, elements + i) == find_root_in_union_find(uf_p, elements + j))
+			if(are_in_same_group(uf_p, elements + i, elements + j))
 				printf("%d %d\n", elements[i].num, elements[j].num);
 		}
 	}
