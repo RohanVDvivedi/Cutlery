@@ -1,5 +1,9 @@
 1. Tasks picked
 
+Union find
+ * while perfroming find, make all the nodes from the parameter to the parent to point to parent.
+ * root of the tree points to itself instead of NULL, initialization of the node may be NULL.
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
@@ -19,10 +23,6 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
-Union find
- * while perfroming find, make all the nodes from the parameter to the parent to point to parent.
- * root of the tree points to itself instead of NULL, initialization of the node may be NULL.
-
 array_tree
  * provide a simple implementation for an n way tree, parent and first child access (n * i + 1), check whether a node has a parent and whether it has child or not
  * the parent of i-th node in n way tree is always at floor((i-1)/n)
@@ -38,7 +38,7 @@ BST tasks (NEW DATASTRUCTURE inclusion)
    * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
 
 HASHMAP tasks
- * implement get_next_in_same bucket.
+ * implement get_next_in_same_bucket.
 
 ITERATOR api for linkedlist, singlylist, hashmap(as shown above) and bst
  * api for get_next and get_prev on every element for the above data structures if possible
