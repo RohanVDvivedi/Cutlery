@@ -25,6 +25,9 @@ void initialize_ufnode(ufnode* node_p);
 
 const void* find_root_in_union_find(const union_find* uf_p, const void* data);
 
+// check if data1 and data2 are in same group
+int are_in_same_group(const union_find* uf_p, const void* data1, const void* data2);
+
 // return 0, (i.e. fails) if data1 and data2 are already in the same group
 int merge_groups_in_union_find(const union_find* uf_p, const void* data1, const void* data2);
 
