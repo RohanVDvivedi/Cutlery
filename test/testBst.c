@@ -407,6 +407,11 @@ int main()
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
+	print_preceding(bst_p, 9);
+	print_preceding_equals(bst_p, 9);
+	print_succeeding_equals(bst_p, 9);
+	print_succeeding(bst_p, 9);
+
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
