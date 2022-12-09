@@ -187,6 +187,30 @@ const void* find_largest_in_bst(const bst* bst_p)
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
+static bstnode* get_inorder_next_node(const bstnode* node_p)
+{
+	return NULL;
+}
+
+static bstnode* get_inorder_prev_node(const bstnode* node_p)
+{
+	return NULL;
+}
+
+const void* get_inorder_next_of_in_bst(const bst* bst_p, const void* data_xist)
+{
+	const bstnode* node_xist = get_node(data_xist, bst_p);
+	const bstnode* node_next = get_inorder_next_node(node_xist);
+	return (node_next != NULL) ? get_data(node_next, bst_p) : NULL;
+}
+
+const void* get_inorder_prev_of_in_bst(const bst* bst_p, const void* data_xist)
+{
+	const bstnode* node_xist = get_node(data_xist, bst_p);
+	const bstnode* node_prev = get_inorder_prev_node(node_xist);;
+	return (node_prev != NULL) ? get_data(node_prev, bst_p) : NULL;
+}
+
 static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode* node_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, unsigned int max_result_count, int* accumulator_stop, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
 	if(node_p == NULL)

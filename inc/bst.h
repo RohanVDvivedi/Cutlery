@@ -104,6 +104,12 @@ const void* find_smallest_in_bst(const bst* bst_p);
 // find data in bst_p (given in parameter), with the biggest value
 const void* find_largest_in_bst(const bst* bst_p);
 
+// get the element that comes inorder next of data_xist in the bst
+const void* get_inorder_next_of_in_bst(const bst* bst_p, const void* data_xist);
+
+// get the element that comes inorder previous of data_xist in the bst
+const void* get_inorder_prev_of_in_bst(const bst* bst_p, const void* data_xist);
+
 typedef enum sort_direction sort_direction;
 enum sort_direction{ASCENDING_ORDERED, DESCENDING_ORDERED};
 // find all (or atleast max_result_count number of) data pointers in the bst,
