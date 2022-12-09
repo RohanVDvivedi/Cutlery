@@ -21,6 +21,8 @@ void initialize_bstnode(bstnode* node_p)
 	node_p->parent = NULL;
 	node_p->left = NULL;
 	node_p->right = NULL;
+
+	// node property of the node that is not linked to any bst is 0
 	node_p->node_property = 0;
 }
 
