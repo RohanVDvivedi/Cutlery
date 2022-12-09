@@ -187,14 +187,38 @@ const void* find_largest_in_bst(const bst* bst_p)
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
-static bstnode* get_inorder_next_node(const bstnode* node_p)
+static const bstnode* get_inorder_next_node(const bstnode* node_p)
 {
-	return NULL;
+	const bstnode* node_next = NULL;
+
+	if(node_p->right != NULL)
+		node_next = get_smallest_node_from_node(node_p->right);
+	else if(!is_root_node(node_p))
+	{
+		const bstnode* temp = node_p;
+		while(is_right_of_its_parent(temp))
+			temp = temp->parent;
+		node_next = temp->parent;
+	}
+
+	return node_next;
 }
 
-static bstnode* get_inorder_prev_node(const bstnode* node_p)
+static const bstnode* get_inorder_prev_node(const bstnode* node_p)
 {
-	return NULL;
+	const bstnode* node_prev = NULL;
+
+	if(node_p->left != NULL)
+		node_prev = get_largest_node_from_node(node_p->left);
+	else if(!is_root_node(node_p))
+	{
+		const bstnode* temp = node_p;
+		while(is_left_of_its_parent(temp))
+			temp = temp->parent;
+		node_prev = temp->parent;
+	}
+
+	return node_prev;
 }
 
 const void* get_inorder_next_of_in_bst(const bst* bst_p, const void* data_xist)
