@@ -1,8 +1,5 @@
 1. Tasks picked
 
-BST tasks
-  * implement get_inorder_next_of_in_bst and get_inorder_prev_of_in_bst
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
