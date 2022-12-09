@@ -126,6 +126,25 @@ void print_all_lesser_than_equals(const bst* bst_p, int k, sort_direction sd, un
 	printf("total : %u\n\n", n);
 }
 
+void print_all_using_iterator_in_both_directions(const bst* bst_p)
+{
+	printf("\n\nUsing forward loop :\n");
+	for(const void* it = find_smallest_in_bst(bst_p); it != NULL; it = get_inorder_next_of_in_bst(bst_p, it))
+	{
+		print_ts(it);
+		printf("\n");
+	}
+	printf("\nforward loop end\n\n");
+
+	printf("\nUsing backward loop :\n");
+	for(const void* it = find_largest_in_bst(bst_p); it != NULL; it = get_inorder_prev_of_in_bst(bst_p, it))
+	{
+		print_ts(it);
+		printf("\n");
+	}
+	printf("\nbackward loop end\n\n");
+}
+
 void print_ts_bst(bst* bst_p)
 {
 	dstring str;
@@ -146,6 +165,8 @@ int main()
 	bst* bst_p = &my_bst;
 	initialize_bst(bst_p, TREE_TYPE_TO_USE, cmp, offsetof(ts, bst_embed_node));
 	print_ts_bst(bst_p);
+
+	print_all_using_iterator_in_both_directions(bst_p);
 
 	printf("COMPLETED INITIALIZING BALANCED BINARY SEARCH TREE\n");
 
@@ -212,6 +233,8 @@ int main()
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
+
+	print_all_using_iterator_in_both_directions(bst_p);
 
 	error = insert_in_bst(bst_p, &((ts){14, 14, "fourteen"}));
 	printf("node inserted = %d\n", error);
@@ -370,6 +393,8 @@ int main()
 	print_all_greater_than_equals(bst_p, 14, DESCENDING_ORDERED, 5);
 	print_all_greater_than_equals(bst_p, 20, DESCENDING_ORDERED, 5);
 
+	print_all_using_iterator_in_both_directions(bst_p);
+
 	printf("COMPLETED INSERTING NODES\n");
 
 	printf("STARTING TO REMOVE NODES\n");
@@ -414,6 +439,8 @@ int main()
 	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){15}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
+
+	print_all_using_iterator_in_both_directions(bst_p);
 
 	print_preceding(bst_p, 9);
 	print_preceding_equals(bst_p, 9);
@@ -500,9 +527,13 @@ int main()
 	print_smallest(bst_p);
 	print_largest(bst_p);
 
+	print_all_using_iterator_in_both_directions(bst_p);
+
 	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){4}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
+
+	print_all_using_iterator_in_both_directions(bst_p);
 
 	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){5}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
@@ -540,6 +571,8 @@ int main()
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
 
+	print_all_using_iterator_in_both_directions(bst_p);
+
 	error = remove_from_bst(bst_p, find_equals_in_bst(bst_p, &((ts){2}), FIRST_OCCURENCE));
 	printf("node removed = %d\n", error);
 	print_ts_bst(bst_p);
@@ -554,6 +587,8 @@ int main()
 
 	print_smallest(bst_p);
 	print_largest(bst_p);
+
+	print_all_using_iterator_in_both_directions(bst_p);
 
 	printf("COMPLETED REMOVING NODES\n");
 
