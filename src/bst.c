@@ -41,10 +41,10 @@ int is_empty_bst(const bst* bst_p)
 #define is_equal(compare_A_with_B)		((compare_A_with_B) == 0)
 
 // searches for bstnode that holds data equal to the given data
-static bstnode* find_node(const bst* bst_p, const void* data, search_occurence occurence_type)
+static const bstnode* find_node(const bst* bst_p, const void* data, search_occurence occurence_type)
 {
-	bstnode* result = NULL;
-	bstnode* node_p = bst_p->root;
+	const bstnode* result = NULL;
+	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
 		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
@@ -73,10 +73,10 @@ static bstnode* find_node(const bst* bst_p, const void* data, search_occurence o
 	return result;
 }
 
-static bstnode* find_node_preceding(const bst* bst_p, const void* data)
+static const bstnode* find_node_preceding(const bst* bst_p, const void* data)
 {
-	bstnode* result = NULL;
-	bstnode* node_p = bst_p->root;
+	const bstnode* result = NULL;
+	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
 		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
@@ -91,10 +91,10 @@ static bstnode* find_node_preceding(const bst* bst_p, const void* data)
 	return result;
 }
 
-static bstnode* find_node_preceding_or_equals(const bst* bst_p, const void* data)
+static const bstnode* find_node_preceding_or_equals(const bst* bst_p, const void* data)
 {
-	bstnode* result = NULL;
-	bstnode* node_p = bst_p->root;
+	const bstnode* result = NULL;
+	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
 		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
@@ -109,10 +109,10 @@ static bstnode* find_node_preceding_or_equals(const bst* bst_p, const void* data
 	return result;
 }
 
-static bstnode* find_node_succeeding(const bst* bst_p, const void* data)
+static const bstnode* find_node_succeeding(const bst* bst_p, const void* data)
 {
-	bstnode* result = NULL;
-	bstnode* node_p = bst_p->root;
+	const bstnode* result = NULL;
+	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
 		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
@@ -127,10 +127,10 @@ static bstnode* find_node_succeeding(const bst* bst_p, const void* data)
 	return result;
 }
 
-static bstnode* find_node_succeeding_or_equals(const bst* bst_p, const void* data)
+static const bstnode* find_node_succeeding_or_equals(const bst* bst_p, const void* data)
 {
-	bstnode* result = NULL;
-	bstnode* node_p = bst_p->root;
+	const bstnode* result = NULL;
+	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
 		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
@@ -147,43 +147,43 @@ static bstnode* find_node_succeeding_or_equals(const bst* bst_p, const void* dat
 
 const void* find_equals_in_bst(const bst* bst_p, const void* data, search_occurence occurence_type)
 {
-	bstnode* node_p = find_node(bst_p, data, occurence_type);
+	const bstnode* node_p = find_node(bst_p, data, occurence_type);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_preceding_in_bst(const bst* bst_p, const void* data)
 {
-	bstnode* node_p = find_node_preceding(bst_p, data);
+	const bstnode* node_p = find_node_preceding(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_preceding_or_equals_in_bst(const bst* bst_p, const void* data)
 {
-	bstnode* node_p = find_node_preceding_or_equals(bst_p, data);
+	const bstnode* node_p = find_node_preceding_or_equals(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_succeeding_in_bst(const bst* bst_p, const void* data)
 {
-	bstnode* node_p = find_node_succeeding(bst_p, data);
+	const bstnode* node_p = find_node_succeeding(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_succeeding_or_equals_in_bst(const bst* bst_p, const void* data)
 {
-	bstnode* node_p = find_node_succeeding_or_equals(bst_p, data);
+	const bstnode* node_p = find_node_succeeding_or_equals(bst_p, data);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_smallest_in_bst(const bst* bst_p)
 {
-	bstnode* node_p = get_smallest_node_from_node(bst_p->root);
+	const bstnode* node_p = get_smallest_node_from_node(bst_p->root);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 
 const void* find_largest_in_bst(const bst* bst_p)
 {
-	bstnode* node_p = get_largest_node_from_node(bst_p->root);
+	const bstnode* node_p = get_largest_node_from_node(bst_p->root);
 	return (node_p != NULL) ? get_data(node_p, bst_p) : NULL;
 }
 

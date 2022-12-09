@@ -3,9 +3,9 @@
 
 #include<bst.h>
 
-bstnode* get_smallest_node_from_node(bstnode* node_p);
+const bstnode* get_smallest_node_from_node(const bstnode* node_p);
 
-bstnode* get_largest_node_from_node(bstnode* node_p);
+const bstnode* get_largest_node_from_node(const bstnode* node_p);
 
 // inserts a node in the bst
 // the node must be a new_node -> passing is_new_bstnode as true

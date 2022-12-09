@@ -4,10 +4,10 @@
 
 #include<cutlery_stds.h>
 
-bstnode* get_smallest_node_from_node(bstnode* node_p)
+const bstnode* get_smallest_node_from_node(const bstnode* node_p)
 {
-	bstnode* prev = NULL;
-	bstnode* curr = node_p;
+	const bstnode* prev = NULL;
+	const bstnode* curr = node_p;
 	while(curr != NULL)
 	{
 		prev = curr;
@@ -16,10 +16,10 @@ bstnode* get_smallest_node_from_node(bstnode* node_p)
 	return prev;
 }
 
-bstnode* get_largest_node_from_node(bstnode* node_p)
+const bstnode* get_largest_node_from_node(const bstnode* node_p)
 {
-	bstnode* prev = NULL;
-	bstnode* curr = node_p;
+	const bstnode* prev = NULL;
+	const bstnode* curr = node_p;
 	while(curr != NULL)
 	{
 		prev = curr;
@@ -69,7 +69,7 @@ void remove_node_from_bst(bst* bst_p, bstnode* node_p)
 	if(node_p->left != NULL && node_p->right != NULL)
 	{
 		// find a smallest node that is greater than node_p
-		bstnode* succeeding_node_p = get_smallest_node_from_node(node_p->right);
+		bstnode* succeeding_node_p = (bstnode*) get_smallest_node_from_node(node_p->right);
 
 		// interchange their positions in the tree, to bring the removal to previously seen easy cases
 		exchange_positions_in_bst(bst_p, node_p, succeeding_node_p);
