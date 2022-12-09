@@ -23,9 +23,6 @@ array_tree
  * provide a simple implementation for an n way tree, parent and first child access (n * i + 1), check whether a node has a parent and whether it has child or not
  * the parent of i-th node in n way tree is always at floor((i-1)/n)
 
-BST tasks
-  * implement modification such that root points to itself instead of NULL, this also solves the is_new_node issues (issue of single node tree's root node being a new node, though it is already in use).
-
 BST tasks (NEW DATASTRUCTURE inclusion * future)
  * provide implementation for splay trees, Treap, AA etc in bst
  * add unsigned int subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
