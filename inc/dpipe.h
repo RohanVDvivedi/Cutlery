@@ -13,6 +13,11 @@
 ** note:: the buffer_capacity must be greater than the largest data_size that you may write/push to dpipe with operation_type = ACCEPT_ALL_OR_NONE
 */
 
+/*
+	Important note: you can close the dpipe, once closed no write, push, unread calls can be made. (i.e. data can not be added to the dpipe)
+	but the get, pop, read functions will work as usual until the dpipe has data.
+*/
+
 typedef struct dpipe dpipe;
 struct dpipe
 {
