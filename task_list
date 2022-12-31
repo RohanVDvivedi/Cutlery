@@ -17,6 +17,8 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery, implemented as enums like FIBONACCI_HEAP and BINOMIAL_HEAP
 
 DSTRING tasks
+ * implement is_lowercase, is_uppercase and is_whitespace for characters, and toLowercase and toUppercase for both characters and dstring
+ * implement ltrim_whitespaces, rtrim_whitespaces and trim_whitespaces
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
 array_tree
@@ -30,7 +32,7 @@ BST tasks (NEW DATASTRUCTURE inclusion * future)
    * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
 
 HASHMAP tasks
- * implement get_next_in_same_bucket_of_hashmap.
+ * implement get_next_of_in_hashmap, where it takes in hashmap_statefull_iterator, which can be initialized with bucket_id to iterate on OR to iterate over all the elements
 
 3. Competely new datastructure tasks (*future)
 
