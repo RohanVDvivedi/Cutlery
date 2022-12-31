@@ -1,5 +1,16 @@
 1. Tasks picked
 
+DSTRING tasks
+ * implement is_lowercase, is_uppercase and is_whitespace for characters, and toLowercase and toUppercase for both characters and dstring
+ * implement ltrim_whitespaces, rtrim_whitespaces and trim_whitespaces
+
+HASHMAP tasks
+ * implement get_next_of_in_hashmap, where it takes in hashmap_statefull_iterator, which can be initialized with bucket_id to iterate on OR to iterate over all the elements
+
+array_tree_util
+ * provide a simple implementation for an n way tree, parent and first child access (n * i + 1), check whether a node has a parent and whether it has child or not
+ * the parent of i-th node in n way tree is always at floor((i-1)/n)
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
@@ -17,22 +28,13 @@ HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery, implemented as enums like FIBONACCI_HEAP and BINOMIAL_HEAP
 
 DSTRING tasks
- * implement is_lowercase, is_uppercase and is_whitespace for characters, and toLowercase and toUppercase for both characters and dstring
- * implement ltrim_whitespaces, rtrim_whitespaces and trim_whitespaces
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
-
-array_tree
- * provide a simple implementation for an n way tree, parent and first child access (n * i + 1), check whether a node has a parent and whether it has child or not
- * the parent of i-th node in n way tree is always at floor((i-1)/n)
 
 BST tasks (NEW DATASTRUCTURE inclusion * future)
  * provide implementation for splay trees, Treap, AA etc in bst
  * add unsigned int subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
    * to provide functionality to get nth smallest or largest in the bst OR to get number of elements greater/lesser/equals than x, OR get_element_count in bst and get_subtree_element_count (internal function).
    * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
-
-HASHMAP tasks
- * implement get_next_of_in_hashmap, where it takes in hashmap_statefull_iterator, which can be initialized with bucket_id to iterate on OR to iterate over all the elements
 
 3. Competely new datastructure tasks (*future)
 
