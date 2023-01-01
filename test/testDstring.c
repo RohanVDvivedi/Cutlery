@@ -68,7 +68,7 @@ int main()
 
 	dstring* slize2 = &((dstring){});
 	init_dstring(slize2, get_byte_array_dstring(&str), get_char_count_dstring(&str));
-	toUppercase(slize2);
+	to_uppercase_dstring(slize2);
 	printf("Created an uppercase dstring (slize2) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize2));
 	printf("on compare to str = case_compare(str,slize2) = %d\n", case_compare_dstring(&str, slize2));
 	printf("on compare to str = compare(str,slize2) = %d\n\n", compare_dstring(&str, slize2));
@@ -154,10 +154,10 @@ int main()
 
 	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
-	toLowercase(&str);
+	to_lowercase_dstring(&str);
 	printf("To lowercase str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
-	toUppercase(&str);
+	to_uppercase_dstring(&str);
 	printf("To uppercase str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
 	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
