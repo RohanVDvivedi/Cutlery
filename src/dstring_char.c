@@ -12,7 +12,13 @@ int is_digit_char(char c)
 
 int is_whitespace_char(char c)
 {
-
+	char whitespace_char[] = {' ', '\t', '\v', '\r', '\n', '\f'};
+	for(int i = 0; i < sizeof(whitespace_char); i++)
+	{
+		if(c == whitespace_char[i])
+			return 1;
+	}
+	return 0;
 }
 
 int is_lowercase_char(char c)
