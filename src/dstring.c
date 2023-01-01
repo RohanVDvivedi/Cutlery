@@ -400,12 +400,36 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count)
 
 unsigned int ltrim_dstring(dstring* str_p)
 {
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
 
+	if(str_size == 0)
+		return 0;
+
+	unsigned int whitespaces_to_remove = 0;
+	for(; whitespaces_to_remove < str_size && is_whitespace_char(str_data[whitespaces_to_remove]); whitespaces_to_remove++);
+
+	if(whitespaces_to_remove > 0)
+		discard_chars_dstring(str_p, 0, whitespaces_to_remove - 1);
+
+	return whitespaces_to_remove;
 }
 
 unsigned int rtrim_dstring(dstring* str_p)
 {
+	char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
 
+	if(str_size == 0)
+		return 0;
+
+	unsigned int whitespaces_to_remove = 0;
+	for(unsigned int i = str_size - 1; i != -1 && is_whitespace_char(str_data[i]); whitespaces_to_remove++);
+
+	if(whitespaces_to_remove > 0)
+		discard_chars_dstring(str_p, str_size - whitespaces_to_remove, str_size - 1);
+
+	return whitespaces_to_remove;
 }
 
 unsigned int trim_dstring(dstring* str_p)
