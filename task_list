@@ -1,8 +1,5 @@
 1. Tasks picked
 
-DSTRING tasks
- * implement ltrim_whitespaces, rtrim_whitespaces and trim_whitespaces
-
 HASHMAP tasks
  * implement get_next_of_in_hashmap, where it takes in hashmap_statefull_iterator, which can be initialized with bucket_id to iterate on OR to iterate over all the elements
 
