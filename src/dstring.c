@@ -302,9 +302,6 @@ int concatenate_char(dstring* str_p1, char chr)
 	return concatenate_dstring(str_p1, &get_literal_dstring(&chr, 1));
 }
 
-// converts a char to uppercase macro
-#define toLowercaseChar(c) ((('A' <= (c)) && ((c) <= 'Z')) ? ((c) - 'A' + 'a') : (c))
-
 void toLowercase(dstring* str_p)
 {
 	char* str_data = get_byte_array_dstring(str_p);
@@ -317,9 +314,6 @@ void toLowercase(dstring* str_p)
 		str_size--;
 	}
 }
-
-// converts a char to uppercase macro
-#define toUppercaseChar(c) ((('a' <= (c)) && ((c) <= 'z')) ? ((c) - 'a' + 'A') : (c))
 
 void toUppercase(dstring* str_p)
 {
