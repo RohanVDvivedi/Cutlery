@@ -26,7 +26,7 @@ int is_lowercase_char(char c)
 	return is_char_in_range(c, 'a', 'z');
 }
 
-int is_uppercase_char(char c);
+int is_uppercase_char(char c)
 {
 	return is_char_in_range(c, 'A', 'Z');
 }

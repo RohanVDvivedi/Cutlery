@@ -309,7 +309,7 @@ void toLowercase(dstring* str_p)
 
 	while(str_size)
 	{
-		*str_data = toLowercaseChar(*str_data);
+		*str_data = to_lowercase_char(*str_data);
 		str_data++;
 		str_size--;
 	}
@@ -322,7 +322,7 @@ void toUppercase(dstring* str_p)
 
 	while(str_size)
 	{
-		*str_data = toUppercaseChar(*str_data);
+		*str_data = to_uppercase_char(*str_data);
 		str_data++;
 		str_size--;
 	}
@@ -355,8 +355,8 @@ static int memory_case_compare(const char* data1, const char* data2, unsigned in
 		return 0;
 	while(size)
 	{
-		char c1 = toLowercaseChar((*data1));
-		char c2 = toLowercaseChar((*data2));
+		char c1 = to_lowercase_char((*data1));
+		char c2 = to_lowercase_char((*data2));
 		if(c1 > c2)
 			return 1;
 		else if(c1 < c2)
