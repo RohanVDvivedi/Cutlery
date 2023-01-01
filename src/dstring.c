@@ -276,7 +276,7 @@ int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 			if(expand_dstring(str_p1, get_capacity_dstring(str_p1) + str2_size))
 				goto EXP_SUCC;
 
-			// the previous call failed so now we try to callocate only the additional required bytes
+			// the previous call failed so now we try to allocate only the additional required bytes
 			if(expand_dstring(str_p1, str2_size - get_unused_capacity_dstring(str_p1)))
 				goto EXP_SUCC;
 

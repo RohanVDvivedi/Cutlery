@@ -69,6 +69,7 @@ int compare_dstring(const dstring* str_p1, const dstring* str_p2);
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
 // discard chars in dstring between start_index and last_index both inclusive
+// it won't shrink the dstring
 int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index);
 
 // concatenates str_p2 to str_p1, this functions fail only if memory allocation fails (a worrysome situation)
@@ -96,6 +97,7 @@ void to_lowercase_dstring(dstring* str_p);
 void to_uppercase_dstring(dstring* str_p);
 
 // trim white spaces from dstring, returns the number of white spaces removed
+// they won't shrink the dstring
 unsigned int ltrim_dstring(dstring* str_p);
 unsigned int rtrim_dstring(dstring* str_p);
 unsigned int trim_dstring(dstring* str_p);
