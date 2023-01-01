@@ -1,7 +1,6 @@
 1. Tasks picked
 
 DSTRING tasks
- * implement is_lowercase, is_uppercase, is_digit(, BASE_BINARY/BASE_OCTAL/BASE_DECIMAL/BASE_HEXADECIMAL) and is_whitespace for characters, get_digit_value(char, BASE_AS_MENTIONED), get_char_representation_for_digit(int digit, BASE_AS_MENTIONED), and toLowercase and toUppercase for both characters and dstring
  * implement ltrim_whitespaces, rtrim_whitespaces and trim_whitespaces
 
 HASHMAP tasks
