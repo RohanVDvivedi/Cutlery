@@ -90,6 +90,8 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count);
 #define printf_dstring_params(str_p)		get_char_count_dstring((str_p)), get_byte_array_dstring((str_p))
 #define printf_dstring(str_p)				((get_byte_array_dstring((str_p)) != NULL && get_char_count_dstring((str_p)) > 0) ? printf(printf_dstring_format, printf_dstring_params((str_p))) : 0)
 
+#include<dstring_char.h>
+
 void toLowercase(dstring* str_p);
 void toUppercase(dstring* str_p);
 
