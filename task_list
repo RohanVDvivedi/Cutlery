@@ -3,10 +3,6 @@
 HASHMAP tasks
  * implement get_next_of_in_hashmap, where it takes in hashmap_statefull_iterator, which can be initialized with bucket_id to iterate on OR to iterate over all the elements
 
-array_tree_util
- * provide a simple implementation for an n way tree, parent and first child access (n * i + 1), check whether a node has a parent and whether it has child or not
- * the parent of i-th node in n way tree is always at floor((i-1)/n)
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
