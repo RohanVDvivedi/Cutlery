@@ -36,7 +36,7 @@
 	Note :: as per cutlery standards UINT_MAX is an unindexable number
 */
 
-#define get_parent_index(child_index) 			get_parent_index(child_index, 2)
+#define get_parent_index(child_index) 			get_parent_index_N(child_index, 2)
 
 // if the index is more than or equal to (UINT_MAX / 2), then calculating its child index is always an overflow
 #define can_have_any_children(index)			((index) < ((UINT_MAX) >> 1))
