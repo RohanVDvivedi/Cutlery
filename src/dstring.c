@@ -302,7 +302,7 @@ int concatenate_char(dstring* str_p1, char chr)
 	return concatenate_dstring(str_p1, &get_literal_dstring(&chr, 1));
 }
 
-void toLowercase(dstring* str_p)
+void to_lowercase_dstring(dstring* str_p)
 {
 	char* str_data = get_byte_array_dstring(str_p);
 	unsigned int str_size = get_char_count_dstring(str_p);
@@ -315,7 +315,7 @@ void toLowercase(dstring* str_p)
 	}
 }
 
-void toUppercase(dstring* str_p)
+void to_uppercase_dstring(dstring* str_p)
 {
 	char* str_data = get_byte_array_dstring(str_p);
 	unsigned int str_size = get_char_count_dstring(str_p);

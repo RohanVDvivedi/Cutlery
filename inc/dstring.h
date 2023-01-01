@@ -92,8 +92,8 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count);
 
 #include<dstring_char.h>
 
-void toLowercase(dstring* str_p);
-void toUppercase(dstring* str_p);
+void to_lowercase_dstring(dstring* str_p);
+void to_uppercase_dstring(dstring* str_p);
 
 #include<dstring_substring.h>
 #include<dstring_diff.h>
