@@ -424,7 +424,7 @@ unsigned int rtrim_dstring(dstring* str_p)
 		return 0;
 
 	unsigned int whitespaces_to_remove = 0;
-	for(unsigned int i = str_size - 1; i != -1 && is_whitespace_char(str_data[i]); whitespaces_to_remove++);
+	for(unsigned int i = str_size - 1; i != -1 && is_whitespace_char(str_data[i]); i--, whitespaces_to_remove++);
 
 	if(whitespaces_to_remove > 0)
 		discard_chars_dstring(str_p, str_size - whitespaces_to_remove, str_size - 1);
