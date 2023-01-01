@@ -95,6 +95,11 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count);
 void to_lowercase_dstring(dstring* str_p);
 void to_uppercase_dstring(dstring* str_p);
 
+// trim white spaces from dstring, returns the number of white spaces removed
+unsigned int ltrim_dstring(dstring* str_p);
+unsigned int rtrim_dstring(dstring* str_p);
+unsigned int trim_dstring(dstring* str_p);
+
 #include<dstring_substring.h>
 #include<dstring_diff.h>
 

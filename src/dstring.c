@@ -398,6 +398,21 @@ void sprint_chars(dstring* str_p, char chr, unsigned int count)
 		snprintf_dstring(str_p, "%c", chr);
 }
 
+unsigned int ltrim_dstring(dstring* str_p)
+{
+
+}
+
+unsigned int rtrim_dstring(dstring* str_p)
+{
+
+}
+
+unsigned int trim_dstring(dstring* str_p)
+{
+	return ltrim_dstring(str_p) + rtrim_dstring(str_p);
+}
+
 // all method below this point are non permanent methods of dstring of cutlery library
 
 #include<stdio.h>
@@ -448,3 +463,4 @@ int concatenate_c_string(dstring* str_p1, const char* c_string)
 {
 	return concatenate_dstring(str_p1, &get_literal_cstring(c_string));
 }
+
