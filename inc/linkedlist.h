@@ -33,7 +33,7 @@ void initialize_linkedlist(linkedlist* ll, unsigned int node_offset);
 // always initialize your linkedlist node before using it
 void initialize_llnode(llnode* node_p);
 
-// a free floating bstnode is the one, that is not referenced in any linkedlist, i.e a node that can be inserted to any bst
+// a free floating llnode is the one, that is not referenced in any linkedlist, i.e a node that can be inserted to any linkedlist
 int is_free_floating_llnode(const llnode* node_p);
 
 int is_empty_linkedlist(const linkedlist* ll);
