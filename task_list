@@ -1,13 +1,15 @@
 1. Tasks picked
 
-HASHMAP tasks
- * implement hashmap_ref it consists of unsigned int bucket_id and const void* element as its members
- * implement get_first_of_hashmap returns the first element of the hashmap, params include unsigned int bucket_id, if bucket_id is GET_ANY_FROM_HASHMAP (== UINT_MAX), then return any first element, else returns first element corresponding to the provided bucket_id
- * implement get_next_of_in_hashmap, where it takes in hashmap_ref, and a int flag that suggests look for next in same bucket only.
+DSTRING tasks
+ * implement dstring split_dstring(const dstring* str_p, const dstring* delim, dstring* remaining); remaining may be NULL, after this call remaining (if exists) points to portion in str_p after the delimeter, while it returns the dstring that points to portion of dstring before delimeter.
 
- * struct hashmap_reference{ unsigned int bucket_id; const void* element };
- * hashmap_reference get_first_of_hashmap(const hashmap* hashmap_p, unsigned int bucket_id);
- * hashmap_reference get_next_of_in_hashmap(const hashmap* hashmap_p, const hashmap_reference* curr_p, int same_bucket_only);
+HASHMAP tasks
+ * define rbhnode {unsigned int bucket_id;}; -> an embedded node for robinhood hashing storing the bucet_id of the element in place
+ * implement initialize_rbhnode (bucket_id = UINT_MAX) and is_new_rbhnode(bucket_id == UINT_MAX)
+ * modify delete method to delete without a find - reducing latency of delete
+ * insert and delete call is_new_rbhnode appropriately -> insert only a new node and delete a non new node that exists at the correct location
+ * implement get_first_of_in_hashmap(unsigned int bucket_id);
+ * implement get_next_of_in_hashmap(int next_type); where next_type = ANY_IN_HASHMAP, ANY_IN_SAME_BUCKET, ANY_THAT_EQUALS
 
 2. Add new datastructure types tasks (*future)
 
