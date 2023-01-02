@@ -54,7 +54,7 @@ int is_empty_hashmap(const hashmap* hashmap_p)
 }
 
 // utility :-> gets plausible index after hashing and mod of the hash
-static unsigned int get_index(const hashmap* hashmap_p, const void* data)
+static unsigned int get_bucket_index(const hashmap* hashmap_p, const void* data)
 {
 	return hashmap_p->hash_function(data) % get_bucket_count_hashmap(hashmap_p);
 }
@@ -94,7 +94,7 @@ static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 // function used for ROBINHOOD_HASHING only
 static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const void* data, unsigned int index_actual)
 {
-	unsigned int index_expected = get_index(hashmap_p, data);
+	unsigned int index_expected = get_bucket_index(hashmap_p, data);
 
 	if(index_actual >= index_expected)
 	{
@@ -109,7 +109,7 @@ static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const vo
 // function used for ROBINHOOD_HASHING only
 static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 {
-	unsigned int index = get_index(hashmap_p, data);
+	unsigned int index = get_bucket_index(hashmap_p, data);
 	unsigned int probe_sequence_length = 0;
 
 	const void* data_at_index = NULL;
@@ -162,7 +162,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
-			unsigned int index = get_index(hashmap_p, data);
+			unsigned int index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -171,7 +171,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			unsigned int index = get_index(hashmap_p, data);
+			unsigned int index = get_bucket_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
 			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -200,7 +200,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			if(hashmap_p->element_count == get_bucket_count_hashmap(hashmap_p))
 				break;
 
-			unsigned int expected_index = get_index(hashmap_p, data);
+			unsigned int expected_index = get_bucket_index(hashmap_p, data);
 
 			unsigned int index = expected_index;
 			unsigned int probe_sequence_length = 0;
@@ -242,7 +242,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		{
-			unsigned int index = get_index(hashmap_p, data);
+			unsigned int index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -252,7 +252,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
-			unsigned int index = get_index(hashmap_p, data);
+			unsigned int index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -263,7 +263,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			unsigned int index = get_index(hashmap_p, data);
+			unsigned int index = get_bucket_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
 			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -322,7 +322,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
-			unsigned int index = get_index(hashmap_p, data);
+			unsigned int index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -333,7 +333,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			unsigned int index = get_index(hashmap_p, data);
+			unsigned int index = get_bucket_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
 			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
