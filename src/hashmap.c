@@ -28,6 +28,16 @@ void initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_
 	hashmap_p->element_count = 0;
 }
 
+void initialize_rbhnode(rbhnode* node_p)
+{
+	node_p->bucket_index = INVALID_INDEX;
+}
+
+int is_free_floating_rbhnode(const rbhnode* node_p)
+{
+	return node_p->bucket_index == INVALID_INDEX;
+}
+
 unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p)
 {
 	return get_capacity_array(&(hashmap_p->hashmap_holder));

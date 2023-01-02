@@ -66,7 +66,7 @@ struct hashmap
 typedef struct rbhnode rbhnode;
 struct rbhnode
 {
-	unsigned int bucket_id;
+	unsigned int bucket_index;
 };
 
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
