@@ -56,13 +56,7 @@ int is_empty_hashmap(const hashmap* hashmap_p)
 // utility :-> gets plausible index after hashing and mod of the hash
 static unsigned int get_index(const hashmap* hashmap_p, const void* data)
 {
-	// calculate hash
-	unsigned int hash = hashmap_p->hash_function(data);
-
-	// calculate index
-	unsigned int index = hash % get_bucket_count_hashmap(hashmap_p);
-
-	return index;
+	return hashmap_p->hash_function(data) % get_bucket_count_hashmap(hashmap_p);
 }
 
 static int is_hashmap_with_ZERO_buckets(const hashmap* hashmap_p)
