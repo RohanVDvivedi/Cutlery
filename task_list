@@ -1,8 +1,5 @@
 1. Tasks picked
 
-DSTRING tasks
- * implement dstring split_dstring(const dstring* str_p, const dstring* delim, dstring* remaining); remaining may be NULL, after this call remaining (if exists) points to portion in str_p after the delimeter, while it returns the dstring that points to portion of dstring before delimeter.
-
 HASHMAP tasks
  * define rbhnode {unsigned int bucket_id;}; -> an embedded node for robinhood hashing storing the bucet_id of the element in place
  * implement initialize_rbhnode (bucket_id = UINT_MAX) and is_new_rbhnode(bucket_id == UINT_MAX)
