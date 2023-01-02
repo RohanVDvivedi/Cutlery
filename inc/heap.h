@@ -50,6 +50,9 @@ void initialize_heap_with_memory(heap* heap_p, unsigned int capacity, heap_type 
 // always initialize your hpnode before using it
 void initialize_hpnode(hpnode* node_p);
 
+// a free floating hpnode is the one that does not exist in any heap
+int is_free_floating_hpnode(const hpnode* node_p);
+
 // push a new data element to the heap
 // push returns 1, if data_p is successfully pushed
 // push returns 0 and fails if the heap container is full

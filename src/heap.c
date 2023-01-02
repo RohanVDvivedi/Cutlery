@@ -120,7 +120,7 @@ void initialize_hpnode(hpnode* node_p)
 	node_p->heap_index = INVALID_INDEX;
 }
 
-static int is_new_hpnode(const heap* heap_p, const hpnode* node_p)
+int is_free_floating_hpnode(const hpnode* node_p)
 {
 	return node_p->heap_index == INVALID_INDEX;
 }
@@ -158,8 +158,8 @@ int push_to_heap(heap* heap_p, const void* data)
 	if(is_full_heap(heap_p))
 		return 0;
 
-	// if embedded hpnode is being used, then the hpnode must be a new node
-	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data, heap_p)))
+	// if embedded hpnode is being used, then the hpnode must be a free floating node, i.e. it must not exist in any heap
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_free_floating_hpnode(get_node(data, heap_p)))
 		return 0;
 
 	// insert new element to the heap_holder at the last index + 1 and then increment element_count
@@ -195,7 +195,7 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start
 		const void* data = get_from_array(array_p, start_index + i);
 
 		// if embedded hpnode is being used, then the hpnode must be a new node
-		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_new_hpnode(heap_p, get_node(data, heap_p)))
+		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_free_floating_hpnode(get_node(data, heap_p)))
 			continue;
 
 		// insert data and then update element count
@@ -240,9 +240,9 @@ int remove_from_heap(heap* heap_p, const void* data)
 	// figure out the index to call remove at
 	unsigned int index_to_remove_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
 
-	// we can not remove if the data is a new node OR the data does not exist in heap at the desired index
+	// we can not remove if the data is a free floating node (i.e. not existing in any heap) OR the data does not exist in heap at the desired index (as dictated by hpnode)
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
-		(is_new_hpnode(heap_p, get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_remove_at)))
+		(is_free_floating_hpnode(get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_remove_at)))
 			return 0;
 
 	// remove the ith element from the heap
@@ -282,9 +282,9 @@ void heapify_for(heap* heap_p, const void* data)
 	// figure out the index to call heapify at
 	unsigned int index_to_heapify_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
 
-	// we can not heapify if the data is a new node OR if the data does not exist in heap at the desired index
+	// we can not heapify if the data is a free floating node (i.e. not existing in any heap) OR if the data does not exist in heap at the desired index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
-		(is_new_hpnode(heap_p, get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_heapify_at)))
+		(is_free_floating_hpnode(get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_heapify_at)))
 			return ;
 
 	// heapify at the ith element of the heap
