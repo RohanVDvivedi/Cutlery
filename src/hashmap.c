@@ -30,12 +30,12 @@ void initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_
 
 void initialize_rbhnode(rbhnode* node_p)
 {
-	node_p->bucket_index = INVALID_INDEX;
+	node_p->position_index = INVALID_INDEX;
 }
 
 int is_free_floating_rbhnode(const rbhnode* node_p)
 {
-	return node_p->bucket_index == INVALID_INDEX;
+	return node_p->position_index == INVALID_INDEX;
 }
 
 unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p)

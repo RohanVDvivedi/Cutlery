@@ -66,7 +66,9 @@ struct hashmap
 typedef struct rbhnode rbhnode;
 struct rbhnode
 {
-	unsigned int bucket_index;
+	// position index is the actual index in the hashmap_holder of this element
+	// while bucket_index is the index that this element hashes to
+	unsigned int position_index;
 };
 
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
