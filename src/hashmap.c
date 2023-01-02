@@ -92,18 +92,15 @@ static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 }
 
 // function used for ROBINHOOD_HASHING only
-static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const void* data, unsigned int index_actual)
+static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const void* data)
 {
-	unsigned int index_expected = get_bucket_index(hashmap_p, data);
+	unsigned int bucket_index = get_bucket_index(hashmap_p, data);
+	unsigned int position_index = ((rbhnode*)get_node(data, hashmap_p))->position_index;
 
-	if(index_actual >= index_expected)
-	{
-		return index_actual - index_expected;
-	}
+	if(position_index >= bucket_index)
+		return position_index - bucket_index;
 	else
-	{
-		return index_actual + get_bucket_count_hashmap(hashmap_p) - index_expected;
-	}
+		return position_index + get_bucket_count_hashmap(hashmap_p) - bucket_index;
 }
 
 // function used for ROBINHOOD_HASHING only
@@ -130,7 +127,7 @@ static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
 
 		// we have a greater probe sequence length for data
 		// find : this element if not found until now, can not be any further than this index
-		if(probe_sequence_length > get_probe_sequence_length(hashmap_p, data_at_index, index))
+		if(probe_sequence_length > get_probe_sequence_length(hashmap_p, data_at_index))
 			break;
 
 		index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
@@ -223,7 +220,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 				}
 				else
 				{
-					unsigned int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index, index);
+					unsigned int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index);
 					if(probe_sequence_length > probe_sequence_length_data_at_index)
 					{
 						// steal the slot
@@ -305,7 +302,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			unsigned int previousIndex = index;
 			index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
 			data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
-			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index, index) != 0)
+			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index) != 0)
 			{
 				// shift null downwards, and data_at_index to previousIndex
 				{
