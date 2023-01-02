@@ -50,4 +50,20 @@ unsigned int contains_dstring_BM(const dstring* str, const dstring* sub_str);
 // returns 1 if prefix_p is prefix of string_p, else it returns 0
 int is_prefix(const dstring* string_p, const dstring* prefix_p);
 
+
+
+/*
+**  split_dstring function splits a dstring into 2 parts separated by the first occurence of the delimeter dstring
+**  none of the 2 parts will contain the delimeter
+**  it uses contains_dstring_RK function to find the index of the delimeter dstring
+**
+**  dstring remaining = split_dstring(const dstring* str, const dstring* delim, dstring* split);
+**  here the split contains the first part of the split and the remaining string will be returned
+**
+**  both the split and the remaining dstrings will be POINT_DSTR dstring, i.e. they will only point to str
+**  if an instance of delim is not found then the remaining will be an empty_dstring
+*/
+
+dstring split_dstring(const dstring* str, const dstring* delim, dstring* split);
+
 #endif

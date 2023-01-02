@@ -198,3 +198,22 @@ int is_prefix(const dstring* string_p, const dstring* prefix_p)
 		return 0 == memory_compare(get_byte_array_dstring(string_p), get_byte_array_dstring(prefix_p), get_char_count_dstring(prefix_p));
 	return 0;
 }
+
+dstring split_dstring(const dstring* str, const dstring* delim, dstring* split)
+{
+	const char* str_data = get_byte_array_dstring(str);
+	unsigned int str_size = get_char_count_dstring(str);
+
+	unsigned int delim_size = get_char_count_dstring(delim);
+
+	unsigned int delim_index = contains_dstring_RK(str, delim);
+
+	if(delim_index == INVALID_INDEX)
+	{
+		(*split) = get_literal_dstring(str_data, str_size);
+		return get_literal_dstring(NULL, 0);
+	}
+
+	(*split) = get_literal_dstring(str_data, delim_index);
+	return get_literal_dstring(str_data + delim_index + delim_size, str_size - delim_index - delim_size);
+}
