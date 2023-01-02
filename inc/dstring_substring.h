@@ -43,12 +43,12 @@ unsigned int contains_dstring_BM(const dstring* str, const dstring* sub_str);
 
 
 /*
-**	is_prefix function checks if the given dstring prefix_p is prefic to another dstring string_p
+**	is_prefix_of_dstring function checks if the given dstring prefix_p is prefix to another dstring string_p
 **  return 1 if true, and 0 if not a prefix
 */
 
 // returns 1 if prefix_p is prefix of string_p, else it returns 0
-int is_prefix(const dstring* string_p, const dstring* prefix_p);
+int is_prefix_of_dstring(const dstring* string_p, const dstring* prefix_p);
 
 
 

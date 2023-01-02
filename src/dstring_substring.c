@@ -191,7 +191,7 @@ unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 
 unsigned int contains_dstring_BM(const dstring* str, const dstring* sub_str);
 
-int is_prefix(const dstring* string_p, const dstring* prefix_p)
+int is_prefix_of_dstring(const dstring* string_p, const dstring* prefix_p)
 {
 	// prefix must have a length smaller than or equal to provided main string
 	if(get_char_count_dstring(string_p) >= get_char_count_dstring(prefix_p))
