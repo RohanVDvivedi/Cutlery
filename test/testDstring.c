@@ -275,4 +275,18 @@ int main()
 	rtrim_dstring(&strim);
 	printf("after rtrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
+
+	// tests for split_dstring
+	{
+		dstring str = get_literal_cstring("Vipul, Rupa, Devashree, Rohan, Jumbo");
+		dstring delim = get_literal_cstring(", ");
+
+		dstring remaining = str;
+		while(!is_empty_dstring(&remaining))
+		{
+			dstring split;
+			remaining = split_dstring(&remaining, &delim, &split);
+			printf("<" printf_dstring_format ">\n", printf_dstring_params(&split));
+		}
+	}
 }
