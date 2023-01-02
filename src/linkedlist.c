@@ -2,11 +2,10 @@
 
 #include<cutlery_stds.h>
 
-// utility
-// to check if a node is new
-static int is_new_llnode(const linkedlist* ll, const llnode* node_p)
+// to check if a node is a free floating node
+int is_free_floating_llnode(const llnode* node_p)
 {
-	return ((node_p->next == NULL) && (node_p->prev == NULL) && (ll->head != node_p));
+	return ((node_p->next == NULL) && (node_p->prev == NULL));
 }
 
 void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
@@ -116,7 +115,7 @@ int insert_head_in_linkedlist(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p, ll);
 
-	if(!is_new_llnode(ll, new_node))	// insert only a new node
+	if(!is_free_floating_llnode(new_node))	// insert only a free floating node, i.e. a node that does not exist in any linkedlist
 		return 0;
 
 	// case when the linkedlist is empty
@@ -136,7 +135,7 @@ int insert_tail_in_linkedlist(linkedlist* ll, const void* data_p)
 {
 	llnode* new_node = get_node(data_p, ll);
 
-	if(!is_new_llnode(ll, new_node))	// insert only a new node
+	if(!is_free_floating_llnode(new_node))	// insert only a free floating node, i.e. a node that does not exist in any linkedlist
 		return 0;
 
 	// case when the linkedlist is empty
@@ -157,8 +156,8 @@ int insert_before_in_linkedlist(linkedlist* ll, const void* data_xist, const voi
 	llnode* node_xist = get_node(data_xist, ll);
 	llnode* new_node = get_node(data, ll);
 
-	// insert only a new node, before a node that exists
-	if(is_new_llnode(ll, node_xist) || !is_new_llnode(ll, new_node))
+	// insert only a free floating node, before a node that exists (i.e. that must not be a free floating node)
+	if(is_free_floating_llnode(node_xist) || !is_free_floating_llnode(new_node))
 		return 0;
 
 	insert_node_before(ll, node_xist, new_node);
@@ -171,8 +170,8 @@ int insert_after_in_linkedlist(linkedlist* ll, const void* data_xist, const void
 	llnode* node_xist = get_node(data_xist, ll);
 	llnode* new_node = get_node(data, ll);
 
-	// insert only a new node, after a node that exists
-	if(is_new_llnode(ll, node_xist) || !is_new_llnode(ll, new_node))
+	// insert only a free floating node, before a node that exists (i.e. that must not be a free floating node)
+	if(is_free_floating_llnode(node_xist) || !is_free_floating_llnode(new_node))
 		return 0;
 
 	insert_node_after(ll, node_xist, new_node);
@@ -252,8 +251,8 @@ int insert_all_before_in_linkedlist(linkedlist* ll, const void* data_xist, linke
 
 	llnode* node_xist = get_node(data_xist, ll);
 
-	// insert only after a node that exists
-	if(is_new_llnode(ll, node_xist))
+	// insert only before a node that exists (i.e. that is not a free floating node)
+	if(is_free_floating_llnode(node_xist))
 		return 0;
 
 	insert_all_nodes_before(ll, node_xist, insert_from_ll->head);
@@ -272,8 +271,8 @@ int insert_all_after_in_linkedlist(linkedlist* ll, const void* data_xist, linked
 
 	llnode* node_xist = get_node(data_xist, ll);
 
-	// insert only after a node that exists
-	if(is_new_llnode(ll, node_xist))
+	// insert only after a node that exists (i.e. that is not a free floating node)
+	if(is_free_floating_llnode(node_xist))
 		return 0;
 
 	insert_all_nodes_after(ll, node_xist, insert_from_ll->head);
@@ -326,7 +325,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data)
 {
 	llnode* node_p = get_node(data, ll);
 
-	if(is_new_llnode(ll, node_p))	// a new node does not need to be removed
+	if(is_free_floating_llnode(node_p))	// a free floating node can not be removed
 		return 0;
 
 	remove_node(ll, node_p);
