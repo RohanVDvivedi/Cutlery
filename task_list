@@ -1,7 +1,13 @@
 1. Tasks picked
 
 HASHMAP tasks
- * implement get_next_of_in_hashmap, where it takes in hashmap_statefull_iterator, which can be initialized with bucket_id to iterate on OR to iterate over all the elements
+ * implement hashmap_ref it consists of unsigned int bucket_id and const void* element as its members
+ * implement get_first_of_hashmap returns the first element of the hashmap, params include unsigned int bucket_id, if bucket_id is GET_ANY_FROM_HASHMAP (== UINT_MAX), then return any first element, else returns first element corresponding to the provided bucket_id
+ * implement get_next_of_in_hashmap, where it takes in hashmap_ref, and a int flag that suggests look for next in same bucket only.
+
+ * struct hashmap_reference{ unsigned int bucket_id; const void* element };
+ * hashmap_reference get_first_of_hashmap(const hashmap* hashmap_p, unsigned int bucket_id);
+ * hashmap_reference get_next_of_in_hashmap(const hashmap* hashmap_p, const hashmap_reference* curr_p, int same_bucket_only);
 
 2. Add new datastructure types tasks (*future)
 
