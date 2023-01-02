@@ -33,7 +33,7 @@ int main()
 
 		for(int i = 0; i < temp_size; i++)
 		{
-			printf("prefix \"%s\" => %d\n", temp[i], is_prefix(&str, &get_literal_cstring(temp[i])));
+			printf("prefix \"%s\" => %d\n", temp[i], is_prefix_of_dstring(&str, &get_literal_cstring(temp[i])));
 			printf("\n\n");
 		}
 
