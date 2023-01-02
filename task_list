@@ -1,5 +1,8 @@
 1. Tasks picked
 
+COMMON tasks
+ * make is_new_*node available as is_free_floating_*node in public api
+
 HASHMAP tasks
  * define rbhnode {unsigned int bucket_id;}; -> an embedded node for robinhood hashing storing the bucet_id of the element in place
  * implement initialize_rbhnode (bucket_id = UINT_MAX) and is_new_rbhnode(bucket_id == UINT_MAX)
