@@ -65,6 +65,9 @@ void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, 
 // always initialize your bstnode before using it
 void initialize_bstnode(bstnode* node_p);
 
+// a free floating bstnode is the one, that is not referenced in any bst, i.e a node that can be inserted to any bst
+int is_free_floating_bstnode(const bstnode* node_p);
+
 int is_empty_bst(const bst* bst_p);
 
 /*

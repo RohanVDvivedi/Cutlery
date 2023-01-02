@@ -26,10 +26,10 @@ void initialize_bstnode(bstnode* node_p)
 	node_p->node_property = 0;
 }
 
-static int is_new_bstnode(const bst* bst_p, const bstnode* node_p)
+int is_free_floating_bstnode(const bstnode* node_p)
 {
 	// note: node_property of a new_bstnode is 0
-	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->node_property == 0) && (bst_p->root != node_p));
+	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->node_property == 0));
 }
 
 int is_empty_bst(const bst* bst_p)
@@ -311,7 +311,7 @@ int insert_in_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data, bst_p);
 	
-	if(!is_new_bstnode(bst_p, node_p))	// insert only a new node
+	if(!is_free_floating_bstnode(node_p))	// insert only a free floating node, i.e. a node that does not exist in any bst
 		return 0;
 
 	// else insert node as per the balancing that this tree uses
@@ -341,7 +341,7 @@ int remove_from_bst(bst* bst_p, const void* data)
 {
 	bstnode* node_p = get_node(data, bst_p);
 
-	if(is_new_bstnode(bst_p, node_p))	// for attempting to remove the node, it must be present in bst, i.e. not a new node
+	if(is_free_floating_bstnode(node_p))	// for attempting to remove the node, it must be present in the bst, i.e. must not be a free floating node
 		return 0;
 
 	switch(bst_p->type)
