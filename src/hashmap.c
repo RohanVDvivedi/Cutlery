@@ -312,6 +312,14 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 	{
 		case ROBINHOOD_HASHING :
 		{
+			// a free floating rbhnode, can not be in any hashmap, hence can not be removed from the hashmap
+			if(!is_free_floating_rbhnode(get_node(data, hashmap_p)))
+				break;
+
+			// if the data does not exist at position_index in hashmap_holder, as dictated by its rbhnode, then it can not be removed
+			if(data != get_from_array(&(hashmap_p->hashmap_holder), ((rbhnode*)get_node(data, hashmap_p))->position_index))
+				break;
+
 			unsigned int index = get_actual_index(hashmap_p, data);
 
 			const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
