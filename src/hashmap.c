@@ -213,46 +213,50 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 	{
 		case ROBINHOOD_HASHING :
 		{
+			// only a free floating rbhnode can be inserted in to hashmap
+			if(!is_free_floating_rbhnode(get_node(data, hashmap_p)))
+				break;
+
 			// if the hashmap is full
 			if(hashmap_p->element_count == get_bucket_count_hashmap(hashmap_p))
 				break;
 
-			unsigned int expected_index = get_bucket_index(hashmap_p, data);
+			unsigned int bucket_index = get_bucket_index(hashmap_p, data);
 
-			unsigned int index = expected_index;
+			unsigned int position_index = bucket_index;
 			unsigned int probe_sequence_length = 0;
 
 			while(1)
 			{
-				const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
+				const void* data_at_position_index = get_from_array(&(hashmap_p->hashmap_holder), position_index);
 			
-				if(data_at_index == NULL)
+				// found an empty bucket, insert the element here, while updating its position_index
+				if(data_at_position_index == NULL)
 				{
-					set_in_array(&(hashmap_p->hashmap_holder), data, index);
+					set_in_array(&(hashmap_p->hashmap_holder), data, position_index);
+					((rbhnode*)get_node(data, hashmap_p))->position_index = position_index;
+
 					inserted = 1;
-					break;
-				}
-				// inserting the same data again, that is already existing is not allowed in the hashmap
-				else if(data_at_index == data)
-				{
-					inserted = 0;
 					break;
 				}
 				else
 				{
-					unsigned int probe_sequence_length_data_at_index = get_probe_sequence_length(hashmap_p, data_at_index);
-					if(probe_sequence_length > probe_sequence_length_data_at_index)
+					unsigned int probe_sequence_length_data_at_position_index = get_probe_sequence_length(hashmap_p, data_at_position_index);
+					if(probe_sequence_length_data_at_position_index < probe_sequence_length)
 					{
-						// steal the slot
-						set_in_array(&(hashmap_p->hashmap_holder), data, index);
-						data = data_at_index;
-						probe_sequence_length = probe_sequence_length_data_at_index;
-					}
+						// steal the slot, and update position_index of data
+						set_in_array(&(hashmap_p->hashmap_holder), data, position_index);
+						((rbhnode*)get_node(data, hashmap_p))->position_index = position_index;
 
-					// prepare for next iteration
-					index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
-					probe_sequence_length++;
+						// now we need to iterate to reinsert the data_at_position_index
+						data = data_at_position_index;
+						probe_sequence_length = probe_sequence_length_data_at_position_index;
+					}
 				}
+
+				// prepare for next iteration
+				position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p)); // equivalent to ==> (position_index + 1) % bucket_count
+				probe_sequence_length++;
 			}
 
 			break;
