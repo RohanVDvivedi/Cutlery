@@ -57,21 +57,40 @@ void print_ts_hashmap(hashmap* hashmap_p)
 	printf("\n");
 }
 
-const collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ /*ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD*/ ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
+//#define TEST_ROBINHOOD_HASHING
+//#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
+//#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
+//#define TEST_ELEMENTS_AS_RED_BLACK_BST
+//#define TEST_ELEMENTS_AS_AVL_BST
 
-#define INIT_EMBED_NODE {INVALID_INDEX} /*{}*/
+#if defined TEST_ROBINHOOD_HASHING
+	#define POLICY_USED ROBINHOOD_HASHING
+#elif defined TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
+	#define POLICY_USED ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
+#elif defined TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
+	#define POLICY_USED ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
+#elif defined TEST_ELEMENTS_AS_RED_BLACK_BST
+	#define POLICY_USED ELEMENTS_AS_RED_BLACK_BST
+#elif defined TEST_ELEMENTS_AS_AVL_BST
+	#define POLICY_USED ELEMENTS_AS_AVL_BST
+#else
+	#error "INVALID COLLISION RESOLUTION POLICY"
+#endif
 
-unsigned int HASH_BUCKETS = 4;
+#if defined TEST_ROBINHOOD_HASHING
+	#define INIT_EMBED_NODE {INVALID_INDEX}
+	#define HASH_BUCKETS 10
+#else
+	#define INIT_EMBED_NODE {}
+	#define HASH_BUCKETS 4
+#endif
 
 int main()
 {
+	printf("MACRO PARAMS => %d %u\n", POLICY_USED, HASH_BUCKETS);
+
 	hashmap hashmap_temp;
 	hashmap* hashmap_p = &hashmap_temp;
-
-	if(POLICY_USED == ROBINHOOD_HASHING)
-	{
-		HASH_BUCKETS = 10;
-	}
 
 	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, offsetof(ts, embedded_nodes));
 
