@@ -59,6 +59,8 @@ void print_ts_hashmap(hashmap* hashmap_p)
 
 const collision_resolution_policy POLICY_USED = /*ROBINHOOD_HASHING*/ /*ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD*/ ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL /*ELEMENTS_AS_RED_BLACK_BST*/ /*ELEMENTS_AS_AVL_BST*/;
 
+#define INIT_EMBED_NODE {INVALID_INDEX} /*{}*/
+
 unsigned int HASH_BUCKETS = 4;
 
 int main()
@@ -75,31 +77,31 @@ int main()
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){1, 100, "one"}));
+	insert_in_hashmap(hashmap_p, &((ts){1, 100, "one", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){2, 200, "two"}));
+	insert_in_hashmap(hashmap_p, &((ts){2, 200, "two", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there"}));
+	insert_in_hashmap(hashmap_p, &((ts){3, 300, "there", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){4, 400, "four"}));
+	insert_in_hashmap(hashmap_p, &((ts){4, 400, "four", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){5, 500, "five"}));
+	insert_in_hashmap(hashmap_p, &((ts){5, 500, "five", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){6, 600, "six"}));
+	insert_in_hashmap(hashmap_p, &((ts){6, 600, "six", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){7, 700, "seven"}));
+	insert_in_hashmap(hashmap_p, &((ts){7, 700, "seven", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
@@ -124,11 +126,11 @@ int main()
 	}
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){8, 800, "eight"}));
+	insert_in_hashmap(hashmap_p, &((ts){8, 800, "eight", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){9, 900, "nine"}));
+	insert_in_hashmap(hashmap_p, &((ts){9, 900, "nine", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
@@ -200,15 +202,15 @@ int main()
 
 	printf("\nCompleted removing entries\n\n");
 
-	insert_in_hashmap(hashmap_p, &((ts){60, 6000, "sixty"}));
+	insert_in_hashmap(hashmap_p, &((ts){60, 6000, "sixty", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){70, 7000, "seventy"}));
+	insert_in_hashmap(hashmap_p, &((ts){70, 7000, "seventy", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){56, 5600, "fifty six"}));
+	insert_in_hashmap(hashmap_p, &((ts){56, 5600, "fifty six", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
@@ -228,15 +230,15 @@ int main()
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){80, 8000, "eighty"}));
+	insert_in_hashmap(hashmap_p, &((ts){80, 8000, "eighty", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){20, 2000, "twenty"}));
+	insert_in_hashmap(hashmap_p, &((ts){20, 2000, "twenty", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){40, 4000, "forty"}));
+	insert_in_hashmap(hashmap_p, &((ts){40, 4000, "forty", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
@@ -329,7 +331,7 @@ int main()
 	print_ts_hashmap(hashmap_p);
 
 	printf("Inserting key-value at 90\n");
-	insert_in_hashmap(hashmap_p, &((ts){90, 9000, "ninety"}));
+	insert_in_hashmap(hashmap_p, &((ts){90, 9000, "ninety", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
 
