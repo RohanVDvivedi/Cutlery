@@ -57,7 +57,7 @@ void print_ts_hashmap(hashmap* hashmap_p)
 	printf("\n");
 }
 
-//#define TEST_ROBINHOOD_HASHING
+#define TEST_ROBINHOOD_HASHING
 //#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
 //#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
 //#define TEST_ELEMENTS_AS_RED_BLACK_BST
