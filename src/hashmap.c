@@ -279,7 +279,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		case ROBINHOOD_HASHING :
 		{
 			// a free floating rbhnode, can not be in any hashmap, hence can not be removed from the hashmap
-			if(!is_free_floating_rbhnode(get_node(data, hashmap_p)))
+			if(is_free_floating_rbhnode(get_node(data, hashmap_p)))
 				break;
 
 			// get the position index of the data
