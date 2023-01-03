@@ -5,7 +5,7 @@ HASHMAP tasks
  * implement get_next_of_in_hashmap(const hashmap* hashmap_p, int next_type); where next_type = ANY_IN_HASHMAP, ANY_IN_SAME_BUCKET, ANY_THAT_EQUALS
 
 COMMON TASK
- * propogate hashmap and dstring api changes to all downstream libraries
+ * propogate hashmap (to bufferpool, serc & httpparser) and dstring (serc & cashed) api changes to all downstream libraries
 
 2. Add new datastructure types tasks (*future)
 
