@@ -3,6 +3,7 @@
 #include<linkedlist.h>
 #include<bst.h>
 #include<queue.h>
+#include<circular_buffer_array_util.h>
 
 #include<dstring.h>
 
@@ -147,14 +148,33 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned int index = get_actual_index(hashmap_p, data);
+			unsigned int bucket_index = get_bucket_index(hashmap_p, data);
 
-			const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
-			
-			if(data_at_index != NULL && hashmap_p->compare(data, data_at_index) == 0)
-				return data_at_index;
+			unsigned int position_index = bucket_index;
+			unsigned int probe_sequence_length = 0;
 
-			return NULL;
+			const void* data_found = NULL;
+
+			while(probe_sequence_length < get_bucket_count_hashmap(hashmap_p))
+			{
+				const void* data_at_position_index = get_from_array(&(hashmap_p->hashmap_holder), position_index);
+
+				// bucket is empty OR data_at_position_index is at a lesser probe sequence length :: then quit the loop
+				if(data_at_position_index == NULL || get_probe_sequence_length(hashmap_p, data_at_position_index) < probe_sequence_length)
+					break;
+
+				// data and the data_at_index compares equals :: the data we are looking for has been found
+				if(hashmap_p->compare(data, data_at_position_index) == 0)
+				{
+					data_found = data_at_position_index;
+					break;
+				}
+
+				position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p)); // equivalent to ==> (position_index + 1) % bucket_count
+				probe_sequence_length++;
+			}
+
+			return data_found;
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
