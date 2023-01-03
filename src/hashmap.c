@@ -104,40 +104,6 @@ static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const vo
 		return position_index + get_bucket_count_hashmap(hashmap_p) - bucket_index;
 }
 
-// function used for ROBINHOOD_HASHING only
-static unsigned int get_actual_index(const hashmap* hashmap_p, const void* data)
-{
-	unsigned int index = get_bucket_index(hashmap_p, data);
-	unsigned int probe_sequence_length = 0;
-
-	const void* data_at_index = NULL;
-
-	while(probe_sequence_length < get_bucket_count_hashmap(hashmap_p))
-	{
-		data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
-
-		// bucket is empty
-		// find : the data is not in the hashmap
-		if(data_at_index == NULL)
-			break;
-
-		// data and the data_at_index compares equals
-		// find : the data we are looking for has been found
-		if(data == data_at_index || hashmap_p->compare(data, data_at_index) == 0)
-			break;
-
-		// we have a greater probe sequence length for data
-		// find : this element if not found until now, can not be any further than this index
-		if(probe_sequence_length > get_probe_sequence_length(hashmap_p, data_at_index))
-			break;
-
-		index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
-		probe_sequence_length++;
-	}
-
-	return index;
-}
-
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 {
 	// can not find in a hashmap that has no (0) buckets OR if it is empty
