@@ -14,8 +14,9 @@ struct teststruct
 
 	union
 	{
-		bstnode embed_node1;
+		rbhnode embed_node1;
 		llnode  embed_node2;
+		bstnode embed_node3;
 	}embedded_nodes;
 };
 
