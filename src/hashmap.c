@@ -320,6 +320,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			if(data != get_from_array(&(hashmap_p->hashmap_holder), ((rbhnode*)get_node(data, hashmap_p))->position_index))
 				break;
 
+			// TODO below
 			unsigned int index = get_actual_index(hashmap_p, data);
 
 			const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
