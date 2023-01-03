@@ -1,10 +1,6 @@
 1. Tasks picked
 
 HASHMAP tasks
- * define rbhnode {unsigned int bucket_id;}; -> an embedded node for robinhood hashing storing the bucet_id of the element in place
- * implement initialize_rbhnode (bucket_id = UINT_MAX) and is_new_rbhnode(bucket_id == UINT_MAX)
- * modify delete method to delete without a find - reducing latency of delete
- * insert and delete call is_new_rbhnode appropriately -> insert only a new node and delete a non new node that exists at the correct location
  * implement get_first_of_in_hashmap(unsigned int bucket_id);
  * implement get_next_of_in_hashmap(int next_type); where next_type = ANY_IN_HASHMAP, ANY_IN_SAME_BUCKET, ANY_THAT_EQUALS
 
