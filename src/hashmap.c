@@ -579,7 +579,10 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 			{
 				case ROBINHOOD_HASHING :
 				{
-					sprint_element(append_str, get_from_array(&(hashmap_p->hashmap_holder), index), tabs + 2);
+					const void* data = get_from_array(&(hashmap_p->hashmap_holder), index);
+					sprint_chars(append_str, '\t', tabs + 2);
+					snprintf_dstring(append_str, "position_index = %u\n", ((rbhnode*)get_node(data, hashmap_p))->position_index);
+					sprint_element(append_str, data, tabs + 2);
 					snprintf_dstring(append_str, "\n");
 					break;
 				}
