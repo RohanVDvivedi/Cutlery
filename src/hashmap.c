@@ -316,35 +316,38 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			if(!is_free_floating_rbhnode(get_node(data, hashmap_p)))
 				break;
 
+			// get the position index of the data
+			unsigned int position_index = ((rbhnode*)get_node(data, hashmap_p))->position_index;
+
 			// if the data does not exist at position_index in hashmap_holder, as dictated by its rbhnode, then it can not be removed
-			if(data != get_from_array(&(hashmap_p->hashmap_holder), ((rbhnode*)get_node(data, hashmap_p))->position_index))
+			if(data != get_from_array(&(hashmap_p->hashmap_holder), position_index))
 				break;
 
-			// TODO below
-			unsigned int index = get_actual_index(hashmap_p, data);
-
-			const void* data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
-			
-			// if the given element does not exist in the hashmap we can not remove it
-			if(data_at_index != data)
-				break;
-
-			set_in_array(&(hashmap_p->hashmap_holder), NULL, index);
+			// make the slot at the position_index (in hashmap holder) empty, and re intialize its rbhnode
+			set_in_array(&(hashmap_p->hashmap_holder), NULL, position_index);
+			initialize_rbhnode(get_node(data, hashmap_p));
 			deleted = 1;
 
-			unsigned int previousIndex = index;
-			index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
-			data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
-			while(data_at_index != NULL && get_probe_sequence_length(hashmap_p, data_at_index) != 0)
+			// Now we loop and move all elements that have non zero probe sequence length, a slot backwards
+			unsigned int previous_position_index = position_index;
+			position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p)); // equivalent to ==> (position_index + 1) % bucket_count
+			const void* data_at_position_index = get_from_array(&(hashmap_p->hashmap_holder), position_index);
+
+			while(data_at_position_index != NULL && get_probe_sequence_length(hashmap_p, data_at_position_index) > 0)
 			{
-				// shift null downwards, and data_at_index to previousIndex
+				// shift NULL downwards, and data_at_position_index to previousIndex
 				{
-					set_in_array(&(hashmap_p->hashmap_holder), data_at_index, previousIndex);
-					set_in_array(&(hashmap_p->hashmap_holder), NULL, index);
+					set_in_array(&(hashmap_p->hashmap_holder), data_at_position_index, previous_position_index);
+					set_in_array(&(hashmap_p->hashmap_holder), NULL, position_index);
+
+					// update position_index of data_at_position_index
+					((rbhnode*)get_node(data_at_position_index, hashmap_p))->position_index = previous_position_index;
 				}
-				previousIndex = index;
-				index = (index + 1) % get_bucket_count_hashmap(hashmap_p);
-				data_at_index = get_from_array(&(hashmap_p->hashmap_holder), index);
+
+				// prepare for next iteration
+				previous_position_index = position_index;
+				position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p)); // equivalent to ==> (position_index + 1) % bucket_count
+				data_at_position_index = get_from_array(&(hashmap_p->hashmap_holder), position_index);
 			}
 
 			break;
