@@ -118,7 +118,7 @@ void print_all_that_equals_from_hashmap(const hashmap* hashmap_p, const void* da
 
 #if defined TEST_ROBINHOOD_HASHING
 	#define INIT_EMBED_NODE {INVALID_INDEX}
-	#define HASH_BUCKETS 10
+	#define HASH_BUCKETS 12
 #else
 	#define INIT_EMBED_NODE {}
 	#define HASH_BUCKETS 4
@@ -192,13 +192,7 @@ int main()
 
 	print_ts_hashmap(hashmap_p);
 
-	insert_in_hashmap(hashmap_p, &((ts){3, 333, "333", INIT_EMBED_NODE}));
-
-	print_ts_hashmap(hashmap_p);
-
 	print_hashmap_bucket_wise(hashmap_p);
-
-	print_all_that_equals_from_hashmap(hashmap_p, &((ts){3}));
 
 	printf("\nStarting to remove few entries\n\n");
 
@@ -225,6 +219,18 @@ int main()
 	{
 		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
 	}
+
+	insert_in_hashmap(hashmap_p, &((ts){15, 333, "333", INIT_EMBED_NODE}));
+
+	print_ts_hashmap(hashmap_p);
+
+	insert_in_hashmap(hashmap_p, &((ts){3, 333, "333", INIT_EMBED_NODE}));
+
+	print_ts_hashmap(hashmap_p);
+
+	print_hashmap_bucket_wise(hashmap_p);
+
+	print_all_that_equals_from_hashmap(hashmap_p, &((ts){3}));
 
 	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
 
