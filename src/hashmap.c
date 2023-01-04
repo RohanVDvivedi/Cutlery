@@ -110,12 +110,14 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 	if(is_hashmap_with_ZERO_buckets(hashmap_p) || is_empty_hashmap(hashmap_p))
 		return NULL;
 
+	// evaluate the index of the bucket that this element will go into
+	// all elements that compare equal, must hash to the same bucket
+	unsigned int bucket_index = get_bucket_index(hashmap_p, data);
+
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned int bucket_index = get_bucket_index(hashmap_p, data);
-
 			unsigned int position_index = bucket_index;
 			unsigned int probe_sequence_length = 0;
 
@@ -145,19 +147,17 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
-			unsigned int index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			
-			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 			return find_equals_in_linkedlist(&ll, data, hashmap_p->compare);
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			unsigned int index = get_bucket_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
-			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 			return find_equals_in_bst(&bstt, data, FIRST_OCCURENCE);
 		}
 		default :
@@ -175,6 +175,9 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 	if(is_hashmap_with_ZERO_buckets(hashmap_p))
 		return inserted;
 
+	// evaluate the index of the bucket that this element will go into
+	unsigned int bucket_index = get_bucket_index(hashmap_p, data);
+
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
@@ -186,8 +189,6 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			// if the hashmap is full
 			if(hashmap_p->element_count == get_bucket_count_hashmap(hashmap_p))
 				break;
-
-			unsigned int bucket_index = get_bucket_index(hashmap_p, data);
 
 			unsigned int position_index = bucket_index;
 			unsigned int probe_sequence_length = 0;
@@ -229,33 +230,30 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		{
-			unsigned int index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
-			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 			inserted = insert_head_in_linkedlist(&ll, data);
-			set_in_array(&(hashmap_p->hashmap_holder), ll.head, index);
+			set_in_array(&(hashmap_p->hashmap_holder), ll.head, bucket_index);
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
-			unsigned int index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
-			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 			inserted = insert_tail_in_linkedlist(&ll, data);
-			set_in_array(&(hashmap_p->hashmap_holder), ll.head, index);
+			set_in_array(&(hashmap_p->hashmap_holder), ll.head, bucket_index);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			unsigned int index = get_bucket_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
-			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 			inserted = insert_in_bst(&bstt, data);
-			set_in_array(&(hashmap_p->hashmap_holder), bstt.root, index);
+			set_in_array(&(hashmap_p->hashmap_holder), bstt.root, bucket_index);
 			break;
 		}
 	}
