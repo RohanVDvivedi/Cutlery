@@ -458,7 +458,39 @@ static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hash
 
 static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap_p, const void* data_xist)
 {
+	switch(hashmap_p->hashmap_policy)
+	{
+		// here we use the concept that objects that compare equal must lie in the same bucket
+		case ROBINHOOD_HASHING :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
+		{
+			const void* curr = data_xist;
+			const void* next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, curr);
 
+			// we iterate over all the elements of the bucket, untill we reach the end or we find the element that equals data_xist
+			while(next != NULL && hashmap_p->compare(next, data_xist) != 0)
+				curr = next;
+
+			return next;
+		}
+		// here we use the concept that objects that compare equal must lie in the same bucket
+		// Additionally, they must be adjacent to each other in the bst, since bst is always ordered
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			const void* next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, data_xist);
+
+			// if there is no other element in the bucket, or if the next does not compare equal to data_xist
+			// then return NULL
+			if(next == NULL || hashmap_p->compare(next, data_xist) != 0)
+				return NULL;
+
+			return next;
+		}
+	}
+
+	return NULL;
 }
 
 const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xist, hashmap_next_type next_type)
