@@ -82,6 +82,20 @@ void print_hashmap_bucket_wise(const hashmap* hashmap_p)
 	printf("\n");
 }
 
+void print_all_that_equals_from_hashmap(const hashmap* hashmap_p, const void* data)
+{
+	printf("printing all elements that comapre equal to ");
+	print_ts(data);
+	printf("\n");
+	for(const void* d = find_equals_in_hashmap(hashmap_p, data); d != NULL; d = get_next_of_in_hashmap(hashmap_p, d, ANY_THAT_EQUALS))
+	{
+		printf("\t");
+		print_ts(d);
+		printf("\n");
+	}
+	printf("\n");
+}
+
 #define TEST_ROBINHOOD_HASHING
 //#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
 //#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
@@ -178,7 +192,13 @@ int main()
 
 	print_ts_hashmap(hashmap_p);
 
+	insert_in_hashmap(hashmap_p, &((ts){3, 333, "333", INIT_EMBED_NODE}));
+
+	print_ts_hashmap(hashmap_p);
+
 	print_hashmap_bucket_wise(hashmap_p);
+
+	print_all_that_equals_from_hashmap(hashmap_p, &((ts){3}));
 
 	printf("\nStarting to remove few entries\n\n");
 
@@ -386,6 +406,8 @@ int main()
 
 	print_hashmap_bucket_wise(hashmap_p);
 
+	print_all_that_equals_from_hashmap(hashmap_p, &((ts){3}));
+
 	printf("\n\nBefore rehashing - 16\n");
 	print_ts_hashmap(hashmap_p);
 
@@ -405,6 +427,8 @@ int main()
 	print_ts_hashmap(hashmap_p);
 
 	print_hashmap_bucket_wise(hashmap_p);
+
+	print_all_that_equals_from_hashmap(hashmap_p, &((ts){3}));
 
 	resize_hashmap(hashmap_p, 10);
 
