@@ -47,13 +47,38 @@ void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 		snprintf_dstring(append_str, "%d, %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-void print_ts_hashmap(hashmap* hashmap_p)
+void print_ts_hashmap(const hashmap* hashmap_p)
 {
 	dstring str;
 	init_dstring(&str, "", 0);
 	sprint_hashmap(&str, hashmap_p, sprint_ts, 0);
 	printf_dstring(&str);
 	deinit_dstring(&str);
+	printf("\n");
+}
+
+void print_hashmap_bucket_wise(const hashmap* hashmap_p)
+{
+	printf("printing all elements :: ");
+	for(const void* data = get_first_of_in_hashmap(hashmap_p, FIRST_OF_HASHMAP); data != NULL; data = get_next_of_in_hashmap(hashmap_p, data, ANY_IN_HASHMAP))
+	{
+		printf("\t");
+		print_ts(data);
+		printf("\n");
+	}
+	printf("\n");
+
+	printf("printing all elements bucket_wise :: ");
+	for(unsigned int bucket_index = 0; bucket_index < get_bucket_count_hashmap(hashmap_p); bucket_index++)
+	{
+		printf("\tbucket_no : %u\n", bucket_index);
+		for(const void* data = get_first_of_in_hashmap(hashmap_p, bucket_index); data != NULL; data = get_next_of_in_hashmap(hashmap_p, data, ANY_IN_SAME_BUCKET))
+		{
+			printf("\t\t");
+			print_ts(data);
+			printf("\n");
+		}
+	}
 	printf("\n");
 }
 
