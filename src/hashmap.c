@@ -453,7 +453,41 @@ static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_
 
 static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hashmap_p, const void* data_xist)
 {
+	unsigned int bucket_index = get_bucket_index(hashmap_p, data_xist);
 
+	switch(hashmap_p->hashmap_policy)
+	{
+		case ROBINHOOD_HASHING :
+		{
+			// TODO
+			return NULL;
+		}
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
+		{
+			linkedlist ll; init_data_structure(hashmap_p, &ll);
+
+			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
+
+			// tail node of the linkedlist (it being a circular doubly linkedlist), will have its next reference pointing to head of the linkedlist
+			// hence we check for tail, and if data_xist is tail node, we return NULL
+			if(data_xist == get_tail_of_linkedlist(&ll))
+				return NULL;
+
+			return get_next_of_in_linkedlist(&ll, data_xist);
+		}
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			bst bstt; init_data_structure(hashmap_p, &bstt);
+
+			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
+
+			return get_inorder_next_of_in_bst(&bstt, data_xist);
+		}
+	}
+
+	return NULL;
 }
 
 static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap_p, const void* data_xist)
