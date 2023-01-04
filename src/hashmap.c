@@ -444,11 +444,6 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 	return NULL;
 }
 
-static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_p, const void* data_xist)
-{
-
-}
-
 static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hashmap_p, const void* data_xist)
 {
 	unsigned int bucket_index = get_bucket_index(hashmap_p, data_xist);
@@ -511,6 +506,45 @@ static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hash
 			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 
 			return get_inorder_next_of_in_bst(&bstt, data_xist);
+		}
+	}
+
+	return NULL;
+}
+
+static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_p, const void* data_xist)
+{
+	switch(hashmap_p->hashmap_policy)
+	{
+		case ROBINHOOD_HASHING :
+		{
+			// TODO
+			return NULL;
+		}
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
+		case ELEMENTS_AS_AVL_BST :
+		case ELEMENTS_AS_RED_BLACK_BST :
+		{
+			// attempt to find next in same bucket
+			const void* next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, data_xist);
+
+			// if found return it
+			if(next != NULL)
+				return next;
+
+			unsigned int bucket_index = get_bucket_index(hashmap_p, data_xist);
+
+			// loop over hashmap holder and find the next valid bucket_index
+			unsigned int next_bucket_index = bucket_index + 1;
+			for(; next_bucket_index < get_bucket_count_hashmap(hashmap_p) && get_from_array(&(hashmap_p->hashmap_holder), next_bucket_index) == NULL; next_bucket_index++){}
+
+			// if no such next valid bucket_index then return NULL
+			if(next_bucket_index == get_bucket_count_hashmap(hashmap_p))
+				return NULL;
+
+			// else return the first element for that bucket
+			return get_first_of_in_hashmap(hashmap_p, next_bucket_index);
 		}
 	}
 
