@@ -220,6 +220,10 @@ int main()
 		nodes_deleted += remove_from_hashmap(hashmap_p, temp);
 	}
 
+	print_ts_hashmap(hashmap_p);
+
+	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
+
 	insert_in_hashmap(hashmap_p, &((ts){15, 333, "333", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
@@ -228,13 +232,15 @@ int main()
 
 	print_ts_hashmap(hashmap_p);
 
+	insert_in_hashmap(hashmap_p, &((ts){15, 1515, "1515", INIT_EMBED_NODE}));
+
+	print_ts_hashmap(hashmap_p);
+
 	print_hashmap_bucket_wise(hashmap_p);
 
 	print_all_that_equals_from_hashmap(hashmap_p, &((ts){3}));
 
-	printf("\nnodes deleted : %d\n\n", nodes_deleted);nodes_deleted = 0;
-
-	print_ts_hashmap(hashmap_p);
+	print_all_that_equals_from_hashmap(hashmap_p, &((ts){15}));
 
 	// this is exactly how we remove by finding the object from the hashmap first
 	temp = (ts*) find_equals_in_hashmap(hashmap_p, &((ts){6}));
