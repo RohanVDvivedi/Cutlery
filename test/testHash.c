@@ -96,10 +96,10 @@ void print_all_that_equals_from_hashmap(const hashmap* hashmap_p, const void* da
 	printf("\n");
 }
 
-#define TEST_ROBINHOOD_HASHING
+//#define TEST_ROBINHOOD_HASHING
 //#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
 //#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
-//#define TEST_ELEMENTS_AS_RED_BLACK_BST
+#define TEST_ELEMENTS_AS_RED_BLACK_BST
 //#define TEST_ELEMENTS_AS_AVL_BST
 
 #if defined TEST_ROBINHOOD_HASHING
@@ -419,6 +419,8 @@ int main()
 	print_hashmap_bucket_wise(hashmap_p);
 
 	print_all_that_equals_from_hashmap(hashmap_p, &((ts){3}));
+
+	print_all_that_equals_from_hashmap(hashmap_p, &((ts){15}));
 
 	printf("\n\nBefore rehashing - 16\n");
 	print_ts_hashmap(hashmap_p);
