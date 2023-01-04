@@ -102,6 +102,24 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
 // fails with 0, if the data provided does not exist in this hashmap
 int remove_from_hashmap(hashmap* hashmap_p, const void* data);
 
+#define FIRST_OF_HASHMAP INVALID_INDEX
+
+// returns pointer to the first element of the hashmap in bucket at bucket_index
+// if bucket_index parameter == FIRST_OF_HASHMAP, then the first element in iteration of hashmap is returned
+const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucket_index);
+
+typedef enum hashmap_next_type hashmap_next_type;
+enum hashmap_next_type
+{
+	ANY_IN_HASHMAP,
+	ANY_IN_SAME_BUCKET,
+	ANY_THAT_EQUALS
+};
+
+// this below function can be used to get the next element that occurs after data_xist in hashmap
+// the next_type variable dictates what element will be returned it can be ANY_IN_HASHMAP, ANY_IN_SAME_BUCKET or ANY_THAT_EQUALS
+const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xist, hashmap_next_type next_type);
+
 // returns bucket_count of the hashmap
 unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p);
 // returns the number of elements inside the hashmap

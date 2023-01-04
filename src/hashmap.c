@@ -129,7 +129,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 				if(data_at_position_index == NULL || get_probe_sequence_length(hashmap_p, data_at_position_index) < probe_sequence_length)
 					break;
 
-				// data and the data_at_index compares equals :: the data we are looking for has been found
+				// data and the data_at_position_index compares equals :: the data we are looking for has been found
 				if(hashmap_p->compare(data, data_at_position_index) == 0)
 				{
 					data_found = data_at_position_index;
@@ -347,6 +347,70 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 
 	return deleted;
 }
+
+const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucket_index)
+{
+	// if there are no elements in the hashmap then return NULL immediately
+	if(get_element_count_hashmap(hashmap_p) == 0)
+		return NULL;
+
+	if(bucket_index < get_bucket_count_hashmap(hashmap_p))
+	{
+		switch(hashmap_p->hashmap_policy)
+		{
+			case ROBINHOOD_HASHING :
+			{
+				unsigned int position_index = bucket_index;
+				unsigned int probe_sequence_length = 0;
+
+				const void* data_found = NULL;
+
+				while(probe_sequence_length < get_bucket_count_hashmap(hashmap_p))
+				{
+					const void* data_at_position_index = get_from_array(&(hashmap_p->hashmap_holder), position_index);
+
+					// bucket is empty OR data_at_position_index is at a lesser probe sequence length :: then quit the loop
+					if(data_at_position_index == NULL || get_probe_sequence_length(hashmap_p, data_at_position_index) < probe_sequence_length)
+						break;
+
+					// the data_at_position_index has the required bucket_index :: the data we are looking for has been found
+					if(bucket_index == get_bucket_index(hashmap_p, data_at_position_index))
+					{
+						data_found = data_at_position_index;
+						break;
+					}
+
+					position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p)); // equivalent to ==> (position_index + 1) % bucket_count
+					probe_sequence_length++;
+				}
+
+				return data_found;
+			}
+			case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+			case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
+			{
+				unsigned int index = get_bucket_index(hashmap_p, data);
+				linkedlist ll; init_data_structure(hashmap_p, &ll);
+
+				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+
+				return get_head_of_linkedlist(ll);
+			}
+			case ELEMENTS_AS_AVL_BST :
+			case ELEMENTS_AS_RED_BLACK_BST :
+			{
+				unsigned int index = get_bucket_index(hashmap_p, data);
+				bst bstt; init_data_structure(hashmap_p, &bstt);
+				
+				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+				
+				return find_smallest_in_bst(bstt);
+			}
+		}
+	}
+}
+
+const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xist, hashmap_next_type next_type);
 
 void remove_all_from_hashmap(hashmap* hashmap_p)
 {
