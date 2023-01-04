@@ -457,8 +457,37 @@ static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hash
 	{
 		case ROBINHOOD_HASHING :
 		{
-			// TODO
-			return NULL;
+			// position_index, and probe_sequence_length of the data_xist
+			unsigned int position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index;
+			unsigned int probe_sequence_length = sub_indexes(position_index, bucket_index, get_bucket_count_hashmap(hashmap_p));
+
+			// get the position_index of the next element
+			position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p));
+			probe_sequence_length++;
+
+			const void* next = NULL;
+
+			while(probe_sequence_length < get_bucket_count_hashmap(hashmap_p))
+			{
+				const void* data_at_position_index = get_from_array(&(hashmap_p->hashmap_holder), position_index);
+
+				// quit the loop returning NULL, if the data_at_position_index is NULL OR is at a smaller probe_sequence_length than expected
+				if(data_at_position_index == NULL || get_probe_sequence_length(hashmap_p, data_at_position_index) < probe_sequence_length)
+					break;
+
+				// we are looking for the next element who falls in the same bucket
+				if(get_bucket_index(hashmap_p, data_at_position_index) == bucket_index)
+				{
+					next = data_at_position_index;
+					break;
+				}
+
+				// prepare for next iteration
+				position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p));
+				probe_sequence_length++;
+			}
+
+			return next;
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
