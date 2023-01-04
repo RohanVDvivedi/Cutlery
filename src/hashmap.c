@@ -399,13 +399,51 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 			case ELEMENTS_AS_RED_BLACK_BST :
 			{
 				bst bstt; init_data_structure(hashmap_p, &bstt);
-				
+
 				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
-				
+
 				return find_smallest_in_bst(&bstt);
 			}
 		}
 	}
+	else
+	{
+		unsigned int first_valid_position_index = INVALID_INDEX;
+
+		for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p) && first_valid_position_index == INVALID_INDEX; index++)
+		{
+			if(get_from_array(&(hashmap_p->hashmap_holder), index) != NULL)
+				first_valid_position_index = index;
+		}
+
+		switch(hashmap_p->hashmap_policy)
+		{
+			case ROBINHOOD_HASHING :
+			{
+				return get_from_array(&(hashmap_p->hashmap_holder), first_valid_position_index);
+			}
+			case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
+			case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
+			{
+				linkedlist ll; init_data_structure(hashmap_p, &ll);
+
+				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), first_valid_position_index);
+
+				return get_head_of_linkedlist(&ll);
+			}
+			case ELEMENTS_AS_AVL_BST :
+			case ELEMENTS_AS_RED_BLACK_BST :
+			{
+				bst bstt; init_data_structure(hashmap_p, &bstt);
+
+				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), first_valid_position_index);
+
+				return find_smallest_in_bst(&bstt);
+			}
+		}
+	}
+
+	return NULL;
 }
 
 const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xist, hashmap_next_type next_type);
