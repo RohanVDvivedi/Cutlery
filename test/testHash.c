@@ -59,7 +59,7 @@ void print_ts_hashmap(const hashmap* hashmap_p)
 
 void print_hashmap_bucket_wise(const hashmap* hashmap_p)
 {
-	printf("printing all elements :: ");
+	printf("printing all elements :: \n");
 	for(const void* data = get_first_of_in_hashmap(hashmap_p, FIRST_OF_HASHMAP); data != NULL; data = get_next_of_in_hashmap(hashmap_p, data, ANY_IN_HASHMAP))
 	{
 		printf("\t");
@@ -68,7 +68,7 @@ void print_hashmap_bucket_wise(const hashmap* hashmap_p)
 	}
 	printf("\n");
 
-	printf("printing all elements bucket_wise :: ");
+	printf("printing all elements bucket_wise :: \n");
 	for(unsigned int bucket_index = 0; bucket_index < get_bucket_count_hashmap(hashmap_p); bucket_index++)
 	{
 		printf("\tbucket_no : %u\n", bucket_index);
@@ -177,6 +177,8 @@ int main()
 	insert_in_hashmap(hashmap_p, &((ts){9, 900, "nine", INIT_EMBED_NODE}));
 
 	print_ts_hashmap(hashmap_p);
+
+	print_hashmap_bucket_wise(hashmap_p);
 
 	printf("\nStarting to remove few entries\n\n");
 
@@ -382,6 +384,8 @@ int main()
 	printf("Now finding value corresponding to key 1\n\n");
 	print_ts(find_equals_in_hashmap(hashmap_p, &((ts){1})));printf("\n\n");
 
+	print_hashmap_bucket_wise(hashmap_p);
+
 	printf("\n\nBefore rehashing - 16\n");
 	print_ts_hashmap(hashmap_p);
 
@@ -399,6 +403,8 @@ int main()
 
 	printf("\n\nAfter rehashing - 20 * 1.2\n");
 	print_ts_hashmap(hashmap_p);
+
+	print_hashmap_bucket_wise(hashmap_p);
 
 	resize_hashmap(hashmap_p, 10);
 
