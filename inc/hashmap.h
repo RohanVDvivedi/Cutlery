@@ -35,8 +35,10 @@ enum collision_resolution_policy
 // hence hashmap does not gaurantee uniqueness for your data on its own
 // two data* (pointers) pointing to data that compare equals on the given compartor may exist in the hashmap
 
-// While designing the hashfunction please consider using all the attributes, that you are using in the comparator function
-// the comparator function and the hashfunction must be based on using the same fields
+// while designing the hash function please consider using all or some the attributes, that you are using in the comparator function
+// the comparator function and the hashfunction must be based on using the same fields/attributes
+// i.e. attributes of your data used in calculation of your hash_function must be a subset of the attributes you use in your compare function
+// this ensures that all the data that compare equals reside/collide in the same bucket of the hashmap
 
 typedef struct hashmap hashmap;
 struct hashmap

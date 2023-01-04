@@ -446,7 +446,35 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 	return NULL;
 }
 
-const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xist, hashmap_next_type next_type);
+static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_p, const void* data_xist)
+{
+
+}
+
+static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hashmap_p, const void* data_xist)
+{
+
+}
+
+static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap_p, const void* data_xist)
+{
+
+}
+
+const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xist, hashmap_next_type next_type)
+{
+	switch(next_type)
+	{
+		case ANY_IN_HASHMAP :
+			return get_next_of_in_hashmap_ANY_IN_HASHMAP(hashmap_p, data_xist);
+		case ANY_IN_SAME_BUCKET :
+			return get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, data_xist);
+		case ANY_THAT_EQUALS :
+			return get_next_of_in_hashmap_ANY_THAT_EQUALS(hashmap_p, data_xist);
+		default :
+			return NULL;
+	}
+}
 
 void remove_all_from_hashmap(hashmap* hashmap_p)
 {
