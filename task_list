@@ -1,8 +1,7 @@
 1. Tasks picked
 
 HASHMAP tasks
- * implement get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucket_index);
- * implement get_next_of_in_hashmap(const hashmap* hashmap_p, int next_type); where next_type = ANY_IN_HASHMAP, ANY_IN_SAME_BUCKET, ANY_THAT_EQUALS
+ * test hashmap iteration
 
 COMMON TASK
  * propogate hashmap (to bufferpool, serc & httpparser) and dstring (serc & cashed) api changes to all downstream libraries
