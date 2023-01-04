@@ -389,22 +389,20 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 			case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 			case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 			{
-				unsigned int index = get_bucket_index(hashmap_p, data);
 				linkedlist ll; init_data_structure(hashmap_p, &ll);
 
-				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 
-				return get_head_of_linkedlist(ll);
+				return get_head_of_linkedlist(&ll);
 			}
 			case ELEMENTS_AS_AVL_BST :
 			case ELEMENTS_AS_RED_BLACK_BST :
 			{
-				unsigned int index = get_bucket_index(hashmap_p, data);
 				bst bstt; init_data_structure(hashmap_p, &bstt);
 				
-				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
+				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 				
-				return find_smallest_in_bst(bstt);
+				return find_smallest_in_bst(&bstt);
 			}
 		}
 	}
