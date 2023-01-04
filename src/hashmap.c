@@ -406,13 +406,11 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 	}
 	else
 	{
-		unsigned int first_valid_position_index = INVALID_INDEX;
-
-		for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p) && first_valid_position_index == INVALID_INDEX; index++)
-		{
-			if(get_from_array(&(hashmap_p->hashmap_holder), index) != NULL)
-				first_valid_position_index = index;
-		}
+		// loop over hashmap holder and find the first valid bucket_index
+		// we know here that there is atleast an element in hashmap (check in the beginning of this function)
+		// hence there must be a non-NULL bucket in the hashmap_holder
+		unsigned int first_valid_position_index = 0;
+		for(; first_valid_position_index < get_bucket_count_hashmap(hashmap_p) && get_from_array(&(hashmap_p->hashmap_holder), first_valid_position_index) == NULL; first_valid_position_index++){}
 
 		switch(hashmap_p->hashmap_policy)
 		{
