@@ -516,8 +516,17 @@ static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_
 	{
 		case ROBINHOOD_HASHING :
 		{
-			// TODO
-			return NULL;
+			unsigned int next_position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index + 1;
+
+			// loop until you find the next_position_index at which hashmap_holder is a non-NULL
+			for(; next_position_index < get_bucket_count_hashmap(hashmap_p) && get_from_array(&(hashmap_p->hashmap_holder), next_position_index) == NULL; next_position_index++){}
+
+			// if you reached the end of the hashmap_holder then return NULL
+			if(next_position_index == get_bucket_count_hashmap(hashmap_p))
+				return NULL;
+
+			// else return the element at the next_position_index
+			return get_from_array(&(hashmap_p->hashmap_holder), next_position_index);
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
