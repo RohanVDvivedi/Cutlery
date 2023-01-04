@@ -84,7 +84,7 @@ void print_hashmap_bucket_wise(const hashmap* hashmap_p)
 
 void print_all_that_equals_from_hashmap(const hashmap* hashmap_p, const void* data)
 {
-	printf("printing all elements that comapre equal to ");
+	printf("printing all elements that compare equal to ");
 	print_ts(data);
 	printf("\n");
 	for(const void* d = find_equals_in_hashmap(hashmap_p, data); d != NULL; d = get_next_of_in_hashmap(hashmap_p, d, ANY_THAT_EQUALS))
