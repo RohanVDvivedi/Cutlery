@@ -1,8 +1,5 @@
 1. Tasks picked
 
-HASHMAP tasks
- * test hashmap iteration
-
 COMMON TASK
  * propogate hashmap (to bufferpool, serc & httpparser) and dstring (serc & cashed) api changes to all downstream libraries
 
