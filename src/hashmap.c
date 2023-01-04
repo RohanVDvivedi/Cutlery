@@ -572,7 +572,10 @@ static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap
 
 			// we iterate over all the elements of the bucket, untill we reach the end or we find the element that equals data_xist
 			while(next != NULL && hashmap_p->compare(next, data_xist) != 0)
+			{
 				curr = next;
+				next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, curr);
+			}
 
 			return next;
 		}
