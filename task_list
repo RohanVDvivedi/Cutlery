@@ -1,8 +1,5 @@
 1. Tasks picked
 
-COMMON TASK
- * propogate hashmap (to bufferpool, serc & httpparser) and dstring (serc & cashed) api changes to all downstream libraries
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
