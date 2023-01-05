@@ -1,5 +1,8 @@
 1. Tasks picked
 
+DSTRING task
+ * implement vsnprintf_dstring
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
