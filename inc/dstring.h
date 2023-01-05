@@ -79,6 +79,7 @@ int concatenate_char(dstring* str_p1, char chr);
 
 // append_to_dstring_formatted is a snprintf implementation for dstrings
 // fails if the memory allocation calls fail
+int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list args);
 int snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
 // append count number of chr char at the end of the dstring str_p

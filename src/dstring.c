@@ -442,10 +442,9 @@ unsigned int trim_dstring(dstring* str_p)
 #include<stdio.h>
 #include<stdarg.h>
 
-int snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
+int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list var_args)
 {
-	va_list var_args, var_args_dummy;
-	va_start(var_args, cstr_format);
+	var_args_dummy;
 
 	va_copy(var_args_dummy, var_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
@@ -476,9 +475,19 @@ int snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 	size_extra_req = vsnprintf(str_data + str_size, get_unused_capacity_dstring(str_p), cstr_format, var_args);
 	increment_char_count_dstring(str_p, size_extra_req);
 
+	return 1;
+}
+
+int snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
+{
+	va_list var_args;
+	va_start(var_args, cstr_format);
+
+	int res = vsnprintf_dstring(str_p, cstr_format, var_args);
+
 	va_end(var_args);
 
-	return 1;
+	return res;
 }
 
 #include<string.h>
