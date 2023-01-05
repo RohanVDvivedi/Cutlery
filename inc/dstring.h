@@ -77,11 +77,6 @@ int concatenate_dstring(dstring* str_p1, const dstring* str_p2);
 int concatenate_c_string(dstring* str_p1, const char* c_string);
 int concatenate_char(dstring* str_p1, char chr);
 
-// append_to_dstring_formatted is a snprintf implementation for dstrings
-// fails if the memory allocation calls fail
-int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list args);
-int snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
-
 // append count number of chr char at the end of the dstring str_p
 void sprint_chars(dstring* str_p, char chr, unsigned int count);
 
@@ -109,5 +104,12 @@ unsigned int trim_dstring(dstring* str_p);
 // This is the global memory allocator that will be used for contents 
 // of every dstring that ever gets created/modified
 extern memory_allocator DSTRING_mem_alloc;
+
+#include<stdarg.h>
+
+// append_to_dstring_formatted is a snprintf implementation for dstrings
+// fails if the memory allocation calls fail
+int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list args);
+int snprintf_dstring(dstring* str_p, const char* cstr_format, ...);
 
 #endif

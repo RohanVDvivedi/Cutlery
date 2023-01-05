@@ -444,7 +444,7 @@ unsigned int trim_dstring(dstring* str_p)
 
 int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list var_args)
 {
-	var_args_dummy;
+	va_list var_args_dummy;
 
 	va_copy(var_args_dummy, var_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
