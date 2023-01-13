@@ -10,26 +10,25 @@ void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffi
 	for(unsigned int string_length = 0; ; string_length++)
 	{
 		if(string_length <= 1)
-		{
 			suffix_prefix_match_length[string_length] = 0;
-			continue;
-		}
-
-		unsigned int prefix_length_old = suffix_prefix_match_length[string_length - 1];
-		while(1)
+		else
 		{
-			if(sub_str_data[string_length-1] == sub_str_data[prefix_length_old])
+			unsigned int prefix_length_old = suffix_prefix_match_length[string_length - 1];
+			while(1)
 			{
-				suffix_prefix_match_length[string_length] = prefix_length_old + 1;
-				break;
-			}
-			else
-			{
-				prefix_length_old = suffix_prefix_match_length[prefix_length_old];
-				if(prefix_length_old == 0)
+				if(sub_str_data[string_length-1] == sub_str_data[prefix_length_old])
 				{
-					suffix_prefix_match_length[string_length] = 0;
+					suffix_prefix_match_length[string_length] = prefix_length_old + 1;
 					break;
+				}
+				else
+				{
+					prefix_length_old = suffix_prefix_match_length[prefix_length_old];
+					if(prefix_length_old == 0)
+					{
+						suffix_prefix_match_length[string_length] = 0;
+						break;
+					}
 				}
 			}
 		}
