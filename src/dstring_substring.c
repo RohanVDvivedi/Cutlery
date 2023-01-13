@@ -199,6 +199,14 @@ int is_prefix_of_dstring(const dstring* string_p, const dstring* prefix_p)
 	return 0;
 }
 
+int is_suffix_of_dstring(const dstring* string_p, const dstring* suffix_p)
+{
+	// suffix must have a length smaller than or equal to provided main string
+	if(get_char_count_dstring(string_p) >= get_char_count_dstring(suffix_p))
+		return 0 == memory_compare(get_byte_array_dstring(string_p) + get_char_count_dstring(string_p) - get_char_count_dstring(suffix_p), get_byte_array_dstring(suffix_p), get_char_count_dstring(suffix_p));
+	return 0;
+}
+
 dstring split_dstring(const dstring* str, const dstring* delim, dstring* split)
 {
 	const char* str_data = get_byte_array_dstring(str);
