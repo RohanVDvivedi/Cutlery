@@ -40,6 +40,29 @@ int main()
 		printf("\n\n");
 	}
 
+	{
+		char* temp[] = {
+			"",
+			"D",
+			"BCBBD",
+			"BBCBBD",
+			"BBCBBDX",
+			"XBBCBBD",
+			" BBCBBD",
+			"Hello World, as said by Rohan AAACAAAAAC BBCBBD BBCBBD",
+		};
+
+		int temp_size = sizeof(temp) / sizeof(char*);
+
+		for(int i = 0; i < temp_size; i++)
+		{
+			printf("suffix \"%s\" => %d\n", temp[i], is_suffix_of_dstring(&str, &get_literal_cstring(temp[i])));
+			printf("\n\n");
+		}
+
+		printf("\n\n");
+	}
+
 	snprintf_dstring(&str, "iNt no : %d, strIng : %s, floAT : %f", 336, "Heello Worlds!! =+", 35.49);
 	printf("str : \"" printf_dstring_format "\"\n\n\n", printf_dstring_params(&str));
 
