@@ -1,5 +1,8 @@
 1. Tasks picked
 
+ * read dstring to parse an unsigned int
+ * get_ltrimmed_dstring_pointing_to, get_rtrimmed_dstring_pointing_to and get_trimmed_dstring_pointing_to
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
