@@ -236,34 +236,45 @@ int main()
 
 	// tests for ltrim rtrim functions
 	dstring strim;
+	dstring result;
 
 	// ltrim test
 	strim = new_copy_dstring(&get_literal_cstring(""));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_ltrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	ltrim_dstring(&strim);
 	printf("after ltrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("Rohan"));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_ltrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	ltrim_dstring(&strim);
 	printf("after ltrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("   Rohan"));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_ltrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	ltrim_dstring(&strim);
 	printf("after ltrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("Rohan   "));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_ltrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	ltrim_dstring(&strim);
 	printf("after ltrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("   Rohan   "));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_ltrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	ltrim_dstring(&strim);
 	printf("after ltrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
@@ -271,30 +282,40 @@ int main()
 	// rtrim test
 	strim = new_copy_dstring(&get_literal_cstring(""));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_rtrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	rtrim_dstring(&strim);
 	printf("after rtrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("Rohan"));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_rtrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	rtrim_dstring(&strim);
 	printf("after rtrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("   Rohan"));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_rtrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	rtrim_dstring(&strim);
 	printf("after rtrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("Rohan   "));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_rtrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	rtrim_dstring(&strim);
 	printf("after rtrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
 
 	strim = new_copy_dstring(&get_literal_cstring("   Rohan   "));
 	printf("<" printf_dstring_format ">\n", printf_dstring_params(&strim));
+	result = get_rtrimmed_dstring_pointing_to(&strim);
+	printf("Result : <" printf_dstring_format ">\n", printf_dstring_params(&result));
 	rtrim_dstring(&strim);
 	printf("after rtrim : <"printf_dstring_format ">\n\n", printf_dstring_params(&strim));
 	deinit_dstring(&strim);
