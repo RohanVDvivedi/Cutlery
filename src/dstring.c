@@ -473,7 +473,8 @@ dstring get_rtrimmed_dstring_pointing_to(const dstring* str_p)
 
 dstring get_trimmed_dstring_pointing_to(const dstring* str_p)
 {
-	return get_rtrimmed_dstring_pointing_to(&get_ltrimmed_dstring_pointing_to(str_p));
+	dstring s = get_ltrimmed_dstring_pointing_to(str_p);
+	return get_rtrimmed_dstring_pointing_to(&s);
 }
 
 // all method below this point are non permanent methods of dstring of cutlery library
