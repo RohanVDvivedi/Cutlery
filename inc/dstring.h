@@ -98,6 +98,10 @@ unsigned int ltrim_dstring(dstring* str_p);
 unsigned int rtrim_dstring(dstring* str_p);
 unsigned int trim_dstring(dstring* str_p);
 
+dstring get_ltrimmed_dstring_pointing_to(const dstring* str_p);
+dstring get_rtrimmed_dstring_pointing_to(const dstring* str_p);
+dstring get_trimmed_dstring_pointing_to(const dstring* str_p);
+
 #include<dstring_substring.h>
 #include<dstring_diff.h>
 

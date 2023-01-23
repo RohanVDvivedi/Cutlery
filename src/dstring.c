@@ -437,6 +437,21 @@ unsigned int trim_dstring(dstring* str_p)
 	return ltrim_dstring(str_p) + rtrim_dstring(str_p);
 }
 
+dstring get_ltrimmed_dstring_pointing_to(const dstring* str_p)
+{
+	// TODO
+}
+
+dstring get_rtrimmed_dstring_pointing_to(const dstring* str_p)
+{
+	// TODO
+}
+
+dstring get_trimmed_dstring_pointing_to(const dstring* str_p)
+{
+	return get_rtrimmed_dstring_pointing_to(&get_ltrimmed_dstring_pointing_to(str_p));
+}
+
 // all method below this point are non permanent methods of dstring of cutlery library
 
 #include<stdio.h>
