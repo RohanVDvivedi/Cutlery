@@ -333,4 +333,19 @@ int main()
 			printf("<" printf_dstring_format ">\n", printf_dstring_params(&split));
 		}
 	}
+
+	{
+		dstring s = get_literal_cstring("123");
+		unsigned int i = 0;
+		int r = 0;
+		printf("s = <" printf_dstring_format ">\n", printf_dstring_params(&s));
+		r = get_unsigned_int_from_dstring(&s, 8, &i);
+		printf("unsigned int = %u 0x%x 0%o in base 8 with result %d\n", i, i, i, r);
+		r = get_unsigned_int_from_dstring(&s, 10, &i);
+		printf("unsigned int = %u 0x%x 0%o in base 10 with result %d\n", i, i, i, r);
+		r = get_unsigned_int_from_dstring(&s, 16, &i);
+		printf("unsigned int = %u 0x%x 0%o in base 16 with result %d\n", i, i, i, r);
+		r = get_unsigned_int_from_dstring(&s, 2, &i);
+		printf("unsigned int = %u 0x%x 0%o in base 2 with result %d\n", i, i, i, r);
+	}
 }
