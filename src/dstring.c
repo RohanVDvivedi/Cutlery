@@ -17,6 +17,11 @@ memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
 // BASE METHODS START
 
+dstring_type get_dstring_type(const dstring* str_p)
+{
+	return get_dstr_type(str_p->type_n_SS_size);
+}
+
 void init_empty_dstring(dstring* str_p, unsigned int capacity)
 {
 	if(capacity > SS_capacity)

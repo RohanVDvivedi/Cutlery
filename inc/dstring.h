@@ -30,6 +30,8 @@ struct dstring
 // BASE METHODS START
 // only BASE methods are allowed to directly access the dstring struct
 
+dstring_type get_dstring_type(const dstring* str_p);
+
 void init_empty_dstring(dstring* str_p, unsigned int capacity);
 
 #define get_literal_dstring(data, data_size) \
