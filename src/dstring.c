@@ -465,6 +465,28 @@ dstring get_trimmed_dstring_pointing_to(const dstring* str_p)
 	return get_rtrimmed_dstring_pointing_to(&s);
 }
 
+int get_unsigned_int_from_dstring(const dstring* str_p, unsigned int radix, unsigned int* result)
+{
+	if(radix < 2 || radix > 36)
+		return 0;
+
+	const char* str_data = get_byte_array_dstring(str_p);
+	unsigned int str_size = get_char_count_dstring(str_p);
+
+	(*result) = 0;
+
+	for(unsigned int i = 0; i < str_size; i++)
+	{
+		unsigned int digit = get_digit_from_char(str_data[i], radix);
+		if(digit == INVALID_INDEX)
+			return 0;
+		(*result) *= radix;
+		(*result) += digit;
+	}
+
+	return 1;
+}
+
 // all method below this point are non permanent methods of dstring of cutlery library
 
 #include<stdio.h>

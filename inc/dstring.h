@@ -102,6 +102,11 @@ dstring get_ltrimmed_dstring_pointing_to(const dstring* str_p);
 dstring get_rtrimmed_dstring_pointing_to(const dstring* str_p);
 dstring get_trimmed_dstring_pointing_to(const dstring* str_p);
 
+// returns 1 in successfull conversion
+// it will return 0 if a character other than a radix character is found
+// this function does not check for overflow, hence it must be you who takes care of that, by checking the length of the string provided
+int get_unsigned_int_from_dstring(const dstring* str_p, unsigned int radix, unsigned int* result);
+
 #include<dstring_substring.h>
 #include<dstring_diff.h>
 
