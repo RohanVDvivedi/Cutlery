@@ -44,3 +44,22 @@ char to_uppercase_char(char c)
 		return c - 'a' + 'A';
 	return c;
 }
+
+unsigned int get_digit_from_char(char c, unsigned int radix)
+{
+	if(radix < 2 || radix > 36)
+		return INVALID_INDEX;
+
+	unsigned int digit = INVALID_INDEX;
+	if(is_char_in_range(c, '0', '9'))
+		digit = c - '0';
+	else if(is_char_in_range(c, 'a', 'z'))
+		digit = c - 'a' + 10;
+	else if(is_char_in_range(c, 'A', 'Z'))
+		digit = c - 'A' + 10;
+
+	if(digit < radix)
+		return digit;
+
+	return INVALID_INDEX;
+}
