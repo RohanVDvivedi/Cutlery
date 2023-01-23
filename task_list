@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * read dstring to parse an unsigned int, with given radix in range from 2 to 16, and maximum bytes to read
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
