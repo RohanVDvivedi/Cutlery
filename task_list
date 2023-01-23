@@ -1,6 +1,6 @@
 1. Tasks picked
 
- * read dstring to parse an unsigned int
+ * read dstring to parse an unsigned int, with given radix in range from 2 to 16, and maximum bytes to read
  * get_ltrimmed_dstring_pointing_to, get_rtrimmed_dstring_pointing_to and get_trimmed_dstring_pointing_to
 
 2. Add new datastructure types tasks (*future)
