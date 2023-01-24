@@ -65,6 +65,7 @@ int is_suffix_of_dstring(const dstring* string_p, const dstring* suffix_p);
 **
 **  both the split and the remaining dstrings will be POINT_DSTR dstring, i.e. they will only point to str
 **  if an instance of delim is not found then the remaining will be an empty_dstring
+**  since both split and remaining will be POINT_DSTR pointing to the original str, you do not need to deinit_dstring them (it would be a NOP)
 */
 
 dstring split_dstring(const dstring* str, const dstring* delim, dstring* split);
