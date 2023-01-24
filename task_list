@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * also add a macro to initialize a POINT_DSTR pointing to all of any dstring, as a shortcut
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
