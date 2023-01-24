@@ -36,6 +36,7 @@ void init_empty_dstring(dstring* str_p, unsigned int capacity);
 
 #define get_literal_dstring(data, data_size) \
 	((const dstring){.type_n_SS_size = POINT_DSTR, .byte_array = ((char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
+#define get_literal_dstring_pointing_to(dstr) get_literal_dstring(get_byte_array_dstring(dstr), get_char_count_dstring(dstr))
 #define get_literal_cstring(cstr) get_literal_dstring((cstr), strlen((cstr)))
 
 void deinit_dstring(dstring* str_p);
