@@ -94,6 +94,9 @@ unsigned int get_capacity_dstring(const dstring* str_p)
 
 unsigned int get_unused_capacity_dstring(const dstring* str_p)
 {
+	// a POINT_DSTR has no memory associated with it, hence it does not even have unused capacity
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+		return 0;
 	return get_capacity_dstring(str_p) - get_char_count_dstring(str_p);
 }
 
@@ -251,6 +254,10 @@ int is_empty_dstring(const dstring* str_p)
 
 int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index)
 {
+	// if it is a POINT_DSTR, you can not remove characters from it
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+		return 0;
+
 	// check that the ranges of start_index and last_index are valid
 	if(start_index > last_index || last_index >= get_char_count_dstring(str_p))
 		return 0;
@@ -269,6 +276,10 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 
 int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
+	// you cannot concatenate to a POINT_DSTR
+	if(get_dstr_type(str_p1->type_n_SS_size) == POINT_DSTR)
+		return 0;
+
 	const char* str2_data = get_byte_array_dstring(str_p2);
 	unsigned int str2_size = get_char_count_dstring(str_p2);
 
@@ -499,6 +510,10 @@ int get_unsigned_int_from_dstring(const dstring* str_p, unsigned int radix, unsi
 
 int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list var_args)
 {
+	// a POINT_DSTR can not be concatenated to
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+		return 0;
+
 	va_list var_args_dummy;
 
 	va_copy(var_args_dummy, var_args);
