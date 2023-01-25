@@ -274,6 +274,40 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 	return 1;
 }
 
+int discard_chard_from_front_dstring(dstring* str_p, unsigned int bytes_to_discard)
+{
+	unsigned int str_size = get_char_count_dstring(str_p);
+
+	if(str_size < bytes_to_discard)
+		return 0;
+
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	{
+		const char* str_data = get_byte_array_dstring(str_p);
+		(*str_p) = get_literal_dstring(str_data + bytes_to_discard, str_size - bytes_to_discard);
+		return 1;
+	}
+	else
+		return discard_chars_dstring(str_p, 0, bytes_to_discard - 1);
+}
+
+int discard_chard_from_back_dstring(dstring* str_p, unsigned int bytes_to_discard)
+{
+	unsigned int str_size = get_char_count_dstring(str_p);
+
+	if(str_size < bytes_to_discard)
+		return 0;
+
+	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	{
+		const char* str_data = get_byte_array_dstring(str_p);
+		(*str_p) = get_literal_dstring(str_data, str_size - bytes_to_discard);
+		return 1;
+	}
+	else
+		return discard_chars_dstring(str_p, str_size - bytes_to_discard, str_size - 1);
+}
+
 int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
 	// you cannot concatenate to a POINT_DSTR

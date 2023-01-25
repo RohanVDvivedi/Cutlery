@@ -73,7 +73,12 @@ int case_compare_dstring(const dstring* str_p1, const dstring* str_p2);
 
 // discard chars in dstring between start_index and last_index both inclusive
 // it won't shrink the dstring
+// this function will fail for POINT_DSTR
 int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index);
+
+// this function can be called on all types of dstrings
+int discard_chard_from_front_dstring(dstring* str_p, unsigned int bytes_to_discard);
+int discard_chard_from_back_dstring(dstring* str_p, unsigned int bytes_to_discard);
 
 // concatenates str_p2 to str_p1, this functions fail only if memory allocation fails (a worrysome situation)
 int concatenate_dstring(dstring* str_p1, const dstring* str_p2);
