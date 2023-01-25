@@ -217,10 +217,10 @@ dstring split_dstring(const dstring* str, const dstring* delim, dstring* split)
 
 	if(delim_index == INVALID_INDEX)
 	{
-		(*split) = get_literal_dstring(str_data, str_size);
-		return get_literal_dstring(NULL, 0);
+		(*split) = get_dstring_pointing_to(str_data, str_size);
+		return get_dstring_pointing_to(NULL, 0);
 	}
 
-	(*split) = get_literal_dstring(str_data, delim_index);
-	return get_literal_dstring(str_data + delim_index + delim_size, str_size - delim_index - delim_size);
+	(*split) = get_dstring_pointing_to(str_data, delim_index);
+	return get_dstring_pointing_to(str_data + delim_index + delim_size, str_size - delim_index - delim_size);
 }

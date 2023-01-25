@@ -287,7 +287,7 @@ int discard_chars_from_front_dstring(dstring* str_p, unsigned int bytes_to_disca
 	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
 	{
 		const char* str_data = get_byte_array_dstring(str_p);
-		(*str_p) = get_literal_dstring(str_data + bytes_to_discard, str_size - bytes_to_discard);
+		(*str_p) = get_dstring_pointing_to(str_data + bytes_to_discard, str_size - bytes_to_discard);
 		return 1;
 	}
 	else
@@ -307,7 +307,7 @@ int discard_chars_from_back_dstring(dstring* str_p, unsigned int bytes_to_discar
 	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
 	{
 		const char* str_data = get_byte_array_dstring(str_p);
-		(*str_p) = get_literal_dstring(str_data, str_size - bytes_to_discard);
+		(*str_p) = get_dstring_pointing_to(str_data, str_size - bytes_to_discard);
 		return 1;
 	}
 	else
@@ -355,7 +355,7 @@ int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 
 int concatenate_char(dstring* str_p1, char chr)
 {
-	return concatenate_dstring(str_p1, &get_literal_dstring(&chr, 1));
+	return concatenate_dstring(str_p1, &get_dstring_pointing_to(&chr, 1));
 }
 
 void to_lowercase_dstring(dstring* str_p)
@@ -568,6 +568,5 @@ int snprintf_dstring(dstring* str_p, const char* cstr_format, ...)
 
 int concatenate_c_string(dstring* str_p1, const char* c_string)
 {
-	return concatenate_dstring(str_p1, &get_literal_cstring(c_string));
+	return concatenate_dstring(str_p1, &get_dstring_pointing_to_cstring(c_string));
 }
-
