@@ -281,6 +281,9 @@ int discard_chars_from_front_dstring(dstring* str_p, unsigned int bytes_to_disca
 	if(str_size < bytes_to_discard)
 		return 0;
 
+	if(bytes_to_discard == 0)
+		return 1;
+
 	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
 	{
 		const char* str_data = get_byte_array_dstring(str_p);
@@ -297,6 +300,9 @@ int discard_chars_from_back_dstring(dstring* str_p, unsigned int bytes_to_discar
 
 	if(str_size < bytes_to_discard)
 		return 0;
+
+	if(bytes_to_discard == 0)
+		return 1;
 
 	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
 	{
@@ -456,8 +462,7 @@ unsigned int ltrim_dstring(dstring* str_p)
 	unsigned int whitespaces_to_remove = 0;
 	for(; whitespaces_to_remove < str_size && is_whitespace_char(str_data[whitespaces_to_remove]); whitespaces_to_remove++);
 
-	if(whitespaces_to_remove > 0)
-		discard_chars_dstring(str_p, 0, whitespaces_to_remove - 1);
+	discard_chars_from_front_dstring(str_p, whitespaces_to_remove);
 
 	return whitespaces_to_remove;
 }
@@ -470,8 +475,7 @@ unsigned int rtrim_dstring(dstring* str_p)
 	unsigned int whitespaces_to_remove = 0;
 	for(unsigned int i = str_size - 1; i != -1 && is_whitespace_char(str_data[i]); i--, whitespaces_to_remove++);
 
-	if(whitespaces_to_remove > 0)
-		discard_chars_dstring(str_p, str_size - whitespaces_to_remove, str_size - 1);
+	discard_chars_from_back_dstring(str_p, whitespaces_to_remove);
 
 	return whitespaces_to_remove;
 }
@@ -479,40 +483,6 @@ unsigned int rtrim_dstring(dstring* str_p)
 unsigned int trim_dstring(dstring* str_p)
 {
 	return ltrim_dstring(str_p) + rtrim_dstring(str_p);
-}
-
-dstring get_ltrimmed_dstring_pointing_to(const dstring* str_p)
-{
-	const char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
-
-	unsigned int whitespaces_to_remove = 0;
-	for(; whitespaces_to_remove < str_size && is_whitespace_char(str_data[whitespaces_to_remove]); whitespaces_to_remove++);
-
-	if(whitespaces_to_remove == str_size)
-		return get_literal_dstring(NULL, 0);
-
-	return get_literal_dstring(str_data + whitespaces_to_remove, str_size - whitespaces_to_remove);
-}
-
-dstring get_rtrimmed_dstring_pointing_to(const dstring* str_p)
-{
-	const char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
-
-	unsigned int whitespaces_to_remove = 0;
-	for(unsigned int i = str_size - 1; i != -1 && is_whitespace_char(str_data[i]); i--, whitespaces_to_remove++);
-
-	if(whitespaces_to_remove == str_size)
-		return get_literal_dstring(NULL, 0);
-
-	return get_literal_dstring(str_data, str_size - whitespaces_to_remove);
-}
-
-dstring get_trimmed_dstring_pointing_to(const dstring* str_p)
-{
-	dstring s = get_ltrimmed_dstring_pointing_to(str_p);
-	return get_rtrimmed_dstring_pointing_to(&s);
 }
 
 int get_unsigned_int_from_dstring(const dstring* str_p, unsigned int radix, unsigned int* result)

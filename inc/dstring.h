@@ -106,12 +106,6 @@ unsigned int ltrim_dstring(dstring* str_p);
 unsigned int rtrim_dstring(dstring* str_p);
 unsigned int trim_dstring(dstring* str_p);
 
-// the dstrings returned by the below functions are POINT_DSTR, pointing to the original str_p, and hence you do not need to deinitialize it, using deinit_dstring function call
-// since even if you deinitialize it, it will be a NOP
-dstring get_ltrimmed_dstring_pointing_to(const dstring* str_p);
-dstring get_rtrimmed_dstring_pointing_to(const dstring* str_p);
-dstring get_trimmed_dstring_pointing_to(const dstring* str_p);
-
 // returns 1 in successfull conversion
 // it will return 0 if a character other than a radix character is found
 // this function does not check for overflow, hence it must be you who takes care of that, by checking the length of the string provided
