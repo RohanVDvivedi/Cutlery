@@ -1,6 +1,7 @@
 1. Tasks picked
 
 * appropriately name point_dstr creation macros, and use sizeof for cstring literats
+* use get_dstring_type function instead of call to macro, in internal functions
 
 2. Add new datastructure types tasks (*future)
 
