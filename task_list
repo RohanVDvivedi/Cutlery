@@ -1,8 +1,6 @@
 1. Tasks picked
 
 * appropriately name point_dstr creation macros, and use sizeof for cstring literats
-* in ltrim_dstring and rtrim_dstring, if the passed dstring is a POINT_DSTR then modify it accordingly, since we can not directly discard its characters
-* implement discard_prefix_bytes and discard_suffix_bytes, as separate functions since they can also be called on POINT_DSTR
 
 2. Add new datastructure types tasks (*future)
 
