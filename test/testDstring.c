@@ -7,11 +7,11 @@ int main()
 	dstring str = new_dstring(NULL, 0);
 	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
-	concatenate_dstring(&str, &get_literal_cstring("Hello "));
+	concatenate_dstring(&str, &get_dstring_pointing_to_literal_cstring("Hello "));
 	printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
 
 	{
-		const dstring* tempstr = &get_literal_cstring("World, as said by Rohan AAACAAAAAC BBCBBD BBCBBD");
+		const dstring* tempstr = &get_dstring_pointing_to_literal_cstring("World, as said by Rohan AAACAAAAAC BBCBBD BBCBBD");
 		printf("concatenate str with tempstr : \"" printf_dstring_format "\"\n", printf_dstring_params(tempstr));
 		concatenate_dstring(&str, tempstr);
 		printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
@@ -33,7 +33,7 @@ int main()
 
 		for(int i = 0; i < temp_size; i++)
 		{
-			printf("prefix \"%s\" => %d\n", temp[i], is_prefix_of_dstring(&str, &get_literal_cstring(temp[i])));
+			printf("prefix \"%s\" => %d\n", temp[i], is_prefix_of_dstring(&str, &get_dstring_pointing_to_cstring(temp[i])));
 			printf("\n\n");
 		}
 
@@ -56,7 +56,7 @@ int main()
 
 		for(int i = 0; i < temp_size; i++)
 		{
-			printf("suffix \"%s\" => %d\n", temp[i], is_suffix_of_dstring(&str, &get_literal_cstring(temp[i])));
+			printf("suffix \"%s\" => %d\n", temp[i], is_suffix_of_dstring(&str, &get_dstring_pointing_to_cstring(temp[i])));
 			printf("\n\n");
 		}
 
@@ -66,25 +66,25 @@ int main()
 	snprintf_dstring(&str, "iNt no : %d, strIng : %s, floAT : %f", 336, "Heello Worlds!! =+", 35.49);
 	printf("str : \"" printf_dstring_format "\"\n\n\n", printf_dstring_params(&str));
 
-	printf("Created a literal dstring : " printf_dstring_format "\n\n", printf_dstring_params(&get_literal_dstring(get_byte_array_dstring(&str) + 4, 10)));
+	printf("Created a literal dstring : " printf_dstring_format "\n\n", printf_dstring_params(&get_dstring_pointing_to(get_byte_array_dstring(&str) + 4, 10)));
 
-	const dstring* slize = &get_literal_dstring(get_byte_array_dstring(&str), get_char_count_dstring(&str));
+	const dstring* slize = &get_dstring_pointing_to(get_byte_array_dstring(&str), get_char_count_dstring(&str));
 	printf("Created a literal dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
 	printf("on compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, slize));
 
-	slize = &get_literal_dstring(get_byte_array_dstring(&str), get_char_count_dstring(&str));
+	slize = &get_dstring_pointing_to(get_byte_array_dstring(&str), get_char_count_dstring(&str));
 	printf("Created a literal dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
 	printf("on compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, slize));
 
-	slize = &get_literal_dstring(get_byte_array_dstring(&str), 20);
+	slize = &get_dstring_pointing_to(get_byte_array_dstring(&str), 20);
 	printf("Created a literal dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
 	printf("on compare to str = case_compare(str,slize) = %d\n\n", case_compare_dstring(&str, slize));
 
-	slize = &get_literal_dstring(get_byte_array_dstring(&str), 20);
+	slize = &get_dstring_pointing_to(get_byte_array_dstring(&str), 20);
 	printf("Created a literal dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
 	printf("on compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, slize));
 
-	slize = &get_literal_dstring(get_byte_array_dstring(&str), get_char_count_dstring(&str));
+	slize = &get_dstring_pointing_to_dstring(&str);
 	printf("Created a literal dstring (slize) : \"" printf_dstring_format "\"\n", printf_dstring_params(slize));
 	printf("on compare to str = case_compare(str,slize) = %d\n", case_compare_dstring(&str, slize));
 	printf("on compare to str = compare(str,slize) = %d\n\n", compare_dstring(&str, slize));
@@ -121,7 +121,7 @@ int main()
 		{
 			printf("contains_dstring : %s\n", temp[i]);
 
-			const dstring* temp_dstr = &get_literal_cstring(temp[i]);
+			const dstring* temp_dstr = &get_dstring_pointing_to_literal_cstring(temp[i]);
 
 			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
 
@@ -155,14 +155,14 @@ int main()
 		{
 			printf("contains_dstring : %s\n", temp[i]);
 
-			const dstring* temp_dstr = &get_literal_cstring(temp[i]);
+			const dstring* temp_dstr = &get_dstring_pointing_to_cstring(temp[i]);
 
 			unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * (get_char_count_dstring(temp_dstr) + 1));
 			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
 
 			printf("SUFFIX_PREFIX_MATCH_LENGTHS : \n");
 			for(unsigned int l = 0; l <= get_char_count_dstring(temp_dstr); l++)
-				printf(printf_dstring_format " -> %u\n", printf_dstring_params(&get_literal_dstring(temp[i], l)), suffix_prefix_match_length[l]);
+				printf(printf_dstring_format " -> %u\n", printf_dstring_params(&get_dstring_pointing_to(temp[i], l)), suffix_prefix_match_length[l]);
 			printf("\n");
 
 			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
@@ -224,8 +224,8 @@ int main()
 
 		for(int i = 0; i < test_count; i++)
 		{
-			const dstring* s0 = &get_literal_cstring(temp[i][0]);
-			const dstring* s1 = &get_literal_cstring(temp[i][1]);
+			const dstring* s0 = &get_dstring_pointing_to_cstring(temp[i][0]);
+			const dstring* s1 = &get_dstring_pointing_to_cstring(temp[i][1]);
 			printf("leven-dist(\"%s\", \"%s\") = %u\n", temp[i][0], temp[i][1], levenshtein_distance(s0, s1));
 			printf("len-of-lcs(\"%s\", \"%s\") = %u\n", temp[i][0], temp[i][1], length_of_longest_common_subsequence(s0, s1));
 			printf("\n\n");
@@ -239,35 +239,35 @@ int main()
 	dstring s2;
 
 	// ltrim test
-	s1 = get_literal_cstring("");
+	s1 = get_dstring_pointing_to_literal_cstring("");
 	s2 = new_copy_dstring(&s1);
 	ltrim_dstring(&s1);
 	ltrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("Rohan");
+	s1 = get_dstring_pointing_to_literal_cstring("Rohan");
 	s2 = new_copy_dstring(&s1);
 	ltrim_dstring(&s1);
 	ltrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("   Rohan");
+	s1 = get_dstring_pointing_to_literal_cstring("   Rohan");
 	s2 = new_copy_dstring(&s1);
 	ltrim_dstring(&s1);
 	ltrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("Rohan   ");
+	s1 = get_dstring_pointing_to_literal_cstring("Rohan   ");
 	s2 = new_copy_dstring(&s1);
 	ltrim_dstring(&s1);
 	ltrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("   Rohan   ");
+	s1 = get_dstring_pointing_to_literal_cstring("   Rohan   ");
 	s2 = new_copy_dstring(&s1);
 	ltrim_dstring(&s1);
 	ltrim_dstring(&s2);
@@ -275,35 +275,35 @@ int main()
 	deinit_dstring(&s2);
 
 	// rtrim test
-	s1 = get_literal_cstring("");
+	s1 = get_dstring_pointing_to_literal_cstring("");
 	s2 = new_copy_dstring(&s1);
 	rtrim_dstring(&s1);
 	rtrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("Rohan");
+	s1 = get_dstring_pointing_to_literal_cstring("Rohan");
 	s2 = new_copy_dstring(&s1);
 	rtrim_dstring(&s1);
 	rtrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("   Rohan");
+	s1 = get_dstring_pointing_to_literal_cstring("   Rohan");
 	s2 = new_copy_dstring(&s1);
 	rtrim_dstring(&s1);
 	rtrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("Rohan   ");
+	s1 = get_dstring_pointing_to_literal_cstring("Rohan   ");
 	s2 = new_copy_dstring(&s1);
 	rtrim_dstring(&s1);
 	rtrim_dstring(&s2);
 	printf("after ltrim : <"printf_dstring_format "> <"printf_dstring_format ">\n\n", printf_dstring_params(&s1), printf_dstring_params(&s2));
 	deinit_dstring(&s2);
 
-	s1 = get_literal_cstring("   Rohan   ");
+	s1 = get_dstring_pointing_to_literal_cstring("   Rohan   ");
 	s2 = new_copy_dstring(&s1);
 	rtrim_dstring(&s1);
 	rtrim_dstring(&s2);
@@ -312,8 +312,8 @@ int main()
 
 	// tests for split_dstring
 	{
-		dstring str = get_literal_cstring("Vipul, Rupa, Devashree, Rohan, Jumbo");
-		dstring delim = get_literal_cstring(", ");
+		dstring str = get_dstring_pointing_to_literal_cstring("Vipul, Rupa, Devashree, Rohan, Jumbo");
+		dstring delim = get_dstring_pointing_to_literal_cstring(", ");
 
 		dstring remaining = str;
 		while(!is_empty_dstring(&remaining))
@@ -325,7 +325,7 @@ int main()
 	}
 
 	{
-		dstring s = get_literal_cstring("123");
+		dstring s = get_dstring_pointing_to_literal_cstring("123");
 		unsigned int i = 0;
 		int r = 0;
 		printf("s = <" printf_dstring_format ">\n", printf_dstring_params(&s));
