@@ -274,7 +274,7 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 	return 1;
 }
 
-int discard_chard_from_front_dstring(dstring* str_p, unsigned int bytes_to_discard)
+int discard_chars_from_front_dstring(dstring* str_p, unsigned int bytes_to_discard)
 {
 	unsigned int str_size = get_char_count_dstring(str_p);
 
@@ -291,7 +291,7 @@ int discard_chard_from_front_dstring(dstring* str_p, unsigned int bytes_to_disca
 		return discard_chars_dstring(str_p, 0, bytes_to_discard - 1);
 }
 
-int discard_chard_from_back_dstring(dstring* str_p, unsigned int bytes_to_discard)
+int discard_chars_from_back_dstring(dstring* str_p, unsigned int bytes_to_discard)
 {
 	unsigned int str_size = get_char_count_dstring(str_p);
 
