@@ -37,23 +37,23 @@ void init_empty_dstring(dstring* str_p, unsigned int capacity)
 
 char* get_byte_array_dstring(const dstring* str_p)
 {
-	if(get_dstr_type(str_p->type_n_SS_size) != SHORT_DSTR)
+	if(get_dstring_type(str_p) != SHORT_DSTR)
 		return str_p->byte_array;
 	return ((char*)str_p) + SS_data_offset;
 }
 
 unsigned int get_char_count_dstring(const dstring* str_p)
 {
-	if(get_dstr_type(str_p->type_n_SS_size) != SHORT_DSTR)
+	if(get_dstring_type(str_p) != SHORT_DSTR)
 		return str_p->bytes_occupied;
 	return get_dstr_SS_size(str_p->type_n_SS_size);
 }
 
 int increment_char_count_dstring(dstring* str_p, unsigned int increment_by)
 {
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR || increment_by > get_unused_capacity_dstring(str_p))
+	if(get_dstring_type(str_p) == POINT_DSTR || increment_by > get_unused_capacity_dstring(str_p))
 		return 0;
-	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	if(get_dstring_type(str_p) == SHORT_DSTR)
 	{
 		unsigned int new_SS_size = get_char_count_dstring(str_p) + increment_by;
 		set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
@@ -65,9 +65,9 @@ int increment_char_count_dstring(dstring* str_p, unsigned int increment_by)
 
 int decrement_char_count_dstring(dstring* str_p, unsigned int decrement_by)
 {
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR || decrement_by > get_char_count_dstring(str_p))
+	if(get_dstring_type(str_p) == POINT_DSTR || decrement_by > get_char_count_dstring(str_p))
 		return 0;
-	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	if(get_dstring_type(str_p) == SHORT_DSTR)
 	{
 		unsigned int new_SS_size = get_char_count_dstring(str_p) - decrement_by;
 		set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
@@ -79,7 +79,7 @@ int decrement_char_count_dstring(dstring* str_p, unsigned int decrement_by)
 
 void make_dstring_empty(dstring* str_p)
 {
-	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	if(get_dstring_type(str_p) == SHORT_DSTR)
 		set_dstr_SS_size(str_p->type_n_SS_size, 0);
 	else
 		str_p->bytes_occupied = 0;
@@ -87,7 +87,7 @@ void make_dstring_empty(dstring* str_p)
 
 unsigned int get_capacity_dstring(const dstring* str_p)
 {
-	if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	if(get_dstring_type(str_p) == SHORT_DSTR)
 		return SS_capacity;
 	return str_p->bytes_allocated;
 }
@@ -95,14 +95,14 @@ unsigned int get_capacity_dstring(const dstring* str_p)
 unsigned int get_unused_capacity_dstring(const dstring* str_p)
 {
 	// a POINT_DSTR has no memory associated with it, hence it does not even have unused capacity
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	if(get_dstring_type(str_p) == POINT_DSTR)
 		return 0;
 	return get_capacity_dstring(str_p) - get_char_count_dstring(str_p);
 }
 
 void deinit_dstring(dstring* str_p)
 {
-	if(get_dstr_type(str_p->type_n_SS_size) == LARGE_DSTR && str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
+	if(get_dstring_type(str_p) == LARGE_DSTR && str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
 		deallocate(DSTRING_mem_alloc, str_p->byte_array, str_p->bytes_allocated);
 	str_p->type_n_SS_size = SHORT_DSTR;
 	str_p->byte_array = NULL;
@@ -113,7 +113,7 @@ void deinit_dstring(dstring* str_p)
 int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 {
 	// if it is a POINT_DSTR it can not be expanded or shrunk
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	if(get_dstring_type(str_p) == POINT_DSTR)
 		return 0;
 
 	char* str_data = get_byte_array_dstring(str_p);
@@ -130,7 +130,7 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 		return 0;
 
 	// you might have to make a large dstring larger
-	if(get_dstr_type(str_p->type_n_SS_size) == LARGE_DSTR)
+	if(get_dstring_type(str_p) == LARGE_DSTR)
 	{
 		char* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, &new_capacity);
 
@@ -143,7 +143,7 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 		str_p->bytes_allocated = new_capacity;
 	}
 	// or convert a short dstring in to a large dstring
-	else if(get_dstr_type(str_p->type_n_SS_size) == SHORT_DSTR)
+	else if(get_dstring_type(str_p) == SHORT_DSTR)
 	{
 		// create a new LARGE_DSTR of new_capacity as its capacity
 		dstring* str_large_p = &((dstring){});
@@ -163,7 +163,7 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 int shrink_dstring(dstring* str_p)
 {
 	// if it is a POINT_DSTR it can not be expanded or shrunk
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	if(get_dstring_type(str_p) == POINT_DSTR)
 		return 0;
 
 	char* str_data = get_byte_array_dstring(str_p);
@@ -255,7 +255,7 @@ int is_empty_dstring(const dstring* str_p)
 int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index)
 {
 	// if it is a POINT_DSTR, you can not remove characters from it
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	if(get_dstring_type(str_p) == POINT_DSTR)
 		return 0;
 
 	// check that the ranges of start_index and last_index are valid
@@ -284,7 +284,7 @@ int discard_chars_from_front_dstring(dstring* str_p, unsigned int bytes_to_disca
 	if(bytes_to_discard == 0)
 		return 1;
 
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	if(get_dstring_type(str_p) == POINT_DSTR)
 	{
 		const char* str_data = get_byte_array_dstring(str_p);
 		(*str_p) = get_dstring_pointing_to(str_data + bytes_to_discard, str_size - bytes_to_discard);
@@ -304,7 +304,7 @@ int discard_chars_from_back_dstring(dstring* str_p, unsigned int bytes_to_discar
 	if(bytes_to_discard == 0)
 		return 1;
 
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	if(get_dstring_type(str_p) == POINT_DSTR)
 	{
 		const char* str_data = get_byte_array_dstring(str_p);
 		(*str_p) = get_dstring_pointing_to(str_data, str_size - bytes_to_discard);
@@ -515,7 +515,7 @@ int get_unsigned_int_from_dstring(const dstring* str_p, unsigned int radix, unsi
 int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list var_args)
 {
 	// a POINT_DSTR can not be concatenated to
-	if(get_dstr_type(str_p->type_n_SS_size) == POINT_DSTR)
+	if(get_dstring_type(str_p) == POINT_DSTR)
 		return 0;
 
 	va_list var_args_dummy;
