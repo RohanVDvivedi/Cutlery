@@ -13,6 +13,10 @@
 	#define UINT_MAX (~(0U))
 #endif
 
+// by this below 2 level concatenate expansion we can first substitute params and then concatenate them
+#define CAT_(a, b) a ## b
+#define CAT(a, b) CAT_(a, b)
+
 #define INVALID_INDEX UINT_MAX
 // any array (struct array, struct dstring, c array or char array ) will never have this index
 // INVALID_INDEX is used to report error (or a lack of result) to the user

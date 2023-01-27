@@ -331,7 +331,7 @@ int main()
 		dstring str = get_dstring_pointing_to_literal_cstring("Vipul, Rupa, Devashree, Rohan, , Jumbo");
 		dstring delim = get_dstring_pointing_to_literal_cstring(", ");
 
-		for(dstring split, remaining = split_dstring(&str, &delim, &split); (!is_empty_dstring(&remaining)) || (!is_empty_dstring(&split)); remaining = split_dstring(&remaining, &delim, &split))
+		for_each_split_by_delim(split, &str, &delim)
 			printf("<" printf_dstring_format ">\n", printf_dstring_params(&split));
 	}
 
