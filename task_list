@@ -1,5 +1,6 @@
 1. Tasks picked
 
+DPIPE
  * implement const void* get_internal_consecutive_read_reference_*[front,back]_dpipe(unsigned int* max_bytes_readable) to get pointer to internal buffer to read consecutive bytes without copy
  * implement int discard_bytes_*[front,back]_dpipe(unsigned int bytes_to_discard), to discard bytes from front or back of dpipe, without reading them. -> this can be used with prior bytes peeked or read
  * use above functions to further implement discard_bytes_read
