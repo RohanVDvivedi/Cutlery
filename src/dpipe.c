@@ -228,6 +228,34 @@ int pop_back_from_dpipe(dpipe* pipe, unsigned int data_size)
 	return 1;
 }
 
+const void* get_max_consecutive_from_front_of_dpipe(const dpipe* pipe, unsigned int* bytes_available)
+{
+	// return NULL, if there are no bytes available
+	if(pipe->byte_count == 0)
+	{
+		(*bytes_available) = 0;
+		return NULL;
+	}
+
+	// construct internal buffer to the first byte and set number of consecutive number of bytes at that address in bytes_available 
+	const void* internal = pipe->buffer + pipe->first_byte;
+	(*bytes_available) = min(pipe->buffer_capacity - pipe->first_byte, pipe->byte_count);
+
+	return internal;
+}
+
+const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, unsigned int* bytes_available)
+{
+	// return NULL, if there are no bytes available
+	if(pipe->byte_count == 0)
+	{
+		(*bytes_available) = 0;
+		return NULL;
+	}
+
+	// TODO
+}
+
 void remove_all_from_dpipe(dpipe* pipe)
 {
 	pipe->first_byte = 0;
