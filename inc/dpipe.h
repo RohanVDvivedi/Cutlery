@@ -70,8 +70,11 @@ unsigned int read_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dp
 // the first byte at data will be read first upon calling read
 unsigned int unread_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
 
-// peek data_size number of bytes that will be read next ==> get_front_of_dpipe
+// peek data_size number of readabale bytes (from read end), that were suppossed to be read next ==> get_front_of_dpipe
 unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
+
+// discard next data_size number of readable bytes (from read end), that were suppossed to be read next ==> pop_front_from_dpipe
+int discard_from_dpipe(dpipe* pipe, unsigned int data_size);
 
 // use push, pop and get functions only if you know what you are doing
 // pop_*_from_dpipe will only discard data_size number of bytes from front or back of dpipe, so it must be used in conjunction with get_*_of_dpipe

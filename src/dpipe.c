@@ -51,6 +51,11 @@ unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_si
 	return get_front_of_dpipe(pipe, data, data_size, op_type);
 }
 
+int discard_from_dpipe(dpipe* pipe, unsigned int data_size)
+{
+	return pop_front_from_dpipe(pipe, data_size);
+}
+
 static inline unsigned int copy_from_circular_buffer(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
 {
 	// we can not read more than buffer_capacity number of bytes from buffer
