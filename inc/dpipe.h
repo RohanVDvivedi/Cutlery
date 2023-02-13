@@ -63,7 +63,7 @@ void initialize_dpipe_with_memory(dpipe* pipe, unsigned int capacity, void* buff
 // write bytes to dpipe ==> push_back_to_dpipe
 unsigned int write_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
 
-// read next bytes from dpipe ==> get_front_of_dpipe and then pop_front_from_dpipe
+// read next bytes from dpipe ==> get_front_of_dpipe and then pop_front_from_dpipe OR peek_from_dpipe and then discard from dpipe
 unsigned int read_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
 
 // unread given bytes (that we already read) back to the pipe ==> push_front_to_dpipe
