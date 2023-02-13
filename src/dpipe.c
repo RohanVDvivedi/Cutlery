@@ -253,7 +253,21 @@ const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, unsigned i
 		return NULL;
 	}
 
-	// TODO
+
+	const void* internal = NULL;
+
+	if(pipe->buffer_capacity - pipe->first_byte >= pipe->byte_count) // case when all bytes are consecutive
+	{
+		internal = pipe->buffer + pipe->first_byte;
+		(*bytes_available) = pipe->byte_count;
+	}
+	else // else we need to search for tail bytes that start at first_byte
+	{
+		internal = pipe->buffer;
+		(*bytes_available) = pipe->byte_count - (pipe->buffer_capacity - pipe->first_byte);
+	}
+
+	return internal;
 }
 
 void remove_all_from_dpipe(dpipe* pipe)
