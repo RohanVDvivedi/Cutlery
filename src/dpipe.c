@@ -253,7 +253,6 @@ const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, unsigned i
 		return NULL;
 	}
 
-
 	const void* internal = NULL;
 
 	if(pipe->buffer_capacity - pipe->first_byte >= pipe->byte_count) // case when all bytes are consecutive
