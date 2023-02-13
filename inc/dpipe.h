@@ -76,7 +76,7 @@ unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_si
 // discard next data_size number of readable bytes (from read end), that were suppossed to be read next ==> pop_front_from_dpipe
 int discard_from_dpipe(dpipe* pipe, unsigned int data_size);
 
-// use push, pop and get functions only if you know what you are doing
+// use push, get and pop functions only if you know what you are doing
 // pop_*_from_dpipe will only discard data_size number of bytes from front or back of dpipe, so it must be used in conjunction with get_*_of_dpipe
 unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
 unsigned int get_back_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
