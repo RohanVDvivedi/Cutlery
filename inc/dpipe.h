@@ -85,6 +85,14 @@ unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data
 int pop_front_from_dpipe(dpipe* pipe, unsigned int data_size);
 int pop_back_from_dpipe(dpipe* pipe, unsigned int data_size);
 
+// below function will return pointer to the internal buffer of the dpipe and the consecutive bytes count that it points to
+// since these pointer point to bytes in internal buffer of dpipe, you may not modify or access out of bound
+// these functions are provided for critical code segments, when you may like to avoid copy from dpipe buffer
+// you may pop bytes_available after these calls
+// use these fucntion only if you know what you are doing
+const void* get_max_consecutive_from_front_of_dpipe(const dpipe* pipe, unsigned int* bytes_available);
+const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, unsigned int* bytes_available);
+
 // removes all bytes of the dpipe i.e. makes byte_count and first_byte = 0
 void remove_all_from_dpipe(dpipe* pipe);
 
