@@ -76,6 +76,12 @@ unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_si
 // discard next data_size number of readable bytes (from read end), that were suppossed to be read next ==> pop_front_from_dpipe
 int discard_from_dpipe(dpipe* pipe, unsigned int data_size);
 
+// peeks max consecutive from readabale end of dpipe, these are the bytes that were suppossed to be read next => get_max_consecutive_from_front_of_dpipe
+// you may use this function to avoid copy
+// after a call to this function you may call discard_from_dpipe on the bytes_available, inorder to pop these bytes
+// since this function returns pointer to the internal buffer of the dpipe, you may not modify it
+const void* peek_max_consecutive_from_dpipe(const dpipe* pipe, unsigned int* bytes_available);
+
 // use push, get and pop functions only if you know what you are doing
 // pop_*_from_dpipe will only discard data_size number of bytes from front or back of dpipe, so it must be used in conjunction with get_*_of_dpipe
 unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);

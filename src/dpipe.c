@@ -56,6 +56,11 @@ int discard_from_dpipe(dpipe* pipe, unsigned int data_size)
 	return pop_front_from_dpipe(pipe, data_size);
 }
 
+const void* peek_max_consecutive_from_dpipe(const dpipe* pipe, unsigned int* bytes_available)
+{
+	return get_max_consecutive_from_front_of_dpipe(pipe, bytes_available);
+}
+
 static inline unsigned int copy_from_circular_buffer(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
 {
 	// we can not read more than buffer_capacity number of bytes from buffer
