@@ -36,7 +36,9 @@ unsigned int write_to_dpipe(dpipe* pipe, const void* data, unsigned int data_siz
 
 unsigned int read_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
 {
-	return pop_front_from_dpipe(pipe, data, data_size, op_type);
+	unsigned int bytes_read = get_front_of_dpipe(pipe, data, data_size, op_type);
+	pop_front_from_dpipe(pipe, bytes_read);
+	return bytes_read;
 }
 
 unsigned int unread_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type)
@@ -44,7 +46,7 @@ unsigned int unread_to_dpipe(dpipe* pipe, const void* data, unsigned int data_si
 	return push_front_to_dpipe(pipe, data, data_size, op_type);
 }
 
-unsigned int peek_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
+unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
 {
 	return get_front_of_dpipe(pipe, data, data_size, op_type);
 }
@@ -186,35 +188,39 @@ unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data
 	return bytes_to_write;
 }
 
-unsigned int pop_front_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
+int pop_front_from_dpipe(dpipe* pipe, unsigned int data_size)
 {
-	// read bytes_read number of bytes from front of dpipe into data (max capacity = data_size)
-	unsigned int bytes_read = get_front_of_dpipe(pipe, data, data_size, op_type);
+	// if data_size is greter than bytes in dpipe, then return failure
+	if(data_size > pipe->byte_count)
+		return 0;
 
 	// update the first_byte and the byte_count
-	pipe->first_byte = add_indexes(pipe->first_byte, bytes_read, pipe->buffer_capacity);
-	pipe->byte_count -= bytes_read;
+	pipe->first_byte = add_indexes(pipe->first_byte, data_size, pipe->buffer_capacity);
+	pipe->byte_count -= data_size;
 
 	// reset the first_byte, if the byte_count = 0
 	if(pipe->byte_count == 0)
 		pipe->first_byte = 0;
 
-	return bytes_read;
+	// pop success
+	return 1;
 }
 
-unsigned int pop_back_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
+int pop_back_from_dpipe(dpipe* pipe, unsigned int data_size)
 {
-	// read bytes_read number of bytes from back of dpipe into data (max capacity = data_size)
-	unsigned int bytes_read = get_back_of_dpipe(pipe, data, data_size, op_type);
+	// if data_size is greter than bytes in dpipe, then return failure
+	if(data_size > pipe->byte_count)
+		return 0;
 
 	// update the byte_count
-	pipe->byte_count -= bytes_read;
+	pipe->byte_count -= data_size;
 
 	// reset the first_byte, if the byte_count = 0
 	if(pipe->byte_count == 0)
 		pipe->first_byte = 0;
 
-	return bytes_read;
+	// pop success
+	return 1;
 }
 
 void remove_all_from_dpipe(dpipe* pipe)

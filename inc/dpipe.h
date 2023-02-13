@@ -63,7 +63,7 @@ void initialize_dpipe_with_memory(dpipe* pipe, unsigned int capacity, void* buff
 // write bytes to dpipe ==> push_back_to_dpipe
 unsigned int write_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
 
-// read next bytes from dpipe ==> pop_front_from_dpipe
+// read next bytes from dpipe ==> get_front_of_dpipe and then pop_front_from_dpipe
 unsigned int read_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
 
 // unread given bytes (that we already read) back to the pipe ==> push_front_to_dpipe
@@ -71,15 +71,16 @@ unsigned int read_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dp
 unsigned int unread_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
 
 // peek data_size number of bytes that will be read next ==> get_front_of_dpipe
-unsigned int peek_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
+unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
 
 // use push, pop and get functions only if you know what you are doing
+// pop_*_from_dpipe will only discard data_size number of bytes from front or back of dpipe, so it must be used in conjunction with get_*_of_dpipe
 unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
 unsigned int get_back_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
 unsigned int push_front_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
 unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
-unsigned int pop_front_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
-unsigned int pop_back_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
+int pop_front_from_dpipe(dpipe* pipe, unsigned int data_size);
+int pop_back_from_dpipe(dpipe* pipe, unsigned int data_size);
 
 // removes all bytes of the dpipe i.e. makes byte_count and first_byte = 0
 void remove_all_from_dpipe(dpipe* pipe);
