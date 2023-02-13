@@ -85,10 +85,12 @@ int main()
 
 	resize_dpipe_wrapper(pipe, 0);
 
-	unsigned int bytes_popped_back = pop_back_from_dpipe(pipe, read_buff, 8, PARTIAL_ALLOWED);
+	unsigned int bytes_popped_back = get_back_of_dpipe(pipe, read_buff, 8, PARTIAL_ALLOWED);
+	pop_back_from_dpipe(pipe, bytes_popped_back);
 	printf("popped_back \"%.*s\" => %u\n\n", bytes_popped_back, read_buff, bytes_popped_back);
 
-	bytes_popped_back = pop_back_from_dpipe(pipe, read_buff, 8, PARTIAL_ALLOWED);
+	bytes_popped_back = get_back_of_dpipe(pipe, read_buff, 8, PARTIAL_ALLOWED);
+	pop_back_from_dpipe(pipe, bytes_popped_back);
 	printf("popped_back \"%.*s\" => %u\n\n", bytes_popped_back, read_buff, bytes_popped_back);
 
 	write_to_dpipe_wrapper(pipe, "XXXXX", ALL_OR_NONE);
