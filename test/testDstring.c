@@ -312,15 +312,17 @@ int main()
 
 	// tests for split_dstring
 	{
-		dstring str = get_dstring_pointing_to_literal_cstring("Vipul, Rupa, Devashree, Rohan, , Jumbo");
+		dstring str = get_dstring_pointing_to_literal_cstring("Vipul, Rupa, Devashree, Rohan, , Jumbo, ");
 		dstring delim = get_dstring_pointing_to_literal_cstring(", ");
 
 		dstring remaining = str;
-		while(!is_empty_dstring(&remaining))
+		while(1)
 		{
 			dstring split;
 			remaining = split_dstring(&remaining, &delim, &split);
 			printf("<" printf_dstring_format ">\n", printf_dstring_params(&split));
+			if(get_byte_array_dstring(&remaining) == NULL)
+				break;
 		}
 	}
 
@@ -328,7 +330,7 @@ int main()
 
 	// tests for split_dstring, using an effective for loop
 	{
-		dstring str = get_dstring_pointing_to_literal_cstring("Vipul, Rupa, Devashree, Rohan, , Jumbo");
+		dstring str = get_dstring_pointing_to_literal_cstring("Vipul, Rupa, Devashree, Rohan, , Jumbo, ");
 		dstring delim = get_dstring_pointing_to_literal_cstring(", ");
 
 		for_each_split_by_delim(split, &str, &delim)
