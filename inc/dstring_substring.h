@@ -76,7 +76,7 @@ dstring split_dstring(const dstring* str, const dstring* delim, dstring* split);
 #include<cutlery_stds.h>
 
 // below is an easy way to iterate over all the split strings of the (dstring*) str split by a (dstring*) delimeter
-#define for_each_split_by_delim(split, str, delim) for(dstring split, CAT(__remaining, __LINE__) = split_dstring(str, delim, &split); (!is_empty_dstring(&CAT(__remaining, __LINE__))) || (!is_empty_dstring(&split)); CAT(__remaining, __LINE__) = split_dstring(&CAT(__remaining, __LINE__), delim, &split))
+#define for_each_split_by_delim(split, str, delim) for(dstring split, CAT(__remaining, __LINE__) = split_dstring(str, delim, &split); get_byte_array_dstring(&split) != NULL; CAT(__remaining, __LINE__) = split_dstring(&CAT(__remaining, __LINE__), delim, &split))
 
 /*
 	usage of the above macro
