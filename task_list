@@ -1,6 +1,7 @@
 1. Tasks picked
 
  * implement base64 is_valid_base64_encoding encode_base64 and decode_base64 on dstrings
+ * initialize functions of data structures that are backed by array,can fail if memory allocations fail, so modify their return type to int, and fail with return value = 0, success = 1
 
 2. Add new datastructure types tasks (*future)
 
