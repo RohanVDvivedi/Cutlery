@@ -11,8 +11,10 @@ struct queue
 };
 
 // initializes queue and it will depend on initialize_array to give necessary memory to manage internal element contents
-void initialize_queue(queue* queue_p, unsigned int capacity);
-void initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memory_allocator mem_allocator);
+// the initialize_queue* functions may fail if the initial memory allocation fails
+// in case of a failure, the queue will still be initialized to capacity 0
+int initialize_queue(queue* queue_p, unsigned int capacity);
+int initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memory_allocator mem_allocator);
 void initialize_queue_with_memory(queue* queue_p, unsigned int capacity, const void* data_ps[]);
 
 // push a new element to the queue
