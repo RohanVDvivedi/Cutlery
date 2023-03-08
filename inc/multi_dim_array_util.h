@@ -36,7 +36,7 @@
 **               int arr[3][2][4] = {};                          |                int arr[3 * 2 * 4] = {};   OR   int* arr = calloc(3 * 2 * 4, sizeof(int));
 **                                                               |
 **  element access: @ (2,0,3)                                    |   element access @ (2,0,3)
-**               arr[2][0][3]                                    |                arr[ get_accessor_from_indices( &((int[]){4,2,3}), &((int[]){3,0,2}),3) ]
+**               arr[2][0][3]                                    |                arr[ get_accessor_from_indices( &((int[]){3,0,2}), &((int[]){4,2,3}) , 3) ]
 **
 **	Notice the reverse order in supplying the dimensions and indices array ???
 */
