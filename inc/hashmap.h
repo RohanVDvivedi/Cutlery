@@ -79,6 +79,8 @@ struct rbhnode
 int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
 int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator);
 
+void initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* bucket_memory[]);
+
 // always initialize your rbhnode before using it
 void initialize_rbhnode(rbhnode* node_p);
 

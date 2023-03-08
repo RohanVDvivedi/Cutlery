@@ -29,6 +29,16 @@ int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_p
 	return initialize_array_with_allocator(&(hashmap_p->hashmap_holder), bucket_count, mem_allocator);
 }
 
+void initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* bucket_memory[])
+{
+	hashmap_p->hashmap_policy = hashmap_policy;
+	hashmap_p->hash_function = hash_function;
+	hashmap_p->compare = compare;
+	hashmap_p->node_offset = node_offset;
+	hashmap_p->element_count = 0;
+	initialize_array_with_memory(&(hashmap_p->hashmap_holder), bucket_count, bucket_memory);
+}
+
 void initialize_rbhnode(rbhnode* node_p)
 {
 	node_p->position_index = INVALID_INDEX;
