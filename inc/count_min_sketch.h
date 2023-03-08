@@ -43,9 +43,12 @@ struct count_min_sketch
 	memory_allocator uint_allocator;
 };
 
-void initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[]);
+// initialize_count_min_sketch* functions may fail, if the initial memory allocation fails
+// in case of a failure, there has not been any memory allocation, and the error is fatal, the count min sketch instance is unusable
 
-void initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator uint_allocator);
+int initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[]);
+
+int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator uint_allocator);
 
 // in the initialize with_memory function the frequencies parameter (the last parameter) is optional
 // it can be provided as NULL, if you want to use STD_C_mem_allocator for allocating and maintaining frequencies
