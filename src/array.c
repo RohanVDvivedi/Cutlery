@@ -18,17 +18,23 @@ static unsigned int get_new_capacity(unsigned int current_capacity)
 	return (new_capacity < current_capacity) ? MAX_CAPACITY : new_capacity;
 }
 
-void initialize_array(array* array_p, unsigned int capacity)
+int initialize_array(array* array_p, unsigned int capacity)
 {// initialize array with the default memory allocator
-	initialize_array_with_allocator(array_p, capacity, STD_C_mem_allocator);
+	return initialize_array_with_allocator(array_p, capacity, STD_C_mem_allocator);
 }
 
-void initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator)
+int initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator)
 {
 	array_p->mem_allocator = mem_allocator;
 	unsigned int bytes_allocated = capacity * sizeof(void*);
 	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, &bytes_allocated) : NULL;
 	array_p->capacity = (array_p->data_p_p != NULL) ? (bytes_allocated / sizeof(void*)) : 0;
+
+	// check for allocator error, if the allocation fails, return 0, else return 1
+	if(bytes_allocated > 0 && array_p->data_p_p == NULL)
+		return 0;
+
+	return 1;
 }
 
 void initialize_array_with_memory(array* array_p, unsigned int capacity, const void* data_ps[])

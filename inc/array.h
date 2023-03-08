@@ -19,8 +19,10 @@ struct array
 };
 
 // initializes and gives necessary memory to manage internal element contents
-void initialize_array(array* array_p, unsigned int capacity);
-void initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator);
+// initialize functions may fail, if the initial memory allocation fails
+// in case of such a failure, the array still gets initialized to capacity 0
+int initialize_array(array* array_p, unsigned int capacity);
+int initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator);
 void initialize_array_with_memory(array* array_p, unsigned int capacity, const void* data_ps[]);
 
 // returns pointer to the data at index = index
