@@ -9,24 +9,24 @@
 
 #include<cutlery_stds.h>
 
-void initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
+int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->compare = compare;
-	initialize_array(&(hashmap_p->hashmap_holder), bucket_count);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
+	return initialize_array(&(hashmap_p->hashmap_holder), bucket_count);
 }
 
-void initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator)
+int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->compare = compare;
-	initialize_array_with_allocator(&(hashmap_p->hashmap_holder), bucket_count, mem_allocator);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
+	return initialize_array_with_allocator(&(hashmap_p->hashmap_holder), bucket_count, mem_allocator);
 }
 
 void initialize_rbhnode(rbhnode* node_p)
