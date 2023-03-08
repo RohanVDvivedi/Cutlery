@@ -4,25 +4,25 @@
 
 #include<circular_buffer_array_util.h>
 
-void initialize_arraylist(arraylist* al, unsigned int capacity)
+int initialize_arraylist(arraylist* al, unsigned int capacity)
 {
-	initialize_array(&(al->arraylist_holder), capacity);
 	al->first_index = 0;
 	al->element_count = 0;
+	return initialize_array(&(al->arraylist_holder), capacity);
 }
 
-void initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator)
+int initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator)
 {
-	initialize_array_with_allocator(&(al->arraylist_holder), capacity, mem_allocator);
 	al->first_index = 0;
 	al->element_count = 0;
+	return initialize_array_with_allocator(&(al->arraylist_holder), capacity, mem_allocator);
 }
 
 void initialize_arraylist_with_memory(arraylist* al, unsigned int capacity, const void* data_ps[])
 {
-	initialize_array_with_memory(&(al->arraylist_holder), capacity, data_ps);
 	al->first_index = 0;
 	al->element_count = 0;
+	initialize_array_with_memory(&(al->arraylist_holder), capacity, data_ps);
 }
 
 int push_front_to_arraylist(arraylist* al, const void* data_p)

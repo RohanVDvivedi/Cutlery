@@ -22,8 +22,10 @@ struct arraylist
 	unsigned int element_count;
 };
 
-void initialize_arraylist(arraylist* al, unsigned int capacity);
-void initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator);
+// the initialize_arraylist* functions may fail if the initial memory allocation fails
+// in case of a failure, the arraylist will still be initialized to capacity 0
+int initialize_arraylist(arraylist* al, unsigned int capacity);
+int initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator);
 void initialize_arraylist_with_memory(arraylist* al, unsigned int capacity, const void* data_ps[]);
 
 // push_*_to_arraylist functions will push data_p to the front/back of the arraylist, and will return 1 on success
