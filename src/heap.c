@@ -125,22 +125,22 @@ int is_free_floating_hpnode(const hpnode* node_p)
 	return node_p->heap_index == INVALID_INDEX;
 }
 
-void initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
+int initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
 	heap_p->node_offset = node_offset;
-	initialize_array(&(heap_p->heap_holder), capacity);
 	heap_p->element_count = 0;
+	return initialize_array(&(heap_p->heap_holder), capacity);
 }
 
-void initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator)
+int initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator)
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
 	heap_p->node_offset = node_offset;
-	initialize_array_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 	heap_p->element_count = 0;
+	return initialize_array_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 }
 
 void initialize_heap_with_memory(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* data_ps[])
@@ -148,8 +148,8 @@ void initialize_heap_with_memory(heap* heap_p, unsigned int capacity, heap_type 
 	heap_p->type = type;
 	heap_p->compare = compare;
 	heap_p->node_offset = node_offset;
-	initialize_array_with_memory(&(heap_p->heap_holder), capacity, data_ps);
 	heap_p->element_count = 0;
+	initialize_array_with_memory(&(heap_p->heap_holder), capacity, data_ps);
 }
 
 int push_to_heap(heap* heap_p, const void* data)
