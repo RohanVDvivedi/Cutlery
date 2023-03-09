@@ -198,9 +198,9 @@ int base64_decode(const dstring* base64_enc, dstring* dstr)
 				};
 
 				char packet_merge[3] = {
-					(packet[0] << 2) | ((packet[1] >> 6) & '\x3'),
-					(packet[1] << 4) | ((packet[2] >> 2) & '\xf'),
-					(packet[2] << 6) | ((packet[3]) & '\x3f')
+					(packet[0] << 2) | (packet[1] >> 4),
+					(packet[1] << 4) | (packet[2] >> 2),
+					(packet[2] << 6) | packet[3]
 				};
 
 				concatenate_dstring(dstr, &get_dstring_pointing_to(packet_merge, 3));
@@ -216,8 +216,8 @@ int base64_decode(const dstring* base64_enc, dstring* dstr)
 				};
 
 				char packet_merge[2] = {
-					(packet[0] << 2) | ((packet[1] >> 6) & '\x3'),
-					(packet[1] << 4) | ((packet[2] >> 2) & '\xf')
+					(packet[0] << 2) | (packet[1] >> 4),
+					(packet[1] << 4) | (packet[2] >> 2)
 				};
 
 				concatenate_dstring(dstr, &get_dstring_pointing_to(packet_merge, 2));
@@ -232,7 +232,7 @@ int base64_decode(const dstring* base64_enc, dstring* dstr)
 				};
 
 				char packet_merge[1] = {
-					(packet[0] << 2) | ((packet[1] >> 6) & '\x3')
+					(packet[0] << 2) | (packet[1] >> 6)
 				};
 
 				concatenate_dstring(dstr, &get_dstring_pointing_to(packet_merge, 1));
