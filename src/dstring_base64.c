@@ -43,6 +43,7 @@ int is_valid_base64_encoding(const dstring* base64_enc)
 			else
 				return 0;
 		}
+		i++;
 	}
 
 	// we hit '=', or end of base64_enc
@@ -55,6 +56,7 @@ int is_valid_base64_encoding(const dstring* base64_enc)
 	{
 		if(base64_enc_data[i] != '=')
 			return 0;
+		i++;
 	}
 
 	return 1;
