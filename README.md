@@ -42,6 +42,7 @@ A C (standard C99) library that provides configurable data structures, serving a
    * `#include<bloom_filter.h>`
    * `#include<count_min_sketch.h>`
    * `#include<memory_allocator_interface.h>`
+   * `#include<dstring_base64.h>`
 
 ## Instructions for uninstalling library
 

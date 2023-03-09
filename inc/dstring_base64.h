@@ -1,5 +1,5 @@
-#ifndef BASE64_H
-#define BASE64_H
+#ifndef DSTRING_BASE64_H
+#define DSTRING_BASE64_H
 
 #include<dstring.h>
 
