@@ -74,6 +74,22 @@ int can_base64_encode(const dstring* dstr)
 	return get_char_count_dstring(dstr) <= MAX_ENCODABLE_SIZE;
 }
 
+static char encode_6_bits(unsigned char x)
+{
+	if(0 <= x && x < 26)
+		return x + 'A';
+	else if(26 <= x && x < 52)
+		return x - 26 + 'a';
+	else if(52 <= x && x < 62)
+		return x - 52 + '0';
+	else if(62 == x)
+		return '+';
+	else if(63 == x)
+		return '/';
+	else // this case should never occur
+		return '\0';
+}
+
 int base64_encode(const dstring* dstr, dstring* base64_enc)
 {
 	if(!can_base64_encode(dstr))
@@ -85,6 +101,22 @@ int base64_encode(const dstring* dstr, dstring* base64_enc)
 	// TODO
 
 	return 1;
+}
+
+static unsigned char decode_to_6_bits(char c)
+{
+	if('A' <= c && c <= 'Z')
+		return c - 'A';
+	else if('a' <= c && c <= 'z')
+		return c - 'a' + 26;
+	else if('0' <= c && c <= '9')
+		return c - '0' + 52;
+	else if('+' == c)
+		return 62;
+	else if('/' == c)
+		return 63;
+	else // this case should never occur
+		return -1;
 }
 
 int base64_decode(const dstring* base64_enc, dstring* dstr)
