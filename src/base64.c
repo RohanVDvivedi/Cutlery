@@ -166,8 +166,81 @@ int base64_decode(const dstring* base64_enc, dstring* dstr)
 
 	make_dstring_empty(dstr);
 
+	unsigned int base64_enc_size = get_char_count_dstring(base64_enc);
+	const char* base64_enc_data = get_byte_array_dstring(base64_enc);
+
 	// perfrom decoding
-	// TODO
+	unsigned int i = 0;
+	while(i < base64_enc_size)
+	{
+		int equals_count = 0;
+		if(base64_enc_size - i == 4)
+		{
+			if(base64_enc_data[i+2] == '=')
+				equals_count = 2;
+			else if(base64_enc_data[i+3] == '=')
+				equals_count = 1;
+		}
+
+		const char* packet_in = base64_enc_data + i;
+
+		switch(equals_count)
+		{
+			case 0 :
+			{
+				unsigned char packet[4] = {
+					decode_to_6_bits(packet_in[0]),
+					decode_to_6_bits(packet_in[1]),
+					decode_to_6_bits(packet_in[2]),
+					decode_to_6_bits(packet_in[3])
+				};
+
+				char packet_merge[3] = {
+					(packet[0] << 2) | ((packet[1] >> 6) & '\x3'),
+					(packet[1] << 4) | ((packet[2] >> 2) & '\xf'),
+					(packet[2] << 6) | ((packet[3]) & '\x3f')
+				};
+
+				concatenate_dstring(dstr, &get_dstring_pointing_to(packet_merge, 3));
+
+				break;
+			}
+			case 1 :
+			{
+				unsigned char packet[3] = {
+					decode_to_6_bits(packet_in[0]),
+					decode_to_6_bits(packet_in[1]),
+					decode_to_6_bits(packet_in[2])
+				};
+
+				char packet_merge[2] = {
+					(packet[0] << 2) | ((packet[1] >> 6) & '\x3'),
+					(packet[1] << 4) | ((packet[2] >> 2) & '\xf')
+				};
+
+				concatenate_dstring(dstr, &get_dstring_pointing_to(packet_merge, 2));
+
+				break;
+			}
+			case 2 :
+			{
+				unsigned char packet[2] = {
+					decode_to_6_bits(packet_in[0]),
+					decode_to_6_bits(packet_in[1])
+				};
+
+				char packet_merge[1] = {
+					(packet[0] << 2) | ((packet[1] >> 6) & '\x3')
+				};
+
+				concatenate_dstring(dstr, &get_dstring_pointing_to(packet_merge, 1));
+
+				break;
+			}
+		}
+
+		i+=4;
+	}
 
 	return 1;
 }
