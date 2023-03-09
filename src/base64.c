@@ -11,6 +11,9 @@
 // maximum length of the dstring that we can encode
 #define MAX_ENCODABLE_SIZE (MAX_PACKET_COUNT * 3)
 
+// MASK_6_BITS is equivalent to 0x3F in unsigned int
+#define MASK_6_BITS (('\x1' << 6) - '\x1')
+
 static int is_valid_base64_encoded_char(char c)
 {
 	// i.e. A-Z, a-z, 0-9, + and /
@@ -97,8 +100,45 @@ int base64_encode(const dstring* dstr, dstring* base64_enc)
 
 	make_dstring_empty(base64_enc);
 
+	unsigned int dstr_size = get_char_count_dstring(dstr);
+	const char* dstr_data = get_byte_array_dstring(dstr);
+
 	// perform encoding
-	// TODO
+	unsigned int i = 0;
+	while(dstr_size - i >= 3)
+	{
+		unsigned char packet[4] = {
+			encode_6_bits((dstr_data[i] >> 2) & MASK_6_BITS),
+			encode_6_bits(((dstr_data[i] << 4) | ((dstr_data[i+1] >> 4) & '\xf')) & MASK_6_BITS),
+			encode_6_bits(((dstr_data[i+1] << 2) | ((dstr_data[i+2] >> 6) & '\x3')) & MASK_6_BITS),
+			encode_6_bits((dstr_data[i+2]) & MASK_6_BITS)
+		};
+		concatenate_dstring(base64_enc, &get_dstring_pointing_to(((const char*)packet), 4));
+		i+=3;
+	}
+
+	if(dstr_size - i == 1)
+	{
+		unsigned char packet[4] = {
+			encode_6_bits((dstr_data[i] >> 2) & MASK_6_BITS),
+			encode_6_bits((dstr_data[i] << 4) & MASK_6_BITS),
+			'=',
+			'='
+		};
+		concatenate_dstring(base64_enc, &get_dstring_pointing_to(((const char*)packet), 4));
+		i+=1;
+	}
+	else if(dstr_size - i == 2)
+	{
+		unsigned char packet[4] = {
+			encode_6_bits((dstr_data[i] >> 2) & MASK_6_BITS),
+			encode_6_bits(((dstr_data[i] << 4) | ((dstr_data[i+1] >> 4) & '\xf')) & MASK_6_BITS),
+			encode_6_bits((dstr_data[i+1] << 2) & MASK_6_BITS),
+			'='
+		};
+		concatenate_dstring(base64_enc, &get_dstring_pointing_to(((const char*)packet), 4));
+		i+=2;
+	}
 
 	return 1;
 }
