@@ -232,7 +232,7 @@ int base64_decode(const dstring* base64_enc, dstring* dstr)
 				};
 
 				char packet_merge[1] = {
-					(packet[0] << 2) | (packet[1] >> 6)
+					(packet[0] << 2) | (packet[1] >> 4)
 				};
 
 				concatenate_dstring(dstr, &get_dstring_pointing_to(packet_merge, 1));
