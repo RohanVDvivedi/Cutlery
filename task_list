@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * make memory allocator interface and memory_move functions to use integers of size equal to sizeof(void*) instead of unsigned int
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
