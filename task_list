@@ -1,9 +1,9 @@
 1. Tasks picked
 
- * make memory allocator interface and memory_move functions to use integers of size equal to sizeof(void*) instead of unsigned int
- * we will call this mem_size_t and we will use MAX_ARRAY_CAPACITY = (~((mem_size_t)(0)))>>sizeof(void*), as the MAX_CAPACITY allowed to all containers, and resize beyond this is not possible
- * implement int can_overflow_product(unsigned int a, unsigned int b) and int can_overflow_sum(unsigned int a, unsigned int b) to check for overflows in all containers
-
+ * add a typedef mem_size (to unsigned integer type), which can be used to store number of bytes, and is suppossed to be as wide as void* and atlest as wide as unsigned int.
+ * also define MAX_MEM_SIZE
+ * use mem_size in memory allocator interface, dstring, dpipe and cutlery stds functions like memory_copy, memory_move, memory_compare and memory_set.
+ * we will use MAX_ARRAY_CAPACITY = min(MAX_MEM_SIZE / sizeof(void*), MAX_UNSIGNED_INT)
  * implement radix sort in cutlery to work with sizeof(unsigned int) * 8
 
 2. Add new datastructure types tasks (*future)
