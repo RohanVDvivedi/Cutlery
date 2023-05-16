@@ -37,6 +37,7 @@ struct fastheapnode
 	// linkedlist of its children
 	linkedlist children;
 };
+ * fastheapnode will have utility functions to detach-from-parent, swap position-with-parent, link-parent-and-child etc since these fucntiona can be used both with fibonacci heap and binomial heap
  * we will also have the main data structure struct as
 struct fastheap
 {
