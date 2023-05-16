@@ -24,7 +24,36 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
- * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery, implemented as enums like FIBONACCI_HEAP and BINOMIAL_HEAP
+ * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery.
+ * it will use fastheap node as a struct
+struct fastheapnode
+{
+	// parent of this node
+	fastheapnode* parent;
+
+	// number of children
+	unsigned int degree;
+
+	// linkedlist of its children
+	linkedlist children;
+};
+ * we will also have the main data structure struct as
+struct fastheap
+{
+	// implementation_type can be FIBONACCI_FAST_HEAP or BINOMIAL_FAST_HEAP
+	fastheap_implementation_type implementation_type;
+
+	// type stores MIN_HEAP or MAX_HEAP
+	heap_type type;
+
+	// pointer to the least or greatest node, based on type
+	fastheapnode* top_node;
+
+	linkedlist root_nodes;
+
+	// comparator
+	int (*compare)(const void* a, const void* b);
+};
 
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
