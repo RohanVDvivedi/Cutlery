@@ -52,7 +52,7 @@ struct fastheap
 	linkedlist root_nodes;
 
 	// comparator
-	int (*compare)(const void* a, const void* b);
+	int (*compare)(const void* data1, const void* data2);
 };
 
 DSTRING tasks
