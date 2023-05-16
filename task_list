@@ -14,9 +14,12 @@ RADIX_TREE tasks (NEW DATASTRUCTURE)
 struct trie_node
 {
     dstring partial_string;
-    int prefix_count; // total number of strings in the complete trie structure that have the prefix (or are equal-to) of partial_string
+    unsigned int prefix_count; // total number of strings in the complete trie data structure that have the prefix of partial_string
     void* value;
     hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
+
+    // node for children hashmap, used by the parent, this will only be ununsed in root trie_node
+    rbhnode/bstnode/llnode children_embed_node;
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
