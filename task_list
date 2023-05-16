@@ -24,12 +24,12 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
- * implement a node based binomial heap and fibonacci heap and abstract them over the fastheap datastructure in cutlery.
- * it will use fastheap node as a struct
-struct fastheapnode
+ * implement a node based binomial heap and fibonacci heap.
+ * it will use binomialheap node as a struct
+struct binomialheapnode
 {
 	// parent of this node
-	fastheapnode* parent;
+	binomialheapnode* parent;
 
 	// number of children
 	unsigned int degree;
@@ -37,26 +37,26 @@ struct fastheapnode
 	// linkedlist of its children
 	linkedlist children;
 };
- * fastheapnode will have utility functions to detach-from-parent, swap position-with-parent, link-parent-and-child etc since these fucntiona can be used both with fibonacci heap and binomial heap
+ * binomialheapnode will have utility functions to detach-from-parent, swap position-with-parent, link-parent-and-child etc since these fucntions can be used both with fibonacci heap and binomial heap
  * we will also have the main data structure struct as
-struct fastheap
+struct binomialheap
 {
 	// implementation_type can be FIBONACCI_FAST_HEAP or BINOMIAL_FAST_HEAP
-	fastheap_implementation_type implementation_type;
+	binomialheap_implementation_type implementation_type;
 
 	// type stores MIN_HEAP or MAX_HEAP
 	heap_type type;
 
 	// pointer to the least or greatest node, based on type
-	fastheapnode* top_node;
+	binomialheapnode* top_node;
 
-	linkedlist root_nodes;
+	linkedlist root_list;
 
 	// comparator
 	int (*compare)(const void* data1, const void* data2);
 };
 
- * implement leftist heap (* future)
+ * implement leftist heap as leftistheap (* future)
 
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
