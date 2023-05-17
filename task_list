@@ -5,7 +5,6 @@
  * also define MAX_MEM_SIZE
  * use mem_size in memory allocator interface, dstring, dpipe and cutlery stds functions like memory_copy, memory_move, memory_compare and memory_set.
  * we will use MAX_ARRAY_CAPACITY = min(MAX_MEM_SIZE / sizeof(void*), MAX_UNSIGNED_INT)
- * implement radix sort in cutlery to work with sizeof(unsigned int) * 8
 
 2. Add new datastructure types tasks (*future)
 
