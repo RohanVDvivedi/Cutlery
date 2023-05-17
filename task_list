@@ -1,9 +1,5 @@
 1. Tasks picked
 
- * add a typedef mem_size (to unsigned integer type), which can be used to store number of bytes, and is suppossed to be as wide as void* and atlest as wide as unsigned int.
- * typedef mem_size based on sizeof(void*) ==> unsigned char -> 8, unsigned int -> 16, unsigned long int -> 32 and unsigned long long int -> 64 bit. must sizeof(mem_size) >= sizeof(void*)
- * also define MAX_MEM_SIZE
- * use mem_size in memory allocator interface, and cutlery stds functions like memory_copy, memory_move, memory_compare and memory_set.
  * we will use MAX_ARRAY_CAPACITY = min(MAX_MEM_SIZE / sizeof(void*), MAX_UNSIGNED_INT)
 
 2. Add new datastructure types tasks (*future)
