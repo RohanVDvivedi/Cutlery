@@ -1,6 +1,8 @@
 #ifndef MEMORY_ALLOCATOR_INTERFACE_H
 #define MEMORY_ALLOCATOR_INTERFACE_H
 
+#include<cutlery_stds.h>
+
 /*
 	A memory_allocator struct consists of two pointers
 	1. allocator_context
