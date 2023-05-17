@@ -163,7 +163,7 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 	initialize_queue_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator);
 	initialize_queue_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator);
 
-	for(unsigned int i = 0; i < 32; i++)
+	for(unsigned int i = 0; i < (sizeof(unsigned int) * CHAR_BIT); i++)
 	{
 		unsigned index = start_index;
 		while(index <= last_index)
