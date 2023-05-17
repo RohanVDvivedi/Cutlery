@@ -50,7 +50,7 @@ enum memory_allocator_initialization
 **		inclusive but not limited to 
 **			* memory allocation failure due to excessive memory utilization
 */
-typedef void* (*memory_allocator_function)(void* allocator_context, void* old_memory, unsigned int old_size, unsigned int* new_size, unsigned int new_alignment, memory_allocator_initialization initialization);
+typedef void* (*memory_allocator_function)(void* allocator_context, void* old_memory, mem_size old_size, mem_size* new_size, mem_size new_alignment, memory_allocator_initialization initialization);
 
 struct memory_allocator
 {

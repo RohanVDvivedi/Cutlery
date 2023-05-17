@@ -64,7 +64,7 @@ enum search_occurence
 		* it copies processor accessible word side if and when possible
 		  * this function copies unsigned int instead of unsigned char where ever possible
 */
-void memory_move(void* dest, const void* src, unsigned int size);
+void memory_move(void* dest, const void* src, mem_size size);
 
 /*
 	this is cutlery specific memory set implementation
@@ -74,7 +74,7 @@ void memory_move(void* dest, const void* src, unsigned int size);
 		* it sets processor accessible word side if and when possible
 		  * this function copies unsigned int instead of unsigned char where ever possible
 */
-void memory_set(void* dest_start, char byte_value, unsigned int size);
+void memory_set(void* dest_start, char byte_value, mem_size size);
 
 /*
 	this is cutlery specific memory compare implementation
@@ -87,7 +87,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size);
 		-1 if data1[0:(size-1)] < data2[0:(size-1)]
 		0 if data1[0:(size-1)] == data2[0:(size-1)]
 */
-int memory_compare(const void* data1, const void* data2, unsigned int size);
+int memory_compare(const void* data1, const void* data2, mem_size size);
 
 /*
 	this is cutlery specific memory swap implementation
@@ -102,6 +102,6 @@ int memory_compare(const void* data1, const void* data2, unsigned int size);
 		1 if success
 		0 if memory locations overlap each other
 */
-int memory_swap(void* data1, void* data2, unsigned int size);
+int memory_swap(void* data1, void* data2, mem_size size);
 
 #endif
