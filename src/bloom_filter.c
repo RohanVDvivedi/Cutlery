@@ -39,7 +39,7 @@ int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int buck
 	bf_p->bitmap_allocator = bitmap_allocator;
 
 	// calculate  number of bytes required for storing the bitmap
-	unsigned int bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
+	mem_size bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
 
 	if(bytes_in_bitmap == 0)
 		bf_p->bitmap = NULL;
@@ -65,7 +65,7 @@ void initialize_bloom_filter_with_memory(bloom_filter* bf_p, unsigned int bucket
 	bf_p->bucket_count = bucket_count;
 
 	// calculate  number of bytes required for storing the bitmap
-	unsigned int bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
+	mem_size bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
 
 	if(bytes_in_bitmap == 0)
 		bf_p->bitmap = NULL;
@@ -149,7 +149,7 @@ void sprint_bloom_filter_bitmap(dstring* append_str, const bloom_filter* bf_p, u
 
 void deinitialize_bloom_filter(bloom_filter* bf_p)
 {
-	unsigned int bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
+	mem_size bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
 
 	if(bf_p->bitmap_allocator != NULL && bytes_in_bitmap > 0)
 		deallocate(bf_p->bitmap_allocator, bf_p->bitmap, bytes_in_bitmap);

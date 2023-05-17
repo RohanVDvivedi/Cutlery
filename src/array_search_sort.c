@@ -18,7 +18,7 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
 	const void** src  = array_p->data_p_p + start_index;
 
-	unsigned int dest_bytes = sizeof(void*) * total_elements;
+	mem_size dest_bytes = sizeof(void*) * ((mem_size)total_elements);
 	const void** dest = allocate(array_p->mem_allocator, &dest_bytes);
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
@@ -76,11 +76,11 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 
 	// free the extra memory
 	if((array_p->data_p_p + start_index) == src)
-		deallocate(array_p->mem_allocator, dest, sizeof(void*) * total_elements);
+		deallocate(array_p->mem_allocator, dest, sizeof(void*) * ((mem_size)total_elements));
 	else
 	{
 		memory_move(array_p->data_p_p + start_index, src, ((mem_size)total_elements) * sizeof(void*));
-		deallocate(array_p->mem_allocator, src, sizeof(void*) * total_elements);
+		deallocate(array_p->mem_allocator, src, sizeof(void*) * ((mem_size)total_elements));
 	}
 }
 

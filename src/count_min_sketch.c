@@ -31,7 +31,7 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned
 
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	unsigned int total_bytes_for_all_buckets = total_bucket_count * sizeof(unsigned int);
+	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
 
 	if(total_bytes_for_all_buckets == 0)
 		cms_p->frequencies = NULL;
@@ -58,7 +58,7 @@ void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned i
 
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	unsigned int total_bytes_for_all_buckets = total_bucket_count * sizeof(unsigned int);
+	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
 
 	if(total_bytes_for_all_buckets == 0)
 		cms_p->frequencies = NULL;
@@ -114,23 +114,23 @@ unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, co
 	// and additionally we cache all the buckets we touched in bucket_indices array
 	// this above caching allows us to avoid recalculation of all the hash functions and their corresponding accessible 2-d -> 1d coversion indices
 
-	unsigned int bucket_indices_size = sizeof(unsigned int) * hash_functions_count;
+	mem_size bucket_indices_size = sizeof(unsigned int) * ((mem_size)hash_functions_count);
 	unsigned int* bucket_indices = allocate(STD_C_mem_allocator, &bucket_indices_size);
 	
-	// get the maximum frequency and the concerned bucket_nos
-	unsigned int max_frequency = get_frequency_and_concerned_bucket_indices_from_count_min_sketch(cms_p, data, data_size, bucket_indices);
+	// get the frequency and the concerned bucket_nos
+	unsigned int frequency = get_frequency_and_concerned_bucket_indices_from_count_min_sketch(cms_p, data, data_size, bucket_indices);
 
 	// we iterate over all the hash functions, and increment frequency if it matches the max frequency
 	for(unsigned int h = 0; (h < hash_functions_count); h++)
 	{
-		if(cms_p->frequencies[bucket_indices[h]] == max_frequency)
+		if(cms_p->frequencies[bucket_indices[h]] == frequency)
 			cms_p->frequencies[bucket_indices[h]] = increment_frequency_by_1(cms_p->frequencies[bucket_indices[h]]);
 	}
 
 	// deallocate bucket_indices
 	deallocate(STD_C_mem_allocator, bucket_indices, bucket_indices_size);
 
-	return max_frequency + 1;
+	return frequency + 1;
 }
 
 unsigned int get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, unsigned int data_size)
@@ -189,7 +189,7 @@ void deinitialize_count_min_sketch(count_min_sketch* cms_p)
 {
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	unsigned int total_bytes_for_all_buckets = total_bucket_count * sizeof(unsigned int);
+	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
 
 	if(cms_p->uint_allocator != NULL && total_bytes_for_all_buckets > 0)
 		deallocate(cms_p->uint_allocator, cms_p->frequencies, total_bytes_for_all_buckets);

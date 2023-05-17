@@ -26,7 +26,7 @@ int initialize_array(array* array_p, unsigned int capacity)
 int initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator)
 {
 	array_p->mem_allocator = mem_allocator;
-	unsigned int bytes_allocated = capacity * sizeof(void*);
+	mem_size bytes_allocated = ((mem_size)capacity) * sizeof(void*);
 	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, &bytes_allocated) : NULL;
 	array_p->capacity = (array_p->data_p_p != NULL) ? (bytes_allocated / sizeof(void*)) : 0;
 
@@ -118,7 +118,7 @@ int copy_elements_from_array(array* array_p, unsigned int start_index, const arr
 void deinitialize_array(array* array_p)
 {
 	if(array_p->mem_allocator != NULL && array_p->capacity > 0 && array_p->data_p_p != NULL)
-		deallocate(array_p->mem_allocator, array_p->data_p_p, array_p->capacity * sizeof(void*));
+		deallocate(array_p->mem_allocator, array_p->data_p_p, ((mem_size)array_p->capacity) * sizeof(void*));
 	array_p->mem_allocator = NULL;
 	array_p->data_p_p = NULL;
 	array_p->capacity = 0;
@@ -170,12 +170,12 @@ int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
 		return 0;
 
 	// number of bytes to be allocated
-	unsigned int bytes_allocated = new_capacity * sizeof(void*);
+	mem_size bytes_allocated = ((mem_size)new_capacity) * sizeof(void*);
 
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
-										array_p->capacity * sizeof(void*),
+										((mem_size)array_p->capacity) * sizeof(void*),
 										&bytes_allocated);
 
 	// since memory allocation failed, return 0
@@ -208,12 +208,12 @@ int shrink_array(array* array_p, unsigned int new_capacity)
 		return 0;
 
 	// number of bytes to be allocated
-	unsigned int bytes_allocated = new_capacity * sizeof(void*);
+	mem_size bytes_allocated = ((mem_size)new_capacity) * sizeof(void*);
 
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
-										array_p->capacity * sizeof(void*),
+										((mem_size)array_p->capacity) * sizeof(void*),
 										&bytes_allocated);
 
 	// since memory allocation failed, return 0
