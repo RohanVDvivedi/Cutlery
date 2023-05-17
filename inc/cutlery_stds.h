@@ -21,6 +21,17 @@
 // any array (struct array, struct dstring, c array or char array ) will never have this index
 // INVALID_INDEX is used to report error (or a lack of result) to the user
 
+// on <= 8 bit address space
+//typedef unsigned char mem_size;
+// on <= 16 bit address space
+//typedef unsigned short mem_size;
+// on <= 32 bit address space
+//typedef unsigned long mem_size;
+// on <= 64 bit address space
+typedef unsigned long long mem_size;
+
+#define MEM_SIZE_MAX (~((mem_size)(0)));
+
 #ifndef offsetof
 	#define offsetof(structure, attribute) ((unsigned int)(&(((structure*)(0))->attribute)))
 #endif
