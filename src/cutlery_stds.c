@@ -2,16 +2,16 @@
 
 #include<stdio.h>
 
-static const unsigned int int_size = sizeof(int); // we assume that int is always 2^n bytes in size, i.e. 1,2,4,8 etc
-static const unsigned int int_bits_size = sizeof(int) * CHAR_BIT; // CHAR_BIT must be 8
-static const unsigned int int_alignment_bit_mask = -((int)sizeof(int));	// 0b 111...111 000...000 where 0s represent alignment
+static const mem_size int_size = (sizeof(int)); // we assume that int is always 2^n bytes in size, i.e. 1,2,4,8 etc
+static const mem_size int_bits_size = (sizeof(int) * CHAR_BIT); // CHAR_BIT must be 8
+static const mem_size int_alignment_bit_mask = (-(sizeof(int)));	// 0b 111...111 000...000 where 0s represent alignment
 
 // on a 32 bit int system
 // int_size = 4
 // int_bits_size = 32
 // int_alignment_bis_mask = 0xfffffffc (i.e. 2's complement of 4 OR binary representation of -4)
 
-void memory_move(void* dest_start, const void* src_start, unsigned int size)
+void memory_move(void* dest_start, const void* src_start, mem_size size)
 {
 	// if they are the same memory locations, or if the copy size if 0, skip the copy operation
 	if(src_start == dest_start || size == 0)
@@ -31,19 +31,19 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 	// make forward pass
 	if( dest_start < src_start )
 	{
-		// intialize our iterators for forward copy
+		// initalize our iterators for forward copy
 		const char* src = src_start;
 		char* dest = dest_start;
 
 		// check if int copy is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
 		if( (size >= 3 * int_size) &&
 			(
-				(((long int)src_start) & ~int_alignment_bit_mask) == (((long int)dest_start) & ~int_alignment_bit_mask)
+				(((mem_size)src_start) & ~int_alignment_bit_mask) == (((mem_size)dest_start) & ~int_alignment_bit_mask)
 			)
 		)
 		{
 			// perform a byte-by-byte copy until the addresses are int aligned
-			while( ( ((long int)src) & ~int_alignment_bit_mask ) )
+			while( ( ((mem_size)src) & ~int_alignment_bit_mask ) )
 				*(dest++) = *(src++);
 
 			// perform an int-by-int transfer in this scope
@@ -54,7 +54,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 				int* dest_int = (int*)dest;
 
 				// additonal bytes that you might have to copy after completing the int copy
-				unsigned long int additional_bytes = ((unsigned long int)(src_end)) & ~int_alignment_bit_mask;
+				mem_size additional_bytes = ((mem_size)(src_end)) & ~int_alignment_bit_mask;
 
 				// this is the address of the last byte that must be copied under the int-by-int copy loop
 				const int* src_end_int = src_end - additional_bytes;
@@ -75,19 +75,19 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 	// else make backward pass
 	else
 	{
-		// intialize our iterators for backward copy
+		// initalize our iterators for backward copy
 		const char* src = src_end;
 		char* dest = dest_end;
 
 		// check if int copy is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
 		if( (size >= 3 * int_size) &&
 			(
-				(((long int)src_start) & ~int_alignment_bit_mask) == (((long int)dest_start) & ~int_alignment_bit_mask)
+				(((mem_size)src_start) & ~int_alignment_bit_mask) == (((mem_size)dest_start) & ~int_alignment_bit_mask)
 			)
 		)
 		{
 			// perform a byte-by-byte copy until the addresses are int - 1 aligned
-			while( ( ((long int)src) & ~int_alignment_bit_mask ) )
+			while( ( ((mem_size)src) & ~int_alignment_bit_mask ) )
 				*(--dest) = *(--src);
 
 			// perform an int-by-int transfer in this scope
@@ -98,7 +98,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 				int* dest_int = (int*)dest;
 
 				// additonal bytes that you might have to copy after completing the int copy
-				unsigned long int additional_bytes = (int_size - (((unsigned long int)(src_start)) & ~int_alignment_bit_mask)) & ~int_alignment_bit_mask;
+				mem_size additional_bytes = (int_size - (((mem_size)(src_start)) & ~int_alignment_bit_mask)) & ~int_alignment_bit_mask;
 
 				// this is the address of the last byte that must be copied under the int-by-int copy loop
 				const int* src_start_int = src_start + additional_bytes;
@@ -118,7 +118,7 @@ void memory_move(void* dest_start, const void* src_start, unsigned int size)
 	}
 }
 
-void memory_set(void* dest_start, char byte_value, unsigned int size)
+void memory_set(void* dest_start, char byte_value, mem_size size)
 {
 	// if the copy size is zero, skip the copy operation
 	if(size == 0)
@@ -131,14 +131,14 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 	if(dest_start >= dest_end)
 		return;
 
-	// intialize our iterators for the copy operation
+	// initalize our iterators for the copy operation
 	char* dest = dest_start;
 
 	// check if int copy is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
 	if(size >= 3 * int_size)
 	{
 		// perform a byte-by-byte copy until the address is int aligned
-		while( ( ((long int)dest) & ~int_alignment_bit_mask ) )
+		while( ( ((mem_size)dest) & ~int_alignment_bit_mask ) )
 			*(dest++) = byte_value;
 
 		// perform an int-by-int transfer in this scope
@@ -153,7 +153,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 				int_value |= ( (((int)byte_value) & 0xff) << i );
 
 			// additonal bytes that you might have to copy after completing the int copy
-			unsigned long int additional_bytes = ((unsigned long int)(dest_end)) & ~int_alignment_bit_mask;
+			mem_size additional_bytes = ((mem_size)(dest_end)) & ~int_alignment_bit_mask;
 
 			// this is the address of the last byte that must be copied under the int-by-int copy loop
 			const int* dest_end_int = dest_end - additional_bytes;
@@ -171,7 +171,7 @@ void memory_set(void* dest_start, char byte_value, unsigned int size)
 		*(dest++) = byte_value;
 }
 
-int memory_compare(const void* data1_start, const void* data2_start, unsigned int size)
+int memory_compare(const void* data1_start, const void* data2_start, mem_size size)
 {
 	// if they are the same memory locations, or if the size if 0, then they are equal
 	if(data1_start == data2_start || size == 0)
@@ -185,19 +185,19 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	if(data1_start >= data1_end || data2_start >= data2_end)
 		return 0;
 
-	// intialize our iterators for forward compare
+	// initalize our iterators for forward compare
 	const char* data1 = data1_start;
 	const char* data2 = data2_start;
 
 	// check if int compare is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
 	if( (size >= 3 * int_size) &&
 		(
-			(((long int)data1_start) & ~int_alignment_bit_mask) == (((long int)data2_start) & ~int_alignment_bit_mask)
+			(((mem_size)data1_start) & ~int_alignment_bit_mask) == (((mem_size)data2_start) & ~int_alignment_bit_mask)
 		)
 	)
 	{
 		// perform a byte-by-byte compare until the addresses are int aligned
-		while( ( ((long int)data1) & ~int_alignment_bit_mask ) )
+		while( ( ((mem_size)data1) & ~int_alignment_bit_mask ) )
 		{
 			if((*data1) > (*data2))
 				return 1;
@@ -218,7 +218,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 			const int* data2_int = (int*)data2;
 
 			// additonal bytes that you might have to compare after completing the int copy
-			unsigned long int additional_bytes = ((unsigned long int)(data1_end)) & ~int_alignment_bit_mask;
+			mem_size additional_bytes = ((mem_size)(data1_end)) & ~int_alignment_bit_mask;
 
 			// this is the address of the last byte that must be compared under the int-by-int compare loop
 			const int* data1_end_int = data1_end - additional_bytes;
@@ -257,7 +257,7 @@ int memory_compare(const void* data1_start, const void* data2_start, unsigned in
 	return 0;
 }
 
-int memory_swap(void* data1_start, void* data2_start, unsigned int size)
+int memory_swap(void* data1_start, void* data2_start, mem_size size)
 {
 	// if they are the same memory locations, or if the size if 0, then swap can not be performed
 	if(data1_start == data2_start || size == 0)
@@ -275,19 +275,19 @@ int memory_swap(void* data1_start, void* data2_start, unsigned int size)
 	if((data1_start <= data2_start && data2_start < data1_end) || (data2_start <= data1_start && data1_start < data2_end))
 		return 0;
 
-	// intialize our iterators for forward swap
+	// initalize our iterators for forward swap
 	char* data1 = data1_start;
 	char* data2 = data2_start;
 
 	// check if int compare is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
 	if( (size >= 3 * int_size) &&
 		(
-			(((long int)data1_start) & ~int_alignment_bit_mask) == (((long int)data2_start) & ~int_alignment_bit_mask)
+			(((mem_size)data1_start) & ~int_alignment_bit_mask) == (((mem_size)data2_start) & ~int_alignment_bit_mask)
 		)
 	)
 	{
 		// perform a byte-by-byte swap until the addresses are int aligned
-		while( ( ((long int)data1) & ~int_alignment_bit_mask ) )
+		while( ( ((mem_size)data1) & ~int_alignment_bit_mask ) )
 		{
 			(*data1) ^= (*data2);
 			(*data2) ^= (*data1);
@@ -304,7 +304,7 @@ int memory_swap(void* data1_start, void* data2_start, unsigned int size)
 			int* data2_int = (int*)data2;
 
 			// additonal bytes that you might have to compare after completing the int copy
-			unsigned long int additional_bytes = ((unsigned long int)(data1_end)) & ~int_alignment_bit_mask;
+			mem_size additional_bytes = ((mem_size)(data1_end)) & ~int_alignment_bit_mask;
 
 			// this is the address of the last byte that must be compared under the int-by-int compare loop
 			const int* data1_end_int = data1_end - additional_bytes;
