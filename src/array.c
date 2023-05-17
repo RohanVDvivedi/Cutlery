@@ -86,7 +86,7 @@ int set_NULLs_in_array(array* array_p, unsigned int start_index, unsigned int el
 	if(start_index >= get_capacity_array(array_p) || start_index + element_count_to_NULL > get_capacity_array(array_p))
 		return 0;
 
-	memory_set(array_p->data_p_p + start_index, 0, element_count_to_NULL * sizeof(void*));
+	memory_set(array_p->data_p_p + start_index, 0, ((mem_size)element_count_to_NULL) * sizeof(void*));
 	/*
 		the above memory_set is equivalent to the below loop
 		for(unsigned int i = 0; i < array_p->capacity; i++)
@@ -105,7 +105,7 @@ int copy_elements_from_array(array* array_p, unsigned int start_index, const arr
 		start_from_index >= get_capacity_array(array_from_p) || start_from_index + element_count_to_copy > get_capacity_array(array_from_p))
 		return 0;
 
-	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, element_count_to_copy * sizeof(void*));
+	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, ((mem_size)element_count_to_copy) * sizeof(void*));
 	/*
 		the above memory_move is equivalent to the below loop
 		for(unsigned int i = 0; i < element_count_to_copy; i++)
@@ -188,7 +188,7 @@ int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
 
 	// set all new pointers to NULL i.e. from old_capacity to new_capacity
 	memory_set(new_data_p_p + array_p->capacity, 0,
-			(new_capacity - array_p->capacity) * sizeof(void*));
+			((mem_size)(new_capacity - array_p->capacity)) * sizeof(void*));
 
 	// new assignment to data_p_p and its capacity
 	array_p->data_p_p = new_data_p_p;

@@ -47,7 +47,7 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 				if(a_last > total_elements - 1)
 					a_last = total_elements - 1;
 
-				memory_move(dest + dest_index, src + a_start, (a_last - a_start + 1) * sizeof(void*));
+				memory_move(dest + dest_index, src + a_start, ((mem_size)(a_last - a_start + 1)) * sizeof(void*));
 				break;
 			}
 			else
@@ -79,7 +79,7 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 		deallocate(array_p->mem_allocator, dest, sizeof(void*) * total_elements);
 	else
 	{
-		memory_move(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
+		memory_move(array_p->data_p_p + start_index, src, ((mem_size)total_elements) * sizeof(void*));
 		deallocate(array_p->mem_allocator, src, sizeof(void*) * total_elements);
 	}
 }

@@ -161,7 +161,7 @@ void reset_frequencies_in_count_min_sketch(count_min_sketch* cms_p)
 {
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	unsigned int total_bytes_for_all_buckets = total_bucket_count * sizeof(unsigned int);
+	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
 
 	memory_set(cms_p->frequencies, 0, total_bytes_for_all_buckets);
 }
