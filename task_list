@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * we will use MAX_ARRAY_CAPACITY = min(MAX_MEM_SIZE / sizeof(void*), MAX_UNSIGNED_INT)
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
