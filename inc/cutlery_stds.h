@@ -30,7 +30,7 @@
 // on <= 64 bit address space
 typedef unsigned long long mem_size;
 
-#define MEM_SIZE_MAX (~((mem_size)(0)));
+#define MEM_SIZE_MAX (~((mem_size)(0)))
 
 #ifndef offsetof
 	#define offsetof(structure, attribute) ((unsigned int)(&(((structure*)(0))->attribute)))

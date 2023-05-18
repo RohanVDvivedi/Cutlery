@@ -1,12 +1,23 @@
 #include<array.h>
 
 #include<cutlery_stds.h>
+#include<cutlery_math.h>
 
 // this is the factor and the constant amount, by which the capacity of data_p_p will be expanded or shrunk
 #define EXPANSION_FACTR 1.5
 #define EXPANSION_CONST 2
 
 #define MAX_CAPACITY (~((unsigned int)(0)))
+
+unsigned int MAX_ARRAY_CAPACITY()
+{
+	unsigned int MAX_CAP_UINT = UINT_MAX;
+	mem_size MAX_CAP_MEM_SIZE = MEM_SIZE_MAX / sizeof(void*);
+	if(sizeof(unsigned int) <= sizeof(mem_size))
+		return (unsigned int) min(((mem_size)MAX_CAP_UINT), MAX_CAP_MEM_SIZE);
+	else
+		return (unsigned int) min(MAX_CAP_UINT, ((unsigned int)MAX_CAP_MEM_SIZE));
+}
 
 // new_capacity of data_p_p = (old_capacity of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next capacity (on expansion) for the given array, if it's current capacity is current_capacity
