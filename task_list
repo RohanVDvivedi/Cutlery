@@ -1,5 +1,8 @@
 1. Tasks picked
 
+ * add logic for MAX_INDEXABLE_BYTES_CAPACITY(), a MAX_ARRAY_CAPACITY() version for dstring and dpipe
+ * fail initialization of bloomfilter and count_min_sketch if all the buckets are not indexable
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
