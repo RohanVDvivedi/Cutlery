@@ -7,8 +7,6 @@
 #define EXPANSION_FACTR 1.5
 #define EXPANSION_CONST 2
 
-#define MAX_CAPACITY (~((unsigned int)(0)))
-
 unsigned int MAX_ARRAY_CAPACITY()
 {
 	unsigned int MAX_CAP_UINT = UINT_MAX;
@@ -26,7 +24,7 @@ static unsigned int get_new_capacity(unsigned int current_capacity)
 	unsigned int new_capacity = (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
 
 	// on over flow return max capacity
-	return (new_capacity < current_capacity) ? MAX_CAPACITY : new_capacity;
+	return (new_capacity < current_capacity) ? MAX_ARRAY_CAPACITY() : new_capacity;
 }
 
 int initialize_array(array* array_p, unsigned int capacity)
@@ -178,6 +176,10 @@ int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
 
 	// new_capacity must be greater than the old_capacity
 	if(new_capacity <= array_p->capacity)
+		return 0;
+
+	// if the new capacity is greater than the MAX_ARRAY_CAPACITY(), then fail to expand the array
+	if(new_capacity > MAX_ARRAY_CAPACITY())
 		return 0;
 
 	// number of bytes to be allocated
