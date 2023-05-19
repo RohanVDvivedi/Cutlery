@@ -9,31 +9,32 @@
 	#define CHAR_BIT (8)
 #endif
 
-#ifndef UINT_MAX
-	#define UINT_MAX (~(0U))
-#endif
-
 // by this below 2 level concatenate expansion we can first substitute params and then concatenate them
 #define CAT_(a, b) a ## b
 #define CAT(a, b) CAT_(a, b)
 
-#define INVALID_INDEX UINT_MAX
+// on <= 8 bit address space
+//typedef unsigned char cy_uint;
+// on <= 16 bit address space
+//typedef unsigned short cy_uint;
+// on <= 32 bit address space
+//typedef unsigned long cy_uint;
+// on <= 64 bit address space
+typedef unsigned long long cy_uint;
+
+// We define cy_uint as an unsigned integer that is as wide as a void pointer
+// It can hold any data pointer values
+// So it can hold max value almost equal to the possible maximum number of bytes in your RAM
+// Hence it can hold all possible values of size (element_count) and index of any c array
+
+#define CY_UINT_MAX (~((cy_uint)(0)))
+
+#define INVALID_INDEX CY_UINT_MAX
 // any array (struct array, struct dstring, c array or char array ) will never have this index
 // INVALID_INDEX is used to report error (or a lack of result) to the user
 
-// on <= 8 bit address space
-//typedef unsigned char mem_size;
-// on <= 16 bit address space
-//typedef unsigned short mem_size;
-// on <= 32 bit address space
-//typedef unsigned long mem_size;
-// on <= 64 bit address space
-typedef unsigned long long mem_size;
-
-#define MEM_SIZE_MAX (~((mem_size)(0)))
-
 #ifndef offsetof
-	#define offsetof(structure, attribute) ((unsigned int)(&(((structure*)(0))->attribute)))
+	#define offsetof(structure, attribute) ((cy_uint)(&(((structure*)(0))->attribute)))
 #endif
 
 /*
