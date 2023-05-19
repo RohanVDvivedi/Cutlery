@@ -1,6 +1,6 @@
 1. Tasks picked
 
- * add a custom type c_u_int typedef-ed just like mem_size, and replace all instances of index and count in array, arraylist, stack, heap, hashmap, dstring, dpipe, bitmap, bloomfilter and coun_min_sketch from unsigned int type to c_u_int.
+ * add a custom type cy_uint typedef-ed just like mem_size, and replace all instances of index and count in array, arraylist, stack, heap, hashmap, dstring, dpipe, bitmap, bloomfilter and coun_min_sketch from unsigned int type to cy_uint.
  * add logic for MAX_INDEXABLE_BYTES_CAPACITY(), a MAX_ARRAY_CAPACITY() version for dstring and dpipe
  * fail initialization of bloomfilter and count_min_sketch if all the buckets are not indexable
 
