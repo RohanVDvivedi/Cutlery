@@ -20,8 +20,7 @@ struct array
 };
 
 // returns maximum possible capacity of the array on your hardware
-// it may not be UINT_MAX or MEM_SIZE_MAX
-unsigned int MAX_ARRAY_CAPACITY();
+#define MAX_ARRAY_CAPACITY (CY_UINT_MAX / sizeof(void*))
 
 // initializes and gives necessary memory to manage internal element contents
 // initialize functions may fail, if the initial memory allocation fails
