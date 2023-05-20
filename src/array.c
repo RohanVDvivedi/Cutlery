@@ -117,7 +117,7 @@ int copy_elements_from_array(array* array_p, cy_uint start_index, const array* a
 	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, element_count_to_copy * sizeof(void*));
 	/*
 		the above memory_move is equivalent to the below loop
-		for(unsigned int i = 0; i < element_count_to_copy; i++)
+		for(cy_uint i = 0; i < element_count_to_copy; i++)
 			set_in_array(array_p, get_from_array(array_from_p, start_from_index + i), start_index + i);
 	*/
 
