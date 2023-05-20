@@ -96,10 +96,7 @@ void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 
 	// create a max heap that points to the array_p's contents that need to be sorted
 	heap sort_heap;
-	initialize_heap_with_allocator(&sort_heap, 0, MAX_HEAP, compare, NO_HEAP_NODE_OFFSET, NULL);
-	sort_heap.heap_holder.data_p_p = array_p->data_p_p + start_index;
-	sort_heap.heap_holder.capacity = total_elements;
-	sort_heap.element_count = total_elements;
+	initialize_heap_with_memory(&sort_heap, total_elements, MAX_HEAP, compare, NO_HEAP_NODE_OFFSET, array_p->data_p_p + start_index);
 
 	// now max heapify all elements that we need to sort
 	heapify_all(&sort_heap);
