@@ -58,32 +58,38 @@ enum search_occurence
 
 /* this is cutlery specific memory move implementation
    this is the function to be used in place of memcpy/memmove std library functions
-   features : 	
+   features :
 		* moves size number of bytes from src to dest pointer
 		* There is protection against the memory locations overlap (similar to memmove)
 		  * this is solved by reverse iteration for copying memory
 		* it copies processor accessible word side if and when possible
 		  * this function copies unsigned int instead of unsigned char where ever possible
+	return :
+		1 if success or a memory_move was not required
+		0 otherwise
 */
-void memory_move(void* dest, const void* src, cy_uint size);
+int memory_move(void* dest, const void* src, cy_uint size);
 
 /*
 	this is cutlery specific memory set implementation
 	this is the function to be used in place of memset std library function
-	features : 	
+	features :
 		* it sets size number of bytes at the dest pointer with the given byte_value
 		* it sets processor accessible word side if and when possible
 		  * this function copies unsigned int instead of unsigned char where ever possible
+	return :
+		1 if success or a memory_set was not required
+		0 otherwise
 */
-void memory_set(void* dest_start, char byte_value, cy_uint size);
+int memory_set(void* dest_start, char byte_value, cy_uint size);
 
 /*
 	this is cutlery specific memory compare implementation
 	this is the function to be used in place of memcmp std library function
-	features : 	
+	features :
 		* it accesses processor accessible word size if and when possible
 		  * this function compares unsigned int instead of unsigned char where ever possible
-	return2
+	return :
 		1 if data1[0:(size-1)] > data2[0:(size-1)]
 		-1 if data1[0:(size-1)] < data2[0:(size-1)]
 		0 if data1[0:(size-1)] == data2[0:(size-1)]
@@ -96,10 +102,10 @@ int memory_compare(const void* data1, const void* data2, cy_uint size);
 	this function swaps size number of bytes at the given memory locations
 	it uses XOR-style in-place (no additional memory) for this swap
 	it fails with a 0 if the memory locations are overlapping
-	features : 	
+	features :
 		* it swaps processor accessible word size if and when possible
 		  * this function swaps unsigned int instead of unsigned char where ever possible
-	return2
+	return :
 		1 if success
 		0 if memory locations overlap each other
 */

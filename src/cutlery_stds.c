@@ -11,11 +11,11 @@ static const cy_uint int_alignment_bit_mask = (-(sizeof(int)));	// 0b 111...111 
 // int_bits_size = 32
 // int_alignment_bis_mask = 0xfffffffc (i.e. 2's complement of 4 OR binary representation of -4)
 
-void memory_move(void* dest_start, const void* src_start, cy_uint size)
+int memory_move(void* dest_start, const void* src_start, cy_uint size)
 {
 	// if they are the same memory locations, or if the copy size if 0, skip the copy operation
 	if(src_start == dest_start || size == 0)
-		return;
+		return 1;
 
 	// compute the last src and dest byte address that needs to be copied
 	const void* src_end = src_start + size;
@@ -23,7 +23,7 @@ void memory_move(void* dest_start, const void* src_start, cy_uint size)
 
 	// this conditions may arise if we happen to be at edge of the memory
 	if(src_start >= src_end || dest_start >= dest_end)
-		return;
+		return 0;
 
 	// decide to make a forward pass or backward pass 
 	// based on whether the pass could corrupt the src memory address before we could copy it
@@ -116,20 +116,22 @@ void memory_move(void* dest_start, const void* src_start, cy_uint size)
 		while( src != ((char*)(src_start)) )
 			*(--dest) = *(--src);
 	}
+
+	return 1;
 }
 
 void memory_set(void* dest_start, char byte_value, cy_uint size)
 {
 	// if the copy size is zero, skip the copy operation
 	if(size == 0)
-		return;
+		return 1;
 
 	// compute the last dest byte address that needs to be copied
 	void* dest_end = dest_start + size;
 
 	// this conditions may arise if we happen to be at edge of the memory
 	if(dest_start >= dest_end)
-		return;
+		return 0;
 
 	// initalize our iterators for the copy operation
 	char* dest = dest_start;
@@ -169,6 +171,8 @@ void memory_set(void* dest_start, char byte_value, cy_uint size)
 	// finish up remaining with an old fashioned byte-by-byte copy
 	while( dest != ((char*)(dest_end)) )
 		*(dest++) = byte_value;
+
+	return 1;
 }
 
 int memory_compare(const void* data1_start, const void* data2_start, cy_uint size)
