@@ -9,21 +9,25 @@
 
 // new_capacity of data_p_p = (old_capacity of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next capacity (on expansion) for the given array, if it's current capacity is current_capacity
-static unsigned int get_new_capacity(unsigned int current_capacity)
+static cy_uint get_new_capacity(cy_uint current_capacity)
 {
-	unsigned int new_capacity = (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
+	cy_uint new_capacity = (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
 
 	// on over flow return max capacity
-	return (new_capacity < current_capacity) ? MAX_ARRAY_CAPACITY() : new_capacity;
+	return (new_capacity < current_capacity) ? MAX_ARRAY_CAPACITY : new_capacity;
 }
 
-int initialize_array(array* array_p, unsigned int capacity)
+int initialize_array(array* array_p, cy_uint capacity)
 {// initialize array with the default memory allocator
 	return initialize_array_with_allocator(array_p, capacity, STD_C_mem_allocator);
 }
 
-int initialize_array_with_allocator(array* array_p, unsigned int capacity, memory_allocator mem_allocator)
+int initialize_array_with_allocator(array* array_p, cy_uint capacity, memory_allocator mem_allocator)
 {
+	// if the capacity is greater than the MAX_ARRAY_CAPACITY, then fail array initialization
+	if(capacity > MAX_ARRAY_CAPACITY)
+		return 0;
+
 	array_p->mem_allocator = mem_allocator;
 	mem_size bytes_allocated = ((mem_size)capacity) * sizeof(void*);
 	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, &bytes_allocated) : NULL;
@@ -36,19 +40,25 @@ int initialize_array_with_allocator(array* array_p, unsigned int capacity, memor
 	return 1;
 }
 
-void initialize_array_with_memory(array* array_p, unsigned int capacity, const void* data_ps[])
+int initialize_array_with_memory(array* array_p, cy_uint capacity, const void* data_ps[])
 {
+	// if the capacity is greater than the MAX_ARRAY_CAPACITY, then fail array initialization
+	if(capacity > MAX_ARRAY_CAPACITY)
+		return 0;
+
 	array_p->mem_allocator = NULL;
 	array_p->data_p_p = data_ps;
 	array_p->capacity = capacity;
+
+	return 1;
 }
 
-const void* get_from_array(const array* array_p, unsigned int index)
+const void* get_from_array(const array* array_p, cy_uint index)
 {
 	return (index < array_p->capacity) ? array_p->data_p_p[index] : NULL;
 }
 
-int set_in_array(array* array_p, const void* data_p, unsigned int index)
+int set_in_array(array* array_p, const void* data_p, cy_uint index)
 {
 	if(index < array_p->capacity)
 	{
@@ -58,7 +68,7 @@ int set_in_array(array* array_p, const void* data_p, unsigned int index)
 	return 0;
 }
 
-void swap_in_array(array* array_p, unsigned int i1, unsigned int i2)
+void swap_in_array(array* array_p, cy_uint i1, cy_uint i2)
 {
 	const void* data_temp_i1 = get_from_array(array_p, i1);
 	set_in_array(array_p, get_from_array(array_p, i2), i1);
@@ -75,20 +85,20 @@ void set_all_NULL_in_array(array* array_p)
 	set_NULLs_in_array(array_p, 0, get_capacity_array(array_p));
 }
 
-int set_NULLs_in_array(array* array_p, unsigned int start_index, unsigned int element_count_to_NULL)
+int set_NULLs_in_array(array* array_p, cy_uint start_index, cy_uint element_count_to_NULL)
 {
 	// if no elements are to be set to NULL then return success
 	if(element_count_to_NULL == 0)
 		return 1;
 
 	// make sure that all the indices from [start_index, start_index + element_count_to_NULL - 1) are accessible and in range of the array_p
-	if(start_index >= get_capacity_array(array_p) || start_index + element_count_to_NULL > get_capacity_array(array_p))
+	if(start_index >= get_capacity_array(array_p) || start_index + element_count_to_NULL < start_index  || start_index + element_count_to_NULL > get_capacity_array(array_p))
 		return 0;
 
-	memory_set(array_p->data_p_p + start_index, 0, ((mem_size)element_count_to_NULL) * sizeof(void*));
+	memory_set(array_p->data_p_p + start_index, 0, element_count_to_NULL * sizeof(void*));
 	/*
 		the above memory_set is equivalent to the below loop
-		for(unsigned int i = 0; i < array_p->capacity; i++)
+		for(cy_uint i = 0; i < array_p->capacity; i++)
 			set_in_array(array_p, NULL, i);
 	*/
 
@@ -100,11 +110,11 @@ int copy_elements_from_array(array* array_p, unsigned int start_index, const arr
 	if(element_count_to_copy == 0)
 		return 1;
 
-	if( start_index >= get_capacity_array(array_p) || start_index + element_count_to_copy > get_capacity_array(array_p) ||
-		start_from_index >= get_capacity_array(array_from_p) || start_from_index + element_count_to_copy > get_capacity_array(array_from_p))
+	if( start_index >= get_capacity_array(array_p) || start_index + element_count_to_copy < start_index || start_index + element_count_to_copy > get_capacity_array(array_p) ||
+		start_from_index >= get_capacity_array(array_from_p) || start_from_index + element_count_to_copy < start_from_index || start_from_index + element_count_to_copy > get_capacity_array(array_from_p))
 		return 0;
 
-	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, ((mem_size)element_count_to_copy) * sizeof(void*));
+	memory_move(array_p->data_p_p + start_index, array_from_p->data_p_p + start_from_index, element_count_to_copy * sizeof(void*));
 	/*
 		the above memory_move is equivalent to the below loop
 		for(unsigned int i = 0; i < element_count_to_copy; i++)
@@ -117,7 +127,7 @@ int copy_elements_from_array(array* array_p, unsigned int start_index, const arr
 void deinitialize_array(array* array_p)
 {
 	if(array_p->mem_allocator != NULL && array_p->capacity > 0 && array_p->data_p_p != NULL)
-		deallocate(array_p->mem_allocator, array_p->data_p_p, ((mem_size)array_p->capacity) * sizeof(void*));
+		deallocate(array_p->mem_allocator, array_p->data_p_p, array_p->capacity * sizeof(void*));
 	array_p->mem_allocator = NULL;
 	array_p->data_p_p = NULL;
 	array_p->capacity = 0;
@@ -128,24 +138,24 @@ unsigned int get_capacity_array(const array* array_p)
 	return array_p->capacity;
 }
 
-void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
+void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params)
 {
-	for(unsigned int i = 0; i < array_p->capacity; i++)
+	for(cy_uint i = 0; i < array_p->capacity; i++)
 	{
 		if(get_from_array(array_p, i) != NULL)
 			operation(((void*)get_from_array(array_p, i)), i, additional_params);
 	}
 }
 
-void for_each_in_array(const array* array_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
+void for_each_in_array(const array* array_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params)
 {
-	for(unsigned int i = 0; i < array_p->capacity; i++)
+	for(cy_uint i = 0; i < array_p->capacity; i++)
 		operation(((void*)get_from_array(array_p, i)), i, additional_params);
 }
 
 int expand_array(array* array_p)
 {
-	unsigned int new_capacity = get_new_capacity(array_p->capacity);
+	cy_uint new_capacity = get_new_capacity(array_p->capacity);
 
 	// new_capacity upon expansion must be greater than the current capacity
 	if(new_capacity <= array_p->capacity)
@@ -155,30 +165,30 @@ int expand_array(array* array_p)
 	return reserve_capacity_for_array(array_p, new_capacity);
 }
 
-int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
+int reserve_capacity_for_array(array* array_p, cy_uint atleast_capacity)
 {
 	// can not expand if the allocator is NULL
 	if(array_p->mem_allocator == NULL)
 		return 0;
 
 	// compute new_capacity to expand to
-	unsigned int new_capacity = atleast_capacity;
+	cy_uint new_capacity = atleast_capacity;
 
 	// new_capacity must be greater than the old_capacity
 	if(new_capacity <= array_p->capacity)
 		return 0;
 
-	// if the new capacity is greater than the MAX_ARRAY_CAPACITY(), then fail to expand the array
-	if(new_capacity > MAX_ARRAY_CAPACITY())
+	// if the new capacity is greater than the MAX_ARRAY_CAPACITY, then fail to expand the array
+	if(new_capacity > MAX_ARRAY_CAPACITY)
 		return 0;
 
 	// number of bytes to be allocated
-	mem_size bytes_allocated = ((mem_size)new_capacity) * sizeof(void*);
+	cy_uint bytes_allocated = new_capacity * sizeof(void*);
 
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
-										((mem_size)array_p->capacity) * sizeof(void*),
+										array_p->capacity * sizeof(void*),
 										&bytes_allocated);
 
 	// since memory allocation failed, return 0
@@ -191,7 +201,7 @@ int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
 
 	// set all new pointers to NULL i.e. from old_capacity to new_capacity
 	memory_set(new_data_p_p + array_p->capacity, 0,
-			((mem_size)(new_capacity - array_p->capacity)) * sizeof(void*));
+			(new_capacity - array_p->capacity) * sizeof(void*));
 
 	// new assignment to data_p_p and its capacity
 	array_p->data_p_p = new_data_p_p;
@@ -200,7 +210,7 @@ int reserve_capacity_for_array(array* array_p, unsigned int atleast_capacity)
 	return 1;
 }
 
-int shrink_array(array* array_p, unsigned int new_capacity)
+int shrink_array(array* array_p, cy_uint new_capacity)
 {
 	// can not shrink if the allocator is NULL
 	if(array_p->mem_allocator == NULL)
@@ -211,12 +221,12 @@ int shrink_array(array* array_p, unsigned int new_capacity)
 		return 0;
 
 	// number of bytes to be allocated
-	mem_size bytes_allocated = ((mem_size)new_capacity) * sizeof(void*);
+	mem_size bytes_allocated = new_capacity * sizeof(void*);
 
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
-										((mem_size)array_p->capacity) * sizeof(void*),
+										array_p->capacity * sizeof(void*),
 										&bytes_allocated);
 
 	// since memory allocation failed, return 0
@@ -239,7 +249,7 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "array :\n");
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "capacity : %u\n", array_p->capacity);
 
-	for(unsigned int i = 0; i < array_p->capacity; i++)
+	for(cy_uint i = 0; i < array_p->capacity; i++)
 	{
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "index_id = %u\n", i);

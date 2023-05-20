@@ -27,7 +27,7 @@ struct array
 // in case of such a failure, the array still gets initialized to capacity 0
 int initialize_array(array* array_p, cy_uint capacity);
 int initialize_array_with_allocator(array* array_p, cy_uint capacity, memory_allocator mem_allocator);
-void initialize_array_with_memory(array* array_p, cy_uint capacity, const void* data_ps[]);
+int initialize_array_with_memory(array* array_p, cy_uint capacity, const void* data_ps[]);
 
 // returns pointer to the data at index = index
 const void* get_from_array(const array* array_p, cy_uint index);
