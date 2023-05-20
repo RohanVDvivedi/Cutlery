@@ -250,30 +250,20 @@ cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index,
 			l = m + 1;
 		else
 		{
-			int break_loop = 0;
+			result_index = m;
 			switch(occurence_type)
 			{
 				case FIRST_OCCURENCE:
 				{
-					result_index = m;
-					if(m == start_index)
-						break_loop = 1;
-					else
-						h = m - 1;
+					h = m - 1;
 					break;
 				}
 				case LAST_OCCURENCE:
 				{
-					result_index = m;
-					if(m == last_index)
-						break_loop = 1;
-					else
-						l = m + 1;
+					l = m + 1;
 					break;
 				}
 			}
-			if(break_loop)
-				break;
 		}
 	}
 
