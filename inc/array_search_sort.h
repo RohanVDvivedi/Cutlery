@@ -51,7 +51,7 @@ void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, u
 
 // performs linear search in array from start_index to last_index, both inclusive,
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-unsigned int linear_search_in_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
 
 
@@ -63,7 +63,7 @@ unsigned int linear_search_in_array(const array* array_p, cy_uint start_index, c
 
 // performs binary search in array from start_index to last_index, both inclusive,
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-unsigned int binary_search_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
 // NOTE :::
 // the find_*_in_sorted_array function can be called on the array, only if
@@ -72,10 +72,10 @@ unsigned int binary_search_in_sorted_array(const array* array_p, cy_uint start_i
 
 // These functions performs binary search in array from start_index to last_index, both inclusive,
 // returns INVALID_INDEX, if no result is not found, or the indexes provided are invalid
-unsigned int find_preceding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-unsigned int find_succeeding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
 
 
 //------------------------------------------------------------------------------
@@ -90,6 +90,6 @@ unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_
 // performs binary search in array from start_index to last_index, both inclusive, to find an dex at which the given element data can be inserted
 // it usually returns the index that is one more than the index of the largest element that is also lesser than or equal to the data (given as parameter)
 // returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-unsigned int find_insertion_index_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_insertion_index_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
 
 #endif
