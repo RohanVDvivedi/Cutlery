@@ -120,7 +120,7 @@ int memory_move(void* dest_start, const void* src_start, cy_uint size)
 	return 1;
 }
 
-void memory_set(void* dest_start, char byte_value, cy_uint size)
+int memory_set(void* dest_start, char byte_value, cy_uint size)
 {
 	// if the copy size is zero, skip the copy operation
 	if(size == 0)
