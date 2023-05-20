@@ -64,7 +64,7 @@ void print_ts_array(array* array_p)
 
 int main()
 {
-	printf("MAX_ARRAY_CAPACITY() = %u, %x\n\n", MAX_ARRAY_CAPACITY(), MAX_ARRAY_CAPACITY());
+	printf("MAX_ARRAY_CAPACITY() = %llu, %llx\n\n", MAX_ARRAY_CAPACITY, MAX_ARRAY_CAPACITY);
 
 	array array_temp;
 	array* array_p = &array_temp;
