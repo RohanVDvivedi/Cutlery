@@ -5,14 +5,14 @@
 #include<stdint.h>
 
 // declaration for STD_C_mem_allocator->allocator_function
-void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, mem_size old_size, mem_size* new_size, mem_size new_alignment, memory_allocator_initialization initialization);
+void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, cy_uint old_size, cy_uint* new_size, cy_uint new_alignment, memory_allocator_initialization initialization);
 struct memory_allocator STD_C_memory_allocator = {
 	.allocator_context = NULL,
 	.allocator_function = STD_C_mem_allocator_function,
 };
 memory_allocator STD_C_mem_allocator = &STD_C_memory_allocator;
 
-void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, mem_size old_size, mem_size* new_size, mem_size new_alignment, memory_allocator_initialization initialization)
+void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, cy_uint old_size, cy_uint* new_size, cy_uint new_alignment, memory_allocator_initialization initialization)
 {
 	int new_memory_allocation_failed = 0;
 	void* new_memory = NULL;
