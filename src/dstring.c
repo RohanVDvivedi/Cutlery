@@ -28,7 +28,7 @@ void init_empty_dstring(dstring* str_p, unsigned int capacity)
 	{
 		str_p->type_n_SS_size = LARGE_DSTR;
 		str_p->bytes_occupied = 0;
-		mem_size capacity_ = capacity;
+		cy_uint capacity_ = capacity;
 		str_p->byte_array = allocate(DSTRING_mem_alloc, &capacity_);
 		capacity = capacity_;
 		str_p->bytes_allocated = (str_p->byte_array == NULL) ? 0 : capacity;
@@ -106,7 +106,7 @@ void deinit_dstring(dstring* str_p)
 {
 	if(get_dstring_type(str_p) == LARGE_DSTR && str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
 	{
-		mem_size bytes_to_deallocate = str_p->bytes_allocated;
+		cy_uint bytes_to_deallocate = str_p->bytes_allocated;
 		deallocate(DSTRING_mem_alloc, str_p->byte_array, bytes_to_deallocate);
 	}
 	str_p->type_n_SS_size = SHORT_DSTR;
@@ -137,7 +137,7 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 	// you might have to make a large dstring larger
 	if(get_dstring_type(str_p) == LARGE_DSTR)
 	{
-		mem_size new_capacity_ = new_capacity;
+		cy_uint new_capacity_ = new_capacity;
 		char* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, &new_capacity_);
 		new_capacity = new_capacity_;
 
@@ -193,7 +193,7 @@ int shrink_dstring(dstring* str_p)
 	// an already LARGE_DSTR getting converted to a smaller LARGE_DSTR
 	if(new_capacity > SS_capacity)
 	{
-		mem_size new_capacity_ = new_capacity;
+		cy_uint new_capacity_ = new_capacity;
 		void* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, &new_capacity_);
 		new_capacity = new_capacity_;
 

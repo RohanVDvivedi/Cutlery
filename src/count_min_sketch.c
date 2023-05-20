@@ -31,7 +31,7 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned
 
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
 
 	if(total_bytes_for_all_buckets == 0)
 		cms_p->frequencies = NULL;
@@ -58,7 +58,7 @@ void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned i
 
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
 
 	if(total_bytes_for_all_buckets == 0)
 		cms_p->frequencies = NULL;
@@ -114,7 +114,7 @@ unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, co
 	// and additionally we cache all the buckets we touched in bucket_indices array
 	// this above caching allows us to avoid recalculation of all the hash functions and their corresponding accessible 2-d -> 1d coversion indices
 
-	mem_size bucket_indices_size = sizeof(unsigned int) * ((mem_size)hash_functions_count);
+	cy_uint bucket_indices_size = sizeof(unsigned int) * ((cy_uint)hash_functions_count);
 	unsigned int* bucket_indices = allocate(STD_C_mem_allocator, &bucket_indices_size);
 	
 	// get the frequency and the concerned bucket_nos
@@ -161,7 +161,7 @@ void reset_frequencies_in_count_min_sketch(count_min_sketch* cms_p)
 {
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
 
 	memory_set(cms_p->frequencies, 0, total_bytes_for_all_buckets);
 }
@@ -189,7 +189,7 @@ void deinitialize_count_min_sketch(count_min_sketch* cms_p)
 {
 	// calculate total number of buckets required
 	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	mem_size total_bytes_for_all_buckets = ((mem_size)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
 
 	if(cms_p->uint_allocator != NULL && total_bytes_for_all_buckets > 0)
 		deallocate(cms_p->uint_allocator, cms_p->frequencies, total_bytes_for_all_buckets);

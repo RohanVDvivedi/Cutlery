@@ -16,7 +16,7 @@ void initialize_dpipe_with_allocator(dpipe* pipe, unsigned int capacity, memory_
 	pipe->first_byte = 0;
 	pipe->byte_count = 0;
 	pipe->buffer_allocator = buffer_allocator;
-	mem_size buffer_capacity_ = pipe->buffer_capacity;
+	cy_uint buffer_capacity_ = pipe->buffer_capacity;
 	pipe->buffer = (pipe->buffer_capacity == 0) ? NULL : allocate(pipe->buffer_allocator, &(buffer_capacity_));
 	pipe->buffer_capacity = buffer_capacity_;
 }
@@ -319,8 +319,8 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 	// if the byte count is 0, then resize must be successfull
 	if(pipe->byte_count == 0)
 	{
-		mem_size new_capacity_ = new_capacity;
-		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((mem_size)pipe->buffer_capacity), &new_capacity_);
+		cy_uint new_capacity_ = new_capacity;
+		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity_);
 		new_capacity = new_capacity_;
 		pipe->buffer_capacity = new_capacity;
 		pipe->first_byte = 0;
@@ -342,8 +342,8 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 			}
 
 			// shrink the dpipe
-			mem_size new_capacity_ = new_capacity;
-			pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((mem_size)pipe->buffer_capacity), &new_capacity_);
+			cy_uint new_capacity_ = new_capacity;
+			pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity_);
 			new_capacity = new_capacity_;
 			pipe->buffer_capacity = new_capacity;
 			return 1;
@@ -352,8 +352,8 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 	}
 	else // expanding
 	{
-		mem_size new_capacity_ = new_capacity;
-		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((mem_size)pipe->buffer_capacity), &new_capacity_);
+		cy_uint new_capacity_ = new_capacity;
+		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity_);
 		new_capacity = new_capacity_;
 
 		// if there is not wound around then resize is complete
@@ -407,7 +407,7 @@ void deinitialize_dpipe(dpipe* pipe)
 	close_dpipe(pipe);
 	remove_all_from_dpipe(pipe);
 	if(pipe->buffer_capacity > 0 && pipe->buffer != NULL && pipe->buffer_allocator != NULL)
-		deallocate(pipe->buffer_allocator, pipe->buffer, ((mem_size)pipe->buffer_capacity));
+		deallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity));
 	pipe->buffer_allocator = NULL;
 	pipe->buffer_capacity = 0;
 	pipe->buffer = NULL;

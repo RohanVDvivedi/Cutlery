@@ -19,7 +19,7 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 	unsigned int str1_len = get_char_count_dstring(str1);
 
 	unsigned int dp_dims[] = {str0_len + 1, str1_len + 1};
-	mem_size dp_bytes = sizeof(unsigned int) * ((mem_size)dp_dims[0]) * ((mem_size)dp_dims[1]);
+	cy_uint dp_bytes = sizeof(unsigned int) * ((cy_uint)dp_dims[0]) * ((cy_uint)dp_dims[1]);
 	unsigned int* dp = allocate(DSTRING_mem_alloc, &dp_bytes);
 
 	for(unsigned int i = 0; i < dp_dims[1]; i++)
@@ -51,7 +51,7 @@ unsigned int levenshtein_distance(const dstring* str0, const dstring* str1)
 	// result at the last element
 	unsigned int result = dp[(dp_dims[0] * dp_dims[1]) - 1];
 
-	deallocate(DSTRING_mem_alloc, dp, sizeof(unsigned int) * ((mem_size)dp_dims[0]) * ((mem_size)dp_dims[1]));
+	deallocate(DSTRING_mem_alloc, dp, sizeof(unsigned int) * ((cy_uint)dp_dims[0]) * ((cy_uint)dp_dims[1]));
 
 	return result;
 }
@@ -71,7 +71,7 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 	unsigned int str1_len = get_char_count_dstring(str1);
 
 	unsigned int dp_dims[] = {str0_len + 1, str1_len + 1};
-	mem_size dp_bytes = sizeof(unsigned int) * ((mem_size)dp_dims[0]) * ((mem_size)dp_dims[1]);
+	cy_uint dp_bytes = sizeof(unsigned int) * ((cy_uint)dp_dims[0]) * ((cy_uint)dp_dims[1]);
 	unsigned int* dp = allocate(DSTRING_mem_alloc, &dp_bytes);
 
 	for(unsigned int i = 0; i < dp_dims[1]; i++)
@@ -103,7 +103,7 @@ unsigned int length_of_longest_common_subsequence(const dstring* str0, const dst
 	// result at the last element
 	unsigned int result = dp[(dp_dims[0] * dp_dims[1]) - 1];
 
-	deallocate(DSTRING_mem_alloc, dp, sizeof(unsigned int) * ((mem_size)dp_dims[0]) * ((mem_size)dp_dims[1]));
+	deallocate(DSTRING_mem_alloc, dp, sizeof(unsigned int) * ((cy_uint)dp_dims[0]) * ((cy_uint)dp_dims[1]));
 
 	return result;
 }

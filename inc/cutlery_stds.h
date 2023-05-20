@@ -29,6 +29,9 @@ typedef unsigned long long cy_uint;
 
 #define CY_UINT_MAX (~((cy_uint)(0)))
 
+// TO BE REMOVED AFTER A COMPLETE UPGRADE TO cy_uint from unsigned int
+#define UINT_MAX (~(0U))
+
 #define INVALID_INDEX CY_UINT_MAX
 // any array (struct array, struct dstring, c array or char array ) will never have this index
 // INVALID_INDEX is used to report error (or a lack of result) to the user
