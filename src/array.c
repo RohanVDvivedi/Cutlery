@@ -29,7 +29,7 @@ int initialize_array_with_allocator(array* array_p, cy_uint capacity, memory_all
 		return 0;
 
 	array_p->mem_allocator = mem_allocator;
-	mem_size bytes_allocated = ((mem_size)capacity) * sizeof(void*);
+	cy_uint bytes_allocated = capacity * sizeof(void*);
 	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, &bytes_allocated) : NULL;
 	array_p->capacity = (array_p->data_p_p != NULL) ? (bytes_allocated / sizeof(void*)) : 0;
 
@@ -105,7 +105,7 @@ int set_NULLs_in_array(array* array_p, cy_uint start_index, cy_uint element_coun
 	return 1;
 }
 
-int copy_elements_from_array(array* array_p, unsigned int start_index, const array* array_from_p, unsigned int start_from_index, unsigned int element_count_to_copy)
+int copy_elements_from_array(array* array_p, cy_uint start_index, const array* array_from_p, cy_uint start_from_index, cy_uint element_count_to_copy)
 {
 	if(element_count_to_copy == 0)
 		return 1;
@@ -133,7 +133,7 @@ void deinitialize_array(array* array_p)
 	array_p->capacity = 0;
 }
 
-unsigned int get_capacity_array(const array* array_p)
+cy_uint get_capacity_array(const array* array_p)
 {
 	return array_p->capacity;
 }
@@ -221,7 +221,7 @@ int shrink_array(array* array_p, cy_uint new_capacity)
 		return 0;
 
 	// number of bytes to be allocated
-	mem_size bytes_allocated = new_capacity * sizeof(void*);
+	cy_uint bytes_allocated = new_capacity * sizeof(void*);
 
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
