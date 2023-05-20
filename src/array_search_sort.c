@@ -5,40 +5,40 @@
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
-void merge_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
+void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = last_index - start_index + 1;
+	cy_uint total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
 	const void** src  = array_p->data_p_p + start_index;
 
-	mem_size dest_bytes = sizeof(void*) * ((mem_size)total_elements);
+	cy_uint dest_bytes = sizeof(void*) * total_elements;
 	const void** dest = allocate(array_p->mem_allocator, &dest_bytes);
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
-	unsigned int sort_chunk_size = 1;
+	cy_uint sort_chunk_size = 1;
 	while(sort_chunk_size <= total_elements)
 	{
 
 		// in each iteration of the internal loop
 		// merge 2 adjacent sorted chunks of src array
 		// to form 1 chunk of twice the size in dest array
-		unsigned int dest_index = 0;
+		cy_uint dest_index = 0;
 		while(dest_index < total_elements)
 		{
 			// start and last indices of chunk 1
-			unsigned int a_start = dest_index;
-			unsigned int a_last = a_start + sort_chunk_size - 1;
+			cy_uint a_start = dest_index;
+			cy_uint a_last = a_start + sort_chunk_size - 1;
 
 			// start and last indices of chunk 2
-			unsigned int b_start = a_last + 1;
-			unsigned int b_last = b_start + sort_chunk_size - 1;
+			cy_uint b_start = a_last + 1;
+			cy_uint b_last = b_start + sort_chunk_size - 1;
 
 			// *_start and *_last are both inclusive indices
 
@@ -47,7 +47,7 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 				if(a_last > total_elements - 1)
 					a_last = total_elements - 1;
 
-				memory_move(dest + dest_index, src + a_start, ((mem_size)(a_last - a_start + 1)) * sizeof(void*));
+				memory_move(dest + dest_index, src + a_start, (a_last - a_start + 1) * sizeof(void*));
 				break;
 			}
 			else
@@ -76,11 +76,11 @@ void merge_sort_array(array* array_p, unsigned int start_index, unsigned int las
 
 	// free the extra memory
 	if((array_p->data_p_p + start_index) == src)
-		deallocate(array_p->mem_allocator, dest, sizeof(void*) * ((mem_size)total_elements));
+		deallocate(array_p->mem_allocator, dest, dest_bytes);
 	else
 	{
-		memory_move(array_p->data_p_p + start_index, src, ((mem_size)total_elements) * sizeof(void*));
-		deallocate(array_p->mem_allocator, src, sizeof(void*) * ((mem_size)total_elements));
+		memory_move(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
+		deallocate(array_p->mem_allocator, src, dest_bytes);
 	}
 }
 
