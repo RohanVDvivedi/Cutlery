@@ -228,10 +228,25 @@ cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index,
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
-	// if the element is lesser than the element at the start_index
-	// OR is greater than the element at the last_index, then return INVALID_INDEX
-	if(compare(get_from_array(array_p, start_index), data_p) > 0 || compare(get_from_array(array_p, last_index), data_p) < 0)
-		return INVALID_INDEX;
+	switch(occurence_type)
+	{
+		case FIRST_OCCURENCE :
+		{
+			// take care of conditions when we might go start_index - 1
+			if(compare(get_from_array(array_p, start_index), data_p) == 0)
+				return start_index;
+			else if(compare(get_from_array(array_p, start_index), data_p) > 0)
+				return INVALID_INDEX;
+			break;
+		}
+		case LAST_OCCURENCE :
+		{
+			// take care of conditions when we might go start_index - 1
+			if(compare(get_from_array(array_p, start_index), data_p) > 0)
+				return INVALID_INDEX;
+			break;
+		}
+	}
 
 	// binary search low and high range variables
 	cy_uint l = start_index;
@@ -276,6 +291,7 @@ cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
+	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
 	// then there is no element in array lesser than it, so return INVALID_INDEX
 	if(compare(get_from_array(array_p, start_index), data_p) >= 0)
@@ -310,6 +326,7 @@ cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint s
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
+	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
 	// then there is no element in array lesser than it, so return INVALID_INDEX
 	if(compare(get_from_array(array_p, start_index), data_p) > 0)
@@ -344,6 +361,7 @@ cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_inde
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
+	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index
 	// then its succeeding is the start_indexed element, so return start_index
 	if(compare(get_from_array(array_p, start_index), data_p) > 0)
@@ -378,6 +396,7 @@ cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint 
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
+	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index
 	// then its succeeding is the start_indexed element, so return start_index
 	if(compare(get_from_array(array_p, start_index), data_p) >= 0)
@@ -412,6 +431,7 @@ cy_uint find_insertion_index_in_sorted_array(const array* array_p, cy_uint start
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return INVALID_INDEX;
 
+	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index, then return start_index
 	if(compare(get_from_array(array_p, start_index), data_p) > 0)
 		return start_index;
