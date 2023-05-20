@@ -10,7 +10,7 @@ struct array
 	// we maintain array of pointers each of which point to actual data
 	const void** data_p_p;
 
-	// this many element pointers (const void*) can be accomodated in array
+	// this many element pointers (const void*) can be accomodated in this array at data_p_p
 	unsigned int capacity;
 
 	// this is the memory_allocator that will be used for allocating memory for the array
