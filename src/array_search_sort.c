@@ -270,7 +270,7 @@ cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index,
 	return result_index;
 }
 
-unsigned int find_preceding_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
@@ -282,16 +282,16 @@ unsigned int find_preceding_in_sorted_array(const array* array_p, unsigned int s
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
-	unsigned int l = start_index;
-	unsigned int h = last_index;
+	cy_uint l = start_index;
+	cy_uint h = last_index;
 
 	// result from performing binary search
-	unsigned int result_index = INVALID_INDEX;
+	cy_uint result_index = INVALID_INDEX;
 
 	// perform binary search for first or last occurence
 	while(l <= h)
 	{
-		unsigned int m = l + ((h - l) / 2);
+		cy_uint m = l + ((h - l) / 2);
 		if(compare(get_from_array(array_p, m), data_p) < 0)
 		{
 			result_index = m;
@@ -304,7 +304,7 @@ unsigned int find_preceding_in_sorted_array(const array* array_p, unsigned int s
 	return result_index;
 }
 
-unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
@@ -316,16 +316,16 @@ unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, unsi
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
-	unsigned int l = start_index;
-	unsigned int h = last_index;
+	cy_uint l = start_index;
+	cy_uint h = last_index;
 
 	// result from performing binary search
-	unsigned int result_index = INVALID_INDEX;
+	cy_uint result_index = INVALID_INDEX;
 
 	// perform binary search for first or last occurence
 	while(l <= h)
 	{
-		unsigned int m = l + ((h - l) / 2);
+		cy_uint m = l + ((h - l) / 2);
 		if(compare(get_from_array(array_p, m), data_p) > 0)
 			h = m - 1;
 		else
@@ -338,7 +338,7 @@ unsigned int find_preceding_or_equals_in_sorted_array(const array* array_p, unsi
 	return result_index;
 }
 
-unsigned int find_succeeding_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
@@ -350,16 +350,16 @@ unsigned int find_succeeding_in_sorted_array(const array* array_p, unsigned int 
 		return start_index;
 
 	// binary search low and high range variables
-	unsigned int l = start_index;
-	unsigned int h = last_index;
+	cy_uint l = start_index;
+	cy_uint h = last_index;
 
 	// result from performing binary search
-	unsigned int result_index = INVALID_INDEX;
+	cy_uint result_index = INVALID_INDEX;
 
 	// perform binary search for first or last occurence
 	while(l <= h)
 	{
-		unsigned int m = l + ((h - l) / 2);
+		cy_uint m = l + ((h - l) / 2);
 		if(compare(get_from_array(array_p, m), data_p) > 0)
 		{
 			result_index = m;
@@ -372,7 +372,7 @@ unsigned int find_succeeding_in_sorted_array(const array* array_p, unsigned int 
 	return result_index;
 }
 
-unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
@@ -384,16 +384,16 @@ unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, uns
 		return start_index;
 
 	// binary search low and high range variables
-	unsigned int l = start_index;
-	unsigned int h = last_index;
+	cy_uint l = start_index;
+	cy_uint h = last_index;
 
 	// result from performing binary search
-	unsigned int result_index = INVALID_INDEX;
+	cy_uint result_index = INVALID_INDEX;
 
 	// perform binary search for first or last occurence
 	while(l <= h)
 	{
-		unsigned int m = l + ((h - l) / 2);
+		cy_uint m = l + ((h - l) / 2);
 		if(compare(get_from_array(array_p, m), data_p) < 0)
 			l = m + 1;
 		else
@@ -406,7 +406,7 @@ unsigned int find_succeeding_or_equals_in_sorted_array(const array* array_p, uns
 	return result_index;
 }
 
-unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_insertion_index_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
@@ -417,16 +417,16 @@ unsigned int find_insertion_index_in_sorted_array(const array* array_p, unsigned
 		return start_index;
 
 	// binary search low and high range variables
-	unsigned int l = start_index;
-	unsigned int h = last_index + 1;
+	cy_uint l = start_index;
+	cy_uint h = last_index + 1;
 
 	// result from performing binary search
-	unsigned int result_index = INVALID_INDEX;
+	cy_uint result_index = INVALID_INDEX;
 
 	// perform binary search for first or last occurence
 	while(l <= h)
 	{
-		unsigned int m = l + ((h - l) / 2);
+		cy_uint m = l + ((h - l) / 2);
 
 		// if the mid has crossed the last_index,
 		// then the last element is more than or equal to the data,
