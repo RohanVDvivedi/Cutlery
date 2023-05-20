@@ -176,7 +176,7 @@ int main()
 	for(int i = 0; i < sort_array_size; i++)
 	{
 		ts to_find = {i, "lol"};
-		unsigned int index;
+		cy_uint index;
 		printf("Finding data where a = %d\n", to_find.a);
 
 		printf("Linear search (First occurence) : ");
