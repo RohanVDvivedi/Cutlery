@@ -84,13 +84,13 @@ void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 	}
 }
 
-void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
+void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = last_index - start_index + 1;
+	cy_uint total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
@@ -105,7 +105,7 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last
 	heapify_all(&sort_heap);
 
 	// place the top of the heap element in the array, then pop heap
-	for(unsigned int i = total_elements; i > 0; i--)
+	for(cy_uint i = total_elements; i > 0; i--)
 	{
 		const void* max_data = get_top_of_heap(&sort_heap);
 		pop_from_heap(&sort_heap);
@@ -116,30 +116,30 @@ void heap_sort_array(array* array_p, unsigned int start_index, unsigned int last
 	deinitialize_heap(&sort_heap);
 }
 
-void quick_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, int (*compare)(const void* data1, const void* data2))
+void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = last_index - start_index + 1;
+	cy_uint total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
 	// always picking the last element as the pivot
 	const void* pivot = get_from_array(array_p, last_index);
 
-	unsigned int all_greater_than_pivot_start_index = start_index;
+	cy_uint all_greater_than_pivot_start_index = start_index;
 
 	// position pivot element at its correct index
-	for(unsigned int i = start_index; i <= last_index; i++)
+	for(cy_uint i = start_index; i <= last_index; i++)
 	{
 		if(compare(get_from_array(array_p, i), pivot) <= 0)
 			swap_in_array(array_p, all_greater_than_pivot_start_index++, i);
 	}
 
 	// index of the pivot element
-	unsigned int pivot_index = all_greater_than_pivot_start_index - 1;
+	cy_uint pivot_index = all_greater_than_pivot_start_index - 1;
 
 	// perform recursive quick sort on the smaller arrays excluding the pivot element
 	if(pivot_index > start_index)
@@ -148,13 +148,13 @@ void quick_sort_array(array* array_p, unsigned int start_index, unsigned int las
 		quick_sort_array(array_p, pivot_index + 1, last_index, compare);
 }
 
-void radix_sort_array(array* array_p, unsigned int start_index, unsigned int last_index, unsigned int (*get_sort_attribute)(const void* data))
+void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned int (*get_sort_attribute)(const void* data))
 {
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	unsigned int total_elements = last_index - start_index + 1;
+	cy_uint total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
 		return;
 
@@ -163,9 +163,9 @@ void radix_sort_array(array* array_p, unsigned int start_index, unsigned int las
 	initialize_queue_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator);
 	initialize_queue_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator);
 
-	for(unsigned int i = 0; i < (sizeof(unsigned int) * CHAR_BIT); i++)
+	for(cy_uint i = 0; i < (sizeof(unsigned int) * CHAR_BIT); i++)
 	{
-		unsigned index = start_index;
+		cy_uint index = start_index;
 		while(index <= last_index)
 		{
 			const void* data = get_from_array(array_p, index++);
