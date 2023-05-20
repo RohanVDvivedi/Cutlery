@@ -225,7 +225,7 @@ cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uin
 	return INVALID_INDEX;
 }
 
-unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
@@ -237,16 +237,16 @@ unsigned int binary_search_in_sorted_array(const array* array_p, unsigned int st
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
-	unsigned int l = start_index;
-	unsigned int h = last_index;
+	cy_uint l = start_index;
+	cy_uint h = last_index;
 
 	// result from performing binary search
-	unsigned int result_index = INVALID_INDEX;
+	cy_uint result_index = INVALID_INDEX;
 
 	// perform binary search for first or last occurence
 	while(l <= h)
 	{
-		unsigned int m = l + ((h - l) / 2);
+		cy_uint m = l + ((h - l) / 2);
 		if(compare(get_from_array(array_p, m), data_p) > 0)
 			h = m - 1;
 		else if(compare(get_from_array(array_p, m), data_p) < 0)
