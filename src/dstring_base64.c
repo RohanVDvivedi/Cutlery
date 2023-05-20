@@ -2,6 +2,9 @@
 
 #include<cutlery_stds.h>
 
+// TODO change this to CY_UINT_MAX
+#define UINT_MAX (~(0U))
+
 // maximum packet count that we can process
 #define MAX_PACKET_COUNT (UINT_MAX >> 2)
 
