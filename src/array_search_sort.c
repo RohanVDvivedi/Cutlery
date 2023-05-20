@@ -193,7 +193,7 @@ void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, u
 }
 
 
-unsigned int linear_search_in_array(const array* array_p, unsigned int start_index, unsigned int last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= array_p->capacity)
@@ -203,7 +203,7 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 	{
 		case FIRST_OCCURENCE:
 		{
-			for(unsigned int i = start_index; i <= last_index; i++)
+			for(cy_uint i = start_index; i <= last_index; i++)
 			{
 				if(compare(get_from_array(array_p, i), data_p) == 0)
 					return i;
@@ -212,12 +212,10 @@ unsigned int linear_search_in_array(const array* array_p, unsigned int start_ind
 		}
 		case LAST_OCCURENCE:
 		{
-			for(unsigned int i = last_index; ; i--)
+			for(cy_uint i = last_index; i != (start_index - 1); i--)
 			{
 				if(compare(get_from_array(array_p, i), data_p) == 0)
 					return i;
-				if(i == start_index)
-					break;
 			}
 			break;
 		}
