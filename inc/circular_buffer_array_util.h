@@ -1,6 +1,8 @@
 #ifndef CIRCULAR_BUFFER_ARRAY_UTIL_H
 #define CIRCULAR_BUFFER_ARRAY_UTIL_H
 
+#include<cutlery_stds.h>
+
 // ==== BASE FUNTIONS START ====
 
 /*
@@ -10,7 +12,7 @@
 */
 
 // equivalent to => (i1 + i2) % buffer_capacity
-static inline unsigned int add_indexes(unsigned int i1, unsigned int i2, unsigned int buffer_capacity)
+static inline cy_uint add_indexes(cy_uint i1, cy_uint i2, cy_uint buffer_capacity)
 {
 	if(buffer_capacity - i1 > i2)
 		return i1 + i2;
@@ -19,7 +21,7 @@ static inline unsigned int add_indexes(unsigned int i1, unsigned int i2, unsigne
 }
 
 // equivalent to => (buffer_capacity + i1 - i2) % buffer_capacity
-static inline unsigned int sub_indexes(unsigned int i1, unsigned int i2, unsigned int buffer_capacity)
+static inline cy_uint sub_indexes(cy_uint i1, cy_uint i2, cy_uint buffer_capacity)
 {
 	if(i1 >= i2)
 		return i1 - i2;
