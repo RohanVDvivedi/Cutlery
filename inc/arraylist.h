@@ -16,17 +16,17 @@ struct arraylist
 	// from first_index to first_index + ((element_count - 1) % arraylist_holder.total_size)
 
 	// first_index points to the front of the arraylist
-	unsigned int first_index;
+	cy_uint first_index;
 
 	// element_count represents the number of elements contained in the array list
-	unsigned int element_count;
+	cy_uint element_count;
 };
 
 // the initialize_arraylist* functions may fail if the initial memory allocation fails
 // in case of a failure, the arraylist will still be initialized to capacity 0
-int initialize_arraylist(arraylist* al, unsigned int capacity);
-int initialize_arraylist_with_allocator(arraylist* al, unsigned int capacity, memory_allocator mem_allocator);
-void initialize_arraylist_with_memory(arraylist* al, unsigned int capacity, const void* data_ps[]);
+int initialize_arraylist(arraylist* al, cy_uint capacity);
+int initialize_arraylist_with_allocator(arraylist* al, cy_uint capacity, memory_allocator mem_allocator);
+int initialize_arraylist_with_memory(arraylist* al, cy_uint capacity, const void* data_ps[]);
 
 // push_*_to_arraylist functions will push data_p to the front/back of the arraylist, and will return 1 on success
 int push_front_to_arraylist(arraylist* al, const void* data_p);
@@ -48,20 +48,20 @@ const void* get_back_of_arraylist(const arraylist* al);
 // get_*_of_arraylist functions will fail and return NULL if the number of elements in the given arraylist is 0
 
 // to get nth element from the front/back of the arraylist
-const void* get_nth_from_front_of_arraylist(const arraylist* al, unsigned int n);
-const void* get_nth_from_back_of_arraylist(const arraylist* al, unsigned int n);
+const void* get_nth_from_front_of_arraylist(const arraylist* al, cy_uint n);
+const void* get_nth_from_back_of_arraylist(const arraylist* al, cy_uint n);
 // get_nth_from_*_of_arraylist functions will fail and return NULL if n is greater than the number of elements in the given arraylist
 
 // to set nth element from front/back in the arraylist to data_p pointer
-int set_nth_from_front_in_arraylist(arraylist* al, const void* data_p, unsigned int n);
-int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, unsigned int n);
+int set_nth_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint n);
+int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n);
 // set_nth_from_*_in_arraylist functions will fail and return 0 if n is greater than the number of elements in the given arraylist
 // on success, these functions will return 1
 
 // returns capacity of the arraylist, i.e. the maximum number of elements that can be accomodated in arraylist
-unsigned int get_capacity_arraylist(const arraylist* al);
+cy_uint get_capacity_arraylist(const arraylist* al);
 // returns the number of elements inside the arraylist
-unsigned int get_element_count_arraylist(const arraylist* al);
+cy_uint get_element_count_arraylist(const arraylist* al);
 
 // returns 1 if the arraylist is full, else returns 0
 int is_full_arraylist(const arraylist* al);
@@ -76,14 +76,14 @@ int shrink_arraylist(arraylist* al);
 
 // expands arraylist to atleast the capacity of atleast_capacity
 // returns 1, only if the arraylist was expanded
-int reserve_capacity_for_arraylist(arraylist* al, unsigned int atleast_capacity);
+int reserve_capacity_for_arraylist(arraylist* al, cy_uint atleast_capacity);
 
 // get the data from the arraylist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the arraylist that compares equal (i.e. compare function returns 0)
 const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* data1, const void* data2));
 
 // iterates over all the elements in the arraylist from front to back
-void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
+void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params);
 
 // serializes the arraylist, and appends the serialized form to the dstring
 void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
