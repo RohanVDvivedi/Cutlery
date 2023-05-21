@@ -247,12 +247,12 @@ int shrink_array(array* array_p, cy_uint new_capacity)
 void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "array :\n");
-	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "capacity : %u\n", array_p->capacity);
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "capacity : %" PRIu_cy_uint "\n", array_p->capacity);
 
 	for(cy_uint i = 0; i < array_p->capacity; i++)
 	{
 		sprint_chars(append_str, '\t', tabs);
-		snprintf_dstring(append_str, "index_id = %u\n", i);
+		snprintf_dstring(append_str, "index_id = %" PRIu_cy_uint "\n", i);
 
 		const void* element = get_from_array(array_p, i);
 		if(element != NULL)
