@@ -2,19 +2,19 @@
 
 #include<cutlery_stds.h>
 
-int initialize_stack(stack* stack_p, unsigned int capacity)
+int initialize_stack(stack* stack_p, cy_uint capacity)
 {
 	return initialize_arraylist(&(stack_p->stack_holder), capacity);
 }
 
-int initialize_stack_with_allocator(stack* stack_p, unsigned int capacity, memory_allocator mem_allocator)
+int initialize_stack_with_allocator(stack* stack_p, cy_uint capacity, memory_allocator mem_allocator)
 {
 	return initialize_arraylist_with_allocator(&(stack_p->stack_holder), capacity, mem_allocator);
 }
 
-void initialize_stack_with_memory(stack* stack_p, unsigned int capacity, const void* data_ps[])
+int initialize_stack_with_memory(stack* stack_p, cy_uint capacity, const void* data_ps[])
 {
-	initialize_arraylist_with_memory(&(stack_p->stack_holder), capacity, data_ps);
+	return initialize_arraylist_with_memory(&(stack_p->stack_holder), capacity, data_ps);
 }
 
 int push_to_stack(stack* stack_p, const void* data_p)
@@ -32,7 +32,7 @@ const void* get_top_of_stack(const stack* stack_p)
 	return get_back_of_arraylist(&(stack_p->stack_holder));
 }
 
-const void* get_nth_from_top_of_stack(const stack* stack_p, unsigned int n)
+const void* get_nth_from_top_of_stack(const stack* stack_p, cy_uint n)
 {
 	return get_nth_from_back_of_arraylist(&(stack_p->stack_holder), n);
 }
@@ -47,12 +47,12 @@ void deinitialize_stack(stack* stack_p)
 	deinitialize_arraylist(&(stack_p->stack_holder));
 }
 
-unsigned int get_capacity_stack(const stack* stack_p)
+cy_uint get_capacity_stack(const stack* stack_p)
 {
 	return get_capacity_arraylist(&(stack_p->stack_holder));
 }
 
-unsigned int get_element_count_stack(const stack* stack_p)
+cy_uint get_element_count_stack(const stack* stack_p)
 {
 	return get_element_count_arraylist(&(stack_p->stack_holder));
 }
@@ -77,12 +77,12 @@ int shrink_stack(stack* stack_p)
 	return shrink_arraylist(&(stack_p->stack_holder));
 }
 
-int reserve_capacity_for_stack(stack* stack_p, unsigned int atleast_capacity)
+int reserve_capacity_for_stack(stack* stack_p, cy_uint atleast_capacity)
 {
 	return reserve_capacity_for_arraylist(&(stack_p->stack_holder), atleast_capacity);
 }
 
-void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
+void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params)
 {
 	for_each_in_arraylist(&(stack_p->stack_holder), operation, additional_params);
 }
