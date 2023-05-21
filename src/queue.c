@@ -2,19 +2,19 @@
 
 #include<cutlery_stds.h>
 
-int initialize_queue(queue* queue_p, unsigned int capacity)
+int initialize_queue(queue* queue_p, cy_uint capacity)
 {
 	return initialize_arraylist(&(queue_p->queue_holder), capacity);
 }
 
-int initialize_queue_with_allocator(queue* queue_p, unsigned int capacity, memory_allocator mem_allocator)
+int initialize_queue_with_allocator(queue* queue_p, cy_uint capacity, memory_allocator mem_allocator)
 {
 	return initialize_arraylist_with_allocator(&(queue_p->queue_holder), capacity, mem_allocator);
 }
 
-void initialize_queue_with_memory(queue* queue_p, unsigned int capacity, const void* data_ps[])
+int initialize_queue_with_memory(queue* queue_p, cy_uint capacity, const void* data_ps[])
 {
-	initialize_arraylist_with_memory(&(queue_p->queue_holder), capacity, data_ps);
+	return initialize_arraylist_with_memory(&(queue_p->queue_holder), capacity, data_ps);
 }
 
 int push_to_queue(queue* queue_p, const void* data_p)
@@ -32,7 +32,7 @@ const void* get_top_of_queue(const queue* queue_p)
 	return get_front_of_arraylist(&(queue_p->queue_holder));
 }
 
-const void* get_nth_from_top_of_queue(const queue* queue_p, unsigned int n)
+const void* get_nth_from_top_of_queue(const queue* queue_p, cy_uint n)
 {
 	return get_nth_from_front_of_arraylist(&(queue_p->queue_holder), n);
 }
@@ -47,12 +47,12 @@ void deinitialize_queue(queue* queue_p)
 	deinitialize_arraylist(&(queue_p->queue_holder));
 }
 
-unsigned int get_capacity_queue(const queue* queue_p)
+cy_uint get_capacity_queue(const queue* queue_p)
 {
 	return get_capacity_arraylist(&(queue_p->queue_holder));
 }
 
-unsigned int get_element_count_queue(const queue* queue_p)
+cy_uint get_element_count_queue(const queue* queue_p)
 {
 	return get_element_count_arraylist(&(queue_p->queue_holder));
 }
@@ -77,12 +77,12 @@ int shrink_queue(queue* queue_p)
 	return shrink_arraylist(&(queue_p->queue_holder));
 }
 
-int reserve_capacity_for_queue(queue* queue_p, unsigned int atleast_capacity)
+int reserve_capacity_for_queue(queue* queue_p, cy_uint atleast_capacity)
 {
 	return reserve_capacity_for_arraylist(&(queue_p->queue_holder), atleast_capacity);
 }
 
-void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params)
+void for_each_in_queue(const queue* queue_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params)
 {
 	for_each_in_arraylist(&(queue_p->queue_holder), operation, additional_params);
 }
