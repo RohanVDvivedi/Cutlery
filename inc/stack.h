@@ -13,9 +13,9 @@ struct stack
 // initializes stack and it will depend on initialize_array to give necessary memory to manage internal element contents
 // the initialize_stack* functions may fail if the initial memory allocation fails
 // in case of a failure, the stack will still be initialized to capacity 0
-int initialize_stack(stack* stack_p, unsigned int capacity);
-int initialize_stack_with_allocator(stack* stack_p, unsigned int capacity, memory_allocator mem_allocator);
-void initialize_stack_with_memory(stack* stack_p, unsigned int capacity, const void* data_ps[]);
+int initialize_stack(stack* stack_p, cy_uint capacity);
+int initialize_stack_with_allocator(stack* stack_p, cy_uint capacity, memory_allocator mem_allocator);
+int initialize_stack_with_memory(stack* stack_p, cy_uint capacity, const void* data_ps[]);
 
 // push a new element to the stack
 // push returns 1, if data_p is successfully pushed
@@ -30,7 +30,7 @@ int pop_from_stack(stack* stack_p);
 
 // returns pointer to the top element data pointer, (i.e. data pointer to the last inserted element) 
 const void* get_top_of_stack(const stack* stack_p);
-const void* get_nth_from_top_of_stack(const stack* stack_p, unsigned int n);
+const void* get_nth_from_top_of_stack(const stack* stack_p, cy_uint n);
 
 // removes all the elements from stack stack_p
 // after a call to this function the stack contains 0 elements (get_element_count() == 0)
@@ -42,10 +42,10 @@ void remove_all_from_stack(stack* stack_p);
 void deinitialize_stack(stack* stack_p);
 
 // returns capacity of the stack, i.e. the maximum number of elements that can be accomodated in stack
-unsigned int get_capacity_stack(const stack* stack_p);
+cy_uint get_capacity_stack(const stack* stack_p);
 
 // returns the number of elements inside the stack
-unsigned int get_element_count_stack(const stack* stack_p);
+cy_uint get_element_count_stack(const stack* stack_p);
 
 // returns 1, if the stack container is full, i.e. it needs to be expanded to push any futher elements
 // else it return 0, this means there is still space in the container to push elements
@@ -66,10 +66,10 @@ int shrink_stack(stack* stack_p);
 
 // expands stack to atleast the capacity of atleast_capacity
 // returns 1, only if the stack was expanded
-int reserve_capacity_for_stack(stack* stack_p, unsigned int atleast_capacity);
+int reserve_capacity_for_stack(stack* stack_p, cy_uint atleast_capacity);
 
 // for each element of the stack, perform the given operation
-void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, unsigned int index, const void* additional_params), const void* additional_params);
+void for_each_in_stack(const stack* stack_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params);
 
 // serializes the stack, and appends the serialized form to the dstring
 void sprint_stack(dstring* append_str, const stack* stack_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
