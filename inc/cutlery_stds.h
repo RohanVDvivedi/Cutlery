@@ -13,14 +13,35 @@
 #define CAT_(a, b) a ## b
 #define CAT(a, b) CAT_(a, b)
 
-// on <= 8 bit address space
-//typedef unsigned char cy_uint;
-// on <= 16 bit address space
-//typedef unsigned short cy_uint;
-// on <= 32 bit address space
-//typedef unsigned long cy_uint;
-// on <= 64 bit address space
-typedef unsigned long long cy_uint;
+// Appropriately typedef cy_uint, depending on the size of void* on your system
+
+// if (sizeof(void*) <= 8 bits)
+/*
+	typedef unsigned char cy_uint;
+	#define PRIu_cy_uint "hhu"
+	#define PRIx_cy_uint "hhx"
+*/
+
+// else if (sizeof(void*) <= 16 bits)
+/*
+	typedef unsigned short cy_uint;
+	#define PRIu_cy_uint "hu"
+	#define PRIx_cy_uint "hx"
+*/
+
+// else if (sizeof(void*) <= 32 bits)
+/*
+	typedef unsigned long cy_uint;
+	#define PRIu_cy_uint "lu"
+	#define PRIx_cy_uint "lx"
+*/
+
+// else if (sizeof(void*) <= 64 bits)
+
+	typedef unsigned long long cy_uint;
+	#define PRIu_cy_uint "llu"
+	#define PRIx_cy_uint "llx"
+
 
 // We define cy_uint as an unsigned integer that is as wide as a void pointer
 // It can hold any data pointer values
