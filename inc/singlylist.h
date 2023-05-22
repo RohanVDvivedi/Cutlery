@@ -18,7 +18,7 @@ struct singlylist
 {
 	// defines the address of the data, with respect to the singlylist node (slnode)
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
-	unsigned int node_offset;
+	cy_uint node_offset;
 
 	// head->next->...->next = tail // ->next is called n-1 times, n being the number of elements
 	// tail->next = NULL
@@ -27,7 +27,7 @@ struct singlylist
 };
 
 // initializes to a new singlylist
-void initialize_singlylist(singlylist* sl, unsigned int node_offset);
+void initialize_singlylist(singlylist* sl, cy_uint node_offset);
 
 // always initialize your singlylist node before using it
 void initialize_slnode(slnode* node_p);
@@ -37,7 +37,7 @@ int is_empty_singlylist(const singlylist* sl);
 // simply gets head, tail or nth from head data
 const void* get_head_of_singlylist(const singlylist* sl);
 const void* get_tail_of_singlylist(const singlylist* sl);
-const void* get_nth_from_head_of_singlylist(const singlylist* sl, unsigned int n);
+const void* get_nth_from_head_of_singlylist(const singlylist* sl, cy_uint n);
 
 // get next element's data of a given data element of the singlylist
 // data_xist must be a valid data pointer existing in the singlylist

@@ -2,7 +2,7 @@
 
 #include<cutlery_stds.h>
 
-void initialize_singlylist(singlylist* sl, unsigned int node_offset)
+void initialize_singlylist(singlylist* sl, cy_uint node_offset)
 {
 	sl->node_offset = node_offset;
 	sl->head = NULL;
@@ -34,7 +34,7 @@ const void* get_tail_of_singlylist(const singlylist* sl)
 	return (sl->tail == NULL) ? NULL : get_data(sl->tail, sl);
 }
 
-const void* get_nth_from_head_of_singlylist(const singlylist* sl, unsigned int n)
+const void* get_nth_from_head_of_singlylist(const singlylist* sl, cy_uint n)
 {
 	const slnode* node_p = sl->head;
 	while(node_p != NULL && n > 0)
@@ -277,7 +277,7 @@ static void sprint_singlylist_wrapper(dstring* append_str, const singlylist* sl,
 void sprint_singlylist(dstring* append_str, const singlylist* sl, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "singlylist :\n");
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%u]\n", sl->node_offset);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%" PRIu_cy_uint "]\n", sl->node_offset);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "head : [%p]\n", sl->head);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "tail : [%p]\n", sl->tail);
 	if(!is_empty_singlylist(sl))
