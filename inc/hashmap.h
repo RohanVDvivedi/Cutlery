@@ -47,10 +47,10 @@ struct hashmap
 	collision_resolution_policy hashmap_policy;
 
 	// if it is using open addressing, this is the node_offset for instructing the linkedlist or binary search tree
-	unsigned int node_offset;
+	cy_uint node_offset;
 
 	// hash function to hash the data
-	unsigned int (*hash_function)(const void* data);
+	cy_uint (*hash_function)(const void* data);
 
 	// compare data and returns 0 if they are equal, else non-zero
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
@@ -61,7 +61,7 @@ struct hashmap
 
 	// element_count represents the number of elements in the hashmap
 	// this count is only valid for ROBINHOOD_HASHING OR if the actual element_count is lesser than UINT_MAX (which must be the case)
-	unsigned int element_count;
+	cy_uint element_count;
 };
 
 // for collision_resolution_policy = ROBINHOOD_HASHING, use rbhnode as an embedded node
@@ -70,16 +70,16 @@ struct rbhnode
 {
 	// position index is the actual index in the hashmap_holder of this element
 	// while bucket_index is the index that this element hashes to
-	unsigned int position_index;
+	cy_uint position_index;
 };
 
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
 // initialize_hashmap* function may fail with a 0, if the initial memory allocation fails
 // in case of a failure, the hashmap is initialized with 0 buckets, and hence is unusable for most purposes
-int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
-int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator);
+int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset);
+int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator);
 
-void initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* bucket_memory[]);
+int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* bucket_memory[]);
 
 // always initialize your rbhnode before using it
 void initialize_rbhnode(rbhnode* node_p);
@@ -112,7 +112,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data);
 
 // returns pointer to the first element of the hashmap in bucket at bucket_index
 // if bucket_index parameter == FIRST_OF_HASHMAP, then the first element in iteration of hashmap is returned
-const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucket_index);
+const void* get_first_of_in_hashmap(const hashmap* hashmap_p, cy_uint bucket_index);
 
 typedef enum hashmap_next_type hashmap_next_type;
 enum hashmap_next_type
@@ -127,9 +127,9 @@ enum hashmap_next_type
 const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xist, hashmap_next_type next_type);
 
 // returns bucket_count of the hashmap
-unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p);
+cy_uint get_bucket_count_hashmap(const hashmap* hashmap_p);
 // returns the number of elements inside the hashmap
-unsigned int get_element_count_hashmap(const hashmap* hashmap_p);
+cy_uint get_element_count_hashmap(const hashmap* hashmap_p);
 // returns 1 if the hashmap is empty (i.e. element_count == 0), else returns 0
 int is_empty_hashmap(const hashmap* hashmap_p);
 
@@ -137,7 +137,7 @@ int is_empty_hashmap(const hashmap* hashmap_p);
 // this is O(n) operation, since it involves rehashing all the elements of the hashmap
 // On failure it returns 0, when new_bucket_count < old_element_count (for ROBINHOOD_HASHING) || new_bucket_count == 0
 // else it returns 1 on successfully resizing
-int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count);
+int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count);
 // below function works similarly to resize_hashmap
 // it fails with return 0, when expand_factor <= 1.0
 int expand_hashmap(hashmap* hashmap_p, float expand_factor);
