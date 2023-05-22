@@ -7,7 +7,7 @@
 #include<cutlery_math.h>
 
 // gets max height including all nodes from itself to leaf, including itself and the leaf node, in an avl tree
-static unsigned int get_max_height(bstnode* node_p)
+static cy_uint get_max_height(bstnode* node_p)
 {
 	if(node_p == NULL)
 		return 0;

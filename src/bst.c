@@ -442,7 +442,7 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "data :\n");
 		sprint_element(append_str, get_data(node_p, bst_p), tabs + 1);
-		snprintf_dstring(append_str, " (%u)\n", node_p->node_property);
+		snprintf_dstring(append_str, " (%" PRIu_cy_uint ")\n", node_p->node_property);
 
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "parent : [%p]\n", node_p->parent);

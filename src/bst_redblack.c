@@ -30,7 +30,7 @@ static void make_node_black(bstnode* node_p)
 
 static void exchange_colours(bstnode* node_p1, bstnode* node_p2)
 {
-	int temp_color = node_p1->node_property;
+	cy_uint temp_color = node_p1->node_property;
 	node_p1->node_property = node_p2->node_property;
 	node_p2->node_property = temp_color;
 }
