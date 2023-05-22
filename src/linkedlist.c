@@ -8,7 +8,7 @@ int is_free_floating_llnode(const llnode* node_p)
 	return ((node_p->next == NULL) && (node_p->prev == NULL));
 }
 
-void initialize_linkedlist(linkedlist* ll, unsigned int node_offset)
+void initialize_linkedlist(linkedlist* ll, cy_uint node_offset)
 {
 	ll->node_offset = node_offset;
 	ll->head = NULL;
@@ -35,7 +35,7 @@ const void* get_tail_of_linkedlist(const linkedlist* ll)
 	return ((ll->head == NULL) ? NULL : get_data(ll->head->prev, ll));
 }
 
-const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, unsigned int n)
+const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, cy_uint n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
@@ -54,7 +54,7 @@ const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, unsigned int n
 	return NULL;
 }
 
-const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, unsigned int n)
+const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, cy_uint n)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;

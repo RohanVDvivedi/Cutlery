@@ -19,7 +19,7 @@ struct linkedlist
 {
 	// defines the address of the data, with respect to the linkedlist node
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
-	unsigned int node_offset;
+	cy_uint node_offset;
 
 	// head->next->...->next = tail // ->next is called n-1 times, n being the number of elements
 	// tail->prev->...->prev = head // ->prev is called n-1 times, n being the number of elements
@@ -28,7 +28,7 @@ struct linkedlist
 };
 
 // initializes to a new linked list
-void initialize_linkedlist(linkedlist* ll, unsigned int node_offset);
+void initialize_linkedlist(linkedlist* ll, cy_uint node_offset);
 
 // always initialize your linkedlist node before using it
 void initialize_llnode(llnode* node_p);
@@ -41,8 +41,8 @@ int is_empty_linkedlist(const linkedlist* ll);
 // simply gets head, tail or nth from head or tail data
 const void* get_head_of_linkedlist(const linkedlist* ll);
 const void* get_tail_of_linkedlist(const linkedlist* ll);
-const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, unsigned int n);
-const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, unsigned int n);
+const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, cy_uint n);
+const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, cy_uint n);
 
 // get next or previous element's data of a given data element of the linkedlist
 // data_xist must be a valid data pointer existing in the linkedlist
