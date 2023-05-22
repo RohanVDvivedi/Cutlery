@@ -20,9 +20,9 @@ struct teststruct
 	}embedded_nodes;
 };
 
-unsigned int hash_function(const void* data)
+cy_uint hash_function(const void* data)
 {
-	return (unsigned int)((((ts*)data)->key)-1);
+	return (cy_uint)((((ts*)data)->key)-1);
 }
 
 int cmp(const void* data1, const void* data2)
