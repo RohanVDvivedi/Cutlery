@@ -32,14 +32,12 @@
 
 	as you can see in a binary tree, the first element of each of the row is always the number that is of the form 0000...000111...11
 	i.e. all 0s and then all 1s
-	thus for a 32 bit number (most unsigned int), the minimum index that does not have children is (UINT_MAX >> 1)
-	Note :: as per cutlery standards UINT_MAX is an unindexable number
 */
 
 #define get_parent_index(child_index) 			get_parent_index_N(child_index, 2)
 
 // if the index is more than or equal to (UINT_MAX / 2), then calculating its child index is always an overflow
-#define can_have_any_children(index)			((index) < ((UINT_MAX) >> 1))
+#define can_have_any_children(index)			can_have_any_children_N(parent_index, 2)
 #define get_left_child_index(parent_index)		get_index_of_ith_child_N(parent_index, 0, 2)
 #define get_right_child_index(parent_index)		get_index_of_ith_child_N(parent_index, 1, 2)
 
