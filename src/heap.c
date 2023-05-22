@@ -5,7 +5,7 @@
 #include<binary_tree_as_array_util.h>
 
 // utility : interchanges data elements at indices i1 and i2
-static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, unsigned int i2)
+static void inter_change_elements_for_indexes(heap* heap_p, cy_uint i1, cy_uint i2)
 {
 	swap_in_array(&(heap_p->heap_holder), i1, i2);
 
@@ -21,7 +21,7 @@ static void inter_change_elements_for_indexes(heap* heap_p, unsigned int i1, uns
 // returns true (1) if, the reordering is required, else 0
 // we do not check if parent index is actually the parent of the child
 // hence, this function can be used to test if the order could be made correct
-static int is_reordering_required(const heap* heap_p, unsigned int parent_index, unsigned int child_index)
+static int is_reordering_required(const heap* heap_p, cy_uint parent_index, cy_uint child_index)
 {
 	// we dont allow reordering if, parent index or child index are out of bounds of element_count
 	if(parent_index >= heap_p->element_count || child_index >= heap_p->element_count)
@@ -56,12 +56,12 @@ static int is_reordering_required(const heap* heap_p, unsigned int parent_index,
 	return reordering_required;
 }
 
-static void bubble_up(heap* heap_p, unsigned int index)
+static void bubble_up(heap* heap_p, cy_uint index)
 {
 	// exit at index 0, or thew index is out of range
 	while(has_parent(index) && index < heap_p->element_count)
 	{
-		unsigned int parent_index = get_parent_index(index);
+		cy_uint parent_index = get_parent_index(index);
 
 		// exit, if reordering is not required
 		if(!is_reordering_required(heap_p, parent_index, index))
@@ -73,16 +73,16 @@ static void bubble_up(heap* heap_p, unsigned int index)
 	}
 }
 
-static void bubble_down(heap* heap_p, unsigned int index)
+static void bubble_down(heap* heap_p, cy_uint index)
 {
 	// we can not bubble down the last node
 	while(can_have_any_children(index) && index < heap_p->element_count)
 	{
-		unsigned int left_child_index = get_left_child_index(index);
-		unsigned int right_child_index = get_right_child_index(index);
+		cy_uint left_child_index = get_left_child_index(index);
+		cy_uint right_child_index = get_right_child_index(index);
 
 		// if no reordering is required then the element at the index position remains as the parent
-		unsigned int new_parent_index = index;
+		cy_uint new_parent_index = index;
 
 		// check if reordering is required with either left or right child
 		int left_reordering_required = is_reordering_required(heap_p, index, left_child_index);
@@ -125,7 +125,7 @@ int is_free_floating_hpnode(const hpnode* node_p)
 	return node_p->heap_index == INVALID_INDEX;
 }
 
-int initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
+int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
@@ -134,7 +134,7 @@ int initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*c
 	return initialize_array(&(heap_p->heap_holder), capacity);
 }
 
-int initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator)
+int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
@@ -143,13 +143,13 @@ int initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_typ
 	return initialize_array_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 }
 
-void initialize_heap_with_memory(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* data_ps[])
+int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* data_ps[])
 {
 	heap_p->type = type;
 	heap_p->compare = compare;
 	heap_p->node_offset = node_offset;
 	heap_p->element_count = 0;
-	initialize_array_with_memory(&(heap_p->heap_holder), capacity, data_ps);
+	return initialize_array_with_memory(&(heap_p->heap_holder), capacity, data_ps);
 }
 
 int push_to_heap(heap* heap_p, const void* data)
@@ -175,21 +175,21 @@ int push_to_heap(heap* heap_p, const void* data)
 	return 1;
 }
 
-int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index)
+int push_all_from_array_to_heap(heap* heap_p, array* array_p, cy_uint start_index, cy_uint last_index)
 {
 	// fail if the indexes provided in the array are invalid
 	if(start_index > last_index)
 		return 0;
 
 	// number of elements to be inserted from start_index to last_index (both inclusive)
-	unsigned int elements_to_insert = last_index - start_index + 1;
+	cy_uint elements_to_insert = last_index - start_index + 1;
 
 	// if the capacity of heap is not enough to hold all the elements then return with a failure
 	if(get_capacity_heap(heap_p) < (get_element_count_heap(heap_p) + elements_to_insert))
 		return 0;
 
 	// insert all the elements from array [start_index to last_index] to the heap_p
-	for(unsigned int i = 0; i < elements_to_insert; i++)
+	for(cy_uint i = 0; i < elements_to_insert; i++)
 	{
 		// get the data element that needs to be inserted
 		const void* data = get_from_array(array_p, start_index + i);
@@ -238,7 +238,7 @@ int remove_from_heap(heap* heap_p, const void* data)
 		return 0;
 
 	// figure out the index to call remove at
-	unsigned int index_to_remove_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
+	cy_uint index_to_remove_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
 
 	// we can not remove if the data is a free floating node (i.e. not existing in any heap) OR the data does not exist in heap at the desired index (as dictated by hpnode)
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
@@ -249,7 +249,7 @@ int remove_from_heap(heap* heap_p, const void* data)
 	return remove_at_index_from_heap(heap_p, index_to_remove_at);
 }
 
-int remove_at_index_from_heap(heap* heap_p, unsigned int index)
+int remove_at_index_from_heap(heap* heap_p, cy_uint index)
 {
 	// an element can be removed, only if heap is not empty, and the index provided is within bounds
 	if(is_empty_heap(heap_p) || index >= heap_p->element_count)
@@ -280,7 +280,7 @@ void heapify_for(heap* heap_p, const void* data)
 		return ;
 
 	// figure out the index to call heapify at
-	unsigned int index_to_heapify_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
+	cy_uint index_to_heapify_at = ((hpnode*)(get_node(data, heap_p)))->heap_index;
 
 	// we can not heapify if the data is a free floating node (i.e. not existing in any heap) OR if the data does not exist in heap at the desired index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
@@ -291,16 +291,16 @@ void heapify_for(heap* heap_p, const void* data)
 	return heapify_at(heap_p, index_to_heapify_at);
 }
 
-void heapify_at(heap* heap_p, unsigned int index)
+void heapify_at(heap* heap_p, cy_uint index)
 {
 	// return if index is out-of-bounds
 	if(index >= heap_p->element_count)
 		return;
 
 	// pre-evaluate parent, left child and right child indexes for the corresponding index
-	unsigned int parent_index = get_parent_index(index);
-	unsigned int left_child_index = get_left_child_index(index);
-	unsigned int right_child_index = get_right_child_index(index);
+	cy_uint parent_index = get_parent_index(index);
+	cy_uint left_child_index = get_left_child_index(index);
+	cy_uint right_child_index = get_right_child_index(index);
 
 	// if re-ordering is required at the parent side, we bubble up
 	if(has_parent(index) && is_reordering_required(heap_p, parent_index, index))
@@ -320,7 +320,7 @@ void heapify_all(heap* heap_p)
 		return;
 
 	// initially make index point to last index in heap
-	unsigned int index = get_element_count_heap(heap_p) - 1;
+	cy_uint index = get_element_count_heap(heap_p) - 1;
 
 	// bubble_down at all the elements in reverse order staring with index
 	while(1)
@@ -336,7 +336,7 @@ void heapify_all(heap* heap_p)
 	}
 }
 
-static void initialize_node_wrapper(void* data, unsigned int heap_index, const void* additional_params)
+static void initialize_node_wrapper(void* data, cy_uint heap_index, const void* additional_params)
 {
 	const heap* heap_p = additional_params;
 	initialize_hpnode(get_node(data, heap_p));
@@ -362,12 +362,12 @@ void deinitialize_heap(heap* heap_p)
 	heap_p->node_offset = NO_HEAP_NODE_OFFSET;
 }
 
-unsigned int get_capacity_heap(const heap* heap_p)
+cy_uint get_capacity_heap(const heap* heap_p)
 {
 	return get_capacity_array(&(heap_p->heap_holder));
 }
 
-unsigned int get_element_count_heap(const heap* heap_p)
+cy_uint get_element_count_heap(const heap* heap_p)
 {
 	return heap_p->element_count;
 }
@@ -392,12 +392,12 @@ int shrink_heap(heap* heap_p)
 	return shrink_array(&(heap_p->heap_holder), heap_p->element_count);
 }
 
-int reserve_capacity_for_heap(heap* heap_p, unsigned int atleast_capacity)
+int reserve_capacity_for_heap(heap* heap_p, cy_uint atleast_capacity)
 {
 	return reserve_capacity_for_array(&(heap_p->heap_holder), atleast_capacity);
 }
 
-void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params)
+void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, cy_uint heap_index, const void* additional_params), const void* additional_params)
 {
 	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
 }
@@ -414,7 +414,7 @@ void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)
 	}
 
 	sprint_chars(append_str, '\t', tabs);
-	snprintf_dstring(append_str, "element_count : %u\n", heap_p->element_count);
+	snprintf_dstring(append_str, "element_count : %" PRIu_cy_uint "\n", heap_p->element_count);
 
 	sprint_chars(append_str, '\t', tabs);
 	snprintf_dstring(append_str, "heap_holder : \n");
