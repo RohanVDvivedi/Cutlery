@@ -145,7 +145,7 @@ void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 		quick_sort_array(array_p, pivot_index + 1, last_index, compare);
 }
 
-void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned int (*get_sort_attribute)(const void* data))
+void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data))
 {
 	if(start_index > last_index || last_index >= array_p->capacity)
 		return;
@@ -160,13 +160,13 @@ void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, u
 	initialize_queue_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator);
 	initialize_queue_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator);
 
-	for(cy_uint i = 0; i < (sizeof(unsigned int) * CHAR_BIT); i++)
+	for(cy_uint i = 0; i < (sizeof(unsigned long long int) * CHAR_BIT); i++)
 	{
 		cy_uint index = start_index;
 		while(index <= last_index)
 		{
 			const void* data = get_from_array(array_p, index++);
-			unsigned int queue_index = (get_sort_attribute(data) >> i) & 1;
+			unsigned int queue_index = ((get_sort_attribute(data) >> i) & 1ULL);
 			push_to_queue(&(sort_queue[queue_index]), data);
 		}
 
