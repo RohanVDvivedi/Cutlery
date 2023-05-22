@@ -45,7 +45,7 @@ struct bst
 
 	// defines address to data with respect to bstnode
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
-	unsigned int node_offset;
+	cy_uint node_offset;
 
 	// the root node of the tree
 	bstnode* root;
@@ -60,7 +60,7 @@ struct bst
 */
 
 // initializes as if a new bst, may be to reuse
-void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
+void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset);
 
 // always initialize your bstnode before using it
 void initialize_bstnode(bstnode* node_p);
@@ -118,7 +118,7 @@ enum sort_direction{ASCENDING_ORDERED, DESCENDING_ORDERED};
 // find all (or atleast max_result_count number of) data pointers in the bst,
 // which compare >= lower_bound and <= upper_bound,
 // and accumulate them in the sort_direction order (either ASCENDING or DESCENDING order).
-unsigned int find_all_in_range_in_bst(	
+cy_uint find_all_in_range_in_bst(
 						const bst* bst_p,				// binary search tree to search in
 						
 						const void* lower_bound,		// if(lower_bound != NULL), then find all data >= lower_bound, else find all ignoring the lower_bound
@@ -129,8 +129,8 @@ unsigned int find_all_in_range_in_bst(
 														//	stopping only if max_result_count condition is reached
 														// vice-versa for DESCENDING_ORDERED
 						
-						unsigned int max_result_count,	// this is the maximum in-range results to find.
-							// TO GET ALL THE RESULTS => max_result_count = 0xffffffff (maximum unsigned int)
+						cy_uint max_result_count,	// this is the maximum in-range results to find.
+							// TO GET ALL THE RESULTS => max_result_count = CY_UINT_MAX
 
 						// result_accumulator is a function that will be called for a maximum of max_result_count number of times, as long as it returns 1
 						// it will be called once for each element found, with parameters; data and additional_params

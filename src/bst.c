@@ -8,7 +8,7 @@
 
 #include<cutlery_stds.h>
 
-void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
+void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
 {
 	bst_p->type = type;
 	bst_p->compare = compare;
@@ -237,12 +237,12 @@ const void* get_inorder_prev_of_in_bst(const bst* bst_p, const void* data_xist)
 	return (node_prev != NULL) ? get_data(node_prev, bst_p) : NULL;
 }
 
-static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode* node_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, unsigned int max_result_count, int* accumulator_stop, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
+static cy_uint find_all_in_range_recursive(const bst* bst_p, const bstnode* node_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, cy_uint max_result_count, int* accumulator_stop, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
 	if(node_p == NULL)
 		return 0;
 
-	unsigned int results_accumulated = 0;
+	cy_uint results_accumulated = 0;
 
 	const void* data_p = get_data(node_p, bst_p);
 
@@ -296,7 +296,7 @@ static unsigned int find_all_in_range_recursive(const bst* bst_p, const bstnode*
 	return results_accumulated;
 }
 
-unsigned int find_all_in_range_in_bst(const bst* bst_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, unsigned int max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
+cy_uint find_all_in_range_in_bst(const bst* bst_p, const void* lower_bound, const void* upper_bound, sort_direction sort_dirctn, cy_uint max_result_count, int (*result_accumulator)(const void* data, const void* additional_params), const void* additional_params)
 {
 	// errror in providing values 
 	// if both of the lower and upper bounds are provided, then lower_bound must not be greater than upper bound
@@ -442,7 +442,7 @@ static void print_node(dstring* append_str, const bst* bst_p, const bstnode* nod
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "data :\n");
 		sprint_element(append_str, get_data(node_p, bst_p), tabs + 1);
-		snprintf_dstring(append_str, " (%d)\n", node_p->node_property);
+		snprintf_dstring(append_str, " (%u)\n", node_p->node_property);
 
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "parent : [%p]\n", node_p->parent);
@@ -478,7 +478,7 @@ void sprint_bst(dstring* append_str, const bst* bst_p, void (*sprint_element)(ds
 		{snprintf_dstring(append_str, "bst (RED_BLACK_TREE) :\n"); break; }
 	}
 
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%u]\n", bst_p->node_offset);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%" PRIu_cy_uint "]\n", bst_p->node_offset);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "root : [%p]\n", bst_p->root);
 
 	print_tree(append_str, bst_p, bst_p->root, sprint_element, tabs + 1);
