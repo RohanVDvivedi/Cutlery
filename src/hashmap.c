@@ -9,7 +9,7 @@
 
 #include<cutlery_stds.h>
 
-int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset)
+int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
@@ -19,7 +19,7 @@ int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_p
 	return initialize_array(&(hashmap_p->hashmap_holder), bucket_count);
 }
 
-int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator)
+int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
@@ -29,14 +29,14 @@ int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_p
 	return initialize_array_with_allocator(&(hashmap_p->hashmap_holder), bucket_count, mem_allocator);
 }
 
-void initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, unsigned int bucket_count, unsigned int (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* bucket_memory[])
+int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* bucket_memory[])
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
 	hashmap_p->hash_function = hash_function;
 	hashmap_p->compare = compare;
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
-	initialize_array_with_memory(&(hashmap_p->hashmap_holder), bucket_count, bucket_memory);
+	return initialize_array_with_memory(&(hashmap_p->hashmap_holder), bucket_count, bucket_memory);
 }
 
 void initialize_rbhnode(rbhnode* node_p)
@@ -49,12 +49,12 @@ int is_free_floating_rbhnode(const rbhnode* node_p)
 	return node_p->position_index == INVALID_INDEX;
 }
 
-unsigned int get_bucket_count_hashmap(const hashmap* hashmap_p)
+cy_uint get_bucket_count_hashmap(const hashmap* hashmap_p)
 {
 	return get_capacity_array(&(hashmap_p->hashmap_holder));
 }
 
-unsigned int get_element_count_hashmap(const hashmap* hashmap_p)
+cy_uint get_element_count_hashmap(const hashmap* hashmap_p)
 {
 	return hashmap_p->element_count;
 }
@@ -65,7 +65,7 @@ int is_empty_hashmap(const hashmap* hashmap_p)
 }
 
 // utility :-> gets plausible index after hashing and mod of the hash
-static unsigned int get_bucket_index(const hashmap* hashmap_p, const void* data)
+static cy_uint get_bucket_index(const hashmap* hashmap_p, const void* data)
 {
 	return hashmap_p->hash_function(data) % get_bucket_count_hashmap(hashmap_p);
 }
@@ -103,10 +103,10 @@ static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 }
 
 // function used for ROBINHOOD_HASHING only
-static unsigned int get_probe_sequence_length(const hashmap* hashmap_p, const void* data)
+static cy_uint get_probe_sequence_length(const hashmap* hashmap_p, const void* data)
 {
-	unsigned int bucket_index = get_bucket_index(hashmap_p, data);
-	unsigned int position_index = ((rbhnode*)get_node(data, hashmap_p))->position_index;
+	cy_uint bucket_index = get_bucket_index(hashmap_p, data);
+	cy_uint position_index = ((rbhnode*)get_node(data, hashmap_p))->position_index;
 
 	if(position_index >= bucket_index)
 		return position_index - bucket_index;
@@ -122,14 +122,14 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 
 	// evaluate the index of the bucket that this element will go into
 	// all elements that compare equal, must hash to the same bucket
-	unsigned int bucket_index = get_bucket_index(hashmap_p, data);
+	cy_uint bucket_index = get_bucket_index(hashmap_p, data);
 
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned int position_index = bucket_index;
-			unsigned int probe_sequence_length = 0;
+			cy_uint position_index = bucket_index;
+			cy_uint probe_sequence_length = 0;
 
 			const void* data_found = NULL;
 
@@ -186,7 +186,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 		return inserted;
 
 	// evaluate the index of the bucket that this element will go into
-	unsigned int bucket_index = get_bucket_index(hashmap_p, data);
+	cy_uint bucket_index = get_bucket_index(hashmap_p, data);
 
 	switch(hashmap_p->hashmap_policy)
 	{
@@ -200,8 +200,8 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 			if(hashmap_p->element_count == get_bucket_count_hashmap(hashmap_p))
 				break;
 
-			unsigned int position_index = bucket_index;
-			unsigned int probe_sequence_length = 0;
+			cy_uint position_index = bucket_index;
+			cy_uint probe_sequence_length = 0;
 
 			while(1)
 			{
@@ -218,7 +218,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data)
 				}
 				else
 				{
-					unsigned int probe_sequence_length_data_at_position_index = get_probe_sequence_length(hashmap_p, data_at_position_index);
+					cy_uint probe_sequence_length_data_at_position_index = get_probe_sequence_length(hashmap_p, data_at_position_index);
 					if(probe_sequence_length_data_at_position_index < probe_sequence_length)
 					{
 						// steal the slot, and update position_index of data
@@ -291,7 +291,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 				break;
 
 			// get the position index of the data
-			unsigned int position_index = ((rbhnode*)get_node(data, hashmap_p))->position_index;
+			cy_uint position_index = ((rbhnode*)get_node(data, hashmap_p))->position_index;
 
 			// if the data does not exist at position_index in hashmap_holder, as dictated by its rbhnode, then it can not be removed
 			if(data != get_from_array(&(hashmap_p->hashmap_holder), position_index))
@@ -303,7 +303,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 			deleted = 1;
 
 			// Now we loop and move all elements that have non zero probe sequence length, a slot backwards
-			unsigned int previous_position_index = position_index;
+			cy_uint previous_position_index = position_index;
 			position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p)); // equivalent to ==> (position_index + 1) % bucket_count
 			const void* data_at_position_index = get_from_array(&(hashmap_p->hashmap_holder), position_index);
 
@@ -329,7 +329,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
-			unsigned int index = get_bucket_index(hashmap_p, data);
+			cy_uint index = get_bucket_index(hashmap_p, data);
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -340,7 +340,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			unsigned int index = get_bucket_index(hashmap_p, data);
+			cy_uint index = get_bucket_index(hashmap_p, data);
 			bst bstt; init_data_structure(hashmap_p, &bstt);
 			
 			bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
@@ -356,7 +356,7 @@ int remove_from_hashmap(hashmap* hashmap_p, const void* data)
 	return deleted;
 }
 
-const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucket_index)
+const void* get_first_of_in_hashmap(const hashmap* hashmap_p, cy_uint bucket_index)
 {
 	// if there are no elements in the hashmap then return NULL immediately
 	if(get_element_count_hashmap(hashmap_p) == 0)
@@ -368,8 +368,8 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 		{
 			case ROBINHOOD_HASHING :
 			{
-				unsigned int position_index = bucket_index;
-				unsigned int probe_sequence_length = 0;
+				cy_uint position_index = bucket_index;
+				cy_uint probe_sequence_length = 0;
 
 				const void* data_found = NULL;
 
@@ -419,7 +419,7 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 		// loop over hashmap holder and find the first valid bucket_index
 		// we know here that there is atleast an element in hashmap (check in the beginning of this function)
 		// hence there must be a non-NULL bucket in the hashmap_holder
-		unsigned int first_valid_position_index = 0;
+		cy_uint first_valid_position_index = 0;
 		for(; first_valid_position_index < get_bucket_count_hashmap(hashmap_p) && get_from_array(&(hashmap_p->hashmap_holder), first_valid_position_index) == NULL; first_valid_position_index++){}
 
 		switch(hashmap_p->hashmap_policy)
@@ -454,15 +454,15 @@ const void* get_first_of_in_hashmap(const hashmap* hashmap_p, unsigned int bucke
 
 static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hashmap_p, const void* data_xist)
 {
-	unsigned int bucket_index = get_bucket_index(hashmap_p, data_xist);
+	cy_uint bucket_index = get_bucket_index(hashmap_p, data_xist);
 
 	switch(hashmap_p->hashmap_policy)
 	{
 		case ROBINHOOD_HASHING :
 		{
 			// position_index, and probe_sequence_length of the data_xist
-			unsigned int position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index;
-			unsigned int probe_sequence_length = sub_indexes(position_index, bucket_index, get_bucket_count_hashmap(hashmap_p));
+			cy_uint position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index;
+			cy_uint probe_sequence_length = sub_indexes(position_index, bucket_index, get_bucket_count_hashmap(hashmap_p));
 
 			// get the position_index of the next element
 			position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p));
@@ -526,7 +526,7 @@ static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_
 	{
 		case ROBINHOOD_HASHING :
 		{
-			unsigned int next_position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index + 1;
+			cy_uint next_position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index + 1;
 
 			// loop until you find the next_position_index at which hashmap_holder is a non-NULL
 			for(; next_position_index < get_bucket_count_hashmap(hashmap_p) && get_from_array(&(hashmap_p->hashmap_holder), next_position_index) == NULL; next_position_index++){}
@@ -550,10 +550,10 @@ static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_
 			if(next != NULL)
 				return next;
 
-			unsigned int bucket_index = get_bucket_index(hashmap_p, data_xist);
+			cy_uint bucket_index = get_bucket_index(hashmap_p, data_xist);
 
 			// loop over hashmap holder and find the next valid bucket_index
-			unsigned int next_bucket_index = bucket_index + 1;
+			cy_uint next_bucket_index = bucket_index + 1;
 			for(; next_bucket_index < get_bucket_count_hashmap(hashmap_p) && get_from_array(&(hashmap_p->hashmap_holder), next_bucket_index) == NULL; next_bucket_index++){}
 
 			// if no such next valid bucket_index then return NULL
@@ -637,7 +637,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
-			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
 				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
@@ -650,7 +650,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
 			bst bstt; init_data_structure(hashmap_p, &bstt);
-			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
 				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
@@ -688,7 +688,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 	{
 		case ROBINHOOD_HASHING :
 		{
-			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
 				if(get_from_array(&(hashmap_p->hashmap_holder), index) != NULL)
 					operation(get_from_array(&(hashmap_p->hashmap_holder), index), additional_params);
@@ -699,7 +699,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 		{
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
-			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
 				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 				for_each_in_linkedlist(&ll, operation, additional_params);
@@ -710,7 +710,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
 			bst bstt; init_data_structure(hashmap_p, &bstt);
-			for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
 				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 				for_each_in_bst(&bstt, POST_ORDER, operation, additional_params);
@@ -727,7 +727,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 // utility function used by resize_hashmap function only
 static void push_to_queue_wrapper(const void* hashmap_data, const void* queue_p) {	push_to_queue((queue*)(queue_p), hashmap_data);	}
 
-int resize_hashmap(hashmap* hashmap_p, unsigned int new_bucket_count)
+int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 {
 	// if the memory allocator is NULL, we can not resize the hashmap
 	if(hashmap_p->hashmap_holder.mem_allocator == NULL)
@@ -784,10 +784,10 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 		return 0;
 
 	// calculate the new bucket count
-	unsigned int new_bucket_count = expand_factor * get_bucket_count_hashmap(hashmap_p);
-	// handle over flow, of unsigned int
+	cy_uint new_bucket_count = expand_factor * get_bucket_count_hashmap(hashmap_p);
+	// handle over flow, of cy_uint
 	if(new_bucket_count < get_bucket_count_hashmap(hashmap_p))
-		new_bucket_count = (~((unsigned int)(0)));
+		new_bucket_count = CY_UINT_MAX;
 
 	// if new_bucket_count is not greater than the current bucket_count, then this is no longer an expansion
 	if(new_bucket_count <= get_bucket_count_hashmap(hashmap_p))
@@ -831,22 +831,22 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 	}
 
 	sprint_chars(append_str, '\t', tabs);
-	snprintf_dstring(append_str, "node_offset : %u\n", hashmap_p->node_offset);
+	snprintf_dstring(append_str, "node_offset : %" PRIu_cy_uint "\n", hashmap_p->node_offset);
 
 	sprint_chars(append_str, '\t', tabs);
-	snprintf_dstring(append_str, "element_count : %u\n", hashmap_p->element_count);
+	snprintf_dstring(append_str, "element_count : %" PRIu_cy_uint "\n", hashmap_p->element_count);
 
 	sprint_chars(append_str, '\t', tabs);
-	snprintf_dstring(append_str, "bucket_count : %u\n", get_bucket_count_hashmap(hashmap_p));
+	snprintf_dstring(append_str, "bucket_count : %" PRIu_cy_uint "\n", get_bucket_count_hashmap(hashmap_p));
 
 	linkedlist ll; init_data_structure(hashmap_p, &ll);
 	bst bstt; init_data_structure(hashmap_p, &bstt);
 
 	// iterate over all the buckets in the hashmap_p
-	for(unsigned int index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+	for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 	{
 		sprint_chars(append_str, '\t', tabs + 1);
-		snprintf_dstring(append_str, "bucket_id = %u\n", index);
+		snprintf_dstring(append_str, "bucket_id = %" PRIu_cy_uint "\n", index);
 
 		if(get_from_array(&(hashmap_p->hashmap_holder), index) != NULL)
 		{
@@ -856,7 +856,7 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 				{
 					const void* data = get_from_array(&(hashmap_p->hashmap_holder), index);
 					sprint_chars(append_str, '\t', tabs + 2);
-					snprintf_dstring(append_str, "position_index = %u\n", ((rbhnode*)get_node(data, hashmap_p))->position_index);
+					snprintf_dstring(append_str, "position_index = %" PRIu_cy_uint "\n", ((rbhnode*)get_node(data, hashmap_p))->position_index);
 					sprint_element(append_str, data, tabs + 2);
 					snprintf_dstring(append_str, "\n");
 					break;
