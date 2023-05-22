@@ -1,6 +1,8 @@
 #ifndef UNION_FIND_H
 #define UNION_FIND_H
 
+#include<cutlery_stds.h>
+
 typedef struct ufnode ufnode;
 struct ufnode
 {
