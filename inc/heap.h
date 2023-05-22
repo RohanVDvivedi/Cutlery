@@ -14,7 +14,7 @@ typedef struct hpnode hpnode;
 struct hpnode
 {
 	// an embedded heap node is used to define the index of that element in the heap
-	unsigned int heap_index;
+	cy_uint heap_index;
 };
 
 // you can use heap, without embedded a hpnode
@@ -33,21 +33,21 @@ struct heap
 
 	// defines the address of the data, with respect to the heap node
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
-	unsigned int node_offset;
+	cy_uint node_offset;
 
 	// to store pointers to the elements of the heap
 	array heap_holder;
 	
 	// number of elements in the heap
-	unsigned int element_count;
+	cy_uint element_count;
 };
 
 // initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
 // the initialize_heap* functions may fail if the initial memory allocation fails
 // in case of a failure, the heap will still be initialized to capacity 0
-int initialize_heap(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset);
-int initialize_heap_with_allocator(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, memory_allocator mem_allocator);
-void initialize_heap_with_memory(heap* heap_p, unsigned int capacity, heap_type type, int (*compare)(const void* data1, const void* data2), unsigned int node_offset, const void* data_ps[]);
+int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset);
+int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator);
+int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* data_ps[]);
 
 // always initialize your hpnode before using it
 void initialize_hpnode(hpnode* node_p);
@@ -67,7 +67,7 @@ int push_to_heap(heap* heap_p, const void* data);
 // returns 0, if the total_size of the heap was smaller than size necessary
 // upon the return of this function, either all the elements are inserted or no elements are inserted
 // O(N) operation
-int push_all_from_array_to_heap(heap* heap_p, array* array_p, unsigned int start_index, unsigned int last_index);
+int push_all_from_array_to_heap(heap* heap_p, array* array_p, cy_uint start_index, cy_uint last_index);
 
 // pop the top element from the heap
 // pop returns 1, if an element is successfully popped
@@ -84,7 +84,7 @@ const void* get_top_of_heap(const heap* heap_p);
 // if your doubt turns out to be true and the heap property is being violated,
 // then this function would restore the heap property for that index
 // O(log(N)) operation
-void heapify_at(heap* heap_p, unsigned int index);
+void heapify_at(heap* heap_p, cy_uint index);
 
 // this function can be called only if you are using the embedded hpnode in your data
 // it figures out the heap_index from the hpnode of the data and 
@@ -107,7 +107,7 @@ void heapify_all(heap* heap_p);
 // this functions fails with 0 returns, if the index provided is greater than the elements in the heap
 // i.e. fails if index is out of bounds, else if the element was removed it will return 1
 // O(log(N)) operation
-int remove_at_index_from_heap(heap* heap_p, unsigned int index);
+int remove_at_index_from_heap(heap* heap_p, cy_uint index);
 
 // this function can be called only if you are using the embedded hpnode in your data
 // it figures out the heap_index from the hpnode of the data and 
@@ -126,10 +126,10 @@ void remove_all_from_heap(heap* heap_p);
 void deinitialize_heap(heap* heap_p);
 
 // returns capacity of the heap, i.e. the maximum number of elements that can be accomodated in heap
-unsigned int get_capacity_heap(const heap* heap_p);
+cy_uint get_capacity_heap(const heap* heap_p);
 
 // returns the number of elements inside the heap
-unsigned int get_element_count_heap(const heap* heap_p);
+cy_uint get_element_count_heap(const heap* heap_p);
 
 // returns 1, if the heap container is full, i.e. it needs to be expanded to push any futher elements
 // else it return 0, this means there is still space in the container to push elements
@@ -150,10 +150,10 @@ int shrink_heap(heap* heap_p);
 
 // expands heap to atleast the capacity of atleast_capacity
 // returns 1, only if the heap was expanded
-int reserve_capacity_for_heap(heap* heap_p, unsigned int atleast_capacity);
+int reserve_capacity_for_heap(heap* heap_p, cy_uint atleast_capacity);
 
 // perform an operation on all the key value pairs for the heap
-void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, unsigned int heap_index, const void* additional_params), const void* additional_params);
+void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, cy_uint heap_index, const void* additional_params), const void* additional_params);
 
 // serializes the array, and appends the serialized form to the dstring
 void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs);
