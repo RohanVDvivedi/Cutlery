@@ -1,6 +1,6 @@
 1. Tasks picked
 
- * add a custom type cy_uint typedef-ed just like mem_size, and replace all instances of index, count, node_offset and node_property, etc in singlylist, linkedlist, bst, dstring, dpipe, bitmap, bloomfilter and count_min_sketch from unsigned int type to cy_uint.
+ * add a custom type cy_uint typedef-ed just like mem_size, and replace all instances of index, count, node_offset and node_property, etc in linkedlist, bst, dstring, dpipe, bitmap, bloomfilter and count_min_sketch from unsigned int type to cy_uint.
  * add logic for MAX_INDEXABLE_BYTES_CAPACITY(), a MAX_ARRAY_CAPACITY() version for dstring and dpipe
  * fail initialization of any cutlery datastructures if the capacity is greater than the MAX CAPACITY
 
