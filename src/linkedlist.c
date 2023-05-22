@@ -394,7 +394,7 @@ static void sprint_linkedlist_wrapper(dstring* append_str, const linkedlist* ll,
 void sprint_linkedlist(dstring* append_str, const linkedlist* ll, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "linkedlist :\n");
-	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%u]\n", ll->node_offset);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%" PRIu_cy_uint "]\n", ll->node_offset);
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "head : [%p]\n", ll->head);
 	if(!is_empty_linkedlist(ll))
 	{
