@@ -3,7 +3,7 @@
 #include<cutlery_stds.h>
 #include<cutlery_math.h>
 
-void initialize_union_find(union_find* uf_p, unsigned int node_offset)
+void initialize_union_find(union_find* uf_p, cy_uint node_offset)
 {
 	uf_p->node_offset = node_offset;
 }

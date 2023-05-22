@@ -6,7 +6,7 @@ struct ufnode
 {
 	ufnode* parent; // == self, if it is the root of the group, else it points to its immediate parent
 
-	unsigned int rank;
+	cy_uint rank;
 };
 
 typedef struct union_find union_find;
@@ -14,11 +14,11 @@ struct union_find
 {
 	// defines address to data with respect to uf_node
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
-	unsigned int node_offset;
+	cy_uint node_offset;
 };
 
 // initializes a new bst
-void initialize_union_find(union_find* uf_p, unsigned int node_offset);
+void initialize_union_find(union_find* uf_p, cy_uint node_offset);
 
 // always initialize your ufnode before using it
 void initialize_ufnode(ufnode* node_p);
