@@ -47,7 +47,7 @@ int test_compare(const void* a, const void* b)
 	}
 }
 
-unsigned int get_radix_sort_attr(const void* a)
+unsigned long long int get_radix_sort_attr(const void* a)
 {
 	return ((ts*)a)->a;
 }
@@ -149,8 +149,8 @@ int main()
 
 //#define MERGE_SORT
 //#define HEAP_SORT
-#define QUICK_SORT
-//#define RADIX_SORT
+//#define QUICK_SORT
+#define RADIX_SORT
 
 #if defined MERGE_SORT
 	printf("Sorting %u to %u using MERGE_SORT\n\n", start_index, end_index);
