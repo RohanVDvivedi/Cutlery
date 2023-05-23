@@ -21,7 +21,7 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 BST tasks (NEW DATASTRUCTURE inclusion)
- * implement TREAP_BST a treap with randomized priorirty based insertion
+ * implement TREAP and AA_TREE
  * add subtree size in all bsts (*far future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
