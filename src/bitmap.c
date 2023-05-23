@@ -17,53 +17,53 @@
 
 
 
-int get_bit(const char* bitmap, unsigned int index)
+int get_bit(const char* bitmap, cy_uint index)
 {
 	return (bitmap[X_div_8(index)] >> (X_mod_8(index))) & 0x01;
 }
 
-void set_bit(char* bitmap, unsigned int index)
+void set_bit(char* bitmap, cy_uint index)
 {
 	bitmap[X_div_8(index)] |= (1<<(X_mod_8(index)));
 }
 
-void reset_bit(char* bitmap, unsigned int index)
+void reset_bit(char* bitmap, cy_uint index)
 {
 	bitmap[X_div_8(index)] &= ~(1<<(X_mod_8(index)));
 }
 
-void set_all_bits(char* bitmap, unsigned int size)
+void set_all_bits(char* bitmap, cy_uint size)
 {
 	// number of whole bytes in the bitmap
-	unsigned int bitmap_whole_byte_size = X_div_8(size);
+	cy_uint bitmap_whole_byte_size = X_div_8(size);
 	
 	// set all bits in the complete bytes
-	for(unsigned int i = 0; i < bitmap_whole_byte_size; i++)
-		bitmap[i] = 0xff;
+	for(cy_uint i = 0; i < bitmap_whole_byte_size; i++)
+		bitmap[i] = (~('\x0'));
 
 	// set necessary bits in the last partial byte
-	for(unsigned int i = X_mul_8(bitmap_whole_byte_size); i < size; i++)
+	for(cy_uint i = X_mul_8(bitmap_whole_byte_size); i < size; i++)
 		set_bit(bitmap, i);
 }
 
-void reset_all_bits(char* bitmap, unsigned int size)
+void reset_all_bits(char* bitmap, cy_uint size)
 {
 	// number of whole bytes in the bitmap
-	unsigned int bitmap_whole_byte_size = X_div_8(size);
+	cy_uint bitmap_whole_byte_size = X_div_8(size);
 	
 	// reset all bits in the complete bytes
-	for(unsigned int i = 0; i < bitmap_whole_byte_size; i++)
-		bitmap[i] = 0x00;
+	for(cy_uint i = 0; i < bitmap_whole_byte_size; i++)
+		bitmap[i] = '\x0';
 
 	// set necessary bits in the last partial byte
-	for(unsigned int i = X_mul_8(bitmap_whole_byte_size); i < size; i++)
+	for(cy_uint i = X_mul_8(bitmap_whole_byte_size); i < size; i++)
 		reset_bit(bitmap, i);
 }
 
-void sprint_bitmap(dstring* append_str, const char* bitmap, unsigned int size, unsigned int tabs)
+void sprint_bitmap(dstring* append_str, const char* bitmap, cy_uint size, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs);
-	for(unsigned int i = 0; i < size; i++)
+	for(cy_uint i = 0; i < size; i++)
 	{
 		if(i)
 			snprintf_dstring(append_str, " ");
@@ -74,7 +74,7 @@ void sprint_bitmap(dstring* append_str, const char* bitmap, unsigned int size, u
 	snprintf_dstring(append_str, "\n");
 }
 
-unsigned int bitmap_size_in_bytes(unsigned int size)
+cy_uint bitmap_size_in_bytes(cy_uint size)
 {
 	// size/8 => gives us the number of complete bytes of data
 	// note: size/8 => floor(((double)size)/8)
@@ -84,17 +84,17 @@ unsigned int bitmap_size_in_bytes(unsigned int size)
 	return X_div_8(size + 7);					  // -- version 3
 }
 
-unsigned int find_first_set(const char* bitmap, unsigned int start_index, unsigned int size)
+cy_uint find_first_set(const char* bitmap, cy_uint start_index, cy_uint size)
 {
-	unsigned int byte_index = X_div_8(start_index);
-	unsigned int bytes_in_bitmap = bitmap_size_in_bytes(size);
+	cy_uint byte_index = X_div_8(start_index);
+	cy_uint bytes_in_bitmap = bitmap_size_in_bytes(size);
 
 	while(byte_index < bytes_in_bitmap)
 	{
 		if(bitmap[byte_index])
 		{
 			// ffs functions returns value between 1 <-> 8
-			unsigned int bit_index = X_mul_8(byte_index) + (ffs(bitmap[byte_index]) - 1);
+			cy_uint bit_index = X_mul_8(byte_index) + (ffs(bitmap[byte_index]) - 1);
 
 			// bit index valid only if it is between returnable bounds
 			if(start_index <= bit_index && bit_index < size)

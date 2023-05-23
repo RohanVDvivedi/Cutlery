@@ -3,27 +3,29 @@
 
 #include<dstring.h>
 
-// char* bitmap      => first pointer adddress of the bitmap
-// unsigned int size => size of the bitmap in number of bits
-// unsigned int index => bit location in the bitmap (starting with 0)
+// char* bitmap       => first pointer adddress of the bitmap
+// cy_uint size  => size of the bitmap in number of bits
+// cy_uint index => bit location in the bitmap (starting with 0)
 
-int get_bit(const char* bitmap, unsigned int index);
+// CHAR_BIT is assumed to be 8
 
-void set_bit(char* bitmap, unsigned int index);
+int get_bit(const char* bitmap, cy_uint index);
 
-void reset_bit(char* bitmap, unsigned int index);
+void set_bit(char* bitmap, cy_uint index);
 
-void set_all_bits(char* bitmap, unsigned int size);
+void reset_bit(char* bitmap, cy_uint index);
 
-void reset_all_bits(char* bitmap, unsigned int size);
+void set_all_bits(char* bitmap, cy_uint size);
 
-void sprint_bitmap(dstring* append_str, const char* bitmap, unsigned int size, unsigned int tabs);
+void reset_all_bits(char* bitmap, cy_uint size);
 
-unsigned int bitmap_size_in_bytes(unsigned int size);
+void sprint_bitmap(dstring* append_str, const char* bitmap, cy_uint size, unsigned int tabs);
 
-// unsigned int start_index => bit location in the bitmap to start checking from
+cy_uint bitmap_size_in_bytes(cy_uint size);
+
+// start_index => bit location in the bitmap to start checking from
 // returns a least index of the bit set to 1, that is between start_index and size-1
 // if no bit is set in the given range return size (size is out-of-bound index)
-unsigned int find_first_set(const char* bitmap, unsigned int start_index, unsigned int size);
+cy_uint find_first_set(const char* bitmap, cy_uint start_index, cy_uint size);
 
 #endif
