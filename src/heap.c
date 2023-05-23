@@ -319,21 +319,9 @@ void heapify_all(heap* heap_p)
 	if(is_empty_heap(heap_p))
 		return;
 
-	// initially make index point to last index in heap
-	cy_uint index = get_element_count_heap(heap_p) - 1;
-
-	// bubble_down at all the elements in reverse order staring with index
-	while(1)
-	{
-		bubble_down(heap_p, index);
-
-		// if the last index processed was at 0, then return
-		if(index == 0)
-			break;
-
-		// else decrement and continue
-		index--;
-	}
+	// bubble_down at all the elements in reverse order
+	for(cy_uint index = get_element_count_heap(heap_p); index > 0;)
+		bubble_down(heap_p, --index);
 }
 
 static void initialize_node_wrapper(void* data, cy_uint heap_index, const void* additional_params)
