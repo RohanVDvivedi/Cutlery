@@ -11,7 +11,7 @@ RADIX_TREE tasks (NEW DATASTRUCTURE)
 struct trie_node
 {
     dstring partial_string;
-    unsigned int prefix_count; // total number of strings in the complete trie data structure that have the prefix of partial_string
+    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix of partial_string
     void* value;
     hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
 
@@ -19,6 +19,10 @@ struct trie_node
     rbhnode/bstnode/llnode children_embed_node;
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
+
+BST tasks (NEW DATASTRUCTURE inclusion)
+ * implement TREAP_BST a treap with randomized priorirty based insertion
+ * add subtree size in all bsts (*far future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap.
@@ -29,7 +33,7 @@ struct binomialheapnode
 	binomialheapnode* parent;
 
 	// number of children
-	unsigned int degree;
+	cy_uint degree;
 
 	// linkedlist of its children
 	linkedlist children;
