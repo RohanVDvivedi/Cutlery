@@ -1,6 +1,8 @@
 #ifndef MULTI_DIM_ARRAY_UTIL_H
 #define MULTI_DIM_ARRAY_UTIL_H
 
+#include<cutlery_stds.h>
+
 /*
 **
 **	This file provides utility fundtions for accessing multi-dimensional array
