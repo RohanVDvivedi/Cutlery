@@ -1,22 +1,5 @@
 #include<bitmap.h>
 
-#include<string.h>
-
-// UTILITY - OPTIMIZED - start
-
-// X_mul_8(x) ==> x * 8
-#define X_mul_8(x) ((x)<<3)
-
-// X_div_8(x) ==> x / 8
-#define X_div_8(x) ((x)>>3)
-
-// X_mod_8(x) ==> x % 8
-#define X_mod_8(x) ((x)&7)
-
-// UTILITY - end
-
-
-
 int get_bit(const char* bitmap, cy_uint index)
 {
 	return (bitmap[X_div_8(index)] >> (X_mod_8(index))) & 0x01;
@@ -83,6 +66,8 @@ cy_uint bitmap_size_in_bytes(cy_uint size)
 	// return X_div_8(size) + (X_mod_8(size)>0);  // -- version 2
 	return X_div_8(size + 7);					  // -- version 3
 }
+
+#include<string.h>
 
 cy_uint find_first_set(const char* bitmap, cy_uint start_index, cy_uint size)
 {

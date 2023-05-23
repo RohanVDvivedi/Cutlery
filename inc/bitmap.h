@@ -7,8 +7,6 @@
 // cy_uint size  => size of the bitmap in number of bits
 // cy_uint index => bit location in the bitmap (starting with 0)
 
-// CHAR_BIT is assumed to be 8
-
 int get_bit(const char* bitmap, cy_uint index);
 
 void set_bit(char* bitmap, cy_uint index);
