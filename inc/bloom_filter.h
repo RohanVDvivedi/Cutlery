@@ -24,14 +24,12 @@ struct bloom_filter
 
 	// each data_hash_function has bucket_count number of buckets
 	// total number of buckets = number of hash functions * bucket_count
-	unsigned int bucket_count;
+	cy_uint bucket_count;
 
 	// This is a bitmap consisting of (total bucket count) number of bits
 	// this bitmap is a single chunk of memory
-	// if the bitmap was managed as array by the c language,
-	// then it would be accessible as bitmap[ ith_hash_function ][ jth_bit ]
-	// but since c language does not allow dynamic multidimentional bit arrays
-	// here we will use the functionality defined in bitmap.h and multi_dim_array_util.h (and related source (.c) file)
+	// if the bitmap was managed as array by the c language, then it would be accessible as bitmap[ ith_hash_function ][ jth_bit ]
+	// here we will use the functionality defined in bitmap.h and multi_dim_array_util.h to create a packed (single allocation) multi dimensional bitmap
 	char* bitmap;
 
 	// memory allocator to be used for above mentioned bitmap
@@ -42,15 +40,15 @@ struct bloom_filter
 // initialize_bloom_filter* functions may fail, if the initial memory allocation fails
 // in case of a failure, there has not been any memory allocation, and the error is fatal, the bloom filter instance is unusable
 
-int initialize_bloom_filter(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[]);
+int initialize_bloom_filter(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[]);
 
-int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator bitmap_allocator);
+int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator bitmap_allocator);
 
 // in the initialize with_memory function the bitmap parameter (the last parameter) is optional
 // it can be provided as NULL, if you want to use STD_C_mem_allocator for allocating and maintaining bitmap
-void initialize_bloom_filter_with_memory(bloom_filter* bf_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], char bitmap[]);
+int initialize_bloom_filter_with_memory(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], char bitmap[]);
 
-void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, unsigned int data_size);
+void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, cy_uint data_size);
 
 typedef enum bloom_filter_presence bloom_filter_presence;
 enum bloom_filter_presence
@@ -62,7 +60,7 @@ enum bloom_filter_presence
 // a result of exists in bloom_filter is 
 // a definite not present (i.e. not present with 100% surety)
 // or it may be present (it may be present or absent)
-bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const void* data, unsigned int data_size);
+bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const void* data, cy_uint data_size);
 
 double get_fraction_of_bloom_filter_bits_set(const bloom_filter* bf_p);
 
