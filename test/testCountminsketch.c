@@ -5,19 +5,19 @@
 
 #define COUNT_MIN_SKETCH_BUCKET_COUNT     (16)
 
-unsigned int hash_f_1(const void* data, unsigned int ununsed)
+cy_uint hash_f_1(const void* data, cy_uint ununsed)
 {
 	const char* str = data;
 	return strlen(str);
 }
 
-unsigned int hash_f_2(const void* data, unsigned int ununsed)
+cy_uint hash_f_2(const void* data, cy_uint ununsed)
 {
 	const char* str = data;
-	unsigned int sum_chars = 0;
+	cy_uint sum_chars = 0;
 	while((*str) != '\0')
 	{
-		sum_chars += (((unsigned int)(*str)) - ((('a'<=((unsigned int)(*str)))&&(((unsigned int)(*str))<='z'))?'a':'A'));
+		sum_chars += (((cy_uint)(*str)) - ((('a'<=((cy_uint)(*str)))&&(((cy_uint)(*str))<='z'))?'a':'A'));
 		str++;
 	}
 	return sum_chars;
@@ -35,12 +35,12 @@ void print_countminsketch(const count_min_sketch* cms_p)
 
 void increment_and_print_frequency(count_min_sketch* cms_p, char* str)
 {
-	printf("%s -> %u\n", str, increment_frequency_in_count_min_sketch(cms_p, str, -1));
+	printf("%s -> %" PRIu_cy_uint "\n", str, increment_frequency_in_count_min_sketch(cms_p, str, -1));
 }
 
 void get_and_print_frequency(const count_min_sketch* cms_p, char* str)
 {
-	printf("%s -> %u\n", str, get_frequency_from_count_min_sketch(cms_p, str, -1));
+	printf("%s -> %" PRIu_cy_uint "\n", str, get_frequency_from_count_min_sketch(cms_p, str, -1));
 }
 
 int main()
@@ -100,6 +100,10 @@ int main()
 
 	get_and_print_frequency(cms_p, "manan");
 
+	get_and_print_frequency(cms_p, "Rohan V");
+
+	get_and_print_frequency(cms_p, "Rohan Xvivedi");
+
 	printf("reseting frequencies\n");
 	reset_frequencies_in_count_min_sketch(cms_p);
 
@@ -122,6 +126,10 @@ int main()
 	get_and_print_frequency(cms_p, "devashree");
 
 	get_and_print_frequency(cms_p, "manan");
+
+	get_and_print_frequency(cms_p, "Rohan V");
+
+	get_and_print_frequency(cms_p, "Rohan Xvivedi");
 
 	deinitialize_count_min_sketch(cms_p);
 
