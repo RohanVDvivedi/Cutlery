@@ -134,6 +134,13 @@ bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const voi
 	return result;
 }
 
+void reset_all_bloom_filter_bits(bloom_filter* bf_p)
+{
+	cy_uint bits_in_bitmap = get_bitmap_size_in_bits_for_bloom_filter(bf_p);
+
+	reset_all_bits(bf_p->bitmap, bits_in_bitmap);
+}
+
 double get_fraction_of_bloom_filter_bits_set(const bloom_filter* bf_p)
 {
 	cy_uint total_bits = get_bitmap_size_in_bits_for_bloom_filter(bf_p);
