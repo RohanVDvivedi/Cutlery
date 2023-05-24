@@ -63,7 +63,7 @@ enum bloom_filter_presence
 bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const void* data, cy_uint data_size);
 
 // all bits will be reset i.e. all the elements will be made ABSENT
-void reset_all_bloom_filter_bits(bloom_filter* bp_p);
+void reset_bits_in_bloom_filter(bloom_filter* bp_p);
 
 double get_fraction_of_bloom_filter_bits_set(const bloom_filter* bf_p);
 
