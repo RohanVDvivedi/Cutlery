@@ -7,31 +7,36 @@
 #include<cutlery_math.h>
 #include<memory_allocator_interface.h>
 
-static unsigned int get_total_bucket_count_for_count_min_sketch(const count_min_sketch* cms_p)
+static cy_uint get_total_bucket_count_for_count_min_sketch(const count_min_sketch* cms_p)
 {
 	return cms_p->bucket_count * get_capacity_array(&(cms_p->data_hash_functions));
 }
 
-int initialize_count_min_sketch(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[])
+int initialize_count_min_sketch(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[])
 {
 	// no allocators provided initialize with STC_C_mem_allocator
 	return initialize_count_min_sketch_with_allocator(cms_p, bucket_count, hash_functions_count, data_hash_functions, STD_C_mem_allocator, STD_C_mem_allocator);
 }
 
-int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator uint_allocator)
+int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator uint_allocator)
 {
+	// the total_buckets must not be 0, and the total_buckets must not overflow CY_UINT_MAX, and it must be lesser than the max bucket count possible on your machine
+	cy_uint total_buckets = bucket_count * hash_functions_count;
+	if(total_buckets == 0 || total_buckets < bucket_count || total_buckets < hash_functions_count || total_buckets > MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT)
+		return 0;
+
 	// initialize array (of data_hash_func-s) and populate it with data_hash_functions
 	if(!initialize_array_with_allocator(&(cms_p->data_hash_functions), hash_functions_count, data_hash_functions_array_allocator))
 		return 0;
-	for(unsigned int i = 0; i < hash_functions_count; i++)
+	for(cy_uint i = 0; i < hash_functions_count; i++)
 		set_in_array(&(cms_p->data_hash_functions), data_hash_functions[i], i);
 
 	cms_p->bucket_count = bucket_count;
 	cms_p->uint_allocator = uint_allocator;
 
 	// calculate total number of buckets required
-	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
+	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(cy_uint);
 
 	if(total_bytes_for_all_buckets == 0)
 		cms_p->frequencies = NULL;
@@ -48,8 +53,13 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, unsigned
 	return 1;
 }
 
-void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned int bucket_count, unsigned int hash_functions_count, const data_hash_func data_hash_functions[], unsigned int frequencies[])
+void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], cy_uint frequencies[])
 {
+	// the total_buckets must not be 0, and the total_buckets must not overflow CY_UINT_MAX, and it must be lesser than the max bucket count possible on your machine
+	cy_uint total_buckets = bucket_count * hash_functions_count;
+	if(total_buckets == 0 || total_buckets < bucket_count || total_buckets < hash_functions_count || total_buckets > MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT)
+		return 0;
+
 	// initialize array with memory
 	initialize_array_with_memory(&(cms_p->data_hash_functions), hash_functions_count, (const void**)data_hash_functions);
 
@@ -57,8 +67,8 @@ void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned i
 	cms_p->bucket_count = bucket_count;
 
 	// calculate total number of buckets required
-	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
+	cy_uint total_bytes_for_all_buckets = total_bucket_count * sizeof(cy_uint);
 
 	if(total_bytes_for_all_buckets == 0)
 		cms_p->frequencies = NULL;
@@ -68,37 +78,44 @@ void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, unsigned i
 	{
 		cms_p->uint_allocator = STD_C_mem_allocator;
 		cms_p->frequencies = zallocate(cms_p->uint_allocator, &total_bytes_for_all_buckets);
+		if(cms_p->frequencies == NULL)
+		{
+			deinitialize_array(&(cms_p->data_hash_functions));
+			return 0;
+		}
 	}
+
+	return 1;
 }
 
 // incrementing frequency by 1, while avoiding overflow
-static unsigned int increment_frequency_by_1(unsigned int frequency)
+static cy_uint increment_frequency_by_1(cy_uint frequency)
 {
-	if(frequency == UINT_MAX)
+	if(frequency == CY_UINT_MAX)
 		return frequency;
 	return frequency + 1;
 }
 
 
 // returns frequency of a certain data element, and the bucket numbers concerned for each of the hash_functions
-// the bucket_indices must point to hash_functions_count number of unsigned ints
+// the bucket_indices must point to hash_functions_count number of cy_uints
 // where bucket_indices[h] is the index of the bucket number concerned for the given data for the h-th hash_function
-static unsigned int get_frequency_and_concerned_bucket_indices_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, unsigned int data_size, unsigned int* bucket_indices)
+static cy_uint get_frequency_and_concerned_bucket_indices_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, cy_uint data_size, cy_uint* bucket_indices)
 {
-	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
-	unsigned int bucket_count = cms_p->bucket_count;
+	cy_uint hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	cy_uint bucket_count = cms_p->bucket_count;
 
 	// result frequency
-	unsigned int result = UINT_MAX;
+	cy_uint result = UINT_MAX;
 
 	// we iterate over all the hash functions
-	for(unsigned int h = 0; (h < hash_functions_count); h++)
+	for(cy_uint h = 0; (h < hash_functions_count); h++)
 	{
 		data_hash_func hash_function = get_from_array(&(cms_p->data_hash_functions), h);
 
-		unsigned int bucket_no = hash_function(data, data_size) % bucket_count;
+		cy_uint bucket_no = hash_function(data, data_size) % bucket_count;
 
-		bucket_indices[h] = get_accessor_from_indices((const unsigned int []){bucket_no, h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+		bucket_indices[h] = get_accessor_from_indices((const cy_uint []){bucket_no, h}, (const cy_uint []){bucket_count, hash_functions_count}, 2);
 
 		result = min(result, cms_p->frequencies[bucket_indices[h]]);
 	}
@@ -106,22 +123,22 @@ static unsigned int get_frequency_and_concerned_bucket_indices_from_count_min_sk
 	return result;
 }
 
-unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, unsigned int data_size)
+cy_uint increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, cy_uint data_size)
 {
-	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	cy_uint hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
 
 	// we calculate the current max_frequency (of data)
 	// and additionally we cache all the buckets we touched in bucket_indices array
 	// this above caching allows us to avoid recalculation of all the hash functions and their corresponding accessible 2-d -> 1d coversion indices
 
-	cy_uint bucket_indices_size = sizeof(unsigned int) * ((cy_uint)hash_functions_count);
-	unsigned int* bucket_indices = allocate(STD_C_mem_allocator, &bucket_indices_size);
+	cy_uint bucket_indices_size = sizeof(cy_uint) * ((cy_uint)hash_functions_count);
+	cy_uint* bucket_indices = allocate(STD_C_mem_allocator, &bucket_indices_size);
 	
 	// get the frequency and the concerned bucket_nos
-	unsigned int frequency = get_frequency_and_concerned_bucket_indices_from_count_min_sketch(cms_p, data, data_size, bucket_indices);
+	cy_uint frequency = get_frequency_and_concerned_bucket_indices_from_count_min_sketch(cms_p, data, data_size, bucket_indices);
 
 	// we iterate over all the hash functions, and increment frequency if it matches the max frequency
-	for(unsigned int h = 0; (h < hash_functions_count); h++)
+	for(cy_uint h = 0; (h < hash_functions_count); h++)
 	{
 		if(cms_p->frequencies[bucket_indices[h]] == frequency)
 			cms_p->frequencies[bucket_indices[h]] = increment_frequency_by_1(cms_p->frequencies[bucket_indices[h]]);
@@ -130,26 +147,26 @@ unsigned int increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, co
 	// deallocate bucket_indices
 	deallocate(STD_C_mem_allocator, bucket_indices, bucket_indices_size);
 
-	return frequency + 1;
+	return increment_frequency_by_1(frequency);
 }
 
-unsigned int get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, unsigned int data_size)
+cy_uint get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, cy_uint data_size)
 {
-	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
-	unsigned int bucket_count = cms_p->bucket_count;
+	cy_uint hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	cy_uint bucket_count = cms_p->bucket_count;
 
 	// result frequency
-	unsigned int result = UINT_MAX;
+	cy_uint result = UINT_MAX;
 
 	// in the below for loop, the minimum value result can have is 0
 	// hence we save some cycles by exiting the loop early if result == 0
-	for(unsigned int h = 0; (h < hash_functions_count) && (result > 0); h++)
+	for(cy_uint h = 0; (h < hash_functions_count) && (result > 0); h++)
 	{
 		data_hash_func hash_function = get_from_array(&(cms_p->data_hash_functions), h);
 
-		unsigned int bucket_no = hash_function(data, data_size) % bucket_count;
+		cy_uint bucket_no = hash_function(data, data_size) % bucket_count;
 
-		unsigned int index = get_accessor_from_indices((const unsigned int []){bucket_no, h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+		cy_uint index = get_accessor_from_indices((const cy_uint []){bucket_no, h}, (const cy_uint []){bucket_count, hash_functions_count}, 2);
 
 		result = min(result, cms_p->frequencies[index]);
 	}
@@ -160,26 +177,26 @@ unsigned int get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, 
 void reset_frequencies_in_count_min_sketch(count_min_sketch* cms_p)
 {
 	// calculate total number of buckets required
-	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
+	cy_uint total_bytes_for_all_buckets = total_bucket_count * sizeof(cy_uint);
 
 	memory_set(cms_p->frequencies, 0, total_bytes_for_all_buckets);
 }
 
 void sprint_count_min_sketch(dstring* append_str, const count_min_sketch* cms_p, unsigned int tabs)
 {
-	unsigned int hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
-	unsigned int bucket_count = cms_p->bucket_count;
+	cy_uint hash_functions_count = get_capacity_array(&(cms_p->data_hash_functions));
+	cy_uint bucket_count = cms_p->bucket_count;
 
-	for(unsigned int h = 0; h < hash_functions_count; h++)
+	for(cy_uint h = 0; h < hash_functions_count; h++)
 	{
-		sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "h(%u) -> ", h);
+		sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "h(%" PRIu_cy_uint ") -> ", h);
 
-		for(unsigned int b = 0; b < bucket_count; b++)
+		for(cy_uint b = 0; b < bucket_count; b++)
 		{
-			unsigned int index = get_accessor_from_indices((const unsigned int []){b, h}, (const unsigned int []){bucket_count, hash_functions_count}, 2);
+			cy_uint index = get_accessor_from_indices((const cy_uint []){b, h}, (const cy_uint []){bucket_count, hash_functions_count}, 2);
 
-			snprintf_dstring(append_str, "%u ", cms_p->frequencies[index]);
+			snprintf_dstring(append_str, "%" PRIu_cy_uint " ", cms_p->frequencies[index]);
 		}
 		snprintf_dstring(append_str, "\n");
 	}
@@ -188,8 +205,8 @@ void sprint_count_min_sketch(dstring* append_str, const count_min_sketch* cms_p,
 void deinitialize_count_min_sketch(count_min_sketch* cms_p)
 {
 	// calculate total number of buckets required
-	unsigned int total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(unsigned int);
+	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
+	cy_uint total_bytes_for_all_buckets = total_bucket_count * sizeof(cy_uint);
 
 	if(cms_p->uint_allocator != NULL && total_bytes_for_all_buckets > 0)
 		deallocate(cms_p->uint_allocator, cms_p->frequencies, total_bytes_for_all_buckets);

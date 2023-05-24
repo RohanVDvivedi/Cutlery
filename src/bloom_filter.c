@@ -37,7 +37,7 @@ int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, cy_uint bucket_co
 	// initialize array (of data_hash_func-s) and populate it with data_hash_functions
 	if(!initialize_array_with_allocator(&(bf_p->data_hash_functions), hash_functions_count, data_hash_functions_array_allocator))
 		return 0;
-	for(unsigned int i = 0; i < hash_functions_count; i++)
+	for(cy_uint i = 0; i < hash_functions_count; i++)
 		set_in_array(&(bf_p->data_hash_functions), data_hash_functions[i], i);
 
 	bf_p->bucket_count = bucket_count;

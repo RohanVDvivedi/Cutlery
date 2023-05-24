@@ -43,6 +43,8 @@ struct count_min_sketch
 	memory_allocator uint_allocator;
 };
 
+#define MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT (CY_UINT_MAX / sizeof(cy_uint))
+
 // initialize_count_min_sketch* functions may fail, if the initial memory allocation fails
 // in case of a failure, there has not been any memory allocation, and the error is fatal, the count min sketch instance is unusable
 
