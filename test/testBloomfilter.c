@@ -93,6 +93,12 @@ int main()
 
 	print_exists_in_bloom_filter(bf_p, "Rohan Xvivedi");
 
+	print_bloomfilter(bf_p);
+
+	reset_bits_in_bloom_filter(bf_p);
+
+	print_bloomfilter(bf_p);
+
 	printf("percentage 1s in bloom_filter = %lf %%\n", 100.0 * get_fraction_of_bloom_filter_bits_set(bf_p));
 
 	deinitialize_bloom_filter(bf_p);
