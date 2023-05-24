@@ -4,7 +4,7 @@
 /*
 	standard N-ary tree as array, (with N=3) can be represented as follows
 
-	all indexes are unsigned ints
+	all indexes are cy_uint-s
 	array form (when indexed) :
 
 	0 1 2 3 4 5 6 7 8 9 10 11 ...
