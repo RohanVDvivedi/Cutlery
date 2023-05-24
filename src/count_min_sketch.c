@@ -18,7 +18,7 @@ int initialize_count_min_sketch(count_min_sketch* cms_p, cy_uint bucket_count, c
 	return initialize_count_min_sketch_with_allocator(cms_p, bucket_count, hash_functions_count, data_hash_functions, STD_C_mem_allocator, STD_C_mem_allocator);
 }
 
-int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator uint_allocator)
+int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator cy_uint_allocator)
 {
 	// the total_buckets must not be 0, and the total_buckets must not overflow CY_UINT_MAX, and it must be lesser than the max bucket count possible on your machine
 	cy_uint total_buckets = bucket_count * hash_functions_count;
@@ -32,7 +32,7 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 		set_in_array(&(cms_p->data_hash_functions), data_hash_functions[i], i);
 
 	cms_p->bucket_count = bucket_count;
-	cms_p->uint_allocator = uint_allocator;
+	cms_p->cy_uint_allocator = cy_uint_allocator;
 
 	// calculate total number of buckets required
 	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
@@ -42,7 +42,7 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 		cms_p->frequencies = NULL;
 	else
 	{
-		cms_p->frequencies = zallocate(cms_p->uint_allocator, &total_bytes_for_all_buckets);
+		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &total_bytes_for_all_buckets);
 		if(cms_p->frequencies == NULL)
 		{
 			deinitialize_array(&(cms_p->data_hash_functions));
@@ -53,7 +53,7 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 	return 1;
 }
 
-void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], cy_uint frequencies[])
+int initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], cy_uint frequencies[])
 {
 	// the total_buckets must not be 0, and the total_buckets must not overflow CY_UINT_MAX, and it must be lesser than the max bucket count possible on your machine
 	cy_uint total_buckets = bucket_count * hash_functions_count;
@@ -63,7 +63,7 @@ void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint bu
 	// initialize array with memory
 	initialize_array_with_memory(&(cms_p->data_hash_functions), hash_functions_count, (const void**)data_hash_functions);
 
-	cms_p->uint_allocator = NULL;
+	cms_p->cy_uint_allocator = NULL;
 	cms_p->bucket_count = bucket_count;
 
 	// calculate total number of buckets required
@@ -76,8 +76,8 @@ void initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint bu
 		cms_p->frequencies = frequencies;
 	else
 	{
-		cms_p->uint_allocator = STD_C_mem_allocator;
-		cms_p->frequencies = zallocate(cms_p->uint_allocator, &total_bytes_for_all_buckets);
+		cms_p->cy_uint_allocator = STD_C_mem_allocator;
+		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &total_bytes_for_all_buckets);
 		if(cms_p->frequencies == NULL)
 		{
 			deinitialize_array(&(cms_p->data_hash_functions));
@@ -208,8 +208,8 @@ void deinitialize_count_min_sketch(count_min_sketch* cms_p)
 	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
 	cy_uint total_bytes_for_all_buckets = total_bucket_count * sizeof(cy_uint);
 
-	if(cms_p->uint_allocator != NULL && total_bytes_for_all_buckets > 0)
-		deallocate(cms_p->uint_allocator, cms_p->frequencies, total_bytes_for_all_buckets);
+	if(cms_p->cy_uint_allocator != NULL && total_bytes_for_all_buckets > 0)
+		deallocate(cms_p->cy_uint_allocator, cms_p->frequencies, total_bytes_for_all_buckets);
 
 	deinitialize_array(&(cms_p->data_hash_functions));
 }
