@@ -6,6 +6,9 @@
 
 2. Add new datastructure types tasks (*future)
 
+LINKEDLIST & SINGLYLIST tasks
+ * implement radix_sort, and some other sort function
+
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
 struct trie_node
@@ -22,7 +25,7 @@ struct trie_node
 
 BST tasks (NEW DATASTRUCTURE inclusion)
  * implement TREAP and AA_TREE
- * add subtree size in all bsts (*far future)
+ * add subtree size in all bsts, build functions for get_index_of_element_in_bst and get_element_at_index_in_bs (*far future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap.
