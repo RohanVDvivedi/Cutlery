@@ -5,19 +5,19 @@
 
 #define BLOOM_FILTER_BUCKET_COUNT     (16)
 
-unsigned int hash_f_1(const void* data, unsigned int ununsed)
+cy_uint hash_f_1(const void* data, cy_uint ununsed)
 {
 	const char* str = data;
 	return strlen(str);
 }
 
-unsigned int hash_f_2(const void* data, unsigned int ununsed)
+cy_uint hash_f_2(const void* data, cy_uint ununsed)
 {
 	const char* str = data;
-	unsigned int sum_chars = 0;
+	cy_uint sum_chars = 0;
 	while((*str) != '\0')
 	{
-		sum_chars += (((unsigned int)(*str)) - ((('a'<=((unsigned int)(*str)))&&(((unsigned int)(*str))<='z'))?'a':'A'));
+		sum_chars += (((cy_uint)(*str)) - ((('a'<=((cy_uint)(*str)))&&(((cy_uint)(*str))<='z'))?'a':'A'));
 		str++;
 	}
 	return sum_chars;
