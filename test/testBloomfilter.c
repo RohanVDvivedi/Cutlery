@@ -89,6 +89,10 @@ int main()
 
 	print_exists_in_bloom_filter(bf_p, "manan");
 
+	print_exists_in_bloom_filter(bf_p, "Rohan V");
+
+	print_exists_in_bloom_filter(bf_p, "Rohan Xvivedi");
+
 	printf("percentage 1s in bloom_filter = %lf %%\n", 100.0 * get_fraction_of_bloom_filter_bits_set(bf_p));
 
 	deinitialize_bloom_filter(bf_p);
