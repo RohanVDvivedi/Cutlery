@@ -22,15 +22,15 @@ typedef struct dpipe dpipe;
 struct dpipe
 {
 	// total bytes currently allocated at buffer
-	unsigned int buffer_capacity;
+	cy_uint buffer_capacity;
 
 	// the offset of the first byte in the buffer
 	// it is also the byte of the front of the dpipe
-	unsigned int first_byte;
+	cy_uint first_byte;
 
 	// number of bytes occupied in the buffer starting at first_byte
 	// remember this is a circular buffer
-	unsigned int byte_count;
+	cy_uint byte_count;
 
 	// if the dpipe is closed, no bytes can be written/pushed to it
 	// BUT you can still read/pop bytes as long as get_bytes_readable_in_dpipe(pipe) > 0
@@ -51,69 +51,69 @@ enum dpipe_operation_type
 };
 
 /*
-**	For every function here that takes data and data_size as parameters and returns an unsigned int
+**	For every function here that takes data and data_size as parameters and returns an cy_uint
 **	The return value indicates what number of bytes were read/written from the given data,
 **	which will always be lesser than or equal to data_size
 */
 
-void initialize_dpipe(dpipe* pipe, unsigned int capacity);
-void initialize_dpipe_with_allocator(dpipe* pipe, unsigned int capacity, memory_allocator buffer_allocator);
-void initialize_dpipe_with_memory(dpipe* pipe, unsigned int capacity, void* buffer);
+void initialize_dpipe(dpipe* pipe, cy_uint capacity);
+void initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_allocator buffer_allocator);
+void initialize_dpipe_with_memory(dpipe* pipe, cy_uint capacity, void* buffer);
 
 // write bytes to dpipe ==> push_back_to_dpipe
-unsigned int write_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
+cy_uint write_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type);
 
 // read next bytes from dpipe ==> get_front_of_dpipe and then pop_front_from_dpipe OR peek_from_dpipe and then discard from dpipe
-unsigned int read_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
+cy_uint read_from_dpipe(dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type);
 
 // unread given bytes (that we already read) back to the pipe ==> push_front_to_dpipe
 // the first byte at data will be read first upon calling read
-unsigned int unread_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
+cy_uint unread_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type);
 
 // peek data_size number of readabale bytes (from read end), that were suppossed to be read next ==> get_front_of_dpipe
-unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
+cy_uint peek_from_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type);
 
 // discard next data_size number of readable bytes (from read end), that were suppossed to be read next ==> pop_front_from_dpipe
-int discard_from_dpipe(dpipe* pipe, unsigned int data_size);
+int discard_from_dpipe(dpipe* pipe, cy_uint data_size);
 
 // peeks max consecutive from readabale end of dpipe, these are the bytes that were suppossed to be read next => get_max_consecutive_from_front_of_dpipe
 // you may use this function to avoid copy
 // after a call to this function you may call discard_from_dpipe on the bytes_available, inorder to pop these bytes
 // since this function returns pointer to the internal buffer of the dpipe, you may not modify it
-const void* peek_max_consecutive_from_dpipe(const dpipe* pipe, unsigned int* bytes_available);
+const void* peek_max_consecutive_from_dpipe(const dpipe* pipe, cy_uint* bytes_available);
 
 // use push, get and pop functions only if you know what you are doing
 // pop_*_from_dpipe will only discard data_size number of bytes from front or back of dpipe, so it must be used in conjunction with get_*_of_dpipe
-unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
-unsigned int get_back_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type);
-unsigned int push_front_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
-unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type);
-int pop_front_from_dpipe(dpipe* pipe, unsigned int data_size);
-int pop_back_from_dpipe(dpipe* pipe, unsigned int data_size);
+cy_uint get_front_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type);
+cy_uint get_back_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type);
+cy_uint push_front_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type);
+cy_uint push_back_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type);
+int pop_front_from_dpipe(dpipe* pipe, cy_uint data_size);
+int pop_back_from_dpipe(dpipe* pipe, cy_uint data_size);
 
 // below function will return pointer to the internal buffer of the dpipe and the consecutive bytes count that it points to
 // since these pointer point to bytes in internal buffer of dpipe, you may not modify or access out of bound
 // these functions are provided for critical code segments, when you may like to avoid copy from dpipe buffer
 // you may pop bytes_available after these calls
 // use these fucntion only if you know what you are doing
-const void* get_max_consecutive_from_front_of_dpipe(const dpipe* pipe, unsigned int* bytes_available);
-const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, unsigned int* bytes_available);
+const void* get_max_consecutive_from_front_of_dpipe(const dpipe* pipe, cy_uint* bytes_available);
+const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, cy_uint* bytes_available);
 
 // removes all bytes of the dpipe i.e. makes byte_count and first_byte = 0
 void remove_all_from_dpipe(dpipe* pipe);
 
 // returns, number of byte you can write or read, without any resize operation
-unsigned int get_bytes_writable_in_dpipe(const dpipe* pipe);
-unsigned int get_bytes_readable_in_dpipe(const dpipe* pipe);
+cy_uint get_bytes_writable_in_dpipe(const dpipe* pipe);
+cy_uint get_bytes_readable_in_dpipe(const dpipe* pipe);
 
 // returns number of bytes allocated at buffer in the pipe
-unsigned int get_capacity_dpipe(const dpipe* pipe);
+cy_uint get_capacity_dpipe(const dpipe* pipe);
 
 int is_empty_dpipe(const dpipe* pipe);
 int is_full_dpipe(const dpipe* pipe);
 
 // can be used to expand or shrink the dpipe, the new_capacity becomes the new capacity
-int resize_dpipe(dpipe* pipe, unsigned int new_capacity);
+int resize_dpipe(dpipe* pipe, cy_uint new_capacity);
 
 void close_dpipe(dpipe* pipe);
 
