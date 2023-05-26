@@ -114,7 +114,7 @@ static inline cy_uint copy_to_circular_buffer(void* buffer, cy_uint buffer_capac
 cy_uint get_front_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is empty, then fail the read
-	if(is_empty_dpipe(pipe))
+	if(is_empty_dpipe(pipe) || data_size == 0)
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
@@ -133,7 +133,7 @@ cy_uint get_front_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpi
 cy_uint get_back_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is empty, then fail the read
-	if(is_empty_dpipe(pipe))
+	if(is_empty_dpipe(pipe) || data_size == 0)
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and there isn't enough bytes to read then fail with a 0
@@ -153,7 +153,7 @@ cy_uint get_back_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpip
 cy_uint push_front_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is closed or is full, then fail the write
-	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe))
+	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe) || data_size == 0)
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
@@ -178,7 +178,7 @@ cy_uint push_front_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dp
 cy_uint push_back_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is closed or is full, then fail the write
-	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe))
+	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe) || data_size == 0)
 		return 0;
 
 	// if the op_type = ALL_OR_NONE and all of the bytes of data can not be written then fail with a 0
@@ -204,6 +204,9 @@ int pop_front_from_dpipe(dpipe* pipe, cy_uint data_size)
 	if(data_size > pipe->byte_count)
 		return 0;
 
+	if(data_size == 0)
+		return 1;
+
 	// update the first_byte and the byte_count
 	pipe->first_byte = add_indexes(pipe->first_byte, data_size, pipe->buffer_capacity);
 	pipe->byte_count -= data_size;
@@ -221,6 +224,9 @@ int pop_back_from_dpipe(dpipe* pipe, cy_uint data_size)
 	// if data_size is greter than bytes in dpipe, then return failure
 	if(data_size > pipe->byte_count)
 		return 0;
+
+	if(data_size == 0)
+		return 1;
 
 	// update the byte_count
 	pipe->byte_count -= data_size;
