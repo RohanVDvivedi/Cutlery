@@ -4,24 +4,22 @@
 #include<cutlery_stds.h>
 #include<circular_buffer_array_util.h>
 
-void initialize_dpipe(dpipe* pipe, unsigned int capacity)
+void initialize_dpipe(dpipe* pipe, cy_uint capacity)
 {
 	initialize_dpipe_with_allocator(pipe, capacity, STD_C_mem_allocator);
 }
 
-void initialize_dpipe_with_allocator(dpipe* pipe, unsigned int capacity, memory_allocator buffer_allocator)
+void initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_allocator buffer_allocator)
 {
 	pipe->is_closed = 0;
 	pipe->buffer_capacity = capacity;
 	pipe->first_byte = 0;
 	pipe->byte_count = 0;
 	pipe->buffer_allocator = buffer_allocator;
-	cy_uint buffer_capacity_ = pipe->buffer_capacity;
-	pipe->buffer = (pipe->buffer_capacity == 0) ? NULL : allocate(pipe->buffer_allocator, &(buffer_capacity_));
-	pipe->buffer_capacity = buffer_capacity_;
+	pipe->buffer = (pipe->buffer_capacity == 0) ? NULL : allocate(pipe->buffer_allocator, &(pipe->buffer_capacity));
 }
 
-void initialize_dpipe_with_memory(dpipe* pipe, unsigned int capacity, void* buffer)
+void initialize_dpipe_with_memory(dpipe* pipe, cy_uint capacity, void* buffer)
 {
 	pipe->is_closed = 0;
 	pipe->buffer_capacity = capacity;
@@ -31,48 +29,48 @@ void initialize_dpipe_with_memory(dpipe* pipe, unsigned int capacity, void* buff
 	pipe->buffer = buffer;
 }
 
-unsigned int write_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint write_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	return push_back_to_dpipe(pipe, data, data_size, op_type);
 }
 
-unsigned int read_from_dpipe(dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint read_from_dpipe(dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
-	unsigned int bytes_read = get_front_of_dpipe(pipe, data, data_size, op_type);
+	cy_uint bytes_read = get_front_of_dpipe(pipe, data, data_size, op_type);
 	pop_front_from_dpipe(pipe, bytes_read);
 	return bytes_read;
 }
 
-unsigned int unread_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint unread_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	return push_front_to_dpipe(pipe, data, data_size, op_type);
 }
 
-unsigned int peek_from_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint peek_from_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	return get_front_of_dpipe(pipe, data, data_size, op_type);
 }
 
-int discard_from_dpipe(dpipe* pipe, unsigned int data_size)
+int discard_from_dpipe(dpipe* pipe, cy_uint data_size)
 {
 	return pop_front_from_dpipe(pipe, data_size);
 }
 
-const void* peek_max_consecutive_from_dpipe(const dpipe* pipe, unsigned int* bytes_available)
+const void* peek_max_consecutive_from_dpipe(const dpipe* pipe, cy_uint* bytes_available)
 {
 	return get_max_consecutive_from_front_of_dpipe(pipe, bytes_available);
 }
 
-static inline unsigned int copy_from_circular_buffer(const void* buffer, unsigned int buffer_capacity, unsigned int offset, void* data, unsigned int bytes_to_read)
+static inline cy_uint copy_from_circular_buffer(const void* buffer, cy_uint buffer_capacity, cy_uint offset, void* data, cy_uint bytes_to_read)
 {
 	// we can not read more than buffer_capacity number of bytes from buffer
 	bytes_to_read = min(bytes_to_read, buffer_capacity);
 
 	// return value
-	unsigned int bytes_read = bytes_to_read;
+	cy_uint bytes_read = bytes_to_read;
 
 	// bytes readable until the buffer_capacity boundary hits use
-	unsigned int bytes_readily_readable = min(bytes_to_read, buffer_capacity - offset);
+	cy_uint bytes_readily_readable = min(bytes_to_read, buffer_capacity - offset);
 
 	// perform a copy and update data to point to next available byte to copy to
 	memory_move(data, buffer + offset, bytes_readily_readable);
@@ -88,16 +86,16 @@ static inline unsigned int copy_from_circular_buffer(const void* buffer, unsigne
 	return bytes_read;
 }
 
-static inline unsigned int copy_to_circular_buffer(void* buffer, unsigned int buffer_capacity, unsigned int offset, const void* data, unsigned int bytes_to_write)
+static inline cy_uint copy_to_circular_buffer(void* buffer, cy_uint buffer_capacity, cy_uint offset, const void* data, cy_uint bytes_to_write)
 {
 	// we can not write more than buffer_capacity number of bytes to the buffer
 	bytes_to_write = min(bytes_to_write, buffer_capacity);
 
 	// return value
-	unsigned int bytes_written = bytes_to_write;
+	cy_uint bytes_written = bytes_to_write;
 
 	// bytes writable until the buffer_capacity boundary hits use
-	unsigned int bytes_readily_writable = min(bytes_to_write, buffer_capacity - offset);
+	cy_uint bytes_readily_writable = min(bytes_to_write, buffer_capacity - offset);
 
 	// perform a copy and update data to point to next available byte to copy from
 	memory_move(buffer + offset, data, bytes_readily_writable);
@@ -113,7 +111,7 @@ static inline unsigned int copy_to_circular_buffer(void* buffer, unsigned int bu
 	return bytes_written;
 }
 
-unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint get_front_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is empty, then fail the read
 	if(is_empty_dpipe(pipe))
@@ -124,7 +122,7 @@ unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data
 		return 0;
 
 	// total_bytes to read
-	unsigned int bytes_to_read = min(get_bytes_readable_in_dpipe(pipe), data_size);
+	cy_uint bytes_to_read = min(get_bytes_readable_in_dpipe(pipe), data_size);
 
 	// circular buffer copy starting at first_byte offset to be read
 	copy_from_circular_buffer(pipe->buffer, pipe->buffer_capacity, pipe->first_byte, data, bytes_to_read);
@@ -132,7 +130,7 @@ unsigned int get_front_of_dpipe(const dpipe* pipe, void* data, unsigned int data
 	return bytes_to_read;
 }
 
-unsigned int get_back_of_dpipe(const dpipe* pipe, void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint get_back_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is empty, then fail the read
 	if(is_empty_dpipe(pipe))
@@ -143,16 +141,16 @@ unsigned int get_back_of_dpipe(const dpipe* pipe, void* data, unsigned int data_
 		return 0;
 
 	// total_bytes to read
-	unsigned int bytes_to_read = min(get_bytes_readable_in_dpipe(pipe), data_size);
+	cy_uint bytes_to_read = min(get_bytes_readable_in_dpipe(pipe), data_size);
 
 	// circular buffer copy starting at first_byte offset to be read
-	unsigned int first_byte_to_read = add_indexes(pipe->first_byte, get_bytes_readable_in_dpipe(pipe) - bytes_to_read, pipe->buffer_capacity);
+	cy_uint first_byte_to_read = add_indexes(pipe->first_byte, get_bytes_readable_in_dpipe(pipe) - bytes_to_read, pipe->buffer_capacity);
 	copy_from_circular_buffer(pipe->buffer, pipe->buffer_capacity, first_byte_to_read, data, bytes_to_read);
 
 	return bytes_to_read;
 }
 
-unsigned int push_front_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint push_front_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is closed or is full, then fail the write
 	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe))
@@ -163,7 +161,7 @@ unsigned int push_front_to_dpipe(dpipe* pipe, const void* data, unsigned int dat
 		return 0;
 
 	// total_bytes to write
-	unsigned int bytes_to_write = min(get_bytes_writable_in_dpipe(pipe), data_size);
+	cy_uint bytes_to_write = min(get_bytes_writable_in_dpipe(pipe), data_size);
 
 	// update the new first_byte
 	pipe->first_byte = sub_indexes(pipe->first_byte, bytes_to_write, pipe->buffer_capacity);
@@ -177,7 +175,7 @@ unsigned int push_front_to_dpipe(dpipe* pipe, const void* data, unsigned int dat
 	return bytes_to_write;
 }
 
-unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data_size, dpipe_operation_type op_type)
+cy_uint push_back_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type)
 {
 	// if the pipe is closed or is full, then fail the write
 	if(is_dpipe_closed(pipe) || is_full_dpipe(pipe))
@@ -188,10 +186,10 @@ unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data
 		return 0;
 
 	// total_bytes to write
-	unsigned int bytes_to_write = min(get_bytes_writable_in_dpipe(pipe), data_size);
+	cy_uint bytes_to_write = min(get_bytes_writable_in_dpipe(pipe), data_size);
 
 	// calculate the offset to end of the buffer and copy the data there
-	unsigned int end_offset = add_indexes(pipe->first_byte, pipe->byte_count, pipe->buffer_capacity);
+	cy_uint end_offset = add_indexes(pipe->first_byte, pipe->byte_count, pipe->buffer_capacity);
 	copy_to_circular_buffer(pipe->buffer, pipe->buffer_capacity, end_offset, data, bytes_to_write);
 
 	// increment byte_count
@@ -200,7 +198,7 @@ unsigned int push_back_to_dpipe(dpipe* pipe, const void* data, unsigned int data
 	return bytes_to_write;
 }
 
-int pop_front_from_dpipe(dpipe* pipe, unsigned int data_size)
+int pop_front_from_dpipe(dpipe* pipe, cy_uint data_size)
 {
 	// if data_size is greter than bytes in dpipe, then return failure
 	if(data_size > pipe->byte_count)
@@ -218,7 +216,7 @@ int pop_front_from_dpipe(dpipe* pipe, unsigned int data_size)
 	return 1;
 }
 
-int pop_back_from_dpipe(dpipe* pipe, unsigned int data_size)
+int pop_back_from_dpipe(dpipe* pipe, cy_uint data_size)
 {
 	// if data_size is greter than bytes in dpipe, then return failure
 	if(data_size > pipe->byte_count)
@@ -235,7 +233,7 @@ int pop_back_from_dpipe(dpipe* pipe, unsigned int data_size)
 	return 1;
 }
 
-const void* get_max_consecutive_from_front_of_dpipe(const dpipe* pipe, unsigned int* bytes_available)
+const void* get_max_consecutive_from_front_of_dpipe(const dpipe* pipe, cy_uint* bytes_available)
 {
 	// return NULL, if there are no bytes available
 	if(pipe->byte_count == 0)
@@ -251,7 +249,7 @@ const void* get_max_consecutive_from_front_of_dpipe(const dpipe* pipe, unsigned 
 	return internal;
 }
 
-const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, unsigned int* bytes_available)
+const void* get_max_consecutive_from_back_of_dpipe(const dpipe* pipe, cy_uint* bytes_available)
 {
 	// return NULL, if there are no bytes available
 	if(pipe->byte_count == 0)
@@ -282,17 +280,17 @@ void remove_all_from_dpipe(dpipe* pipe)
 	pipe->byte_count = 0;
 }
 
-unsigned int get_bytes_writable_in_dpipe(const dpipe* pipe)
+cy_uint get_bytes_writable_in_dpipe(const dpipe* pipe)
 {
 	return pipe->buffer_capacity - pipe->byte_count;
 }
 
-unsigned int get_bytes_readable_in_dpipe(const dpipe* pipe)
+cy_uint get_bytes_readable_in_dpipe(const dpipe* pipe)
 {
 	return pipe->byte_count;
 }
 
-unsigned int get_capacity_dpipe(const dpipe* pipe)
+cy_uint get_capacity_dpipe(const dpipe* pipe)
 {
 	return pipe->buffer_capacity;
 }
@@ -307,7 +305,7 @@ int is_full_dpipe(const dpipe* pipe)
 	return pipe->byte_count == pipe->buffer_capacity;
 }
 
-int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
+int resize_dpipe(dpipe* pipe, cy_uint new_capacity)
 {
 	// can not skrink, if the new capacity can not fit the bytes that dpipe is holding
 	if(new_capacity < pipe->byte_count)
@@ -319,16 +317,14 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 	// if the byte count is 0, then resize must be successfull
 	if(pipe->byte_count == 0)
 	{
-		cy_uint new_capacity_ = new_capacity;
-		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity_);
-		new_capacity = new_capacity_;
+		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
 		pipe->buffer_capacity = new_capacity;
 		pipe->first_byte = 0;
 		return 1;
 	}
 
 	// calculate the offset to last byte
-	unsigned int last_byte_offset = add_indexes(pipe->first_byte, pipe->byte_count - 1, pipe->buffer_capacity);
+	cy_uint last_byte_offset = add_indexes(pipe->first_byte, pipe->byte_count - 1, pipe->buffer_capacity);
 
 	if(pipe->buffer_capacity > new_capacity) // shrinking
 	{
@@ -342,9 +338,7 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 			}
 
 			// shrink the dpipe
-			cy_uint new_capacity_ = new_capacity;
-			pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity_);
-			new_capacity = new_capacity_;
+			pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
 			pipe->buffer_capacity = new_capacity;
 			return 1;
 		}
@@ -352,9 +346,7 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 	}
 	else // expanding
 	{
-		cy_uint new_capacity_ = new_capacity;
-		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity_);
-		new_capacity = new_capacity_;
+		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
 
 		// if there is not wound around then resize is complete
 		if(pipe->first_byte <= last_byte_offset)
@@ -363,13 +355,13 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 			return 1;
 		}
 
-		unsigned int buffer_head_bytes = pipe->buffer_capacity - pipe->first_byte;
-		unsigned int buffer_tail_bytes = pipe->byte_count - buffer_head_bytes;
+		cy_uint buffer_head_bytes = pipe->buffer_capacity - pipe->first_byte;
+		cy_uint buffer_tail_bytes = pipe->byte_count - buffer_head_bytes;
 
 		if(buffer_head_bytes <= buffer_tail_bytes) // move buffer head to the end of the buffer
 		{
 			// move the buffer_head to the bottom of the buffer
-			unsigned int new_first_byte = new_capacity - buffer_head_bytes;
+			cy_uint new_first_byte = new_capacity - buffer_head_bytes;
 			memory_move(pipe->buffer + new_first_byte, pipe->buffer + pipe->first_byte, buffer_head_bytes);
 
 			// update the first byte
@@ -377,9 +369,9 @@ int resize_dpipe(dpipe* pipe, unsigned int new_capacity)
 		}
 		else // move part of buffer tail to the end of the buffer
 		{
-			unsigned int new_bytes_available_post_head = pipe->buffer_capacity - new_capacity;
+			cy_uint new_bytes_available_post_head = pipe->buffer_capacity - new_capacity;
 
-			unsigned int buffer_tail_bytes_to_move = min(buffer_tail_bytes, new_bytes_available_post_head);
+			cy_uint buffer_tail_bytes_to_move = min(buffer_tail_bytes, new_bytes_available_post_head);
 
 			memory_move(pipe->buffer + pipe->buffer_capacity, pipe->buffer, buffer_tail_bytes_to_move);
 
