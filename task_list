@@ -62,6 +62,8 @@ struct binomialheap
 
  * implement leftist heap as leftistheap (* future)
 
+ * convert current binary heap implementation to N-ary heap
+
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
