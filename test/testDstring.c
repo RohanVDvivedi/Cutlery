@@ -123,13 +123,13 @@ int main()
 
 			const dstring* temp_dstr = &get_dstring_pointing_to_literal_cstring(temp[i]);
 
-			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
+			printf("NAIVE : %" PRIu_cy_uint "\n", contains_dstring_NAIVE(&str, temp_dstr));
 
-			unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * (get_char_count_dstring(temp_dstr) + 1));
+			cy_uint* suffix_prefix_match_length = alloca(sizeof(cy_uint) * (get_char_count_dstring(temp_dstr) + 1));
 			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
-			printf("KMP   : %u\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
+			printf("KMP   : %" PRIu_cy_uint "\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
 
-			printf("RK    : %u\n", contains_dstring_RK(&str, temp_dstr));
+			printf("RK    : %" PRIu_cy_uint "\n", contains_dstring_RK(&str, temp_dstr));
 
 			printf("\n\n");
 		}
@@ -157,17 +157,17 @@ int main()
 
 			const dstring* temp_dstr = &get_dstring_pointing_to_cstring(temp[i]);
 
-			unsigned int* suffix_prefix_match_length = alloca(sizeof(unsigned int) * (get_char_count_dstring(temp_dstr) + 1));
+			cy_uint* suffix_prefix_match_length = alloca(sizeof(cy_uint) * (get_char_count_dstring(temp_dstr) + 1));
 			get_prefix_suffix_match_lengths(temp_dstr, suffix_prefix_match_length);
 
 			printf("SUFFIX_PREFIX_MATCH_LENGTHS : \n");
-			for(unsigned int l = 0; l <= get_char_count_dstring(temp_dstr); l++)
-				printf(printf_dstring_format " -> %u\n", printf_dstring_params(&get_dstring_pointing_to(temp[i], l)), suffix_prefix_match_length[l]);
+			for(cy_uint l = 0; l <= get_char_count_dstring(temp_dstr); l++)
+				printf(printf_dstring_format " -> %" PRIu_cy_uint "\n", printf_dstring_params(&get_dstring_pointing_to(temp[i], l)), suffix_prefix_match_length[l]);
 			printf("\n");
 
-			printf("NAIVE : %u\n", contains_dstring_NAIVE(&str, temp_dstr));
-			printf("KMP   : %u\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
-			printf("RK    : %u\n", contains_dstring_RK(&str, temp_dstr));
+			printf("NAIVE : %" PRIu_cy_uint "\n", contains_dstring_NAIVE(&str, temp_dstr));
+			printf("KMP   : %" PRIu_cy_uint "\n", contains_dstring_KMP(&str, temp_dstr, suffix_prefix_match_length));
+			printf("RK    : %" PRIu_cy_uint "\n", contains_dstring_RK(&str, temp_dstr));
 
 			printf("\n\n");
 		}
@@ -226,8 +226,8 @@ int main()
 		{
 			const dstring* s0 = &get_dstring_pointing_to_cstring(temp[i][0]);
 			const dstring* s1 = &get_dstring_pointing_to_cstring(temp[i][1]);
-			printf("leven-dist(\"%s\", \"%s\") = %u\n", temp[i][0], temp[i][1], levenshtein_distance(s0, s1));
-			printf("len-of-lcs(\"%s\", \"%s\") = %u\n", temp[i][0], temp[i][1], length_of_longest_common_subsequence(s0, s1));
+			printf("leven-dist(\"%s\", \"%s\") = %" PRIu_cy_uint "\n", temp[i][0], temp[i][1], levenshtein_distance(s0, s1));
+			printf("len-of-lcs(\"%s\", \"%s\") = %" PRIu_cy_uint "\n", temp[i][0], temp[i][1], length_of_longest_common_subsequence(s0, s1));
 			printf("\n\n");
 		}
 
@@ -341,16 +341,16 @@ int main()
 
 	{
 		dstring s = get_dstring_pointing_to_literal_cstring("123");
-		unsigned int i = 0;
+		unsigned long long int i = 0;
 		int r = 0;
 		printf("s = <" printf_dstring_format ">\n", printf_dstring_params(&s));
-		r = get_unsigned_int_from_dstring(&s, 8, &i);
-		printf("unsigned int = %u 0x%x 0%o in base 8 with result %d\n", i, i, i, r);
-		r = get_unsigned_int_from_dstring(&s, 10, &i);
-		printf("unsigned int = %u 0x%x 0%o in base 10 with result %d\n", i, i, i, r);
-		r = get_unsigned_int_from_dstring(&s, 16, &i);
-		printf("unsigned int = %u 0x%x 0%o in base 16 with result %d\n", i, i, i, r);
-		r = get_unsigned_int_from_dstring(&s, 2, &i);
-		printf("unsigned int = %u 0x%x 0%o in base 2 with result %d\n", i, i, i, r);
+		r = get_unsigned_long_long_int_from_dstring(&s, 8, &i);
+		printf("unsigned int = %llu 0x%llx 0%llo in base 8 with result %d\n", i, i, i, r);
+		r = get_unsigned_long_long_int_from_dstring(&s, 10, &i);
+		printf("unsigned int = %llu 0x%llx 0%llo in base 10 with result %d\n", i, i, i, r);
+		r = get_unsigned_long_long_int_from_dstring(&s, 16, &i);
+		printf("unsigned int = %llu 0x%llx 0%llo in base 16 with result %d\n", i, i, i, r);
+		r = get_unsigned_long_long_int_from_dstring(&s, 2, &i);
+		printf("unsigned int = %llu 0x%llx 0%llo in base 2 with result %d\n", i, i, i, r);
 	}
 }
