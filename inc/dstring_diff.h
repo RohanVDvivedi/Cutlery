@@ -3,8 +3,8 @@
 
 #include<dstring.h>
 
-unsigned int levenshtein_distance(const dstring* str0, const dstring* str1);
+cy_uint levenshtein_distance(const dstring* str0, const dstring* str1);
 
-unsigned int length_of_longest_common_subsequence(const dstring* str0, const dstring* str1);
+cy_uint length_of_longest_common_subsequence(const dstring* str0, const dstring* str1);
 
 #endif
