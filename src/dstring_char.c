@@ -1,5 +1,4 @@
 #include<dstring_char.h>
-#include<cutlery_stds.h>
 
 static inline int is_char_in_range(char c, char lte, char gte)
 {
@@ -49,9 +48,9 @@ char to_uppercase_char(char c)
 unsigned int get_digit_from_char(char c, unsigned int radix)
 {
 	if(radix < 2 || radix > 36)
-		return INVALID_INDEX;
+		return -1;
 
-	unsigned int digit = INVALID_INDEX;
+	unsigned int digit = -1;
 	if(is_char_in_range(c, '0', '9'))
 		digit = c - '0';
 	else if(is_char_in_range(c, 'a', 'z'))
@@ -62,5 +61,5 @@ unsigned int get_digit_from_char(char c, unsigned int radix)
 	if(digit < radix)
 		return digit;
 
-	return INVALID_INDEX;
+	return -1;
 }
