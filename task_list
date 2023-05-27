@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * replace all instances of index and count etc in dstring from unsigned int type to cy_uint.
-
 2. Add new datastructure types tasks (*future)
 
 LINKEDLIST & SINGLYLIST tasks
