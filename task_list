@@ -1,8 +1,6 @@
 1. Tasks picked
 
- * replace all instances of index and count etc in dstring and dpipe from unsigned int type to cy_uint.
- * add logic for MAX_INDEXABLE_BYTES_CAPACITY(), a MAX_ARRAY_CAPACITY() version for dstring and dpipe
- * fail initialization of any cutlery datastructures if the capacity is greater than the MAX CAPACITY
+ * replace all instances of index and count etc in dstring from unsigned int type to cy_uint.
 
 2. Add new datastructure types tasks (*future)
 
