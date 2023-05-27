@@ -93,7 +93,7 @@ void sprint_chars(dstring* str_p, char chr, cy_uint count);
 #define STRINGIFY2(X) #X
 #define STRINGIFY(X) STRINGIFY2(X)
 #define printf_dstring_format				STRINGIFY(%.*s)
-#define printf_dstring_params(str_p)		get_char_count_dstring((str_p)), get_byte_array_dstring((str_p))
+#define printf_dstring_params(str_p)		((int)get_char_count_dstring((str_p))), get_byte_array_dstring((str_p))
 #define printf_dstring(str_p)				((get_byte_array_dstring((str_p)) != NULL && get_char_count_dstring((str_p)) > 0) ? printf(printf_dstring_format, printf_dstring_params((str_p))) : 0)
 
 #include<dstring_char.h>
