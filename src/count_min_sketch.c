@@ -106,7 +106,7 @@ static cy_uint get_frequency_and_concerned_bucket_indices_from_count_min_sketch(
 	cy_uint bucket_count = cms_p->bucket_count;
 
 	// result frequency
-	cy_uint result = UINT_MAX;
+	cy_uint result = CY_UINT_MAX;
 
 	// we iterate over all the hash functions
 	for(cy_uint h = 0; (h < hash_functions_count); h++)
@@ -156,7 +156,7 @@ cy_uint get_frequency_from_count_min_sketch(const count_min_sketch* cms_p, const
 	cy_uint bucket_count = cms_p->bucket_count;
 
 	// result frequency
-	cy_uint result = UINT_MAX;
+	cy_uint result = CY_UINT_MAX;
 
 	// in the below for loop, the minimum value result can have is 0
 	// hence we save some cycles by exiting the loop early if result == 0

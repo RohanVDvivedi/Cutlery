@@ -1,6 +1,7 @@
 #include<dstring_diff.h>
 
 #include<cutlery_stds.h>
+#include<cutlery_math.h>
 #include<memory_allocator_interface.h>
 #include<multi_dim_array_util.h>
 

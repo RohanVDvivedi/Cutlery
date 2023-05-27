@@ -1,6 +1,7 @@
 #include<dstring.h>
 
 #include<cutlery_stds.h>
+#include<cutlery_math.h>
 #include<memory_allocator_interface.h>
 
 // default memory allocator for dstring is the STD_C memory allocator
@@ -495,7 +496,7 @@ cy_uint trim_dstring(dstring* str_p)
 	return ltrim_dstring(str_p) + rtrim_dstring(str_p);
 }
 
-int get_unsigned_long_long_int_from_dstring(const dstring* str_p, cy_uint radix, unsigned long long int* result)
+int get_unsigned_long_long_int_from_dstring(const dstring* str_p, unsigned int radix, unsigned long long int* result)
 {
 	if(radix < 2 || radix > 36)
 		return 0;
