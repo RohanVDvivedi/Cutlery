@@ -2,18 +2,18 @@
 
 #include<cutlery_stds.h>
 
-void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffix_prefix_match_length)
+void get_prefix_suffix_match_lengths(const dstring* sub_str, cy_uint* suffix_prefix_match_length)
 {
 	const char* sub_str_data = get_byte_array_dstring(sub_str);
-	unsigned int sub_str_size = get_char_count_dstring(sub_str);
+	cy_uint sub_str_size = get_char_count_dstring(sub_str);
 
-	for(unsigned int string_length = 0; ; string_length++)
+	for(cy_uint string_length = 0; ; string_length++)
 	{
 		if(string_length <= 1)
 			suffix_prefix_match_length[string_length] = 0;
 		else
 		{
-			unsigned int prefix_length_old = suffix_prefix_match_length[string_length - 1];
+			cy_uint prefix_length_old = suffix_prefix_match_length[string_length - 1];
 			while(1)
 			{
 				if(sub_str_data[string_length-1] == sub_str_data[prefix_length_old])
@@ -39,13 +39,13 @@ void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffi
 	}
 }
 
-unsigned int contains_dstring_NAIVE(const dstring* str, const dstring* sub_str)
+cy_uint contains_dstring_NAIVE(const dstring* str, const dstring* sub_str)
 {
 	const char* str_data = get_byte_array_dstring(str);
-	unsigned int str_size = get_char_count_dstring(str);
+	cy_uint str_size = get_char_count_dstring(str);
 
 	const char* sub_str_data = get_byte_array_dstring(sub_str);
-	unsigned int sub_str_size = get_char_count_dstring(sub_str);
+	cy_uint sub_str_size = get_char_count_dstring(sub_str);
 
 	// sub_string to be found can not be smaller than the string
 	// also the string to find the substring in can not be empty
@@ -57,10 +57,10 @@ unsigned int contains_dstring_NAIVE(const dstring* str, const dstring* sub_str)
 		return 0;
 
 	// in the str dstring iterate from i => 0 to (str_size - sub_str_size) both inclusive
-	for(unsigned int i = 0; i <= str_size - sub_str_size; i++)
+	for(cy_uint i = 0; i <= str_size - sub_str_size; i++)
 	{
 		int found = 1;
-		for(unsigned int j = 0; j < sub_str_size; j++)
+		for(cy_uint j = 0; j < sub_str_size; j++)
 		{
 			if(str_data[i + j] != sub_str_data[j])
 			{
@@ -76,13 +76,13 @@ unsigned int contains_dstring_NAIVE(const dstring* str, const dstring* sub_str)
 	return INVALID_INDEX;
 }
 
-unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, const unsigned int* suffix_prefix_match_length)
+cy_uint contains_dstring_KMP(const dstring* str, const dstring* sub_str, const cy_uint* suffix_prefix_match_length)
 {
 	const char* str_data = get_byte_array_dstring(str);
-	unsigned int str_size = get_char_count_dstring(str);
+	cy_uint str_size = get_char_count_dstring(str);
 
 	const char* sub_str_data = get_byte_array_dstring(sub_str);
-	unsigned int sub_str_size = get_char_count_dstring(sub_str);
+	cy_uint sub_str_size = get_char_count_dstring(sub_str);
 
 	// sub_string to be found can not be smaller than the string
 	// also the string to find the substring in can not be empty
@@ -95,7 +95,7 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 
 	// Knuth Morris Pratt
 	// iterate over the string str form i => 0 to (str_size - 1) both inclusive
-	for(unsigned int i = 0, substring_iter = 0; i < str_size;)
+	for(cy_uint i = 0, substring_iter = 0; i < str_size;)
 	{
 		if(str_data[i] == sub_str_data[substring_iter])
 		{
@@ -121,13 +121,13 @@ unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, co
 	return INVALID_INDEX;
 }
 
-unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
+cy_uint contains_dstring_RK(const dstring* str, const dstring* sub_str)
 {
 	const char* str_data = get_byte_array_dstring(str);
-	unsigned int str_size = get_char_count_dstring(str);
+	cy_uint str_size = get_char_count_dstring(str);
 
 	const char* sub_str_data = get_byte_array_dstring(sub_str);
-	unsigned int sub_str_size = get_char_count_dstring(sub_str);
+	cy_uint sub_str_size = get_char_count_dstring(sub_str);
 
 	// sub_string to be found can not be smaller than the string
 	// also the string to find the substring in can not be empty
@@ -144,24 +144,24 @@ unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 	// find the hash and char_sum of the sub_str,
 	// and hash of first sub_str_size characters of str
 	// and the sum of first sub_str_size characters of str
-	unsigned int sub_str_hash = 0;
-	unsigned int sub_str_char_sum = 0;
-	unsigned int str_hash_rolling = 0;
-	unsigned int str_char_sum_rolling = 0;
-	for(unsigned int i = 0; i < sub_str_size; i++)
+	unsigned long long int sub_str_hash = 0;
+	unsigned long long int sub_str_char_sum = 0;
+	unsigned long long int str_hash_rolling = 0;
+	unsigned long long int str_char_sum_rolling = 0;
+	for(cy_uint i = 0; i < sub_str_size; i++)
 	{
-		sub_str_hash += ((i + 1) * ((unsigned int)sub_str_data[i]));
-		sub_str_char_sum += ((unsigned int)sub_str_data[i]);
-		str_hash_rolling += ((i + 1) * ((unsigned int)str_data[i]));
-		str_char_sum_rolling += ((unsigned int)str_data[i]);
+		sub_str_hash += ((i + 1) * ((unsigned long long int)sub_str_data[i]));
+		sub_str_char_sum += ((unsigned long long int)sub_str_data[i]);
+		str_hash_rolling += ((i + 1) * ((unsigned long long int)str_data[i]));
+		str_char_sum_rolling += ((unsigned long long int)str_data[i]);
 	}
 
-	for(unsigned int i = 0; ; i++)
+	for(cy_uint i = 0; ; i++)
 	{
 		if(sub_str_char_sum == str_char_sum_rolling && sub_str_hash == str_hash_rolling)
 		{
 			int found = 1;
-			for(unsigned int j = 0; j < sub_str_size; j++)
+			for(cy_uint j = 0; j < sub_str_size; j++)
 			{
 				if(str_data[i + j] != sub_str_data[j])
 				{
@@ -179,16 +179,16 @@ unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str)
 
 		// prepare str_hash_rolling and str_sum_rolling for the next iteration
 		str_hash_rolling -= str_char_sum_rolling;
-		str_hash_rolling += (sub_str_size * ((unsigned int)str_data[i + sub_str_size]));
-		str_char_sum_rolling -= ((unsigned int)str_data[i]);
-		str_char_sum_rolling += ((unsigned int)str_data[i + sub_str_size]);
+		str_hash_rolling += (sub_str_size * ((unsigned long long int)str_data[i + sub_str_size]));
+		str_char_sum_rolling -= ((unsigned long long int)str_data[i]);
+		str_char_sum_rolling += ((unsigned long long int)str_data[i + sub_str_size]);
 	}
 
 	// substring sub_str does not occur in the str
 	return INVALID_INDEX;
 }
 
-unsigned int contains_dstring_BM(const dstring* str, const dstring* sub_str);
+cy_uint contains_dstring_BM(const dstring* str, const dstring* sub_str);
 
 int is_prefix_of_dstring(const dstring* string_p, const dstring* prefix_p)
 {
@@ -209,11 +209,11 @@ int is_suffix_of_dstring(const dstring* string_p, const dstring* suffix_p)
 dstring split_dstring(const dstring* str, const dstring* delim, dstring* split)
 {
 	const char* str_data = get_byte_array_dstring(str);
-	unsigned int str_size = get_char_count_dstring(str);
+	cy_uint str_size = get_char_count_dstring(str);
 
-	unsigned int delim_size = get_char_count_dstring(delim);
+	cy_uint delim_size = get_char_count_dstring(delim);
 
-	unsigned int delim_index = contains_dstring_RK(str, delim);
+	cy_uint delim_index = contains_dstring_RK(str, delim);
 
 	if(delim_index == INVALID_INDEX)
 	{

@@ -6,11 +6,11 @@
 
 
 // returns suffix_prefix_match_length
-// this function populates suffix_prefix_match_length unsigned int array that is atleast (get_char_count_dstring(sub_str) + 1) elements long
+// this function populates suffix_prefix_match_length cy_uint array that is atleast (get_char_count_dstring(sub_str) + 1) elements long
 // this function must be used as a pre computation step of KMP algorithm
 //
 // upon return for sub_str[0..i] the length of prefix that matches the suffix is given by suffix_prefix_match_length[i-1]
-void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffix_prefix_match_length);
+void get_prefix_suffix_match_lengths(const dstring* sub_str, cy_uint* suffix_prefix_match_length);
 // used as pre-computation of KMP contains_dstring algorithm
 // this function has complexity of O(m), where m is the length of str
 
@@ -27,16 +27,16 @@ void get_prefix_suffix_match_lengths(const dstring* sub_str, unsigned int* suffi
 **  return : first index to the position of first sub string (sub_str) match inside the str, else it returns INVALID_INDEX
 */
 
-unsigned int contains_dstring_NAIVE(const dstring* str, const dstring* sub_str);
+cy_uint contains_dstring_NAIVE(const dstring* str, const dstring* sub_str);
 // Naive implementation O(m*n)
 
-unsigned int contains_dstring_KMP(const dstring* str, const dstring* sub_str, const unsigned int* suffix_prefix_match_length);
+cy_uint contains_dstring_KMP(const dstring* str, const dstring* sub_str, const cy_uint* suffix_prefix_match_length);
 // KMP (Knuth–Morris–Pratt) O(n)
 
-unsigned int contains_dstring_RK(const dstring* str, const dstring* sub_str);
+cy_uint contains_dstring_RK(const dstring* str, const dstring* sub_str);
 // RK (Rabin Karp) (best case O(m+n) and worst case O(m*n))
 
-unsigned int contains_dstring_BM(const dstring* str, const dstring* sub_str);
+cy_uint contains_dstring_BM(const dstring* str, const dstring* sub_str);
 // BM (Booyer Moore)
 
 
