@@ -7,7 +7,8 @@
 2. Add new datastructure types tasks (*future)
 
 LINKEDLIST & SINGLYLIST tasks
- * implement radix_sort, and some other sort function
+ * implement radix_sort and bubble_sort function
+ * implement to swap element positions
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
@@ -22,10 +23,6 @@ struct trie_node
     rbhnode/bstnode/llnode children_embed_node;
 };
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
-
-BST tasks (NEW DATASTRUCTURE inclusion)
- * implement TREAP and AA_TREE
- * add subtree size in all bsts, build functions for get_index_of_element_in_bst and get_element_at_index_in_bs (*far future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap.
@@ -68,9 +65,9 @@ DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
 BST tasks (NEW DATASTRUCTURE inclusion * future)
- * provide implementation for splay trees, Treap, AA etc in bst
- * add unsigned int subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
-   * to provide functionality to get nth smallest or largest in the bst OR to get number of elements greater/lesser/equals than x, OR get_element_count in bst and get_subtree_element_count (internal function).
+ * provide implementation for TREAP, AA_TREE etc in bst
+ * add cy_uint subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
+   * to provide functionality to get_index_of_element_in_bst, get_element_at_index_in_bst OR get_element_count in bst and get_subtree_element_count (internal function).
    * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
 
 3. Competely new datastructure tasks (*future)
