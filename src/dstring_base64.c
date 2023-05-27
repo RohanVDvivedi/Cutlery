@@ -3,15 +3,15 @@
 #include<cutlery_stds.h>
 
 // maximum packet count that we can process
-#define MAX_PACKET_COUNT (UINT_MAX >> 2)
+#define MAX_PACKET_COUNT (CY_UINT_MAX / 4)
 
 // maximum length of the dstring once encoded, or maximum length that we can decode
-#define MAX_BASE64_ENCODED_SIZE (MAX_PACKET_COUNT << 2)
+#define MAX_BASE64_ENCODED_SIZE (MAX_PACKET_COUNT * 4)
 
 // maximum length of the dstring that we can encode
 #define MAX_ENCODABLE_SIZE (MAX_PACKET_COUNT * 3)
 
-// MASK_6_BITS is equivalent to 0x3F in unsigned int
+// MASK_6_BITS is equivalent to 0x3F in unsigned char
 #define MASK_6_BITS (('\x1' << 6) - '\x1')
 
 static int is_valid_base64_encoded_char(char c)
@@ -24,7 +24,7 @@ static int is_valid_base64_encoded_char(char c)
 
 int is_valid_base64_encoding(const dstring* base64_enc)
 {
-	unsigned int base64_enc_size = get_char_count_dstring(base64_enc);
+	cy_uint base64_enc_size = get_char_count_dstring(base64_enc);
 
 	if(base64_enc_size % 4)
 		return 0;
@@ -32,7 +32,7 @@ int is_valid_base64_encoding(const dstring* base64_enc)
 	const char* base64_enc_data = get_byte_array_dstring(base64_enc);
 
 	// check if all chars are valid i.e. A-Z, a-z, 0-9, + and / until an = is encountered
-	unsigned int i = 0;
+	cy_uint i = 0;
 	while(i < base64_enc_size)
 	{
 		if(!is_valid_base64_encoded_char(base64_enc_data[i]))
@@ -102,11 +102,11 @@ int base64_encode(const dstring* dstr, dstring* base64_enc)
 
 	make_dstring_empty(base64_enc);
 
-	unsigned int dstr_size = get_char_count_dstring(dstr);
+	cy_uint dstr_size = get_char_count_dstring(dstr);
 	const char* dstr_data = get_byte_array_dstring(dstr);
 
 	// perform encoding
-	unsigned int i = 0;
+	cy_uint i = 0;
 	while(dstr_size - i >= 3)
 	{
 		unsigned char packet[4] = {
@@ -168,11 +168,11 @@ int base64_decode(const dstring* base64_enc, dstring* dstr)
 
 	make_dstring_empty(dstr);
 
-	unsigned int base64_enc_size = get_char_count_dstring(base64_enc);
+	cy_uint base64_enc_size = get_char_count_dstring(base64_enc);
 	const char* base64_enc_data = get_byte_array_dstring(base64_enc);
 
 	// perfrom decoding
-	unsigned int i = 0;
+	cy_uint i = 0;
 	while(i < base64_enc_size)
 	{
 		int equals_count = 0;
