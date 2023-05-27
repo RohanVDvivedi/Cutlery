@@ -12,7 +12,7 @@ memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
 #define set_dstr_SS_size(type_n_SS_size, SS_size)	(type_n_SS_size) = ((((SS_size) << 2) & 0xfc) | ((type_n_SS_size) & 0x3))
 
-#define SS_data_offset		((unsigned long int)((&(((dstring*)0)->type_n_SS_size))+sizeof(unsigned char)))
+#define SS_data_offset		((cy_uint)((&(((dstring*)0)->type_n_SS_size))+sizeof(unsigned char)))
 #define SS_capacity			(sizeof(dstring)-SS_data_offset)
 
 // BASE METHODS START
@@ -22,15 +22,13 @@ dstring_type get_dstring_type(const dstring* str_p)
 	return get_dstr_type(str_p->type_n_SS_size);
 }
 
-void init_empty_dstring(dstring* str_p, unsigned int capacity)
+void init_empty_dstring(dstring* str_p, cy_uint capacity)
 {
 	if(capacity > SS_capacity)
 	{
 		str_p->type_n_SS_size = LARGE_DSTR;
 		str_p->bytes_occupied = 0;
-		cy_uint capacity_ = capacity;
-		str_p->byte_array = allocate(DSTRING_mem_alloc, &capacity_);
-		capacity = capacity_;
+		str_p->byte_array = allocate(DSTRING_mem_alloc, &capacity);
 		str_p->bytes_allocated = (str_p->byte_array == NULL) ? 0 : capacity;
 	}
 	else 	// return a short dstring with size 0
@@ -44,20 +42,20 @@ char* get_byte_array_dstring(const dstring* str_p)
 	return ((char*)str_p) + SS_data_offset;
 }
 
-unsigned int get_char_count_dstring(const dstring* str_p)
+cy_uint get_char_count_dstring(const dstring* str_p)
 {
 	if(get_dstring_type(str_p) != SHORT_DSTR)
 		return str_p->bytes_occupied;
 	return get_dstr_SS_size(str_p->type_n_SS_size);
 }
 
-int increment_char_count_dstring(dstring* str_p, unsigned int increment_by)
+int increment_char_count_dstring(dstring* str_p, cy_uint increment_by)
 {
 	if(get_dstring_type(str_p) == POINT_DSTR || increment_by > get_unused_capacity_dstring(str_p))
 		return 0;
 	if(get_dstring_type(str_p) == SHORT_DSTR)
 	{
-		unsigned int new_SS_size = get_char_count_dstring(str_p) + increment_by;
+		cy_uint new_SS_size = get_char_count_dstring(str_p) + increment_by;
 		set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
 	}
 	else
@@ -65,13 +63,13 @@ int increment_char_count_dstring(dstring* str_p, unsigned int increment_by)
 	return 1;
 }
 
-int decrement_char_count_dstring(dstring* str_p, unsigned int decrement_by)
+int decrement_char_count_dstring(dstring* str_p, cy_uint decrement_by)
 {
 	if(get_dstring_type(str_p) == POINT_DSTR || decrement_by > get_char_count_dstring(str_p))
 		return 0;
 	if(get_dstring_type(str_p) == SHORT_DSTR)
 	{
-		unsigned int new_SS_size = get_char_count_dstring(str_p) - decrement_by;
+		cy_uint new_SS_size = get_char_count_dstring(str_p) - decrement_by;
 		set_dstr_SS_size(str_p->type_n_SS_size, new_SS_size);
 	}
 	else
@@ -87,14 +85,14 @@ void make_dstring_empty(dstring* str_p)
 		str_p->bytes_occupied = 0;
 }
 
-unsigned int get_capacity_dstring(const dstring* str_p)
+cy_uint get_capacity_dstring(const dstring* str_p)
 {
 	if(get_dstring_type(str_p) == SHORT_DSTR)
 		return SS_capacity;
 	return str_p->bytes_allocated;
 }
 
-unsigned int get_unused_capacity_dstring(const dstring* str_p)
+cy_uint get_unused_capacity_dstring(const dstring* str_p)
 {
 	// a POINT_DSTR has no memory associated with it, hence it does not even have unused capacity
 	if(get_dstring_type(str_p) == POINT_DSTR)
@@ -105,28 +103,35 @@ unsigned int get_unused_capacity_dstring(const dstring* str_p)
 void deinit_dstring(dstring* str_p)
 {
 	if(get_dstring_type(str_p) == LARGE_DSTR && str_p->bytes_allocated > 0 && str_p->byte_array != NULL)
-	{
-		cy_uint bytes_to_deallocate = str_p->bytes_allocated;
-		deallocate(DSTRING_mem_alloc, str_p->byte_array, bytes_to_deallocate);
-	}
+		deallocate(DSTRING_mem_alloc, str_p->byte_array, str_p->bytes_allocated);
 	str_p->type_n_SS_size = SHORT_DSTR;
 	str_p->byte_array = NULL;
 	str_p->bytes_allocated = 0;
 	str_p->bytes_occupied = 0;
 }
 
-int expand_dstring(dstring* str_p, unsigned int additional_allocation)
+int expand_dstring(dstring* str_p, cy_uint additional_allocation)
 {
 	// if it is a POINT_DSTR it can not be expanded or shrunk
 	if(get_dstring_type(str_p) == POINT_DSTR)
 		return 0;
 
+	// if no additional allocation required then return success
+	if(additional_allocation == 0)
+		return 1;
+
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
-	unsigned int str_capacity = get_capacity_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
+	cy_uint str_capacity = get_capacity_dstring(str_p);
 
 	// compute the new capacity
-	unsigned int new_capacity = str_size + additional_allocation;
+	cy_uint new_capacity = str_size + additional_allocation;
+
+	// check for overflow
+	if(new_capacity < str_size || new_capacity < additional_allocation)
+		return 0;
+
+	// can not be smaller than SS_capacity
 	if(new_capacity < SS_capacity)
 		new_capacity = SS_capacity;
 
@@ -137,9 +142,7 @@ int expand_dstring(dstring* str_p, unsigned int additional_allocation)
 	// you might have to make a large dstring larger
 	if(get_dstring_type(str_p) == LARGE_DSTR)
 	{
-		cy_uint new_capacity_ = new_capacity;
-		char* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, &new_capacity_);
-		new_capacity = new_capacity_;
+		char* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, &new_capacity);
 
 		// failed allocation
 		if(new_byte_array == NULL && new_capacity > 0)
@@ -174,11 +177,11 @@ int shrink_dstring(dstring* str_p)
 		return 0;
 
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
-	unsigned int str_capacity = get_capacity_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
+	cy_uint str_capacity = get_capacity_dstring(str_p);
 
 	// compute the new capacity
-	unsigned int new_capacity = str_size;
+	cy_uint new_capacity = str_size;
 	if(new_capacity <= SS_capacity)
 		new_capacity = SS_capacity;
 
@@ -193,9 +196,7 @@ int shrink_dstring(dstring* str_p)
 	// an already LARGE_DSTR getting converted to a smaller LARGE_DSTR
 	if(new_capacity > SS_capacity)
 	{
-		cy_uint new_capacity_ = new_capacity;
-		void* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, &new_capacity_);
-		new_capacity = new_capacity_;
+		void* new_byte_array = reallocate(DSTRING_mem_alloc, str_data, str_capacity, &new_capacity);
 
 		// failed allocation
 		if(new_byte_array == NULL && new_capacity > 0)
@@ -227,7 +228,7 @@ int shrink_dstring(dstring* str_p)
 
 // BASE METHODS END
 
-void init_dstring(dstring* str_p, const char* data, unsigned int data_size)
+void init_dstring(dstring* str_p, const char* data, cy_uint data_size)
 {
 	init_empty_dstring(str_p, data_size);
 	if(data != NULL && data_size > 0)
@@ -242,7 +243,7 @@ void init_copy_dstring(dstring* str_p, const dstring* init_copy_from)
 	init_dstring(str_p, get_byte_array_dstring(init_copy_from), get_char_count_dstring(init_copy_from));
 }
 
-dstring new_dstring(const char* data, unsigned int data_size)
+dstring new_dstring(const char* data, cy_uint data_size)
 {
 	dstring str;
 	init_dstring(&str, data, data_size);
@@ -261,7 +262,7 @@ int is_empty_dstring(const dstring* str_p)
 	return 0 == get_char_count_dstring(str_p);
 }
 
-int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int last_index)
+int discard_chars_dstring(dstring* str_p, cy_uint start_index, cy_uint last_index)
 {
 	// if it is a POINT_DSTR, you can not remove characters from it
 	if(get_dstring_type(str_p) == POINT_DSTR)
@@ -272,7 +273,7 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 		return 0;
 
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
 	// move the characters after the last_index to the position at start_index
 	memory_move(str_data + start_index, str_data + last_index + 1, str_size - (last_index + 1));
@@ -283,9 +284,9 @@ int discard_chars_dstring(dstring* str_p, unsigned int start_index, unsigned int
 	return 1;
 }
 
-int discard_chars_from_front_dstring(dstring* str_p, unsigned int bytes_to_discard)
+int discard_chars_from_front_dstring(dstring* str_p, cy_uint bytes_to_discard)
 {
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
 	if(str_size < bytes_to_discard)
 		return 0;
@@ -303,9 +304,9 @@ int discard_chars_from_front_dstring(dstring* str_p, unsigned int bytes_to_disca
 		return discard_chars_dstring(str_p, 0, bytes_to_discard - 1);
 }
 
-int discard_chars_from_back_dstring(dstring* str_p, unsigned int bytes_to_discard)
+int discard_chars_from_back_dstring(dstring* str_p, cy_uint bytes_to_discard)
 {
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
 	if(str_size < bytes_to_discard)
 		return 0;
@@ -330,7 +331,7 @@ int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 		return 0;
 
 	const char* str2_data = get_byte_array_dstring(str_p2);
-	unsigned int str2_size = get_char_count_dstring(str_p2);
+	cy_uint str2_size = get_char_count_dstring(str_p2);
 
 	if(str2_data != NULL && str2_size > 0)
 	{
@@ -352,7 +353,7 @@ int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 		}
 
 		char* str1_data = get_byte_array_dstring(str_p1);
-		unsigned int str1_size = get_char_count_dstring(str_p1);
+		cy_uint str1_size = get_char_count_dstring(str_p1);
 
 		// do appending as normal now
 		memory_move(str1_data + str1_size, str2_data, str2_size);
@@ -370,7 +371,7 @@ int concatenate_char(dstring* str_p1, char chr)
 void to_lowercase_dstring(dstring* str_p)
 {
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
 	while(str_size)
 	{
@@ -383,7 +384,7 @@ void to_lowercase_dstring(dstring* str_p)
 void to_uppercase_dstring(dstring* str_p)
 {
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
 	while(str_size)
 	{
@@ -396,15 +397,15 @@ void to_uppercase_dstring(dstring* str_p)
 int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
 	const char* str1_data = get_byte_array_dstring(str_p1);
-	unsigned int str1_size = get_char_count_dstring(str_p1);
+	cy_uint str1_size = get_char_count_dstring(str_p1);
 
 	const char* str2_data = get_byte_array_dstring(str_p2);
-	unsigned int str2_size = get_char_count_dstring(str_p2);
+	cy_uint str2_size = get_char_count_dstring(str_p2);
 
 	if(str1_size == str2_size)
 		return memory_compare(str1_data, str2_data, str1_size);
 
-	unsigned int min_size = (str1_size < str2_size) ? str1_size : str2_size;
+	cy_uint min_size = min(str1_size, str2_size);
 	int cmp = memory_compare(str1_data, str2_data, min_size);
 
 	if(cmp != 0)
@@ -414,7 +415,7 @@ int compare_dstring(const dstring* str_p1, const dstring* str_p2)
 	return 1;
 }
 
-static int memory_case_compare(const char* data1, const char* data2, unsigned int size)
+static int memory_case_compare(const char* data1, const char* data2, cy_uint size)
 {
 	if(data1 == data2 || size == 0)
 		return 0;
@@ -439,15 +440,15 @@ static int memory_case_compare(const char* data1, const char* data2, unsigned in
 int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
 {
 	const char* str1_data = get_byte_array_dstring(str_p1);
-	unsigned int str1_size = get_char_count_dstring(str_p1);
+	cy_uint str1_size = get_char_count_dstring(str_p1);
 
 	const char* str2_data = get_byte_array_dstring(str_p2);
-	unsigned int str2_size = get_char_count_dstring(str_p2);
+	cy_uint str2_size = get_char_count_dstring(str_p2);
 
 	if(str1_size == str2_size)
 		return memory_case_compare(str1_data, str2_data, str1_size);
 
-	unsigned int min_size = (str1_size < str2_size) ? str1_size : str2_size;
+	cy_uint min_size = min(str1_size, str2_size);
 	int cmp = memory_case_compare(str1_data, str2_data, min_size);
 
 	if(cmp != 0)
@@ -457,18 +458,18 @@ int case_compare_dstring(const dstring* str_p1, const dstring* str_p2)
 	return 1;
 }
 
-void sprint_chars(dstring* str_p, char chr, unsigned int count)
+void sprint_chars(dstring* str_p, char chr, cy_uint count)
 {
-	for(unsigned int i = 0; i < count; i++)
+	for(cy_uint i = 0; i < count; i++)
 		snprintf_dstring(str_p, "%c", chr);
 }
 
-unsigned int ltrim_dstring(dstring* str_p)
+cy_uint ltrim_dstring(dstring* str_p)
 {
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
-	unsigned int whitespaces_to_remove = 0;
+	cy_uint whitespaces_to_remove = 0;
 	for(; whitespaces_to_remove < str_size && is_whitespace_char(str_data[whitespaces_to_remove]); whitespaces_to_remove++);
 
 	discard_chars_from_front_dstring(str_p, whitespaces_to_remove);
@@ -476,38 +477,38 @@ unsigned int ltrim_dstring(dstring* str_p)
 	return whitespaces_to_remove;
 }
 
-unsigned int rtrim_dstring(dstring* str_p)
+cy_uint rtrim_dstring(dstring* str_p)
 {
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
-	unsigned int whitespaces_to_remove = 0;
-	for(unsigned int i = str_size - 1; i != -1 && is_whitespace_char(str_data[i]); i--, whitespaces_to_remove++);
+	cy_uint whitespaces_to_remove = 0;
+	for(cy_uint i = str_size - 1; i != -1 && is_whitespace_char(str_data[i]); i--, whitespaces_to_remove++);
 
 	discard_chars_from_back_dstring(str_p, whitespaces_to_remove);
 
 	return whitespaces_to_remove;
 }
 
-unsigned int trim_dstring(dstring* str_p)
+cy_uint trim_dstring(dstring* str_p)
 {
 	return ltrim_dstring(str_p) + rtrim_dstring(str_p);
 }
 
-int get_unsigned_int_from_dstring(const dstring* str_p, unsigned int radix, unsigned int* result)
+int get_unsigned_long_long_int_from_dstring(const dstring* str_p, cy_uint radix, unsigned long long int* result)
 {
 	if(radix < 2 || radix > 36)
 		return 0;
 
 	const char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
 	(*result) = 0;
 
-	for(unsigned int i = 0; i < str_size; i++)
+	for(cy_uint i = 0; i < str_size; i++)
 	{
 		unsigned int digit = get_digit_from_char(str_data[i], radix);
-		if(digit == INVALID_INDEX)
+		if(digit == -1)
 			return 0;
 		(*result) *= radix;
 		(*result) += digit;
@@ -531,7 +532,7 @@ int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list var_args)
 
 	va_copy(var_args_dummy, var_args);
 	// this is the additional size that will be occupied by the final dstring over the current occupied size
-	unsigned int size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1; // yes this last ( + 1) is important, remove it and live in misery
+	cy_uint size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1; // yes this last ( + 1) is important, remove it and live in misery
 	va_end(var_args_dummy);
 
 	// expand str_p as needed
@@ -553,7 +554,7 @@ int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list var_args)
 
 	// call all accessor methods of dstring again after expanding
 	char* str_data = get_byte_array_dstring(str_p);
-	unsigned int str_size = get_char_count_dstring(str_p);
+	cy_uint str_size = get_char_count_dstring(str_p);
 
 	size_extra_req = vsnprintf(str_data + str_size, get_unused_capacity_dstring(str_p), cstr_format, var_args);
 	increment_char_count_dstring(str_p, size_extra_req);
