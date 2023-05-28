@@ -1,6 +1,9 @@
 #ifndef CUTLERY_STDS_H
 #define CUTLERY_STDS_H
 
+// macro that can be used to fail a build is a certain compile time expression is true
+#define fail_build_on(compile_time_expr) char CAT(_,__LINE__)[1-(!!(compile_time_expr))];
+
 #ifndef NULL
 	#define NULL ((void*)0)
 #endif
@@ -14,6 +17,10 @@
 #define CAT(a, b) CAT_(a, b)
 
 // Appropriately typedef cy_uint, depending on the size of void* on your system
+// cy_uint is a cutlery's drop in replacement for size_t
+// cy_uint is capable to hold indexes, sizes, capacities and element counts of (structures <where applicable> and ) C arrays of all valid C structures
+// cy_uint is atleast as wide as the void*, i.e. it is also capable to hold any data and function pointer
+// it fills in a unique niche in Cutlery
 
 // if (sizeof(void*) <= 8 bits)
 /*
@@ -57,6 +64,9 @@
 #ifndef offsetof
 	#define offsetof(structure, attribute) ((cy_uint)(&(((structure*)(0))->attribute)))
 #endif
+
+// fail build if the size of cy_uint is lesser than size of void*
+fail_build_on(sizeof(cy_uint) < sizeof(void*))
 
 /*
 *	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
