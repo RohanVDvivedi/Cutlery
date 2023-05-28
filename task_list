@@ -4,7 +4,7 @@
 
 LINKEDLIST & SINGLYLIST tasks
  * implement radix_sort and bubble_sort function
- * implement to swap element positions
+ * implement to swap element positions and use them to implement the bubble sort
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
@@ -21,6 +21,9 @@ struct trie_node
  * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
+ * move heap_type MIN_HEAP and MAX_HEAP to a separate header file, make MIN_HEAP = 1, and MAX_HEAP = -1, multiply heap type with the comparison result and implement the heap
+ * make the current heap implementation into a N-ary heap, with N being cy_uint variable, to be provided at run time
+
  * implement a node based binomial heap and fibonacci heap.
  * it will use binomialheap node as a struct
 struct binomialheapnode
@@ -54,8 +57,6 @@ struct binomialheap
 };
 
  * implement leftist heap as leftistheap (* future)
-
- * convert current binary heap implementation to N-ary heap
 
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
