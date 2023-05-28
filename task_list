@@ -23,6 +23,7 @@ struct trie_node
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * move heap_type MIN_HEAP and MAX_HEAP to a separate header file, make MIN_HEAP = 1, and MAX_HEAP = -1, multiply heap type with the comparison result and implement the heap
  * make the current heap implementation into a N-ary heap, with N being cy_uint variable, to be provided at run time
+ * (--optimization) start heapify_all from the last parent element that has a child, no need to bubble_down the leaf elements of the N-ary heap
 
  * implement a node based binomial heap and fibonacci heap.
  * it will use binomialheap node as a struct
