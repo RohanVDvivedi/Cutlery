@@ -1,9 +1,6 @@
 #ifndef CUTLERY_STDS_H
 #define CUTLERY_STDS_H
 
-// macro that can be used to fail a build is a certain compile time expression is true
-#define fail_build_on(compile_time_expr) char CAT(_,__LINE__)[1-(!!(compile_time_expr))];
-
 #ifndef NULL
 	#define NULL ((void*)0)
 #endif
@@ -15,6 +12,9 @@
 // by this below 2 level concatenate expansion we can first substitute params and then concatenate them
 #define CAT_(a, b) a ## b
 #define CAT(a, b) CAT_(a, b)
+
+// macro that can be used to fail a build is a certain compile time expression is true
+#define fail_build_on(compile_time_expr) extern char CAT(__cutlery_build_failed__,__LINE__)[1 - (2 * (!!(compile_time_expr)))];
 
 // Appropriately typedef cy_uint, depending on the size of void* on your system
 // cy_uint is a cutlery's drop in replacement for size_t
@@ -66,6 +66,7 @@
 #endif
 
 // fail build if the size of cy_uint is lesser than size of void*
+// we must ensure that sizeof(cy_uint) >= sizeof(void*)
 fail_build_on(sizeof(cy_uint) < sizeof(void*))
 
 /*
