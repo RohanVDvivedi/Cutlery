@@ -2,6 +2,9 @@
 
 2. Add new datastructure types tasks (*future)
 
+ARRAY
+ * capacity -> capacity stores capacity at data_p_p in bytes, replace all array_p->capacity calls to get_capacity_array() {return array_p->capacity / sizeof(void*);}, this will allow us to easily pass array's capacity arround to allocators
+
 DSTRING
  * in expand_dstring calls in concatenate_dstring handle case when additional space calcuation may over flow, sum of theie sizes must not overflow
 
