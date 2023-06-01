@@ -11,7 +11,8 @@ struct array
 	// we maintain array of pointers each of which point to actual data
 	const void** data_p_p;
 
-	// this many element pointers (const void*) can be accomodated in this array at data_p_p
+	// capacity_in_bytes = number of bytes pointed by data_p_p
+	// capacity_in_bytes / sizeof(void*) = number of element pointers (const void*) that can be accomodated in this array
 	cy_uint capacity;
 
 	// this is the memory_allocator that will be used for allocating memory for the array

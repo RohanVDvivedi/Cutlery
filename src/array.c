@@ -31,7 +31,7 @@ int initialize_array_with_allocator(array* array_p, cy_uint capacity, memory_all
 	array_p->mem_allocator = mem_allocator;
 	cy_uint bytes_allocated = capacity * sizeof(void*);
 	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, &bytes_allocated) : NULL;
-	array_p->capacity = (array_p->data_p_p != NULL) ? (bytes_allocated / sizeof(void*)) : 0;
+	array_p->capacity_in_bytes = (array_p->data_p_p != NULL) ? bytes_allocated : 0;
 
 	// check for allocator error, if the allocation fails, return 0, else return 1
 	if(bytes_allocated > 0 && array_p->data_p_p == NULL)
@@ -48,7 +48,7 @@ int initialize_array_with_memory(array* array_p, cy_uint capacity, const void* d
 
 	array_p->mem_allocator = NULL;
 	array_p->data_p_p = data_ps;
-	array_p->capacity = capacity;
+	array_p->capacity_in_bytes = capacity * sizeof(void*);
 
 	return 1;
 }
@@ -126,16 +126,16 @@ int copy_elements_from_array(array* array_p, cy_uint start_index, const array* a
 
 void deinitialize_array(array* array_p)
 {
-	if(array_p->mem_allocator != NULL && array_p->capacity > 0 && array_p->data_p_p != NULL)
-		deallocate(array_p->mem_allocator, array_p->data_p_p, array_p->capacity * sizeof(void*));
+	if(array_p->mem_allocator != NULL && array_p->capacity_in_bytes > 0 && array_p->data_p_p != NULL)
+		deallocate(array_p->mem_allocator, array_p->data_p_p, array_p->capacity_in_bytes);
 	array_p->mem_allocator = NULL;
 	array_p->data_p_p = NULL;
-	array_p->capacity = 0;
+	array_p->capacity_in_bytes = 0;
 }
 
 cy_uint get_capacity_array(const array* array_p)
 {
-	return array_p->capacity;
+	return array_p->capacity_in_bytes / sizeof(void*);
 }
 
 void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params)
