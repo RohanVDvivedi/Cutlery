@@ -39,8 +39,8 @@ struct count_min_sketch
 	// here we will use the functionality defined in multi_dim_array_util.h to access each of its elements
 	cy_uint* frequencies;
 
-	// cy_uint_allocator is used for the above attribute frequencies,
-	memory_allocator cy_uint_allocator;
+	// frequencies_allocator is used for allocating memory for the above attribute frequencies array
+	memory_allocator frequencies_allocator;
 };
 
 #define MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT (CY_UINT_MAX / sizeof(cy_uint))
@@ -50,7 +50,7 @@ struct count_min_sketch
 
 int initialize_count_min_sketch(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[]);
 
-int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator cu_uint_allocator);
+int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator frequencies_allocator);
 
 // in the initialize with_memory function the frequencies parameter (the last parameter) is optional
 // it can be provided as NULL, if you want to use STD_C_mem_allocator for allocating and maintaining frequencies

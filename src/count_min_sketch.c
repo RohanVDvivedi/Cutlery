@@ -13,7 +13,7 @@ int initialize_count_min_sketch(count_min_sketch* cms_p, cy_uint bucket_count, c
 	return initialize_count_min_sketch_with_allocator(cms_p, bucket_count, hash_functions_count, data_hash_functions, STD_C_mem_allocator, STD_C_mem_allocator);
 }
 
-int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator cy_uint_allocator)
+int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator frequencies_allocator)
 {
 	// the total_buckets must not be 0, and the total_buckets must not overflow CY_UINT_MAX, and it must be lesser than the max bucket count possible on your machine
 	cy_uint total_buckets = bucket_count * hash_functions_count;
@@ -26,10 +26,10 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 	for(cy_uint i = 0; i < hash_functions_count; i++)
 		set_in_array(&(cms_p->data_hash_functions), data_hash_functions[i], i);
 
-	cms_p->cy_uint_allocator = cy_uint_allocator;
+	cms_p->frequencies_allocator = frequencies_allocator;
 	cms_p->capacity_in_bytes = total_buckets * sizeof(cy_uint);
 
-	cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &(cms_p->capacity_in_bytes));
+	cms_p->frequencies = zallocate(cms_p->frequencies_allocator, &(cms_p->capacity_in_bytes));
 	if(cms_p->frequencies == NULL)
 	{
 		cms_p->capacity_in_bytes = 0;
@@ -50,15 +50,15 @@ int initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint buc
 	// initialize array with memory
 	initialize_array_with_memory(&(cms_p->data_hash_functions), hash_functions_count, (const void**)data_hash_functions);
 
-	cms_p->cy_uint_allocator = NULL;
+	cms_p->frequencies_allocator = NULL;
 	cms_p->capacity_in_bytes = total_buckets * sizeof(cy_uint);
 
 	if(frequencies != NULL)
 		cms_p->frequencies = frequencies;
 	else
 	{
-		cms_p->cy_uint_allocator = STD_C_mem_allocator;
-		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &(cms_p->capacity_in_bytes));
+		cms_p->frequencies_allocator = STD_C_mem_allocator;
+		cms_p->frequencies = zallocate(cms_p->frequencies_allocator, &(cms_p->capacity_in_bytes));
 		if(cms_p->frequencies == NULL)
 		{
 			deinitialize_array(&(cms_p->data_hash_functions));
@@ -193,10 +193,10 @@ void sprint_count_min_sketch(dstring* append_str, const count_min_sketch* cms_p,
 
 void deinitialize_count_min_sketch(count_min_sketch* cms_p)
 {
-	if(cms_p->cy_uint_allocator != NULL && cms_p->capacity_in_bytes > 0)
-		deallocate(cms_p->cy_uint_allocator, cms_p->frequencies, cms_p->capacity_in_bytes);
+	if(cms_p->frequencies_allocator != NULL && cms_p->capacity_in_bytes > 0)
+		deallocate(cms_p->frequencies_allocator, cms_p->frequencies, cms_p->capacity_in_bytes);
 	cms_p->frequencies = NULL;
 	cms_p->capacity_in_bytes = 0;
-	cms_p->cy_uint_allocator = NULL;
+	cms_p->frequencies_allocator = NULL;
 	deinitialize_array(&(cms_p->data_hash_functions));
 }
