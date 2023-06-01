@@ -2,7 +2,7 @@
 
 2. Add new datastructure types tasks (*future)
 
-BLOOM_FILTER COUNT_MIN_SKETCH
+COUNT_MIN_SKETCH
  * make capacity -> capacity_in_bytes
 
 DSTRING
