@@ -7,7 +7,7 @@
 
 void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -86,7 +86,7 @@ void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 
 void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -116,7 +116,7 @@ void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 
 void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -148,7 +148,7 @@ void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 
 void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data))
 {
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -194,7 +194,7 @@ void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, u
 cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return INVALID_INDEX;
 
 	switch(occurence_type)
@@ -226,7 +226,7 @@ cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uin
 cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return INVALID_INDEX;
 
 	switch(occurence_type)
@@ -289,7 +289,7 @@ cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index,
 cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
@@ -324,7 +324,7 @@ cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index
 cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
@@ -359,7 +359,7 @@ cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint s
 cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
@@ -394,7 +394,7 @@ cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_inde
 cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
@@ -429,7 +429,7 @@ cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint 
 cy_uint find_insertion_index_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= array_p->capacity)
+	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
