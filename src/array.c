@@ -55,12 +55,12 @@ int initialize_array_with_memory(array* array_p, cy_uint capacity, const void* d
 
 const void* get_from_array(const array* array_p, cy_uint index)
 {
-	return (index < array_p->capacity) ? array_p->data_p_p[index] : NULL;
+	return (index < get_capacity_array(array_p)) ? array_p->data_p_p[index] : NULL;
 }
 
 int set_in_array(array* array_p, const void* data_p, cy_uint index)
 {
-	if(index < array_p->capacity)
+	if(index < get_capacity_array(array_p))
 	{
 		array_p->data_p_p[index] = data_p;
 		return 1;
@@ -98,7 +98,7 @@ int set_NULLs_in_array(array* array_p, cy_uint start_index, cy_uint element_coun
 	memory_set(array_p->data_p_p + start_index, 0, element_count_to_NULL * sizeof(void*));
 	/*
 		the above memory_set is equivalent to the below loop
-		for(cy_uint i = 0; i < array_p->capacity; i++)
+		for(cy_uint i = 0; i < get_capacity_array(array_p); i++)
 			set_in_array(array_p, NULL, i);
 	*/
 
@@ -140,7 +140,7 @@ cy_uint get_capacity_array(const array* array_p)
 
 void for_each_non_null_in_array(const array* array_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params)
 {
-	for(cy_uint i = 0; i < array_p->capacity; i++)
+	for(cy_uint i = 0; i < get_capacity_array(array_p); i++)
 	{
 		if(get_from_array(array_p, i) != NULL)
 			operation(((void*)get_from_array(array_p, i)), i, additional_params);
@@ -149,7 +149,7 @@ void for_each_non_null_in_array(const array* array_p, void (*operation)(void* da
 
 void for_each_in_array(const array* array_p, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params)
 {
-	for(cy_uint i = 0; i < array_p->capacity; i++)
+	for(cy_uint i = 0; i < get_capacity_array(array_p); i++)
 		operation(((void*)get_from_array(array_p, i)), i, additional_params);
 }
 
@@ -247,9 +247,9 @@ int shrink_array(array* array_p, cy_uint new_capacity)
 void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "array :\n");
-	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "capacity : %" PRIu_cy_uint "\n", array_p->capacity);
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, "capacity : %" PRIu_cy_uint "\n", get_capacity_array(array_p));
 
-	for(cy_uint i = 0; i < array_p->capacity; i++)
+	for(cy_uint i = 0; i < get_capacity_array(array_p); i++)
 	{
 		sprint_chars(append_str, '\t', tabs);
 		snprintf_dstring(append_str, "index_id = %" PRIu_cy_uint "\n", i);
