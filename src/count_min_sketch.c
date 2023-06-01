@@ -29,17 +29,12 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 	cms_p->cy_uint_allocator = cy_uint_allocator;
 	cms_p->capacity_in_bytes = total_buckets * sizeof(cy_uint);
 
-	if(total_bytes_for_all_buckets == 0)
-		cms_p->frequencies = NULL;
-	else
+	cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &(cms_p->capacity_in_bytes));
+	if(cms_p->frequencies == NULL)
 	{
-		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &cms_p->capacity_in_bytes);
-		if(cms_p->frequencies == NULL)
-		{
-			cms_p->capacity_in_bytes = 0;
-			deinitialize_array(&(cms_p->data_hash_functions));
-			return 0;
-		}
+		cms_p->capacity_in_bytes = 0;
+		deinitialize_array(&(cms_p->data_hash_functions));
+		return 0;
 	}
 
 	return 1;
@@ -63,7 +58,7 @@ int initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint buc
 	else
 	{
 		cms_p->cy_uint_allocator = STD_C_mem_allocator;
-		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &total_bytes_for_all_buckets);
+		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &(cms_p->capacity_in_bytes));
 		if(cms_p->frequencies == NULL)
 		{
 			deinitialize_array(&(cms_p->data_hash_functions));
