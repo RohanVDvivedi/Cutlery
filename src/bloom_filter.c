@@ -121,7 +121,8 @@ bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const voi
 
 void reset_bits_in_bloom_filter(bloom_filter* bf_p)
 {
-	reset_all_bits(bf_p->bitmap, bf_p->capacity_in_bytes * CHAR_BIT);
+	// set all of the memory pointed to by bf_p->bitmap to 0
+	memory_set(bf_p->bitmap, 0, bf_p->capacity_in_bytes);
 }
 
 double get_fraction_of_bloom_filter_bits_set(const bloom_filter* bf_p)
@@ -162,6 +163,8 @@ void deinitialize_bloom_filter(bloom_filter* bf_p)
 {
 	if(bf_p->bitmap_allocator != NULL && bf_p->capacity_in_bytes > 0)
 		deallocate(bf_p->bitmap_allocator, bf_p->bitmap, bf_p->capacity_in_bytes);
+	bf_p->bitmap_allocator = NULL;
+	bf_p->bitmap = NULL;
 	bf_p->capacity_in_bytes = 0;
 	deinitialize_array(&(bf_p->data_hash_functions));
 }
