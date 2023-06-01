@@ -7,20 +7,6 @@
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
-static cy_uint get_bitmap_size_in_bits_for_bloom_filter(const bloom_filter* bf_p)
-{
-	// calculate the total number of bits required in bitmap
-	return bf_p->bucket_count * get_capacity_array(&(bf_p->data_hash_functions));
-}
-
-static cy_uint get_bitmap_size_in_bytes_for_bloom_filter(const bloom_filter* bf_p)
-{
-	cy_uint bits_in_bitmap = get_bitmap_size_in_bits_for_bloom_filter(bf_p);
-
-	// and then number of bytes required for storing the bitmap
-	return bitmap_size_in_bytes(bits_in_bitmap);
-}
-
 int initialize_bloom_filter(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[])
 {
 	// no allocators provided initialize with STC_C_mem_allocator
@@ -40,22 +26,15 @@ int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, cy_uint bucket_co
 	for(cy_uint i = 0; i < hash_functions_count; i++)
 		set_in_array(&(bf_p->data_hash_functions), data_hash_functions[i], i);
 
-	bf_p->bucket_count = bucket_count;
 	bf_p->bitmap_allocator = bitmap_allocator;
+	bf_p->capacity_in_bytes = bitmap_size_in_bytes(bits_in_bitmap);
 
-	// calculate  number of bytes required for storing the bitmap
-	cy_uint bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
-
-	if(bytes_in_bitmap == 0)
-		bf_p->bitmap = NULL;
-	else
+	bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &(bf_p->capacity_in_bytes));
+	if(bf_p->bitmap == NULL)
 	{
-		bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &bytes_in_bitmap);
-		if(bf_p->bitmap == NULL)
-		{
-			deinitialize_array(&(bf_p->data_hash_functions));
-			return 0;
-		}
+		bf_p->capacity_in_bytes = 0;
+		deinitialize_array(&(bf_p->data_hash_functions));
+		return 0;
 	}
 
 	return 1;
@@ -73,14 +52,9 @@ int initialize_bloom_filter_with_memory(bloom_filter* bf_p, cy_uint bucket_count
 		return 0;
 
 	bf_p->bitmap_allocator = NULL;
-	bf_p->bucket_count = bucket_count;
+	bf_p->capacity_in_bytes = bitmap_size_in_bytes(bits_in_bitmap);
 
-	// calculate  number of bytes required for storing the bitmap
-	cy_uint bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
-
-	if(bytes_in_bitmap == 0)
-		bf_p->bitmap = NULL;
-	else if(bitmap != NULL)
+	if(bitmap != NULL)
 		bf_p->bitmap = bitmap;
 	else
 	{
@@ -88,6 +62,7 @@ int initialize_bloom_filter_with_memory(bloom_filter* bf_p, cy_uint bucket_count
 		bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &bytes_in_bitmap);
 		if(bf_p->bitmap == NULL)
 		{
+			bf_p->capacity_in_bytes = 0;
 			deinitialize_array(&(bf_p->data_hash_functions));
 			return 0;
 		}
@@ -174,10 +149,8 @@ void sprint_bloom_filter_bitmap(dstring* append_str, const bloom_filter* bf_p, u
 
 void deinitialize_bloom_filter(bloom_filter* bf_p)
 {
-	cy_uint bytes_in_bitmap = get_bitmap_size_in_bytes_for_bloom_filter(bf_p);
-
-	if(bf_p->bitmap_allocator != NULL && bytes_in_bitmap > 0)
-		deallocate(bf_p->bitmap_allocator, bf_p->bitmap, bytes_in_bitmap);
-
+	if(bf_p->bitmap_allocator != NULL && bf_p->capacity_in_bytes > 0)
+		deallocate(bf_p->bitmap_allocator, bf_p->bitmap, bf_p->capacity_in_bytes);
+	bf_p->capacity_in_bytes;
 	deinitialize_array(&(bf_p->data_hash_functions));
 }
