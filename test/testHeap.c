@@ -21,13 +21,13 @@ int cmp(const void* data1, const void* data2)
 
 void print_ts(const void* tsv)
 {
-	printf(" %d, %d, %s =<HEAP_INDEX>=> %u", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
+	printf(" %d, %d, %s =<HEAP_INDEX>=> %" PRIu_cy_uint, ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
 }
 
 void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs + 1);
-	snprintf_dstring(append_str, "%d, %d, %s =<HEAP_INDEX>=> %u", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
+	snprintf_dstring(append_str, "%d, %d, %s =<HEAP_INDEX>=> %" PRIu_cy_uint, ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, ((ts*)tsv)->hp_embed_node.heap_index);
 }
 
 void print_ts_heap(heap* heap_p)
