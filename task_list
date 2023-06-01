@@ -2,6 +2,9 @@
 
 2. Add new datastructure types tasks (*future)
 
+BLOOM_FILTER COUNT_MIN_SKETCH
+ * make capacity -> capacity_in_bytes
+
 DSTRING
  * in expand_dstring calls in concatenate_dstring handle case when additional space calcuation may over flow, sum of theie sizes must not overflow
 
