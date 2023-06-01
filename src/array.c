@@ -9,7 +9,7 @@
 
 // new_capacity of data_p_p = (old_capacity of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next capacity (on expansion) for the given array, if it's current capacity is current_capacity
-static cy_uint get_new_capacity(cy_uint current_capacity)
+static inline cy_uint get_new_expansion_capacity(cy_uint current_capacity)
 {
 	cy_uint new_capacity = (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
 
@@ -155,14 +155,8 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, cy_
 
 int expand_array(array* array_p)
 {
-	cy_uint new_capacity = get_new_capacity(array_p->capacity);
-
-	// new_capacity upon expansion must be greater than the current capacity
-	if(new_capacity <= array_p->capacity)
-		return 0;
-
 	// expand array to atleast the new_capacity
-	return reserve_capacity_for_array(array_p, new_capacity);
+	return reserve_capacity_for_array(array_p, get_new_expansion_capacity(get_capacity_array(array_p)));
 }
 
 int reserve_capacity_for_array(array* array_p, cy_uint atleast_capacity)
@@ -171,15 +165,12 @@ int reserve_capacity_for_array(array* array_p, cy_uint atleast_capacity)
 	if(array_p->mem_allocator == NULL)
 		return 0;
 
-	// compute new_capacity to expand to
+	// new_capacity to expand to
 	cy_uint new_capacity = atleast_capacity;
 
-	// new_capacity must be greater than the old_capacity
-	if(new_capacity <= array_p->capacity)
-		return 0;
-
-	// if the new capacity is greater than the MAX_ARRAY_CAPACITY, then fail to expand the array
-	if(new_capacity > MAX_ARRAY_CAPACITY)
+	// if the new capacity is greater than the MAX_ARRAY_CAPACITY
+	// OR if new_capacity is lesser than or equal to the old_capacity, then fail to expand the array
+	if(new_capacity > MAX_ARRAY_CAPACITY || new_capacity <= get_capacity_array(array_p))
 		return 0;
 
 	// number of bytes to be allocated
@@ -217,7 +208,7 @@ int shrink_array(array* array_p, cy_uint new_capacity)
 		return 0;
 
 	// new_capacity must be lesser than the old_capacity
-	if(new_capacity >= array_p->capacity)
+	if(new_capacity >= get_capacity_array(array_p))
 		return 0;
 
 	// number of bytes to be allocated
