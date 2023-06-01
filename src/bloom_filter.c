@@ -59,7 +59,7 @@ int initialize_bloom_filter_with_memory(bloom_filter* bf_p, cy_uint bucket_count
 	else
 	{
 		bf_p->bitmap_allocator = STD_C_mem_allocator;
-		bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &bytes_in_bitmap);
+		bf_p->bitmap = zallocate(bf_p->bitmap_allocator, &(bf_p->capacity_in_bytes));
 		if(bf_p->bitmap == NULL)
 		{
 			bf_p->capacity_in_bytes = 0;
@@ -71,10 +71,20 @@ int initialize_bloom_filter_with_memory(bloom_filter* bf_p, cy_uint bucket_count
 	return 1;
 }
 
+cy_uint get_hash_function_count_bloom_filter(const bloom_filter* bf_p)
+{
+	return get_capacity_array(&(bf_p->data_hash_functions));
+}
+
+cy_uint get_bucket_count_per_hash_function_bloom_filter(const bloom_filter* bf_p)
+{
+	return (bf_p->capacity_in_bytes * CHAR_BIT) / get_hash_function_count_bloom_filter(bf_p);
+}
+
 void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, cy_uint data_size)
 {
-	cy_uint hash_functions_count = get_capacity_array(&(bf_p->data_hash_functions));
-	cy_uint bucket_count = bf_p->bucket_count;
+	cy_uint hash_functions_count = get_hash_function_count_bloom_filter(bf_p);
+	cy_uint bucket_count = get_bucket_count_per_hash_function_bloom_filter(bf_p);
 
 	for(cy_uint h = 0; h < hash_functions_count; h++)
 	{
@@ -90,8 +100,8 @@ void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, cy_uint data_s
 
 bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const void* data, cy_uint data_size)
 {
-	cy_uint hash_functions_count = get_capacity_array(&(bf_p->data_hash_functions));
-	cy_uint bucket_count = bf_p->bucket_count;
+	cy_uint hash_functions_count = get_hash_function_count_bloom_filter(bf_p);
+	cy_uint bucket_count = get_bucket_count_per_hash_function_bloom_filter(bf_p);
 
 	bloom_filter_presence result = MAY_BE_PRESENT;
 
@@ -111,14 +121,15 @@ bloom_filter_presence exists_in_bloom_filter(const bloom_filter* bf_p, const voi
 
 void reset_bits_in_bloom_filter(bloom_filter* bf_p)
 {
-	cy_uint bits_in_bitmap = get_bitmap_size_in_bits_for_bloom_filter(bf_p);
-
-	reset_all_bits(bf_p->bitmap, bits_in_bitmap);
+	reset_all_bits(bf_p->bitmap, bf_p->capacity_in_bytes * CHAR_BIT);
 }
 
 double get_fraction_of_bloom_filter_bits_set(const bloom_filter* bf_p)
 {
-	cy_uint total_bits = get_bitmap_size_in_bits_for_bloom_filter(bf_p);
+	cy_uint hash_functions_count = get_hash_function_count_bloom_filter(bf_p);
+	cy_uint bucket_count = get_bucket_count_per_hash_function_bloom_filter(bf_p);
+
+	cy_uint total_bits = hash_functions_count * bucket_count;
 
 	// count the number of bits that are set
 	cy_uint bits_set = 0;
@@ -130,12 +141,12 @@ double get_fraction_of_bloom_filter_bits_set(const bloom_filter* bf_p)
 
 void sprint_bloom_filter_bitmap(dstring* append_str, const bloom_filter* bf_p, unsigned int tabs)
 {
-	cy_uint hash_functions_count = get_capacity_array(&(bf_p->data_hash_functions));
-	cy_uint bucket_count = bf_p->bucket_count;
+	cy_uint hash_functions_count = get_hash_function_count_bloom_filter(bf_p);
+	cy_uint bucket_count = get_bucket_count_per_hash_function_bloom_filter(bf_p);
 
 	for(cy_uint h = 0; h < hash_functions_count; h++)
 	{
-		sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "h(%u) -> ", h);
+		sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "h(%" PRIu_cy_uint ") -> ", h);
 
 		for(cy_uint b = 0; b < bucket_count; b++)
 		{
@@ -151,6 +162,6 @@ void deinitialize_bloom_filter(bloom_filter* bf_p)
 {
 	if(bf_p->bitmap_allocator != NULL && bf_p->capacity_in_bytes > 0)
 		deallocate(bf_p->bitmap_allocator, bf_p->bitmap, bf_p->capacity_in_bytes);
-	bf_p->capacity_in_bytes;
+	bf_p->capacity_in_bytes = 0;
 	deinitialize_array(&(bf_p->data_hash_functions));
 }

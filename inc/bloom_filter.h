@@ -49,6 +49,14 @@ int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, cy_uint bucket_co
 // it can be provided as NULL, if you want to use STD_C_mem_allocator for allocating and maintaining bitmap
 int initialize_bloom_filter_with_memory(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], char bitmap[]);
 
+// this is the number of hash functions that would be used by the bloom filter
+// equivalent to get_capacity_array(&(bf_p->data_hash_functions));
+cy_uint get_hash_function_count_bloom_filter(const bloom_filter* bf_p);
+
+// this is the number of buckets per hash function in the bloom filter
+// equivalent to (bf_p->capacity_in_bytes * CHAR_BIT) / get_hash_function_count_bloom_filter(bf_p)
+cy_uint get_bucket_count_per_hash_function_bloom_filter(const bloom_filter* bf_p);
+
 void insert_in_bloom_filter(bloom_filter* bf_p, const void* data, cy_uint data_size);
 
 typedef enum bloom_filter_presence bloom_filter_presence;
