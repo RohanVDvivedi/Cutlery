@@ -179,24 +179,21 @@ int reserve_capacity_for_array(array* array_p, cy_uint atleast_capacity)
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
-										array_p->capacity * sizeof(void*),
+										array_p->capacity_in_bytes,
 										&bytes_allocated);
+
+	// bytes_allocated is our real capacity_in_bytes
 
 	// since memory allocation failed, return 0
 	if(new_data_p_p == NULL && new_capacity > 0)
 		return 0;
 
-	// the new capacity may be more than what you asked for
-	// so calculate the bytes that were allocated
-	new_capacity = bytes_allocated / sizeof(void*);
-
 	// set all new pointers to NULL i.e. from old_capacity to new_capacity
-	memory_set(new_data_p_p + array_p->capacity, 0,
-			(new_capacity - array_p->capacity) * sizeof(void*));
+	memory_set(new_data_p_p + get_capacity_array(array_p), 0, bytes_allocated - array_p->capacity_in_bytes);
 
 	// new assignment to data_p_p and its capacity
 	array_p->data_p_p = new_data_p_p;
-	array_p->capacity = new_capacity;
+	array_p->capacity_in_bytes = bytes_allocated;
 
 	return 1;
 }
@@ -217,20 +214,18 @@ int shrink_array(array* array_p, cy_uint new_capacity)
 	// reallocate memory for the new_capacity
 	const void** new_data_p_p = reallocate(array_p->mem_allocator,
 										array_p->data_p_p,
-										array_p->capacity * sizeof(void*),
+										array_p->capacity_in_bytes,
 										&bytes_allocated);
+
+	// bytes_allocated is our real capacity_in_bytes
 
 	// since memory allocation failed, return 0
 	if(new_data_p_p == NULL && new_capacity > 0)
 		return 0;
 
-	// the new capacity may be more than what you asked for
-	// so calculate the bytes that were allocated
-	new_capacity = bytes_allocated / sizeof(void*);
-
 	// new assignment to data_p_p and its capacity
 	array_p->data_p_p = new_data_p_p;
-	array_p->capacity = new_capacity;
+	array_p->capacity_in_bytes = bytes_allocated;
 
 	return 1;
 }
