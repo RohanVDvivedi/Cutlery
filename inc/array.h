@@ -13,7 +13,7 @@ struct array
 
 	// capacity_in_bytes = number of bytes pointed by data_p_p
 	// capacity_in_bytes / sizeof(void*) = number of element pointers (const void*) that can be accomodated in this array
-	cy_uint capacity;
+	cy_uint capacity_in_bytes;
 
 	// this is the memory_allocator that will be used for allocating memory for the array
 	// for expand or shrink, allocation functions pointed to by this allocator will be called
