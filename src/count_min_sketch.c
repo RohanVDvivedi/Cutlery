@@ -7,11 +7,6 @@
 #include<cutlery_math.h>
 #include<memory_allocator_interface.h>
 
-static cy_uint get_total_bucket_count_for_count_min_sketch(const count_min_sketch* cms_p)
-{
-	return cms_p->bucket_count * get_capacity_array(&(cms_p->data_hash_functions));
-}
-
 int initialize_count_min_sketch(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[])
 {
 	// no allocators provided initialize with STC_C_mem_allocator
@@ -31,20 +26,17 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 	for(cy_uint i = 0; i < hash_functions_count; i++)
 		set_in_array(&(cms_p->data_hash_functions), data_hash_functions[i], i);
 
-	cms_p->bucket_count = bucket_count;
 	cms_p->cy_uint_allocator = cy_uint_allocator;
-
-	// calculate total number of buckets required
-	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	cy_uint total_bytes_for_all_buckets = ((cy_uint)total_bucket_count) * sizeof(cy_uint);
+	cms_p->capacity_in_bytes = total_buckets * sizeof(cy_uint);
 
 	if(total_bytes_for_all_buckets == 0)
 		cms_p->frequencies = NULL;
 	else
 	{
-		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &total_bytes_for_all_buckets);
+		cms_p->frequencies = zallocate(cms_p->cy_uint_allocator, &cms_p->capacity_in_bytes);
 		if(cms_p->frequencies == NULL)
 		{
+			cms_p->capacity_in_bytes = 0;
 			deinitialize_array(&(cms_p->data_hash_functions));
 			return 0;
 		}
@@ -64,15 +56,9 @@ int initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint buc
 	initialize_array_with_memory(&(cms_p->data_hash_functions), hash_functions_count, (const void**)data_hash_functions);
 
 	cms_p->cy_uint_allocator = NULL;
-	cms_p->bucket_count = bucket_count;
+	cms_p->capacity_in_bytes = total_buckets * sizeof(cy_uint);
 
-	// calculate total number of buckets required
-	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	cy_uint total_bytes_for_all_buckets = total_bucket_count * sizeof(cy_uint);
-
-	if(total_bytes_for_all_buckets == 0)
-		cms_p->frequencies = NULL;
-	else if(frequencies != NULL)
+	if(frequencies != NULL)
 		cms_p->frequencies = frequencies;
 	else
 	{
@@ -216,12 +202,10 @@ void sprint_count_min_sketch(dstring* append_str, const count_min_sketch* cms_p,
 
 void deinitialize_count_min_sketch(count_min_sketch* cms_p)
 {
-	// calculate total number of buckets required
-	cy_uint total_bucket_count = get_total_bucket_count_for_count_min_sketch(cms_p);
-	cy_uint total_bytes_for_all_buckets = total_bucket_count * sizeof(cy_uint);
-
-	if(cms_p->cy_uint_allocator != NULL && total_bytes_for_all_buckets > 0)
-		deallocate(cms_p->cy_uint_allocator, cms_p->frequencies, total_bytes_for_all_buckets);
-
+	if(cms_p->cy_uint_allocator != NULL && cms_p->capacity_in_bytes > 0)
+		deallocate(cms_p->cy_uint_allocator, cms_p->frequencies, cms_p->capacity_in_bytes);
+	cms_p->frequencies = NULL;
+	cms_p->capacity_in_bytes = 0;
+	cms_p->cy_uint_allocator = NULL;
 	deinitialize_array(&(cms_p->data_hash_functions));
 }
