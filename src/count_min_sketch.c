@@ -88,6 +88,18 @@ int initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint buc
 	return 1;
 }
 
+cy_uint get_hash_function_count_count_min_sketch(const count_min_sketch* cms_p)
+{
+	return get_capacity_array(&(cms_p->data_hash_functions));
+}
+
+// this is the number of buckets per hash function in the count min sketch
+// equivalent to (cms_p->capacity_in_bytes / sizeof(cy_uint)) / get_hash_function_count_bloom_filter(bf_p)
+cy_uint get_bucket_count_per_hash_function_count_min_sketch(const count_min_sketch* cms_p)
+{
+	return (cms_p->capacity_in_bytes / sizeof(cy_uint)) / get_hash_function_count_count_min_sketch(cms_p);
+}
+
 // incrementing frequency by 1, while avoiding overflow
 static cy_uint increment_frequency_by_1(cy_uint frequency)
 {
