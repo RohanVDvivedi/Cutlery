@@ -384,9 +384,9 @@ void radix_sort_linkedlist(linkedlist* ll, unsigned long long int (*get_sort_att
 		while(!is_empty_linkedlist(ll))
 		{
 			const void* data_p = get_head_of_linkedlist(ll);
-			unsigned int sort_buckets_index = (get_sort_attribute(ll) >> i) & 1ULL;
+			unsigned int sort_buckets_index = (get_sort_attribute(data_p) >> i) & 1ULL;
 			remove_head_from_linkedlist(ll);
-			insert_head_in_linkedlist(&(sort_buckets[sort_buckets_index]), data_p);
+			insert_tail_in_linkedlist(&(sort_buckets[sort_buckets_index]), data_p);
 		}
 
 		// concatenate both the sort buckets, one after the other in order
