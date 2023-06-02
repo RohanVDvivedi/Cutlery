@@ -368,6 +368,33 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 	return NULL;
 }
 
+void radix_sort_linkedlist(linkedlist* ll, unsigned long long int (*get_sort_attribute)(const void* data))
+{
+	// return, if the linkedlist has 0 or 1 nodes only
+	if(is_empty_linkedlist(ll) || get_head_of_linkedlist(ll) == get_tail_of_linkedlist(ll))
+		return;
+
+	linkedlist sort_buckets[2];
+	initialize_linkedlist(&(sort_buckets[0]), ll->node_offset);
+	initialize_linkedlist(&(sort_buckets[1]), ll->node_offset);
+
+	for(unsigned int i = 0; i < sizeof(unsigned long long int) * CHAR_BIT; i++)
+	{
+		// sort all elements of ll, based on the ith bit of the sort attribute
+		while(!is_empty_linkedlist(ll))
+		{
+			const void* data_p = get_head_of_linkedlist(ll);
+			unsigned int sort_buckets_index = (get_sort_attribute(ll) >> i) & 1ULL;
+			remove_head_from_linkedlist(ll);
+			insert_head_in_linkedlist(&(sort_buckets[sort_buckets_index]), data_p);
+		}
+
+		// concatenate both the sort buckets, one after the other in order
+		insert_all_at_tail_in_linkedlist(ll, &(sort_buckets[0]));
+		insert_all_at_tail_in_linkedlist(ll, &(sort_buckets[1]));
+	}
+}
+
 void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
 	if(is_empty_linkedlist(ll))
