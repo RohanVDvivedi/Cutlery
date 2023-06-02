@@ -11,6 +11,11 @@ struct teststruct
 	llnode ll_embed_node;
 };
 
+unsigned long long int get_radix_sort_attr(const void* data)
+{
+	return (((const ts*)data)->a + 100);
+}
+
 void print_ts(const void* tsv)
 {
 	if(tsv == NULL)
@@ -233,6 +238,11 @@ int main()
 
 	printf("testInsertAllAfter: \n");
 	print_ts_linkedlist(testInsertAllAfter);
+
+	// radix sort linkedlist
+	printf("after radix sort : \n");
+	radix_sort_linkedlist(ll, get_radix_sort_attr);
+	print_ts_linkedlist(ll);
 
 	printf("\n\nremoving all from linkedlist\n\n");
 	remove_all_from_linkedlist(ll);
