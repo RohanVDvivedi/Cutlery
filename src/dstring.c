@@ -325,41 +325,51 @@ int discard_chars_from_back_dstring(dstring* str_p, cy_uint bytes_to_discard)
 		return discard_chars_dstring(str_p, str_size - bytes_to_discard, str_size - 1);
 }
 
+static int make_room_for_bytes_in_dstring(dstring* str_p, cy_uint incoming_byte_count)
+{
+	if(incoming_byte_count <= get_unused_capacity_dstring(str_p))
+		return 1;
+
+	cy_uint str_size = get_char_count_dstring(str_p);
+
+	// check to make sure that the new size (after appending incoming_byte_count), does not overflow
+	cy_uint new_possible_size = str_size + incoming_byte_count;
+	if(new_possible_size < str_size || new_possible_size < incoming_byte_count)
+		return 0;
+
+	// suggest an additional allocaton that doubles the old capacity while also accomodating incoming bytes
+	cy_uint additional_allocation = get_capacity_dstring(str_p) + incoming_byte_count;
+	if(additional_allocation > get_capacity_dstring(str_p) && additional_allocation > incoming_byte_count
+	 && expand_dstring(str_p, additional_allocation))
+			return 1;
+
+	// else just accomodate the incoming_bytes
+	additional_allocation = incoming_byte_count - get_unused_capacity_dstring(str_p);
+	if(expand_dstring(str_p, additional_allocation))
+		return 1;
+	
+	return 0;
+}
+
 int concatenate_dstring(dstring* str_p1, const dstring* str_p2)
 {
 	// you cannot concatenate to a POINT_DSTR
 	if(get_dstr_type(str_p1->type_n_SS_size) == POINT_DSTR)
 		return 0;
 
+	// concatenate only if we are able to make room for the incoming bytes
+	if(!make_room_for_bytes_in_dstring(str_p1, get_char_count_dstring(str_p2)))
+		return 0;
+
 	const char* str2_data = get_byte_array_dstring(str_p2);
 	cy_uint str2_size = get_char_count_dstring(str_p2);
 
-	if(str2_data != NULL && str2_size > 0)
-	{
-		// check if new data could fit, without expansion, else expand the dstring
-		if(str2_size > get_unused_capacity_dstring(str_p1))
-		{
-			// try allocating atleast twice the original size and the size required to accomodate the new bytes
-			if(expand_dstring(str_p1, get_capacity_dstring(str_p1) + str2_size))
-				goto EXP_SUCC;
+	char* str1_data = get_byte_array_dstring(str_p1);
+	cy_uint str1_size = get_char_count_dstring(str_p1);
 
-			// the previous call failed so now we try to allocate only the additional required bytes
-			if(expand_dstring(str_p1, str2_size - get_unused_capacity_dstring(str_p1)))
-				goto EXP_SUCC;
-
-			// concatenation failed
-			return 0;
-
-			EXP_SUCC:;
-		}
-
-		char* str1_data = get_byte_array_dstring(str_p1);
-		cy_uint str1_size = get_char_count_dstring(str_p1);
-
-		// do appending as normal now
-		memory_move(str1_data + str1_size, str2_data, str2_size);
-		increment_char_count_dstring(str_p1, str2_size);
-	}
+	// do appending as normal now
+	memory_move(str1_data + str1_size, str2_data, str2_size);
+	increment_char_count_dstring(str_p1, str2_size);
 
 	return 1;
 }
@@ -536,22 +546,9 @@ int vsnprintf_dstring(dstring* str_p, const char* cstr_format, va_list var_args)
 	cy_uint size_extra_req = vsnprintf(NULL, 0, cstr_format, var_args_dummy) + 1; // yes this last ( + 1) is important, remove it and live in misery
 	va_end(var_args_dummy);
 
-	// expand str_p as needed
-	if(size_extra_req > get_unused_capacity_dstring(str_p))
-	{
-		// try allocating atleast twice the original size and the size required to accomodate the new bytes
-		if(expand_dstring(str_p, get_capacity_dstring(str_p) + size_extra_req))
-			goto EXP_SUCC;
-
-		// the previous call failed so now we try to callocate only the additional required bytes
-		if(expand_dstring(str_p, size_extra_req - get_unused_capacity_dstring(str_p)))
-			goto EXP_SUCC;
-
-		// concatenation failed
+	// append only if we are able to make room for the incoming size_extra_req bytes
+	if(!make_room_for_bytes_in_dstring(str_p, size_extra_req))
 		return 0;
-
-		EXP_SUCC:;
-	}
 
 	// call all accessor methods of dstring again after expanding
 	char* str_data = get_byte_array_dstring(str_p);
