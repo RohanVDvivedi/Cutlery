@@ -11,6 +11,11 @@ struct teststruct
 	slnode sl_embed_node;
 };
 
+unsigned long long int get_radix_sort_attr(const void* data)
+{
+	return (((const ts*)data)->a + 100);
+}
+
 void print_ts(const void* tsv)
 {
 	if(tsv == NULL)
@@ -195,6 +200,11 @@ int main()
 
 	printf("testInsertAllAfter: \n");
 	print_ts_singlylist(testInsertAllAfter);
+
+	// radix sort linkedlist
+	printf("after radix sort : \n");
+	radix_sort_singlylist(sl, get_radix_sort_attr);
+	print_ts_singlylist(sl);
 
 	printf("\n\nremoving all from singlylist\n\n");
 	remove_all_from_singlylist(sl);
