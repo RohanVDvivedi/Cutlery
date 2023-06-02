@@ -2,9 +2,6 @@
 
 2. Add new datastructure types tasks (*future)
 
-DSTRING
- * in expand_dstring calls in concatenate_dstring handle case when additional space calcuation may over flow, sum of theie sizes must not overflow
-
 LINKEDLIST & SINGLYLIST tasks
  * implement swap element positions
  * implement radix_sort and bubble_sort function (using swap elements position)
