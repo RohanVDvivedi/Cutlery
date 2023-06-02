@@ -256,6 +256,33 @@ const void* find_equals_in_singlylist(const singlylist* sl, const void* data, in
 	return NULL;
 }
 
+void radix_sort_singlylist(singlylist* sl, unsigned long long int (*get_sort_attribute)(const void* data))
+{
+	// return, if the singlylist has 0 or 1 nodes only
+	if(is_empty_singlylist(sl) || get_head_of_singlylist(sl) == get_tail_of_singlylist(sl))
+		return;
+
+	singlylist sort_buckets[2];
+	initialize_singlylist(&(sort_buckets[0]), sl->node_offset);
+	initialize_singlylist(&(sort_buckets[1]), sl->node_offset);
+
+	for(unsigned int i = 0; i < sizeof(unsigned long long int) * CHAR_BIT; i++)
+	{
+		// sort all elements of ll, based on the ith bit of the sort attribute
+		while(!is_empty_singlylist(sl))
+		{
+			const void* data_p = get_head_of_singlylist(sl);
+			unsigned int sort_buckets_index = (get_sort_attribute(data_p) >> i) & 1ULL;
+			remove_head_from_singlylist(sl);
+			insert_tail_in_singlylist(&(sort_buckets[sort_buckets_index]), data_p);
+		}
+
+		// concatenate both the sort buckets, one after the other in order
+		insert_all_at_tail_in_singlylist(sl, &(sort_buckets[0]));
+		insert_all_at_tail_in_singlylist(sl, &(sort_buckets[1]));
+	}
+}
+
 void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
 	const slnode* node_p = sl->head;
