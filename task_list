@@ -4,8 +4,7 @@
 
 LINKEDLIST & SINGLYLIST tasks
  * implement swap element positions
- * implement radix_sort and bubble_sort function (using swap elements position)
- * sorting will help implement mergeable heap data structures
+ * implement radix_sort and bubble_sort function (using swap elements position), sorting will help implement mergeable heap data structures
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
