@@ -11,7 +11,7 @@ struct teststruct
 	llnode ll_embed_node;
 };
 
-int comapre_by_a_increasing(const void* a, const void* b)
+int compare_by_a_increasing(const void* a, const void* b)
 {
 	if(((const ts*)a)->a < ((const ts*)b)->a)
 		return -1;
@@ -21,7 +21,7 @@ int comapre_by_a_increasing(const void* a, const void* b)
 		return 0;
 }
 
-int comapre_by_a_decreasing(const void* a, const void* b)
+int compare_by_a_decreasing(const void* a, const void* b)
 {
 	if(((const ts*)a)->a < ((const ts*)b)->a)
 		return 1;
@@ -281,13 +281,13 @@ int main()
 	#ifdef USE_BUBBLE_SORT
 		// bubble sort linkedlist
 		printf("after bubble sort : \n");
-		bubble_sort_linkedlist(ll, comapre_by_a_increasing);
+		bubble_sort_linkedlist(ll, compare_by_a_increasing);
 		print_ts_linkedlist(ll);
 	#endif
 
 	// radix sort linkedlist
 	printf("after bubble sort (reverse) : \n");
-	bubble_sort_linkedlist(ll, comapre_by_a_decreasing);
+	bubble_sort_linkedlist(ll, compare_by_a_decreasing);
 	print_ts_linkedlist(ll);
 
 	printf("\n\nremoving all from linkedlist\n\n");
