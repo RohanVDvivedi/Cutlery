@@ -216,8 +216,7 @@ int main()
 	print_ts_linkedlist(testInsertAllHead);
 
 	swap_in_linkedlist(testInsertAllHead, get_head_of_linkedlist(testInsertAllHead), get_nth_from_head_of_linkedlist(testInsertAllHead, 2));
-
-	printf("testInsertAllHead: \n");
+	printf("testInsertAllHead: (swapped 0th and 2nd element) \n");
 	print_ts_linkedlist(testInsertAllHead);
 
 	insert_all_at_head_in_linkedlist(ll, testInsertAllHead);
@@ -247,6 +246,10 @@ int main()
 	insert_head_in_linkedlist(testInsertAllBefore, &((ts){107, "1 0 7"}));
 
 	printf("testInsertAllBefore: \n");
+	print_ts_linkedlist(testInsertAllBefore);
+
+	swap_in_linkedlist(testInsertAllBefore, get_head_of_linkedlist(testInsertAllBefore), get_nth_from_head_of_linkedlist(testInsertAllBefore, 1));
+	printf("testInsertAllBefore: (swapped 0th and 1st element) \n");
 	print_ts_linkedlist(testInsertAllBefore);
 
 	insert_all_before_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 0), testInsertAllBefore);
