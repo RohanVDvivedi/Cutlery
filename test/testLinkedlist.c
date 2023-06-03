@@ -210,6 +210,12 @@ int main()
 	insert_head_in_linkedlist(testInsertAllHead, &((ts){100, "1 0 0"}));
 	insert_head_in_linkedlist(testInsertAllHead, &((ts){101, "1 0 1"}));
 	insert_head_in_linkedlist(testInsertAllHead, &((ts){102, "1 0 2"}));
+	insert_head_in_linkedlist(testInsertAllHead, &((ts){102, "1 0 2.5"}));
+
+	printf("testInsertAllHead: \n");
+	print_ts_linkedlist(testInsertAllHead);
+
+	swap_in_linkedlist(testInsertAllHead, get_head_of_linkedlist(testInsertAllHead), get_nth_from_head_of_linkedlist(testInsertAllHead, 2));
 
 	printf("testInsertAllHead: \n");
 	print_ts_linkedlist(testInsertAllHead);
