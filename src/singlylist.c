@@ -283,6 +283,50 @@ void radix_sort_singlylist(singlylist* sl, unsigned long long int (*get_sort_att
 	}
 }
 
+static void swap_nodes_singlylist(slnode** node1_p_p, slnode** node2_p_p)
+{
+	if((*node1_p_p) == (*node2_p_p))
+		return;
+
+	slnode* temp;
+
+	temp = (*node1_p_p);
+	(*node1_p_p) = (*node2_p_p);
+	(*node2_p_p) = temp;
+
+	temp = (*node1_p_p)->next;
+	(*node1_p_p)->next = (*node2_p_p)->next;
+	(*node2_p_p)->next = temp;
+}
+
+void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, const void* data2))
+{
+	// return, if the singlylist has 0 or 1 nodes only
+	if(is_empty_singlylist(sl) || get_head_of_singlylist(sl) == get_tail_of_singlylist(sl))
+		return;
+
+	// perform loops for bubble sort as long as there are any swaps in previous iteration
+	cy_uint swaps_performed = 0;
+	do
+	{
+		swaps_performed = 0;
+
+		slnode** curr = &(sl->head);
+		slnode** next = &((*curr)->next);
+		while((*next))
+		{
+			if(compare(*curr, *next) > 0)
+				swap_nodes_singlylist(curr, next);
+			curr = next;
+			next = &((*curr)->next);
+		}
+
+		sl->tail = *curr;
+	}while(swaps_performed);
+
+
+}
+
 void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
 	const slnode* node_p = sl->head;
