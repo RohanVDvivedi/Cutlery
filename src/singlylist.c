@@ -315,7 +315,7 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 		slnode** next = &((*curr)->next);
 		while((*next))
 		{
-			if(compare(*curr, *next) > 0)
+			if(compare(get_data(*curr, sl), get_data(*next, sl)) > 0)
 			{
 				swaps_performed++;
 				swap_nodes_singlylist(curr, next);
@@ -326,8 +326,6 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 
 		sl->tail = *curr;
 	}while(swaps_performed);
-
-
 }
 
 void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
