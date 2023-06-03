@@ -79,7 +79,7 @@ void print_ts_singlylist(singlylist* sl)
 	printf("\n");
 }
 
-//#define USE_RADIX_SORT
+#define USE_RADIX_SORT
 #define USE_BUBBLE_SORT
 
 int main()
