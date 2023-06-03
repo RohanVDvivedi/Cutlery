@@ -16,6 +16,26 @@ unsigned long long int get_radix_sort_attr(const void* data)
 	return (((const ts*)data)->a + 100);
 }
 
+int compare_by_a_increasing(const void* a, const void* b)
+{
+	if(((const ts*)a)->a < ((const ts*)b)->a)
+		return -1;
+	else if(((const ts*)a)->a > ((const ts*)b)->a)
+		return 1;
+	else
+		return 0;
+}
+
+int compare_by_a_decreasing(const void* a, const void* b)
+{
+	if(((const ts*)a)->a < ((const ts*)b)->a)
+		return 1;
+	else if(((const ts*)a)->a > ((const ts*)b)->a)
+		return -1;
+	else
+		return 0;
+}
+
 void print_ts(const void* tsv)
 {
 	if(tsv == NULL)
@@ -58,6 +78,9 @@ void print_ts_singlylist(singlylist* sl)
 	deinit_dstring(&str);
 	printf("\n");
 }
+
+#define USE_RADIX_SORT
+#define USE_BUBBLE_SORT
 
 int main()
 {
@@ -201,9 +224,23 @@ int main()
 	printf("testInsertAllAfter: \n");
 	print_ts_singlylist(testInsertAllAfter);
 
-	// radix sort linkedlist
-	printf("after radix sort : \n");
-	radix_sort_singlylist(sl, get_radix_sort_attr);
+	#ifdef USE_RADIX_SORT
+		// radix sort singlylist
+		printf("after radix sort : \n");
+		radix_sort_singlylist(sl, get_radix_sort_attr);
+		print_ts_singlylist(sl);
+	#endif
+
+	#ifdef USE_BUBBLE_SORT
+		// bubble sort linkedlist
+		printf("after bubble sort : \n");
+		bubble_sort_singlylist(sl, compare_by_a_increasing);
+		print_ts_singlylist(sl);
+	#endif
+
+	// bubble sort linkedlist
+	printf("after bubble sort (reverse) : \n");
+	bubble_sort_singlylist(sl, compare_by_a_decreasing);
 	print_ts_singlylist(sl);
 
 	printf("\n\nremoving all from singlylist\n\n");
