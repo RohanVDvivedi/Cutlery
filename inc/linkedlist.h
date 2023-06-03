@@ -73,6 +73,9 @@ int remove_from_linkedlist(linkedlist* ll, const void* data);
 // and reinitializes their embedded llnode
 void remove_all_from_linkedlist(linkedlist* ll);
 
+// swap positions of the 2 elements in a given linkedlist
+int swap_in_linkedlist(linkedlist* ll, const void* data_xist1, const void* data_xist2);
+
 // get the data from the linkedlist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the linkedlist that compares equal (i.e. compare function returns 0)
 const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2));

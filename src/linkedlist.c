@@ -352,6 +352,68 @@ void remove_all_from_linkedlist(linkedlist* ll)
 	ll->head = NULL;
 }
 
+void swap_nodes_in_linkedlist(linkedlist* ll, llnode* node1_p, llnode* node2_p)
+{
+	llnode* prev1_p = node1_p->prev;
+	llnode* next1_p = node1_p->next;
+
+	llnode* prev2_p = node2_p->prev;
+	llnode* next2_p = node2_p->next;
+
+	llnode* temp;
+
+	// swap next linkages (perform swaps in the same order first prev and next's links and then node1/2_p's links)
+	{
+		temp = prev1_p->next;
+		prev1_p->next = prev2_p->next;
+		prev2_p->next = temp;
+
+		temp = node1_p->next;
+		node1_p->next = node2_p->next;
+		node2_p->next = temp;
+	}
+
+	// swap prev linkages
+	{
+		temp = next1_p->prev;
+		next1_p->prev = next2_p->prev;
+		next2_p->prev = temp;
+
+		temp = node1_p->prev;
+		node1_p->prev = node2_p->prev;
+		node2_p->prev = temp;
+	}
+
+	// swap head if any of them is head
+	if(ll->head == node1_p)
+		ll->head = node2_p;
+	else if(ll->head == node2_p)
+		ll->head = node1_p;
+}
+
+int swap_in_linkedlist(linkedlist* ll, const void* data_xist1, const void* data_xist2)
+{
+	// swap can not be performed on nodes of an empty linkedlist
+	if(is_empty_linkedlist(ll))
+		return 1;
+
+	// get nodes of the linkedlist
+	llnode* node1_p = get_node(data_xist1, ll);
+	llnode* node2_p = get_node(data_xist2, ll);
+
+	// if any of them is free floating node then we can swap them
+	if(is_free_floating_llnode(node1_p) || is_free_floating_llnode(node2_p))
+		return 0;
+
+	// same nodes no swap required
+	if(node1_p == node2_p)
+		return 1;
+
+	swap_nodes_in_linkedlist(ll, node1_p, node2_p);
+
+	return 1;
+}
+
 const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2))
 {
 	if(is_empty_linkedlist(ll))
