@@ -2,10 +2,6 @@
 
 2. Add new datastructure types tasks (*future)
 
-SINGLYLIST tasks
- * implement swap element positions
- * implement bubble_sort function
-
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
 struct trie_node
