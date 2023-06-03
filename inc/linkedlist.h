@@ -86,6 +86,9 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 // radix sort all of the linkedlist
 void radix_sort_linkedlist(linkedlist* ll, unsigned long long int (*get_sort_attribute)(const void* data));
 
+// bubble sort all of the linkedlist
+void bubble_sort_linkedlist(linkedlist* ll, int (*compare)(const void* data1, const void* data2));
+
 // perform operation on all the elements of the linked list
 // the function is designed well, you may call free on your data, in the provided operation function
 void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params);

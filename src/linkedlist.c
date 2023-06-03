@@ -514,6 +514,35 @@ void radix_sort_linkedlist(linkedlist* ll, unsigned long long int (*get_sort_att
 	}
 }
 
+void bubble_sort_linkedlist(linkedlist* ll, int (*compare)(const void* data1, const void* data2))
+{
+	// return, if the linkedlist has 0 or 1 nodes only
+	if(is_empty_linkedlist(ll) || get_head_of_linkedlist(ll) == get_tail_of_linkedlist(ll))
+		return;
+
+	// perform loops for bubble sort as long as there are any swaps in previous iteration
+	cy_uint swaps_performed = 0;
+	do
+	{
+		swaps_performed = 0;
+
+		const void* curr = get_head_of_linkedlist(ll);
+		const void* next = get_next_of_in_linkedlist(ll, curr);
+		while(next != get_head_of_linkedlist(ll))
+		{
+			if(compare(curr, next) > 0)
+			{
+				swaps_performed++;
+				swap_in_linkedlist(ll, curr, next);
+			}
+			else
+				curr = next;
+			next = get_next_of_in_linkedlist(ll, curr);
+		}
+
+	}while(swaps_performed);
+}
+
 void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
 	if(is_empty_linkedlist(ll))
