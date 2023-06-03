@@ -319,8 +319,10 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 			{
 				swaps_performed++;
 				swap_nodes_singlylist(curr, next);
+				curr = &((*curr)->next);
 			}
-			curr = next;
+			else
+				curr = next;
 			next = &((*curr)->next);
 		}
 
