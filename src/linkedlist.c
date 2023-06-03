@@ -414,6 +414,63 @@ int swap_in_linkedlist(linkedlist* ll, const void* data_xist1, const void* data_
 	return 1;
 }
 
+void swap_nodes_in_2_linkedlists(linkedlist* ll_1, llnode* node1_p, linkedlist* ll_2, llnode* node2_p)
+{
+	// swap all attributes of llnode
+	llnode temp = (*node1_p);
+	(*node1_p) = (*node2_p);
+	(*node2_p) = temp;
+
+	// fix linkages of next and prev nodes of node1_p, if required
+	if(node1_p->next == node2_p && node1_p->prev == node2_p)
+	{
+		node1_p->next = node1_p;
+		node1_p->prev = node1_p;
+	}
+	else
+	{
+		node1_p->next->prev = node1_p;
+		node1_p->prev->next = node1_p;
+	}
+
+	// fix linkages of next and prev nodes of node1_p, if required
+	if(node2_p->next == node1_p && node2_p->prev == node1_p)
+	{
+		node2_p->next = node2_p;
+		node2_p->prev = node2_p;
+	}
+	else
+	{
+		node2_p->next->prev = node2_p;
+		node2_p->prev->next = node2_p;
+	}
+
+	// swap head of the corresponding linkedlists if necessary
+	if(ll_1->head == node1_p)
+		ll_1->head = node2_p;
+	if(ll_2->head == node2_p)
+		ll_2->head = node1_p;
+}
+
+int swap_in_2_linkedlists(linkedlist* ll_1, const void* data_xist1, linkedlist* ll_2, const void* data_xist2)
+{
+	// both the linkedlists must not be empty and, their node offsets must match
+	if(is_empty_linkedlist(ll_1) || is_empty_linkedlist(ll_2) || ll_1->node_offset != ll_2->node_offset)
+		return 0;
+
+	// get nodes of the linkedlist
+	llnode* node1_p = get_node(data_xist1, ll_1);
+	llnode* node2_p = get_node(data_xist2, ll_2);
+
+	// if any of them is free floating node then we can swap them
+	if(is_free_floating_llnode(node1_p) || is_free_floating_llnode(node2_p))
+		return 0;
+
+	swap_nodes_in_2_linkedlists(ll_1, node1_p, ll_2, node2_p);
+
+	return 1;
+}
+
 const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2))
 {
 	if(is_empty_linkedlist(ll))
