@@ -2,7 +2,6 @@
 
 HEAP tasks
  * make the current heap implementation into a N-ary heap, with N being cy_uint variable, to be provided at run time
- * (--optimization) start heapify_all from the last parent element that has a child, no need to bubble_down the leaf elements of the N-ary heap
 
 2. Add new datastructure types tasks (*future)
 
