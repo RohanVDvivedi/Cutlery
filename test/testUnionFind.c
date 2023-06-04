@@ -45,7 +45,7 @@ int main()
 {
 	// initialize all data elements
 	data_element elements[] = {
-		{0}, {1}, {2}, {7}, {10}, {11}, {12}, {13}, {14}, {20}, {21}, {22}, {29},
+		{0,1}, {1,1}, {2,1}, {7,1}, {10,1}, {11,1}, {12,1}, {13,1}, {14,1}, {20,1}, {21,1}, {22,1}, {29,1},
 	};
 
 	// initialize all their embedded nodes
@@ -76,6 +76,11 @@ int main()
 				printf("%d %d\n", elements[i].num, elements[j].num);
 		}
 	}
+
+	printf("printing all elements with their groups\n");
+	for(int i = 0; i < sizeof(elements)/sizeof(data_element); i++)
+		print_node_details(elements + i, 1, uf_p);
+	printf("\n");
 
 	printf("\n");
 
