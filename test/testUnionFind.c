@@ -9,6 +9,7 @@ struct data_element
 {
 	int num;
 
+	// order statistics, i.e. element count of each groups is supported by this (such an) element in user's structure
 	unsigned int element_count;
 
 	// embedded union find node
@@ -29,6 +30,8 @@ void print_node_details(data_element* e, int print_root, union_find* uf_p)
 		printf("\n");
 }
 
+// merge while maintaining order statistics of each group
+// ((const data_element*)find_root_in_union_find(uf_p, X))->element_count,  is the element_count of the group containing X
 void merge_with_managing_element_count(union_find* uf_p, const data_element* a, const data_element* b)
 {
 	//extract element count of the group a and group b
