@@ -31,7 +31,7 @@ static int is_reordering_required_for_indexes(const heap* heap_p, cy_uint parent
 	const void* parent = get_from_array(&(heap_p->heap_holder), parent_index);
 	const void* child  = get_from_array(&(heap_p->heap_holder), child_index );
 
-	return is_reordering_required(parent, child, heap_p->compare heap_p->type);
+	return is_reordering_required(parent, child, heap_p->compare, heap_p->type);
 }
 
 static void bubble_up(heap* heap_p, cy_uint index)

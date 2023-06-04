@@ -3,7 +3,7 @@
 
 #include<array.h>
 
-#include<heap_core.h>
+#include<heap_type.h>
 
 typedef struct hpnode hpnode;
 struct hpnode
