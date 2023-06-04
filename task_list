@@ -2,6 +2,9 @@
 
 2. Add new datastructure types tasks (*future)
 
+UNION_FIND tasks
+ * implement subtree_size in union find's node
+
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
 struct trie_node
