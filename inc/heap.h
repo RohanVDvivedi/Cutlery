@@ -3,12 +3,7 @@
 
 #include<array.h>
 
-typedef enum heap_type heap_type;
-enum heap_type
-{
-	MIN_HEAP,
-	MAX_HEAP
-};
+#include<heap_core.h>
 
 typedef struct hpnode hpnode;
 struct hpnode
