@@ -294,12 +294,14 @@ void heapify_at(heap* heap_p, cy_uint index)
 
 void heapify_all(heap* heap_p)
 {
-	if(is_empty_heap(heap_p))
+	// heapify_all is not required is the element_count is 0 OR 1
+	if(get_element_count_heap(heap_p) <= 1)
 		return;
 
-	// bubble_down at all the elements in reverse order
-	for(cy_uint index = get_element_count_heap(heap_p); index > 0;)
-		bubble_down(heap_p, --index);
+	// bubble_down at all the possible-parent elements in reverse order
+	// this is because a bubble down at any leaf node is just a NOP, hence we are saving almost half of the loop iterations
+	for(cy_uint index = get_parent_index(get_element_count_heap(heap_p) - 1); index != -1; index--)
+		bubble_down(heap_p, index);
 }
 
 static void initialize_node_wrapper(void* data, cy_uint heap_index, const void* additional_params)
