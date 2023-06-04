@@ -38,7 +38,7 @@ void merge_with_managing_element_count(union_find* uf_p, const data_element* a, 
 	// attempt a merge, if the merge is successfull a and b belong to the same group
 	// update the element_count of the root of this new group to the sum of the element_counts of both the groups
 	if(merge_groups_in_union_find(uf_p, a, b))
-		((const data_element*)find_root_in_union_find(uf_p, a))->element_count = element_count_group_a + element_count_group_b;
+		((data_element*)find_root_in_union_find(uf_p, a))->element_count = element_count_group_a + element_count_group_b;
 }
 
 int main()
