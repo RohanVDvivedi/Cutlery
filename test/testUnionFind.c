@@ -22,9 +22,9 @@ int get_tens_digit(int num)
 
 void print_node_details(data_element* e, int print_root, union_find* uf_p)
 {
-	printf("%d at (@ %p, ufnode @ %p): parent : %p", e->num, e, &(e->uf_embed_node), e->uf_embed_node.parent);
+	printf("%2d at (@ %p, ufnode @ %p): parent : %p", e->num, e, &(e->uf_embed_node), e->uf_embed_node.parent);
 	if(print_root)
-		printf("and root : %p : element_count = %u\n", find_root_in_union_find(uf_p, e), ((const data_element*)find_root_in_union_find(uf_p, e))->element_count);
+		printf(" and root : %p : element_count = %u\n", find_root_in_union_find(uf_p, e), ((const data_element*)find_root_in_union_find(uf_p, e))->element_count);
 	else
 		printf("\n");
 }
@@ -76,6 +76,7 @@ int main()
 				printf("%d %d\n", elements[i].num, elements[j].num);
 		}
 	}
+	printf("\n");
 
 	printf("printing all elements with their groups\n");
 	for(int i = 0; i < sizeof(elements)/sizeof(data_element); i++)
@@ -110,7 +111,12 @@ int main()
 
 	print_node_details(elements + 7, 0, uf_p);
 
-	printf("path shortening tested\n");
+	printf("path shortening tested\n\n");
+
+	printf("printing all elements with their groups\n");
+	for(int i = 0; i < sizeof(elements)/sizeof(data_element); i++)
+		print_node_details(elements + i, 1, uf_p);
+	printf("\n");
 
 	return 0;
 }
