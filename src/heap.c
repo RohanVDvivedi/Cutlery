@@ -21,7 +21,7 @@ static void inter_change_elements_for_indexes(heap* heap_p, cy_uint i1, cy_uint 
 // returns true (1) if, the reordering is required, else 0
 // we do not check if parent index is actually the parent of the child
 // hence, this function can be used to test if the order could be made correct
-static int is_reordering_required(const heap* heap_p, cy_uint parent_index, cy_uint child_index)
+static int is_reordering_required_for_indexes(const heap* heap_p, cy_uint parent_index, cy_uint child_index)
 {
 	// we dont allow reordering if, parent index or child index are out of bounds of element_count
 	if(parent_index >= heap_p->element_count || child_index >= heap_p->element_count)
@@ -31,29 +31,7 @@ static int is_reordering_required(const heap* heap_p, cy_uint parent_index, cy_u
 	const void* parent = get_from_array(&(heap_p->heap_holder), parent_index);
 	const void* child  = get_from_array(&(heap_p->heap_holder), child_index );
 
-	int reordering_required = 0;
-
-	switch(heap_p->type)
-	{
-		case MIN_HEAP :
-		{
-			// in min heap, parent has to be smaller than or equal to the child
-			// we have an issue if parent is greater than child 
-			if(heap_p->compare(parent, child) > 0)
-				reordering_required = 1;
-			break;
-		}
-		case MAX_HEAP :
-		{
-			// in max heap, parent has to be greater than or equal to the child
-			// we have an issue if parent is smaller than child 
-			if(heap_p->compare(parent, child) < 0)
-				reordering_required = 1;
-			break;
-		}
-	}
-
-	return reordering_required;
+	return is_reordering_required(parent, child, heap_p->compare heap_p->type);
 }
 
 static void bubble_up(heap* heap_p, cy_uint index)
@@ -64,7 +42,7 @@ static void bubble_up(heap* heap_p, cy_uint index)
 		cy_uint parent_index = get_parent_index(index);
 
 		// exit, if reordering is not required
-		if(!is_reordering_required(heap_p, parent_index, index))
+		if(!is_reordering_required_for_indexes(heap_p, parent_index, index))
 			break;
 
 		inter_change_elements_for_indexes(heap_p, parent_index, index);
@@ -85,8 +63,8 @@ static void bubble_down(heap* heap_p, cy_uint index)
 		cy_uint new_parent_index = index;
 
 		// check if reordering is required with either left or right child
-		int left_reordering_required = is_reordering_required(heap_p, index, left_child_index);
-		int right_reordering_required = is_reordering_required(heap_p, index, right_child_index);
+		int left_reordering_required = is_reordering_required_for_indexes(heap_p, index, left_child_index);
+		int right_reordering_required = is_reordering_required_for_indexes(heap_p, index, right_child_index);
 
 		// if reordering is required only with the left or with only the right child
 		if(left_reordering_required && !right_reordering_required)
@@ -98,7 +76,7 @@ static void bubble_down(heap* heap_p, cy_uint index)
 		{
 			// else if reordering is required for both left child and right child
 			// then check if reordering would be required if left child index becomes the parent
-			if(is_reordering_required(heap_p, left_child_index, right_child_index))
+			if(is_reordering_required_for_indexes(heap_p, left_child_index, right_child_index))
 				new_parent_index = right_child_index;
 			else
 				new_parent_index = left_child_index;
@@ -303,13 +281,13 @@ void heapify_at(heap* heap_p, cy_uint index)
 	cy_uint right_child_index = get_right_child_index(index);
 
 	// if re-ordering is required at the parent side, we bubble up
-	if(has_parent(index) && is_reordering_required(heap_p, parent_index, index))
+	if(has_parent(index) && is_reordering_required_for_indexes(heap_p, parent_index, index))
 		bubble_up(heap_p, index);
 
 	// else if the re ordering is required at any of the children's side we bubble down
 	else if(can_have_any_children(index) &&
-	(	((left_child_index  < heap_p->element_count) && is_reordering_required(heap_p, index,  left_child_index)) 
-	||	((right_child_index < heap_p->element_count) && is_reordering_required(heap_p, index, right_child_index))
+	(	((left_child_index  < heap_p->element_count) && is_reordering_required_for_indexes(heap_p, index,  left_child_index)) 
+	||	((right_child_index < heap_p->element_count) && is_reordering_required_for_indexes(heap_p, index, right_child_index))
 	)	)
 		bubble_down(heap_p, index);
 }
