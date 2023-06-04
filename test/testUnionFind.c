@@ -9,6 +9,8 @@ struct data_element
 {
 	int num;
 
+	unsigned int element_count;
+
 	// embedded union find node
 	ufnode uf_embed_node;
 };
@@ -22,9 +24,21 @@ void print_node_details(data_element* e, int print_root, union_find* uf_p)
 {
 	printf("%d at (@ %p, ufnode @ %p): parent : %p", e->num, e, &(e->uf_embed_node), e->uf_embed_node.parent);
 	if(print_root)
-		printf("and root : %p\n", find_root_in_union_find(uf_p, e));
+		printf("and root : %p : element_count = %u\n", find_root_in_union_find(uf_p, e), ((const data_element*)find_root_in_union_find(uf_p, e))->element_count);
 	else
 		printf("\n");
+}
+
+void merge_with_managing_element_count(union_find* uf_p, const data_element* a, const data_element* b)
+{
+	//extract element count of the group a and group b
+	unsigned int element_count_group_a = ((const data_element*)find_root_in_union_find(uf_p, a))->element_count;
+	unsigned int element_count_group_b = ((const data_element*)find_root_in_union_find(uf_p, b))->element_count;
+
+	// attempt a merge, if the merge is successfull a and b belong to the same group
+	// update the element_count of the root of this new group to the sum of the element_counts of both the groups
+	if(merge_groups_in_union_find(uf_p, a, b))
+		((const data_element*)find_root_in_union_find(uf_p, a))->element_count = element_count_group_a + element_count_group_b;
 }
 
 int main()
@@ -49,7 +63,7 @@ int main()
 		for(int j = i + 1; j < sizeof(elements)/sizeof(data_element); j++)
 		{
 			if(get_tens_digit(elements[i].num) == get_tens_digit(elements[j].num))
-				merge_groups_in_union_find(uf_p, elements + i, elements + j);
+				merge_with_managing_element_count(uf_p, elements + i, elements + j);
 		}
 	}
 
@@ -71,7 +85,7 @@ int main()
 	printf("\n");
 
 	printf("merge %d and %d\n", elements[0].num, elements[8].num);
-	merge_groups_in_union_find(uf_p, elements + 0, elements + 8);
+	merge_with_managing_element_count(uf_p, elements + 0, elements + 8);
 
 	printf("\n");
 
