@@ -39,7 +39,7 @@ static void bubble_up(heap* heap_p, cy_uint index)
 	// exit at index 0, or thew index is out of range
 	while(has_parent(index) && index < heap_p->element_count)
 	{
-		cy_uint parent_index = get_parent_index(index);
+		cy_uint parent_index = get_parent_index_N(index, heap_p->degree);
 
 		// exit, if reordering is not required
 		if(!is_reordering_required_for_indexes(heap_p, parent_index, index))
