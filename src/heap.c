@@ -312,7 +312,7 @@ void heapify_all(heap* heap_p)
 
 	// bubble_down at all the possible-parent elements in reverse order
 	// this is because a bubble down at any leaf node is just a NOP, hence we are saving almost half of the loop iterations
-	for(cy_uint index = get_parent_index(get_element_count_heap(heap_p) - 1); index != -1; index--)
+	for(cy_uint index = get_parent_index_N(get_element_count_heap(heap_p) - 1, heap_p->degree); index != -1; index--)
 		bubble_down(heap_p, index);
 }
 
