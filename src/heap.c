@@ -2,7 +2,7 @@
 
 #include<cutlery_stds.h>
 
-#include<binary_tree_as_array_util.h>
+#include<n-ary_tree_as_array_util.h>
 
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, cy_uint i1, cy_uint i2)
