@@ -287,20 +287,12 @@ void heapify_at(heap* heap_p, cy_uint index)
 	if(index >= heap_p->element_count)
 		return;
 
-	// pre-evaluate parent, left child and right child indexes for the corresponding index
-	cy_uint parent_index = get_parent_index(index);
-	cy_uint left_child_index = get_left_child_index(index);
-	cy_uint right_child_index = get_right_child_index(index);
-
 	// if re-ordering is required at the parent side, we bubble up
-	if(has_parent(index) && is_reordering_required_for_indexes(heap_p, parent_index, index))
+	if(has_parent_N(index) && is_reordering_required_for_indexes(heap_p, get_parent_index_N(index, heap_p->degree), index))
 		bubble_up(heap_p, index);
 
-	// else if the re ordering is required at any of the children's side we bubble down
-	else if(can_have_any_children(index) &&
-	(	((left_child_index  < heap_p->element_count) && is_reordering_required_for_indexes(heap_p, index,  left_child_index)) 
-	||	((right_child_index < heap_p->element_count) && is_reordering_required_for_indexes(heap_p, index, right_child_index))
-	)	)
+	// else we attempt a bubble down, only if it can have children
+	else if(can_have_any_children_N(index, heap_p->degree))
 		bubble_down(heap_p, index);
 }
 
