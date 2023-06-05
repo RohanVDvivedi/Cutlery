@@ -91,10 +91,10 @@ int pop_from_heap(heap* heap_p);
 // O(1) operation
 const void* get_top_of_heap(const heap* heap_p);
 
-// the below function is to be called when you doubt if the heap properties are being maintained at the given index
-// or because you changed the attributes of the data, which changed its ordering
+// the below function is to be called when you doubt if the heap properties are being violated at the given index
+// or because you changed the attributes of the data, which changed its comparison ourput with respect to other elements in the heap
 // if your doubt turns out to be true and the heap property is being violated,
-// then this function would restore the heap property for that index
+// then this function would restore the heap property for that index, assuming that all other elements are still holding the same values while the heap was valid
 // O(log(N)) operation
 void heapify_at(heap* heap_p, cy_uint index);
 
@@ -107,8 +107,8 @@ void heapify_at(heap* heap_p, cy_uint index);
 // O(log(N)) operation
 void heapify_for(heap* heap_p, const void* data);
 
-// the below function is to be called when you doubt if the heap properties are being maintained at multiple indices of the heap
-// or because you changed the attributes of the data, which changed its ordering
+// the below function is to be called when you doubt if the heap properties are being violated at multiple indices of the heap
+// or because you changed the attributes of multiple data elements, which changed its ordering
 // if your doubt turns out to be true and the heap property is being violated at multiple indices of heap,
 // then this function would restore the heap property throughout the heap
 // O(N) operation
