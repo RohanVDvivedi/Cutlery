@@ -22,8 +22,11 @@ struct hpnode
 **	Here n refer's to the degree of the heap
 **	A degree of 2 makes it a binary heap
 **	A degree of n implies that each element/node of the heap has atmost n children
+**	Hence, the degree must be non zero, i.e. > 0
 **
 */
+
+#define BINARY_HEAP_DEGREE 2
 
 typedef struct heap heap;
 struct heap
@@ -32,9 +35,7 @@ struct heap
 	// as a MIN_HEAP or MAX_HEAP
 	heap_type type;
 
-	// this is the degree of this heap
-	// degree = 2, means a binary heap
-	// this value must be non zero
+	// this is the degree of this heap, it must be non zero
 	// each element in the heap may have atmost degree number of children
 	cy_uint degree;
 
