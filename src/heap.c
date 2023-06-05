@@ -37,7 +37,7 @@ static int is_reordering_required_for_indexes(const heap* heap_p, cy_uint parent
 static void bubble_up(heap* heap_p, cy_uint index)
 {
 	// exit at index 0, or thew index is out of range
-	while(has_parent(index) && index < heap_p->element_count)
+	while(has_parent_N(index) && index < heap_p->element_count)
 	{
 		cy_uint parent_index = get_parent_index_N(index, heap_p->degree);
 
@@ -54,35 +54,21 @@ static void bubble_up(heap* heap_p, cy_uint index)
 static void bubble_down(heap* heap_p, cy_uint index)
 {
 	// we can not bubble down the last node
-	while(can_have_any_children(index) && index < heap_p->element_count)
+	while(can_have_any_children_N(index, heap_p->degree) && index < heap_p->element_count)
 	{
-		cy_uint left_child_index = get_left_child_index(index);
-		cy_uint right_child_index = get_right_child_index(index);
-
 		// if no reordering is required then the element at the index position remains as the parent
 		cy_uint new_parent_index = index;
 
-		// check if reordering is required with either left or right child
-		int left_reordering_required = is_reordering_required_for_indexes(heap_p, index, left_child_index);
-		int right_reordering_required = is_reordering_required_for_indexes(heap_p, index, right_child_index);
-
-		// if reordering is required only with the left or with only the right child
-		if(left_reordering_required && !right_reordering_required)
-			new_parent_index = left_child_index;
-		else if(!left_reordering_required && right_reordering_required)
-			new_parent_index = right_child_index;
-
-		else if(left_reordering_required && right_reordering_required)
+		// iterate over all the children of the parent at index
+		// find the one that if made the new parent, will not require reordering with any of its siblings
+		for(cy_uint i = 0, child_index = get_index_of_ith_child_N(index, 0, heap_p->degree); i < heap_p->degree && child_index < heap_p->element_count; i++, child_index++)
 		{
-			// else if reordering is required for both left child and right child
-			// then check if reordering would be required if left child index becomes the parent
-			if(is_reordering_required_for_indexes(heap_p, left_child_index, right_child_index))
-				new_parent_index = right_child_index;
-			else
-				new_parent_index = left_child_index;
+			if(is_reordering_required_for_indexes(heap_p, new_parent_index, child_index))
+				new_parent_index = child_index;
 		}
 
-		// if no reordering was required, exit the loop
+		// if this condition becomes true, then the index stays the parent of all its siblings, hence no reordering required
+		// and if no reordering was required, exit the loop
 		if(new_parent_index == index)
 			break;
 
