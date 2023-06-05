@@ -13,7 +13,17 @@ struct hpnode
 };
 
 // you can use heap, without embedded a hpnode
+// pass this as the node_offset when you are not using the embedded node
 #define NO_HEAP_NODE_OFFSET INVALID_INDEX
+
+/*
+**
+**	This is a n-ary heap data structures, organized as a complete n-ary tree on an array
+**	Here n refer's to the degree of the heap
+**	A degree of 2 makes it a binary heap
+**	A degree of n implies that each element/node of the heap has atmost n children
+**
+*/
 
 typedef struct heap heap;
 struct heap
