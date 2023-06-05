@@ -103,27 +103,39 @@ int is_free_floating_hpnode(const hpnode* node_p)
 	return node_p->heap_index == INVALID_INDEX;
 }
 
-int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
+int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
 {
+	if(degree == 0)
+		return 0;
+
 	heap_p->type = type;
+	heap_p->degree = degree;
 	heap_p->compare = compare;
 	heap_p->node_offset = node_offset;
 	heap_p->element_count = 0;
 	return initialize_array(&(heap_p->heap_holder), capacity);
 }
 
-int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
+int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
 {
+	if(degree == 0)
+		return 0;
+
 	heap_p->type = type;
+	heap_p->degree = degree;
 	heap_p->compare = compare;
 	heap_p->node_offset = node_offset;
 	heap_p->element_count = 0;
 	return initialize_array_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 }
 
-int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* data_ps[])
+int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* data_ps[])
 {
+	if(degree == 0)
+		return 0;
+
 	heap_p->type = type;
+	heap_p->degree = degree;
 	heap_p->compare = compare;
 	heap_p->node_offset = node_offset;
 	heap_p->element_count = 0;
@@ -328,6 +340,7 @@ void deinitialize_heap(heap* heap_p)
 	heap_p->element_count = 0;
 	heap_p->compare = NULL;
 	heap_p->node_offset = NO_HEAP_NODE_OFFSET;
+	heap_p->degree = 0;
 }
 
 cy_uint get_capacity_heap(const heap* heap_p)
@@ -380,6 +393,9 @@ void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)
 		case MAX_HEAP :
 		{snprintf_dstring(append_str, "heap (MAX_HEAP) :\n");break;}
 	}
+
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "degree : %" PRIu_cy_uint "\n", heap_p->degree);
 
 	sprint_chars(append_str, '\t', tabs);
 	snprintf_dstring(append_str, "element_count : %" PRIu_cy_uint "\n", heap_p->element_count);
