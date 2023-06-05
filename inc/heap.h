@@ -22,6 +22,12 @@ struct heap
 	// as a MIN_HEAP or MAX_HEAP
 	heap_type type;
 
+	// this is the degree of this heap
+	// degree = 2, means a binary heap
+	// this value must be non zero
+	// each element in the heap may have atmost degree number of children
+	cy_uint degree;
+
 	// compare data provided and returns 0 if they are same, else non-zero
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
 	int (*compare)(const void* data1, const void* data2);
