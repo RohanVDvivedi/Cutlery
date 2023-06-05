@@ -1,8 +1,5 @@
 1. Tasks picked
 
-HEAP tasks
- * make the current heap implementation into a N-ary heap, with N being cy_uint variable, to be provided at run time
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
