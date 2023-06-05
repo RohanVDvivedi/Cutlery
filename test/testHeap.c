@@ -70,7 +70,7 @@ int main()
 {
 	heap heap_temp;
 	heap* heap_p = &heap_temp;
-	initialize_heap(heap_p, 5, MIN_HEAP, cmp, offsetof(ts, hp_embed_node));
+	initialize_heap(heap_p, 5, MIN_HEAP, BINARY_HEAP_DEGREE, cmp, offsetof(ts, hp_embed_node));
 
 	print_ts_heap(heap_p);
 
