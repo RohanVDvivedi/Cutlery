@@ -174,8 +174,8 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, cy_uint start_inde
 	// number of elements to be inserted from start_index to last_index (both inclusive)
 	cy_uint elements_to_insert = last_index - start_index + 1;
 
-	// if the capacity of heap is not enough to hold all the elements then return with a failure
-	if(get_capacity_heap(heap_p) < (get_element_count_heap(heap_p) + elements_to_insert))
+	// if the capacity of heap is not enough to hold all the elements, then return with a failure
+	if(get_capacity_heap(heap_p) - get_element_count_heap(heap_p) < elements_to_insert)
 		return 0;
 
 	// insert all the elements from array [start_index to last_index] to the heap_p
