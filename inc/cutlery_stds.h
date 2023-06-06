@@ -27,6 +27,7 @@
 	typedef unsigned char cy_uint;
 	#define PRIu_cy_uint "hhu"
 	#define PRIx_cy_uint "hhx"
+	#define CY_UINT_C(x)	((cy_uint)(x ## U))
 */
 
 // else if (sizeof(void*) <= 16 bits)
@@ -34,6 +35,7 @@
 	typedef unsigned short cy_uint;
 	#define PRIu_cy_uint "hu"
 	#define PRIx_cy_uint "hx"
+	#define CY_UINT_C(x)	((cy_uint)(x ## U))
 */
 
 // else if (sizeof(void*) <= 32 bits)
@@ -41,6 +43,7 @@
 	typedef unsigned long cy_uint;
 	#define PRIu_cy_uint "lu"
 	#define PRIx_cy_uint "lx"
+	#define CY_UINT_C(x)	(x ## UL)
 */
 
 // else if (sizeof(void*) <= 64 bits)
@@ -48,6 +51,7 @@
 	typedef unsigned long long cy_uint;
 	#define PRIu_cy_uint "llu"
 	#define PRIx_cy_uint "llx"
+	#define CY_UINT_C(x)	(x ## ULL)
 
 
 // We define cy_uint as an unsigned integer that is as wide as a void pointer
