@@ -1,5 +1,8 @@
 1. Tasks picked
 
+ * build CY_UINT_C(x) to define a cy_uint constant
+ * replace all integer constants with that
+
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
