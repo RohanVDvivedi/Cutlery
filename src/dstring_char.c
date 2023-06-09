@@ -45,6 +45,18 @@ char to_uppercase_char(char c)
 	return c;
 }
 
+cy_uint get_digits_required_to_represent_unsigned_long_long_int(unsigned int radix)
+{
+	unsigned long long int MAX_VAL = -1;
+	cy_uint res = 0;
+	while(MAX_VAL > 0)
+	{
+		res++;
+		MAX_VAL /= radix;
+	}
+	return res;
+}
+
 unsigned int get_digit_from_char(char c, unsigned int radix)
 {
 	if(radix < 2 || radix > 36)
