@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * add a function in dstring that makes a dstring's byte array c string compatible
-
 2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
