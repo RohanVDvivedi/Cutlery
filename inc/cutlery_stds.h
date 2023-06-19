@@ -14,15 +14,15 @@
 #define CAT(a, b) CAT_(a, b)
 
 // all the bits set to 1
-#define UNSIGNED_MAX_VALUE(type) (~((type)(0)))
+#define UNSIGNED_MAX_VALUE_OF(type) (~((type)(0)))
 
 // below 2 macros only work with signed numbers, if represented with 2's complement
 
 // only the most significant bit set to 1
-#define SIGNED_MIN_VALUE(type) ((type)(((type)(1)) << ((sizeof(type)*CHAR_BIT)-1)))
+#define SIGNED_MIN_VALUE_OF(type) ((type)(((type)(1)) << ((sizeof(type)*CHAR_BIT)-1)))
 
 // all bits except the most significant bit set to 1
-#define SIGNED_MAX_VALUE(type) ((type)(~(SIGNED_MIN_VALUE(type))))
+#define SIGNED_MAX_VALUE_OF(type) ((type)(~(SIGNED_MIN_VALUE(type))))
 
 // macro that can be used to fail a build is a certain compile time expression is true
 #define fail_build_on(compile_time_expr) extern char CAT(__cutlery_build_failed__,__LINE__)[1 - (2 * (!!(compile_time_expr)))];
@@ -70,7 +70,7 @@
 // So it can hold max value almost equal to the possible maximum number of bytes in your RAM
 // Hence it can hold all possible values of size (element_count) and index of any c array
 
-#define CY_UINT_MAX (~((cy_uint)(0)))
+#define CY_UINT_MAX UNSIGNED_MAX_VALUE_OF(cy_uint)
 
 #define INVALID_INDEX CY_UINT_MAX
 // any array (struct array, struct dstring, c array or char array ) will never have this index
