@@ -22,7 +22,7 @@
 #define SIGNED_MIN_VALUE_OF(type) ((type)(((type)(1)) << ((sizeof(type)*CHAR_BIT)-1)))
 
 // all bits except the most significant bit set to 1
-#define SIGNED_MAX_VALUE_OF(type) ((type)(~(SIGNED_MIN_VALUE(type))))
+#define SIGNED_MAX_VALUE_OF(type) ((type)(~(SIGNED_MIN_VALUE_OF(type))))
 
 // macro that can be used to fail a build is a certain compile time expression is true
 #define fail_build_on(compile_time_expr) extern char CAT(__cutlery_build_failed__,__LINE__)[1 - (2 * (!!(compile_time_expr)))];
