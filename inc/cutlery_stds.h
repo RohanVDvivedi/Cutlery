@@ -13,6 +13,17 @@
 #define CAT_(a, b) a ## b
 #define CAT(a, b) CAT_(a, b)
 
+// all the bits set to 1
+#define UNSIGNED_MAX_VALUE(type) (~((type)(0)))
+
+// below 2 macros only work with signed numbers, if represented with 2's complement
+
+// only the most significant bit set to 1
+#define SIGNED_MIN_VALUE(type) ((type)(((type)(1)) << ((sizeof(type)*CHAR_BIT)-1)))
+
+// all bits except the most significant bit set to 1
+#define SIGNED_MAX_VALUE(type) ((type)(~(SIGNED_MIN_VALUE(type))))
+
 // macro that can be used to fail a build is a certain compile time expression is true
 #define fail_build_on(compile_time_expr) extern char CAT(__cutlery_build_failed__,__LINE__)[1 - (2 * (!!(compile_time_expr)))];
 
