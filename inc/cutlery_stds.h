@@ -9,6 +9,12 @@
 	#define CHAR_BIT (8)
 #endif
 
+// below macros must be used only for unsigned integers
+// returns greatest multiple of alignemnt lesser than or equal to x
+#define UINT_ALIGN_DOWN(x, alignment) (((x) / (alignment)) * alignment)
+// returns least multiple of alignment greater than or equal to x
+#define UINT_ALIGN_UP(x, alignment)   (UINT_ALIGN_DOWN(x, alignment) + ( ((x)%(alignment)) ? (alignment) : 0 ))
+
 // by this below 2 level concatenate expansion we can first substitute params and then concatenate them
 #define CAT_(a, b) a ## b
 #define CAT(a, b) CAT_(a, b)
