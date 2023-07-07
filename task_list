@@ -2,6 +2,10 @@
 
 2. Add new datastructure types tasks (*future)
 
+VECTOR tasks (NEW DATASTRUCTURE)
+ * implement a vector accessible with a pointer to the type, and directly addressable, not of pointers but real arrays
+ * to be defined later
+
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
 struct trie_node
