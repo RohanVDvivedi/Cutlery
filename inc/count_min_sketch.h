@@ -15,11 +15,9 @@
 ** while you can call "get_frequency_from_count_min_sketch" any time to check frequency of any of the data element
 **
 ** you may call "reset_frequencies_in_count_min_sketch" to reset all the frequencies to 0
-** this function can be used timely to avoid overflows inside the count_min_sketch
 **
 ** This implementation of count min sketch only increments the count of the bucket_number-s (hash_value % bucket_count) that have the minimum count
-**
-** additionally a bucket with a value of UINT_MAX is not incremented, to avoid overflow
+** And no increment is performed if the count overflows cy_uint
 */
 
 typedef struct count_min_sketch count_min_sketch;
