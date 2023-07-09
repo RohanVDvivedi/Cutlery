@@ -4,7 +4,7 @@
 #include<multi_dim_array_util.h>
 
 #include<dstring.h>
-#include<cutlery_stds.h>
+#include<cutlery_math.h>
 #include<memory_allocator_interface.h>
 
 int initialize_bloom_filter(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[])
@@ -15,9 +15,14 @@ int initialize_bloom_filter(bloom_filter* bf_p, cy_uint bucket_count, cy_uint ha
 
 int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator bitmap_allocator)
 {
-	// the bits_in_bitmap must not be 0, and the bits_in_bitmap must not overflow CY_UINT_MAX
+	// the bits_in_bitmap must not overflow the cy_uint datatype
+	if(will_unsigned_mul_overflow(cy_uint, bucket_count, hash_functions_count))
+		return 0;
+
 	cy_uint bits_in_bitmap = bucket_count * hash_functions_count;
-	if(bits_in_bitmap == 0 || bits_in_bitmap < bucket_count || bits_in_bitmap < hash_functions_count)
+
+	// number of bits in bitmap must not be 0
+	if(bits_in_bitmap == 0)
 		return 0;
 
 	// initialize array (of data_hash_func-s) and populate it with data_hash_functions
@@ -42,9 +47,14 @@ int initialize_bloom_filter_with_allocator(bloom_filter* bf_p, cy_uint bucket_co
 
 int initialize_bloom_filter_with_memory(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], char bitmap[])
 {
-	// the bits_in_bitmap must not be 0, and the bits_in_bitmap must not overflow CY_UINT_MAX
+	// the bits_in_bitmap must not overflow the cy_uint datatype
+	if(will_unsigned_mul_overflow(cy_uint, bucket_count, hash_functions_count))
+		return 0;
+
 	cy_uint bits_in_bitmap = bucket_count * hash_functions_count;
-	if(bits_in_bitmap == 0 || bits_in_bitmap < bucket_count || bits_in_bitmap < hash_functions_count)
+
+	// number of bits in bitmap must not be 0
+	if(bits_in_bitmap == 0)
 		return 0;
 
 	// initialize array with memory
