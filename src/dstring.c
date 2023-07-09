@@ -125,12 +125,12 @@ int expand_dstring(dstring* str_p, cy_uint additional_allocation)
 	cy_uint str_size = get_char_count_dstring(str_p);
 	cy_uint str_capacity = get_capacity_dstring(str_p);
 
+	// make sure that the new_capacity does not overflow
+	if(will_unsigned_sum_overflow(cy_uint, str_size, additional_allocation))
+		return 0;
+
 	// compute the new capacity
 	cy_uint new_capacity = str_size + additional_allocation;
-
-	// check for overflow
-	if(new_capacity < str_size || new_capacity < additional_allocation)
-		return 0;
 
 	// can not be smaller than SS_capacity
 	if(new_capacity < SS_capacity)
