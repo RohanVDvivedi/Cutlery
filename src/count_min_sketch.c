@@ -15,9 +15,14 @@ int initialize_count_min_sketch(count_min_sketch* cms_p, cy_uint bucket_count, c
 
 int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], memory_allocator data_hash_functions_array_allocator, memory_allocator frequencies_allocator)
 {
-	// the total_buckets must not be 0, and the total_buckets must not overflow CY_UINT_MAX, and it must be lesser than the max bucket count possible on your machine
+	// make sure that the total_buckets (to be calculated) will not overflow
+	if(will_unsigned_mul_overflow(cy_uint, bucket_count, hash_functions_count))
+		return 0;
+
 	cy_uint total_buckets = bucket_count * hash_functions_count;
-	if(total_buckets == 0 || total_buckets < bucket_count || total_buckets < hash_functions_count || total_buckets > MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT)
+
+	// the total_buckets must not be 0 OR more than maximum allowed total bucket count
+	if(total_buckets == 0 || total_buckets > MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT)
 		return 0;
 
 	// initialize array (of data_hash_func-s) and populate it with data_hash_functions
@@ -42,9 +47,14 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 
 int initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[], cy_uint frequencies[])
 {
-	// the total_buckets must not be 0, and the total_buckets must not overflow CY_UINT_MAX, and it must be lesser than the max bucket count possible on your machine
+	// make sure that the total_buckets (to be calculated) will not overflow
+	if(will_unsigned_mul_overflow(cy_uint, bucket_count, hash_functions_count))
+		return 0;
+
 	cy_uint total_buckets = bucket_count * hash_functions_count;
-	if(total_buckets == 0 || total_buckets < bucket_count || total_buckets < hash_functions_count || total_buckets > MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT)
+
+	// the total_buckets must not be 0 OR more than maximum allowed total bucket count
+	if(total_buckets == 0 || total_buckets > MAX_COUNT_MIN_SKETCH_TOTAL_BUCKET_COUNT)
 		return 0;
 
 	// initialize array with memory
