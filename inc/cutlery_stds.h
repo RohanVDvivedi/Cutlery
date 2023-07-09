@@ -20,7 +20,7 @@
 #define CAT(a, b) CAT_(a, b)
 
 // all the bits set to 1
-#define UNSIGNED_MAX_VALUE_OF(type) (~((type)(0)))
+#define UNSIGNED_MAX_VALUE_OF(type) ((type)(~((type)(0))))
 
 // below 2 macros only work with signed numbers, if represented with 2's complement
 
