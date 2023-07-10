@@ -1,7 +1,7 @@
 1. Tasks picked
 
  * add overflow and underflow checks for signed ints, on substraction, multiplication or addition just like we added for unsigned numbers
- * in array the alignment of the allocations must be sizeof(void*)
+ * in array the alignment of the allocations must be sizeof(void*), in count_min_sketch it should be sizeof(cy_uint), and check alignment requirements of all the allocation making datastructures
 
 2. Add new datastructure types tasks (*future)
 
