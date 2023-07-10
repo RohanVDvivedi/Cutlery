@@ -1,12 +1,21 @@
 1. Tasks picked
 
  * add overflow and underflow checks for signed ints, on substraction, multiplication or addition just like we added for unsigned numbers
+ * in array the alignment of the allocations must be sizeof(void*)
 
 2. Add new datastructure types tasks (*future)
 
-VECTOR tasks (NEW DATASTRUCTURE)
- * implement a vector accessible with a pointer to the type, and directly addressable, not of pointers but real arrays
- * allows arraylist like access, direct access using offset to element like traditional c array, can be used as a stack or queue, can be expanded and shrunk or resizes to a specific capacity, but it stores element in place, by copying it, its reference is not constant, so I don;t know how to club it with cutlery's other data structures that need pointers to elements to be fixed an whered uniqueness of element is defined by its pointer value, -- need to think about it, or will add it to a separate repository as a separate project
+VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
+ * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
+ * struct value_arraylist_type_name
+	{
+		cy_uint first;			// number of elements in 
+		cy_uint element_count;
+		cy_uint capacity;
+		memory_allocator mem_allocator;
+		value_type data[];
+	};
+ * add comment that this (value_arraylist) is suppossed to be used with only small ephemeral structs and primitive types, that have no immovable attributes like (synchronization primitives like) mutex, conditional variables or semaphores
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
