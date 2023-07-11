@@ -632,12 +632,12 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 		{
 			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				const void* element = get_from_array(&(hashmap_p->hashmap_holder), index);
-				if(element == NULL)
+				const void* data = get_from_array(&(hashmap_p->hashmap_holder), index);
+				if(data == NULL)
 					continue;
 
 				// initialize rbhnode of all elements
-				initialize_rbhnode(get_node(element, hashmap_p));
+				initialize_rbhnode(get_node(data, hashmap_p));
 			}
 			break;
 		}
