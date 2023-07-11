@@ -30,7 +30,7 @@ int initialize_array_with_allocator(array* array_p, cy_uint capacity, memory_all
 
 	array_p->mem_allocator = mem_allocator;
 	cy_uint bytes_allocated = capacity * sizeof(void*);
-	array_p->data_p_p = (capacity > 0) ? zallocate(array_p->mem_allocator, &bytes_allocated) : NULL;
+	array_p->data_p_p = (capacity > 0) ? aligned_zallocate(array_p->mem_allocator, &bytes_allocated, _Alignof(void*)) : NULL;
 	array_p->capacity_in_bytes = (array_p->data_p_p != NULL) ? bytes_allocated : 0;
 
 	// check for allocator error, if the allocation fails, return 0, else return 1
@@ -177,10 +177,11 @@ int reserve_capacity_for_array(array* array_p, cy_uint atleast_capacity)
 	cy_uint bytes_allocated = new_capacity * sizeof(void*);
 
 	// reallocate memory for the new_capacity
-	const void** new_data_p_p = reallocate(array_p->mem_allocator,
-										array_p->data_p_p,
-										array_p->capacity_in_bytes,
-										&bytes_allocated);
+	const void** new_data_p_p = aligned_reallocate(array_p->mem_allocator,
+													array_p->data_p_p,
+													array_p->capacity_in_bytes,
+													&bytes_allocated,
+													_Alignof(void*));
 
 	// bytes_allocated is our real capacity_in_bytes
 
@@ -212,10 +213,11 @@ int shrink_array(array* array_p, cy_uint new_capacity)
 	cy_uint bytes_allocated = new_capacity * sizeof(void*);
 
 	// reallocate memory for the new_capacity
-	const void** new_data_p_p = reallocate(array_p->mem_allocator,
-										array_p->data_p_p,
-										array_p->capacity_in_bytes,
-										&bytes_allocated);
+	const void** new_data_p_p = aligned_reallocate(array_p->mem_allocator,
+													array_p->data_p_p,
+													array_p->capacity_in_bytes,
+													&bytes_allocated,
+													_Alignof(void*));
 
 	// bytes_allocated is our real capacity_in_bytes
 

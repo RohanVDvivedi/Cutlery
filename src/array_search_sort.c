@@ -19,7 +19,7 @@ void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 	const void** src  = array_p->data_p_p + start_index;
 
 	cy_uint dest_bytes = sizeof(void*) * total_elements;
-	const void** dest = allocate(array_p->mem_allocator, &dest_bytes);
+	const void** dest = aligned_allocate(array_p->mem_allocator, &dest_bytes, _Alignof(void*));
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	cy_uint sort_chunk_size = 1;
