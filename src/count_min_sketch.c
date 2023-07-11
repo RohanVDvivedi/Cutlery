@@ -33,7 +33,7 @@ int initialize_count_min_sketch_with_allocator(count_min_sketch* cms_p, cy_uint 
 	cms_p->frequencies_allocator = frequencies_allocator;
 	cms_p->capacity_in_bytes = total_buckets * sizeof(cy_uint);
 
-	cms_p->frequencies = zallocate(cms_p->frequencies_allocator, &(cms_p->capacity_in_bytes));
+	cms_p->frequencies = aligned_zallocate(cms_p->frequencies_allocator, &(cms_p->capacity_in_bytes), _Alignof(cy_uint));
 	if(cms_p->frequencies == NULL)
 	{
 		cms_p->capacity_in_bytes = 0;
@@ -67,7 +67,7 @@ int initialize_count_min_sketch_with_memory(count_min_sketch* cms_p, cy_uint buc
 	else
 	{
 		cms_p->frequencies_allocator = STD_C_mem_allocator;
-		cms_p->frequencies = zallocate(cms_p->frequencies_allocator, &(cms_p->capacity_in_bytes));
+		cms_p->frequencies = aligned_zallocate(cms_p->frequencies_allocator, &(cms_p->capacity_in_bytes), _Alignof(cy_uint));
 		if(cms_p->frequencies == NULL)
 		{
 			deinitialize_array(&(cms_p->data_hash_functions));
@@ -134,7 +134,7 @@ cy_uint increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const v
 	// this above caching allows us to avoid recalculation of all the hash functions and their corresponding accessible 2-d -> 1d coversion indices
 
 	cy_uint bucket_indices_size = sizeof(cy_uint) * ((cy_uint)hash_functions_count);
-	cy_uint* bucket_indices = allocate(STD_C_mem_allocator, &bucket_indices_size);
+	cy_uint* bucket_indices = aligned_allocate(STD_C_mem_allocator, &bucket_indices_size, _Alignof(cy_uint));
 	
 	// get the frequency and the concerned bucket_nos
 	cy_uint frequency = get_frequency_and_concerned_bucket_indices_from_count_min_sketch(cms_p, data, data_size, bucket_indices);
