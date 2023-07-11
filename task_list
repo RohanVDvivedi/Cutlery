@@ -78,7 +78,7 @@ BST tasks (NEW DATASTRUCTURE inclusion * future)
 3. Competely new datastructure tasks (*future)
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
- * use int or unsigned int for below functionality and implement their itrative approaches only
+ * use value_arraylist for below functionality and implement their itrative approaches only
  * access methods must be insert, update, find_range
  * implement segment tree => for min, max, sum, product(multiplication), bitwise-and, bitwise-or, bitwise-xor, lcm and hcf
  * implement fenwick tree => for addition, product(multiplication), bitwise-xor => the functions for which their inverse exists
