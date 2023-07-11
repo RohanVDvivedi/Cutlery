@@ -630,7 +630,9 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			// nothing needs to be done here
+			// re-initialize rbhnode of all the elements
+			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
+				initialize_rbhnode(get_node(get_from_array(&(hashmap_p->hashmap_holder), index), hashmap_p));
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
@@ -657,6 +659,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 				// remove all elements from the bst bucket
 				remove_all_from_bst(&bstt);
 			}
+
 			break;
 		}
 		default :
@@ -665,7 +668,8 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 		}
 	}
 
-	// mark all the buckets as NULL
+	// at this point all the buckets contain garbage data,
+	// hence we must mark all the buckets as NULL
 	remove_all_from_array(&(hashmap_p->hashmap_holder));
 
 	// then update element_count to 0
