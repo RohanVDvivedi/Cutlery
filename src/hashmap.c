@@ -700,8 +700,9 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 		{
 			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 			{
-				if(get_from_array(&(hashmap_p->hashmap_holder), index) != NULL)
-					operation(get_from_array(&(hashmap_p->hashmap_holder), index), additional_params);
+				const void* data = get_from_array(&(hashmap_p->hashmap_holder), index);
+				if(data != NULL)
+					operation(data, additional_params);
 			}
 			break;
 		}
