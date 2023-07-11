@@ -115,6 +115,11 @@ typedef const struct memory_allocator* memory_allocator;
 // final deallocate / free call to the memory allocator
 #define deallocate(mem_allocator, old_memory, old_size)				mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, NULL, 0, DONT_CARE)
 
+// aligned allocation functions of the above mcros
+#define aligned_allocate(mem_allocator, new_size, new_alignment)	mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, new_alignment, DONT_CARE)
+#define aligned_zallocate(mem_allocator, new_size, new_alignment) 	mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, new_alignment, ZERO)
+#define aligned_reallocate(mem_allocator, old_memory, old_size, new_size, new_alignment) 	mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, new_size, new_alignment, PRESERVE)
+
 // the memory allocator interface for a STD_C library functions like malloc, calloc, aligned_alloc, and free
 extern struct memory_allocator STD_C_memory_allocator;
 extern memory_allocator STD_C_mem_allocator;
