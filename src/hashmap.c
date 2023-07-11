@@ -630,9 +630,15 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 	{
 		case ROBINHOOD_HASHING :
 		{
-			// re-initialize rbhnode of all the elements
 			for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
-				initialize_rbhnode(get_node(get_from_array(&(hashmap_p->hashmap_holder), index), hashmap_p));
+			{
+				const void* element = get_from_array(&(hashmap_p->hashmap_holder), index);
+				if(element == NULL)
+					continue;
+
+				// initialize rbhnode of all elements
+				initialize_rbhnode(get_node(element, hashmap_p));
+			}
 			break;
 		}
 		case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
