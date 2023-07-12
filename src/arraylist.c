@@ -189,7 +189,33 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 // assumes that the checks of existence of nth element in arraylist has passed
 static int remove_nth_element_from_front_of_arraylist_INTERNAL(arraylist* al, cy_uint n)
 {
-	// TODO
+	// set the element in array at the concerned index (one that is to be removed) to NULL
+	cy_uint index_concerned = add_indexes(al->first_index, n, get_capacity_arraylist(al));
+	set_in_array(&(al->arraylist_holder), NULL, index_concerned);
+
+	// if there is only 1 element and is to be removed\
+	// then we need to reset the arraylist
+	if(al->element_count == 1)
+	{
+		al->first_index = 0;
+		al->element_count = 0;
+		return 1;
+	}
+
+	// calculate the number of elements before and after the element that was to be removed
+	cy_uint elements_before = n;
+	cy_uint elements_after = al->element_count - (n + 1);
+
+	if(elements_before <= elements_after)	// move the elements before the nth element
+	{
+		// TODO
+	}
+	else	// move the elements after the nth element
+	{
+		// TODO
+	}
+
+	return 1;
 }
 
 int remove_nth_from_front_of_arraylist(arraylist* al, cy_uint n)
