@@ -188,7 +188,7 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 
 // the below internal function assumes that
 // n_at is valid, and there are atleast non-zero number of element_count_to_remove number of elements after it
-int remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
+static int remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
 {
 	// TODO
 }
