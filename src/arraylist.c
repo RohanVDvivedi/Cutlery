@@ -186,6 +186,29 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
 }
 
+// assumes that the checks of existence of nth element in arraylist has passed
+static int remove_nth_element_from_front_of_arraylist_INTERNAL(arraylist* al, cy_uint n)
+{
+	// TODO
+}
+
+int remove_nth_from_front_of_arraylist(arraylist* al, cy_uint n)
+{
+	if(is_empty_arraylist(al) || n >= al->element_count)
+		return 0;
+
+	return remove_nth_element_from_front_of_arraylist_INTERNAL(al, n);
+}
+
+int remove_nth_from_back_of_arraylist(arraylist* al, cy_uint n)
+{
+	if(is_empty_arraylist(al) || n >= al->element_count)
+		return 0;
+
+	// n-th element from back is same as removing (al->element_count - 1 - n)-th element from front
+	return remove_nth_element_from_front_of_arraylist_INTERNAL(al, al->element_count - 1 - n);
+}
+
 cy_uint get_capacity_arraylist(const arraylist* al)
 {
 	return get_capacity_array(&(al->arraylist_holder));
