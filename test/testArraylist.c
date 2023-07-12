@@ -4,6 +4,33 @@
 
 #include<arraylist.h>
 
+void print_int(const void* data)
+{
+	if(data != NULL)
+		printf("%d", *((int*)data));
+	else
+		printf("NULL - INT");
+}
+
+void sprint_int(dstring* append_str, const void* data, unsigned int tabs)
+{
+	sprint_chars(append_str, '\t', tabs + 1);
+	if(data != NULL)
+		snprintf_dstring(append_str, "%d", *((int*)data));
+	else
+		snprintf_dstring(append_str, "NULL - INT");
+}
+
+void print_int_arraylist(arraylist* al)
+{
+	dstring str;
+	init_dstring(&str, "", 0);
+	sprint_arraylist(&str, al, sprint_int, 0);
+	printf_dstring(&str);
+	deinit_dstring(&str);
+	printf("\n");
+}
+
 #define TOTAL_OPERATIONS_SUPPORTED 8
 
 typedef enum al_op al_op;
@@ -93,15 +120,15 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		{
 			if(get_element_count_arraylist(al) < 10)
 			{
-				int n = 25;
+				int n = 7;
 				while(n > 0)
 				{
 					if(is_full_arraylist(al))
 						expand_arraylist(al);
-					operate_on_arraylist(al, PUSH_FRONT);
+					push_front_to_arraylist(al, element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE));
 					if(is_full_arraylist(al))
 						expand_arraylist(al);
-					operate_on_arraylist(al, PUSH_BACK);
+					push_back_to_arraylist(al, element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE));
 					n--;
 				}
 				printf("Inserting elements for calling remove front\n");
@@ -119,18 +146,18 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		{
 			if(get_element_count_arraylist(al) < 10)
 			{
-				int n = 25;
+				int n = 7;
 				while(n > 0)
 				{
 					if(is_full_arraylist(al))
 						expand_arraylist(al);
-					operate_on_arraylist(al, PUSH_FRONT);
+					push_front_to_arraylist(al, element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE));
 					if(is_full_arraylist(al))
 						expand_arraylist(al);
-					operate_on_arraylist(al, PUSH_BACK);
+					push_back_to_arraylist(al, element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE));
 					n--;
 				}
-				printf("Inserting elements for calling remove front\n");
+				printf("Inserting elements for calling remove back\n");
 				print_int_arraylist(al);
 				printf("\n\n");
 			}
@@ -141,33 +168,6 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			break;
 		}
 	}
-}
-
-void print_int(const void* data)
-{
-	if(data != NULL)
-		printf("%d", *((int*)data));
-	else
-		printf("NULL - INT");
-}
-
-void sprint_int(dstring* append_str, const void* data, unsigned int tabs)
-{
-	sprint_chars(append_str, '\t', tabs + 1);
-	if(data != NULL)
-		snprintf_dstring(append_str, "%d", *((int*)data));
-	else
-		snprintf_dstring(append_str, "NULL - INT");
-}
-
-void print_int_arraylist(arraylist* al)
-{
-	dstring str;
-	init_dstring(&str, "", 0);
-	sprint_arraylist(&str, al, sprint_int, 0);
-	printf_dstring(&str);
-	deinit_dstring(&str);
-	printf("\n");
 }
 
 int main()
