@@ -59,6 +59,7 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 // on success, these functions will return 1
 
 // remove `element_count_to_remove` elements from front or back of arraylist, at index n_at
+// these functions are O(N), hence I do not recommend using them
 int remove_elements_from_front_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove);
 int remove_elements_from_back_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove);
 
