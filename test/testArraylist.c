@@ -10,18 +10,20 @@ typedef enum al_op al_op;
 enum al_op
 {
 	PUSH_FRONT = 0,
-	PUSH_BACK,		// 1
-	POP_FRONT,		// 2
-	POP_BACK,		// 3
-	SET_NTH_FRONT,	// 4
-	SET_NTH_BACK,	// 5
-	GET_NTH_FRONT,	// 6
-	GET_NTH_BACK 	// 7
+	PUSH_BACK,			// 1
+	POP_FRONT,			// 2
+	POP_BACK,			// 3
+	SET_NTH_FRONT,		// 4
+	SET_NTH_BACK,		// 5
+	REMOVE_FRONT_N_NTH,	// 6
+	REMOVE_BACK_N_NTH,	// 7
+	GET_NTH_FRONT,		// 8
+	GET_NTH_BACK,		// 9
 };
 
-#define INITIAL_TOTAL_SIZE 3
-#define NUMBER_OF_OPERATIONS 50
-#define ELEMENT_POOL_SIZE 50
+#define INITIAL_TOTAL_SIZE 12
+#define NUMBER_OF_OPERATIONS 128
+#define ELEMENT_POOL_SIZE 128
 
 int element_pool[ELEMENT_POOL_SIZE];
 
@@ -86,6 +88,58 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			printf("SET %u TH_BACK : %d : %d\n", index, *data, set_nth_from_back_in_arraylist(al, data, index));
 			break;
 		}
+
+		case REMOVE_FRONT_N_NTH :
+		{
+			if(get_element_count_arraylist(al) < 10)
+			{
+				int n = 25;
+				while(n > 0)
+				{
+					if(is_full_arraylist(al))
+						expand_arraylist(al);
+					operate_on_arraylist(al, PUSH_FRONT);
+					if(is_full_arraylist(al))
+						expand_arraylist(al);
+					operate_on_arraylist(al, PUSH_BACK);
+					n--;
+				}
+				printf("Inserting elements for calling remove front\n");
+				print_int_arraylist(al);
+				printf("\n\n");
+			}
+			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
+			unsigned int element_count_to_remove = ((unsigned int)rand()) % (get_element_count_arraylist(al) - n_at);
+			int res = remove_elements_from_front_of_arraylist_at(al, n_at, element_count_to_remove);
+			printf("REMOVE_FRONT N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
+			break;
+		}
+
+		case REMOVE_BACK_N_NTH :
+		{
+			if(get_element_count_arraylist(al) < 10)
+			{
+				int n = 25;
+				while(n > 0)
+				{
+					if(is_full_arraylist(al))
+						expand_arraylist(al);
+					operate_on_arraylist(al, PUSH_FRONT);
+					if(is_full_arraylist(al))
+						expand_arraylist(al);
+					operate_on_arraylist(al, PUSH_BACK);
+					n--;
+				}
+				printf("Inserting elements for calling remove front\n");
+				print_int_arraylist(al);
+				printf("\n\n");
+			}
+			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
+			unsigned int element_count_to_remove = ((unsigned int)rand()) % (get_element_count_arraylist(al) - n_at);
+			int res = remove_elements_from_back_of_arraylist_at(al, n_at, element_count_to_remove);
+			printf("REMOVE_FRONT N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
+			break;
+		}
 	}
 }
 
@@ -138,7 +192,7 @@ int main()
 	{
 		int op = rand() % TOTAL_OPERATIONS_SUPPORTED;
 		operate_on_arraylist(al, op);
-		if(op <= 5)	// print complete arraylist only on an update operation
+		if(op <= 7)	// print complete arraylist only on an update operation
 			print_int_arraylist(al);
 		printf("\n\n");
 
@@ -153,7 +207,7 @@ int main()
 			printf("\n\n");
 		}
 
-		if(num_ops % 20 == 0)
+		if(num_ops % 50 == 0)
 		{
 			printf("SHRINK ARRAYLIST : %d\n", shrink_arraylist(al));
 			print_int_arraylist(al);
