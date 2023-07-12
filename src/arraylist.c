@@ -186,53 +186,41 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
 }
 
-// assumes that the checks of existence of nth element in arraylist has passed
-static int remove_nth_element_from_front_of_arraylist_INTERNAL(arraylist* al, cy_uint n)
+int remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
 {
-	// set the element in array at the concerned index (one that is to be removed) to NULL
-	cy_uint index_concerned = add_indexes(al->first_index, n, get_capacity_arraylist(al));
-	set_in_array(&(al->arraylist_holder), NULL, index_concerned);
+	// TODO
+}
 
-	// if there is only 1 element and is to be removed\
-	// then we need to reset the arraylist
-	if(al->element_count == 1)
-	{
-		al->first_index = 0;
-		al->element_count = 0;
+int remove_elements_from_front_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
+{
+	// if the arrylist is empty OR the n_at is an invalid_index OR there aren't enough elements (at and) after index n_at
+	// then we fail with 0
+	if(is_empty_arraylist(al) || (n_at >= al->element_count) || ((al->element_count - n_at) < element_count_to_remove))
+		return 0;
+
+	// nothing to remove
+	if(element_count_to_remove == 0)
 		return 1;
-	}
 
-	// calculate the number of elements before and after the element that was to be removed
-	cy_uint elements_before = n;
-	cy_uint elements_after = al->element_count - (n + 1);
-
-	if(elements_before <= elements_after)	// move the elements before the nth element
-	{
-		// TODO
-	}
-	else	// move the elements after the nth element
-	{
-		// TODO
-	}
-
-	return 1;
+	return remove_elements_from_front_of_arraylist_at_INTERNAL(al, n_at, element_count_to_remove);
 }
 
-int remove_nth_from_front_of_arraylist(arraylist* al, cy_uint n)
+int remove_elements_from_back_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
 {
-	if(is_empty_arraylist(al) || n >= al->element_count)
+	// if the arrylist is empty OR the n_at is an invalid_index OR there aren't enough elements (at and) after index n_at
+	// then we fail with 0
+	if(is_empty_arraylist(al) || (n_at >= al->element_count) || ((al->element_count - n_at) < element_count_to_remove))
 		return 0;
 
-	return remove_nth_element_from_front_of_arraylist_INTERNAL(al, n);
-}
+	// nothing to remove
+	if(element_count_to_remove == 0)
+		return 1;
 
-int remove_nth_from_back_of_arraylist(arraylist* al, cy_uint n)
-{
-	if(is_empty_arraylist(al) || n >= al->element_count)
-		return 0;
+	// compute the last index to be removed
+	cy_uint last_index_to_remove = n_at + element_count_to_remove - 1;
 
-	// n-th element from back is same as removing (al->element_count - 1 - n)-th element from front
-	return remove_nth_element_from_front_of_arraylist_INTERNAL(al, al->element_count - 1 - n);
+	// same as removing the same number of elements but at the last index
+	return remove_elements_from_front_of_arraylist_at_INTERNAL(al, last_index_to_remove, element_count_to_remove);
 }
 
 cy_uint get_capacity_arraylist(const arraylist* al)

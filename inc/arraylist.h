@@ -58,9 +58,9 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 // set_nth_from_*_in_arraylist functions will fail and return 0 if n is greater than the number of elements in the given arraylist
 // on success, these functions will return 1
 
-// remove nth element from front or back of arraylist
-int remove_nth_from_front_of_arraylist(arraylist* al, cy_uint n);
-int remove_nth_from_back_of_arraylist(arraylist* al, cy_uint n);
+// remove `element_count_to_remove` elements from front or back of arraylist, at index n_at
+int remove_elements_from_front_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove);
+int remove_elements_from_back_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove);
 
 // returns capacity of the arraylist, i.e. the maximum number of elements that can be accomodated in arraylist
 cy_uint get_capacity_arraylist(const arraylist* al);
