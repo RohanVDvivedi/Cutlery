@@ -17,4 +17,12 @@
 #define will_signed_sub_overflow(type_of_A_n_B, A, B)		(((A) > 0) && ((B) < ((A) - SIGNED_MAX_VALUE_OF(type_of_A_n_B))))
 #define will_signed_sub_underflow(type_of_A_n_B, A, B)		(((B) > 0) && ((A) < ((B) + SIGNED_MIN_VALUE_OF(type_of_A_n_B))))
 
+#define will_signed_mul_overflow(type_of_A_n_B, A, B)	\
+	((((A) > 0) && ((B) > 0) && ((B) > (SIGNED_MAX_VALUE_OF(type_of_A_n_B) / (A)))) || \
+	(((A) < 0) && ((B) < 0) && ((B) < (SIGNED_MAX_VALUE_OF(type_of_A_n_B) / (A)))))
+
+#define will_signed_mul_underflow(type_of_A_n_B, A, B)	\
+	((((A) < 0) && ((B) > 0) && ((B) > (SIGNED_MIN_VALUE_OF(type_of_A_n_B) / (A)))) || \
+	(((A) > 0) && ((B) < 0) && ((B) < (SIGNED_MIN_VALUE_OF(type_of_A_n_B) / (A)))))
+
 #endif
