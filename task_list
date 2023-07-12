@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * remove_nth_from_front and remove_nth_from_back in arraylist, selectively move tail elements or head elements
-
 2. Add new datastructure types tasks (*future)
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
