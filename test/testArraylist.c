@@ -58,7 +58,7 @@ int non_zero_rand()
 {
 	int r = 0;
 	while((r = rand()) == 0);
-	return r;
+	return (r + 13169598) * 13169598;
 }
 
 void operate_on_arraylist(arraylist* al, al_op op)
