@@ -171,7 +171,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
 			unsigned int element_count_to_remove = ((unsigned int)non_zero_rand()) % (get_element_count_arraylist(al) - n_at);
 			int res = remove_elements_from_back_of_arraylist_at(al, n_at, element_count_to_remove);
-			printf("REMOVE_FRONT N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
+			printf("REMOVE_BACK N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
 			break;
 		}
 	}
