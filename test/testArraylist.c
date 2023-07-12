@@ -54,6 +54,13 @@ enum al_op
 
 int element_pool[ELEMENT_POOL_SIZE];
 
+int non_zero_rand()
+{
+	int r = 0;
+	while((r = rand()) == 0);
+	return r;
+}
+
 void operate_on_arraylist(arraylist* al, al_op op)
 {
 	switch(op)
@@ -136,7 +143,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 				printf("\n\n");
 			}
 			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
-			unsigned int element_count_to_remove = ((unsigned int)rand()) % (get_element_count_arraylist(al) - n_at);
+			unsigned int element_count_to_remove = ((unsigned int)non_zero_rand()) % (get_element_count_arraylist(al) - n_at);
 			int res = remove_elements_from_front_of_arraylist_at(al, n_at, element_count_to_remove);
 			printf("REMOVE_FRONT N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
 			break;
@@ -162,7 +169,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 				printf("\n\n");
 			}
 			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
-			unsigned int element_count_to_remove = ((unsigned int)rand()) % (get_element_count_arraylist(al) - n_at);
+			unsigned int element_count_to_remove = ((unsigned int)non_zero_rand()) % (get_element_count_arraylist(al) - n_at);
 			int res = remove_elements_from_back_of_arraylist_at(al, n_at, element_count_to_remove);
 			printf("REMOVE_FRONT N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
 			break;
