@@ -1,5 +1,6 @@
 #include<arraylist.h>
 
+#include<cutlery_math.h>
 #include<cutlery_stds.h>
 
 #include<circular_buffer_array_util.h>
@@ -190,7 +191,19 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 // n_at is valid, and there are atleast non-zero number of element_count_to_remove number of elements after it
 static int remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
 {
-	// TODO
+	// corresponding actual index of element at n_at from front
+	cy_uint index_concerned = add_indexes(al->first_index, n_at, get_capacity_arraylist(al));
+
+	// reset element_count_to_remove elements circularly at index_concerned
+	{
+		cy_uint elements_to_NULL = min(get_capacity_arraylist(al) - index_concerned, element_count_to_remove);
+		set_NULLs_in_array(&(al->arraylist_holder), index_concerned, elements_to_NULL);
+
+		// calculate remaining elements to be NULL-ed, that are at the begining of the array
+		elements_to_NULL = element_count_to_remove - elements_to_NULL;
+		if(elements_to_NULL > 0)
+			set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
+	}
 }
 
 int remove_elements_from_front_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
