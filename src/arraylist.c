@@ -194,41 +194,33 @@ static void remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, c
 	// corresponding actual index of element at n_at from front
 	cy_uint index_concerned = add_indexes(al->first_index, n_at, get_capacity_arraylist(al));
 
-	// reset element_count_to_remove elements circularly at index_concerned
-	{
-		cy_uint elements_to_NULL = min(get_capacity_arraylist(al) - index_concerned, element_count_to_remove);
-		set_NULLs_in_array(&(al->arraylist_holder), index_concerned, elements_to_NULL);
-
-		// calculate remaining elements to be NULL-ed, that are at the begining of the array
-		elements_to_NULL = element_count_to_remove - elements_to_NULL;
-		if(elements_to_NULL > 0)
-			set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
-	}
-
-	// if we had to remove all the elements then, reset the arraylist
-	if(al->element_count == element_count_to_remove)
-	{
-		al->first_index = 0;
-		al->element_count = 0;
-	}
-
 	// calculate the number of elements before and after the removed elements
-	cy_uint existing_elements_before_removed_ones = n_at;
-	cy_uint existing_elements_after_removed_ones = al->element_count - (n_at + element_count_to_remove);
+	cy_uint existing_elements_before_to_be_removed_ones = n_at;
+	cy_uint existing_elements_after_to_be_removed_ones = al->element_count - (n_at + element_count_to_remove);
 
-	if(existing_elements_before_removed_ones <= existing_elements_after_removed_ones) // move the front elements to the vacant positions
+	if(existing_elements_before_to_be_removed_ones <= existing_elements_after_to_be_removed_ones) // move the front elements to the vacant positions
 	{
 		// move elements one by one
-		cy_uint elements_to_be_moved = existing_elements_before_removed_ones;
+		cy_uint elements_to_be_moved = existing_elements_before_to_be_removed_ones;
 		cy_uint index_to_move_from = sub_indexes(index_concerned, 1, get_capacity_arraylist(al));
 		cy_uint index_to_move_to = add_indexes(index_concerned, element_count_to_remove - 1, get_capacity_arraylist(al));
 		while(elements_to_be_moved > 0)
 		{
 			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
-			set_in_array(&(al->arraylist_holder), NULL, index_to_move_from);
 			index_to_move_from = sub_indexes(index_to_move_from, 1, get_capacity_arraylist(al));
 			index_to_move_to = sub_indexes(index_to_move_to, 1, get_capacity_arraylist(al));
 			elements_to_be_moved--;
+		}
+
+		// reset element_count_to_remove elements to NULL from current first_index
+		{
+			cy_uint elements_to_NULL = min(get_capacity_arraylist(al) - al->first_index, element_count_to_remove);
+			set_NULLs_in_array(&(al->arraylist_holder), al->first_index, elements_to_NULL);
+
+			// calculate remaining elements to be NULL-ed, that are at the begining of the array
+			elements_to_NULL = element_count_to_remove - elements_to_NULL;
+			if(elements_to_NULL > 0)
+				set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
 		}
 
 		// handling post the movement of the front elements
@@ -239,22 +231,36 @@ static void remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, c
 	else // move the back elements to the vacant positions
 	{
 		// move elements one by one
-		cy_uint elements_to_be_moved = existing_elements_after_removed_ones;
+		cy_uint elements_to_be_moved = existing_elements_after_to_be_removed_ones;
 		cy_uint index_to_move_from = add_indexes(index_concerned, element_count_to_remove, get_capacity_arraylist(al));
 		cy_uint index_to_move_to = index_concerned;
 		while(elements_to_be_moved > 0)
 		{
 			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
-			set_in_array(&(al->arraylist_holder), NULL, index_to_move_from);
 			index_to_move_from = add_indexes(index_to_move_from, 1, get_capacity_arraylist(al));
 			index_to_move_to = add_indexes(index_to_move_to, 1, get_capacity_arraylist(al));
 			elements_to_be_moved--;
+		}
+
+		// reset element_count_to_remove elements to NULL from index_to_move_to
+		{
+			cy_uint elements_to_NULL = min(get_capacity_arraylist(al) - index_to_move_to, element_count_to_remove);
+			set_NULLs_in_array(&(al->arraylist_holder), al->first_index, elements_to_NULL);
+
+			// calculate remaining elements to be NULL-ed, that are at the begining of the array
+			elements_to_NULL = element_count_to_remove - elements_to_NULL;
+			if(elements_to_NULL > 0)
+				set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
 		}
 
 		// handling post the movement of the back elements
 		// decrement the element_count
 		al->element_count -= element_count_to_remove;
 	}
+
+	// if we had to remove all the elements then, reset the first_index
+	if(al->element_count == 0)
+		al->first_index = 0;
 }
 
 int remove_elements_from_front_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
