@@ -204,6 +204,19 @@ static int remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, cy
 		if(elements_to_NULL > 0)
 			set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
 	}
+
+	// calculate the number of elements before and after the removed elements
+	cy_uint existing_elements_before_removed_ones = n_at;
+	cy_uint existing_elements_after_removed_ones = al->element_count - (n_at + element_count_to_remove);
+
+	if(existing_elements_before_removed_ones <= existing_elements_after_removed_ones)
+	{
+		// TODO
+	}
+	else
+	{
+		// TODO
+	}
 }
 
 int remove_elements_from_front_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
