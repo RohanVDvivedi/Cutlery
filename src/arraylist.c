@@ -219,10 +219,19 @@ static int remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, cy
 	if(existing_elements_before_removed_ones <= existing_elements_after_removed_ones) // move the front elements to the vacant positions
 	{
 		// TODO
+
+		// handling post the movement of the front elements
+		// move first forward by element_count_to_remove number of indices, and decrement the element_count
+		al->first_index = add_indexes(al->first_index, element_count_to_remove, get_capacity_arraylist(al));
+		al->element_count -= element_count_to_remove;
 	}
 	else // move the back elements to the vacant positions
 	{
 		// TODO
+
+		// handling post the movement of the back elements
+		// decrement the element_count
+		al->element_count -= element_count_to_remove;
 	}
 }
 
