@@ -7,7 +7,7 @@
 
 /*
 **	For all base functions
-**		0 <= i1, i2 < buffer_capacity
+**		0 <= i1, i2 < buffer_capacity and buffer_capacity > 0
 **	i.e. i1 and i2 are indices of elements in a circular array buffer with capacity of buffer_capacity
 */
 
