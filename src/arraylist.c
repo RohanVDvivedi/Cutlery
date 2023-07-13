@@ -26,6 +26,35 @@ int initialize_arraylist_with_memory(arraylist* al, cy_uint capacity, const void
 	return initialize_array_with_memory(&(al->arraylist_holder), capacity, data_ps);
 }
 
+// below utility function, NULLs element_count_to_NULL number of elements starting at first_index
+// for using the below utility function, following conditions must be met
+// first_index < get_capacity_arraylist(al)
+// element_count_to_NULL <= get_capacity_arraylist(al)
+static void circularly_NULL_elements(arraylist* al, cy_uint first_index, cy_uint element_count_to_NULL)
+{
+	// if no elements are to be NULL-ed, then quit
+	if(element_count_to_NULL == 0)
+		return;
+
+	// if all the elements in the arraylist are to be NULL-ed, then do it
+	if(elements_to_NULL == get_capacity_arraylist(al))
+	{
+		set_all_NULL_in_array(&(al->arraylist_holder));
+		return;
+	}
+
+	// else do it selectively and circularly
+	{
+		cy_uint elements_to_NULL = min(get_capacity_arraylist(al) - first_index, element_count_to_NULL);
+		set_NULLs_in_array(&(al->arraylist_holder), first_index, elements_to_NULL);
+
+		// calculate remaining elements to be NULL-ed, that are at the begining of the array
+		elements_to_NULL = element_count_to_NULL - elements_to_NULL;
+		if(elements_to_NULL > 0)
+			set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
+	}
+}
+
 int push_front_to_arraylist(arraylist* al, const void* data_p)
 {
 	// if full, you can't push to arraylist
