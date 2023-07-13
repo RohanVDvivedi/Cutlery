@@ -144,7 +144,8 @@ cy_uint get_back_of_dpipe(const dpipe* pipe, void* data, cy_uint data_size, dpip
 	cy_uint bytes_to_read = min(get_bytes_readable_in_dpipe(pipe), data_size);
 
 	// circular buffer copy starting at first_byte offset to be read
-	cy_uint first_byte_to_read = add_indexes(pipe->first_byte, get_bytes_readable_in_dpipe(pipe) - bytes_to_read, pipe->buffer_capacity);
+	// which is same as the end offset of the front of the bytes not to be read
+	cy_uint first_byte_to_read = get_end_index(pipe->first_byte, get_bytes_readable_in_dpipe(pipe) - bytes_to_read, pipe->buffer_capacity);
 	copy_from_circular_buffer(pipe->buffer, pipe->buffer_capacity, first_byte_to_read, data, bytes_to_read);
 
 	return bytes_to_read;
@@ -189,7 +190,7 @@ cy_uint push_back_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpi
 	cy_uint bytes_to_write = min(get_bytes_writable_in_dpipe(pipe), data_size);
 
 	// calculate the offset to end of the buffer and copy the data there
-	cy_uint end_offset = add_indexes(pipe->first_byte, pipe->byte_count, pipe->buffer_capacity);
+	cy_uint end_offset = get_end_index(pipe->first_byte, pipe->byte_count, pipe->buffer_capacity);
 	copy_to_circular_buffer(pipe->buffer, pipe->buffer_capacity, end_offset, data, bytes_to_write);
 
 	// increment byte_count
@@ -330,7 +331,7 @@ int resize_dpipe(dpipe* pipe, cy_uint new_capacity)
 	}
 
 	// calculate the offset to last byte
-	cy_uint last_byte_offset = add_indexes(pipe->first_byte, pipe->byte_count - 1, pipe->buffer_capacity);
+	cy_uint last_byte_offset = get_last_index(pipe->first_byte, pipe->byte_count, pipe->buffer_capacity);
 
 	if(pipe->buffer_capacity > new_capacity) // shrinking
 	{
