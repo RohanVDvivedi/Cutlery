@@ -37,7 +37,7 @@ static void circularly_NULL_elements(arraylist* al, cy_uint first_index, cy_uint
 		return;
 
 	// if all the elements in the arraylist are to be NULL-ed, then do it
-	if(elements_to_NULL == get_capacity_arraylist(al))
+	if(element_count_to_NULL == get_capacity_arraylist(al))
 	{
 		set_all_NULL_in_array(&(al->arraylist_holder));
 		return;
@@ -230,19 +230,11 @@ static void remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, c
 			elements_to_be_moved--;
 		}
 
-		// reset element_count_to_remove elements to NULL from current first_index
-		{
-			cy_uint elements_to_NULL = min(get_capacity_arraylist(al) - al->first_index, element_count_to_remove);
-			set_NULLs_in_array(&(al->arraylist_holder), al->first_index, elements_to_NULL);
-
-			// calculate remaining elements to be NULL-ed, that are at the begining of the array
-			elements_to_NULL = element_count_to_remove - elements_to_NULL;
-			if(elements_to_NULL > 0)
-				set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
-		}
+		// reset `element_count_to_remove number` of elements to NULL from current first_index
+		circularly_NULL_elements(al, al->first_index, element_count_to_remove);
 
 		// handling post the movement of the front elements
-		// move first forward by element_count_to_remove number of indices, and decrement the element_count
+		// move first_index forward by `element_count_to_remove` number of indices, and decrement the element_count
 		al->first_index = add_indexes(al->first_index, element_count_to_remove, get_capacity_arraylist(al));
 		al->element_count -= element_count_to_remove;
 	}
@@ -260,16 +252,8 @@ static void remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, c
 			elements_to_be_moved--;
 		}
 
-		// reset element_count_to_remove elements to NULL from index_to_move_to
-		{
-			cy_uint elements_to_NULL = min(get_capacity_arraylist(al) - index_to_move_to, element_count_to_remove);
-			set_NULLs_in_array(&(al->arraylist_holder), index_to_move_to, elements_to_NULL);
-
-			// calculate remaining elements to be NULL-ed, that are at the begining of the array
-			elements_to_NULL = element_count_to_remove - elements_to_NULL;
-			if(elements_to_NULL > 0)
-				set_NULLs_in_array(&(al->arraylist_holder), 0, elements_to_NULL);
-		}
+		// reset `element_count_to_remove` number of elements to NULL from the index = `index_concerned + existing_elements_after_to_be_removed_ones` (i.e. the index immediately after the new lst index)
+		circularly_NULL_elements(al, get_end_index(index_concerned, existing_elements_after_to_be_removed_ones, get_capacity_arraylist(al)), element_count_to_remove);
 
 		// handling post the movement of the back elements
 		// decrement the element_count
@@ -512,11 +496,13 @@ void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_el
 
 void remove_all_from_arraylist(arraylist* al)
 {
+	// NULL all existing elements in arraylist
+	// we use the below function to selectively NULL only the indexes at which elements existed
+	circularly_NULL_elements(al, al->first_index, al->element_count);
+
+	// reset arraylist
 	al->first_index = 0;
 	al->element_count = 0;
-	
-	// then NULL out all the array -> this step can be ignored
-	remove_all_from_array(&(al->arraylist_holder));
 }
 
 void deinitialize_arraylist(arraylist* al)
