@@ -37,7 +37,7 @@ static inline cy_uint sub_indexes(cy_uint i1, cy_uint i2, cy_uint buffer_capacit
 **	for all below functions 
 **		0 <= i, first_index < buffer_capacity
 **		1 <= element_count <= buffer_capacity
-** and buffer_capacity >= 1
+** and buffer_capacity > 1
 **
 **	first_index and element_count will have meanings as their (so obvious) names depict in the respective functions
 */
