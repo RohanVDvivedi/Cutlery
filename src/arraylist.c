@@ -158,7 +158,7 @@ const void* get_nth_from_front_of_arraylist(const arraylist* al, cy_uint n)
 		return NULL;
 
 	// find the index of our concern
-	cy_uint index_concerned = add_indexes(al->first_index, n, get_capacity_arraylist(al));
+	cy_uint index_concerned = add_circularly(al->first_index, n, get_capacity_arraylist(al));
 
 	// find the concerned element and return it
 	return get_from_array(&(al->arraylist_holder), index_concerned);
@@ -172,7 +172,7 @@ const void* get_nth_from_back_of_arraylist(const arraylist* al, cy_uint n)
 
 	// find the index of our concern
 	cy_uint last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
-	cy_uint index_concerned = sub_indexes(last_index, n, get_capacity_arraylist(al));
+	cy_uint index_concerned = sub_circularly(last_index, n, get_capacity_arraylist(al));
 
 	// find the concerned element and return it
 	return get_from_array(&(al->arraylist_holder), index_concerned);
@@ -185,7 +185,7 @@ int set_nth_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint n
 		return 0;
 
 	// find the index of our concern
-	cy_uint index_concerned = add_indexes(al->first_index, n, get_capacity_arraylist(al));
+	cy_uint index_concerned = add_circularly(al->first_index, n, get_capacity_arraylist(al));
 
 	// find the concerned element and set it
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
@@ -199,7 +199,7 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 
 	// find the index of our concern
 	cy_uint last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
-	cy_uint index_concerned = sub_indexes(last_index , n, get_capacity_arraylist(al));
+	cy_uint index_concerned = sub_circularly(last_index , n, get_capacity_arraylist(al));
 
 	// find the concerned element and return it
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
@@ -210,7 +210,7 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
 static void remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
 {
 	// corresponding actual index of element at n_at from front
-	cy_uint index_concerned = add_indexes(al->first_index, n_at, get_capacity_arraylist(al));
+	cy_uint index_concerned = add_circularly(al->first_index, n_at, get_capacity_arraylist(al));
 
 	// calculate the number of elements before and after the removed elements
 	cy_uint existing_elements_before_to_be_removed_ones = n_at;
@@ -220,13 +220,13 @@ static void remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, c
 	{
 		// move elements one by one
 		cy_uint elements_to_be_moved = existing_elements_before_to_be_removed_ones;
-		cy_uint index_to_move_from = sub_indexes(index_concerned, 1, get_capacity_arraylist(al));
-		cy_uint index_to_move_to = add_indexes(index_concerned, element_count_to_remove - 1, get_capacity_arraylist(al));
+		cy_uint index_to_move_from = sub_circularly(index_concerned, 1, get_capacity_arraylist(al));
+		cy_uint index_to_move_to = add_circularly(index_concerned, element_count_to_remove - 1, get_capacity_arraylist(al));
 		while(elements_to_be_moved > 0)
 		{
 			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
-			index_to_move_from = sub_indexes(index_to_move_from, 1, get_capacity_arraylist(al));
-			index_to_move_to = sub_indexes(index_to_move_to, 1, get_capacity_arraylist(al));
+			index_to_move_from = sub_circularly(index_to_move_from, 1, get_capacity_arraylist(al));
+			index_to_move_to = sub_circularly(index_to_move_to, 1, get_capacity_arraylist(al));
 			elements_to_be_moved--;
 		}
 
@@ -235,20 +235,20 @@ static void remove_elements_from_front_of_arraylist_at_INTERNAL(arraylist* al, c
 
 		// handling post the movement of the front elements
 		// move first_index forward by `element_count_to_remove` number of indices, and decrement the element_count
-		al->first_index = add_indexes(al->first_index, element_count_to_remove, get_capacity_arraylist(al));
+		al->first_index = add_circularly(al->first_index, element_count_to_remove, get_capacity_arraylist(al));
 		al->element_count -= element_count_to_remove;
 	}
 	else // move the back elements to the vacant positions
 	{
 		// move elements one by one
 		cy_uint elements_to_be_moved = existing_elements_after_to_be_removed_ones;
-		cy_uint index_to_move_from = add_indexes(index_concerned, element_count_to_remove, get_capacity_arraylist(al));
+		cy_uint index_to_move_from = add_circularly(index_concerned, element_count_to_remove, get_capacity_arraylist(al));
 		cy_uint index_to_move_to = index_concerned;
 		while(elements_to_be_moved > 0)
 		{
 			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
-			index_to_move_from = add_indexes(index_to_move_from, 1, get_capacity_arraylist(al));
-			index_to_move_to = add_indexes(index_to_move_to, 1, get_capacity_arraylist(al));
+			index_to_move_from = add_circularly(index_to_move_from, 1, get_capacity_arraylist(al));
+			index_to_move_to = add_circularly(index_to_move_to, 1, get_capacity_arraylist(al));
 			elements_to_be_moved--;
 		}
 
@@ -459,7 +459,7 @@ const void* find_equals_in_arraylist(const arraylist* al, const void* data, int 
 {
 	for(cy_uint i = 0; i < al->element_count; i++)
 	{
-		cy_uint al_index = add_indexes(al->first_index, i, get_capacity_arraylist(al));
+		cy_uint al_index = add_circularly(al->first_index, i, get_capacity_arraylist(al));
 		const void* found = get_from_array(&(al->arraylist_holder), al_index);
 		if(0 == compare(found, data))
 			return found;

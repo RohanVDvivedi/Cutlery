@@ -462,7 +462,7 @@ static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hash
 		{
 			// position_index, and probe_sequence_length of the data_xist
 			cy_uint position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index;
-			cy_uint probe_sequence_length = sub_indexes(position_index, bucket_index, get_bucket_count_hashmap(hashmap_p));
+			cy_uint probe_sequence_length = sub_circularly(position_index, bucket_index, get_bucket_count_hashmap(hashmap_p));
 
 			// get the position_index of the next element
 			position_index = get_circular_next(position_index, get_bucket_count_hashmap(hashmap_p));
