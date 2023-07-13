@@ -54,22 +54,11 @@ int push_back_to_arraylist(arraylist* al, const void* data_p)
 	if(is_full_arraylist(al))
 		return 0;
 
-	// if empty push the element at 0th index
-	if(is_empty_arraylist(al))
-	{
-		al->first_index = 0;
+	// end_index is the index to the position on the circular buffer, that is immediately after the last element
+	cy_uint end_index = get_end_index(al->first_index, al->element_count, get_capacity_arraylist(al));
 
-		// push to back of array list
-		set_in_array(&(al->arraylist_holder), data_p, al->first_index);
-	}
-	else
-	{
-		// end_index is the index to the position on the circular buffer, that is immediately after the last element
-		cy_uint end_index = get_end_index(al->first_index, al->element_count, get_capacity_arraylist(al));
-
-		// push to back of array list
-		set_in_array(&(al->arraylist_holder), data_p, end_index);
-	}
+	// push to back of array list
+	set_in_array(&(al->arraylist_holder), data_p, end_index);
 
 	// increment the element counter
 	al->element_count++;
