@@ -201,7 +201,7 @@ cy_uint push_back_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpi
 
 int pop_front_from_dpipe(dpipe* pipe, cy_uint data_size)
 {
-	// if data_size is greter than bytes in dpipe, then return failure
+	// if data_size is greater than bytes in dpipe, then return failure
 	if(data_size > pipe->byte_count)
 		return 0;
 
@@ -222,7 +222,7 @@ int pop_front_from_dpipe(dpipe* pipe, cy_uint data_size)
 
 int pop_back_from_dpipe(dpipe* pipe, cy_uint data_size)
 {
-	// if data_size is greter than bytes in dpipe, then return failure
+	// if data_size is greater than bytes in dpipe, then return failure
 	if(data_size > pipe->byte_count)
 		return 0;
 
