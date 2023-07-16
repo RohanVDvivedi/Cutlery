@@ -33,6 +33,7 @@ struct dstring
 dstring_type get_dstring_type(const dstring* str_p);
 
 // failure returns 0, which implies failure to allocate memory
+// you can safely assume that this function will never fail with capacity parameter = 0
 int init_empty_dstring(dstring* str_p, cy_uint capacity);
 
 #define get_dstring_pointing_to(data, data_size) \
