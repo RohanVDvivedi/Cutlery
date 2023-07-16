@@ -32,7 +32,8 @@ struct dstring
 
 dstring_type get_dstring_type(const dstring* str_p);
 
-void init_empty_dstring(dstring* str_p, cy_uint capacity);
+// failure returns 0, which implies failure to allocate memory
+int init_empty_dstring(dstring* str_p, cy_uint capacity);
 
 #define get_dstring_pointing_to(data, data_size) \
 	((const dstring){.type_n_SS_size = POINT_DSTR, .byte_array = ((char*)(data)), .bytes_occupied = (data_size), .bytes_allocated = 0})
@@ -58,8 +59,8 @@ int shrink_dstring(dstring* str_p);
 
 // BASE METHODS END
 
-void init_dstring(dstring* str_p, const char* data, cy_uint data_size);
-void init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
+int init_dstring(dstring* str_p, const char* data, cy_uint data_size);
+int init_copy_dstring(dstring* str_p, const dstring* init_copy_from);
 
 dstring new_dstring(const char* data, cy_uint data_size);
 dstring new_copy_dstring(const dstring* init_copy_from);

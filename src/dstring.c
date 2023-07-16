@@ -23,7 +23,7 @@ dstring_type get_dstring_type(const dstring* str_p)
 	return get_dstr_type(str_p->type_n_SS_size);
 }
 
-void init_empty_dstring(dstring* str_p, cy_uint capacity)
+int init_empty_dstring(dstring* str_p, cy_uint capacity)
 {
 	if(capacity > SS_capacity)
 	{
@@ -31,9 +31,17 @@ void init_empty_dstring(dstring* str_p, cy_uint capacity)
 		str_p->bytes_occupied = 0;
 		str_p->byte_array = allocate(DSTRING_mem_alloc, &capacity);
 		str_p->bytes_allocated = (str_p->byte_array == NULL) ? 0 : capacity;
+
+		// if failed to allocate memory, then initialize as a SHORT_DSTR but return a failure
+		if(str_p->byte_array == NULL)
+		{
+			str_p->type_n_SS_size = SHORT_DSTR;
+			return 0;
+		}
 	}
 	else 	// return a short dstring with size 0
 		str_p->type_n_SS_size = SHORT_DSTR;
+	return 1;
 }
 
 char* get_byte_array_dstring(const dstring* str_p)
@@ -229,19 +237,21 @@ int shrink_dstring(dstring* str_p)
 
 // BASE METHODS END
 
-void init_dstring(dstring* str_p, const char* data, cy_uint data_size)
+int init_dstring(dstring* str_p, const char* data, cy_uint data_size)
 {
-	init_empty_dstring(str_p, data_size);
+	if(!init_empty_dstring(str_p, data_size))
+		return 0;
 	if(data != NULL && data_size > 0)
 	{
 		memory_move(get_byte_array_dstring(str_p), data, data_size);
 		increment_char_count_dstring(str_p, data_size);
 	}
+	return 1;
 }
 
-void init_copy_dstring(dstring* str_p, const dstring* init_copy_from)
+int init_copy_dstring(dstring* str_p, const dstring* init_copy_from)
 {
-	init_dstring(str_p, get_byte_array_dstring(init_copy_from), get_char_count_dstring(init_copy_from));
+	return init_dstring(str_p, get_byte_array_dstring(init_copy_from), get_char_count_dstring(init_copy_from));
 }
 
 dstring new_dstring(const char* data, cy_uint data_size)
