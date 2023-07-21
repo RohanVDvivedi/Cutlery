@@ -65,6 +65,9 @@ cy_uint get_capacity_array(const array* array_p);
 // else this function may fail with 0, to indicate a failure, from the memory allocator
 int expand_array(array* array_p);
 
+// this is the capacity that an array will expand to, upon calling expand_array
+cy_uint get_new_expansion_capacity_for_array(cy_uint current_capacity);
+
 // expand array such that it has atleast_capacity after expansion
 // returns 1, only if the array was expanded
 // returns 0, to indicate a failure from the memory allocator

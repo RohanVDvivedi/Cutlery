@@ -9,7 +9,7 @@
 
 // new_capacity of data_p_p = (old_capacity of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next capacity (on expansion) for the given array, if it's current capacity is current_capacity
-static inline cy_uint get_new_expansion_capacity(cy_uint current_capacity)
+cy_uint get_new_expansion_capacity_for_array(cy_uint current_capacity)
 {
 	cy_uint new_capacity = (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
 
@@ -156,7 +156,7 @@ void for_each_in_array(const array* array_p, void (*operation)(void* data_p, cy_
 int expand_array(array* array_p)
 {
 	// expand array to atleast the new_capacity
-	return reserve_capacity_for_array(array_p, get_new_expansion_capacity(get_capacity_array(array_p)));
+	return reserve_capacity_for_array(array_p, get_new_expansion_capacity_for_array(get_capacity_array(array_p)));
 }
 
 int reserve_capacity_for_array(array* array_p, cy_uint atleast_capacity)
