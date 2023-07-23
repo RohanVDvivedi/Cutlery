@@ -83,6 +83,10 @@ int push_back_to_arraylist(arraylist* al, const void* data_p)
 	if(is_full_arraylist(al))
 		return 0;
 
+	// if the arraylist is empty, then reset its first_index before the insertion
+	if(is_empty_arraylist(al))
+		al->first_index = 0;
+
 	// end_index is the index to the position on the circular buffer, that is immediately after the last element
 	cy_uint end_index = get_end_index(al->first_index, al->element_count, get_capacity_arraylist(al));
 
@@ -110,6 +114,10 @@ int pop_front_from_arraylist(arraylist* al)
 	// decrement the element counter
 	al->element_count--;
 
+	// reset the first index if this pop, made the arraylist empty
+	if(is_empty_arraylist(al))
+		al->first_index = 0;
+
 	return 1;
 }
 
@@ -127,6 +135,10 @@ int pop_back_from_arraylist(arraylist* al)
 
 	// decrement the element counter
 	al->element_count--;
+
+	// reset the first index if this pop, made the arraylist empty
+	if(is_empty_arraylist(al))
+		al->first_index = 0;
 
 	return 1;
 }
