@@ -165,7 +165,10 @@ cy_uint push_front_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dp
 	cy_uint bytes_to_write = min(get_bytes_writable_in_dpipe(pipe), data_size);
 
 	// update the new first_byte
-	pipe->first_byte = sub_circularly(pipe->first_byte, bytes_to_write, pipe->buffer_capacity);
+	if(pipe->byte_count == 0)
+		pipe->first_byte = 0;
+	else
+		pipe->first_byte = sub_circularly(pipe->first_byte, bytes_to_write, pipe->buffer_capacity);
 
 	// copy the data to the first_byte in the buffer
 	copy_to_circular_buffer(pipe->buffer, pipe->buffer_capacity, pipe->first_byte, data, bytes_to_write);
