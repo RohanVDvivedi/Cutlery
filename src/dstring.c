@@ -346,15 +346,15 @@ static int make_room_for_bytes_in_dstring(dstring* str_p, cy_uint incoming_byte_
 	if(will_unsigned_sum_overflow(str_size, incoming_byte_count))
 		return 0;
 
+	cy_uint str_capacity = get_capacity_dstring(str_p);
+
 	// suggest an additional allocaton that doubles the old capacity while also accomodating incoming bytes
-	cy_uint additional_allocation = get_capacity_dstring(str_p) + incoming_byte_count;
-	if(additional_allocation > get_capacity_dstring(str_p) && additional_allocation > incoming_byte_count
-	 && expand_dstring(str_p, additional_allocation))
+	if(!will_unsigned_sum_overflow(str_capacity, incoming_byte_count) &&
+		expand_dstring(str_p, str_capacity + incoming_byte_count))
 			return 1;
 
-	// else just accomodate the incoming_bytes
-	additional_allocation = incoming_byte_count - get_unused_capacity_dstring(str_p);
-	if(expand_dstring(str_p, additional_allocation))
+	// else expand enough to just accomodate the incoming_bytes
+	if(expand_dstring(str_p, incoming_byte_count - get_unused_capacity_dstring(str_p)))
 		return 1;
 	
 	return 0;
