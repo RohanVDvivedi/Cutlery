@@ -343,13 +343,13 @@ static int make_room_for_bytes_in_dstring(dstring* str_p, cy_uint incoming_byte_
 	cy_uint str_size = get_char_count_dstring(str_p);
 
 	// check to make sure that the new size (after appending incoming_byte_count), does not overflow
-	if(will_unsigned_sum_overflow(str_size, incoming_byte_count))
+	if(will_unsigned_sum_overflow(cy_uint, str_size, incoming_byte_count))
 		return 0;
 
 	cy_uint str_capacity = get_capacity_dstring(str_p);
 
 	// suggest an additional allocaton that doubles the old capacity while also accomodating incoming bytes
-	if(!will_unsigned_sum_overflow(str_capacity, incoming_byte_count) &&
+	if(!will_unsigned_sum_overflow(cy_uint, str_capacity, incoming_byte_count) &&
 		expand_dstring(str_p, str_capacity + incoming_byte_count))
 			return 1;
 
