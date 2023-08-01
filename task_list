@@ -1,5 +1,4 @@
 1. Tasks picked
- * ensure no overflow occurs while expanding/resizing dstrings with new capacity
 
 2. Add new datastructure types tasks (*future)
 
