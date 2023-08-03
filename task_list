@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * remove get_node and get_data from public header cutlery_stds.h, since it will be a cutlery specific feature.
+
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
  * struct value_arraylist_type_name
