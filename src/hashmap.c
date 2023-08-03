@@ -7,6 +7,7 @@
 
 #include<dstring.h>
 
+#include<cutlery_node.h>
 #include<cutlery_stds.h>
 
 int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset)

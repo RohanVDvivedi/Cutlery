@@ -6,6 +6,7 @@
 #include<bst_redblack.h>
 #include<bst_util.h>
 
+#include<cutlery_node.h>
 #include<cutlery_stds.h>
 
 void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset)

@@ -1,5 +1,6 @@
 #include<union_find.h>
 
+#include<cutlery_node.h>
 #include<cutlery_math.h>
 
 void initialize_union_find(union_find* uf_p, cy_uint node_offset)

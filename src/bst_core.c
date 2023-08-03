@@ -2,6 +2,7 @@
 #include<bst_rotations.h>		// used only for interchange positions of nodes, no rotations performed
 #include<bst_util.h>
 
+#include<cutlery_node.h>
 #include<cutlery_stds.h>
 
 const bstnode* get_smallest_node_from_node(const bstnode* node_p)

@@ -1,5 +1,6 @@
 #include<linkedlist.h>
 
+#include<cutlery_node.h>
 #include<cutlery_stds.h>
 
 // to check if a node is a free floating node

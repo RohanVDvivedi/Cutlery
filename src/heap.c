@@ -1,5 +1,6 @@
 #include<heap.h>
 
+#include<cutlery_node.h>
 #include<cutlery_stds.h>
 
 #include<n-ary_tree_as_array_util.h>
