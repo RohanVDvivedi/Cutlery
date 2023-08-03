@@ -78,6 +78,10 @@
 
 #define CY_UINT_MAX UNSIGNED_MAX_VALUE_OF(cy_uint)
 
+// fail build if the size of cy_uint is lesser than size of void*
+// we must ensure that sizeof(cy_uint) >= sizeof(void*)
+fail_build_on(sizeof(cy_uint) < sizeof(void*))
+
 #define INVALID_INDEX CY_UINT_MAX
 // any array (struct array, struct dstring, c array or char array ) will never have this index
 // INVALID_INDEX is used to report error (or a lack of result) to the user
@@ -85,20 +89,6 @@
 #ifndef offsetof
 	#define offsetof(structure, attribute) ((cy_uint)(&(((structure*)(0))->attribute)))
 #endif
-
-// fail build if the size of cy_uint is lesser than size of void*
-// we must ensure that sizeof(cy_uint) >= sizeof(void*)
-fail_build_on(sizeof(cy_uint) < sizeof(void*))
-
-/*
-*	MACROS TO CONVERT FROM DATA TO NODE AND NODE TO DATA
-*  This is only used by embedded node based data structures.
-*  All embedded node based data structures (like linkedlist, singlylist, bst and heap)
-*  store node_offset to their nodes.
-*  Since, their nodes (that these datastructures operate on) are always at this fixed offset inside the user's data (structs).
-*/
-#define get_data(node_p, ds_p) 	(((const void*)(node_p)) - ((ds_p)->node_offset))
-#define get_node(data_p, ds_p) 	(((void*)(data_p)) + ((ds_p)->node_offset))
 
 // in array or bst you can search an element that equals, returning first or last occurence
 // this is the enum that is used as parameter to those function
