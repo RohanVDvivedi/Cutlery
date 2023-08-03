@@ -1,5 +1,8 @@
 1. Tasks picked
 
+BUG FIX IN ALL EMBEDDED NODE BASED DATASTRUCTURES
+ * mostly observed in get_next_of and get_prev_of in hashmap, linkedlist, singlylist and bst data structures, we are not checking the data_xist to not be a free floating node, if it is free floating node then return NULL immediately
+
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
  * struct value_arraylist_type_name
@@ -14,6 +17,7 @@ VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
 
 SEARCH_SORT extension
  * modify search sort to extend to all cutlery data structure that allow index based access (arraylist and array (and value_arraylist if you can do it))
+ * make an interface structure consisting of functions to get_element_by_index, set_element_by_index, swap_elements_at_indices and get_element_count, this will allow easily implement the above feature for both
 
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
