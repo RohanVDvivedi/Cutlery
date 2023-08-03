@@ -8,9 +8,15 @@ VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
 		cy_uint element_count;		// number of elements in the value_arraylist
 		cy_uint capacity;					// number of elements that can be accomodated in the value_arraylist
 		memory_allocator mem_allocator; // allocator to use
-		value_type data[];				// actual data array
+		value_type* data;				// actual data array
 	};
  * add comment that this (value_arraylist) is suppossed to be used with only small ephemeral structs and primitive types, that have no immovable attributes like (synchronization primitives like) mutex, conditional variables or semaphores
+
+SEARCH_SORT extension
+ * modify search sort to extend to all cutlery data structure that allow index based access (arraylist and array (and value_arraylist if you can do it))
+
+ARRAYLIST
+ * add functionality to add n elements at nth element from front or back.
 
 2. Add new datastructure types tasks (*future)
 
