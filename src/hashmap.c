@@ -773,6 +773,7 @@ int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 	if(!initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset, hashmap_p->hashmap_holder.mem_allocator))
 		return 0;
 
+	// actual transfer of elements from hashmap_p to new_hashmap
 	{
 		// create a temporary queue variable, and push all the hashmap_p elements into it
 		queue q;
