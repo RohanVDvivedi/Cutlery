@@ -78,12 +78,24 @@ const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, cy_uint n)
 
 const void* get_next_of_in_linkedlist(const linkedlist* ll, const void* data_xist)
 {
-	return get_data(((llnode*)(get_node(data_xist, ll)))->next, ll);
+	llnode* node_xist = get_node(data_xist, ll);
+
+	// node_xist must not a free floating node
+	if(is_free_floating_llnode(node_xist))
+		return NULL;
+
+	return get_data(node_xist->next, ll);
 }
 
 const void* get_prev_of_in_linkedlist(const linkedlist* ll, const void* data_xist)
 {
-	return get_data(((llnode*)(get_node(data_xist, ll)))->prev, ll);
+	llnode* node_xist = get_node(data_xist, ll);
+
+	// node_xist must not a free floating node
+	if(is_free_floating_llnode(node_xist))
+		return NULL;
+
+	return get_data(node_xist->prev, ll);
 }
 
 // for the functions insert_node_*, node_p must be in ll linkedlist and new_node must not be part of any linkedlist (i.e. is_new_llnode(new_node) == 1)
