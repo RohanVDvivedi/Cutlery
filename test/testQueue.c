@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<queue.h>
+#include<arraylist.h>
 
 typedef struct teststruct ts;
 struct teststruct
@@ -19,37 +19,37 @@ void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 	snprintf_dstring(append_str, "%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-void print_ts_queue(queue* queue_p)
+void print_ts_queue(arraylist* queue_p)
 {
 	dstring str;
 	init_dstring(&str, "", 0);
-	sprint_queue(&str, queue_p, sprint_ts, 0);
+	sprint_arraylist(&str, queue_p, sprint_ts, 0);
 	printf_dstring(&str);
 	deinit_dstring(&str);
 	printf("\n");
 }
 
-void push_queue_SAFE(queue* queue_p, const void* data_p)
+void push_queue_SAFE(arraylist* queue_p, const void* data_p)
 {
-	if(is_full_queue(queue_p))
-		expand_queue(queue_p);
-	push_to_queue(queue_p, data_p);
+	if(is_full_arraylist(queue_p))
+		expand_arraylist(queue_p);
+	push_back_to_arraylist(queue_p, data_p);
 }
 
-void pop_queue_OPTIMUM_MEMORY(queue* queue_p)
+void pop_queue_OPTIMUM_MEMORY(arraylist* queue_p)
 {
-	pop_from_queue(queue_p);
-	if(get_capacity_queue(queue_p) > 1.5 * get_element_count_queue(queue_p))
-		shrink_queue(queue_p);
+	pop_front_from_arraylist(queue_p);
+	if(get_capacity_arraylist(queue_p) > 1.5 * get_element_count_arraylist(queue_p))
+		shrink_arraylist(queue_p);
 }
 
 int main()
 {
 	int iter = 0;
 
-	queue queue_temp;
-	queue* queue_p = &queue_temp;
-	initialize_queue(queue_p, 3);
+	arraylist queue_temp;
+	arraylist* queue_p = &queue_temp;
+	initialize_arraylist(queue_p, 3);
 
 	printf("-> %d\n", iter++);print_ts_queue(queue_p); // 0
 
@@ -272,10 +272,10 @@ int main()
 	push_queue_SAFE(queue_p, &((ts){36, "thirty six"}));
 	printf("-> %d\n", iter++);print_ts_queue(queue_p); // 73
 
-	remove_all_from_queue(queue_p);
+	remove_all_from_arraylist(queue_p);
 	printf("-> %d\n", iter++);print_ts_queue(queue_p); // 74
 
-	deinitialize_queue(queue_p);
+	deinitialize_arraylist(queue_p);
 
 	return 0;
 }
