@@ -104,16 +104,16 @@ int main()
 	insert_tail_in_linkedlist(ll, &((ts){6, "six"}));
 	print_ts_linkedlist(ll);
 
-	print_ts(get_nth_from_head_of_linkedlist(ll, 1));
+	print_ts(get_from_head_of_linkedlist(ll, 1));
 	printf("\n\n");
 
-	insert_after_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 1), &((ts){3, "three"}));
+	insert_after_in_linkedlist(ll, get_from_head_of_linkedlist(ll, 1), &((ts){3, "three"}));
 	print_ts_linkedlist(ll);
 
-	insert_before_in_linkedlist(ll, get_nth_from_tail_of_linkedlist(ll, 1), &((ts){4, "four"}));
+	insert_before_in_linkedlist(ll, get_from_tail_of_linkedlist(ll, 1), &((ts){4, "four"}));
 	print_ts_linkedlist(ll);
 
-	insert_before_in_linkedlist(ll, get_nth_from_tail_of_linkedlist(ll, 2), &((ts){-1, "minus one"}));
+	insert_before_in_linkedlist(ll, get_from_tail_of_linkedlist(ll, 2), &((ts){-1, "minus one"}));
 	print_ts_linkedlist(ll);
 
 	// check get next and prev functionality
@@ -144,7 +144,7 @@ int main()
 	remove_tail_from_linkedlist(ll);
 	print_ts_linkedlist(ll);
 
-	const ts* temp = get_nth_from_head_of_linkedlist(ll, 2);
+	const ts* temp = get_from_head_of_linkedlist(ll, 2);
 
 	remove_from_linkedlist(ll, temp);
 	print_ts_linkedlist(ll);
@@ -155,10 +155,10 @@ int main()
 	printf("Error on inserting before a not existing node %d\n", insert_before_in_linkedlist(ll, temp, &((ts){-1, "minus one"})));
 	print_ts_linkedlist(ll);
 
-	insert_after_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 1), temp);
+	insert_after_in_linkedlist(ll, get_from_head_of_linkedlist(ll, 1), temp);
 	print_ts_linkedlist(ll);
 
-	printf("Error on inserting an existing node %d\n", insert_before_in_linkedlist(ll, temp, get_nth_from_tail_of_linkedlist(ll, 3)));
+	printf("Error on inserting an existing node %d\n", insert_before_in_linkedlist(ll, temp, get_from_tail_of_linkedlist(ll, 3)));
 	print_ts_linkedlist(ll);
 
 	printf("Searching for structure with a = 4\n");
@@ -189,7 +189,7 @@ int main()
 	for(unsigned int i = 0; i < 7; i++)
 	{
 		printf("get_(%u)_th_from_head : ", i);
-		print_ts(get_nth_from_head_of_linkedlist(ll, i));
+		print_ts(get_from_head_of_linkedlist(ll, i));
 		printf("\n");
 	}
 	printf("\n");
@@ -198,7 +198,7 @@ int main()
 	for(unsigned int i = 0; i < 7; i++)
 	{
 		printf("get_(%u)_th_from_tail : ", i);
-		print_ts(get_nth_from_tail_of_linkedlist(ll, i));
+		print_ts(get_from_tail_of_linkedlist(ll, i));
 		printf("\n");
 	}
 	printf("\n");
@@ -215,7 +215,7 @@ int main()
 	printf("testInsertAllHead: \n");
 	print_ts_linkedlist(testInsertAllHead);
 
-	swap_in_linkedlist(testInsertAllHead, get_head_of_linkedlist(testInsertAllHead), get_nth_from_head_of_linkedlist(testInsertAllHead, 2));
+	swap_in_linkedlist(testInsertAllHead, get_head_of_linkedlist(testInsertAllHead), get_from_head_of_linkedlist(testInsertAllHead, 2));
 	printf("testInsertAllHead: (swapped 0th and 2nd element) \n");
 	print_ts_linkedlist(testInsertAllHead);
 
@@ -248,11 +248,11 @@ int main()
 	printf("testInsertAllBefore: \n");
 	print_ts_linkedlist(testInsertAllBefore);
 
-	swap_in_linkedlist(testInsertAllBefore, get_head_of_linkedlist(testInsertAllBefore), get_nth_from_head_of_linkedlist(testInsertAllBefore, 1));
+	swap_in_linkedlist(testInsertAllBefore, get_head_of_linkedlist(testInsertAllBefore), get_from_head_of_linkedlist(testInsertAllBefore, 1));
 	printf("testInsertAllBefore: (swapped 0th and 1st element) \n");
 	print_ts_linkedlist(testInsertAllBefore);
 
-	insert_all_before_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 0), testInsertAllBefore);
+	insert_all_before_in_linkedlist(ll, get_from_head_of_linkedlist(ll, 0), testInsertAllBefore);
 	print_ts_linkedlist(ll);
 
 	printf("testInsertAllBefore: \n");
@@ -265,7 +265,7 @@ int main()
 	printf("testInsertAllAfter: \n");
 	print_ts_linkedlist(testInsertAllAfter);
 
-	insert_all_after_in_linkedlist(ll, get_nth_from_head_of_linkedlist(ll, 2), testInsertAllAfter);
+	insert_all_after_in_linkedlist(ll, get_from_head_of_linkedlist(ll, 2), testInsertAllAfter);
 	print_ts_linkedlist(ll);
 
 	printf("testInsertAllAfter: \n");
@@ -298,7 +298,7 @@ int main()
 	for(unsigned int i = 0; i < 2; i++)
 	{
 		printf("get_(%u)_th_from_head : ", i);
-		print_ts(get_nth_from_head_of_linkedlist(ll, i));
+		print_ts(get_from_head_of_linkedlist(ll, i));
 		printf("\n");
 	}
 	printf("\n");
@@ -307,7 +307,7 @@ int main()
 	for(unsigned int i = 0; i < 2; i++)
 	{
 		printf("get_(%u)_th_from_tail : ", i);
-		print_ts(get_nth_from_tail_of_linkedlist(ll, i));
+		print_ts(get_from_tail_of_linkedlist(ll, i));
 		printf("\n");
 	}
 	printf("\n");
