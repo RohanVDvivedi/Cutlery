@@ -770,12 +770,17 @@ int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 
 	// create a new hashmap indentical to the hashmap_p with new_bucket_count number of buckets
 	hashmap new_hashmap;
-	initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset, hashmap_p->hashmap_holder.mem_allocator);
+	if(!initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset, hashmap_p->hashmap_holder.mem_allocator))
+		return 0;
 
 	{
 		// create a temporary queue variable, and push all the hashmap_p elements into it
 		queue q;
-		initialize_queue_with_allocator(&q, get_element_count_hashmap(hashmap_p), hashmap_p->hashmap_holder.mem_allocator);
+		if(!initialize_queue_with_allocator(&q, get_element_count_hashmap(hashmap_p), hashmap_p->hashmap_holder.mem_allocator))
+		{
+			deinitialize_hashmap(&new_hashmap);
+			return 0;
+		}
 		for_each_in_hashmap(hashmap_p, push_to_queue_wrapper, &q);
 
 		// pop elements in the queue 1 by 1 and transfer them from one hashmap to another
