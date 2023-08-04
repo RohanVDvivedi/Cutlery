@@ -788,11 +788,10 @@ int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 		while(!is_empty_queue(&q))
 		{
 			const void* data = get_top_of_queue(&q);
+			pop_from_queue(&q);
 
 			remove_from_hashmap(hashmap_p, data);
 			insert_in_hashmap(&new_hashmap, data);
-
-			pop_from_queue(&q);
 		}
 
 		deinitialize_queue(&q);
