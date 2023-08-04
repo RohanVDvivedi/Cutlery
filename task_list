@@ -1,20 +1,19 @@
 1. Tasks picked
 
-SINGLYLIST
- * add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
-
 ARRAYLIST
- * add functionality to add n elements at nth element from front or back.
-
-DECOMMISSION & DEPRECATE
- * stack and queue, since they can be easily implemented with direct calls to arraylist
- * array, and transfer all the array search sort functionaity to arraylist
- * use arraylist in heap and hashmap
+ *1 add functionality to add n elements at nth element from front or back.
 
 ARRAY
- * in merge sort function use containers instead of direct allocations
- * decommission array with necessary functionality from arraylist, the cost is just 1 cy_uint first_index,
- * modify search sort to use arraylist instead of array
+ *1 in merge sort function use containers instead of direct allocations
+
+SINGLYLIST
+ *3 add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
+
+DECOMMISSION & DEPRECATE
+ *2 stack and queue, since they can be easily implemented with direct calls to arraylist
+ *4 array, and transfer all the array search sort functionaity to arraylist
+ *4 use arraylist in heap and hashmap
+ *4 modify search sort to use arraylist instead of array
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
