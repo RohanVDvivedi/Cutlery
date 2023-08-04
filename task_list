@@ -4,6 +4,7 @@ SINGLYLIST
  * add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
 
 ARRAYLIST
+ * minor refactoring in arraylist remove_from_ functionality
  * add functionality to add n elements at nth element from front or back.
 
 DECOMMISSION & DEPRECATE
