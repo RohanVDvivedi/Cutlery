@@ -219,14 +219,14 @@ int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint in
 
 // the below internal function assumes that
 // index is valid, and there are atleast non-zero number of element_count_to_remove number of elements after it
-static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove)
+static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_uint index, cy_uint element_count_to_remove)
 {
-	// corresponding actual index of element at n_at from front
-	cy_uint index_concerned = add_circularly(al->first_index, n_at, get_capacity_arraylist(al));
+	// corresponding actual index of element at index from front
+	cy_uint index_concerned = add_circularly(al->first_index, index, get_capacity_arraylist(al));
 
-	// calculate the number of elements before and after the removed elements
-	cy_uint existing_elements_before_to_be_removed_ones = n_at;
-	cy_uint existing_elements_after_to_be_removed_ones = al->element_count - (n_at + element_count_to_remove);
+	// calculate the number of elements before and after the to-be removed elements
+	cy_uint existing_elements_before_to_be_removed_ones = index;
+	cy_uint existing_elements_after_to_be_removed_ones = al->element_count - (index + element_count_to_remove);
 
 	if(existing_elements_before_to_be_removed_ones <= existing_elements_after_to_be_removed_ones) // move the front elements to the vacant positions
 	{
