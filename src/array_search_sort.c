@@ -5,7 +5,7 @@
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
-void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
 		return 0;

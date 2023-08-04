@@ -34,7 +34,7 @@ void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 
 // sorting algorithm used => radix sort algorithm
 // all the elements will be ordered in increasing order of their value for get_sort_attribute()
-void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data));
+int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data));
 
 
 
