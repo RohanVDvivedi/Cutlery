@@ -94,7 +94,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		case GET_NTH_FRONT :
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
-			const int* data = get_nth_from_front_of_arraylist(al, index);
+			const int* data = get_from_front_of_arraylist(al, index);
 			printf("GET %u TH_FRONT : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
 			break;
 		}
@@ -102,7 +102,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		case GET_NTH_BACK :
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
-			const int* data = get_nth_from_back_of_arraylist(al, index);
+			const int* data = get_from_back_of_arraylist(al, index);
 			printf("GET %u TH_BACK : %d :: %p\n", index, ((data != NULL) ? (*data) : -1), data);
 			break;
 		}
@@ -111,7 +111,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
-			printf("SET %u TH_FRONT : %d : %d\n", index, *data, set_nth_from_front_in_arraylist(al, data, index));
+			printf("SET %u TH_FRONT : %d : %d\n", index, *data, set_from_front_in_arraylist(al, data, index));
 			break;
 		}
 
@@ -119,7 +119,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 		{
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
-			printf("SET %u TH_BACK : %d : %d\n", index, *data, set_nth_from_back_in_arraylist(al, data, index));
+			printf("SET %u TH_BACK : %d : %d\n", index, *data, set_from_back_in_arraylist(al, data, index));
 			break;
 		}
 
@@ -144,7 +144,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			}
 			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
 			unsigned int element_count_to_remove = ((unsigned int)non_zero_rand()) % (get_element_count_arraylist(al) - n_at);
-			int res = remove_elements_from_front_of_arraylist_at(al, n_at, element_count_to_remove);
+			int res = remove_elements_from_front_of_arraylist(al, n_at, element_count_to_remove);
 			printf("REMOVE_FRONT N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
 			break;
 		}
@@ -170,7 +170,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			}
 			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
 			unsigned int element_count_to_remove = ((unsigned int)non_zero_rand()) % (get_element_count_arraylist(al) - n_at);
-			int res = remove_elements_from_back_of_arraylist_at(al, n_at, element_count_to_remove);
+			int res = remove_elements_from_back_of_arraylist(al, n_at, element_count_to_remove);
 			printf("REMOVE_BACK N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
 			break;
 		}
