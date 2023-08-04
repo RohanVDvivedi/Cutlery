@@ -217,7 +217,7 @@ int main()
 	{
 		int op = rand() % TOTAL_OPERATIONS_SUPPORTED;
 		operate_on_arraylist(al, op);
-		if(op <= 7)	// print complete arraylist only on an update operation
+		if(op != 4 && op != 5)	// print complete arraylist only on an update operation
 			print_int_arraylist(al);
 		printf("\n\n");
 
