@@ -32,9 +32,9 @@ const void* get_top_of_queue(const queue* queue_p)
 	return get_front_of_arraylist(&(queue_p->queue_holder));
 }
 
-const void* get_nth_from_top_of_queue(const queue* queue_p, cy_uint n)
+const void* get_from_top_of_queue(const queue* queue_p, cy_uint index)
 {
-	return get_nth_from_front_of_arraylist(&(queue_p->queue_holder), n);
+	return get_from_front_of_arraylist(&(queue_p->queue_holder), index);
 }
 
 void remove_all_from_queue(queue* queue_p)

@@ -32,9 +32,9 @@ const void* get_top_of_stack(const stack* stack_p)
 	return get_back_of_arraylist(&(stack_p->stack_holder));
 }
 
-const void* get_nth_from_top_of_stack(const stack* stack_p, cy_uint n)
+const void* get_from_top_of_stack(const stack* stack_p, cy_uint index)
 {
-	return get_nth_from_back_of_arraylist(&(stack_p->stack_holder), n);
+	return get_from_back_of_arraylist(&(stack_p->stack_holder), index);
 }
 
 void remove_all_from_stack(stack* stack_p)

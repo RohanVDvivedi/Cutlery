@@ -30,7 +30,7 @@ int pop_from_queue(queue* queue_p);
 
 // returns pointer to the top element data pointer, (i.e. data pointer to the earliest inserted element) 
 const void* get_top_of_queue(const queue* queue_p);
-const void* get_nth_from_top_of_queue(const queue* queue_p, cy_uint n);
+const void* get_from_top_of_queue(const queue* queue_p, cy_uint index);
 
 // removes all the elements from queue queue_p
 // after a call to this function the queue contains 0 elements (get_element_count() == 0)

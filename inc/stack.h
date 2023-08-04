@@ -30,7 +30,7 @@ int pop_from_stack(stack* stack_p);
 
 // returns pointer to the top element data pointer, (i.e. data pointer to the last inserted element) 
 const void* get_top_of_stack(const stack* stack_p);
-const void* get_nth_from_top_of_stack(const stack* stack_p, cy_uint n);
+const void* get_from_top_of_stack(const stack* stack_p, cy_uint index);
 
 // removes all the elements from stack stack_p
 // after a call to this function the stack contains 0 elements (get_element_count() == 0)
