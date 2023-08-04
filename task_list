@@ -1,8 +1,5 @@
 1. Tasks picked
 
-DECOMMISSION & DEPRECATE
- * stack and queue, since they can be easily implemented with direct calls to arraylist
-
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
 
