@@ -37,7 +37,7 @@ int is_empty_singlylist(const singlylist* sl);
 // simply gets head, tail or nth from head data
 const void* get_head_of_singlylist(const singlylist* sl);
 const void* get_tail_of_singlylist(const singlylist* sl);
-const void* get_nth_from_head_of_singlylist(const singlylist* sl, cy_uint n);
+const void* get_from_head_of_singlylist(const singlylist* sl, cy_uint index);
 
 // get next element's data of a given data element of the singlylist
 // data_xist must be a valid data pointer existing in the singlylist

@@ -35,13 +35,13 @@ const void* get_tail_of_singlylist(const singlylist* sl)
 	return (sl->tail == NULL) ? NULL : get_data(sl->tail, sl);
 }
 
-const void* get_nth_from_head_of_singlylist(const singlylist* sl, cy_uint n)
+const void* get_from_head_of_singlylist(const singlylist* sl, cy_uint index)
 {
 	const slnode* node_p = sl->head;
-	while(node_p != NULL && n > 0)
+	while(node_p != NULL && index > 0)
 	{
 		node_p = node_p->next;
-		n--;
+		index--;
 	}
 	return (node_p == NULL) ? NULL : get_data(node_p, sl);
 }
