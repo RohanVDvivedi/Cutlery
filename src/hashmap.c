@@ -461,8 +461,13 @@ static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hash
 	{
 		case ROBINHOOD_HASHING :
 		{
+			rbhnode* node_xist = get_node(data_xist, hashmap_p);
+			// node_xist must not be a free floating node
+			if(is_free_floating_rbhnode(node_xist))
+				return NULL;
+
 			// position_index, and probe_sequence_length of the data_xist
-			cy_uint position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index;
+			cy_uint position_index = node_xist->position_index;
 			cy_uint probe_sequence_length = sub_circularly(position_index, bucket_index, get_bucket_count_hashmap(hashmap_p));
 
 			// get the position_index of the next element
@@ -527,7 +532,12 @@ static const void* get_next_of_in_hashmap_ANY_IN_HASHMAP(const hashmap* hashmap_
 	{
 		case ROBINHOOD_HASHING :
 		{
-			cy_uint next_position_index = ((rbhnode*)get_node(data_xist, hashmap_p))->position_index + 1;
+			rbhnode* node_xist = get_node(data_xist, hashmap_p);
+			// node_xist must not be a free floating node
+			if(is_free_floating_rbhnode(node_xist))
+				return NULL;
+
+			cy_uint next_position_index = node_xist->position_index + 1;
 
 			// loop until you find the next_position_index at which hashmap_holder is a non-NULL
 			for(; next_position_index < get_bucket_count_hashmap(hashmap_p) && get_from_array(&(hashmap_p->hashmap_holder), next_position_index) == NULL; next_position_index++){}
