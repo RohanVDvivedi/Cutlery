@@ -2,7 +2,6 @@
 
 ARRAYLIST
  *1 add functionality to add n elements at nth element from front or back.
- *1 add swap function
 
 ARRAY
  *1 in merge sort function use containers instead of direct allocations
