@@ -16,7 +16,6 @@ SEARCH SORT
     int set_element(const void* data_structure, const void* data_p, cy_uint index);
     int swap_elements(const void* data_structure, cy_uint i1, cy_uint i2);
   };
- * fail sort if the initialization functions fail
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
