@@ -2,7 +2,7 @@
 
 #include<linkedlist.h>
 #include<bst.h>
-#include<queue.h>
+#include<arraylist.h>
 #include<circular_buffer_array_util.h>
 
 #include<dstring.h>
@@ -747,7 +747,7 @@ void for_each_in_hashmap(const hashmap* hashmap_p, void (*operation)(const void*
 }
 
 // utility function used by resize_hashmap function only
-static void push_to_queue_wrapper(const void* hashmap_data, const void* queue_p) {	push_to_queue((queue*)(queue_p), hashmap_data);	}
+static void push_to_arraylist_wrapper(const void* hashmap_data, const void* al_p) {	push_back_to_arraylist((arraylist*)(al_p), hashmap_data);	}
 
 int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 {
@@ -776,25 +776,25 @@ int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 	// actual transfer of elements from hashmap_p to new_hashmap
 	{
 		// create a temporary queue variable, and push all the hashmap_p elements into it
-		queue q;
-		if(!initialize_queue_with_allocator(&q, get_element_count_hashmap(hashmap_p), hashmap_p->hashmap_holder.mem_allocator))
+		arraylist q;
+		if(!initialize_arraylist_with_allocator(&q, get_element_count_hashmap(hashmap_p), hashmap_p->hashmap_holder.mem_allocator))
 		{
 			deinitialize_hashmap(&new_hashmap);
 			return 0;
 		}
-		for_each_in_hashmap(hashmap_p, push_to_queue_wrapper, &q);
+		for_each_in_hashmap(hashmap_p, push_to_arraylist_wrapper, &q);
 
 		// pop elements in the queue 1 by 1 and transfer them from one hashmap to another
-		while(!is_empty_queue(&q))
+		while(!is_empty_arraylist(&q))
 		{
-			const void* data = get_top_of_queue(&q);
-			pop_from_queue(&q);
+			const void* data = get_front_of_arraylist(&q);
+			pop_front_from_arraylist(&q);
 
 			remove_from_hashmap(hashmap_p, data);
 			insert_in_hashmap(&new_hashmap, data);
 		}
 
-		deinitialize_queue(&q);
+		deinitialize_arraylist(&q);
 	}
 
 	// deinitialize hashmap_p (old empty hashmap), and shallow copy the new_hashmap in to it
