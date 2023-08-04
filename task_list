@@ -1,10 +1,10 @@
 1. Tasks picked
 
+SINGLYLIST
+ * make singlylist into a circular singly linked list. i.e tail->next == head
+
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
-
-SINGLYLIST
- * add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
 
 SEARCH SORT
  * modify search sort to use an index_accessible_interface,
