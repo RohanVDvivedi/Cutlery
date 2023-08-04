@@ -116,34 +116,59 @@ void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 
 void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
-		return;
-
-	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
-	cy_uint total_elements = last_index - start_index + 1;
-	if(total_elements <= 1)
-		return;
-
-	// always picking the last element as the pivot
-	const void* pivot = get_from_array(array_p, last_index);
-
-	cy_uint all_greater_than_pivot_start_index = start_index;
-
-	// position pivot element at its correct index
-	for(cy_uint i = start_index; i <= last_index; i++)
+	while(1)
 	{
-		if(compare(get_from_array(array_p, i), pivot) <= 0)
-			swap_in_array(array_p, all_greater_than_pivot_start_index++, i);
+		if(start_index > last_index || last_index >= get_capacity_array(array_p))
+			return;
+
+		// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
+		cy_uint total_elements = last_index - start_index + 1;
+		if(total_elements <= 1)
+			return;
+
+		// always picking the last element as the pivot
+		const void* pivot = get_from_array(array_p, last_index);
+
+		cy_uint all_greater_than_pivot_start_index = start_index;
+
+		// position pivot element at its correct index
+		for(cy_uint i = start_index; i <= last_index; i++)
+		{
+			if(compare(get_from_array(array_p, i), pivot) <= 0)
+				swap_in_array(array_p, all_greater_than_pivot_start_index++, i);
+		}
+
+		// index of the pivot element
+		cy_uint pivot_index = all_greater_than_pivot_start_index - 1;
+
+		cy_uint size_of_part_before_pivot = pivot_index - start_index;
+		cy_uint size_of_part_after_pivot = last_index - pivot_index;
+
+		if(size_of_part_before_pivot < size_of_part_after_pivot)
+		{
+			// recurse for before part and loop for after part, in order to keep stack usage to minimum
+			if(size_of_part_before_pivot > 0)
+				quick_sort_array(array_p, start_index, pivot_index - 1, compare);
+
+			// no elements after pivot to loop for
+			if(size_of_part_after_pivot == 0)
+				return;
+
+			start_index = pivot_index + 1;
+		}
+		else
+		{
+			// recurse for after part and loop for before part, in order to keep stack usage to minimum
+			if(size_of_part_after_pivot > 0)
+				quick_sort_array(array_p, pivot_index + 1, last_index, compare);
+
+			// no elements before pivot to loop for
+			if(size_of_part_before_pivot == 0)
+				return;
+
+			last_index = pivot_index - 1;
+		}
 	}
-
-	// index of the pivot element
-	cy_uint pivot_index = all_greater_than_pivot_start_index - 1;
-
-	// perform recursive quick sort on the smaller arrays excluding the pivot element
-	if(pivot_index > start_index)
-		quick_sort_array(array_p, start_index, pivot_index - 1, compare);
-	if(pivot_index < last_index)
-		quick_sort_array(array_p, pivot_index + 1, last_index, compare);
 }
 
 void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data))
