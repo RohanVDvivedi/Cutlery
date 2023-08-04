@@ -3,16 +3,14 @@
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
 
-SEARCH SORT
- * in merge sort function use containers instead of direct allocations
-
 DECOMMISSION & DEPRECATE
- * stack and queue, since they can be saily implemented with direct calls to arraylist
+ * stack and queue, since they can be easily implemented with direct calls to arraylist
  * array, and transfer all the array search sort functionaity to arraylist
+ * use arraylist in heap and hashmap
 
 ARRAY
+ * in merge sort function use containers instead of direct allocations
  * decommission array with necessary functionality from arraylist, the cost is just 1 cy_uint first_index,
- * use arraylist in hashmap and heap.
  * modify search sort to use arraylist instead of array
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
