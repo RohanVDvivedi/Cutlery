@@ -1,8 +1,5 @@
 1. Tasks picked
 
-BUG FIX IN ALL EMBEDDED NODE BASED DATASTRUCTURES
- * mostly observed in get_next_of and get_prev_of in hashmap, linkedlist, singlylist and bst data structures, we are not checking the data_xist to not be a free floating node, if it is free floating node then return NULL immediately
-
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
  * refactor and rename functions accordingly and remove redundant functions, that work only on front and back of arraylist, in favor of the nth functions
