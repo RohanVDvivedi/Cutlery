@@ -37,7 +37,7 @@ const void* get_from_array(const array* array_p, cy_uint index);
 int set_in_array(array* array_p, const void* data_p, cy_uint index);
 
 // swap elements of array at given indexes
-void swap_in_array(array* array_p, cy_uint i1, cy_uint i2);
+int swap_in_array(array* array_p, cy_uint i1, cy_uint i2);
 
 // this function effectively NULLs out all the pointers stored within data_p_p
 void remove_all_from_array(array* array_p);

@@ -68,11 +68,13 @@ int set_in_array(array* array_p, const void* data_p, cy_uint index)
 	return 0;
 }
 
-void swap_in_array(array* array_p, cy_uint i1, cy_uint i2)
+int swap_in_array(array* array_p, cy_uint i1, cy_uint i2)
 {
-	const void* data_temp_i1 = get_from_array(array_p, i1);
-	set_in_array(array_p, get_from_array(array_p, i2), i1);
-	set_in_array(array_p, data_temp_i1, i2);
+	// make sure that i1 and i2 are not out of range
+	if(i1 >= get_capacity_array(array_p) || i2 >= get_capacity_array(array_p))
+		return 0;
+	memory_swap(array_p->data_p_p + i1, array_p->data_p_p + i2, sizeof(void*));
+	return 1;
 }
 
 void remove_all_from_array(array* array_p)
