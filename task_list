@@ -17,6 +17,10 @@ SEARCH SORT
     int swap_elements(const void* data_structure, cy_uint i1, cy_uint i2);
   };
 
+  OR 
+
+ * modify search sort functions to work with arraylist only and make array and arraylist generate references for part of the array or arraylist, call them slice, which are basically array arraylist but without any memory allocator
+
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
  * struct value_arraylist_type_name
