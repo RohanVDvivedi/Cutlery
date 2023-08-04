@@ -6,6 +6,10 @@ ARRAYLIST
 SEARCH SORT
  * in merge sort function use containers instead of direct allocations
 
+DECOMMISSION & DEPRECATE
+ * stack and queue, since they can be saily implemented with direct calls to arraylist
+ * array, and transfer all the array search sort functionaity to arraylist
+
 ARRAY
  * decommission array with necessary functionality from arraylist, the cost is just 1 cy_uint first_index,
  * use arraylist in hashmap and heap.
