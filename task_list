@@ -5,7 +5,6 @@ ARRAYLIST
 
 SEARCH SORT
  * in merge sort function use containers instead of direct allocations
- * discard tail recirsion in quick sort
 
 ARRAY
  * decommission array with necessary functionality from arraylist, the cost is just 1 cy_uint first_index,
