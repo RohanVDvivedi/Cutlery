@@ -176,7 +176,7 @@ const void* get_from_front_of_arraylist(const arraylist* al, cy_uint index)
 	return get_from_array(&(al->arraylist_holder), index_concerned);
 }
 
-const void* get_nth_from_back_of_arraylist(const arraylist* al, cy_uint index)
+const void* get_from_back_of_arraylist(const arraylist* al, cy_uint index)
 {
 	// arraylist must not be empty and the index must be lesser than the element-count
 	if(is_empty_arraylist(al) || index >= al->element_count)
@@ -203,7 +203,7 @@ int set_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint index
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
 }
 
-int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index)
+int set_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index)
 {
 	// arraylist must not be empty and the index must be lesser than the element-count
 	if(is_empty_arraylist(al) || index >= al->element_count)
