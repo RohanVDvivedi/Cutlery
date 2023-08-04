@@ -4,7 +4,7 @@ SINGLYLIST
  * make singlylist into a circular singly linked list. i.e tail->next == head
 
 ARRAYLIST
- * add functionality to add n elements at nth element from front or back.
+ * add functionality to add n elements at index from front or back.
 
 SEARCH SORT
  * modify search sort to use an index_accessible_interface,
