@@ -2,6 +2,7 @@
 
 ARRAYLIST
  *1 add functionality to add n elements at nth element from front or back.
+ *1 add swap function
 
 ARRAY
  *1 in merge sort function use containers instead of direct allocations
@@ -13,7 +14,10 @@ SINGLYLIST
  *3 add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
 
 ARRAY ARRAYLIST
- *4 modify search sort to use arraylist and array, build an interface struct that identifies how to access elements using indexes, especially get_element_by_index, set_element_by_index, swap_elements_at_indices
+ *4 modify search sort to use arraylist, implement function to get arraylist pointing to an array or another arraylist
+
+SEARCH SORT
+ *5 fail search sort if initialize functions fail
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
