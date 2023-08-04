@@ -1,5 +1,8 @@
 1. Tasks picked
 
+SINGLYLIST
+ * add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
+
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
 
