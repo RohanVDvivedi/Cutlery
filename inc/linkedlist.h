@@ -41,8 +41,8 @@ int is_empty_linkedlist(const linkedlist* ll);
 // simply gets head, tail or nth from head or tail data
 const void* get_head_of_linkedlist(const linkedlist* ll);
 const void* get_tail_of_linkedlist(const linkedlist* ll);
-const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, cy_uint n);
-const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, cy_uint n);
+const void* get_from_head_of_linkedlist(const linkedlist* ll, cy_uint index);
+const void* get_from_tail_of_linkedlist(const linkedlist* ll, cy_uint index);
 
 // get next or previous element's data of a given data element of the linkedlist
 // data_xist must be a valid data pointer existing in the linkedlist

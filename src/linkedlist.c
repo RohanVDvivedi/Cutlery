@@ -36,7 +36,7 @@ const void* get_tail_of_linkedlist(const linkedlist* ll)
 	return ((ll->head == NULL) ? NULL : get_data(ll->head->prev, ll));
 }
 
-const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, cy_uint n)
+const void* get_from_head_of_linkedlist(const linkedlist* ll, cy_uint index)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
@@ -44,10 +44,10 @@ const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, cy_uint n)
 	llnode* node_p = ll->head;
 	do
 	{
-		if(n == 0)
+		if(index == 0)
 			return get_data(node_p, ll);
 		node_p = node_p->next;
-		n--;
+		index--;
 	}
 	while(node_p != ll->head);
 
@@ -55,7 +55,7 @@ const void* get_nth_from_head_of_linkedlist(const linkedlist* ll, cy_uint n)
 	return NULL;
 }
 
-const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, cy_uint n)
+const void* get_from_tail_of_linkedlist(const linkedlist* ll, cy_uint index)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
@@ -65,10 +65,10 @@ const void* get_nth_from_tail_of_linkedlist(const linkedlist* ll, cy_uint n)
 	llnode* node_p = tail;
 	do
 	{
-		if(n == 0)
+		if(index == 0)
 			return get_data(node_p, ll);
 		node_p = node_p->prev;
-		n--;
+		index--;
 	}
 	while(node_p != tail);
 
