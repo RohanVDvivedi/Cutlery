@@ -54,10 +54,10 @@ int set_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint index
 int set_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index);
 // set_nth_from_*_in_arraylist functions will fail and return 0 if index is greater than element_count of the arraylist
 
-// remove `element_count_to_remove` elements from front or back of arraylist, at index n_at
-// these functions are O(N), hence I do not recommend using them
-int remove_elements_from_front_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove);
-int remove_elements_from_back_of_arraylist_at(arraylist* al, cy_uint n_at, cy_uint element_count_to_remove);
+// remove `element_count_to_remove` elements from front or back of arraylist, at given index (indexed from front or back respectively)
+// these functions are O(N) (obviously)
+int remove_elements_from_front_of_arraylist(arraylist* al, cy_uint index, cy_uint element_count_to_remove);
+int remove_elements_from_back_of_arraylist(arraylist* al, cy_uint index, cy_uint element_count_to_remove);
 
 // returns capacity of the arraylist, i.e. the maximum number of elements that can be accomodated in arraylist
 cy_uint get_capacity_arraylist(const arraylist* al);
