@@ -104,10 +104,10 @@ int main()
 	insert_tail_in_singlylist(sl, &((ts){6, "six"}));
 	print_ts_singlylist(sl);
 
-	print_ts(get_nth_from_head_of_singlylist(sl, 1));
+	print_ts(get_from_head_of_singlylist(sl, 1));
 	printf("\n\n");
 
-	insert_after_in_singlylist(sl, get_nth_from_head_of_singlylist(sl, 1), &((ts){3, "three"}));
+	insert_after_in_singlylist(sl, get_from_head_of_singlylist(sl, 1), &((ts){3, "three"}));
 	print_ts_singlylist(sl);
 
 	// check get next and prev functionality
@@ -132,7 +132,7 @@ int main()
 	remove_head_from_singlylist(sl);
 	print_ts_singlylist(sl);
 
-	const ts* temp = get_nth_from_head_of_singlylist(sl, 2);
+	const ts* temp = get_from_head_of_singlylist(sl, 2);
 
 	const ts* removed_data = remove_next_of_from_singlylist(sl, temp);
 	print_ts_singlylist(sl);
@@ -140,10 +140,10 @@ int main()
 	printf("Error on inserting after a not existing node %d\n", insert_after_in_singlylist(sl, removed_data, &((ts){-1, "minus one"})));
 	print_ts_singlylist(sl);
 
-	insert_after_in_singlylist(sl, get_nth_from_head_of_singlylist(sl, 1), removed_data);
+	insert_after_in_singlylist(sl, get_from_head_of_singlylist(sl, 1), removed_data);
 	print_ts_singlylist(sl);
 
-	printf("Error on inserting an existing node %d\n", insert_after_in_singlylist(sl, removed_data, get_nth_from_head_of_singlylist(sl, 3)));
+	printf("Error on inserting an existing node %d\n", insert_after_in_singlylist(sl, removed_data, get_from_head_of_singlylist(sl, 3)));
 	print_ts_singlylist(sl);
 
 	printf("Searching for structure with a = 4\n");
@@ -170,11 +170,11 @@ int main()
 	print_ts(find_equals_in_singlylist(sl, &((ts){5}), test_compare));
 	printf("\n\n");
 
-	printf("Testing get_nth_from_head\n");
+	printf("Testing get_from_head\n");
 	for(unsigned int i = 0; i < 7; i++)
 	{
 		printf("get_(%u)_th_from_head : ", i);
-		print_ts(get_nth_from_head_of_singlylist(sl, i));
+		print_ts(get_from_head_of_singlylist(sl, i));
 		printf("\n");
 	}
 	printf("\n");
@@ -218,7 +218,7 @@ int main()
 	printf("testInsertAllAfter: \n");
 	print_ts_singlylist(testInsertAllAfter);
 
-	insert_all_after_in_singlylist(sl, get_nth_from_head_of_singlylist(sl, 2), testInsertAllAfter);
+	insert_all_after_in_singlylist(sl, get_from_head_of_singlylist(sl, 2), testInsertAllAfter);
 	print_ts_singlylist(sl);
 
 	printf("testInsertAllAfter: \n");
@@ -247,11 +247,11 @@ int main()
 	remove_all_from_singlylist(sl);
 	print_ts_singlylist(sl);
 
-	printf("Testing get_nth_from_head\n");
+	printf("Testing get_from_head\n");
 	for(unsigned int i = 0; i < 2; i++)
 	{
 		printf("get_(%u)_th_from_head : ", i);
-		print_ts(get_nth_from_head_of_singlylist(sl, i));
+		print_ts(get_from_head_of_singlylist(sl, i));
 		printf("\n");
 	}
 	printf("\n");

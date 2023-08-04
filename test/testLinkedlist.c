@@ -185,19 +185,19 @@ int main()
 	print_ts(find_equals_in_linkedlist(ll, &((ts){5}), test_compare));
 	printf("\n\n");
 
-	printf("Testing get_nth_from_head\n");
+	printf("Testing get_from_head\n");
 	for(unsigned int i = 0; i < 7; i++)
 	{
-		printf("get_(%u)_th_from_head : ", i);
+		printf("get_th_from_head(%u) : ", i);
 		print_ts(get_from_head_of_linkedlist(ll, i));
 		printf("\n");
 	}
 	printf("\n");
 
-	printf("Testing get_nth_from_tail\n");
+	printf("Testing get_from_tail\n");
 	for(unsigned int i = 0; i < 7; i++)
 	{
-		printf("get_(%u)_th_from_tail : ", i);
+		printf("get_from_tail(%u) : ", i);
 		print_ts(get_from_tail_of_linkedlist(ll, i));
 		printf("\n");
 	}
@@ -294,19 +294,19 @@ int main()
 	remove_all_from_linkedlist(ll);
 	print_ts_linkedlist(ll);
 
-	printf("Testing get_nth_from_head\n");
+	printf("Testing get_from_head\n");
 	for(unsigned int i = 0; i < 2; i++)
 	{
-		printf("get_(%u)_th_from_head : ", i);
+		printf("get_th_from_head(%u) : ", i);
 		print_ts(get_from_head_of_linkedlist(ll, i));
 		printf("\n");
 	}
 	printf("\n");
 
-	printf("Testing get_nth_from_tail\n");
+	printf("Testing get_from_tail\n");
 	for(unsigned int i = 0; i < 2; i++)
 	{
-		printf("get_(%u)_th_from_tail : ", i);
+		printf("get_th_from_tail(%u) : ", i);
 		print_ts(get_from_tail_of_linkedlist(ll, i));
 		printf("\n");
 	}
