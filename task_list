@@ -6,14 +6,14 @@ ARRAYLIST
 ARRAY
  *1 in merge sort function use containers instead of direct allocations
 
+DECOMMISSION & DEPRECATE
+ *2 stack and queue, since they can be easily implemented with direct calls to arraylist
+
 SINGLYLIST
  *3 add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
 
-DECOMMISSION & DEPRECATE
- *2 stack and queue, since they can be easily implemented with direct calls to arraylist
- *4 array, and transfer all the array search sort functionaity to arraylist
- *4 use arraylist in heap and hashmap
- *4 modify search sort to use arraylist instead of array
+ARRAY ARRAYLIST
+ *4 modify search sort to use arraylist and array, build an interface struct that identifies how to access elements using indexes, especially get_element_by_index, set_element_by_index, swap_elements_at_indices
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
