@@ -21,19 +21,22 @@ SEARCH SORT
 
  * modify search sort functions to work with arraylist only and make array and arraylist generate references for part of the array or arraylist, call them slice, which are basically array arraylist but without any memory allocator
 
+HASHMAP
+ * implement algorithm to resize hashmap without using a separate arraylist as queue
+
+2. Add new datastructure types tasks (*future)
+
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
  * struct value_arraylist_type_name
-	{
-		cy_uint first;						// first element's index
-		cy_uint element_count;		// number of elements in the value_arraylist
-		cy_uint capacity;					// number of elements that can be accomodated in the value_arraylist
-		memory_allocator mem_allocator; // allocator to use
-		value_type* data;				// actual data array
-	};
+  {
+    cy_uint first;            // first element's index
+    cy_uint element_count;    // number of elements in the value_arraylist
+    cy_uint capacity;         // number of elements that can be accomodated in the value_arraylist
+    memory_allocator mem_allocator; // allocator to use
+    value_type* data;       // actual data array
+  };
  * add comment that this (value_arraylist) is suppossed to be used with only small ephemeral structs and primitive types, that have no immovable attributes like (synchronization primitives like) mutex, conditional variables or semaphores
-
-2. Add new datastructure types tasks (*future)
 
 RESOURCE_CLEANUP_STACK (NEW DATASTRUCTURE)
  * build as an implementation of value_arraylist
