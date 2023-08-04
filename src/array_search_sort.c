@@ -1,6 +1,6 @@
 #include<array.h>
 #include<heap.h>
-#include<queue.h>
+#include<arraylist.h>
 
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
@@ -182,9 +182,9 @@ void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, u
 		return;
 
 	// construct temporary queues for 0 and 1 bit containing elements
-	queue sort_queue[2];
-	initialize_queue_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator);
-	initialize_queue_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator);
+	arraylist sort_queue[2];
+	initialize_arraylist_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator);
+	initialize_arraylist_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator);
 
 	for(cy_uint i = 0; i < (sizeof(unsigned long long int) * CHAR_BIT); i++)
 	{
@@ -193,26 +193,26 @@ void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, u
 		{
 			const void* data = get_from_array(array_p, index++);
 			unsigned int queue_index = ((get_sort_attribute(data) >> i) & 1ULL);
-			push_to_queue(&(sort_queue[queue_index]), data);
+			push_back_to_arraylist(&(sort_queue[queue_index]), data);
 		}
 
 		index = start_index;
-		while(!is_empty_queue(&(sort_queue[0])))
+		while(!is_empty_arraylist(&(sort_queue[0])))
 		{
-			const void* data = get_top_of_queue(&(sort_queue[0]));
+			const void* data = get_front_of_arraylist(&(sort_queue[0]));
+			pop_front_from_arraylist(&(sort_queue[0]));
 			set_in_array(array_p, data, index++);
-			pop_from_queue(&(sort_queue[0]));
 		}
-		while(!is_empty_queue(&(sort_queue[1])))
+		while(!is_empty_arraylist(&(sort_queue[1])))
 		{
-			const void* data = get_top_of_queue(&(sort_queue[1]));
+			const void* data = get_front_of_arraylist(&(sort_queue[1]));
+			pop_front_from_arraylist(&(sort_queue[1]));
 			set_in_array(array_p, data, index++);
-			pop_from_queue(&(sort_queue[1]));
 		}
 	}
 
-	deinitialize_queue(&(sort_queue[0]));
-	deinitialize_queue(&(sort_queue[1]));
+	deinitialize_arraylist(&(sort_queue[0]));
+	deinitialize_arraylist(&(sort_queue[1]));
 }
 
 
