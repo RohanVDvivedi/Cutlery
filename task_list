@@ -1,22 +1,25 @@
 1. Tasks picked
 
-ARRAYLIST
- *1 add functionality to add n elements at nth element from front or back.
-
-ARRAY
- *1 in merge sort function use containers instead of direct allocations
-
 DECOMMISSION & DEPRECATE
- *2 stack and queue, since they can be easily implemented with direct calls to arraylist
+ * stack and queue, since they can be easily implemented with direct calls to arraylist
+
+ARRAYLIST
+ * add functionality to add n elements at nth element from front or back.
 
 SINGLYLIST
- *3 add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
-
-ARRAY ARRAYLIST
- *4 modify search sort to use arraylist, implement function to get arraylist pointing to an array or another arraylist
+ * add a terminal_node, a node that can allow implementing an is_free_floating node api in singlylist
 
 SEARCH SORT
- *5 fail search sort if initialize functions fail
+ * modify search sort to use an index_accessible_interface,
+  typedef struct index_accessible_interface index_accessible_interface;
+  struct index_accessible_interface
+  {
+    const void* data_structure;
+    const void* get_element(const void* data_structure, cy_uint index);
+    int set_element(const void* data_structure, const void* data_p, cy_uint index);
+    int swap_elements(const void* data_structure, cy_uint i1, cy_uint i2);
+  };
+ * fail sort if the initialization functions fail
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
