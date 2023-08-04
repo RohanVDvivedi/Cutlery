@@ -217,6 +217,32 @@ int set_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index)
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
 }
 
+int swap_from_front_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2)
+{
+	if(i1 >= get_element_count_arraylist(al) || i2 >= get_element_count_arraylist(al))
+		return 0;
+
+	// convert them to index that we would be concerned with in the arraylist_holder
+	cy_uint i1_concerned = add_circularly(al->first_index, i1, get_capacity_arraylist(al));
+	cy_uint i2_concerned = add_circularly(al->first_index, i2, get_capacity_arraylist(al));
+
+	return swap_in_array(&(al->arraylist_holder), i1_concerned, i2_concerned);
+}
+
+int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2)
+{
+	if(i1 >= get_element_count_arraylist(al) || i2 >= get_element_count_arraylist(al))
+		return 0;
+
+	cy_uint last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
+
+	// convert them to index that we would be concerned with in the arraylist_holder
+	cy_uint i1_concerned = sub_circularly(last_index, i1, get_capacity_arraylist(al));
+	cy_uint i2_concerned = sub_circularly(last_index, i2, get_capacity_arraylist(al));
+
+	return swap_in_array(&(al->arraylist_holder), i1_concerned, i2_concerned);
+}
+
 // the below internal function assumes that
 // index is valid, and there are atleast non-zero number of element_count_to_remove number of elements after it
 static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_uint index, cy_uint element_count_to_remove)
