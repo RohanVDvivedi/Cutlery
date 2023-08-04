@@ -31,15 +31,12 @@ int initialize_arraylist_with_memory(arraylist* al, cy_uint capacity, const void
 // push_*_to_arraylist functions will push data_p to the front/back of the arraylist, and will return 1 on success
 int push_front_to_arraylist(arraylist* al, const void* data_p);
 int push_back_to_arraylist(arraylist* al, const void* data_p);
-// push_*_to_arraylist functions will fail and return 0, if the arraylist if_full
-// this happens because the arraylist does not have additional space to store the new element
-// if this happens you may call expand_arraylist to  expand the arrayholder of the arraylist
+// push_*_to_arraylist functions will fail and return 0, if the arraylist is_full
 
 // pop_*_from_arraylist functions will pop a data element from the front/back of the arraylist, and will return 1 on success
 int pop_front_from_arraylist(arraylist* al);
 int pop_back_from_arraylist(arraylist* al);
-// pop_*_from_arraylist functions will fail and return 0, if no element was popped from the arraylist 
-// This happens if the number of elements in the given arraylist is 0
+// pop_*_from_arraylist functions will fail and return 0, if arraylist is_empty
 
 // returns an element at the front/back of the arraylist
 // it fails and returns NULL, if the arraylist is empty
