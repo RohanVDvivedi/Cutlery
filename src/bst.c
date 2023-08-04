@@ -227,6 +227,9 @@ static const bstnode* get_inorder_prev_node(const bstnode* node_p)
 const void* get_inorder_next_of_in_bst(const bst* bst_p, const void* data_xist)
 {
 	const bstnode* node_xist = get_node(data_xist, bst_p);
+	// node_xist must not be free floating
+	if(is_free_floating_bstnode(node_xist))
+		return NULL;
 	const bstnode* node_next = get_inorder_next_node(node_xist);
 	return (node_next != NULL) ? get_data(node_next, bst_p) : NULL;
 }
@@ -234,6 +237,9 @@ const void* get_inorder_next_of_in_bst(const bst* bst_p, const void* data_xist)
 const void* get_inorder_prev_of_in_bst(const bst* bst_p, const void* data_xist)
 {
 	const bstnode* node_xist = get_node(data_xist, bst_p);
+	// node_xist must not be free floating
+	if(is_free_floating_bstnode(node_xist))
+		return NULL;
 	const bstnode* node_prev = get_inorder_prev_node(node_xist);;
 	return (node_prev != NULL) ? get_data(node_prev, bst_p) : NULL;
 }
