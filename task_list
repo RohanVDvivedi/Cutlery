@@ -15,12 +15,13 @@ VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
 	};
  * add comment that this (value_arraylist) is suppossed to be used with only small ephemeral structs and primitive types, that have no immovable attributes like (synchronization primitives like) mutex, conditional variables or semaphores
 
-SEARCH_SORT extension
- * modify search sort to extend to all cutlery data structure that allow index based access (arraylist and array (and value_arraylist if you can do it))
- * make an interface structure consisting of functions to get_element_by_index, set_element_by_index, swap_elements_at_indices and get_element_count, this will allow easily implement the above feature for both
-
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
+
+ARRAY
+ * decommission array with necessary functionality from arraylist, the cost is just 1 cy_uint first_index,
+ * use arraylist in hashmap and heap.
+ * modify search sort to use arraylist instead of array
 
 2. Add new datastructure types tasks (*future)
 
