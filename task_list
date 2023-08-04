@@ -2,7 +2,6 @@
 
 ARRAYLIST
  * add functionality to add n elements at nth element from front or back.
- * refactor and rename functions accordingly and remove redundant functions, that work only on front and back of arraylist, in favor of the nth functions
 
 SEARCH SORT
  * in merge sort function use containers instead of direct allocations
