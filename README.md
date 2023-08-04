@@ -28,8 +28,6 @@ A C (standard C99) library that provides configurable data structures, serving a
    * `#include<cutlery_stds.h>`
    * `#include<array.h>`
    * `#include<arraylist.h>`
-   * `#include<stack.h>`
-   * `#include<queue.h>`
    * `#include<heap.h>`
    * `#include<linkedlist.h>`
    * `#include<singlylist.h>`
