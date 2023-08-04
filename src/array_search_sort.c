@@ -8,18 +8,20 @@
 void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
-		return;
+		return 0;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
 	cy_uint total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
-		return;
+		return 1;
 
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
 	const void** src  = array_p->data_p_p + start_index;
 
 	cy_uint dest_bytes = sizeof(void*) * total_elements;
 	const void** dest = aligned_allocate(array_p->mem_allocator, &dest_bytes, _Alignof(void*));
+	if(dest == NULL)
+		return 0;
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	cy_uint sort_chunk_size = 1;
@@ -82,6 +84,8 @@ void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 		memory_move(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
 		deallocate(array_p->mem_allocator, src, dest_bytes);
 	}
+
+	return 1;
 }
 
 void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
@@ -171,20 +175,25 @@ void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 	}
 }
 
-void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data))
+int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data))
 {
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
-		return;
+		return 0;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
 	cy_uint total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
-		return;
+		return 1;
 
 	// construct temporary queues for 0 and 1 bit containing elements
 	arraylist sort_queue[2];
-	initialize_arraylist_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator);
-	initialize_arraylist_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator);
+	if(!initialize_arraylist_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator))
+		return 0;
+	if(!initialize_arraylist_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator))
+	{
+		deinitialize_arraylist(&(sort_queue[0]));
+		return 0;
+	}
 
 	for(cy_uint i = 0; i < (sizeof(unsigned long long int) * CHAR_BIT); i++)
 	{
@@ -213,6 +222,8 @@ void radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, u
 
 	deinitialize_arraylist(&(sort_queue[0]));
 	deinitialize_arraylist(&(sort_queue[1]));
+
+	return 1;
 }
 
 

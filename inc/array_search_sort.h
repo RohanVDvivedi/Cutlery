@@ -24,7 +24,7 @@ typedef struct array array;
 
 
 // sorting algorithm used => merge sort algorithm (iterative approach)
-void merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
 
 // sorting algorithm used => heap sort algorithm
 void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
