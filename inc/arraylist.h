@@ -45,15 +45,14 @@ const void* get_back_of_arraylist(const arraylist* al);
 // get_*_of_arraylist functions will fail and return NULL if the number of elements in the given arraylist is 0
 
 // to get nth element from the front/back of the arraylist
-const void* get_nth_from_front_of_arraylist(const arraylist* al, cy_uint n);
-const void* get_nth_from_back_of_arraylist(const arraylist* al, cy_uint n);
-// get_nth_from_*_of_arraylist functions will fail and return NULL if n is greater than the number of elements in the given arraylist
+const void* get_from_front_of_arraylist(const arraylist* al, cy_uint index);
+const void* get_from_back_of_arraylist(const arraylist* al, cy_uint index);
+// get_from_*_of_arraylist functions will fail and return NULL if index is greater than element_count of the arraylist
 
 // to set nth element from front/back in the arraylist to data_p pointer
-int set_nth_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint n);
-int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n);
-// set_nth_from_*_in_arraylist functions will fail and return 0 if n is greater than the number of elements in the given arraylist
-// on success, these functions will return 1
+int set_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint index);
+int set_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index);
+// set_nth_from_*_in_arraylist functions will fail and return 0 if index is greater than element_count of the arraylist
 
 // remove `element_count_to_remove` elements from front or back of arraylist, at index n_at
 // these functions are O(N), hence I do not recommend using them

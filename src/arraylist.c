@@ -163,55 +163,55 @@ const void* get_back_of_arraylist(const arraylist* al)
 	return get_from_array(&(al->arraylist_holder), get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al)));
 }
 
-const void* get_nth_from_front_of_arraylist(const arraylist* al, cy_uint n)
+const void* get_from_front_of_arraylist(const arraylist* al, cy_uint index)
 {
-	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_empty_arraylist(al) || n >= al->element_count)
+	// arraylist must not be empty and the index must be lesser than the element-count
+	if(is_empty_arraylist(al) || index >= al->element_count)
 		return NULL;
 
 	// find the index of our concern
-	cy_uint index_concerned = add_circularly(al->first_index, n, get_capacity_arraylist(al));
+	cy_uint index_concerned = add_circularly(al->first_index, index, get_capacity_arraylist(al));
 
 	// find the concerned element and return it
 	return get_from_array(&(al->arraylist_holder), index_concerned);
 }
 
-const void* get_nth_from_back_of_arraylist(const arraylist* al, cy_uint n)
+const void* get_nth_from_back_of_arraylist(const arraylist* al, cy_uint index)
 {
-	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_empty_arraylist(al) || n >= al->element_count)
+	// arraylist must not be empty and the index must be lesser than the element-count
+	if(is_empty_arraylist(al) || index >= al->element_count)
 		return NULL;
 
 	// find the index of our concern
 	cy_uint last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
-	cy_uint index_concerned = sub_circularly(last_index, n, get_capacity_arraylist(al));
+	cy_uint index_concerned = sub_circularly(last_index, index, get_capacity_arraylist(al));
 
 	// find the concerned element and return it
 	return get_from_array(&(al->arraylist_holder), index_concerned);
 }
 
-int set_nth_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
+int set_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint index)
 {
-	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_empty_arraylist(al) || n >= al->element_count)
+	// arraylist must not be empty and the index must be lesser than the element-count
+	if(is_empty_arraylist(al) || index >= al->element_count)
 		return 0;
 
 	// find the index of our concern
-	cy_uint index_concerned = add_circularly(al->first_index, n, get_capacity_arraylist(al));
+	cy_uint index_concerned = add_circularly(al->first_index, index, get_capacity_arraylist(al));
 
 	// find the concerned element and set it
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
 }
 
-int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint n)
+int set_nth_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index)
 {
-	// arraylist must not be empty and the index-n must be lesser than the element-count
-	if(is_empty_arraylist(al) || n >= al->element_count)
+	// arraylist must not be empty and the index must be lesser than the element-count
+	if(is_empty_arraylist(al) || index >= al->element_count)
 		return 0;
 
 	// find the index of our concern
 	cy_uint last_index = get_last_index(al->first_index, al->element_count, get_capacity_arraylist(al));
-	cy_uint index_concerned = sub_circularly(last_index , n, get_capacity_arraylist(al));
+	cy_uint index_concerned = sub_circularly(last_index, index, get_capacity_arraylist(al));
 
 	// find the concerned element and return it
 	return set_in_array(&(al->arraylist_holder), data_p, index_concerned);
