@@ -31,7 +31,7 @@ void print_int_arraylist(arraylist* al)
 	printf("\n");
 }
 
-#define TOTAL_OPERATIONS_SUPPORTED 8
+#define TOTAL_OPERATIONS_SUPPORTED 12
 
 typedef enum al_op al_op;
 enum al_op
@@ -40,12 +40,14 @@ enum al_op
 	PUSH_BACK,			// 1
 	POP_FRONT,			// 2
 	POP_BACK,			// 3
-	SET_NTH_FRONT,		// 4
-	SET_NTH_BACK,		// 5
-	REMOVE_FRONT_N_NTH,	// 6
-	REMOVE_BACK_N_NTH,	// 7
-	GET_NTH_FRONT,		// 8
-	GET_NTH_BACK,		// 9
+	GET_NTH_FRONT,		// 4
+	GET_NTH_BACK,		// 5
+	SET_NTH_FRONT,		// 6
+	SET_NTH_BACK,		// 7
+	SWAP_FRONT,			// 8
+	SWAP_BACK,			// 9
+	REMOVE_FRONT_N_NTH,	// 10
+	REMOVE_BACK_N_NTH,	// 11
 };
 
 #define INITIAL_TOTAL_SIZE 12
@@ -120,6 +122,22 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
 			printf("SET %u TH_BACK : %d : %d\n", index, *data, set_from_back_in_arraylist(al, data, index));
+			break;
+		}
+
+		case SWAP_FRONT :
+		{
+			unsigned int i1 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			unsigned int i2 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			printf("SWAP_FRONT %u and %u : %d\n", i1, i2, swap_from_front_in_arraylist(al, i1, i2));
+			break;
+		}
+
+		case SWAP_BACK :
+		{
+			unsigned int i1 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			unsigned int i2 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			printf("SWAP_BACK %u and %u : %d\n", i1, i2, swap_from_back_in_arraylist(al, i1, i2));
 			break;
 		}
 
