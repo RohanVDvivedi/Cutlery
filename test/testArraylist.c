@@ -127,16 +127,16 @@ void operate_on_arraylist(arraylist* al, al_op op)
 
 		case SWAP_FRONT :
 		{
-			unsigned int i1 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
-			unsigned int i2 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			unsigned int i1 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.005));
+			unsigned int i2 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.005));
 			printf("SWAP_FRONT %u and %u : %d\n", i1, i2, swap_from_front_in_arraylist(al, i1, i2));
 			break;
 		}
 
 		case SWAP_BACK :
 		{
-			unsigned int i1 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
-			unsigned int i2 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.2));
+			unsigned int i1 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.005));
+			unsigned int i2 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.005));
 			printf("SWAP_BACK %u and %u : %d\n", i1, i2, swap_from_back_in_arraylist(al, i1, i2));
 			break;
 		}
