@@ -54,6 +54,11 @@ int set_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint index
 int set_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index);
 // set_nth_from_*_in_arraylist functions will fail and return 0 if index is greater than element_count of the arraylist
 
+// swap elements from front or back in the arraylist
+int swap_from_front_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2);
+int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2);
+// returns 0, failure, if either of i1 or i2 are out of bounds
+
 // remove `element_count_to_remove` elements from front or back of arraylist, at given index (indexed from front or back respectively)
 // these functions are O(N) (obviously)
 int remove_elements_from_front_of_arraylist(arraylist* al, cy_uint index, cy_uint element_count_to_remove);
