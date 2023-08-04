@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<stack.h>
+#include<arraylist.h>
 
 typedef struct teststruct ts;
 struct teststruct
@@ -19,35 +19,35 @@ void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 	snprintf_dstring(append_str, "%d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-void print_ts_stack(stack* stack_p)
+void print_ts_stack(arraylist* stack_p)
 {
 	dstring str;
 	init_dstring(&str, "", 0);
-	sprint_stack(&str, stack_p, sprint_ts, 0);
+	sprint_arraylist(&str, stack_p, sprint_ts, 0);
 	printf_dstring(&str);
 	deinit_dstring(&str);
 	printf("\n");
 }
 
-void push_stack_SAFE(stack* stack_p, const void* data_p)
+void push_stack_SAFE(arraylist* stack_p, const void* data_p)
 {
-	if(is_full_stack(stack_p))
-		expand_stack(stack_p);
-	push_to_stack(stack_p, data_p);
+	if(is_full_arraylist(stack_p))
+		expand_arraylist(stack_p);
+	push_back_to_arraylist(stack_p, data_p);
 }
 
-void pop_stack_OPTIMUM_MEMORY(stack* stack_p)
+void pop_stack_OPTIMUM_MEMORY(arraylist* stack_p)
 {
-	pop_from_stack(stack_p);
-	if(get_capacity_stack(stack_p) > 1.5 * get_element_count_stack(stack_p))
-		shrink_stack(stack_p);
+	pop_back_from_arraylist(stack_p);
+	if(get_capacity_arraylist(stack_p) > 1.5 * get_element_count_arraylist(stack_p))
+		shrink_arraylist(stack_p);
 }
 
 int main()
 {
-	stack stack_temp;
-	stack* stack_p = &stack_temp;
-	initialize_stack(stack_p, 3);
+	arraylist stack_temp;
+	arraylist* stack_p = &stack_temp;
+	initialize_arraylist(stack_p, 3);
 	
 	print_ts_stack(stack_p);
 
@@ -126,7 +126,7 @@ int main()
 	pop_stack_OPTIMUM_MEMORY(stack_p);
 	print_ts_stack(stack_p);
 
-	remove_all_from_stack(stack_p);
+	remove_all_from_arraylist(stack_p);
 	print_ts_stack(stack_p);
 
 	pop_stack_OPTIMUM_MEMORY(stack_p);
@@ -135,6 +135,6 @@ int main()
 	pop_stack_OPTIMUM_MEMORY(stack_p);
 	print_ts_stack(stack_p);
 
-	deinitialize_stack(stack_p);
+	deinitialize_arraylist(stack_p);
 	return 0;
 }
