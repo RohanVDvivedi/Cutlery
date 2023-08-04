@@ -232,13 +232,13 @@ static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_u
 	{
 		// move elements one by one
 		cy_uint elements_to_be_moved = existing_elements_before_to_be_removed_ones;
-		cy_uint index_to_move_from = sub_circularly(index_concerned, 1, get_capacity_arraylist(al));
-		cy_uint index_to_move_to = add_circularly(index_concerned, element_count_to_remove - 1, get_capacity_arraylist(al));
+		cy_uint index_to_move_from = index_concerned;
+		cy_uint index_to_move_to = add_circularly(index_concerned, element_count_to_remove, get_capacity_arraylist(al));
 		while(elements_to_be_moved > 0)
 		{
-			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
 			index_to_move_from = sub_circularly(index_to_move_from, 1, get_capacity_arraylist(al));
 			index_to_move_to = sub_circularly(index_to_move_to, 1, get_capacity_arraylist(al));
+			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
 			elements_to_be_moved--;
 		}
 
@@ -246,9 +246,15 @@ static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_u
 		circularly_NULL_elements(al, al->first_index, element_count_to_remove);
 
 		// handling post the movement of the front elements
-		// move first_index forward by `element_count_to_remove` number of indices, and decrement the element_count
-		al->first_index = add_circularly(al->first_index, element_count_to_remove, get_capacity_arraylist(al));
+		// decrement the element_count
 		al->element_count -= element_count_to_remove;
+
+		// if we had to remove all the elements then, reset the first_index
+		if(al->element_count == 0)
+			al->first_index = 0;
+		else
+			// move first_index forward by `element_count_to_remove` number of indices, and decrement the element_count
+			al->first_index = add_circularly(al->first_index, element_count_to_remove, get_capacity_arraylist(al));
 	}
 	else // move the back elements to the vacant positions
 	{
@@ -270,11 +276,11 @@ static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_u
 		// handling post the movement of the back elements
 		// decrement the element_count
 		al->element_count -= element_count_to_remove;
-	}
 
-	// if we had to remove all the elements then, reset the first_index
-	if(al->element_count == 0)
-		al->first_index = 0;
+		// if we had to remove all the elements then, reset the first_index
+		if(al->element_count == 0)
+			al->first_index = 0;
+	}
 }
 
 int remove_elements_from_front_of_arraylist(arraylist* al, cy_uint index, cy_uint element_count_to_remove)
