@@ -113,15 +113,13 @@ int insert_tail_in_singlylist(singlylist* sl, const void* data)
 	return 1;
 }
 
-// TODO from here --
-
 int insert_after_in_singlylist(singlylist* sl, const void* data_xist, const void* data)
 {
 	slnode* node_xist = get_node(data_xist, sl);
 	slnode* node_p = get_node(data, sl);
 
-	// node_xist must not be a new node and node_p must be a new node
-	if(is_new_slnode(sl, node_xist) || !is_new_slnode(sl, node_p))
+	// node_xist must not be a free floating node and node_p must be a free floating node
+	if(is_free_floating_slnode(node_xist) || !is_free_floating_slnode(node_p))
 		return 0;
 
 	// insert the new node in the singlylist after the node_xist
@@ -134,6 +132,8 @@ int insert_after_in_singlylist(singlylist* sl, const void* data_xist, const void
 
 	return 1;
 }
+
+// TODO from here --
 
 int insert_all_at_head_in_singlylist(singlylist* sl, singlylist* insert_from_sl)
 {
