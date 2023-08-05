@@ -103,4 +103,8 @@ void deinitialize_arraylist(arraylist* al);
 
 #include<indexed_search_sort.h>
 
+// NOTE:: DO NOT MODIFY THE ARRAY DURING THE ACTIVE LIFE TIME OF THE INDEX_ACCESSED_INTERFACE OF THAT ARRAY
+
+index_accessed_interface get_index_accessed_interface_for_array(array* array_p);
+
 #endif

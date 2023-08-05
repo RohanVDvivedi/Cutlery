@@ -89,4 +89,9 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 
 #include<indexed_search_sort.h>
 
+// NOTE:: DO NOT MODIFY THE ARRAYLIST DURING THE ACTIVE LIFE TIME OF THE INDEX_ACCESSED_INTERFACE OF THAT ARRAYLIST
+
+index_accessed_interface get_index_accessed_interface_for_front_of_arraylist(arraylist* al);
+index_accessed_interface get_index_accessed_interface_for_back_of_arraylist(arraylist* al);
+
 #endif
