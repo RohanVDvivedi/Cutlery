@@ -344,8 +344,9 @@ void radix_sort_singlylist(singlylist* sl, unsigned long long int (*get_sort_att
 	}
 }
 
-// TODO from here --
-
+// only swaps positions of *node1_p_p and *node2_p_p
+// node1_p_p and node2_p_p are pointers to the next pointers of their corresponding previous nodes
+// The above statement is the reason why this is not a part of public api !!
 static void swap_nodes_singlylist(slnode** node1_p_p, slnode** node2_p_p)
 {
 	if((*node1_p_p) == (*node2_p_p))
@@ -361,6 +362,8 @@ static void swap_nodes_singlylist(slnode** node1_p_p, slnode** node2_p_p)
 	(*node1_p_p)->next = (*node2_p_p)->next;
 	(*node2_p_p)->next = temp;
 }
+
+// TODO from here --
 
 void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, const void* data2))
 {
