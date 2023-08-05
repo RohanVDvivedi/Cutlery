@@ -379,24 +379,27 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 		slnode** next = &((*curr)->next);
 		while((*next) != sl->head)
 		{
+
 			if(compare(get_data(*curr, sl), get_data(*next, sl)) > 0)
 			{
+				slnode* curr_cached = (*curr);
+				slnode* next_cached = (*next);
+
 				swaps_performed++;
 				swap_nodes_singlylist(curr, next);
 
-				// now the nodes pointed by *curr and *next have been swapped
-
 				// while sl->head and sl->tail need to be fixed
+				// we use the previous caches value to update them
 
-				if(sl->head == (*curr))
-					sl->head = (*next);
-				else if(sl->head == (*next))
-					sl->head = (*curr);
+				if(sl->head == curr_cached)
+					sl->head = next_cached;
+				else if(sl->head == next_cached)
+					sl->head = curr_cached;
 
-				if(sl->tail == (*curr))
-					sl->tail = (*next);
-				else if(sl->tail == (*next))
-					sl->tail = (*curr);
+				if(sl->tail == curr_cached)
+					sl->tail = next_cached;
+				else if(sl->tail == next_cached)
+					sl->tail = curr_cached;
 
 				curr = &((*curr)->next);
 			}
