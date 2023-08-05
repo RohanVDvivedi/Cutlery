@@ -298,19 +298,26 @@ void remove_all_from_singlylist(singlylist* sl)
 	sl->tail = NULL;
 }
 
-// TODO from here --
-
 const void* find_equals_in_singlylist(const singlylist* sl, const void* data, int (*compare)(const void* data1, const void* data2))
 {
+	if(is_empty_singlylist(sl))
+		return;
+
+	slnode * const HEAD = sl->head;
+
 	const slnode* node_p = sl->head;
-	while(node_p != NULL)
+	do
 	{
 		if(compare(data, get_data(node_p, sl)) == 0)
 			return get_data(node_p, sl);
 		node_p = node_p->next;
 	}
+	while(node_p != HEAD);
+
 	return NULL;
 }
+
+// TODO from here --
 
 void radix_sort_singlylist(singlylist* sl, unsigned long long int (*get_sort_attribute)(const void* data))
 {
