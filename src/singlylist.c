@@ -48,7 +48,7 @@ const void* get_from_head_of_singlylist(const singlylist* sl, cy_uint index)
 		node_p = node_p->next;
 		index--;
 	}
-	while(node_p == sl->head);
+	while(node_p != sl->head);
 
 	// if not found in the loop return NULL
 	return NULL;
