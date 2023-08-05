@@ -12,6 +12,9 @@ HASHMAP
    * for linkedlists, merge all of them into a single linkedlist and then insert them all into the new hashmap
    * for bst, use the above mentioned remove_all_from_bst with singlylist functionslity and, then merge all these singlylists and insert them into new_hashmap
 
+HEAP
+ * heap sort for index_accessed_interface
+
 2. Add new datastructure types tasks (*future)
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
