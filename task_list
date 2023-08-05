@@ -4,7 +4,7 @@ ARRAYLIST
  * add functionality to add n elements at index from front or back.
 
 HASHMAP BST
- * implement remove_all_from_hashmap and remove_all_from_bst, to take a singlylist* and if this singlylist is non-NULL, then append all elements to it
+ * implement remove_all_from_hashmap and remove_all_from_bst (result will be a preorder traversal), to take a singlylist* and if this singlylist is non-NULL, then append all elements to it
 
 HASHMAP
  * implement algorithm to resize hashmap without using a separate arraylist as queue
