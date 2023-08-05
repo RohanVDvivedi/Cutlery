@@ -123,11 +123,11 @@ int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int
 	return 1;
 }
 
-int quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	while(1)
 	{
-		if(start_index > last_index || last_index >= get_capacity_array(array_p))
+		if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 			return 0;
 
 		// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -136,15 +136,15 @@ int quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 			return 1;
 
 		// always picking the last element as the pivot
-		const void* pivot = get_from_array(array_p, last_index);
+		const void* pivot = iai_p->get_element(iai_p->ds_p, last_index);
 
 		cy_uint all_greater_than_pivot_start_index = start_index;
 
 		// position pivot element at its correct index
 		for(cy_uint i = start_index; i <= last_index; i++)
 		{
-			if(compare(get_from_array(array_p, i), pivot) <= 0)
-				swap_in_array(array_p, all_greater_than_pivot_start_index++, i);
+			if(compare(iai_p->get_element(iai_p->ds_p, i), pivot) <= 0)
+				iai_p->swap_elements(iai_p->ds_p, all_greater_than_pivot_start_index++, i);
 		}
 
 		// index of the pivot element
@@ -157,7 +157,7 @@ int quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 		{
 			// recurse for before part and loop for after part, in order to keep stack usage to minimum
 			if(size_of_part_before_pivot > 0)
-				quick_sort_array(array_p, start_index, pivot_index - 1, compare);
+				quick_sort_iai(iai_p, start_index, pivot_index - 1, compare);
 
 			// no elements after pivot to loop for
 			if(size_of_part_after_pivot == 0)
@@ -169,7 +169,7 @@ int quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 		{
 			// recurse for after part and loop for before part, in order to keep stack usage to minimum
 			if(size_of_part_after_pivot > 0)
-				quick_sort_array(array_p, pivot_index + 1, last_index, compare);
+				quick_sort_iai(iai_p, pivot_index + 1, last_index, compare);
 
 			// no elements before pivot to loop for
 			if(size_of_part_before_pivot == 0)
