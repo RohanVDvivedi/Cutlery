@@ -212,8 +212,6 @@ int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singly
 	return 1;
 }
 
-// TODO from here --
-
 int remove_head_from_singlylist(singlylist* sl)
 {
 	if(is_empty_singlylist(sl))
@@ -221,14 +219,24 @@ int remove_head_from_singlylist(singlylist* sl)
 
 	slnode* to_be_removed = sl->head;
 
-	sl->head = to_be_removed->next;
-	if(sl->head == NULL)
+	// there is only 1 node in the linkedlist, i.e the head and we are removing it
+	if(sl->head == sl->tail)
+	{
+		sl->head = NULL;
 		sl->tail = NULL;
+	}
+	else
+	{
+		sl->tail->next = sl->head->next;
+		sl->head = sl->head->next;
+	}
 
 	initialize_slnode(to_be_removed);
 
 	return 1;
 }
+
+// TODO from here --
 
 const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist)
 {
