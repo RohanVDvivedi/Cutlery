@@ -4,7 +4,7 @@
 #include<cutlery_stds.h>
 #include<dstring.h>
 #include<memory_allocator_interface.h>
-#include<index_accessed_interface.h>
+#include<index_accessed_search_sort.h>
 
 typedef struct array array;
 struct array

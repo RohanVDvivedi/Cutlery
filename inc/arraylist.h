@@ -2,7 +2,7 @@
 #define ARRAYLIST_H
 
 #include<array.h>
-#include<index_accessed_interface.h>
+#include<index_accessed_search_sort.h>
 
 // the front and back of the arraylist is synonymous to head and tail of the linkedlist
 // arraylist is a circular buffer
