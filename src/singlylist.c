@@ -89,29 +89,31 @@ int insert_head_in_singlylist(singlylist* sl, const void* data)
 	return 1;
 }
 
-// TODO from here --
-
 int insert_tail_in_singlylist(singlylist* sl, const void* data)
 {
 	slnode* node_p = get_node(data, sl);
 
-	// insert only a new node to the singlylist
-	if(!is_new_slnode(sl, node_p))
+	// insert only a free floating node to the singlylist
+	if(!is_free_floating_slnode(node_p))
 		return 0;
 
 	if(is_empty_singlylist(sl))
 	{
 		sl->head = node_p;
 		sl->tail = node_p;
+		node_p->next = node_p;
 	}
 	else
 	{
+		node_p->next = sl->tail->next;
 		sl->tail->next = node_p;
 		sl->tail = node_p;
 	}
 
 	return 1;
 }
+
+// TODO from here --
 
 int insert_after_in_singlylist(singlylist* sl, const void* data_xist, const void* data)
 {
