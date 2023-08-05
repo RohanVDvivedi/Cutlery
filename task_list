@@ -3,9 +3,6 @@
 ARRAYLIST
  * add functionality to add n elements at index from front or back.
 
-SEARCH SORT
- * modify to use random_access_interface, instead of array
-
 HASHMAP BST
  * implement remove_all_from_hashmap and remove_all_from_bst, to take a singlylist* and if this singlylist is non-NULL, then append all elements to it
 
