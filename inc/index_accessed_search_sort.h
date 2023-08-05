@@ -1,5 +1,5 @@
-#ifndef INDEXED_SEARCH_SORT_ARRAY_H
-#define INDEXED_SEARCH_SORT_ARRAY_H
+#ifndef INDEX_ACCESSED_SEARCH_SORT_ARRAY_H
+#define INDEX_ACCESSED_SEARCH_SORT_ARRAY_H
 
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
