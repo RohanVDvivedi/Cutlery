@@ -19,7 +19,9 @@ SEARCH SORT
     const void* (*get_element)(const void* data_structure, cy_uint index);
     int (*set_element)(const void* data_structure, const void* data_p, cy_uint index);
     int (*swap_elements)(const void* data_structure, cy_uint i1, cy_uint i2);
+    cy_uint (*get_element_count)(const void* data_structure);
   };
+ * slices and the above interface eleminates the need to pass start_index and last_index, all search sort functionality work with all of the passed interface's contents
 
 HASHMAP BST
  * implement remove_all_from_hashmap and remove_all_from_bst, to take a singlylist* and if this singlylist is non-NULL, then append all elements to it
