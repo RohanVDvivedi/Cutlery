@@ -14,6 +14,7 @@ HASHMAP
 
 HEAP
  * heap sort for index_accessed_interface
+ * allow inserting elements in bulk using index_accessed_interface
 
 2. Add new datastructure types tasks (*future)
 
