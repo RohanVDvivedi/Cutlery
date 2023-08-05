@@ -555,3 +555,25 @@ void deinitialize_arraylist(arraylist* al)
 	al->first_index = 0;
 	al->element_count = 0;
 }
+
+index_accessed_interface get_index_accessed_interface_for_front_of_arraylist(arraylist* al)
+{
+	return (index_accessed_interface){
+										.ds_p = al,
+										.get_element = (const void* (*)(const void*, cy_uint))get_from_front_of_arraylist,
+										.set_element = (int (*)(void*, const void*, cy_uint))set_from_front_in_arraylist,
+										.swap_elements = (int (*)(void*, cy_uint, cy_uint))swap_from_front_in_arraylist,
+										.get_element_count = (cy_uint (*)(const void*))get_element_count_arraylist,
+									};
+}
+
+index_accessed_interface get_index_accessed_interface_for_back_of_arraylist(arraylist* al)
+{
+	return (index_accessed_interface){
+										.ds_p = al,
+										.get_element = (const void* (*)(const void*, cy_uint))get_from_back_of_arraylist,
+										.set_element = (int (*)(void*, const void*, cy_uint))set_from_back_in_arraylist,
+										.swap_elements = (int (*)(void*, cy_uint, cy_uint))swap_from_back_in_arraylist,
+										.get_element_count = (cy_uint (*)(const void*))get_element_count_arraylist,
+									};
+}
