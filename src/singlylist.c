@@ -133,22 +133,22 @@ int insert_after_in_singlylist(singlylist* sl, const void* data_xist, const void
 	return 1;
 }
 
-// TODO from here --
-
 int insert_all_at_head_in_singlylist(singlylist* sl, singlylist* insert_from_sl)
 {
-	// if the node_offsets are different OR if insert_from_sl is empty then we fail
-	if(sl->node_offset != insert_from_sl->node_offset || is_empty_singlylist(insert_from_sl) || sl == insert_from_sl)
+	// if the node_offsets are different OR if insert_from_sl is same as sl, then we fail
+	if(sl->node_offset != insert_from_sl->node_offset || sl == insert_from_sl)
 		return 0;
 
-	if(is_empty_singlylist(sl))
-	{
-		sl->head = insert_from_sl->head;
-		sl->tail = insert_from_sl->tail;
-	}
+	// nothing to be inserted
+	if(is_empty_singlylist(insert_from_sl))
+		return 1;
+
+	if(is_empty_singlylist(sl)) // if sl is empty copy as it is
+		*sl = *insert_from_sl;
 	else
 	{
 		insert_from_sl->tail->next = sl->head;
+		sl->tail->next = insert_from_sl->head;
 		sl->head = insert_from_sl->head;
 	}
 
@@ -157,6 +157,8 @@ int insert_all_at_head_in_singlylist(singlylist* sl, singlylist* insert_from_sl)
 
 	return 1;
 }
+
+// TODO from here --
 
 int insert_all_at_tail_in_singlylist(singlylist* sl, singlylist* insert_from_sl)
 {
