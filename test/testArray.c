@@ -150,6 +150,7 @@ int main()
 
 //#define MERGE_SORT
 //#define HEAP_SORT
+//#define HEAP_SORT_native
 //#define QUICK_SORT
 #define RADIX_SORT
 
@@ -161,6 +162,9 @@ int main()
 	merge_sort_iai(array_iai_p, start_index, end_index, test_compare, STD_C_mem_allocator);
 #elif defined HEAP_SORT
 	printf("Sorting %u to %u using HEAP_SORT\n\n", start_index, end_index);
+	heap_sort_iai(array_iai_p, start_index, end_index, test_compare, STD_C_mem_allocator);
+#elif defined HEAP_SORT_native
+	printf("Sorting %u to %u using HEAP_SORT_native\n\n", start_index, end_index);
 	heap_sort_array(array_p, start_index, end_index, test_compare);
 #elif defined QUICK_SORT
 	printf("Sorting %u to %u using QUICK_SORT\n\n", start_index, end_index);
