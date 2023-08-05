@@ -236,8 +236,6 @@ int remove_head_from_singlylist(singlylist* sl)
 	return 1;
 }
 
-// TODO from here --
-
 const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist)
 {
 	if(is_empty_singlylist(sl))
@@ -245,22 +243,41 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 
 	slnode* node_xist = get_node(data_xist, sl);
 
-	// node_xist must not be a new node
-	if(is_new_slnode(sl, node_xist))
+	// node_xist must not be a free floating node
+	if(is_free_floating_slnode(node_xist))
 		return NULL;
 
 	slnode* to_be_removed = node_xist->next;
 
-	node_xist->next = to_be_removed->next;
+	if(sl->head == sl->tail) // there is only 1 element in singlylist and it better be node_xist
+	{
+		if(sl->head != node_xist) // the node_xist provided is not in the sl, we fail
+			return NULL;
 
-	// if the node to be removed was a tail node then update the tail node to the node_xist
-	if(sl->tail == to_be_removed)
-		sl->tail = node_xist;
+		// since there is only 1 element in singlylist
+		// and we are require to remove the next of it, which must be itself
+
+		// so here just make the sl empty
+		sl->head = NULL;
+		sl->tail = NULL;
+	}
+	else
+	{
+		// unlink to be to_be_removed from the chain
+		node_xist->next = to_be_removed->next;
+
+		// if to be removed was the tail, then
+		// removing it makes node_xist (which is rightly the previous to it) the tail node
+		if(sl->tail = to_be_removed)
+			sl->tail = node_xist;
+	}
 
 	initialize_slnode(to_be_removed);
 
 	return get_data(to_be_removed, sl);
 }
+
+// TODO from here --
 
 void remove_all_from_singlylist(singlylist* sl)
 {
