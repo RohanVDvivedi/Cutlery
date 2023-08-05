@@ -152,10 +152,10 @@ int push_to_heap(heap* heap_p, const void* data)
 	return 1;
 }
 
-int push_all_from_array_to_heap(heap* heap_p, array* array_p, cy_uint start_index, cy_uint last_index)
+int push_all_to_heap(heap* heap_p, index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index)
 {
 	// fail if the indexes provided in the array are invalid
-	if(start_index > last_index)
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
 
 	// number of elements to be inserted from start_index to last_index (both inclusive)
@@ -165,15 +165,28 @@ int push_all_from_array_to_heap(heap* heap_p, array* array_p, cy_uint start_inde
 	if(get_capacity_heap(heap_p) - get_element_count_heap(heap_p) < elements_to_insert)
 		return 0;
 
+	// if a node_offset is to be maintained i.e. heap_p->node_offset != NO_HEAP_NODE_OFFSET
+	// then we must ensure that all the elements have embedded hpnode that are free floating
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
+	{
+		for(cy_uint i = 0; i < elements_to_insert; i++)
+		{
+			// get the data element that needs to be analyzed
+			const void* data = iai_p->get_element(iai_p->ds_p, start_index + i);
+
+			// we fail, if embedded hpnode of data is not free floating
+			if(!is_free_floating_hpnode(get_node(data, heap_p)))
+				return 0;
+		}
+	}
+
 	// insert all the elements from array [start_index to last_index] to the heap_p
 	for(cy_uint i = 0; i < elements_to_insert; i++)
 	{
 		// get the data element that needs to be inserted
-		const void* data = get_from_array(array_p, start_index + i);
+		const void* data = iai_p->get_element(iai_p->ds_p, start_index + i);
 
-		// if embedded hpnode is being used, then the hpnode must be a new node
-		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_free_floating_hpnode(get_node(data, heap_p)))
-			continue;
+		// we already made sure that all the elements (if they have heap_p->node_offset), have hpnode that are free floating
 
 		// insert data and then update element count
 		set_in_array(&(heap_p->heap_holder), data, heap_p->element_count++);

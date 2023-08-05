@@ -2,6 +2,7 @@
 #define HEAP_H
 
 #include<array.h>
+#include<indexed_search_sort.h>
 
 #include<heap_type.h>
 
@@ -74,12 +75,12 @@ int is_free_floating_hpnode(const hpnode* node_p);
 // O(log(N)) operation
 int push_to_heap(heap* heap_p, const void* data);
 
-// pushes all the elements from the array_p from start_index to last_index (both inclusive) to the heap_p
+// pushes all the elements from the iai_p from start_index to last_index (both inclusive) to the heap_p
 // returns 1, if the operation was successfull
 // returns 0, if the total_size of the heap was smaller than size necessary
 // upon the return of this function, either all the elements are inserted or no elements are inserted
 // O(N) operation
-int push_all_from_array_to_heap(heap* heap_p, array* array_p, cy_uint start_index, cy_uint last_index);
+int push_all_to_heap(heap* heap_p, index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index);
 
 // pop the top element from the heap
 // pop returns 1, if an element is successfully popped
