@@ -53,6 +53,16 @@ int initialize_array_with_memory(array* array_p, cy_uint capacity, const void* d
 	return 1;
 }
 
+int initialize_slice_from_array(array* slice_p, array* array_p, cy_uint start_index, cy_uint last_index)
+{
+	// success only if start_index <= last_index and last_index < get_capacity_array(array_p)
+	if(!(start_index <= last_index && last_index < get_capacity_array(array_p)))
+		return 0;
+
+	// initialize an array, that points to specific contents of the array
+	return initialize_array_with_memory(sice_p, last_index - start_index + 1, array_p->data_p_p + start_index)
+}
+
 const void* get_from_array(const array* array_p, cy_uint index)
 {
 	return (index < get_capacity_array(array_p)) ? array_p->data_p_p[index] : NULL;

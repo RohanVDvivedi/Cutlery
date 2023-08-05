@@ -30,6 +30,11 @@ int initialize_array(array* array_p, cy_uint capacity);
 int initialize_array_with_allocator(array* array_p, cy_uint capacity, memory_allocator mem_allocator);
 int initialize_array_with_memory(array* array_p, cy_uint capacity, const void* data_ps[]);
 
+// returns 1 if slice gets initialized
+// it is basically a reference to a part of the array_p, but with mem_allocator = NULL
+// a slice variable is logically invalidated, once the array_p it is pointing to, expands, shrinks or deinitialized
+int initialize_slice_from_array(array* slice_p, array* array_p, cy_uint start_index, cy_uint last_index);
+
 // returns pointer to the data at index = index
 const void* get_from_array(const array* array_p, cy_uint index);
 
