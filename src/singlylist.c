@@ -268,7 +268,7 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 
 		// if to be removed was the tail, then
 		// removing it makes node_xist (which is rightly the previous to it) the tail node
-		if(sl->tail = to_be_removed)
+		if(sl->tail == to_be_removed)
 			sl->tail = node_xist;
 	}
 
@@ -301,7 +301,7 @@ void remove_all_from_singlylist(singlylist* sl)
 const void* find_equals_in_singlylist(const singlylist* sl, const void* data, int (*compare)(const void* data1, const void* data2))
 {
 	if(is_empty_singlylist(sl))
-		return;
+		return NULL;
 
 	slnode * const HEAD = sl->head;
 
