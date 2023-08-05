@@ -183,23 +183,26 @@ int insert_all_at_tail_in_singlylist(singlylist* sl, singlylist* insert_from_sl)
 	return 1;
 }
 
-// TODO from here --
-
 int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singlylist* insert_from_sl)
 {
-	// if the node_offsets are different OR if insert_from_sl is empty then we fail
-	if(sl->node_offset != insert_from_sl->node_offset || is_empty_singlylist(insert_from_sl) || sl == insert_from_sl)
+	// if the node_offsets are different OR if insert_from_sl is same as sl, then we fail
+	if(sl->node_offset != insert_from_sl->node_offset || sl == insert_from_sl)
 		return 0;
+
+	// nothing to be inserted
+	if(is_empty_singlylist(insert_from_sl))
+		return 1;
 
 	slnode* node_xist = get_node(data_xist, sl);
 
-	// insert only after a node that exists
-	if(is_new_slnode(sl, node_xist))
+	// insert only after a node that may exists in the singlylist (i.e. is not free floating)
+	if(is_free_floating_slnode(node_xist))
 		return 0;
 
 	insert_from_sl->tail->next = node_xist->next;
 	node_xist->next = insert_from_sl->head;
 
+	// if inserting after a tail, then update tail
 	if(sl->tail == node_xist)
 		sl->tail = insert_from_sl->tail;
 
@@ -208,6 +211,8 @@ int insert_all_after_in_singlylist(singlylist* sl, const void* data_xist, singly
 
 	return 1;
 }
+
+// TODO from here --
 
 int remove_head_from_singlylist(singlylist* sl)
 {
