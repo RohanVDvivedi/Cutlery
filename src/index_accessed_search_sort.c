@@ -147,7 +147,37 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-// TODO heap sort
+int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)
+{
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
+		return 0;
+
+	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
+	cy_uint total_elements = last_index - start_index + 1;
+	if(total_elements <= 1)
+		return 1;
+
+	// create a min heap, large enough to hold total_elements
+	heap sort_heap;
+	if(!initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, BINARY_HEAP_DEGREE, compare, NO_HEAP_NODE_OFFSET, mem_allocator))
+		return 0;
+
+	// push all the elements to be sorted to this sort heap
+	push_all_to_heap(&sort_heap, iai_p, start_index, last_index);
+
+	// pluck 1 from heap, and insert it to iai_p (starting at start_index)
+	for(cy_uint i = 0; i < total_elements; i++)
+	{
+		const void* min_data = get_top_of_heap(&sort_heap);
+		pop_from_heap(&sort_heap);
+		iai_p->set_element(iai_p->ds_p, min_data, start_index + i);
+	}
+
+	// deinitialize the sort_heap
+	deinitialize_heap(&sort_heap);
+
+	return 1;
+}
 
 int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
