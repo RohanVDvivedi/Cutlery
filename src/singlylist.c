@@ -303,7 +303,7 @@ const void* find_equals_in_singlylist(const singlylist* sl, const void* data, in
 	if(is_empty_singlylist(sl))
 		return NULL;
 
-	slnode * const HEAD = sl->head;
+	slnode const * const HEAD = sl->head;
 
 	const slnode* node_p = sl->head;
 	do
@@ -393,15 +393,25 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 	}while(swaps_performed);
 }
 
+// TODO from here -end-
+
 void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
+	// no element to iterate over
+	if(is_empty_singlylist(sl))
+		return;
+
+	slnode const * const HEAD = sl->head;
 	const slnode* node_p = sl->head;
-	while(node_p != NULL)
+	do
 	{
 		operation(get_data(node_p, sl), additional_params);
 		node_p = node_p->next;
 	}
+	while(node_p != HEAD);
 }
+
+// TODO from here --
 
 static void sprint_singlylist_wrapper(dstring* append_str, const singlylist* sl, const slnode* node_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
 {
