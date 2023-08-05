@@ -277,21 +277,24 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 	return get_data(to_be_removed, sl);
 }
 
-// TODO from here --
-
 void remove_all_from_singlylist(singlylist* sl)
 {
+	slnode * const HEAD = sl->head;
+
 	slnode* node_p = sl->head;
-	while(node_p != NULL)
+	do
 	{
 		slnode* node_p_next = node_p->next;
 		initialize_slnode(node_p);
 		node_p = node_p_next;
 	}
+	while(node_p != HEAD);
 	
 	sl->head = NULL;
 	sl->tail = NULL;
 }
+
+// TODO from here --
 
 const void* find_equals_in_singlylist(const singlylist* sl, const void* data, int (*compare)(const void* data1, const void* data2))
 {
