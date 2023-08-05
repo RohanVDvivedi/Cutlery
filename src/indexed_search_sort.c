@@ -62,13 +62,16 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	if(total_elements <= 1)
 		return 1;
 
-	// we iteratively merge adjacent sorted chunks from src and store them in dest
-	const void** src  = array_p->data_p_p + start_index;
+	// generate a new index_accessed_interface to access elements from 0, instead of start_index
+	index_accessed_interface src_iai = get_index_accessed_interface_ofsetted(iai_p, start_index);
 
 	cy_uint dest_bytes = sizeof(void*) * total_elements;
 	const void** dest = aligned_allocate(array_p->mem_allocator, &dest_bytes, _Alignof(void*));
 	if(dest == NULL)
 		return 0;
+
+	// we iteratively merge adjacent sorted chunks from src and store them in dest
+	index_accessed_interface src_iai_p = &src_iai;
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	cy_uint sort_chunk_size = 1;
