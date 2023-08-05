@@ -19,19 +19,19 @@ struct iai_offsetted
 static const void* get_element_iai_offsetted(const void* ds_p, cy_uint index)
 {
 	const iai_offsetted* io_p = ds_p;
-	return io_p->iai_p->get_element(io_p->iai_p->ds_p, index - io_p->offset_index);
+	return io_p->iai_p->get_element(io_p->iai_p->ds_p, io_p->offset_index + index);
 }
 
 static int set_element_iai_offsetted(void* ds_p, const void* data_p, cy_uint index)
 {
 	iai_offsetted* io_p = ds_p;
-	return io_p->iai_p->set_element(io_p->iai_p->ds_p, data_p, index - io_p->offset_index);
+	return io_p->iai_p->set_element(io_p->iai_p->ds_p, data_p, io_p->offset_index + index);
 }
 
 static int swap_elements_iai_offsetted(void* ds_p, cy_uint i1, cy_uint i2)
 {
 	iai_offsetted* io_p = ds_p;
-	return io_p->iai_p->swap_elements(io_p->iai_p->ds_p, i1 - io_p->offset_index, i2 - io_p->offset_index);
+	return io_p->iai_p->swap_elements(io_p->iai_p->ds_p, io_p->offset_index + i1, io_p->offset_index + i1);
 }
 
 static cy_uint get_element_count_iai_offsetted(const void* ds_p)
