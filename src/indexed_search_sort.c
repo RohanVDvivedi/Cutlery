@@ -335,7 +335,7 @@ cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_u
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
-	// then there is no element in array lesser than it, so return INVALID_INDEX
+	// then there is no element that is lesser than it, so return INVALID_INDEX
 	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) >= 0)
 		return INVALID_INDEX;
 
@@ -370,7 +370,7 @@ cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* i
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
-	// then there is no element in array lesser than it, so return INVALID_INDEX
+	// then there is no element that is lesser than it, so return INVALID_INDEX
 	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 		return INVALID_INDEX;
 
