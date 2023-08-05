@@ -24,6 +24,7 @@ typedef struct bstnode bstnode;
 struct bstnode
 {
 	// the pointer to the parent node
+	// the parent pointer is the first element of the bstnode, we want it to form singly list when removing all the elements
 	bstnode* parent;
 
 	// all < nodes					// all >= nodes
