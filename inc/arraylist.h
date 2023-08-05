@@ -101,4 +101,6 @@ void remove_all_from_arraylist(arraylist* al);
 
 void deinitialize_arraylist(arraylist* al);
 
+#include<indexed_search_sort.h>
+
 #endif

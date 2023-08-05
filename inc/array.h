@@ -87,6 +87,6 @@ void for_each_non_null_in_array(const array* array_p, void (*operation)(void* da
 // serializes the array, and appends the serialized form to the dstring
 void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
 
-#include<array_search_sort.h>
+#include<indexed_search_sort.h>
 
 #endif
