@@ -56,13 +56,13 @@ struct index_accessed_interface
 
 
 // sorting algorithm used => merge sort algorithm (iterative approach)
-int merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
 
 // sorting algorithm used => heap sort algorithm
 int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
 
 // sorting algorithm used => quick sort algorithm
-int quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int quick_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
 
 // sorting algorithm used => radix sort algorithm
 // all the elements will be ordered in increasing order of their value for get_sort_attribute()
