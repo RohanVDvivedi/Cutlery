@@ -1,6 +1,7 @@
+#include<array.h>
+// TODO this needs to be swapped
 #include<indexed_search_sort.h>
 
-#include<array.h>
 #include<heap.h>
 #include<arraylist.h>
 
