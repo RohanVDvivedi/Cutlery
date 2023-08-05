@@ -15,9 +15,9 @@ void initialize_slnode(slnode* node_p)
 	node_p->next = NULL;
 }
 
-static int is_new_slnode(const singlylist* sl, const slnode* node_p)
+int is_free_floating_slnode(slnode* node_p)
 {
-	return node_p->next == NULL && sl->tail != node_p;
+	return node_p->next == NULL;
 }
 
 int is_empty_singlylist(const singlylist* sl)
@@ -37,25 +37,35 @@ const void* get_tail_of_singlylist(const singlylist* sl)
 
 const void* get_from_head_of_singlylist(const singlylist* sl, cy_uint index)
 {
+	if(is_empty_singlylist(sl))
+		return NULL;
+
 	const slnode* node_p = sl->head;
-	while(node_p != NULL && index > 0)
+	do
 	{
+		if(index == 0)
+			return get_data(node_p, sl);
 		node_p = node_p->next;
 		index--;
 	}
-	return (node_p == NULL) ? NULL : get_data(node_p, sl);
+	while(node_p == sl->head);
+
+	// if not found in the loop return NULL
+	return NULL;
 }
 
 const void* get_next_of_in_singlylist(const singlylist* sl, const void* data_xist)
 {
 	const slnode* node_xist = get_node(data_xist, sl);
 
-	// the data_xist must not be a new node
-	if(is_new_slnode(sl, node_xist))
+	// the data_xist must not be a free floating node
+	if(is_free_floating_slnode(sl, node_xist))
 		return NULL;
-	
-	return (node_xist->next == NULL) ? NULL : get_data(node_xist, sl);
+
+	return get_data(node_xist->next, sl);
 }
+
+// TODO from here --
 
 int insert_head_in_singlylist(singlylist* sl, const void* data)
 {
