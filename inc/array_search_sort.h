@@ -3,6 +3,10 @@
 
 #include<cutlery_stds.h>
 
+//---------------------------------------------------------------------------
+//                         INTERFACE
+//---------------------------------------------------------------------------
+
 /*
 	below is an interface to be implemented by any data structure,
 	that wants to be and can be randomly accessed.
@@ -40,7 +44,8 @@ struct index_accessed_interface
 // else compare = 0 (i.e. data1 == data2)
 // where both data1 and data2 are elements of the array
 
-typedef struct array array;
+
+
 
 //---------------------------------------------------------------------------
 //                         SORT FUNCTIONS ON ARRAY
