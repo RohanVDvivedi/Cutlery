@@ -56,7 +56,7 @@ struct index_accessed_interface
 
 
 // sorting algorithm used => merge sort algorithm (iterative approach)
-int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);
 
 // sorting algorithm used => heap sort algorithm
 int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
