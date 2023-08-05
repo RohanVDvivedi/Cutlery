@@ -15,10 +15,10 @@ SEARCH SORT
   typedef struct index_accessible_interface index_accessible_interface;
   struct index_accessible_interface
   {
-    const void* data_structure;
-    const void* get_element(const void* data_structure, cy_uint index);
-    int set_element(const void* data_structure, const void* data_p, cy_uint index);
-    int swap_elements(const void* data_structure, cy_uint i1, cy_uint i2);
+    void* data_structure;
+    const void* (*get_element)(const void* data_structure, cy_uint index);
+    int (*set_element)(const void* data_structure, const void* data_p, cy_uint index);
+    int (*swap_elements)(const void* data_structure, cy_uint i1, cy_uint i2);
   };
 
 HASHMAP BST
