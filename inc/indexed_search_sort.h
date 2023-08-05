@@ -1,5 +1,5 @@
-#ifndef SEARCH_SORT_ARRAY_H
-#define SEARCH_SORT_ARRAY_H
+#ifndef INDEXED_SEARCH_SORT_ARRAY_H
+#define INDEXED_SEARCH_SORT_ARRAY_H
 
 #include<cutlery_stds.h>
 
