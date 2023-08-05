@@ -256,3 +256,14 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 		snprintf_dstring(append_str, "\n");
 	}
 }
+
+index_accessed_interface get_index_accessed_interface_for_array(array* array_p)
+{
+	return (index_accessed_interface){
+										.ds_p = array_p,
+										.get_element = (const void* (*)(const void*, cy_uint))get_from_array,
+										.set_element = (int (*)(void*, const void*, cy_uint))set_in_array,
+										.swap_elements = (int (*)(void*, cy_uint, cy_uint))swap_in_array,
+										.get_element_count = (cy_uint (*)(const void*))get_capacity_array,
+									};
+}
