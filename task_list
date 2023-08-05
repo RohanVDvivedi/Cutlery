@@ -20,6 +20,12 @@ SEARCH SORT
 
 HASHMAP
  * implement algorithm to resize hashmap without using a separate arraylist as queue
+   * for robin hood, iterate over all buckets, initialize the rbhnode and insert it into the new_hashmap
+   * for linkedlists, merge all of them into a single linkedlist and then insert them all into the new hashmap
+   * for bst
+     * implement a function in bst to get all in postfix order from bst in O(1) memory
+       * name this function remove_all_and_get_all_inside_linkedlist_from_bst
+     * then merge all these linkedlists and insert it into linkedlist
 
 2. Add new datastructure types tasks (*future)
 
