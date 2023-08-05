@@ -2,6 +2,7 @@
 #define ARRAYLIST_H
 
 #include<array.h>
+#include<index_accessed_interface.h>
 
 // the front and back of the arraylist is synonymous to head and tail of the linkedlist
 // arraylist is a circular buffer
@@ -100,8 +101,6 @@ void sprint_arraylist(dstring* append_str, const arraylist* al, void (*sprint_el
 void remove_all_from_arraylist(arraylist* al);
 
 void deinitialize_arraylist(arraylist* al);
-
-#include<indexed_search_sort.h>
 
 // NOTE:: DO NOT MODIFY THE ARRAYLIST DURING THE ACTIVE LIFE TIME OF THE INDEX_ACCESSED_INTERFACE OF THAT ARRAYLIST
 

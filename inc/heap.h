@@ -2,7 +2,7 @@
 #define HEAP_H
 
 #include<array.h>
-#include<indexed_search_sort.h>
+#include<index_accessed_interface.h>
 
 #include<heap_type.h>
 

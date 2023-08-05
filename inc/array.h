@@ -4,6 +4,7 @@
 #include<cutlery_stds.h>
 #include<dstring.h>
 #include<memory_allocator_interface.h>
+#include<index_accessed_interface.h>
 
 typedef struct array array;
 struct array
@@ -89,8 +90,6 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 
 // function to heap sort array inplace
 int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
-
-#include<indexed_search_sort.h>
 
 // NOTE:: DO NOT MODIFY THE ARRAY DURING THE ACTIVE LIFE TIME OF THE INDEX_ACCESSED_INTERFACE OF THAT ARRAY
 
