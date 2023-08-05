@@ -1,18 +1,7 @@
 1. Tasks picked
 
-ARRAY
- * add functionality to get_slice_of_array, a array pointing to same memory but without the allocator
-
-ARRAYLIST
- * add functionality to get_slice_of_arraylist, an arraylist pointing to same internal arraylist holder, but has different specific first and element_count, ofcourse an arraylist slice calls an arrayslice to get all its contents
- * add functionality to add n elements at index from front or back.
-
-HEAP
- * add functionality to get_slice_of_heap_elements, to get an arrayslice, pointing to all elements inside heap
-
-SEARCH SORT
- * modify search sort to use an index_accessed_interface,
-  typedef struct index_accessible_interface index_accessible_interface;
+INTERFACE
+ * implement a index_accessed_interface, with 
   struct index_accessible_interface
   {
     void* data_structure;
@@ -21,7 +10,19 @@ SEARCH SORT
     int (*swap_elements)(const void* data_structure, cy_uint i1, cy_uint i2);
     cy_uint (*get_element_count)(const void* data_structure);
   };
- * slices and the above interface eleminates the need to pass start_index and last_index, all search sort functionality work with all of the passed interface's contents
+
+ARRAY
+ * add functionality to get random_accessed_interface, for an array pointing to same memory but without the allocator
+
+ARRAYLIST
+ * add functionality to get random_accessed_interface, for an arraylist pointing to same internal arraylist holder, but has different specific first and element_count.
+ * add functionality to add n elements at index from front or back.
+
+HEAP
+ * add functionality to get_random_accessed_interface_of_heap_elements, pointing to all elements inside heap.
+
+SEARCH SORT
+ * modify to use random_access_interface, instead of array
 
 HASHMAP BST
  * implement remove_all_from_hashmap and remove_all_from_bst, to take a singlylist* and if this singlylist is non-NULL, then append all elements to it
