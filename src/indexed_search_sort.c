@@ -8,9 +8,53 @@
 #include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
+// below is a utility required only by the merge sort functionality
+
+typedef struct iai_offsetted iai_offsetted;
+struct iai_offsetted
+{
+	index_accessed_interface* iai_p;
+	cy_uint offset_index;
+};
+
+static const void* get_element_iai_offsetted(const void* ds_p, cy_uint index)
+{
+	const iai_offsetted* io_p = ds_p;
+	return io_p->iai_p->get_element(io_p->iai_p->ds_p, index - io_p->offset_index);
+}
+
+static int set_element_iai_offsetted(void* ds_p, const void* data_p, cy_uint index)
+{
+	iai_offsetted* io_p = ds_p;
+	return io_p->iai_p->set_element(io_p->iai_p->ds_p, data_p, index - io_p->offset_index);
+}
+
+static int swap_elements_iai_offsetted(void* ds_p, cy_uint i1, cy_uint i2)
+{
+	iai_offsetted* io_p = ds_p;
+	return io_p->iai_p->swap_elements(io_p->iai_p->ds_p, i1 - io_p->offset_index, i2 - io_p->offset_index);
+}
+
+static cy_uint get_element_count_iai_offsetted(const void* ds_p)
+{
+	const iai_offsetted* io_p = ds_p;
+	return io_p->iai_p->get_element_count(io_p->iai_p->ds_p) - io_p->offset_index;
+}
+
+#define get_index_accessed_interface_ofsetted(iai_p, offset_index) \
+											(index_accessed_interface){ \
+												.ds_p = {.iai_p = iai_p, .offset_index = offset_index },\
+												.get_element = get_element_iai_offsetted,\
+												.set_element = set_element_iai_offsetted,\
+												.swap_elements = swap_elements_iai_offsetted,\
+												.get_element_count = get_element_count_iai_offsetted,\
+											}
+
+// -----------------------------------------------------------------
+
 int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)
 {
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
