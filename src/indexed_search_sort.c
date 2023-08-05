@@ -232,7 +232,7 @@ int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, un
 }
 
 
-cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
@@ -264,7 +264,7 @@ cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uin
 	return INVALID_INDEX;
 }
 
-cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
@@ -327,7 +327,7 @@ cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index,
 	return result_index;
 }
 
-cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
@@ -362,7 +362,7 @@ cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index
 	return result_index;
 }
 
-cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
@@ -397,7 +397,7 @@ cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint s
 	return result_index;
 }
 
-cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
@@ -432,7 +432,7 @@ cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_inde
 	return result_index;
 }
 
-cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
@@ -467,7 +467,7 @@ cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint 
 	return result_index;
 }
 
-cy_uint find_insertion_index_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
