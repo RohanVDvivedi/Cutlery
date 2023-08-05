@@ -88,15 +88,15 @@ int merge_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 	return 1;
 }
 
-void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= get_capacity_array(array_p))
-		return;
+		return 0;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
 	cy_uint total_elements = last_index - start_index + 1;
 	if(total_elements <= 1)
-		return;
+		return 1;
 
 	// create a max heap that points to the array_p's contents that need to be sorted
 	heap sort_heap;
@@ -116,19 +116,21 @@ void heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 
 	// deinitialize the sort_heap
 	deinitialize_heap(&sort_heap);
+
+	return 1;
 }
 
-void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	while(1)
 	{
 		if(start_index > last_index || last_index >= get_capacity_array(array_p))
-			return;
+			return 0;
 
 		// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
 		cy_uint total_elements = last_index - start_index + 1;
 		if(total_elements <= 1)
-			return;
+			return 1;
 
 		// always picking the last element as the pivot
 		const void* pivot = get_from_array(array_p, last_index);
@@ -156,7 +158,7 @@ void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 
 			// no elements after pivot to loop for
 			if(size_of_part_after_pivot == 0)
-				return;
+				return 1;
 
 			start_index = pivot_index + 1;
 		}
@@ -168,7 +170,7 @@ void quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, i
 
 			// no elements before pivot to loop for
 			if(size_of_part_before_pivot == 0)
-				return;
+				return 1;
 
 			last_index = pivot_index - 1;
 		}
