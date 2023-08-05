@@ -41,9 +41,9 @@ static cy_uint get_element_count_iai_offsetted(const void* ds_p)
 	return io_p->iai_p->get_element_count(io_p->iai_p->ds_p) - io_p->offset_index;
 }
 
-#define get_index_accessed_interface_ofsetted(iai_p, offset_index) \
+#define get_index_accessed_interface_ofsetted(iai_p, offset) \
 											(index_accessed_interface){ \
-												.ds_p = {.iai_p = iai_p, .offset_index = offset_index },\
+												.ds_p = &((iai_offsetted){.iai_p = iai_p, .offset_index = offset }),\
 												.get_element = get_element_iai_offsetted,\
 												.set_element = set_element_iai_offsetted,\
 												.swap_elements = swap_elements_iai_offsetted,\
@@ -65,19 +65,20 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	// generate a new index_accessed_interface to access elements from 0, instead of start_index
 	index_accessed_interface src_iai = get_index_accessed_interface_ofsetted(iai_p, start_index);
 
-	cy_uint dest_bytes = sizeof(void*) * total_elements;
-	const void** dest = aligned_allocate(array_p->mem_allocator, &dest_bytes, _Alignof(void*));
-	if(dest == NULL)
+	// generate an auxilary array
+	array aux_array;
+	if(!initialize_array_with_allocator(&aux_array, total_elements, mem_allocator))
 		return 0;
+	index_accessed_interface aux_array_iface = get_index_accessed_interface_for_array(&aux_array);
 
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
-	index_accessed_interface src_iai_p = &src_iai;
+	index_accessed_interface* src_iai_p = &src_iai;
+	index_accessed_interface* dest_iai_p = &aux_array_iface;
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	cy_uint sort_chunk_size = 1;
 	while(sort_chunk_size <= total_elements)
 	{
-
 		// in each iteration of the internal loop
 		// merge 2 adjacent sorted chunks of src array
 		// to form 1 chunk of twice the size in dest array
@@ -99,7 +100,10 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 				if(a_last > total_elements - 1)
 					a_last = total_elements - 1;
 
-				memory_move(dest + dest_index, src + a_start, (a_last - a_start + 1) * sizeof(void*));
+				// copy all elements of the a-section to the destination as is
+				for(cy_uint a_i = a_start; a_i <= a_last; a_i++, dest_index++)
+					dest_iai_p->set_element(dest_iai_p->ds_p, src_iai_p->get_element(src_iai_p->ds_p, a_i), dest_index);
+
 				break;
 			}
 			else
@@ -109,31 +113,37 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 
 				while(dest_index <= b_last)
 				{
-					if((b_start > b_last) || (a_start <= a_last && compare(src[a_start], src[b_start]) < 0))
-						dest[dest_index++] = src[a_start++];
+					if((b_start > b_last) || (a_start <= a_last && compare(src_iai_p->get_element(src_iai_p->ds_p, a_start), src_iai_p->get_element(src_iai_p->ds_p, b_start)) < 0))
+						dest_iai_p->set_element(dest_iai_p->ds_p, src_iai_p->get_element(src_iai_p->ds_p, a_start++), dest_index++);
 					else
-						dest[dest_index++] = src[b_start++];
+						dest_iai_p->set_element(dest_iai_p->ds_p, src_iai_p->get_element(src_iai_p->ds_p, b_start++), dest_index++);
 				}
 			}
 		}
 
 		// src becomes dest, and dest becomes src
-		const void** temp = src;
-		src = dest;
-		dest = temp;
+		void* temp = src_iai_p;
+		src_iai_p = dest_iai_p;
+		dest_iai_p = temp;
 
 		// double the chunk size, for next iteration
 		sort_chunk_size = sort_chunk_size * 2;
 	}
 
-	// free the extra memory
-	if((array_p->data_p_p + start_index) == src)
-		deallocate(array_p->mem_allocator, dest, dest_bytes);
-	else
+	// at the end of every iteration the result is in src_iai_p
+
+	// if the src_iai_p != &src_iai
+	// then tranfer result to the original src
+
+	if(src_iai_p != &src_iai)
 	{
-		memory_move(array_p->data_p_p + start_index, src, total_elements * sizeof(void*));
-		deallocate(array_p->mem_allocator, src, dest_bytes);
+		// then copy all elements (0 to total_elements) from src_iai_p to src_iai
+		for(cy_uint i = 0; i < total_elements; i++)
+			src_iai.set_element(src_iai.ds_p, src_iai_p->get_element(src_iai_p->ds_p, i), i);
 	}
+
+	// deinitialize auxilary array
+	deinitialize_array(&aux_array);
 
 	return 1;
 }
