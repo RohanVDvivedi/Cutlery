@@ -1,10 +1,17 @@
 1. Tasks picked
 
+ARRAY
+ * add functionality to get_slice_of_array, a array pointing to same memory but without the allocator
+
 ARRAYLIST
+ * add functionality to get_slice_of_arraylist, an arraylist pointing to same internal arraylist holder, but has different specific first and element_count, ofcourse an arraylist slice calls an arrayslice to get all its contents
  * add functionality to add n elements at index from front or back.
 
+HEAP
+ * add functionality to get_slice_of_heap_elements, to get an arrayslice, pointing to all elements inside heap
+
 SEARCH SORT
- * modify search sort to use an index_accessible_interface,
+ * modify search sort to use an index_accessed_interface,
   typedef struct index_accessible_interface index_accessible_interface;
   struct index_accessible_interface
   {
@@ -13,10 +20,6 @@ SEARCH SORT
     int set_element(const void* data_structure, const void* data_p, cy_uint index);
     int swap_elements(const void* data_structure, cy_uint i1, cy_uint i2);
   };
-
-  OR 
-
- * modify search sort functions to work with arraylist only and make array and arraylist generate references for part of the array or arraylist, call them slice, which are basically array arraylist but without any memory allocator
 
 HASHMAP BST
  * implement remove_all_from_hashmap and remove_all_from_bst, to take a singlylist* and if this singlylist is non-NULL, then append all elements to it
