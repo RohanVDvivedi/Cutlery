@@ -180,9 +180,9 @@ int quick_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, in
 	}
 }
 
-int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data))
+int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator)
 {
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(mem_allocator == NULL || start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -192,9 +192,9 @@ int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, un
 
 	// construct temporary queues for 0 and 1 bit containing elements
 	arraylist sort_queue[2];
-	if(!initialize_arraylist_with_allocator(&(sort_queue[0]), total_elements, array_p->mem_allocator))
+	if(!initialize_arraylist_with_allocator(&(sort_queue[0]), total_elements, mem_allocator))
 		return 0;
-	if(!initialize_arraylist_with_allocator(&(sort_queue[1]), total_elements, array_p->mem_allocator))
+	if(!initialize_arraylist_with_allocator(&(sort_queue[1]), total_elements, mem_allocator))
 	{
 		deinitialize_arraylist(&(sort_queue[0]));
 		return 0;
@@ -205,7 +205,7 @@ int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, un
 		cy_uint index = start_index;
 		while(index <= last_index)
 		{
-			const void* data = get_from_array(array_p, index++);
+			const void* data = iai_p->get_element(iai_p->ds_p, index++);
 			unsigned int queue_index = ((get_sort_attribute(data) >> i) & 1ULL);
 			push_back_to_arraylist(&(sort_queue[queue_index]), data);
 		}
@@ -215,13 +215,13 @@ int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, un
 		{
 			const void* data = get_front_of_arraylist(&(sort_queue[0]));
 			pop_front_from_arraylist(&(sort_queue[0]));
-			set_in_array(array_p, data, index++);
+			iai_p->set_element(iai_p->ds_p, data, index++);
 		}
 		while(!is_empty_arraylist(&(sort_queue[1])))
 		{
 			const void* data = get_front_of_arraylist(&(sort_queue[1]));
 			pop_front_from_arraylist(&(sort_queue[1]));
-			set_in_array(array_p, data, index++);
+			iai_p->set_element(iai_p->ds_p, data, index++);
 		}
 	}
 
