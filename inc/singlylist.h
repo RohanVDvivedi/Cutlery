@@ -3,7 +3,7 @@
 
 #include<dstring.h>
 
-// SINGLYLIST is a singly non-circular linkedlist
+// SINGLYLIST is a singly circular linkedlist
 
 typedef struct slnode slnode;
 struct slnode
@@ -12,7 +12,7 @@ struct slnode
 	slnode* next;
 };
 
-// it is a singly non-circular linkedlist
+// it is a singly circular linkedlist
 typedef struct singlylist singlylist;
 struct singlylist
 {
@@ -21,7 +21,7 @@ struct singlylist
 	cy_uint node_offset;
 
 	// head->next->...->next = tail // ->next is called n-1 times, n being the number of elements
-	// tail->next = NULL
+	// tail->next = head
 	slnode* head;
 	slnode* tail;
 };
@@ -31,6 +31,9 @@ void initialize_singlylist(singlylist* sl, cy_uint node_offset);
 
 // always initialize your singlylist node before using it
 void initialize_slnode(slnode* node_p);
+
+// returns 1, if the node_p does not exist in any singlylist
+int is_free_floating_slnode(slnode* node_p);
 
 int is_empty_singlylist(const singlylist* sl);
 
