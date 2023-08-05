@@ -77,51 +77,33 @@ int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, un
 //                          SEARCH FUNCTIONS ON ARRAY
 //------------------------------------------------------------------------------
 
-// These functions return an index to the array element, that compares equals to the data provided
-// The data provided as parameter for equality checking may or may not be pointing to the element, already existing in array
+// These functions return an index to the element in the index_accessed datastructure,
+// that compares `comparable` (This means differently for different functions) to the data provided
+// The data provided as parameter for equality checking may or may not be pointing to the element, already existing in the data structure
+// The check is only performed for all indices from start_index to last_index both inclusive
 // the search_occurence parameter suggests whether we are looking for first or the last occurence (parameter occurence_type) that compares equal
-
-// performs linear search in array from start_index to last_index, both inclusive,
-// returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-cy_uint linear_search_in_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+// This functions return INVALID_INDEX, if the such a `comparable` element is not found, or the indexes provided are invalid
 
 
+// performs linear search in the index accessed datastructure
+cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
+// performs binary search in the sorted index accessed datastructure
+cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
 
-// NOTE :::
-// the binary_search_in_sorted_array function can be called on the array, only if
-// your data in the array is sorted in ascending order in accordance to the compare function provided as parameter
-// , (sorted) for all indices from start_index to last_index, both inclusive
-
-// performs binary search in array from start_index to last_index, both inclusive,
-// returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-cy_uint binary_search_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
-
-// NOTE :::
-// the find_*_in_sorted_array function can be called on the array, only if
-// your data in the array is sorted in ascending order in accordance to the compare function provided as parameter
-// , (sorted) for all indices from start_index to last_index, both inclusive
-
-// These functions performs binary search in array from start_index to last_index, both inclusive,
-// returns INVALID_INDEX, if no result is not found, or the indexes provided are invalid
-cy_uint find_preceding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-cy_uint find_preceding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-cy_uint find_succeeding_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-cy_uint find_succeeding_or_equals_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+// performs binary search in the sorted index accessed datastructure
+cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
 
 
 //------------------------------------------------------------------------------
 //                          INSERTION FUNCTIONS ON SORTED ARRAY
 //------------------------------------------------------------------------------
 
-// NOTE :::
-// the find_insertion_index_in_array function can be called on the array, only if
-// your data in the array is sorted in ascending order in accordance to the compare function provided as parameter
-// , (sorted) for all indices from start_index to last_index, both inclusive
-
-// performs binary search in array from start_index to last_index, both inclusive, to find an dex at which the given element data can be inserted
+// performs binary search in sorted index accessed datastructure, to find an index at which the given element data can be inserted
 // it usually returns the index that is one more than the index of the largest element that is also lesser than or equal to the data (given as parameter)
-// returns INVALID_INDEX, if the element is not found, or the indexes provided are invalid
-cy_uint find_insertion_index_in_sorted_array(const array* array_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
 
 #endif
