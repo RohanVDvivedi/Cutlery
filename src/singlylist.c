@@ -363,8 +363,6 @@ static void swap_nodes_singlylist(slnode** node1_p_p, slnode** node2_p_p)
 	(*node2_p_p)->next = temp;
 }
 
-// TODO from here --
-
 void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, const void* data2))
 {
 	// return, if the singlylist has 0 or 1 nodes only
@@ -377,14 +375,29 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 	{
 		swaps_performed = 0;
 
-		slnode** curr = &(sl->head);
+		slnode** curr = &(sl->tail->next);
 		slnode** next = &((*curr)->next);
-		while((*next))
+		while((*next) != sl->head)
 		{
 			if(compare(get_data(*curr, sl), get_data(*next, sl)) > 0)
 			{
 				swaps_performed++;
 				swap_nodes_singlylist(curr, next);
+
+				// now the nodes pointed by *curr and *next have been swapped
+
+				// while sl->head and sl->tail need to be fixed
+
+				if(sl->head == (*curr))
+					sl->head = (*next);
+				else if(sl->head == (*next))
+					sl->head = (*curr);
+
+				if(sl->tail == (*curr))
+					sl->tail = (*next);
+				else if(sl->tail == (*next))
+					sl->tail = (*curr);
+
 				curr = &((*curr)->next);
 			}
 			else
@@ -395,8 +408,6 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 		sl->tail = *curr;
 	}while(swaps_performed);
 }
-
-// TODO from here -end-
 
 void for_each_in_singlylist(const singlylist* sl, void (*operation)(const void* data_p, const void* additional_params), const void* additional_params)
 {
