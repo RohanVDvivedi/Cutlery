@@ -279,6 +279,10 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 
 void remove_all_from_singlylist(singlylist* sl)
 {
+	// nothing to remove
+	if(is_empty_singlylist(sl))
+		return;
+
 	slnode * const HEAD = sl->head;
 
 	slnode* node_p = sl->head;
