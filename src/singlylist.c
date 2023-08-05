@@ -15,7 +15,7 @@ void initialize_slnode(slnode* node_p)
 	node_p->next = NULL;
 }
 
-int is_free_floating_slnode(slnode* node_p)
+int is_free_floating_slnode(const slnode* node_p)
 {
 	return node_p->next == NULL;
 }

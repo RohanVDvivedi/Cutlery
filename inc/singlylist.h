@@ -33,7 +33,7 @@ void initialize_singlylist(singlylist* sl, cy_uint node_offset);
 void initialize_slnode(slnode* node_p);
 
 // returns 1, if the node_p does not exist in any singlylist
-int is_free_floating_slnode(slnode* node_p);
+int is_free_floating_slnode(const slnode* node_p);
 
 int is_empty_singlylist(const singlylist* sl);
 
