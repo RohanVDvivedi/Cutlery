@@ -317,8 +317,6 @@ const void* find_equals_in_singlylist(const singlylist* sl, const void* data, in
 	return NULL;
 }
 
-// TODO from here --
-
 void radix_sort_singlylist(singlylist* sl, unsigned long long int (*get_sort_attribute)(const void* data))
 {
 	// return, if the singlylist has 0 or 1 nodes only
@@ -345,6 +343,8 @@ void radix_sort_singlylist(singlylist* sl, unsigned long long int (*get_sort_att
 		insert_all_at_tail_in_singlylist(sl, &(sort_buckets[1]));
 	}
 }
+
+// TODO from here --
 
 static void swap_nodes_singlylist(slnode** node1_p_p, slnode** node2_p_p)
 {
