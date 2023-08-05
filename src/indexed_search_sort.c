@@ -235,7 +235,7 @@ int radix_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, un
 cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
 	switch(occurence_type)
@@ -244,7 +244,7 @@ cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint star
 		{
 			for(cy_uint i = start_index; i <= last_index; i++)
 			{
-				if(compare(get_from_array(array_p, i), data_p) == 0)
+				if(compare(iai_p->get_element(iai_p->ds_p, i), data_p) == 0)
 					return i;
 			}
 			break;
@@ -253,7 +253,7 @@ cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint star
 		{
 			for(cy_uint i = last_index; i != (start_index - 1); i--)
 			{
-				if(compare(get_from_array(array_p, i), data_p) == 0)
+				if(compare(iai_p->get_element(iai_p->ds_p, i), data_p) == 0)
 					return i;
 			}
 			break;
@@ -267,7 +267,7 @@ cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint star
 cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
 	switch(occurence_type)
@@ -275,16 +275,16 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 		case FIRST_OCCURENCE :
 		{
 			// take care of conditions when we might go start_index - 1
-			if(compare(get_from_array(array_p, start_index), data_p) == 0)
+			if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) == 0)
 				return start_index;
-			else if(compare(get_from_array(array_p, start_index), data_p) > 0)
+			else if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 				return INVALID_INDEX;
 			break;
 		}
 		case LAST_OCCURENCE :
 		{
 			// take care of conditions when we might go start_index - 1
-			if(compare(get_from_array(array_p, start_index), data_p) > 0)
+			if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 				return INVALID_INDEX;
 			break;
 		}
@@ -301,9 +301,9 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(get_from_array(array_p, m), data_p) > 0)
+		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 			h = m - 1;
-		else if(compare(get_from_array(array_p, m), data_p) < 0)
+		else if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
 			l = m + 1;
 		else
 		{
@@ -330,13 +330,13 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
 	// then there is no element in array lesser than it, so return INVALID_INDEX
-	if(compare(get_from_array(array_p, start_index), data_p) >= 0)
+	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) >= 0)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
@@ -350,7 +350,7 @@ cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_u
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(get_from_array(array_p, m), data_p) < 0)
+		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
 		{
 			result_index = m;
 			l = m + 1;
@@ -365,13 +365,13 @@ cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_u
 cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
 	// then there is no element in array lesser than it, so return INVALID_INDEX
-	if(compare(get_from_array(array_p, start_index), data_p) > 0)
+	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
@@ -385,7 +385,7 @@ cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* i
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(get_from_array(array_p, m), data_p) > 0)
+		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 			h = m - 1;
 		else
 		{
@@ -400,13 +400,13 @@ cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* i
 cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index
 	// then its succeeding is the start_indexed element, so return start_index
-	if(compare(get_from_array(array_p, start_index), data_p) > 0)
+	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -420,7 +420,7 @@ cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(get_from_array(array_p, m), data_p) > 0)
+		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 		{
 			result_index = m;
 			h = m - 1;
@@ -435,13 +435,13 @@ cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_
 cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index
 	// then its succeeding is the start_indexed element, so return start_index
-	if(compare(get_from_array(array_p, start_index), data_p) >= 0)
+	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) >= 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -455,7 +455,7 @@ cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* 
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(get_from_array(array_p, m), data_p) < 0)
+		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
 			l = m + 1;
 		else
 		{
@@ -470,12 +470,12 @@ cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* 
 cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
 {
 	// check for valid start and last indexes
-	if(start_index > last_index || last_index >= get_capacity_array(array_p))
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index, then return start_index
-	if(compare(get_from_array(array_p, start_index), data_p) > 0)
+	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -501,7 +501,7 @@ cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p
 
 		// if the element at m in the array is greater,
 		// then update the result_index (since it could be the answer) and shorten the search range
-		if(compare(get_from_array(array_p, m), data_p) > 0)
+		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 		{
 			result_index = m;
 			h = m - 1;
