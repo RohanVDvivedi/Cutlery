@@ -5,6 +5,12 @@
 #include<linkedlist.h>
 #include<bst.h>
 
+//#define TEST_ROBINHOOD_HASHING
+//#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
+//#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
+#define TEST_ELEMENTS_AS_RED_BLACK_BST
+//#define TEST_ELEMENTS_AS_AVL_BST
+
 typedef struct teststruct ts;
 struct teststruct
 {
@@ -36,6 +42,17 @@ void print_ts(const void* tsv)
 		printf("(null)");
 	else
 		printf("%d, %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
+}
+
+void on_remove_all_println_ts_with_node(void* resource_p, const void* tsv)
+{
+	#if defined TEST_ROBINHOOD_HASHING
+		printf("%d %d, %s :: is_free_floating_rbhnode = %d\n", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, is_free_floating_rbhnode(&(((ts*)tsv)->embedded_nodes.embed_node1)));
+	#elif defined TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD || defined TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
+		printf("%d %d, %s :: is_free_floating_llnode = %d\n", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, is_free_floating_llnode(&(((ts*)tsv)->embedded_nodes.embed_node2)));
+	#elif defined TEST_ELEMENTS_AS_AVL_BST || defined TEST_ELEMENTS_AS_RED_BLACK_BST
+		printf("%d %d, %s :: is_free_floating_bstnode = %d\n", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, is_free_floating_bstnode(&(((ts*)tsv)->embedded_nodes.embed_node3)));
+	#endif
 }
 
 void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
@@ -95,12 +112,6 @@ void print_all_that_equals_from_hashmap(const hashmap* hashmap_p, const void* da
 	}
 	printf("\n");
 }
-
-//#define TEST_ROBINHOOD_HASHING
-//#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD
-//#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL
-#define TEST_ELEMENTS_AS_RED_BLACK_BST
-//#define TEST_ELEMENTS_AS_AVL_BST
 
 #if defined TEST_ROBINHOOD_HASHING
 	#define POLICY_USED ROBINHOOD_HASHING
@@ -449,7 +460,7 @@ int main()
 	printf("\n\nAfter rehashing - 10\n");
 	print_ts_hashmap(hashmap_p);
 
-	remove_all_from_hashmap(hashmap_p);
+	remove_all_from_hashmap(hashmap_p, &((notifier_interface){NULL, on_remove_all_println_ts_with_node}));
 
 	printf("\n\nAfter removing all elements\n");
 	print_ts_hashmap(hashmap_p);
