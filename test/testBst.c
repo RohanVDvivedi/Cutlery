@@ -414,7 +414,7 @@ int main()
 			remove_head_from_singlylist(&removed_datas);
 
 			print_ts(tsv);
-			printf("is its bstnode free floating = %d\n\n", is_free_floating_bstnode(&(tsv->bst_embed_node)));
+			printf("\t\t\t AND is its bstnode free floating = %d\n\n", is_free_floating_bstnode(&(tsv->bst_embed_node)));
 		}
 
 		printf("COMPLETED REMOVING ALL NODES\n");
