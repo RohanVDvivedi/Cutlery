@@ -157,7 +157,8 @@ void print_ts_bst(bst* bst_p)
 
 #define TREE_TYPE_TO_USE 	/*NON_SELF_BALANCING*/ AVL_TREE /*RED_BLACK_TREE*/
 
-#define TEST_REMOVE_ALL_AFTER_INSERTS
+// you can either test remove all OR remove single node functions
+//#define TEST_REMOVE_ALL_AFTER_INSERTS
 
 int main()
 {
