@@ -295,9 +295,11 @@ int main()
 	bubble_sort_linkedlist(ll, compare_by_a_decreasing);
 	print_ts_linkedlist(ll);
 
-	printf("\n\nremoving all from linkedlist\n\n");
+	printf("\n\nremoving all from linkedlist and printing them\n\n");
 	remove_all_from_linkedlist(ll, &((notifier_interface){NULL, on_remove_all_println_ts_with_node}));
+	printf("\n\n");
 	print_ts_linkedlist(ll);
+	printf("\n\n");
 
 	printf("Testing get_from_head\n");
 	for(unsigned int i = 0; i < 2; i++)
