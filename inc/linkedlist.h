@@ -11,8 +11,6 @@ struct llnode
 {
 	// the previous and next node in the linked list
 	llnode* next;	// the next of the tail node points to head
-	// here the next node comes first, because we want linkedlist to be convertible to a singlylist, without much hazzle
-
 	llnode* prev;	// the prev of the head node points to tail
 };
 
