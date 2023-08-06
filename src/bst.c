@@ -376,11 +376,8 @@ int remove_from_bst(bst* bst_p, const void* data)
 	return 1;
 }
 
-void remove_all_from_bst(bst* bst_p, singlylist* removed_datas)
+void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p)
 {
-	if(removed_datas != NULL)
-		initialize_singlylist(removed_datas, bst_p->node_offset);
-
 	// stack data that needs to be removed, linked with their parent pointers of the nodes
 	singlylist unremoved_stack;
 	initialize_singlylist(&unremoved_stack, bst_p->node_offset + offsetof(bstnode, parent));
@@ -423,9 +420,9 @@ void remove_all_from_bst(bst* bst_p, singlylist* removed_datas)
 		// its parent was already NULL, the below call will reset its left, right and node_property to NULLs and 0s
 		initialize_bstnode(node_p);
 
-		// insert it to removed_datas
-		if(removed_datas != NULL)
-			insert_tail_in_singlylist(removed_datas, data_p);
+		// notify the notifier_interface ni_p (if any)
+		if(ni_p != NULL)
+			ni_p->notify(ni_p->resource_p, data_p);
 	}
 }
 

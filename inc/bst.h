@@ -7,6 +7,8 @@
 
 #include<cutlery_stds.h>
 
+#include<notifier_interface.h>
+
 /*
 ** 	BST is short for Binary Search Tree
 */
@@ -155,11 +157,8 @@ int insert_in_bst(bst* bst_p, const void* data);
 int remove_from_bst(bst* bst_p, const void* data);
 
 // removes all the elements from the bst and reinitializes their embedded bstnode
-// if removed_datas is provided (not NULL) then removed_datas is initialized and all the elements (that are removed) are inserted in to this singlylist
-// you do not need to initialize removed_datas
-// the removed_datas contains all the elements in pre-order traversal of the bst_p
-// bst_p is empty after this function has returned
-void remove_all_from_bst(bst* bst_p, singlylist* removed_datas /* This is an uninitialized singlylist */);
+// after this if a notifier_interface is specified (i.e. not NULL), then it is notified
+void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p);
 
 // traversals possible in the tree
 typedef enum bsttraversal bsttraversal;
