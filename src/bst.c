@@ -424,7 +424,7 @@ void remove_all_from_bst(bst* bst_p, singlylist* removed_datas)
 		initialize_bstnode(node_p);
 
 		// insert it to removed_datas
-		if(removed_datas)
+		if(removed_datas != NULL)
 			insert_tail_in_singlylist(removed_datas, data_p);
 	}
 }
