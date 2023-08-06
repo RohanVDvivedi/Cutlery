@@ -376,20 +376,57 @@ int remove_from_bst(bst* bst_p, const void* data)
 	return 1;
 }
 
-// a post order function to re-initialize_bstnode all the bstnodes in the bst
-static void remove_all_from_bst_helper(bstnode* node_p)
-{
-	if(node_p == NULL)
-		return;
-	remove_all_from_bst_helper(node_p->left);
-	remove_all_from_bst_helper(node_p->right);
-	initialize_bstnode(node_p);
-}
-
 void remove_all_from_bst(bst* bst_p, singlylist* removed_datas)
 {
-	remove_all_from_bst_helper(bst_p->root);
-	bst_p->root = NULL;
+	if(removed_datas != NULL)
+		initialize_singlylist(removed_datas, bst_p->node_offset);
+
+	// stack data that needs to be removed, linked with their parent pointers of the nodes
+	singlylist unremoved_stack;
+	initialize_singlylist(&unremoved_stack, bst_p->node_offset + offsetof(bstnode, parent));
+
+	// insert first element of the stack
+	if(bst_p->root != NULL)
+	{
+		bst_p->root->parent = NULL; // this is equivalent to initializing slnode for unremoved stack
+		insert_head_in_singlylist(&unremoved_stack, get_data(bst_p->root, bst_p));
+
+		// root now points to nothing
+		bst_p->root = NULL;
+	}
+
+	while(!is_empty_singlylist(&unremoved_stack))
+	{
+		// remove an element from the stack
+		const void* data_p = get_head_of_singlylist(&unremoved_stack);
+		remove_head_from_singlylist(&unremoved_stack);
+
+		// get its node
+		// since we just remove it from the unremoved_stack, it s parent is suppossed to be NULL
+		bstnode* node_p = get_node(data_p, bst_p);
+
+		// if node_p has right node, then insert it to unremoved_stack
+		if(node_p->right != NULL)
+		{
+			node_p->right->parent = NULL; // this is equivalent to initializing slnode for unremoved stack
+			insert_head_in_singlylist(&unremoved_stack, get_data(node_p->right, bst_p));
+		}
+
+		// if node_p has left node, then insert it to unremoved_stack
+		if(node_p->left != NULL)
+		{
+			node_p->left->parent = NULL; // this is equivalent to initializing slnode for unremoved stack
+			insert_head_in_singlylist(&unremoved_stack, get_data(node_p->left, bst_p));
+		}
+
+		// re initialize bstnode of data_p
+		// its parent was already NULL, the below call will reset its left, right and node_property to NULLs and 0s
+		initialize_bstnode(node_p);
+
+		// insert it to removed_datas
+		if(removed_datas)
+			insert_tail_in_singlylist(removed_datas, data_p);
+	}
 }
 
 static void for_each_node_pre_order(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
