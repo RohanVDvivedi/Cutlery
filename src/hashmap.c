@@ -634,7 +634,7 @@ const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xi
 	}
 }
 
-void remove_all_from_hashmap(hashmap* hashmap_p)
+void remove_all_from_hashmap(hashmap* hashmap_p, notifier_interface* ni_p)
 {
 	// iterate over all the buckets in the hashmap_p and removing all the elements
 	switch(hashmap_p->hashmap_policy)
@@ -649,6 +649,10 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 
 				// initialize rbhnode of all elements
 				initialize_rbhnode(get_node(data, hashmap_p));
+
+				// notify the notifier_interface ni_p, (if any)
+				if(ni_p != NULL)
+					ni_p->notify(ni_p->resource_p, data);
 			}
 			break;
 		}
@@ -661,7 +665,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
 				// remove all elements from the linkedlist bucket
-				remove_all_from_linkedlist(&ll, NULL);
+				remove_all_from_linkedlist(&ll, ni_p);
 			}
 			break;
 		}
@@ -674,7 +678,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
 				// remove all elements from the bst bucket
-				remove_all_from_bst(&bstt, NULL);
+				remove_all_from_bst(&bstt, ni_p);
 			}
 
 			break;

@@ -2,6 +2,7 @@
 #define HASHMAP_H
 
 #include<array.h>
+#include<notifier_interface.h>
 
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
@@ -142,10 +143,11 @@ int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count);
 // it fails with return 0, when expand_factor <= 1.0
 int expand_hashmap(hashmap* hashmap_p, float expand_factor);
 
-// removes all the elements from the hashmap hashmap_p
+// removes all the elements from the hashmap and reinitializes their embedded nodes
+// after this if a notifier_interface if specified (i.e. not NULL), then it is notified
 // after a call to this function the hashmap contains 0 elements (get_element_count() == 0)
 // it does not affect the bucket_count of the hashmap
-void remove_all_from_hashmap(hashmap* hashmap_p);
+void remove_all_from_hashmap(hashmap* hashmap_p, notifier_interface* ni_p);
 
 // frees all the data being held by the hashmap
 // the same hashmap can be reused by calling initialize_hashmap function, after it is deinitialized
