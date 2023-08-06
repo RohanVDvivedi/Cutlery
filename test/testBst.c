@@ -23,7 +23,7 @@ void print_ts(const void* tsv)
 	printf("%d %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
-void println_ts_with_node(const void* tsv)
+void on_remove_all_println_ts_with_node(void* resource_p, const void* tsv)
 {
 	printf("%d %d, %s :: is_free_floating_bstnode = %d\n", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, is_free_floating_bstnode(&((ts*)tsv)->bst_embed_node));
 }
@@ -408,20 +408,9 @@ int main()
 	#ifdef TEST_REMOVE_ALL_AFTER_INSERTS
 	{
 		printf("REMOVING ALL NODES\n");
-		singlylist removed_datas;
-		remove_all_from_bst(bst_p, &removed_datas);
+		remove_all_from_bst(bst_p, (notifier_interface){NULL, on_remove_all_println_ts_with_node});
 
 		printf("is bst now empty = %d\n", is_empty_bst(bst_p));
-
-		printf("PRINTING ALL REMOVED NODES\n");
-		while(!is_empty_singlylist(&removed_datas))
-		{
-			const ts* tsv = get_head_of_singlylist(&removed_datas);
-			remove_head_from_singlylist(&removed_datas);
-
-			print_ts(tsv);
-			printf("\t\t\t AND is its bstnode free floating = %d\n\n", is_free_floating_bstnode(&(tsv->bst_embed_node)));
-		}
 
 		printf("COMPLETED REMOVING ALL NODES\n");
 
