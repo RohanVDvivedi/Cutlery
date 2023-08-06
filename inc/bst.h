@@ -157,7 +157,7 @@ int insert_in_bst(bst* bst_p, const void* data);
 int remove_from_bst(bst* bst_p, const void* data);
 
 // removes all the elements from the bst and reinitializes their embedded bstnode
-// after this if a notifier_interface is specified (i.e. not NULL), then it is notified
+// after this if a notifier_interface if specified (i.e. not NULL), then it is notified
 void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p);
 
 // traversals possible in the tree
