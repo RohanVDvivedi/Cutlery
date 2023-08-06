@@ -661,7 +661,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 				ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
 				// remove all elements from the linkedlist bucket
-				remove_all_from_linkedlist(&ll);
+				remove_all_from_linkedlist(&ll, NULL);
 			}
 			break;
 		}

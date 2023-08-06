@@ -1,6 +1,8 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include<notifier_interface.h>
+
 #include<dstring.h>
 
 // LINKEDLIST is a circular doubly linkedlist
@@ -71,9 +73,9 @@ int remove_head_from_linkedlist(linkedlist* ll);
 int remove_tail_from_linkedlist(linkedlist* ll);
 int remove_from_linkedlist(linkedlist* ll, const void* data);
 
-// removes all the elements from linkedlist
-// and reinitializes their embedded llnode
-void remove_all_from_linkedlist(linkedlist* ll);
+// removes all the elements from the linkedlist and reinitializes their embedded llnode
+// after this if a notifier_interface is specified (i.e. not NULL), then it is notified
+void remove_all_from_linkedlist(linkedlist* ll, notifier_interface* ni_p);
 
 // swap positions of the 2 elements in a given linkedlist
 int swap_in_linkedlist(linkedlist* ll, const void* data_xist1, const void* data_xist2);

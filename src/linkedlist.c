@@ -346,7 +346,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data)
 	return 1;
 }
 
-void remove_all_from_linkedlist(linkedlist* ll)
+void remove_all_from_linkedlist(linkedlist* ll, notifier_interface* ni_p)
 {
 	if(is_empty_linkedlist(ll))
 		return;
@@ -357,6 +357,11 @@ void remove_all_from_linkedlist(linkedlist* ll)
 	{
 		llnode* temp_next = temp->next;
 		initialize_llnode(temp);
+
+		// notify the notifer interface (if any)
+		if(ni_p != NULL)
+			ni_p->notify(ni_p->resource_p, temp);
+
 		temp = temp_next;
 	}
 	while(temp != ll->head);
