@@ -408,7 +408,7 @@ int main()
 	#ifdef TEST_REMOVE_ALL_AFTER_INSERTS
 	{
 		printf("REMOVING ALL NODES\n");
-		remove_all_from_bst(bst_p, (notifier_interface){NULL, on_remove_all_println_ts_with_node});
+		remove_all_from_bst(bst_p, &((notifier_interface){NULL, on_remove_all_println_ts_with_node}));
 
 		printf("is bst now empty = %d\n", is_empty_bst(bst_p));
 
