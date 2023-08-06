@@ -360,7 +360,7 @@ void remove_all_from_linkedlist(linkedlist* ll, notifier_interface* ni_p)
 
 		// notify the notifer interface (if any)
 		if(ni_p != NULL)
-			ni_p->notify(ni_p->resource_p, temp);
+			ni_p->notify(ni_p->resource_p, get_data(temp, ll));
 
 		temp = temp_next;
 	}
