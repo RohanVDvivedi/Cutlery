@@ -15,10 +15,10 @@ struct notifier_interface
 	// resource that needs to be notified
 	void* resource_p;
 
-	// the below function will be called when ever we want some thing to be notified to resource_p
+	// the below function will be called when ever we want some resource to be notified of removal of data_p from a datastructure
 	// notify function is designed to mimic insertion function signatures of other data structures of cutlery,
 	// this will allow easy assignment of insertion functions (of other data structures) to this functions pointer
-	int (*notify)(void* resource_p, const void* data_p);
+	void (*notify)(void* resource_p, const void* data_p);
 };
 
 #endif
