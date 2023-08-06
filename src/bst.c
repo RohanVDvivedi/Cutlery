@@ -376,6 +376,9 @@ int remove_from_bst(bst* bst_p, const void* data)
 	return 1;
 }
 
+// only the below function needs this header file
+#include<singlylist.h>
+
 void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p)
 {
 	// stack data that needs to be removed, linked with their parent pointers of the nodes
