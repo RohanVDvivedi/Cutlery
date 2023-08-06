@@ -1,12 +1,8 @@
 #ifndef BST_H
 #define BST_H
 
-#include<singlylist.h>
-
 #include<dstring.h>
-
 #include<cutlery_stds.h>
-
 #include<notifier_interface.h>
 
 /*

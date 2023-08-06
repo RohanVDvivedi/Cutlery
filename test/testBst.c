@@ -23,6 +23,11 @@ void print_ts(const void* tsv)
 	printf("%d %d, %s", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
+void println_ts_with_node(const void* tsv)
+{
+	printf("%d %d, %s :: is_free_floating_bstnode = %d\n", ((ts*)tsv)->key, ((ts*)tsv)->a, ((ts*)tsv)->s, is_free_floating_bstnode(&((ts*)tsv)->bst_embed_node));
+}
+
 void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs + 1);
