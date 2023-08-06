@@ -2,7 +2,6 @@
 #define LINKEDLIST_H
 
 #include<notifier_interface.h>
-
 #include<dstring.h>
 
 // LINKEDLIST is a circular doubly linkedlist
