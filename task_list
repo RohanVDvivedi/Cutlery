@@ -1,14 +1,5 @@
 1. Tasks picked
 
-INTERFACE
- * implement collector interface
-    struct collector_interface
-    {
-      void* ds_p;
-      int collect(void* ds_p, const void* data_p);
-    };
-    Use this interface to be passed to remove_all_from_* functions
-
 ARRAYLIST
  * add functionality to add n elements at index from front or back.
 
