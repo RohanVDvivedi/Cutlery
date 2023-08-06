@@ -277,7 +277,7 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 	return get_data(to_be_removed, sl);
 }
 
-void remove_all_from_singlylist(singlylist* sl)
+void remove_all_from_singlylist(singlylist* sl, notifier_interface* ni_p)
 {
 	// nothing to remove
 	if(is_empty_singlylist(sl))
@@ -290,6 +290,11 @@ void remove_all_from_singlylist(singlylist* sl)
 	{
 		slnode* node_p_next = node_p->next;
 		initialize_slnode(node_p);
+
+		// notify the notifier interface (if any)
+		if(ni_p != NULL)
+			ni_p->notify(ni_p->resource_p, get_data(node_p, sl));
+
 		node_p = node_p_next;
 	}
 	while(node_p != HEAD);
