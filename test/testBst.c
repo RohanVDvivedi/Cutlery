@@ -408,7 +408,7 @@ int main()
 		printf("is bst now empty = %d\n", is_empty_bst(bst_p));
 
 		printf("PRINTING ALL REMOVED NODES\n");
-		while(is_empty_singlylist(&removed_datas))
+		while(!is_empty_singlylist(&removed_datas))
 		{
 			const ts* tsv = get_head_of_singlylist(&removed_datas);
 			remove_head_from_singlylist(&removed_datas);
