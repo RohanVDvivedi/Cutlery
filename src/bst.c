@@ -386,7 +386,7 @@ static void remove_all_from_bst_helper(bstnode* node_p)
 	initialize_bstnode(node_p);
 }
 
-void remove_all_from_bst(bst* bst_p)
+void remove_all_from_bst(bst* bst_p, singlylist* removed_datas)
 {
 	remove_all_from_bst_helper(bst_p->root);
 	bst_p->root = NULL;

@@ -152,9 +152,12 @@ int insert_in_bst(bst* bst_p, const void* data);
 // returns 0, and fails if bstnode of data is a new node
 int remove_from_bst(bst* bst_p, const void* data);
 
-// removes all the elements from the bst
-// and reinitializes their embedded bstnode
-void remove_all_from_bst(bst* bst_p);
+// removes all the elements from the bst and reinitializes their embedded bstnode
+// if removed_datas is provided (not NULL) then removed_datas is initialized and all the elements (that are removed) are inserted in to this singlylist
+// you do not need to initialize removed_datas
+// the removed_datas contains all the elements in pre-order traversal of the bst_p
+// bst_p is empty after this function has returned
+void remove_all_from_bst(bst* bst_p, singlylist* removed_datas /* This is an uninitialized singlylist */);
 
 // traversals possible in the tree
 typedef enum bsttraversal bsttraversal;
