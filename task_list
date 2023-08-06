@@ -3,12 +3,6 @@
 ARRAYLIST
  * add functionality to add n elements at index from front or back.
 
-HASHMAP
-  * resize hashmap without using an auxilary queue. using notifier_interface and remove_all_from_hashmap
-    memmory usage stats (in othe order of policy defined in testHAsh.c) 
-    old : (178)(73,212) (195)(136,088) (195)(136,050) (210)(163,533) (212)(156,186)
-    new : (175)(72,924) (191)(135,704) (191)(135,666) (206)(163,177) (208)(155,802) 
-
 2. Add new datastructure types tasks (*future)
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
