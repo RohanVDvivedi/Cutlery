@@ -674,7 +674,7 @@ void remove_all_from_hashmap(hashmap* hashmap_p)
 				bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 
 				// remove all elements from the bst bucket
-				remove_all_from_bst(&bstt);
+				remove_all_from_bst(&bstt, NULL);
 			}
 
 			break;
