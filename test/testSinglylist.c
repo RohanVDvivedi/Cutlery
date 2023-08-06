@@ -46,6 +46,11 @@ void print_ts(const void* tsv)
 	printf(" %d, %s", ((ts*)tsv)->a, ((ts*)tsv)->s);
 }
 
+void on_remove_all_println_ts_with_node(void* resource_p, const void* tsv)
+{
+	printf("%d, %s :: is_free_floating_slnode = %d\n", ((ts*)tsv)->a, ((ts*)tsv)->s, is_free_floating_slnode(&(((ts*)tsv)->sl_embed_node)));
+}
+
 void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs + 1);
@@ -244,8 +249,10 @@ int main()
 	print_ts_singlylist(sl);
 
 	printf("\n\nremoving all from singlylist\n\n");
-	remove_all_from_singlylist(sl);
+	remove_all_from_singlylist(sl, &((notifier_interface){NULL, on_remove_all_println_ts_with_node}));
+	printf("\n\n");
 	print_ts_singlylist(sl);
+	printf("\n\n");
 
 	printf("Testing get_from_head\n");
 	for(unsigned int i = 0; i < 2; i++)
