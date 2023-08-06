@@ -157,6 +157,8 @@ void print_ts_bst(bst* bst_p)
 
 #define TREE_TYPE_TO_USE 	/*NON_SELF_BALANCING*/ AVL_TREE /*RED_BLACK_TREE*/
 
+#define TEST_REMOVE_ALL_AFTER_INSERTS
+
 int main()
 {
 	printf("INITIALIZING BALANCED BINARY SEARCH TREE\n");
@@ -396,6 +398,30 @@ int main()
 	print_all_using_iterator_in_both_directions(bst_p);
 
 	printf("COMPLETED INSERTING NODES\n");
+
+	#ifdef TEST_REMOVE_ALL_AFTER_INSERTS
+	{
+		printf("REMOVING ALL NODES\n");
+		singlylist removed_datas;
+		remove_all_from_bst(bst_p, &removed_datas);
+
+		printf("is bst now empty = %d\n", is_empty_bst(bst_p));
+
+		printf("PRINTING ALL REMOVED NODES\n");
+		while(is_empty_singlylist(&removed_datas))
+		{
+			const ts* tsv = get_head_of_singlylist(&removed_datas);
+			remove_head_from_singlylist(&removed_datas);
+
+			print_ts(tsv);
+			printf("is its bstnode free floating = %d\n\n", is_free_floating_bstnode(&(tsv->bst_embed_node)));
+		}
+
+		printf("COMPLETED REMOVING ALL NODES\n");
+
+		return 0;
+	}
+	#endif
 
 	printf("STARTING TO REMOVE NODES\n");
 
