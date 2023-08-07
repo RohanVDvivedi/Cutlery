@@ -57,6 +57,11 @@ int quick_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_ui
 // all the elements will be ordered in increasing order of their value for get_sort_attribute()
 int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);
 
+// sorting algorithm used => bubble sort algorithm
+int bubble_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+
+// sorting algorithm used => insertion sort algorithm
+int insertion_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
 
 
 
