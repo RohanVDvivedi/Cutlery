@@ -273,8 +273,9 @@ int insert_NULLs_from_back_in_arraylist(arraylist* al, cy_uint index, cy_uint NU
 	if(NULL_count_to_insert == 0)
 		return 1;
 
-	// compute corresponding front_index, to get the same result
+	// compute corresponding front_index, to get the same result, as if done from front
 	cy_uint front_index = get_element_count_arraylist(al) - index;
+
 	insert_NULLs_from_front_in_arraylist_INTERNAL(al, front_index, NULL_count_to_insert);
 
 	return 1;
@@ -373,10 +374,9 @@ int remove_elements_from_back_of_arraylist(arraylist* al, cy_uint index, cy_uint
 	if(element_count_to_remove == 0)
 		return 1;
 
-	// front_n_at: the corresponding n_at was suppossed to be passed to the remove_elements_from_front_of_arraylist_at function
+	// compute corresponding front_index, to get the same result, as if done from front
 	cy_uint front_index = al->element_count - index - element_count_to_remove;
 
-	// same as removing the same number of elements but at the last index
 	remove_elements_from_front_of_arraylist_INTERNAL(al, front_index, element_count_to_remove);
 
 	return 1;
