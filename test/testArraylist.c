@@ -307,10 +307,6 @@ int main()
 	print_int_arraylist(al);
 	printf("\n\n");
 
-	operate_on_arraylist(al, INSERT_FRONT);
-	print_int_arraylist(al);
-	printf("\n\n");
-
 	deinitialize_arraylist(al);
 	return 0;
 }
