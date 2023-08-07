@@ -261,10 +261,10 @@ static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint
 		// move before elements
 		cy_uint elements_to_be_moved = elements_before_NULLs;
 		cy_uint index_to_move_from = al->first_index;
-		cy_uint index_to_move_to = sub_circularly(al->first_index, NULL_count_to_insert, get_capacity_arraylist(al));
+		cy_uint index_to_move_to = sub_circularly(index_to_move_from, NULL_count_to_insert, get_capacity_arraylist(al));
 		while(elements_to_be_moved)
 		{
-			set_element_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
+			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
 			index_to_move_from = add_circularly(index_to_move_from, 1, get_capacity_arraylist(al));
 			index_to_move_to = add_circularly(index_to_move_to, 1, get_capacity_arraylist(al));
 			elements_to_be_moved--;
@@ -279,6 +279,16 @@ static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint
 	else // make space by moving after elements
 	{
 		// move after elements
+		cy_uint elements_to_be_moved = elements_after_NULLs;
+		cy_uint index_to_move_from = get_end_index(al->first_index, get_element_count_arraylist(al), get_capacity_arraylist(al));
+		cy_uint index_to_move_to = add_circularly(index_to_move_from, NULL_count_to_insert, get_capacity_arraylist(al));
+		while(elements_to_be_moved)
+		{
+			index_to_move_from = sub_circularly(index_to_move_from, 1, get_capacity_arraylist(al));
+			index_to_move_to = sub_circularly(index_to_move_to, 1, get_capacity_arraylist(al));
+			set_in_array(&(al->arraylist_holder), get_from_array(&(al->arraylist_holder), index_to_move_from), index_to_move_to);
+			elements_to_be_moved--;
+		}
 
 		// increment element_count
 		al->element_count += NULL_count_to_insert;
