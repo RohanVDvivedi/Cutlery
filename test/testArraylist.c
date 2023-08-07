@@ -31,7 +31,7 @@ void print_int_arraylist(arraylist* al)
 	printf("\n");
 }
 
-#define TOTAL_OPERATIONS_SUPPORTED 12
+#define TOTAL_OPERATIONS_SUPPORTED 14
 
 typedef enum al_op al_op;
 enum al_op
@@ -46,8 +46,10 @@ enum al_op
 	SET_NTH_BACK,	// 7
 	SWAP_FRONT,		// 8
 	SWAP_BACK,		// 9
-	REMOVE_FRONT,	// 10
-	REMOVE_BACK,	// 11
+	INSERT_FRONT,	// 10
+	INSERT_BACK,	// 11
+	REMOVE_FRONT,	// 12
+	REMOVE_BACK,	// 13
 };
 
 #define INITIAL_TOTAL_SIZE 12
@@ -138,6 +140,30 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			unsigned int i1 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.005));
 			unsigned int i2 = ((unsigned int)(rand())) % ((unsigned int)((get_element_count_arraylist(al) + 1) * 1.005));
 			printf("SWAP_BACK %u and %u : %d\n", i1, i2, swap_from_back_in_arraylist(al, i1, i2));
+			break;
+		}
+
+		case INSERT_FRONT :
+		{
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) + 2));
+			unsigned int nulls_to_insert = ((unsigned int)(non_zero_rand())) % ((unsigned int)(get_capacity_arraylist(al) - get_element_count_arraylist(al)));
+			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
+			int res = insert_NULLs_from_front_in_arraylist(al, index, nulls_to_insert);
+			for(cy_uint i = 0; i < nulls_to_insert; i++)
+				set_from_front_in_arraylist(al, data, index + i);
+			printf("INSERT_FRONT %u %u : %d\n", index, nulls_to_insert, res);
+			break;
+		}
+
+		case INSERT_BACK :
+		{
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) + 2));
+			unsigned int nulls_to_insert = ((unsigned int)(non_zero_rand())) % ((unsigned int)(get_capacity_arraylist(al) - get_element_count_arraylist(al)));
+			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
+			int res = insert_NULLs_from_back_in_arraylist(al, index, nulls_to_insert);
+			for(cy_uint i = 0; i < nulls_to_insert; i++)
+				set_from_back_in_arraylist(al, data, index + i);
+			printf("INSERT_BACK %u %u : %d\n", index, nulls_to_insert, res);
 			break;
 		}
 
