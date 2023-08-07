@@ -14,13 +14,6 @@ VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
   };
  * add comment that this (value_arraylist) is suppossed to be used with only small ephemeral structs and primitive types, that have no immovable attributes like (synchronization primitives like) mutex, conditional variables or semaphores
 
-RESOURCE_CLEANUP_STACK (NEW DATASTRUCTURE)
- * build as an implementation of value_arraylist
- * build golang's defer like functionality, taking in a resource_cleanup(void* resource) and a resource to be cleaned up, using a stack
-   * you can push a clean up task for a resource
-   * or you can run all the cleanup tasks
-   * or destroy all the cleanup tasks
-
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
 struct trie_node
