@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * implement bubble_sort, insertion_sort and is_sorted for index_accessed_search_sort.h
-
 2. Add new datastructure types tasks (*future)
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
