@@ -251,13 +251,27 @@ static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint
 	cy_uint elements_before_NULLs = index;
 	cy_uint elements_after_NULLs = get_element_count_arraylist(al);
 
-	if(elements_before_NULLs <= elements_after_NULLs) // make space by moving before elements
+	if(get_element_count_arraylist(al) == 0) // nothing to be moved
 	{
+		al->first_index = 0;
+		al->element_count = NULL_count_to_insert;
+	}
+	else if(elements_before_NULLs <= elements_after_NULLs) // make space by moving before elements
+	{
+		// move before elements
 
+		// increment element_count
+		al->element_count += NULL_count_to_insert;
+
+		// decrement the arraylist's first_index
+		al->first_index = sub_circularly(al->first_index, NULL_count_to_insert, get_capacity_arraylist(al));
 	}
 	else // make space by moving after elements
 	{
+		// move after elements
 
+		// increment element_count
+		al->element_count += NULL_count_to_insert;
 	}
 
 	// at this point, there is enough space made at (given) index fron from in the arraylist, first_index and element_count of arraylist has been handled
