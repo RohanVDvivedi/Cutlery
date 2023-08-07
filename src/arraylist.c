@@ -249,7 +249,7 @@ int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2)
 static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
 {
 	cy_uint elements_before_NULLs = index;
-	cy_uint elements_after_NULLs = get_element_count_arraylist(al);
+	cy_uint elements_after_NULLs = get_element_count_arraylist(al) - index;
 
 	if(get_element_count_arraylist(al) == 0) // nothing to be moved
 	{
