@@ -51,6 +51,26 @@ static cy_uint get_element_count_iai_offsetted(const void* ds_p)
 
 // -----------------------------------------------------------------
 
+int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+{
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
+		return 0;
+
+	cy_uint total_elements = last_index - start_index + 1;
+	if(total_elements <= 1)
+		return 1;
+
+	//check that all the adjacent elements are in correct order
+	for(cy_uint i = start_index; i < last_index; i++)
+	{
+		// if the adjacent of i is not correctly ordered, then fail with a 0
+		if(compare(iai_p->get_element(iai_p->ds_p, i), iai_p->get_element(iai_p->ds_p, i + 1)) > 0)
+			return 0;
+	}
+
+	return 1;
+}
+
 int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
