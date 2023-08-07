@@ -248,7 +248,22 @@ int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2)
 // and get_capacity - get_element_count >= NULL_count_to_insert
 static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
 {
+	cy_uint elements_before_NULLs = index;
+	cy_uint elements_after_NULLs = get_element_count_arraylist(al);
 
+	if(elements_before_NULLs <= elements_after_NULLs) // make space by moving before elements
+	{
+
+	}
+	else // make space by moving after elements
+	{
+
+	}
+
+	// at this point, there is enough space made at (given) index fron from in the arraylist, first_index and element_count of arraylist has been handled
+
+	// now we only need to NULL those slots created
+	circularly_NULL_elements_in_arraylist_holder(&(al->arraylist_holder), add_circularly(al->first_index, index, get_capacity_arraylist(al)), NULL_count_to_insert);
 }
 
 int insert_NULLs_from_front_in_arraylist(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
