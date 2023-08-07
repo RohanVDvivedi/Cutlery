@@ -37,17 +37,17 @@ typedef enum al_op al_op;
 enum al_op
 {
 	PUSH_FRONT = 0,
-	PUSH_BACK,			// 1
-	POP_FRONT,			// 2
-	POP_BACK,			// 3
-	GET_NTH_FRONT,		// 4
-	GET_NTH_BACK,		// 5
-	SET_NTH_FRONT,		// 6
-	SET_NTH_BACK,		// 7
-	SWAP_FRONT,			// 8
-	SWAP_BACK,			// 9
-	REMOVE_FRONT_N_NTH,	// 10
-	REMOVE_BACK_N_NTH,	// 11
+	PUSH_BACK,		// 1
+	POP_FRONT,		// 2
+	POP_BACK,		// 3
+	GET_NTH_FRONT,	// 4
+	GET_NTH_BACK,	// 5
+	SET_NTH_FRONT,	// 6
+	SET_NTH_BACK,	// 7
+	SWAP_FRONT,		// 8
+	SWAP_BACK,		// 9
+	REMOVE_FRONT,	// 10
+	REMOVE_BACK,	// 11
 };
 
 #define INITIAL_TOTAL_SIZE 12
@@ -141,7 +141,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			break;
 		}
 
-		case REMOVE_FRONT_N_NTH :
+		case REMOVE_FRONT :
 		{
 			if(get_element_count_arraylist(al) < 10)
 			{
@@ -163,11 +163,11 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
 			unsigned int element_count_to_remove = ((unsigned int)non_zero_rand()) % (get_element_count_arraylist(al) - n_at);
 			int res = remove_elements_from_front_of_arraylist(al, n_at, element_count_to_remove);
-			printf("REMOVE_FRONT N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
+			printf("REMOVE_FRONT %u %u : %d\n", n_at, element_count_to_remove, res);
 			break;
 		}
 
-		case REMOVE_BACK_N_NTH :
+		case REMOVE_BACK :
 		{
 			if(get_element_count_arraylist(al) < 10)
 			{
@@ -189,7 +189,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			unsigned int n_at = ((unsigned int)rand()) % (get_element_count_arraylist(al));
 			unsigned int element_count_to_remove = ((unsigned int)non_zero_rand()) % (get_element_count_arraylist(al) - n_at);
 			int res = remove_elements_from_back_of_arraylist(al, n_at, element_count_to_remove);
-			printf("REMOVE_BACK N_AT %u, N %u : %d\n", n_at, element_count_to_remove, res);
+			printf("REMOVE_BACK %u %u : %d\n", n_at, element_count_to_remove, res);
 			break;
 		}
 	}
