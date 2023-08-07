@@ -5,7 +5,7 @@
 #include<memory_allocator_interface.h>
 
 //---------------------------------------------------------------------------
-//                         INTERFACE
+//                         INDEX_ACCESSED_INTERFACE
 //---------------------------------------------------------------------------
 
 #include<index_accessed_interface.h>
@@ -21,11 +21,24 @@
 // where both data1 and data2 are elements of the array
 
 
+//-----------------------------------------------------------------------------------------------------------
+//                         CHECK IF SORTED FUNCTIONS ON INDEX_ACCESSED_INTERFACE
+//-----------------------------------------------------------------------------------------------------------
+
+// below function returns true, only if the given indexed interface is sorted
+// it will return 0 (failure), if either it is unsorted, OR if the start_index and last_index are invalid
+int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
 
 
-//---------------------------------------------------------------------------
-//                         SORT FUNCTIONS ON ARRAY
-//---------------------------------------------------------------------------
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------
+//                         SORT FUNCTIONS ON INDEX_ACCESSED_INTERFACE
+//-----------------------------------------------------------------------------------------------------------
 
 // All functions sort elements in array from start_index to last_index, both inclusive,
 // the sorting is based on the compare function provided
@@ -49,9 +62,9 @@ int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 
 
 
-//------------------------------------------------------------------------------
-//                          SEARCH FUNCTIONS ON ARRAY
-//------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
+//                          SEARCH FUNCTIONS ON INDEX_ACCESSED_INTERFACE
+//-----------------------------------------------------------------------------------------------------------
 
 // These functions return an index to the element in the index_accessed datastructure,
 // that compares `comparable` (This means differently for different functions) to the data provided
@@ -74,9 +87,9 @@ cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_
 cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
 
 
-//------------------------------------------------------------------------------
-//                          INSERTION FUNCTIONS ON SORTED ARRAY
-//------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------
+//                          INSERTION FUNCTIONS ON SORTED INDEX_ACCESSED_INTERFACE
+//-----------------------------------------------------------------------------------------------------------
 
 // performs binary search in sorted index accessed datastructure, to find an index at which the given element data can be inserted
 // it usually returns the index that is one more than the index of the largest element that is also lesser than or equal to the data (given as parameter)
