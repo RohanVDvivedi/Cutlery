@@ -307,7 +307,7 @@ int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-int bubble_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -341,7 +341,7 @@ int bubble_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_u
 	return 1;
 }
 
-int insertion_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
