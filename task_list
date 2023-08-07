@@ -1,9 +1,5 @@
 1. Tasks picked
 
-ARRAYLIST
- * add functionality to add n slots at index from front or back of the arraylist (if the capacity of the arraylist permits)
-   * call this function insert_NULLs_from_front_in_arraylist and insert_NULLs_from_back_in_arraylist
-
 2. Add new datastructure types tasks (*future)
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
