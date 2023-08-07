@@ -60,6 +60,12 @@ int swap_from_front_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2);
 int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2);
 // returns 0, failure, if either of i1 or i2 are out of bounds
 
+// insert `NULL_count_to_insert` number of NULLs at given index (when indexes from front of back)
+// if index == element_count, then NULLs are inserted at the end of the arraylist (from front or back)
+// these functions are O(N) (obviously)
+int insert_NULLs_from_front_in_arraylist(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert);
+int insert_NULLs_from_back_in_arraylist(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert);
+
 // remove `element_count_to_remove` elements from front or back of arraylist, at given index (indexed from front or back respectively)
 // these functions are O(N) (obviously)
 int remove_elements_from_front_of_arraylist(arraylist* al, cy_uint index, cy_uint element_count_to_remove);
