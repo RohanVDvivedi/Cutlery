@@ -243,6 +243,43 @@ int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2)
 	return swap_in_array(&(al->arraylist_holder), i1_concerned, i2_concerned);
 }
 
+static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
+{
+
+}
+
+int insert_NULLs_from_front_in_arraylist(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
+{
+	// fail if the index is not lesser than equal to element_count OR there isn't enough space to accomodate NULL_count_to_insert number of new NULLs
+	if(index > get_element_count_arraylist(al) || NULL_count_to_insert > (get_capacity_arraylist(al) - get_element_count_arraylist(al)))
+		return 0;
+
+	// nothing to insert
+	if(NULL_count_to_insert == 0)
+		return 1;
+
+	insert_NULLs_from_front_in_arraylist_INTERNAL(al, index, NULL_count_to_insert);
+
+	return 1;
+}
+
+int insert_NULLs_from_back_in_arraylist(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
+{
+	// fail if the index is not lesser than equal to element_count OR there isn't enough space to accomodate NULL_count_to_insert number of new NULLs
+	if(index > get_element_count_arraylist(al) || NULL_count_to_insert > (get_capacity_arraylist(al) - get_element_count_arraylist(al)))
+		return 0;
+
+	// nothing to insert
+	if(NULL_count_to_insert == 0)
+		return 1;
+
+	// compute corresponding front_index, to get the same result
+	cy_uint front_index = get_element_count_arraylist(al) - index;
+	insert_NULLs_from_front_in_arraylist_INTERNAL(al, front_index, NULL_count_to_insert);
+
+	return 1;
+}
+
 // the below internal function assumes that
 // index is valid, and there are atleast non-zero number of element_count_to_remove number of elements after it
 static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_uint index, cy_uint element_count_to_remove)
