@@ -145,7 +145,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 
 		case INSERT_FRONT :
 		{
-			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) + 2));
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) + 1));
 			unsigned int nulls_to_insert = ((unsigned int)(non_zero_rand())) % ((unsigned int)(get_capacity_arraylist(al) - get_element_count_arraylist(al)));
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
 			int res = insert_NULLs_from_front_in_arraylist(al, index, nulls_to_insert);
@@ -157,7 +157,7 @@ void operate_on_arraylist(arraylist* al, al_op op)
 
 		case INSERT_BACK :
 		{
-			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) + 2));
+			unsigned int index = ((unsigned int)(rand())) % ((unsigned int)(get_element_count_arraylist(al) + 1));
 			unsigned int nulls_to_insert = ((unsigned int)(non_zero_rand())) % ((unsigned int)(get_capacity_arraylist(al) - get_element_count_arraylist(al)));
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
 			int res = insert_NULLs_from_back_in_arraylist(al, index, nulls_to_insert);
