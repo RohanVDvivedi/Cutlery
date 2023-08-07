@@ -309,7 +309,36 @@ int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 
 int bubble_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
-	// TODO
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
+		return 0;
+
+	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
+	cy_uint total_elements = last_index - start_index + 1;
+	if(total_elements <= 1)
+		return 1;
+
+	// do while there are any swaps performed in the previous iteration
+	cy_uint swaps_performed;
+	cy_uint loop_until = last_index; // this is the earliest index from the right that does not have its designated sorted element
+	do
+	{
+		swaps_performed = 0;
+
+		// loop over the entire array, from start_index to loop_until, swapping adjacent elements until loop_until has the rightfully designated element
+		for(cy_uint i = start_index; i < loop_until; i++)
+		{
+			if(compare(iai_p->get_element(iai_p->ds_p, i), iai_p->get_element(iai_p->ds_p, i + 1)) > 0)
+			{
+				iai_p->swap_elements(iai_p->ds_p, i, i + 1);
+				swaps_performed++;
+			}
+		}
+
+		loop_until -= 1;
+	}
+	while(swaps_performed > 0);
+
+	return 1;
 }
 
 int insertion_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
