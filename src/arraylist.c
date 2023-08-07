@@ -244,7 +244,7 @@ int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2)
 }
 
 // the below internal function assumes that
-// index is valid [0 to element_count both inclusive], and NULL_count_to_insert > 0
+// index is valid [0 to element_count, both inclusive], and NULL_count_to_insert > 0
 // and get_capacity - get_element_count >= NULL_count_to_insert
 static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
 {
