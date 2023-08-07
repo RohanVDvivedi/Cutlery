@@ -343,7 +343,27 @@ int bubble_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_u
 
 int insertion_sort_array(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
 {
-	// TODO
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
+		return 0;
+
+	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
+	cy_uint total_elements = last_index - start_index + 1;
+	if(total_elements <= 1)
+		return 1;
+
+	// all elements from start_index (inclusive) to i (exclusive) are sorted
+	// so in the loop's ith iteration we only need to find the right position for the current ith element
+	for(cy_uint i = start_index; i <= last_index; i++)
+	{
+		for(cy_uint j = i; j > start_index; j--)
+		{
+			// check if j-1 and j are rightly ordered, if not swap them
+			if(compare(iai_p->get_element(iai_p->ds_p, j - 1), iai_p->get_element(iai_p->ds_p, j)) > 0)
+				iai_p->swap_elements(iai_p->ds_p, j - 1, j);
+		}
+	}
+
+	return 1;
 }
 
 cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
