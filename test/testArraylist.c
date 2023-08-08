@@ -150,7 +150,17 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
 			int res = insert_NULLs_from_front_in_arraylist(al, index, nulls_to_insert);
 			for(cy_uint i = 0; i < nulls_to_insert; i++)
+			{
+				// self test
+				if(get_from_front_of_arraylist(al, index + i) != NULL)
+				{
+					printf("ERROR: NULLs not inserted appropriately at %"PRIu_cy_uint" from front\n\n", index + i);
+					print_int_arraylist(al);
+					printf("\n\n");
+					exit(-1);
+				}
 				set_from_front_in_arraylist(al, data, index + i);
+			}
 			printf("INSERT_FRONT %u %u : %d\n", index, nulls_to_insert, res);
 			break;
 		}
@@ -162,7 +172,17 @@ void operate_on_arraylist(arraylist* al, al_op op)
 			const int* data = element_pool + (((unsigned int)rand()) % ELEMENT_POOL_SIZE);
 			int res = insert_NULLs_from_back_in_arraylist(al, index, nulls_to_insert);
 			for(cy_uint i = 0; i < nulls_to_insert; i++)
+			{
+				// self test
+				if(get_from_back_of_arraylist(al, index + i) != NULL)
+				{
+					printf("ERROR: NULLs not inserted appropriately at %"PRIu_cy_uint" from back\n\n", index + i);
+					print_int_arraylist(al);
+					printf("\n\n");
+					exit(-1);
+				}
 				set_from_back_in_arraylist(al, data, index + i);
+			}
 			printf("INSERT_BACK %u %u : %d\n", index, nulls_to_insert, res);
 			break;
 		}
