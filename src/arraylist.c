@@ -277,7 +277,7 @@ static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint
 		// now we only need to NULL those non-NULL slots, that we created
 		circularly_NULL_elements_in_arraylist_holder(&(al->arraylist_holder), non_NULL_elements_to_NULL_first_index, non_NULL_elements_to_NULL);
 
-		// now we only need to fix the first_index and element_count of tha arraylist
+		// now we only need to fix the first_index and element_count of the arraylist
 
 		// increment element_count
 		al->element_count += NULL_count_to_insert;
@@ -306,7 +306,7 @@ static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint
 		// now we only need to NULL those non-NULL slots, that we created
 		circularly_NULL_elements_in_arraylist_holder(&(al->arraylist_holder), non_NULL_elements_to_NULL_first_index, non_NULL_elements_to_NULL);
 
-		// now we only need to fix the first_index and element_count of tha arraylist
+		// now we only need to fix the first_index and element_count of the arraylist
 
 		// increment element_count
 		al->element_count += NULL_count_to_insert;
