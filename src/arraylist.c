@@ -270,6 +270,15 @@ static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint
 			elements_to_be_moved--;
 		}
 
+		// we only need to NULL out these many elements
+		cy_uint non_NULL_elements_to_NULL = min(elements_before_NULLs, NULL_count_to_insert);
+		cy_uint non_NULL_elements_to_NULL_first_index = ;
+
+		// now we only need to NULL those non-NULL slots, that we created
+		circularly_NULL_elements_in_arraylist_holder(&(al->arraylist_holder), non_NULL_elements_to_NULL_first_index, non_NULL_elements_to_NULL);
+
+		// now we only need to fix the first_index and element_count of tha arraylist
+
 		// increment element_count
 		al->element_count += NULL_count_to_insert;
 
@@ -290,14 +299,18 @@ static void insert_NULLs_from_front_in_arraylist_INTERNAL(arraylist* al, cy_uint
 			elements_to_be_moved--;
 		}
 
+		// we only need to NULL out these many elements
+		cy_uint non_NULL_elements_to_NULL = min(elements_after_NULLs, NULL_count_to_insert);
+		cy_uint non_NULL_elements_to_NULL_first_index = add_circularly(al->first_index, elements_before_NULLs, get_capacity_arraylist(al));
+
+		// now we only need to NULL those non-NULL slots, that we created
+		circularly_NULL_elements_in_arraylist_holder(&(al->arraylist_holder), non_NULL_elements_to_NULL_first_index, non_NULL_elements_to_NULL);
+
+		// now we only need to fix the first_index and element_count of tha arraylist
+
 		// increment element_count
 		al->element_count += NULL_count_to_insert;
 	}
-
-	// at this point, there is enough space made at (given) index fron from in the arraylist, first_index and element_count of arraylist has been handled
-
-	// now we only need to NULL those slots created
-	circularly_NULL_elements_in_arraylist_holder(&(al->arraylist_holder), add_circularly(al->first_index, index, get_capacity_arraylist(al)), NULL_count_to_insert);
 }
 
 int insert_NULLs_from_front_in_arraylist(arraylist* al, cy_uint index, cy_uint NULL_count_to_insert)
