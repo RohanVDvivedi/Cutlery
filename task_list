@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * in arraylist insert functionality, NULL only the necessary elements explicityly min(before_elements, NULLs_to_insert) and min(after_elements, NULLs_to_insert), for both of before and after cases respectively
+
 2. Add new datastructure types tasks (*future)
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
