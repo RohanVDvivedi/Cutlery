@@ -1,5 +1,18 @@
 1. Tasks picked
 
+ * modify heap to use heapifyable_interface, that is defined as below, only arraylist and value_arraylist can return this heapifyable_interface, heap will only contain a pointer to this interface.
+ 	 struct heapifyable_interface
+ 	 {
+ 	 		void* ds_p;
+ 	 		const void* get_element(const void* ds_p, cy_uint index);
+ 	 		int set_element(void* ds_p, const void* data, cy_uint index);
+ 	 		int swap_elements(void* ds_p, cy_uint i1, cy_uint i2);
+ 	 		int push_back_element(void* ds_p, const void* data_p);
+ 	 		int pop_back_element(void* ds_p);
+ 	 		cy_uint get_element_count(const void* ds_p);
+ 	 		cy_uint get_capacity(const void* ds_p);
+ 	 };
+
 2. Add new datastructure types tasks (*future)
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
