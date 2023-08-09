@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * add macros to add a name for get_from_arraylist and set_in_arraylist to access elements from front of arraylist
+ * modify heap to work with arraylist
  * modify heap to use n_ary_heapifyable_interface, that is defined as below, only arraylist and value_arraylist can return this n_ary_heapifyable_interface, heap will only contain a pointer to this interface.
  	 struct n_ary_heapifyable_interface
  	 {
