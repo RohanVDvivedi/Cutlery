@@ -1,6 +1,12 @@
 1. Tasks picked
 
- * implement struct heap_info{heap_type type, int(*compare)(const void* a, const void* b);};
+ * use get_element_count(heap_p) instead of heap_p->element_count
+ * implement and use struct heap_info{heap_type type, int(*compare)(const void* a, const void* b);};
+
+ * use arraylist in heap instead of array
+ * modify merge_sort, heap_sort and radix_sort to work with arraylist (without start_index and last_index), instead of index_accessed_interface -> new implementation required for value_arraylist
+
+ * implement get_slice_of_array and get_slice_from_front_of_arraylist and get_slice_from_back_of_arraylist to return arraylist, from first_index to last_index
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
@@ -16,9 +22,10 @@ VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * add comment that it can only be used with quick_sort, bubble_sort and insertion_sort functions (and all other search functions), even though it is index_accessible
  * implement
    * arraylist like functionality - push_front, push_back, pop_front, pop_back, get_front, get_back, get_from_front (, get), get_from_back, set_from_front (, set), set_from_back, swap_from_front (, swap), swap_from_back, insert_from_front (using index_accessed_interface), insert_from_back (using index_accessed_interface), remove_from_front and remove_from_back.
+   * get_slice_from_front and get_slice_from_back to return value_arraylist_type_name
    * heap like functionality - (utility static bubble_up and bubble_down functions) push_heap, pop_heap, top_heap, heapify (takes compare function and degree of heap as input)
    * implement getter for index_accessed_interface
-   * copy functionality for heap_sort (using a cut slice of value_arraylist), (iterative like existing) merge_sort, all other sorts and search functions can be reused
+   * copy functionality for radix_sort, heap_sort (using a cut slice of value_arraylist), (iterative like existing) merge_sort, all other sorts and search functions can be reused
 
 2. Add new datastructure types tasks (*future)
 
