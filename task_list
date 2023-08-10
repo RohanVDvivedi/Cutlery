@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * implement struct heap_info{heap_type type, int(*compare)(const void* a, const void* b);};
+
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
  * struct value_arraylist_type_name
@@ -13,7 +15,7 @@ VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * add comment that this (value_arraylist) is suppossed to be used with only small ephemeral structs and primitive types, that have no immovable attributes like (synchronization primitives like) mutex, conditional variables or semaphores
  * add comment that it can only be used with quick_sort, bubble_sort and insertion_sort functions (and all other search functions), even though it is index_accessible
  * implement
-   * arraylist like functionality - push_front, push_back, pop_front, pop_back, get_front, get_back, get_from_front (, get), get_from_back, set_from_front (, set), set_from_back, swap_from_front (, swap), swap_from_back
+   * arraylist like functionality - push_front, push_back, pop_front, pop_back, get_front, get_back, get_from_front (, get), get_from_back, set_from_front (, set), set_from_back, swap_from_front (, swap), swap_from_back, insert_from_front (using index_accessed_interface), insert_from_back (using index_accessed_interface), remove_from_front and remove_from_back.
    * heap like functionality - (utility static bubble_up and bubble_down functions) push_heap, pop_heap, top_heap, heapify (takes compare function and degree of heap as input)
    * implement getter for index_accessed_interface
    * copy functionality for heap_sort (using a cut slice of value_arraylist), (iterative like existing) merge_sort, all other sorts and search functions can be reused
