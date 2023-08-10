@@ -50,15 +50,24 @@ const void* get_from_front_of_arraylist(const arraylist* al, cy_uint index);
 const void* get_from_back_of_arraylist(const arraylist* al, cy_uint index);
 // get_from_*_of_arraylist functions will fail and return NULL if index is greater than element_count of the arraylist
 
+// default get function
+#define get_from_arraylist get_from_front_of_arraylist
+
 // to set nth element from front/back in the arraylist to data_p pointer
 int set_from_front_in_arraylist(arraylist* al, const void* data_p, cy_uint index);
 int set_from_back_in_arraylist(arraylist* al, const void* data_p, cy_uint index);
 // set_nth_from_*_in_arraylist functions will fail and return 0 if index is greater than element_count of the arraylist
 
+// default set function
+#define set_in_arraylist set_from_front_in_arraylist
+
 // swap elements from front or back in the arraylist
 int swap_from_front_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2);
 int swap_from_back_in_arraylist(arraylist* al, cy_uint i1, cy_uint i2);
 // returns 0, failure, if either of i1 or i2 are out of bounds
+
+// default swap function
+#define swap_in_arraylist swap_from_front_in_arraylist
 
 // insert `NULL_count_to_insert` number of NULLs at given index (when indexes from front of back)
 // if index == element_count, then NULLs are inserted at the end of the arraylist (from front or back)
