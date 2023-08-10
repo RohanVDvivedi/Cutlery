@@ -14,7 +14,7 @@ struct arraylist
 	array arraylist_holder;
 
 	// arraylist is a circular buffer
-	// from first_index to first_index + ((element_count - 1) % arraylist_holder.total_size)
+	// from first_index to ((first_index + element_count - 1) % arraylist_holder.total_size)
 
 	// first_index points to the front of the arraylist
 	cy_uint first_index;
