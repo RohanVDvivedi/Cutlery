@@ -144,7 +144,7 @@ int push_to_heap(heap* heap_p, const void* data)
 
 	// update its heap index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		((hpnode*)(get_node(data, heap_p)))->heap_index = heap_p->element_count - 1;
+		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1), heap_p)))->heap_index = heap_p->element_count - 1;
 
 	// bubble up the newly added element at index heap_p->element_count - 1, to its desired place
 	bubble_up(heap_p, heap_p->element_count - 1);
@@ -193,7 +193,7 @@ int push_all_to_heap(heap* heap_p, index_accessed_interface* iai_p, cy_uint star
 		
 		// update its heap index
 		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-			((hpnode*)(get_node(data, heap_p)))->heap_index = heap_p->element_count - 1;
+			((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1), heap_p)))->heap_index = heap_p->element_count - 1;
 	}
 
 	// heapify all the elements of the heap
@@ -308,22 +308,19 @@ void heapify_all(heap* heap_p)
 		bubble_down(heap_p, index);
 }
 
-static void initialize_node_wrapper(void* data, cy_uint heap_index, const void* additional_params)
-{
-	const heap* heap_p = additional_params;
-	initialize_hpnode(get_node(data, heap_p));
-}
-
 void remove_all_from_heap(heap* heap_p)
 {
+	for(cy_uint i = 0; i < heap_p->element_count; i++)
+	{
+		// re initialize the hpnode
+		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
+			initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), i), heap_p));
+
+		// then then NULL the index
+		set_in_array(&(heap_p->heap_holder), NULL, i);
+	}
+
 	heap_p->element_count = 0;
-
-	// re initialize all the hpnodes
-	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		for_each_in_heap(heap_p, initialize_node_wrapper, heap_p);
-
-	// then NULL out all the array -> this step can be ignored
-	remove_all_from_array(&(heap_p->heap_holder));
 }
 
 void deinitialize_heap(heap* heap_p)
