@@ -2,7 +2,7 @@
 
  * implement get_slice_of_array and get_slice_from_front_of_arraylist and get_slice_from_back_of_arraylist to return arraylist, from first_index to last_index.
 
- * implement index_accessed_interface for dstring and add a testcase to quick sort dstring.
+ * implement index_accessed_interface for dstring and a comparator function for comparing 2 const char ptrs, then add a testcase to quick sort dstring.
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
  * build an only header file #define declarations_for_value_arraylist(value_arraylist_type_name, value_type) and #define definitions_for_value_arraylist(value_arraylist_type, value_type), and providing all functions of arraylist.h
