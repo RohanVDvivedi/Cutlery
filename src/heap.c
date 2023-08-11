@@ -133,9 +133,11 @@ int push_to_heap(heap* heap_p, const void* data)
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_free_floating_hpnode(get_node(data, heap_p)))
 		return 0;
 
-	// insert new element to the heap_holder at it's back, i.e. as its last element from front
-	if(!push_back_to_arraylist(&(heap_p->heap_holder), data))
-		return 0;
+	// push new element to the heap_holder at it's back, i.e. as its last element
+	// since we already ensured that there is enough capacity in the heap_holder, this call must not fail
+	// if this call fails you are doing something wrong!!
+	// so we are not handling the failure to push_back here
+	push_back_to_arraylist(&(heap_p->heap_holder), data);
 
 	// update its heap index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
@@ -184,13 +186,10 @@ int push_all_to_heap(heap* heap_p, index_accessed_interface* iai_p, cy_uint star
 		// we already made sure that all the elements (if they have heap_p->node_offset), have hpnode that are free floating
 
 		// push data to the back of the heap_holder, i.e. at its back, i.e. last element from front
-		if(!push_back_to_arraylist(&(heap_p->heap_holder), data))
-		{
-			// if any push fails, which is unlikely
-			// then remove last i elements from the back of arraylist
-			remove_elements_from_back_of_arraylist(&(heap_p->heap_holder), 0, i);
-			return 0;
-		}
+		// since we already ensured that there is enough capacity in the heap_holder, this call must not fail
+		// if this call fails you are doing something wrong!!
+		// so we are not handling the failure to push_back here
+		push_back_to_arraylist(&(heap_p->heap_holder), data);
 		
 		// update its heap index
 		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
@@ -256,6 +255,7 @@ int remove_at_index_from_heap(heap* heap_p, cy_uint index)
 
 	// pop the last_element of the arraytlist, this operation is expected to never if fail
 	// if it fails you are doing something wrong, since we already checked that the heap_p is not empty
+	// hence we are going to handle the failure to pop_back here
 	pop_back_from_arraylist(&(heap_p->heap_holder));
 
 	// if the heap is not empty
