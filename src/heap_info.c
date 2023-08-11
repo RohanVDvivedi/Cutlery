@@ -1,6 +1,6 @@
 #include<heap_info.h>
 
-int is_reordering_required(const void* parent, const void* child, int (*compare)(const void* data1, const void* data2), heap_type type)
+int is_reordering_required(const void* parent, const void* child, const heap_info* heap_info_p)
 {
-	return (type * compare(parent, child)) > 0;
+	return (heap_info_p->type * heap_info_p->compare(parent, child)) > 0;
 }

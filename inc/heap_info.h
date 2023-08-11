@@ -21,6 +21,6 @@ struct heap_info
 	int (*compare)(const void* data1, const void* data2);
 };
 
-int is_reordering_required(const void* parent, const void* child, int (*compare)(const void* data1, const void* data2), heap_type type);
+int is_reordering_required(const void* parent, const void* child, const heap_info* heap_info_p);
 
 #endif
