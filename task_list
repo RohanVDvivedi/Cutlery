@@ -1,6 +1,5 @@
 1. Tasks picked
 
- * use get_element_count(heap_p) instead of heap_p->element_count
  * implement and use struct heap_info{heap_type type, int(*compare)(const void* a, const void* b);};
 
  * use arraylist in heap instead of array
