@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * implement and use struct heap_info{heap_type type, int(*compare)(const void* a, const void* b);};
-
  * use arraylist in heap instead of array
  * modify merge_sort, heap_sort and radix_sort to work with arraylist (without start_index and last_index), instead of index_accessed_interface -> new implementation required for value_arraylist
 
