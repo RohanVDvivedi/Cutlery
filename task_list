@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * modify merge_sort, heap_sort and radix_sort to work with arraylist.
-
  * implement get_slice_of_array and get_slice_from_front_of_arraylist and get_slice_from_back_of_arraylist to return arraylist, from first_index to last_index
 
 VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
