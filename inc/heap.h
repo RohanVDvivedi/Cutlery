@@ -32,17 +32,12 @@ struct hpnode
 typedef struct heap heap;
 struct heap
 {
-	// the type of heap, a heap can be a min heap or a max heap
-	// as a MIN_HEAP or MAX_HEAP
-	heap_type type;
+	// stores whether, type = MIN_HEAP or MAX_HEAP AND int compare(const void*, const void*) function to be used
+	heap_info info;
 
 	// this is the degree of this heap, it must be non zero
 	// each element in the heap may have atmost degree number of children
 	cy_uint degree;
-
-	// compare data provided and returns 0 if they are same, else non-zero
-	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
-	int (*compare)(const void* data1, const void* data2);
 
 	// defines the address of the data, with respect to the heap node
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
