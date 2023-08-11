@@ -1,6 +1,5 @@
 1. Tasks picked
 
- * use arraylist in heap instead of array
  * modify merge_sort, heap_sort and radix_sort to work with arraylist (without start_index and last_index), instead of index_accessed_interface -> new implementation required for value_arraylist
 
  * implement get_slice_of_array and get_slice_from_front_of_arraylist and get_slice_from_back_of_arraylist to return arraylist, from first_index to last_index
