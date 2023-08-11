@@ -256,7 +256,7 @@ void sprint_array(dstring* append_str, const array* array_p, void (*sprint_eleme
 		snprintf_dstring(append_str, "\n");
 	}
 }
-
+/*
 #include<heap.h>
 
 int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
@@ -290,7 +290,7 @@ int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int
 
 	return 1;
 }
-
+*/
 index_accessed_interface get_index_accessed_interface_for_array(array* array_p)
 {
 	return (index_accessed_interface){

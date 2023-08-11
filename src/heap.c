@@ -8,14 +8,14 @@
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, cy_uint i1, cy_uint i2)
 {
-	swap_in_array(&(heap_p->heap_holder), i1, i2);
+	swap_in_arraylist(&(heap_p->heap_holder), i1, i2);
 
 	// once the elements have been interchanged we update the heap_index of those elements
 	// heap_index is in their embedded nodes (hpnode)
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
 	{
-		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i1), heap_p)))->heap_index = i1;
-		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), i2), heap_p)))->heap_index = i2;
+		((hpnode*)(get_node(get_from_arraylist(&(heap_p->heap_holder), i1), heap_p)))->heap_index = i1;
+		((hpnode*)(get_node(get_from_arraylist(&(heap_p->heap_holder), i2), heap_p)))->heap_index = i2;
 	}
 }
 
@@ -29,8 +29,8 @@ static int is_reordering_required_for_indexes(const heap* heap_p, cy_uint parent
 		return 0;
 
 	// retrieve parent and child pointers
-	const void* parent = get_from_array(&(heap_p->heap_holder), parent_index);
-	const void* child  = get_from_array(&(heap_p->heap_holder), child_index );
+	const void* parent = get_from_arraylist(&(heap_p->heap_holder), parent_index);
+	const void* child  = get_from_arraylist(&(heap_p->heap_holder), child_index );
 
 	return is_reordering_required(parent, child, &(heap_p->info));
 }
@@ -98,8 +98,7 @@ int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degr
 	heap_p->info = (heap_info){.type = type, .compare = compare};
 	heap_p->degree = degree;
 	heap_p->node_offset = node_offset;
-	heap_p->element_count = 0;
-	return initialize_array(&(heap_p->heap_holder), capacity);
+	return initialize_arraylist(&(heap_p->heap_holder), capacity);
 }
 
 int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
@@ -110,8 +109,7 @@ int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type typ
 	heap_p->info = (heap_info){.type = type, .compare = compare};
 	heap_p->degree = degree;
 	heap_p->node_offset = node_offset;
-	heap_p->element_count = 0;
-	return initialize_array_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
+	return initialize_arraylist_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 }
 
 int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* data_ps[])
@@ -122,8 +120,7 @@ int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, 
 	heap_p->info = (heap_info){.type = type, .compare = compare};
 	heap_p->degree = degree;
 	heap_p->node_offset = node_offset;
-	heap_p->element_count = 0;
-	return initialize_array_with_memory(&(heap_p->heap_holder), capacity, data_ps);
+	return initialize_arraylist_with_memory(&(heap_p->heap_holder), capacity, data_ps);
 }
 
 int push_to_heap(heap* heap_p, const void* data)
@@ -136,12 +133,13 @@ int push_to_heap(heap* heap_p, const void* data)
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && !is_free_floating_hpnode(get_node(data, heap_p)))
 		return 0;
 
-	// insert new element to the heap_holder at the last index + 1 and then increment element_count
-	set_in_array(&(heap_p->heap_holder), data, heap_p->element_count++);
+	// insert new element to the heap_holder at it's back, i.e. as its last element from front
+	if(!push_back_to_arraylist(&(heap_p->heap_holder), data))
+		return 0;
 
 	// update its heap index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)))->heap_index = get_element_count_heap(heap_p) - 1;
+		((hpnode*)(get_node(get_from_arraylist(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)))->heap_index = get_element_count_heap(heap_p) - 1;
 
 	// bubble up the newly added element at last index (element_count-1), to its desired place
 	bubble_up(heap_p, get_element_count_heap(heap_p) - 1);
@@ -185,12 +183,18 @@ int push_all_to_heap(heap* heap_p, index_accessed_interface* iai_p, cy_uint star
 
 		// we already made sure that all the elements (if they have heap_p->node_offset), have hpnode that are free floating
 
-		// insert data and then update element count
-		set_in_array(&(heap_p->heap_holder), data, heap_p->element_count++);
+		// push data to the back of the heap_holder, i.e. at its back, i.e. last element from front
+		if(!push_back_to_arraylist(&(heap_p->heap_holder), data))
+		{
+			// if any push fails, which is unlikely
+			// then remove last i elements from the back of arraylist
+			remove_elements_from_back_of_arraylist(&(heap_p->heap_holder), 0, i);
+			return 0;
+		}
 		
 		// update its heap index
 		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-			((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)))->heap_index = get_element_count_heap(heap_p) - 1;
+			((hpnode*)(get_node(get_from_arraylist(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)))->heap_index = get_element_count_heap(heap_p) - 1;
 	}
 
 	// heapify all the elements of the heap
@@ -215,7 +219,8 @@ const void* get_top_of_heap(const heap* heap_p)
 	if(is_empty_heap(heap_p))
 		return NULL;
 
-	return (void*)get_from_array(&(heap_p->heap_holder), 0);
+	// return front of the arraylist
+	return get_front_of_arraylist(&(heap_p->heap_holder));
 }
 
 int remove_from_heap(heap* heap_p, const void* data)
@@ -229,7 +234,7 @@ int remove_from_heap(heap* heap_p, const void* data)
 
 	// we can not remove if the data is a free floating node (i.e. not existing in any heap) OR the data does not exist in heap at the desired index (as dictated by hpnode)
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
-		(is_free_floating_hpnode(get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_remove_at)))
+		(is_free_floating_hpnode(get_node(data, heap_p)) || data != get_from_arraylist(&(heap_p->heap_holder), index_to_remove_at)))
 			return 0;
 
 	// remove the ith element from the heap
@@ -247,10 +252,11 @@ int remove_at_index_from_heap(heap* heap_p, cy_uint index)
 
 	// re-initialize heap_index of the (last) element that we are going to remove
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p));
+		initialize_hpnode(get_node(get_from_arraylist(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p));
 
-	// and set the last to NULL, and decrement the element_count of the heap
-	set_in_array(&(heap_p->heap_holder), NULL, --heap_p->element_count);
+	// pop the last_element of the arraytlist, this operation is expected to never if fail
+	// if it fails you are doing something wrong, since we already checked that the heap_p is not empty
+	pop_back_from_arraylist(&(heap_p->heap_holder));
 
 	// if the heap is not empty
 	// call heapify at index, to appropriately call bubble up or bubble down
@@ -271,7 +277,7 @@ void heapify_for(heap* heap_p, const void* data)
 
 	// we can not heapify if the data is a free floating node (i.e. not existing in any heap) OR if the data does not exist in heap at the desired index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET && 
-		(is_free_floating_hpnode(get_node(data, heap_p)) || data != get_from_array(&(heap_p->heap_holder), index_to_heapify_at)))
+		(is_free_floating_hpnode(get_node(data, heap_p)) || data != get_from_arraylist(&(heap_p->heap_holder), index_to_heapify_at)))
 			return ;
 
 	// heapify at the ith element of the heap
@@ -295,7 +301,7 @@ void heapify_at(heap* heap_p, cy_uint index)
 
 void heapify_all(heap* heap_p)
 {
-	// heapify_all is not required is the element_count is 0 OR 1
+	// heapify_all is not required, if the element_count is 0 OR 1
 	if(get_element_count_heap(heap_p) <= 1)
 		return;
 
@@ -307,23 +313,20 @@ void heapify_all(heap* heap_p)
 
 void remove_all_from_heap(heap* heap_p)
 {
-	for(cy_uint i = 0; i < get_element_count_heap(heap_p); i++)
+	// re initialize all the hpnodes
+	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
 	{
-		// re initialize the hpnode
-		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-			initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), i), heap_p));
-
-		// then then NULL the index
-		set_in_array(&(heap_p->heap_holder), NULL, i);
+		for(cy_uint i = 0; i < get_element_count_heap(heap_p); i++)
+			initialize_hpnode(get_node(get_from_arraylist(&(heap_p->heap_holder), i), heap_p));
 	}
 
-	heap_p->element_count = 0;
+	// then remove all the elements from the holder
+	remove_all_from_arraylist(&(heap_p->heap_holder));
 }
 
 void deinitialize_heap(heap* heap_p)
 {
-	deinitialize_array(&(heap_p->heap_holder));
-	heap_p->element_count = 0;
+	deinitialize_arraylist(&(heap_p->heap_holder));
 	heap_p->node_offset = NO_HEAP_NODE_OFFSET;
 	heap_p->degree = 0;
 	heap_p->info = (heap_info){};
@@ -331,42 +334,42 @@ void deinitialize_heap(heap* heap_p)
 
 cy_uint get_capacity_heap(const heap* heap_p)
 {
-	return get_capacity_array(&(heap_p->heap_holder));
+	return get_capacity_arraylist(&(heap_p->heap_holder));
 }
 
 cy_uint get_element_count_heap(const heap* heap_p)
 {
-	return heap_p->element_count;
+	return get_element_count_arraylist(&(heap_p->heap_holder));
 }
 
 int is_full_heap(const heap* heap_p)
 {
-	return get_element_count_heap(heap_p) == get_capacity_heap(heap_p);
+	return is_full_arraylist(&(heap_p->heap_holder));
 }
 
 int is_empty_heap(const heap* heap_p)
 {
-	return get_element_count_heap(heap_p) == 0;
+	return is_empty_arraylist(&(heap_p->heap_holder));
 }
 
 int expand_heap(heap* heap_p)
 {
-	return expand_array(&(heap_p->heap_holder));
+	return expand_arraylist(&(heap_p->heap_holder));
 }
 
 int shrink_heap(heap* heap_p)
 {
-	return shrink_array(&(heap_p->heap_holder), get_element_count_heap(heap_p));
+	return shrink_arraylist(&(heap_p->heap_holder));
 }
 
 int reserve_capacity_for_heap(heap* heap_p, cy_uint atleast_capacity)
 {
-	return reserve_capacity_for_array(&(heap_p->heap_holder), atleast_capacity);
+	return reserve_capacity_for_arraylist(&(heap_p->heap_holder), atleast_capacity);
 }
 
 void for_each_in_heap(const heap* heap_p, void (*operation)(void* data, cy_uint heap_index, const void* additional_params), const void* additional_params)
 {
-	for_each_non_null_in_array(&(heap_p->heap_holder), operation, additional_params);
+	for_each_in_arraylist(&(heap_p->heap_holder), operation, additional_params);
 }
 
 void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
@@ -388,7 +391,7 @@ void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)
 
 	sprint_chars(append_str, '\t', tabs);
 	snprintf_dstring(append_str, "heap_holder : \n");
-	sprint_array(append_str, &(heap_p->heap_holder), sprint_element, tabs + 1);
+	sprint_arraylist(append_str, &(heap_p->heap_holder), sprint_element, tabs + 1);
 	snprintf_dstring(append_str, "\n");
 
 	sprint_chars(append_str, '\t', tabs);

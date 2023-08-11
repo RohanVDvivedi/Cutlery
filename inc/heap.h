@@ -1,7 +1,7 @@
 #ifndef HEAP_H
 #define HEAP_H
 
-#include<array.h>
+#include<arraylist.h>
 #include<index_accessed_interface.h>
 
 #include<heap_info.h>
@@ -43,11 +43,8 @@ struct heap
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
 	cy_uint node_offset;
 
-	// to store pointers to the elements of the heap
-	array heap_holder;
-	
-	// number of elements in the heap
-	cy_uint element_count;
+	// to store pointers to the elements of the heap, its main container
+	arraylist heap_holder;
 };
 
 // initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
