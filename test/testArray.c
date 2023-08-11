@@ -3,6 +3,7 @@
 
 #include<cutlery_stds.h>
 #include<array.h>
+#include<arraylist.h>
 
 typedef struct teststruct ts;
 struct teststruct
@@ -169,7 +170,10 @@ int main()
 	heap_sort_iai(array_iai_p, start_index, end_index, test_compare, STD_C_mem_allocator);
 #elif defined HEAP_SORT_native
 	printf("Sorting %u to %u using HEAP_SORT_native\n\n", start_index, end_index);
-	heap_sort_array(array_p, start_index, end_index, test_compare);
+	arraylist temp_al;
+	initialize_arraylist_with_memory(&temp_al, get_capacity_array(array_p), array_p->data_p_p);
+	temp_al.element_count = get_capacity_array(array_p);
+	heap_sort_arraylist(&temp_al, start_index, end_index, test_compare);
 #elif defined QUICK_SORT
 	printf("Sorting %u to %u using QUICK_SORT\n\n", start_index, end_index);
 	quick_sort_iai(array_iai_p, start_index, end_index, test_compare);
