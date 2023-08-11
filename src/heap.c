@@ -136,8 +136,8 @@ int push_to_heap(heap* heap_p, const void* data)
 	// push new element to the heap_holder at it's back, i.e. as its last element
 	// since we already ensured that there is enough capacity in the heap_holder, this call must not fail
 	// if this call fails you are doing something wrong!!
-	// so we are not handling the failure to push_back here
-	push_back_to_arraylist(&(heap_p->heap_holder), data);
+	if(!push_back_to_arraylist(&(heap_p->heap_holder), data))
+		return 0;
 
 	// update its heap index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
@@ -255,8 +255,14 @@ int remove_at_index_from_heap(heap* heap_p, cy_uint index)
 
 	// pop the last_element of the arraytlist, this operation is expected to never if fail
 	// if it fails you are doing something wrong, since we already checked that the heap_p is not empty
-	// hence we are going to handle the failure to pop_back here
-	pop_back_from_arraylist(&(heap_p->heap_holder));
+	if(!pop_back_from_arraylist(&(heap_p->heap_holder)))
+	{
+		// undo - the initialize_hpnode at index (element_count-1)
+		get_node(get_from_arraylist(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)->heap_index = get_element_count_heap(heap_p) - 1;
+		// undo - interchange of the index and (element_count-1)
+		inter_change_elements_for_indexes(heap_p, index, get_element_count_heap(heap_p) - 1);
+		return 0;
+	}
 
 	// if the heap is not empty
 	// call heapify at index, to appropriately call bubble up or bubble down
