@@ -25,7 +25,7 @@ static void inter_change_elements_for_indexes(heap* heap_p, cy_uint i1, cy_uint 
 static int is_reordering_required_for_indexes(const heap* heap_p, cy_uint parent_index, cy_uint child_index)
 {
 	// we dont allow reordering if, parent index or child index are out of bounds of element_count
-	if(parent_index >= heap_p->element_count || child_index >= heap_p->element_count)
+	if(parent_index >= get_element_count_heap(heap_p) || child_index >= get_element_count_heap(heap_p))
 		return 0;
 
 	// retrieve parent and child pointers
@@ -38,7 +38,7 @@ static int is_reordering_required_for_indexes(const heap* heap_p, cy_uint parent
 static void bubble_up(heap* heap_p, cy_uint index)
 {
 	// exit at index 0, or thew index is out of range
-	while(has_parent_N(index) && index < heap_p->element_count)
+	while(has_parent_N(index) && index < get_element_count_heap(heap_p))
 	{
 		cy_uint parent_index = get_parent_index_N(index, heap_p->degree);
 
@@ -55,14 +55,14 @@ static void bubble_up(heap* heap_p, cy_uint index)
 static void bubble_down(heap* heap_p, cy_uint index)
 {
 	// we can not bubble down the last node
-	while(can_have_any_children_N(index, heap_p->degree) && index < heap_p->element_count)
+	while(can_have_any_children_N(index, heap_p->degree) && index < get_element_count_heap(heap_p))
 	{
 		// if no reordering is required then the element at the index position remains as the parent
 		cy_uint new_parent_index = index;
 
 		// iterate over all the children of the parent at index
 		// find the one that if made the new parent, will not require reordering with any of its siblings
-		for(cy_uint i = 0, child_index = get_index_of_ith_child_N(index, 0, heap_p->degree); i < heap_p->degree && child_index < heap_p->element_count; i++, child_index++)
+		for(cy_uint i = 0, child_index = get_index_of_ith_child_N(index, 0, heap_p->degree); i < heap_p->degree && child_index < get_element_count_heap(heap_p); i++, child_index++)
 		{
 			if(is_reordering_required_for_indexes(heap_p, new_parent_index, child_index))
 				new_parent_index = child_index;
@@ -144,10 +144,10 @@ int push_to_heap(heap* heap_p, const void* data)
 
 	// update its heap index
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1), heap_p)))->heap_index = heap_p->element_count - 1;
+		((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)))->heap_index = get_element_count_heap(heap_p) - 1;
 
-	// bubble up the newly added element at index heap_p->element_count - 1, to its desired place
-	bubble_up(heap_p, heap_p->element_count - 1);
+	// bubble up the newly added element at last index (element_count-1), to its desired place
+	bubble_up(heap_p, get_element_count_heap(heap_p) - 1);
 
 	return 1;
 }
@@ -193,7 +193,7 @@ int push_all_to_heap(heap* heap_p, index_accessed_interface* iai_p, cy_uint star
 		
 		// update its heap index
 		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-			((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1), heap_p)))->heap_index = heap_p->element_count - 1;
+			((hpnode*)(get_node(get_from_array(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)))->heap_index = get_element_count_heap(heap_p) - 1;
 	}
 
 	// heapify all the elements of the heap
@@ -242,15 +242,15 @@ int remove_from_heap(heap* heap_p, const void* data)
 int remove_at_index_from_heap(heap* heap_p, cy_uint index)
 {
 	// an element can be removed, only if heap is not empty, and the index provided is within bounds
-	if(is_empty_heap(heap_p) || index >= heap_p->element_count)
+	if(is_empty_heap(heap_p) || index >= get_element_count_heap(heap_p))
 		return 0;
 
 	// put the indexed element at last and last element to indexed place
-	inter_change_elements_for_indexes(heap_p, index, heap_p->element_count - 1);
+	inter_change_elements_for_indexes(heap_p, index, get_element_count_heap(heap_p) - 1);
 
 	// re-initialize heap_index of the (last) element that we are going to remove
 	if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
-		initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), heap_p->element_count - 1), heap_p));
+		initialize_hpnode(get_node(get_from_array(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p));
 
 	// and set the last to NULL, and decrement the element_count of the heap
 	set_in_array(&(heap_p->heap_holder), NULL, --heap_p->element_count);
@@ -284,7 +284,7 @@ void heapify_for(heap* heap_p, const void* data)
 void heapify_at(heap* heap_p, cy_uint index)
 {
 	// return if index is out-of-bounds
-	if(index >= heap_p->element_count)
+	if(index >= get_element_count_heap(heap_p))
 		return;
 
 	// if re-ordering is required at the parent side, we bubble up
@@ -310,7 +310,7 @@ void heapify_all(heap* heap_p)
 
 void remove_all_from_heap(heap* heap_p)
 {
-	for(cy_uint i = 0; i < heap_p->element_count; i++)
+	for(cy_uint i = 0; i < get_element_count_heap(heap_p); i++)
 	{
 		// re initialize the hpnode
 		if(heap_p->node_offset != NO_HEAP_NODE_OFFSET)
@@ -344,12 +344,12 @@ cy_uint get_element_count_heap(const heap* heap_p)
 
 int is_full_heap(const heap* heap_p)
 {
-	return heap_p->element_count == get_capacity_heap(heap_p);
+	return get_element_count_heap(heap_p) == get_capacity_heap(heap_p);
 }
 
 int is_empty_heap(const heap* heap_p)
 {
-	return heap_p->element_count == 0;
+	return get_element_count_heap(heap_p) == 0;
 }
 
 int expand_heap(heap* heap_p)
@@ -359,7 +359,7 @@ int expand_heap(heap* heap_p)
 
 int shrink_heap(heap* heap_p)
 {
-	return shrink_array(&(heap_p->heap_holder), heap_p->element_count);
+	return shrink_array(&(heap_p->heap_holder), get_element_count_heap(heap_p));
 }
 
 int reserve_capacity_for_heap(heap* heap_p, cy_uint atleast_capacity)
@@ -387,7 +387,7 @@ void sprint_heap(dstring* append_str, const heap* heap_p, void (*sprint_element)
 	snprintf_dstring(append_str, "degree : %" PRIu_cy_uint "\n", heap_p->degree);
 
 	sprint_chars(append_str, '\t', tabs);
-	snprintf_dstring(append_str, "element_count : %" PRIu_cy_uint "\n", heap_p->element_count);
+	snprintf_dstring(append_str, "element_count : %" PRIu_cy_uint "\n", get_element_count_heap(heap_p));
 
 	sprint_chars(append_str, '\t', tabs);
 	snprintf_dstring(append_str, "heap_holder : \n");
