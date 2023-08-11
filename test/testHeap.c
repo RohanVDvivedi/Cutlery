@@ -56,9 +56,9 @@ void pop_heap_OPTIMUM_MEMORY(heap* heap_p)
 
 void change_key(heap* heap_p, unsigned int index, int new_key)
 {
-	if(index <= heap_p->element_count - 1)
+	if(index <= get_element_count_heap(heap_p) - 1)
 	{
-		ts* element_to_update = ((ts*)get_from_array(&(heap_p->heap_holder), index));
+		ts* element_to_update = ((ts*)get_from_arraylist(&(heap_p->heap_holder), index));
 		element_to_update->key = new_key;
 		heapify_for(heap_p, element_to_update);
 	}
