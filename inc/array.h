@@ -88,9 +88,6 @@ void for_each_non_null_in_array(const array* array_p, void (*operation)(void* da
 // serializes the array, and appends the serialized form to the dstring
 void sprint_array(dstring* append_str, const array* array_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);
 
-// function to heap sort array inplace
-//int heap_sort_array(array* array_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
-
 // NOTE:: DO NOT MODIFY THE ARRAY DURING THE ACTIVE LIFE TIME OF THE INDEX_ACCESSED_INTERFACE OF THAT ARRAY
 
 index_accessed_interface get_index_accessed_interface_for_array(array* array_p);
