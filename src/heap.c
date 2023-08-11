@@ -258,7 +258,7 @@ int remove_at_index_from_heap(heap* heap_p, cy_uint index)
 	if(!pop_back_from_arraylist(&(heap_p->heap_holder)))
 	{
 		// undo - the initialize_hpnode at index (element_count-1)
-		get_node(get_from_arraylist(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p)->heap_index = get_element_count_heap(heap_p) - 1;
+		((hpnode*)get_node(get_from_arraylist(&(heap_p->heap_holder), get_element_count_heap(heap_p) - 1), heap_p))->heap_index = get_element_count_heap(heap_p) - 1;
 		// undo - interchange of the index and (element_count-1)
 		inter_change_elements_for_indexes(heap_p, index, get_element_count_heap(heap_p) - 1);
 		return 0;
