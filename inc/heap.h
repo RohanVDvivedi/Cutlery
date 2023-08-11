@@ -4,7 +4,7 @@
 #include<array.h>
 #include<index_accessed_interface.h>
 
-#include<heap_type.h>
+#include<heap_info.h>
 
 typedef struct hpnode hpnode;
 struct hpnode
