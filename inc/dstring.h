@@ -116,6 +116,7 @@ int get_unsigned_long_long_int_from_dstring(const dstring* str_p, unsigned int r
 
 #include<dstring_substring.h>
 #include<dstring_diff.h>
+#include<dstring_index_accessed_interface.h>
 
 // This is the global memory allocator that will be used for contents 
 // of every dstring that ever gets created/modified
