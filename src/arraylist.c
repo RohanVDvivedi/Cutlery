@@ -680,7 +680,7 @@ index_accessed_interface get_index_accessed_interface_for_back_of_arraylist(arra
 									};
 }
 
-int get_slice_from_array(arraylist* slice, array* array_p, cy_uint first_index, cy_uint element_count)
+int get_slice_as_arraylist_from_array(arraylist* slice, array* array_p, cy_uint first_index, cy_uint element_count)
 {
 	// first_index must be a valid array index, and element_count must be lesser than the capacity of the array
 	if(first_index >= get_capacity_array(array_p) || element_count > get_capacity_array(array_p))
