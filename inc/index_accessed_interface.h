@@ -1,6 +1,8 @@
 #ifndef INDEX_ACCESSED_INTERFACE_H
 #define INDEX_ACCESSED_INTERFACE_H
 
+#include<cutlery_stds.h>
+
 /*
 	below is an interface to be implemented by any data structure,
 	that wants to be and can be randomly accessed.

@@ -4,7 +4,6 @@
 #include<heap.h>
 #include<arraylist.h>
 
-#include<cutlery_stds.h>
 #include<memory_allocator_interface.h>
 
 // below is a utility required only by the merge sort functionality

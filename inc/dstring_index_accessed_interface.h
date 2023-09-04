@@ -1,0 +1,18 @@
+#ifndef DSTRING_INDEX_ACCESSED_INTERFACE_H
+#define DSTRING_INDEX_ACCESSED_INTERFACE_H
+
+#include<index_accessed_interface.h>
+#include<dstring.h>
+
+// index access interface for dstring
+
+// This allows you to use a lot of functionality of index_accesses_search_sort.h
+
+index_accessed_interface get_index_accessed_interface_for_dstring(const dstring* str_p);
+
+// comparator functions to sort characters in dstring
+
+int compare_chars_ascending_at(const char* c1, const char* c2);
+int compare_chars_descending_at(const char* c1, const char* c2);
+
+#endif
