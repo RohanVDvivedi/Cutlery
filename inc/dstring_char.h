@@ -11,6 +11,9 @@ int is_uppercase_char(char c);
 char to_lowercase_char(char c);
 char to_uppercase_char(char c);
 
+int compare_chars_ascending(char c1, char c2);
+int compare_chars_descending(char c1, char c2);
+
 // any radix value is allowed here
 // this is the maximum number of digits (for a specific radix) required to store an unsigned long long int
 cy_uint get_digits_required_to_represent_unsigned_long_long_int(unsigned int radix);
