@@ -124,4 +124,10 @@ void deinitialize_arraylist(arraylist* al);
 index_accessed_interface get_index_accessed_interface_for_front_of_arraylist(arraylist* al);
 index_accessed_interface get_index_accessed_interface_for_back_of_arraylist(arraylist* al);
 
+// the below function can be used to generate a circular arraylist slice from an array
+// with first_index and element_count set as is (if valid)
+// returns 0, on a failure and 1 for success
+// NOTE:: This function has come into existence to only allow inplace sorting of an array just like an arraylist by heap_sort_arraylist function given in arraylist_sort.h
+int get_slice_as_arraylist_from_array(arraylist* slice, array* array_p, cy_uint first_index, cy_uint element_count);
+
 #endif

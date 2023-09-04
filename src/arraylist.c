@@ -679,3 +679,20 @@ index_accessed_interface get_index_accessed_interface_for_back_of_arraylist(arra
 										.get_element_count = (cy_uint (*)(const void*))get_element_count_arraylist,
 									};
 }
+
+int get_slice_from_array(arraylist* slice, array* array_p, cy_uint first_index, cy_uint element_count)
+{
+	// first_index must be a valid array index, and element_count must be lesser than the capacity of the array
+	if(first_index >= get_capacity_array(array_p) || element_count > get_capacity_array(array_p))
+		return 0;
+
+	// initialize arraylist pointing to the same memory contents as that of the array
+	if(!initialize_arraylist_with_memory(slice, get_capacity_array(array_p), array_p->data_p_p))
+		return 0;
+
+	// blindly make the arraylist point to it
+	slice->first_index = first_index;
+	slice->element_count = element_count;
+
+	return 1;
+}
