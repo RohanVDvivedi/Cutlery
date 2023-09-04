@@ -171,8 +171,8 @@ int main()
 #elif defined HEAP_SORT_native
 	printf("Sorting %u to %u using HEAP_SORT_native\n\n", start_index, end_index);
 	arraylist temp_al;
-	initialize_arraylist_with_memory(&temp_al, get_capacity_array(array_p), array_p->data_p_p);
-	temp_al.element_count = get_capacity_array(array_p);
+	if(!get_slice_as_arraylist_from_array(&temp_al, array_p, 0, get_capacity_array(array_p)))
+		exit(-1);
 	heap_sort_arraylist(&temp_al, start_index, end_index, test_compare);
 #elif defined QUICK_SORT
 	printf("Sorting %u to %u using QUICK_SORT\n\n", start_index, end_index);
