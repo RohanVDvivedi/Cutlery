@@ -10,9 +10,9 @@
 
 index_accessed_interface get_index_accessed_interface_for_dstring(dstring* str_p);
 
-// comparator functions to sort characters in dstring
+// comparator helper functions to sort characters in dstring
 
-int compare_chars_ascending_at(const char* c1, const char* c2);
-int compare_chars_descending_at(const char* c1, const char* c2);
+int compare_chars_ascending_at(const void* c1, const void* c2);
+int compare_chars_descending_at(const void* c1, const void* c2);
 
 #endif

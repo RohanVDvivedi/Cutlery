@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include<dstring.h>
 
+#include<index_accessed_search_sort.h>
+
 int main()
 {
 	dstring str = new_dstring(NULL, 0);
@@ -15,6 +17,14 @@ int main()
 		printf("concatenate str with tempstr : \"" printf_dstring_format "\"\n", printf_dstring_params(tempstr));
 		concatenate_dstring(&str, tempstr);
 		printf("str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&str));
+	}
+
+	{
+		// test case to quick sort contents of dstring
+		dstring copy_to_be_sorted = new_copy_dstring(&str);
+		index_accessed_interface iai = get_index_accessed_interface_for_dstring(&copy_to_be_sorted);
+		quick_sort_iai(&iai, 0, get_char_count_dstring(&copy_to_be_sorted) - 1, compare_chars_ascending_at);
+		printf("soted str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&copy_to_be_sorted));
 	}
 
 	{
