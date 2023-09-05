@@ -19,7 +19,40 @@ VALUE_ARRAYLIST tasks (NEW DATASTRUCTURE)
    * implement getter for index_accessed_interface
    * copy functionality for radix_sort, heap_sort (using a cut slice of value_arraylist), (iterative like existing) merge_sort, all other sorts and search functions can be reused
 
-2. Add new datastructure types tasks (*future)
+2. interface tasks
+
+ITERATOR INTERFACE
+ * build an iterator interface as
+ struct {
+    const void* ds_p;
+    const void* get_next(const void* ds_p, const void* data_xist);
+ };
+
+COMPARATOR INTERFACE
+ * build a comparator interface and make all of cutlery use it
+ struct {
+  const void* context;
+  union {
+    int compare(const void* data1, const void* data2); // when context == NULL
+    int compare_with_context(const void* context, const void* data1, const void* data2);
+  };
+ };
+ * build a function to compare using comparator
+ int compare_with_comparator(const void* comparator, const void* data1, const void* data2);
+
+HASHER INTERFACE
+ * build a hasher interface and make all of cutlery use it
+ struct {
+  const void* context;
+  union {
+    cy_uint hash(const void* data);
+    cy_uint hash_with_context(const void* context, const void* data);
+  };
+ };
+ * build a function to hash using hasher
+ cy_int hash_with_hasher(const void* hasher, const void* data);
+
+3. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
