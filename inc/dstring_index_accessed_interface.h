@@ -8,7 +8,7 @@
 
 // This allows you to use a lot of functionality of index_accesses_search_sort.h
 
-index_accessed_interface get_index_accessed_interface_for_dstring(const dstring* str_p);
+index_accessed_interface get_index_accessed_interface_for_dstring(dstring* str_p);
 
 // comparator functions to sort characters in dstring
 
