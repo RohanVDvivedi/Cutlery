@@ -53,6 +53,12 @@ int push_to_heap_ ## container(container* c, heap_info* hinfo, contained_type* v
 int pop_from_heap_ ## container(container* c, heap_info* hindo);                                                               \
 int remove_from_heap_ ## container(container* c, heap_info* hinfo);                                                            \
                                                                                                                                \
+/* container specific sorting functions */                                                                                     \
+/* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
+int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
+int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
+int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data));\
+                                                                                                                               \
 /* functions to increase decrease capacity of the container */                                                                 \
 int expand_ ## container(container* c);                                                                                        \
 int shrink_ ## container(container* c);                                                                                        \
