@@ -1,6 +1,12 @@
 #ifndef VALUE_ARRAYLIST_H
 #define VALUE_ARRAYLIST_H
 
+#include<cutlery_stds.h>
+#include<memory_allocator_interface.h>
+#include<index_accessed_interface.h>
+#include<circular_buffer_array_util.h>
+#include<heap_info.h>
+
 /*
 	value_arraylist is a header that will build a cache friendly container for you
 	it is suppossed to be used with only small ephemeral structs and primitive types,
