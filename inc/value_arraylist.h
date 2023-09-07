@@ -224,9 +224,47 @@ const contained_type* get_back_of_ ## container(const container* c);            
 	return c->data_p +  get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                       \
 }                                                                                                                              \
 const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index);                                      \
+{                                                                                                                              \
+	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
+		return NULL;                                                                                                           \
+                                                                                                                               \
+	cy_uint index_concerned = add_circularly(c->first_index, index, get_capacity_ ## container(c));                            \
+                                                                                                                               \
+	return c->data_p + index_concerned;                                                                                        \
+}                                                                                                                              \
 const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index);                                       \
+{                                                                                                                              \
+	if(is_empty_ ## container(c) || index >= al->element_count)                                                                \
+		return NULL;                                                                                                           \
+                                                                                                                               \
+	cy_uint last_index = get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                      \
+	cy_uint index_concerned = sub_circularly(last_index, index, get_capacity_ ## container(c));                                \
+                                                                                                                               \
+	return c->data_p + index_concerned;                                                                                        \
+}                                                                                                                              \
 int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index);                                     \
+{                                                                                                                              \
+	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	cy_uint index_concerned = add_circularly(c->first_index, index, get_capacity_ ## container(c));                            \
+                                                                                                                               \
+	c->data_p[index_concerned] = (*v);                                                                                         \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index);                                      \
+{                                                                                                                              \
+	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	cy_uint last_index = get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                      \
+	cy_uint index_concerned = sub_circularly(last_index, index, get_capacity_ ## container(c));                                \
+                                                                                                                               \
+	c->data_p[index_concerned] = (*v);                                                                                         \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                    \
 int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                     \
                                                                                                                                \
