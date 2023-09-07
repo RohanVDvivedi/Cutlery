@@ -24,7 +24,8 @@ struct container                                                                
 	memory_allocator mem_allocator; /* allocator for the container */                                                          \
 };                                                                                                                             \
                                                                                                                                \
-/*#define MAX_ ## container ## _CAPACITY (CY_UINT_MAX / sizeof(contained_type))*/                                                    \
+/* global constant setting the max capacity of this container built */                                                         \
+static const cy_uint MAX_ ## container ## _CAPACITY (CY_UINT_MAX / sizeof(contained_type));                                    \
                                                                                                                                \
 /* initialization functions */                                                                                                 \
 int initialize_ ## container(container* c, cy_uint capacity);                                                                  \
@@ -62,7 +63,6 @@ index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
 int heapify_ ## container(container* c, heap_info* hinfo);                                                                     \
-/*#define get_top_of_heap_ ## container get_front_of_ ## container*/                                                               \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, contained_type* v);                                             \
 int pop_from_heap_ ## container(container* c, heap_info* hindo);                                                               \
 int remove_from_heap_ ## container(container* c, heap_info* hinfo);                                                            \
