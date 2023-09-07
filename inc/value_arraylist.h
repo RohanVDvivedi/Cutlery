@@ -128,4 +128,6 @@ int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity); 
 void remove_all_from_ ## container(container* c);                                                                              \
 int deinitialize_ ## container(container* c);                                                                                  \
 
+// comment break, there must be a newline above this comment
+
 #endif
