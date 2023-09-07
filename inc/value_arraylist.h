@@ -14,6 +14,7 @@
 */
 
 #define declarations_value_arraylist(container, contained_type)                                                                \
+typedef struct container container;                                                                                            \
 struct container                                                                                                               \
 {                                                                                                                              \
 	container_type* data_p;         /* array, each element being od container_type */                                          \
