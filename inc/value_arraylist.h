@@ -23,6 +23,8 @@ struct container                                                                
 	memory_allocator mem_allocator; /* allocator for the container */                                                          \
 };                                                                                                                             \
                                                                                                                                \
+#define MAX_ ## container ## _CAPACITY CU_UINT_MAX / sizeof(contained_type)                                                    \
+                                                                                                                               \
 /* initialization functions */                                                                                                 \
 int initialize_ ## container(container* c, cy_uint capacity);                                                                  \
 int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator);               \
@@ -78,9 +80,43 @@ int deinitialize_ ## container(container* c);                                   
 
 #define definitions_value_arraylist(container, contained_type)                                                                 \
 /* initialization functions */                                                                                                 \
-int initialize_ ## container(container* c, cy_uint capacity);                                                                  \
-int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator);               \
-int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p);                          \
+int initialize_ ## container(container* c, cy_uint capacity)                                                                   \
+{                                                                                                                              \
+	return initialize_ ## container ## _with_allocator(c, capacity, STD_C_mem_allocator);                                      \
+}                                                                                                                              \
+int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator)                \
+{                                                                                                                              \
+	/* check to ensure max capacity */                                                                                         \
+	if(capacity > MAX_ container _ CAPACITY)                                                                                   \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	c->mem_allocator = mem_allocator;                                                                                          \
+	c->first_index = 0;                                                                                                        \
+	c->element_count = 0;                                                                                                      \
+	cy_uint bytes_allocated = capacity * sizeof(contained_type);                                                               \
+	c->data_p = (capacity > 0) ? aligned_allocate(c->mem_allocator, &bytes_allocated, _Alignof(contained_type)) : NULL;        \
+	c->capacity_in_bytes = (c->data_p == NULL) ? 0 : bytes_allocated;                                                          \
+                                                                                                                               \
+	/* check for allocator error, if the allocation fails, return 0, else return 1 */                                          \
+	if(bytes_allocated > 0 && array_p->data_p_p == NULL)                                                                       \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
+int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p)                           \
+{                                                                                                                              \
+	/* check to ensure max capacity */                                                                                         \
+	if(capacity > MAX_ container _ CAPACITY)                                                                                   \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	c->mem_allocator = NULL;                                                                                                   \
+	c->first_index = 0;                                                                                                        \
+	c->element_count = 0;                                                                                                      \
+	c->data_p = data_p;                                                                                                        \
+	c->capacity_in_bytes = capacity * sizeof(contained_type);                                                                  \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
                                                                                                                                \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
 int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
@@ -125,8 +161,21 @@ int shrink_ ## container(container* c);                                         
 int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity);                                                \
                                                                                                                                \
 /* deinitialization function */                                                                                                \
-void remove_all_from_ ## container(container* c);                                                                              \
-int deinitialize_ ## container(container* c);                                                                                  \
+void remove_all_from_ ## container(container* c)                                                                               \
+{                                                                                                                              \
+	c->first_index = 0;                                                                                                        \
+	c->element_count = 0;                                                                                                      \
+}                                                                                                                              \
+void deinitialize_ ## container(container* c)                                                                                  \
+{                                                                                                                              \
+	if(c->mem_allocator != NULL && c->data_p != NULL && c->capacity_in_bytes > 0)                                              \
+		deallocate(c->mem_allocator, c->data_p, c->capacity_in_bytes);                                                         \
+	c->mem_allocator = NULL;                                                                                                   \
+	c->data_p = NULL;                                                                                                          \
+	c->capacity_in_bytes = 0;                                                                                                  \
+	c->first_index = 0;                                                                                                        \
+	c->element_count = 0;                                                                                                      \
+}                                                                                                                              \
 
 // comment break, there must be a newline above this comment
 
