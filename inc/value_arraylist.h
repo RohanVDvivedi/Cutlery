@@ -210,7 +210,19 @@ int pop_back_from_ ## container(container* c)                                   
 	return 1;                                                                                                                  \
 }                                                                                                                              \
 const contained_type* get_front_of_ ## container(const container* c);                                                          \
+{                                                                                                                              \
+	if(is_empty_ ## container(c))                                                                                              \
+		return NULL;                                                                                                           \
+                                                                                                                               \
+	return c->data_p + c->first_index;                                                                                         \
+}                                                                                                                              \
 const contained_type* get_back_of_ ## container(const container* c);                                                           \
+{                                                                                                                              \
+	if(is_empty_ ## container(c))                                                                                              \
+		return NULL;                                                                                                           \
+                                                                                                                               \
+	return c->data_p +  get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                       \
+}                                                                                                                              \
 const contained_type* get_from_front_of_ ## container(const container* c);                                                     \
 const contained_type* get_from_back_of_ ## container(const container* c);                                                      \
 int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index);                                     \
