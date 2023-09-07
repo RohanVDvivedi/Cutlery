@@ -30,6 +30,10 @@ int initialize_ ## container(container* c, cy_uint capacity);                   
 int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator);               \
 int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p);                          \
                                                                                                                                \
+/* basic container oprations to get capacity and element_count */                                                              \
+cy_uint get_capacity_ ## container (const container* c);                                                                       \
+cy_uint get_element_count_ ## container (const container* c);                                                                  \
+                                                                                                                               \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
 int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
 int push_back_to_ ## container(container* c, const contained_type* v);                                                         \
@@ -116,6 +120,16 @@ int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, con
 	c->capacity_in_bytes = capacity * sizeof(contained_type);                                                                  \
                                                                                                                                \
 	return 1;                                                                                                                  \
+}                                                                                                                              \
+                                                                                                                               \
+/* basic container oprations to get capacity and element_count */                                                              \
+cy_uint get_capacity_ ## container (const container* c)                                                                        \
+{                                                                                                                              \
+	return (c->capacity_in_bytes / sizeof(contained_type));                                                                    \
+}                                                                                                                              \
+cy_uint get_element_count_ ## container (const container* c)                                                                   \
+{                                                                                                                              \
+	return c->element_count;                                                                                                   \
 }                                                                                                                              \
                                                                                                                                \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
