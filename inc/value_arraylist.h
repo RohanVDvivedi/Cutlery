@@ -33,8 +33,12 @@ int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, 
 int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p);                          \
                                                                                                                                \
 /* basic container oprations to get capacity and element_count */                                                              \
-cy_uint get_capacity_ ## container (const container* c);                                                                       \
-cy_uint get_element_count_ ## container (const container* c);                                                                  \
+cy_uint get_capacity_ ## container(const container* c);                                                                        \
+cy_uint get_element_count_ ## container(const container* c);                                                                   \
+                                                                                                                               \
+/* check is_empty and is_full */                                                                                               \
+int is_empty_ ## container(container* c);                                                                                      \
+int is_full_ ## container(container* c);                                                                                       \
                                                                                                                                \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
 int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
@@ -134,6 +138,16 @@ cy_uint get_element_count_ ## container (const container* c)                    
 	return c->element_count;                                                                                                   \
 }                                                                                                                              \
                                                                                                                                \
+/* check is_empty and is_full */                                                                                               \
+int is_empty_ ## container(container* c);                                                                                      \
+{                                                                                                                              \
+	return get_element_count_ ## container(c) == 0;                                                                            \
+}                                                                                                                              \
+int is_full_ ## container(container* c);                                                                                       \
+{                                                                                                                              \
+	return get_element_count_ ## container(c) == get_capacity_ ## container(c);                                                \
+}                                                                                                                              \
+                                                                                                                               \                                                                                                                               \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
 int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
 int push_back_to_ ## container(container* c, const contained_type* v);                                                         \
