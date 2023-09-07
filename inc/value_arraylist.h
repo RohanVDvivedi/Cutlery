@@ -265,8 +265,28 @@ int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uin
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                    \
-int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                     \
+int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2)                                                     \
+{                                                                                                                              \
+	if(i1 >= get_element_count_ ## container(c) || i2 >= get_element_count_ ## container(c))                                   \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	cy_uint i1_concerned = add_circularly(c->first_index, i1, get_capacity_ ## container(c));                                  \
+	cy_uint i2_concerned = add_circularly(c->first_index, i2, get_capacity_ ## container(c));                                  \
+                                                                                                                               \
+	return memory_swap(c->data_p + i1_concerned, c->data_p + i2_concerned, sizeof(contained_type));                            \
+}                                                                                                                              \
+int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)                                                      \
+{                                                                                                                              \
+	if(i1 >= get_element_count_ ## container(c) || i2 >= get_element_count_ ## container(c))                                   \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	cy_uint last_index = get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                      \
+                                                                                                                               \
+	cy_uint i1_concerned = sub_circularly(last_index, i1, get_capacity_ ## container(c));                                      \
+	cy_uint i2_concerned = sub_circularly(last_index, i2, get_capacity_ ## container(c));                                      \
+                                                                                                                               \
+	return memory_swap(c->data_p + i1_concerned, c->data_p + i2_concerned, sizeof(contained_type));                            \
+}                                                                                                                              \
                                                                                                                                \
 /* below functions will make room for element_count number of elements, at the given index, either from front or back */       \
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
