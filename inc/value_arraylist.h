@@ -152,8 +152,38 @@ int is_full_ ## container(container* c)                                         
 }                                                                                                                              \
                                                                                                                                \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
-int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
-int push_back_to_ ## container(container* c, const contained_type* v);                                                         \
+int push_front_to_ ## container(container* c, const contained_type* v)                                                         \
+{                                                                                                                              \
+	if(is_full_ ## container(c))                                                                                               \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	if(is_empty_ ## container(c))                                                                                              \
+		c->first_index = 0;                                                                                                    \
+	else                                                                                                                       \
+		c->first_index = get_circular_prev(c->first_index, get_capacity_arraylist(al));                                        \
+                                                                                                                               \
+	c->data_p[c->first_index] = (*v);                                                                                          \
+                                                                                                                               \
+	c->element_count++;                                                                                                        \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
+int push_back_to_ ## container(container* c, const contained_type* v)                                                          \
+{                                                                                                                              \
+	if(is_full_ ## container(c))                                                                                               \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	if(is_empty_ ## container(c))                                                                                              \
+		c->first_index = 0;                                                                                                    \
+                                                                                                                               \
+	cy_uint end_index = get_end_index(al->first_index, al->element_count, get_capacity_arraylist(al));                         \
+                                                                                                                               \
+	c->data_p[end_index] = (*v);                                                                                               \
+                                                                                                                               \
+	c->element_count++;                                                                                                        \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 int pop_front_from_ ## container(container* c);                                                                                \
 int pop_back_from_ ## container(container* c);                                                                                 \
 const contained_type* get_front_of_ ## container(const container* c);                                                          \
