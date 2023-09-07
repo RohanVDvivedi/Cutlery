@@ -34,8 +34,8 @@ cy_uint get_capacity_ ## container(const container* c);                         
 cy_uint get_element_count_ ## container(const container* c);                                                                   \
                                                                                                                                \
 /* check is_empty and is_full */                                                                                               \
-int is_empty_ ## container(container* c);                                                                                      \
-int is_full_ ## container(container* c);                                                                                       \
+int is_empty_ ## container(const container* c);                                                                                \
+int is_full_ ## container(const container* c);                                                                                 \
                                                                                                                                \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
 int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
@@ -142,11 +142,11 @@ cy_uint get_element_count_ ## container (const container* c)                    
 }                                                                                                                              \
                                                                                                                                \
 /* check is_empty and is_full */                                                                                               \
-int is_empty_ ## container(container* c)                                                                                       \
+int is_empty_ ## container(const container* c)                                                                                 \
 {                                                                                                                              \
 	return get_element_count_ ## container(c) == 0;                                                                            \
 }                                                                                                                              \
-int is_full_ ## container(container* c)                                                                                        \
+int is_full_ ## container(const container* c)                                                                                  \
 {                                                                                                                              \
 	return get_element_count_ ## container(c) == get_capacity_ ## container(c);                                                \
 }                                                                                                                              \
@@ -209,21 +209,21 @@ int pop_back_from_ ## container(container* c)                                   
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-const contained_type* get_front_of_ ## container(const container* c);                                                          \
+const contained_type* get_front_of_ ## container(const container* c)                                                           \
 {                                                                                                                              \
 	if(is_empty_ ## container(c))                                                                                              \
 		return NULL;                                                                                                           \
                                                                                                                                \
 	return c->data_p + c->first_index;                                                                                         \
 }                                                                                                                              \
-const contained_type* get_back_of_ ## container(const container* c);                                                           \
+const contained_type* get_back_of_ ## container(const container* c)                                                            \
 {                                                                                                                              \
 	if(is_empty_ ## container(c))                                                                                              \
 		return NULL;                                                                                                           \
                                                                                                                                \
 	return c->data_p +  get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                       \
 }                                                                                                                              \
-const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index);                                      \
+const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index)                                       \
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return NULL;                                                                                                           \
@@ -232,9 +232,9 @@ const contained_type* get_from_front_of_ ## container(const container* c, cy_uin
                                                                                                                                \
 	return c->data_p + index_concerned;                                                                                        \
 }                                                                                                                              \
-const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index);                                       \
+const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index)                                        \
 {                                                                                                                              \
-	if(is_empty_ ## container(c) || index >= al->element_count)                                                                \
+	if(is_empty_ ## container(c) || index >= c->element_count)                                                                \
 		return NULL;                                                                                                           \
                                                                                                                                \
 	cy_uint last_index = get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                      \
@@ -242,7 +242,7 @@ const contained_type* get_from_back_of_ ## container(const container* c, cy_uint
                                                                                                                                \
 	return c->data_p + index_concerned;                                                                                        \
 }                                                                                                                              \
-int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index);                                     \
+int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index)                                      \
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return 0;                                                                                                              \
@@ -253,7 +253,7 @@ int set_from_front_in_ ## container(container* c, const contained_type* v, cy_ui
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index);                                      \
+int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index)                                       \
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return 0;                                                                                                              \
