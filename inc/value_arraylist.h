@@ -44,8 +44,8 @@ int pop_front_from_ ## container(container* c);                                 
 int pop_back_from_ ## container(container* c);                                                                                 \
 const contained_type* get_front_of_ ## container(const container* c);                                                          \
 const contained_type* get_back_of_ ## container(const container* c);                                                           \
-const contained_type* get_from_front_of_ ## container(const container* c);                                                     \
-const contained_type* get_from_back_of_ ## container(const container* c);                                                      \
+const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index);                                      \
+const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index);                                       \
 int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index);                                     \
 int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index);                                      \
 int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                    \
@@ -223,8 +223,8 @@ const contained_type* get_back_of_ ## container(const container* c);            
                                                                                                                                \
 	return c->data_p +  get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                       \
 }                                                                                                                              \
-const contained_type* get_from_front_of_ ## container(const container* c);                                                     \
-const contained_type* get_from_back_of_ ## container(const container* c);                                                      \
+const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index);                                      \
+const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index);                                       \
 int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index);                                     \
 int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index);                                      \
 int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                    \
