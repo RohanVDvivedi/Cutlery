@@ -17,14 +17,14 @@
 typedef struct container container;                                                                                            \
 struct container                                                                                                               \
 {                                                                                                                              \
-	container_type* data_p;         /* array, each element being od container_type */                                          \
+	contained_type* data_p;         /* array, each element being od container_type */                                          \
 	cy_uint first_index;            /* the index of the first element in the container */                                      \
 	cy_uint element_count;          /* number of elements in the container */                                                  \
 	cy_uint capacity_in_bytes;      /* capacity in bytes pointed by the holder */                                              \
 	memory_allocator mem_allocator; /* allocator for the container */                                                          \
 };                                                                                                                             \
                                                                                                                                \
-#define MAX_ ## container ## _CAPACITY CU_UINT_MAX / sizeof(contained_type)                                                    \
+/*#define MAX_ ## container ## _CAPACITY (CY_UINT_MAX / sizeof(contained_type))*/                                                    \
                                                                                                                                \
 /* initialization functions */                                                                                                 \
 int initialize_ ## container(container* c, cy_uint capacity);                                                                  \
@@ -62,7 +62,7 @@ index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
 int heapify_ ## container(container* c, heap_info* hinfo);                                                                     \
-#define get_top_of_heap_ ## container get_front_of_ ## container                                                               \
+/*#define get_top_of_heap_ ## container get_front_of_ ## container*/                                                               \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, contained_type* v);                                             \
 int pop_from_heap_ ## container(container* c, heap_info* hindo);                                                               \
 int remove_from_heap_ ## container(container* c, heap_info* hinfo);                                                            \
@@ -80,7 +80,7 @@ int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity); 
                                                                                                                                \
 /* deinitialization function */                                                                                                \
 void remove_all_from_ ## container(container* c);                                                                              \
-int deinitialize_ ## container(container* c);                                                                                  \
+void deinitialize_ ## container(container* c);                                                                                 \
 
 // comment break, there must be a newline above this comment
 
@@ -93,7 +93,7 @@ int initialize_ ## container(container* c, cy_uint capacity)                    
 int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator)                \
 {                                                                                                                              \
 	/* check to ensure max capacity */                                                                                         \
-	if(capacity > MAX_ container _ CAPACITY)                                                                                   \
+	if(capacity > MAX_ ## container ## _CAPACITY)                                                                              \
 		return 0;                                                                                                              \
                                                                                                                                \
 	c->mem_allocator = mem_allocator;                                                                                          \
@@ -104,7 +104,7 @@ int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, 
 	c->capacity_in_bytes = (c->data_p == NULL) ? 0 : bytes_allocated;                                                          \
                                                                                                                                \
 	/* check for allocator error, if the allocation fails, return 0, else return 1 */                                          \
-	if(bytes_allocated > 0 && array_p->data_p_p == NULL)                                                                       \
+	if(bytes_allocated > 0 && c->data_p == NULL)                                                                               \
 		return 0;                                                                                                              \
                                                                                                                                \
 	return 1;                                                                                                                  \
@@ -112,7 +112,7 @@ int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, 
 int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p)                           \
 {                                                                                                                              \
 	/* check to ensure max capacity */                                                                                         \
-	if(capacity > MAX_ container _ CAPACITY)                                                                                   \
+	if(capacity > MAX_ ## container ## _CAPACITY)                                                                              \
 		return 0;                                                                                                              \
                                                                                                                                \
 	c->mem_allocator = NULL;                                                                                                   \
