@@ -1,6 +1,7 @@
 #include<value_arraylist.h>
 
 declarations_value_arraylist(int_list, int)
+#define EXPANSION_FACTOR 1.5
 definitions_value_arraylist(int_list, int)
 
 int main()

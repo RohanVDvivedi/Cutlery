@@ -24,9 +24,6 @@ struct container                                                                
 	memory_allocator mem_allocator; /* allocator for the container */                                                          \
 };                                                                                                                             \
                                                                                                                                \
-/* global constant setting the max capacity of this container built */                                                         \
-static const cy_uint MAX_ ## container ## _CAPACITY (CY_UINT_MAX / sizeof(contained_type));                                    \
-                                                                                                                               \
 /* initialization functions */                                                                                                 \
 int initialize_ ## container(container* c, cy_uint capacity);                                                                  \
 int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator);               \
@@ -89,6 +86,10 @@ void deinitialize_ ## container(container* c);                                  
 // comment break, there must be a newline above this comment
 
 #define definitions_value_arraylist(container, contained_type)                                                                 \
+                                                                                                                               \
+/* global constant setting the max capacity of this container built */                                                         \
+static const cy_uint MAX_ ## container ## _CAPACITY = (CY_UINT_MAX / sizeof(contained_type));                                  \
+                                                                                                                               \
 /* initialization functions */                                                                                                 \
 int initialize_ ## container(container* c, cy_uint capacity)                                                                   \
 {                                                                                                                              \
@@ -139,15 +140,15 @@ cy_uint get_element_count_ ## container (const container* c)                    
 }                                                                                                                              \
                                                                                                                                \
 /* check is_empty and is_full */                                                                                               \
-int is_empty_ ## container(container* c);                                                                                      \
+int is_empty_ ## container(container* c)                                                                                       \
 {                                                                                                                              \
 	return get_element_count_ ## container(c) == 0;                                                                            \
 }                                                                                                                              \
-int is_full_ ## container(container* c);                                                                                       \
+int is_full_ ## container(container* c)                                                                                        \
 {                                                                                                                              \
 	return get_element_count_ ## container(c) == get_capacity_ ## container(c);                                                \
 }                                                                                                                              \
-                                                                                                                               \                                                                                                                               \
+                                                                                                                               \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
 int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
 int push_back_to_ ## container(container* c, const contained_type* v);                                                         \
@@ -214,11 +215,11 @@ static int shrink_ ## container ## _holder(container* c, cy_uint new_capacity)  
 	cy_uint bytes_allocated = new_capacity * sizeof(contained_type);                                                           \
                                                                                                                                \
 	/* reallocate memory for the new_capacity */                                                                               \
-	const contained_type* new_data_p = aligned_reallocate(c->mem_allocator,                                                    \
-															c->data_p_p,                                                       \
-															c->capacity_in_bytes,                                              \
-															&bytes_allocated,                                                  \
-															_Alignof(contained_type));                                         \
+	contained_type* new_data_p = aligned_reallocate(c->mem_allocator,                                                          \
+													c->data_p,                                                                 \
+													c->capacity_in_bytes,                                                      \
+													&bytes_allocated,                                                          \
+													_Alignof(contained_type));                                                 \
                                                                                                                                \
 	/* bytes_allocated is our real capacity_in_bytes */                                                                        \
                                                                                                                                \
@@ -245,16 +246,19 @@ int shrink_ ## container(container* c)                                          
 		/* move elements to front */                                                                                           \
 		if(!is_empty_ ## container(c) && c->first_index > 0)                                                                   \
 		{                                                                                                                      \
-			memory_move(c->data_p, c->data_p + c->first, c->element_count * sizeof(contained_type));                           \
-			al->first_index = 0;                                                                                               \
+			memory_move(c->data_p, c->data_p + c->first_index, c->element_count * sizeof(contained_type));                     \
+			c->first_index = 0;                                                                                                \
 		}                                                                                                                      \
                                                                                                                                \
-		has_holder_shrunk = shrink_ ## container ## _holder(&(c->arraylist_holder), c->element_count);                         \
+		has_holder_shrunk = shrink_ ## container ## _holder(c, c->element_count);                                              \
 	}                                                                                                                          \
                                                                                                                                \
 	return has_holder_shrunk;                                                                                                  \
 }                                                                                                                              \
-int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity);                                                \
+int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)                                                 \
+{                                                                                                                              \
+	/* TODO */                                                                                                                 \
+}                                                                                                                              \
                                                                                                                                \
 /* deinitialization function */                                                                                                \
 void remove_all_from_ ## container(container* c)                                                                               \
