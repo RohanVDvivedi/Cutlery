@@ -186,8 +186,74 @@ int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_inde
 int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data));\
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
-int expand_ ## container(container* c);                                                                                        \
-int shrink_ ## container(container* c);                                                                                        \
+int expand_ ## container(container* c)                                                                                         \
+{                                                                                                                              \
+	/* compute new capacity */                                                                                                 \
+	cy_uint capacity = get_capacity_ ## container(c);                                                                          \
+	cy_uint new_capacity = capacity * EXPANSION_FACTOR + 2;                                                                    \
+	if(new_capacity <= capacity || new_capacity > MAX_ ## container ## _CAPACITY)                                              \
+		new_capacity = MAX_ ## container ## _CAPACITY;                                                                         \
+                                                                                                                               \
+	/* must be greater than old capacity  */                                                                                   \
+	if(new_capacity <= capacity)                                                                                               \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	return reserve_capacity_for_ ## container(c, new_capacity);                                                                \
+}                                                                                                                              \
+static int shrink_ ## container ## _holder(container* c, cy_uint new_capacity)                                                 \
+{                                                                                                                              \
+	/* can not shrink if the allocator is NULL */                                                                              \
+	if(c->mem_allocator == NULL)                                                                                               \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* new_capacity must be lesser than the old_capacity */                                                                    \
+	if(new_capacity >= get_capacity_ ## container(c))                                                                          \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* number of bytes to be allocated */                                                                                      \
+	cy_uint bytes_allocated = new_capacity * sizeof(contained_type);                                                           \
+                                                                                                                               \
+	/* reallocate memory for the new_capacity */                                                                               \
+	const contained_type* new_data_p = aligned_reallocate(c->mem_allocator,                                                    \
+															c->data_p_p,                                                       \
+															c->capacity_in_bytes,                                              \
+															&bytes_allocated,                                                  \
+															_Alignof(contained_type));                                         \
+                                                                                                                               \
+	/* bytes_allocated is our real capacity_in_bytes */                                                                        \
+                                                                                                                               \
+	/* since memory allocation failed, return 0 */                                                                             \
+	if(new_data_p == NULL && new_capacity > 0)                                                                                 \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* new assignment to data_p and its capacity */                                                                            \
+	c->data_p = new_data_p;                                                                                                    \
+	c->capacity_in_bytes = bytes_allocated;                                                                                    \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
+int shrink_ ## container(container* c)                                                                                         \
+{                                                                                                                              \
+	int has_holder_shrunk = 0;                                                                                                 \
+                                                                                                                               \
+	/* can't shrink a 0 capacity container */                                                                                  \
+	if(get_capacity_ ## container(c) == 0)                                                                                     \
+		return has_holder_shrunk;                                                                                              \
+                                                                                                                               \
+	if(is_empty_ ## container(c) || c->first_index <= get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c)))\
+	{                                                                                                                          \
+		/* move elements to front */                                                                                           \
+		if(!is_empty_ ## container(c) && c->first_index > 0)                                                                   \
+		{                                                                                                                      \
+			memory_move(c->data_p, c->data_p + c->first, c->element_count * sizeof(contained_type));                           \
+			al->first_index = 0;                                                                                               \
+		}                                                                                                                      \
+                                                                                                                               \
+		has_holder_shrunk = shrink_ ## container ## _holder(&(c->arraylist_holder), c->element_count);                         \
+	}                                                                                                                          \
+                                                                                                                               \
+	return has_holder_shrunk;                                                                                                  \
+}                                                                                                                              \
 int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity);                                                \
                                                                                                                                \
 /* deinitialization function */                                                                                                \
