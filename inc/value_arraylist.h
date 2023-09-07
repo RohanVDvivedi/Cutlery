@@ -160,7 +160,7 @@ int push_front_to_ ## container(container* c, const contained_type* v)          
 	if(is_empty_ ## container(c))                                                                                              \
 		c->first_index = 0;                                                                                                    \
 	else                                                                                                                       \
-		c->first_index = get_circular_prev(c->first_index, get_capacity_arraylist(al));                                        \
+		c->first_index = get_circular_prev(c->first_index, get_capacity_ ## container(c));                                     \
                                                                                                                                \
 	c->data_p[c->first_index] = (*v);                                                                                          \
                                                                                                                                \
@@ -176,7 +176,7 @@ int push_back_to_ ## container(container* c, const contained_type* v)           
 	if(is_empty_ ## container(c))                                                                                              \
 		c->first_index = 0;                                                                                                    \
                                                                                                                                \
-	cy_uint end_index = get_end_index(al->first_index, al->element_count, get_capacity_arraylist(al));                         \
+	cy_uint end_index = get_end_index(c->first_index, c->element_count, get_capacity_ ## container(c));                        \
                                                                                                                                \
 	c->data_p[end_index] = (*v);                                                                                               \
                                                                                                                                \
@@ -184,8 +184,31 @@ int push_back_to_ ## container(container* c, const contained_type* v)           
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int pop_front_from_ ## container(container* c);                                                                                \
-int pop_back_from_ ## container(container* c);                                                                                 \
+int pop_front_from_ ## container(container* c)                                                                                 \
+{                                                                                                                              \
+	if(is_empty_ ## container(c))                                                                                              \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	c->first_index = get_circular_next(c->first_index, get_capacity_ ## container(c));                                         \
+	c->element_count--;                                                                                                        \
+                                                                                                                               \
+	if(is_empty_ ## container(c))                                                                                              \
+		c->first_index = 0;                                                                                                    \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
+int pop_back_from_ ## container(container* c)                                                                                  \
+{                                                                                                                              \
+	if(is_empty_ ## container(c))                                                                                              \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	c->element_count--;                                                                                                        \
+                                                                                                                               \
+	if(is_empty_ ## container(c))                                                                                              \
+		c->first_index = 0;                                                                                                    \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 const contained_type* get_front_of_ ## container(const container* c);                                                          \
 const contained_type* get_back_of_ ## container(const container* c);                                                           \
 const contained_type* get_from_front_of_ ## container(const container* c);                                                     \
