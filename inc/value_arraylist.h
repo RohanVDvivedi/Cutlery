@@ -329,7 +329,7 @@ static void bubble_up_ ## container(container* c, heap_info* hinfo, cy_uint degr
 		cy_uint parent_index = get_parent_index_N(index, degree);                                                              \
                                                                                                                                \
 		/* exit, if reordering is not required */                                                                              \
-		if(!is_reordering_required(get_from_front_of_ ## container(c, parent_index), get_from_front_of_ ## container(c, index), index, hinfo))\
+		if(!is_reordering_required(get_from_front_of_ ## container(c, parent_index), get_from_front_of_ ## container(c, index), hinfo))\
 			break;                                                                                                             \
                                                                                                                                \
 		swap_from_front_in_ ## container(c, parent_index, index);                                                              \
@@ -347,7 +347,7 @@ static void bubble_down_ ## container(container* c, heap_info* hinfo, cy_uint de
                                                                                                                                \
 		/* iterate over all the children of the parent at index */                                                             \
 		/* find the one that if made the new parent, will not require reordering with any of its siblings */                   \
-		for(cy_uint i = 0, child_index = get_index_of_ith_child_N(index, 0, degree); i < degree && child_index < get_element_count_heap(heap_p); i++, child_index++)\
+		for(cy_uint i = 0, child_index = get_index_of_ith_child_N(index, 0, degree); i < degree && child_index < get_element_count_ ## container(c); i++, child_index++)\
 		{                                                                                                                      \
 			if(is_reordering_required(get_from_front_of_ ## container(c, new_parent_index), get_from_front_of_ ## container(c, child_index), hinfo))\
 				new_parent_index = child_index;                                                                                \
