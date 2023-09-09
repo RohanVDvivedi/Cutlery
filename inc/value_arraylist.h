@@ -387,7 +387,7 @@ void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy
                                                                                                                                \
 	/* else we attempt a bubble down, only if it can have children */                                                          \
 	else if(can_have_any_children_N(index, degree))                                                                            \
-		bubble_down(c, hinfo, degree, index);                                                                                  \
+		bubble_down_ ## container(c, hinfo, degree, index);                                                                    \
 }                                                                                                                              \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v)                        \
 {                                                                                                                              \
