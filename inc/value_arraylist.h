@@ -298,8 +298,26 @@ int remove_elements_from_front_of_ ## container(container* al, cy_uint index, cy
 int remove_elements_from_back_of_ ## container(container* al, cy_uint index, cy_uint element_count_to_remove);                 \
                                                                                                                                \
 /* get index accessed interface for elements */                                                                                \
-index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c);                                \
-index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c);                                 \
+index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c)                                 \
+{                                                                                                                              \
+	return (index_accessed_interface) {                                                                                        \
+		.ds_p = c,                                                                                                             \
+		.get_element = ((const void* (*)(const void*, cy_uint))(get_from_front_of_ ## container)),                             \
+		.set_element = ((int (*)(void*, const void*, cy_uint))(set_from_front_in_ ## container)),                              \
+		.swap_elements = ((int (*)(void*, cy_uint, cy_uint))(swap_from_front_in_ ## container)),                               \
+		.get_element_count = ((cy_uint (*)(const void*))(get_element_count_ ## container)),                                    \
+	};                                                                                                                         \
+}                                                                                                                              \
+index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c)                                  \
+{                                                                                                                              \
+	return (index_accessed_interface) {                                                                                        \
+		.ds_p = c,                                                                                                             \
+		.get_element = ((const void* (*)(const void*, cy_uint))(get_from_back_of_ ## container)),                              \
+		.set_element = ((int (*)(void*, const void*, cy_uint))(set_from_back_in_ ## container)),                               \
+		.swap_elements = ((int (*)(void*, cy_uint, cy_uint))(swap_from_back_in_ ## container)),                                \
+		.get_element_count = ((cy_uint (*)(const void*))(get_element_count_ ## container)),                                    \
+	};                                                                                                                         \
+}                                                                                                                              \
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
 int heapify_ ## container(container* c, heap_info* hinfo);                                                                     \
