@@ -66,8 +66,8 @@ index_accessed_interface get_index_accessed_interface_for_front_of_ ## container
 index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c);                                 \
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
-int heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                                     \
-int heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index);                                   \
+void heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                                    \
+void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index);                                  \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v);                       \
 int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                               \
 int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index);                             \
@@ -364,7 +364,7 @@ static void bubble_down_ ## container(container* c, heap_info* hinfo, cy_uint de
 		index = new_parent_index;                                                                                              \
 	}                                                                                                                          \
 }                                                                                                                              \
-int heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree)                                                      \
+void heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree)                                                     \
 {                                                                                                                              \
 	/* heapify_all is not required, if the element_count is 0 OR 1 */                                                          \
 	if(get_element_count_ ## container(c) <= 1)                                                                                \
@@ -375,9 +375,19 @@ int heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree)       
 	for(cy_uint index = get_parent_index_N(get_element_count_ ## container(c) - 1, degree); index != -1; index--)              \
 		bubble_down_ ## container(c, hinfo, degree, index);                                                                    \
 }                                                                                                                              \
-int heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                                    \
+void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                                   \
 {                                                                                                                              \
+	/* return if index is out-of-bounds */                                                                                     \
+	if(index >= get_element_count_ ## container(c))                                                                            \
+		return;                                                                                                                \
                                                                                                                                \
+	/* if re-ordering is required at the parent side, we bubble up */                                                          \
+	if(has_parent_N(index) && is_reordering_required(get_from_front_of_ ## container(c, get_parent_index_N(index, degree)), get_from_front_of_ ## container(c, index), hinfo))\
+		bubble_up_ ## container(c, hinfo, degree, index);                                                                      \
+                                                                                                                               \
+	/* else we attempt a bubble down, only if it can have children */                                                          \
+	else if(can_have_any_children_N(index, degree))                                                                            \
+		bubble_down(c, hinfo, degree, index);                                                                                  \
 }                                                                                                                              \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v)                        \
 {                                                                                                                              \
