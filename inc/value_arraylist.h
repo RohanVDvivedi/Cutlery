@@ -66,10 +66,10 @@ index_accessed_interface get_index_accessed_interface_for_front_of_ ## container
 index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c);                                 \
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
-int heapify_ ## container(container* c, heap_info* hinfo);                                                                     \
-int push_to_heap_ ## container(container* c, heap_info* hinfo, contained_type* v);                                             \
-int pop_from_heap_ ## container(container* c, heap_info* hindo);                                                               \
-int remove_from_heap_ ## container(container* c, heap_info* hinfo);                                                            \
+int heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                                     \
+int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v);                       \
+int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                               \
+int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                            \
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
@@ -365,7 +365,7 @@ static void bubble_down_ ## container(container* c, heap_info* hinfo, cy_uint de
 }                                                                                                                              \
 int heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                                     \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v);                       \
-int pop_from_heap_ ## container(container* c, heap_info* hindo, cy_uint degree);                                               \
+int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                               \
 int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                            \
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
