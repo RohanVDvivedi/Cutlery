@@ -401,7 +401,26 @@ int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree) 
 }                                                                                                                              \
 int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                              \
 {                                                                                                                              \
+	/* an element can be removed, only if heap is not empty, and the index provided is within bounds */                        \
+	if(is_empty_ ## container(c) || index >= get_element_count_ ## container(c))                                               \
+		return 0;                                                                                                              \
                                                                                                                                \
+	/* swap element at index with the last element */                                                                          \
+	swap_from_front_in_ ## container(c, index, get_element_count_ ## container(c) - 1);                                        \
+                                                                                                                               \
+	/* pop the last element */                                                                                                 \
+	if(!pop_back_from_ ## container(c))                                                                                        \
+	{                                                                                                                          \
+		/* undo the swap */                                                                                                    \
+		swap_from_front_in_ ## container(c, index, get_element_count_ ## container(c) - 1);                                    \
+		return 0;                                                                                                              \
+	}                                                                                                                          \
+                                                                                                                               \
+	/* if the index is still within bounds, heapify_at that index */                                                           \
+	if(index < get_element_count_ ## container(c))                                                                             \
+		heapify_at_ ## container(c, hinfo, degree, index);                                                                     \
+                                                                                                                               \
+	return 1;                                                                                                                  \
 }                                                                                                                              \
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
