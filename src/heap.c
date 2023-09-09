@@ -264,9 +264,10 @@ int remove_at_index_from_heap(heap* heap_p, cy_uint index)
 		return 0;
 	}
 
-	// if the heap is not empty
 	// call heapify at index, to appropriately call bubble up or bubble down
-	if(!is_empty_heap(heap_p))
+	// only if the index (the old last element) is still within bounds
+	// index will be out of bounds, if the index == original element_count - 1
+	if(index < get_element_count_heap(heap_p))
 		heapify_at(heap_p, index);
 
 	return 1;
