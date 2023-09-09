@@ -364,6 +364,16 @@ static void bubble_down_ ## container(container* c, heap_info* hinfo, cy_uint de
 	}                                                                                                                          \
 }                                                                                                                              \
 int heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                                     \
+{                                                                                                                              \
+	/* heapify_all is not required, if the element_count is 0 OR 1 */                                                          \
+	if(get_element_count_ ## container(c) <= 1)                                                                                \
+		return;                                                                                                                \
+                                                                                                                               \
+	/* bubble_down at all the possible-parent elements in reverse order */                                                     \
+	/* this is because a bubble down at any leaf node is just a NOP, hence we are saving almost half of the loop iterations */ \
+	for(cy_uint index = get_parent_index_N(get_element_count_ ## container(c) - 1, degree); index != -1; index--)              \
+		bubble_down_ ## container(c, hinfo, degree, index);                                                                    \
+}                                                                                                                              \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v);                       \
 int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                               \
 int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                            \
