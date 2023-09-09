@@ -321,6 +321,48 @@ index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(
 }                                                                                                                              \
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
+static void bubble_up_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                             \
+{                                                                                                                              \
+	/* exit at index 0, or the index is out of range */                                                                        \
+	while(has_parent_N(index) && index < get_element_count_ ## container(c))                                                   \
+	{                                                                                                                          \
+		cy_uint parent_index = get_parent_index_N(index, degree);                                                              \
+                                                                                                                               \
+		/* exit, if reordering is not required */                                                                              \
+		if(!is_reordering_required(get_from_front_of_ ## container(c, parent_index), get_from_front_of_ ## container(c, index), index, hinfo))\
+			break;                                                                                                             \
+                                                                                                                               \
+		swap_from_front_in_ ## container(c, parent_index, index);                                                              \
+                                                                                                                               \
+		index = parent_index;                                                                                                  \
+	}                                                                                                                          \
+}                                                                                                                              \
+static void bubble_down_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                           \
+{                                                                                                                              \
+	/* we can not bubble down the last node */                                                                                 \
+	while(can_have_any_children_N(index, degree) && index < get_element_count_ ## container(c))                                \
+	{                                                                                                                          \
+		/* if no reordering is required then the element at the index position remains as the parent */                        \
+		cy_uint new_parent_index = index;                                                                                      \
+                                                                                                                               \
+		/* iterate over all the children of the parent at index */                                                             \
+		/* find the one that if made the new parent, will not require reordering with any of its siblings */                   \
+		for(cy_uint i = 0, child_index = get_index_of_ith_child_N(index, 0, degree); i < degree && child_index < get_element_count_heap(heap_p); i++, child_index++)\
+		{                                                                                                                      \
+			if(is_reordering_required(get_from_front_of_ ## container(c, new_parent_index), get_from_front_of_ ## container(c, child_index), hinfo))\
+				new_parent_index = child_index;                                                                                \
+		}                                                                                                                      \
+                                                                                                                               \
+		/* if this condition becomes true, then the index stays the parent of all its siblings, hence no reordering required */\
+		/* and if no reordering was required, exit the loop */                                                                 \
+		if(new_parent_index == index)                                                                                          \
+			break;                                                                                                             \
+                                                                                                                               \
+		swap_from_front_in_ ## container(c, new_parent_index, index);                                                          \
+                                                                                                                               \
+		index = new_parent_index;                                                                                              \
+	}                                                                                                                          \
+}                                                                                                                              \
 int heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                                     \
 int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v);                       \
 int pop_from_heap_ ## container(container* c, heap_info* hindo, cy_uint degree);                                               \
