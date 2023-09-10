@@ -545,7 +545,50 @@ static int reserve_capacity_for_ ## container ## _holder(container* c, cy_uint a
 }                                                                                                                              \
 static void linearlize_ ## container ## _upon_expansion(container* c, cy_uint old_capacity)                                    \
 {                                                                                                                              \
-	/* TODO */                                                                                                                 \
+	/* element_count remains the same, it is indifferent to re-linearizing the data in this function */                        \
+	cy_uint element_count = get_element_count_ ## container(c);                                                                \
+                                                                                                                               \
+	/* quit if there are no elements to be linearized */                                                                       \
+	if(element_count == 0)                                                                                                     \
+		return ;                                                                                                               \
+                                                                                                                               \
+	/* this is the first index before we started our data management and linearization task */                                 \
+	cy_uint old_first_index = c->first_index;                                                                                  \
+                                                                                                                               \
+	/* check if the container does need linearization */                                                                       \
+	if(old_first_index <= get_last_index(old_first_index, element_count, old_capacity))                                        \
+		return ;                                                                                                               \
+                                                                                                                               \
+	/* reaching this place implies that the container is wrapped around and has 2 parts: a head and a tail */                  \
+	/* lets calculate the number of elements in the head and tail */                                                           \
+	cy_uint elements_in_head = old_capacity - old_first_index;   /* elements from old_first_index until old_capacity - 1 */    \
+	cy_uint elements_in_tail = element_count - elements_in_head; /* elements from 0 to last_index == element_count - elements_in_head */\
+                                                                                                                               \
+	if(elements_in_head <= elements_in_tail)                                                                                   \
+	{                                                                                                                          \
+		/* calculate the new first index */                                                                                    \
+		cy_uint new_first_index = get_capacity_ ## container(c) - elements_in_head;                                            \
+                                                                                                                               \
+		/* move all elements in head to the end of the container holder */                                                     \
+		memory_move(c->data_p + new_first_index, c->data_p + old_first_index, elements_in_head * sizeof(contained_type));      \
+                                                                                                                               \
+		/* update the new first_index */                                                                                       \
+		al->first_index = new_first_index;                                                                                     \
+	}                                                                                                                          \
+	else                                                                                                                       \
+	{                                                                                                                          \
+		/* number of new slots added */                                                                                        \
+		cy_uint new_slots_added = get_capacity_ ## container(al) - old_capacity;                                               \
+                                                                                                                               \
+		/* we move as many elements (from tail), as we can, to the new slots available at the end */                           \
+		cy_uint tail_elements_to_relocate = min(new_slots_added, elements_in_tail);                                            \
+		memory_move(c->data_p + old_capacity, c->data_p, tail_elements_to_relocate * sizeof(contained_type));                  \
+                                                                                                                               \
+		/* then we move the remaining tail elements to the index 0 */                                                          \
+		cy_uint tail_elements_to_shift = elements_in_tail - tail_elements_to_relocate;                                         \
+		if(tail_elements_to_shift > 0)                                                                                         \
+			memory_move(c->data_p, c->data_p + tail_elements_to_relocate, tail_elements_to_shift * sizeof(contained_type));    \
+	}                                                                                                                          \
 }                                                                                                                              \
 int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)                                                 \
 {                                                                                                                              \
