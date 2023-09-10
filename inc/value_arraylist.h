@@ -508,6 +508,41 @@ int shrink_ ## container(container* c)                                          
                                                                                                                                \
 	return has_holder_shrunk;                                                                                                  \
 }                                                                                                                              \
+static int reserve_capacity_for_ ## container ## _holder(container* c, cy_uint atleast_capacity)                               \
+{                                                                                                                              \
+	/* can not expand if the allocator is NULL */                                                                              \
+	if(c->mem_allocator == NULL)                                                                                               \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* new_capacity to expand to */                                                                                            \
+	cy_uint new_capacity = atleast_capacity;                                                                                   \
+                                                                                                                               \
+	/* if the new capacity is greater than the MAX_ARRAY_CAPACITY */                                                           \
+	/* OR if new_capacity is lesser than or equal to the old_capacity, then fail to expand the array */                        \
+	if(new_capacity > MAX_ ## container ## _CAPACITY || new_capacity <= get_capacity_ ## container(c))                         \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* number of bytes to be allocated */                                                                                      \
+	cy_uint bytes_allocated = new_capacity * sizeof(contained_type);                                                           \
+                                                                                                                               \
+	/* reallocate memory for the new_capacity */                                                                               \
+	contained_type* new_data_p = aligned_reallocate(c->mem_allocator,                                                          \
+													c->data_p,                                                                 \
+													c->capacity_in_bytes,                                                      \
+													&bytes_allocated,                                                          \
+													_Alignof(contained_type));                                                 \
+                                                                                                                               \
+	/* bytes_allocated is our real capacity_in_bytes */                                                                        \
+                                                                                                                               \
+	/* since memory allocation failed, return 0 */                                                                             \
+	if(new_data_p == NULL && new_capacity > 0)                                                                                 \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	c->data_p = new_data_p;                                                                                                    \
+	c->capacity_in_bytes = bytes_allocated;                                                                                    \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)                                                 \
 {                                                                                                                              \
 	/* TODO */                                                                                                                 \
