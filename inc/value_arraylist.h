@@ -543,9 +543,29 @@ static int reserve_capacity_for_ ## container ## _holder(container* c, cy_uint a
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)                                                 \
+static void linearlize_ ## container ## _upon_expansion(container* c, cy_uint old_capacity)                                    \
 {                                                                                                                              \
 	/* TODO */                                                                                                                 \
+}                                                                                                                              \
+int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)                                                 \
+{                                                                                                                              \
+	int data_movement_will_be_required = 1;                                                                                    \
+                                                                                                                               \
+	/* on this condition, we can expand without any data movement */                                                           \
+	if(is_empty_ ## container(c) || c->first_index <= get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c)))\
+		data_movement_will_be_required = 0;                                                                                    \
+                                                                                                                               \
+	/* record old_capacity for future use */                                                                                   \
+	cy_uint old_capacity = get_capacity_ ## container(c);                                                                      \
+                                                                                                                               \
+	/* expand the holder fearlessly */                                                                                         \
+	int has_holder_expanded = reserve_capacity_for_ ## container ## _holder(c, atleast_capacity);                              \
+                                                                                                                               \
+	/* move data if necessary conditions meet */                                                                               \
+	if(data_movement_will_be_required && has_holder_expanded)                                                                  \
+		linearlize_ ## container ## _upon_expansion(c, old_capacity);                                                          \
+                                                                                                                               \
+	return has_holder_expanded;                                                                                                \
 }                                                                                                                              \
                                                                                                                                \
 /* deinitialization function */                                                                                                \
