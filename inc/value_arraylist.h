@@ -2,6 +2,7 @@
 #define VALUE_ARRAYLIST_H
 
 #include<cutlery_stds.h>
+#include<cutlery_math.h>
 #include<memory_allocator_interface.h>
 #include<index_accessed_interface.h>
 #include<circular_buffer_array_util.h>
@@ -296,8 +297,8 @@ int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint e
 int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint element_count);                                  \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
-int remove_elements_from_front_of_ ## container(container* al, cy_uint index, cy_uint element_count_to_remove);                \
-int remove_elements_from_back_of_ ## container(container* al, cy_uint index, cy_uint element_count_to_remove);                 \
+int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                 \
+int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                  \
                                                                                                                                \
 /* get index accessed interface for elements */                                                                                \
 index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c)                                 \
@@ -573,12 +574,12 @@ static void linearlize_ ## container ## _upon_expansion(container* c, cy_uint ol
 		memory_move(c->data_p + new_first_index, c->data_p + old_first_index, elements_in_head * sizeof(contained_type));      \
                                                                                                                                \
 		/* update the new first_index */                                                                                       \
-		al->first_index = new_first_index;                                                                                     \
+		c->first_index = new_first_index;                                                                                      \
 	}                                                                                                                          \
 	else                                                                                                                       \
 	{                                                                                                                          \
 		/* number of new slots added */                                                                                        \
-		cy_uint new_slots_added = get_capacity_ ## container(al) - old_capacity;                                               \
+		cy_uint new_slots_added = get_capacity_ ## container(c) - old_capacity;                                                \
                                                                                                                                \
 		/* we move as many elements (from tail), as we can, to the new slots available at the end */                           \
 		cy_uint tail_elements_to_relocate = min(new_slots_added, elements_in_tail);                                            \
