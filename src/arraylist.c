@@ -467,7 +467,7 @@ int is_empty_arraylist(const arraylist* al)
 	return al->element_count == 0;
 }
 
-static void linearlize_arraylist_upon_expansion(arraylist* al, cy_uint old_capacity)
+static void linearize_arraylist_upon_expansion(arraylist* al, cy_uint old_capacity)
 {
 	// element_count remains the same, it is indifferent to re-linearizing the data in this function
 	cy_uint element_count = get_element_count_arraylist(al);
@@ -519,10 +519,7 @@ static void linearlize_arraylist_upon_expansion(arraylist* al, cy_uint old_capac
 		// this is also the maximum number of elements that can be moved from tail to bottom part of head
 		cy_uint new_slots_added = get_capacity_arraylist(al) - old_capacity;
 
-		cy_uint tail_elements_to_relocate = new_slots_added;
-		if(elements_in_tail < new_slots_added)
-			tail_elements_to_relocate = elements_in_tail;
-
+		cy_uint tail_elements_to_relocate = min(new_slots_added, elements_in_tail);
 		copy_elements_from_array(&(al->arraylist_holder), old_capacity, &(al->arraylist_holder), 0, tail_elements_to_relocate);
 
 		cy_uint tail_elements_to_shift = elements_in_tail - tail_elements_to_relocate;
@@ -549,7 +546,7 @@ int expand_arraylist(arraylist* al)
 
 	// move data if necessary conditions meet
 	if(data_movement_will_be_required && has_holder_expanded)
-		linearlize_arraylist_upon_expansion(al, old_capacity);
+		linearize_arraylist_upon_expansion(al, old_capacity);
 
 	return has_holder_expanded;
 }
@@ -570,7 +567,7 @@ int reserve_capacity_for_arraylist(arraylist* al, cy_uint atleast_capacity)
 
 	// move data if necessary conditions meet
 	if(data_movement_will_be_required && has_holder_expanded)
-		linearlize_arraylist_upon_expansion(al, old_capacity);
+		linearize_arraylist_upon_expansion(al, old_capacity);
 
 	return has_holder_expanded;
 }
