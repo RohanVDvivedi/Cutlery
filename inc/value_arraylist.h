@@ -671,7 +671,7 @@ void deinitialize_ ## container(container* c)                                   
 }                                                                                                                              \
                                                                                                                                \
 /* sprint function */                                                                                                          \
-void sprint_ ## container(dstring* append_str, const container* c, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);\
+void sprint_ ## container(dstring* append_str, const container* c, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)\
 {                                                                                                                              \
 	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, #container " :\n");                                   \
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "first_index : %" PRIu_cy_uint "\n", c->first_index);   \
@@ -680,7 +680,7 @@ void sprint_ ## container(dstring* append_str, const container* c, void (*sprint
 	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "holder : \n");                                         \
 	for(cy_uint i = 0; i < get_capacity_ ## container(c); i++)                                                                 \
 	{                                                                                                                          \
-		if(sub_circularly(i, c->start_index, get_capacity_ ## container(c)) < get_element_count_ ## container(c))              \
+		if(sub_circularly(i, c->first_index, get_capacity_ ## container(c)) < get_element_count_ ## container(c))              \
 			sprint_element(append_str, c->data_p + i, tabs + 1);                                                               \
 		else                                                                                                                   \
 		{                                                                                                                      \
