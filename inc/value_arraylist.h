@@ -79,7 +79,7 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
 int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);\
 int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
-int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);\
+int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const contained_type* data), memory_allocator mem_allocator);\
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
 int expand_ ## container(container* c);                                                                                        \
@@ -479,7 +479,7 @@ int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_inde
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator)\
+int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const contained_type* data), memory_allocator mem_allocator)\
 {                                                                                                                              \
 	if(mem_allocator == NULL || start_index > last_index || last_index >= get_element_count_ ## container(c))                  \
 		return 0;                                                                                                              \
