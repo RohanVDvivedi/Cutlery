@@ -438,6 +438,42 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
 int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
 int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
+{                                                                                                                              \
+	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* compute the number of elements to sort; 0 or 1 number of elements do not need sorting */                                \
+	cy_uint total_elements = last_index - start_index + 1;                                                                     \
+	if(total_elements <= 1)                                                                                                    \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	/* create a max heap that points to the container's contents that need to be sorted */                                     \
+	container sort_heap;                                                                                                       \
+	heap_info hinfo;                                                                                                           \
+	cy_uint degree;                                                                                                            \
+	initialize_ ## container ## _with_memory(&sort_heap, get_capacity_ ## container(c), c->data_p);                            \
+	c->first_index = add_circularly(c->first_index, start_index, get_capacity_ ## container(c));                               \
+	c->element_count = total_elements;                                                                                         \
+	hinfo.type = MAX_HEAP;                                                                                                     \
+	hinfo.compare = compare;                                                                                                   \
+	degree = 2; /* default degree is 2, i.e. a binary heap */                                                                  \
+                                                                                                                               \
+	/* now max heapify all elements that we need to sort */                                                                    \
+	heapify_all(&sort_heap, &hinfo, degree);                                                                                   \
+                                                                                                                               \
+	/* place the top of the heap element in the array at the end, then pop heap */                                             \
+	for(cy_uint i = total_elements; i > 1; i--)                                                                                \
+	{                                                                                                                          \
+		const contained_type max_data = *get_front_of_ ## container(&sort_heap);                                               \
+		pop_from_heap(&sort_heap, &hinfo, degree);                                                                             \
+		set_from_front_in_ ## container(c, &max_data, start_index + i - 1);                                                    \
+	}                                                                                                                          \
+                                                                                                                               \
+	/* deinitialize the sort_heap */                                                                                           \
+	deinitialize_heap(&sort_heap);                                                                                             \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data));\
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
