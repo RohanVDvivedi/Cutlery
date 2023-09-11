@@ -22,7 +22,7 @@ int heap_sort_arraylist(arraylist* al, cy_uint start_index, cy_uint last_index, 
 	// now max heapify all elements that we need to sort
 	heapify_all(&sort_heap);
 
-	// place the top of the heap element in the array, then pop heap
+	// place the top of the heap element to the beginning of the sorted region of the arraylist, then pop heap
 	for(cy_uint i = total_elements; i > 1; i--)
 	{
 		const void* max_data = get_top_of_heap(&sort_heap);
