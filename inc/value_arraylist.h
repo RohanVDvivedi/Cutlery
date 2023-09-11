@@ -77,9 +77,9 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
-int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
+int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);\
 int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
-int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data));\
+int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);\
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
 int expand_ ## container(container* c);                                                                                        \
@@ -441,7 +441,7 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
-int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
+int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);\
 int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))\
 {                                                                                                                              \
 	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
@@ -479,7 +479,56 @@ int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_inde
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data));\
+int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator)\
+{                                                                                                                              \
+	if(mem_allocator == NULL || start_index > last_index || last_index >= get_element_count_ ## container(c))                  \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* compute the number of elements to sort; 0 or 1 number of elements do not need sorting */                                \
+	cy_uint total_elements = last_index - start_index + 1;                                                                     \
+	if(total_elements <= 1)                                                                                                    \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	/* construct temporary queues for 0 and 1 bit containing elements */                                                       \
+	container sort_queue[2];                                                                                                   \
+	if(!initialize_ ## container ## _with_allocator(&(sort_queue[0]), total_elements, mem_allocator))                          \
+		return 0;                                                                                                              \
+	if(!initialize_ ## container ## _with_allocator(&(sort_queue[1]), total_elements, mem_allocator))                          \
+	{                                                                                                                          \
+		deinitialize_ ## container(&(sort_queue[0]));                                                                          \
+		return 0;                                                                                                              \
+	}                                                                                                                          \
+                                                                                                                               \
+	for(cy_uint i = 0; i < (sizeof(unsigned long long int) * CHAR_BIT); i++)                                                   \
+	{                                                                                                                          \
+		cy_uint index = start_index;                                                                                           \
+		while(index <= last_index)                                                                                             \
+		{                                                                                                                      \
+			const contained_type* data = get_from_front_of_ ## container(c, index++);                                          \
+			unsigned int queue_index = ((get_sort_attribute(data) >> i) & 1ULL);                                               \
+			push_back_to_ ## container(&(sort_queue[queue_index]), data);                                                      \
+		}                                                                                                                      \
+                                                                                                                               \
+		index = start_index;                                                                                                   \
+		while(!is_empty_arraylist(&(sort_queue[0])))                                                                           \
+		{                                                                                                                      \
+			const contained_type data = *get_front_of_ ## container(&(sort_queue[0]));                                         \
+			pop_front_from_ ## container(&(sort_queue[0]));                                                                    \
+			set_from_front_in_ ## container(c, &data, index++);                                                                \
+		}                                                                                                                      \
+		while(!is_empty_arraylist(&(sort_queue[1])))                                                                           \
+		{                                                                                                                      \
+			const contained_type data = *get_front_of_ ## container(&(sort_queue[1]));                                         \
+			pop_front_from_ ## container(&(sort_queue[1]));                                                                    \
+			set_from_front_in_ ## container(c, &data, index++);                                                                \
+		}                                                                                                                      \
+	}                                                                                                                          \
+                                                                                                                               \
+	deinitialize_ ## container(&(sort_queue[0]));                                                                              \
+	deinitialize_ ## container(&(sort_queue[1]));                                                                              \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
 int expand_ ## container(container* c)                                                                                         \
