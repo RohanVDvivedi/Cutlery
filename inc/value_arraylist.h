@@ -437,7 +437,7 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
 int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
-int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
+int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))\
 {                                                                                                                              \
 	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
 		return 0;                                                                                                              \
