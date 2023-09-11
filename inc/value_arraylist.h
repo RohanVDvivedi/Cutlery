@@ -9,6 +9,8 @@
 #include<n-ary_tree_as_array_util.h>
 #include<heap_info.h>
 
+#include<dstring.h>
+
 /*
 	value_arraylist is a header that will build a cache friendly container for you
 	it is suppossed to be used with only small ephemeral structs and primitive types,
@@ -87,6 +89,9 @@ int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity); 
 /* deinitialization function */                                                                                                \
 void remove_all_from_ ## container(container* c);                                                                              \
 void deinitialize_ ## container(container* c);                                                                                 \
+                                                                                                                               \
+/* sprint function */                                                                                                          \
+void sprint_ ## container(dstring* append_str, const container* c, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);\
 
 // comment break, there must be a newline above this comment
 
@@ -237,7 +242,7 @@ const contained_type* get_from_front_of_ ## container(const container* c, cy_uin
 }                                                                                                                              \
 const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index)                                        \
 {                                                                                                                              \
-	if(is_empty_ ## container(c) || index >= c->element_count)                                                                \
+	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return NULL;                                                                                                           \
                                                                                                                                \
 	cy_uint last_index = get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                      \
@@ -663,6 +668,11 @@ void deinitialize_ ## container(container* c)                                   
 	c->capacity_in_bytes = 0;                                                                                                  \
 	c->first_index = 0;                                                                                                        \
 	c->element_count = 0;                                                                                                      \
+}                                                                                                                              \
+/* sprint function */                                                                                                          \
+void sprint_ ## container(dstring* append_str, const container* c, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);\
+{                                                                                                                              \
+	/* TODO */                                                                                                                 \
 }                                                                                                                              \
 
 // comment break, there must be a newline above this comment
