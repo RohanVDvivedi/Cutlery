@@ -669,10 +669,26 @@ void deinitialize_ ## container(container* c)                                   
 	c->first_index = 0;                                                                                                        \
 	c->element_count = 0;                                                                                                      \
 }                                                                                                                              \
+                                                                                                                               \
 /* sprint function */                                                                                                          \
 void sprint_ ## container(dstring* append_str, const container* c, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);\
 {                                                                                                                              \
-	/* TODO */                                                                                                                 \
+	sprint_chars(append_str, '\t', tabs++); snprintf_dstring(append_str, #container " :\n");                                   \
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "first_index : %" PRIu_cy_uint "\n", c->first_index);   \
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "element_count : %" PRIu_cy_uint "\n", c->element_count);\
+                                                                                                                               \
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "holder : \n");                                         \
+	for(cy_uint i = 0; i < get_capacity_ ## container(c); i++)                                                                 \
+	{                                                                                                                          \
+		if(sub_circularly(i, c->start_index, get_capacity_ ## container(c)) < get_element_count_ ## container(c))              \
+			sprint_element(append_str, c->data_p + i, tabs + 1);                                                               \
+		else                                                                                                                   \
+		{                                                                                                                      \
+			sprint_chars(append_str, '\t', tabs + 1);                                                                          \
+			snprintf_dstring(append_str, "EMPTY\n");                                                                           \
+		}                                                                                                                      \
+	}                                                                                                                          \
+	snprintf_dstring(append_str, "\n");                                                                                        \
 }                                                                                                                              \
 
 // comment break, there must be a newline above this comment
