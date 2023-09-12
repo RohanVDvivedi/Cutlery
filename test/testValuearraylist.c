@@ -4,6 +4,13 @@ declarations_value_arraylist(int_list, int)
 #define EXPANSION_FACTOR 1.5
 definitions_value_arraylist(int_list, int)
 
+int compare_ints(const void* a, const void* b)
+{
+	int ai = *((const int*)a);
+	int bi = *((const int*)b);
+	return compare(ai, bi);
+}
+
 void sprint_int(dstring* append_str, const void* data_p, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs);
