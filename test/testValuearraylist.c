@@ -13,7 +13,7 @@ int compare_ints(const void* a, const void* b)
 	return compare_numbers(ai, bi);
 }
 
-unsigned long long int get_radix_sort_attr(const void* a)
+unsigned long long int get_radix_sort_attr(const int* a)
 {
 	return ((*((const int*)a)) + 1000000);
 }
