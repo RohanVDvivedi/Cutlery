@@ -31,6 +31,7 @@ void print_int_list(const int_list* il_p)
 	sprint_int_list(&append_str, il_p, sprint_int, 0);
 	printf_dstring(&append_str);
 	printf("\n");
+	deinit_dstring(&append_str);
 }
 
 int main()
