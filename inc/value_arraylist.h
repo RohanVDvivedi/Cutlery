@@ -464,18 +464,18 @@ int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_inde
 	degree = 2; /* default degree is 2, i.e. a binary heap */                                                                  \
                                                                                                                                \
 	/* now max heapify all elements that we need to sort */                                                                    \
-	heapify_all(&sort_heap, &hinfo, degree);                                                                                   \
+	heapify_ ## container(&sort_heap, &hinfo, degree);                                                                         \
                                                                                                                                \
 	/* place the top of the heap element in the array at the end, then pop heap */                                             \
 	for(cy_uint i = total_elements; i > 1; i--)                                                                                \
 	{                                                                                                                          \
 		const contained_type max_data = *get_front_of_ ## container(&sort_heap);                                               \
-		pop_from_heap(&sort_heap, &hinfo, degree);                                                                             \
+		pop_from_heap_ ## container(&sort_heap, &hinfo, degree);                                                               \
 		set_from_front_in_ ## container(c, &max_data, start_index + i - 1);                                                    \
 	}                                                                                                                          \
                                                                                                                                \
 	/* deinitialize the sort_heap */                                                                                           \
-	deinitialize_heap(&sort_heap);                                                                                             \
+	deinitialize_ ## container(&sort_heap);                                                                                    \
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
