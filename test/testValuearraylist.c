@@ -67,6 +67,10 @@ int main()
 
 	print_int_list(il_p);
 
+	expand_int_list(il_p);
+
+	print_int_list(il_p);
+
 	heap_info hinfo = {MAX_HEAP, compare_ints};
 	cy_uint degree = 2;
 
@@ -86,6 +90,47 @@ int main()
 		printf("%d\n", *top);
 		pop_from_heap_int_list(il_p, &hinfo, degree);
 	}
+
+	print_int_list(il_p);
+
+	shrink_int_list(il_p);
+
+	print_int_list(il_p);
+
+	reserve_capacity_for_int_list(il_p, 9);
+
+	set_val = 5;
+	push_front_to_int_list(il_p, &set_val);
+
+	set_val = 4;
+	push_front_to_int_list(il_p, &set_val);
+
+	set_val = 3;
+	push_back_to_int_list(il_p, &set_val);
+
+	set_val = 6;
+	push_front_to_int_list(il_p, &set_val);
+
+	set_val = 7;
+	push_front_to_int_list(il_p, &set_val);
+
+	set_val = 0;
+	push_back_to_int_list(il_p, &set_val);
+
+	set_val = 1;
+	push_front_to_int_list(il_p, &set_val);
+
+	set_val = 2;
+	push_front_to_int_list(il_p, &set_val);
+
+	set_val = 9;
+	push_back_to_int_list(il_p, &set_val);
+
+	print_int_list(il_p);
+
+	reserve_capacity_for_int_list(il_p, 12);
+
+	print_int_list(il_p);
 
 	deinitialize_int_list(il_p);
 	return 0;
