@@ -13,6 +13,11 @@ int compare_ints(const void* a, const void* b)
 	return compare_numbers(ai, bi);
 }
 
+unsigned long long int get_radix_sort_attr(const void* a)
+{
+	return ((*((const int*)a)) + 1000000);
+}
+
 void sprint_int(dstring* append_str, const void* data_p, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs);
@@ -132,6 +137,23 @@ int main()
 
 	print_int_list(il_p);
 
+#define USE_HEAP_SORT
+//#define USE_RADIX_SORT
+//#define USE_MERGE_SORT
+
+#if defined USE_HEAP_SORT
+	heap_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, compare_ints);
+#elif defined USE_RADIX_SORT
+	radix_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, get_radix_sort_attr, il_p->mem_allocator);
+#endif
+
+	print_int_list(il_p);
+
+	remove_all_from_int_list(il_p);
+
+	print_int_list(il_p);
+
 	deinitialize_int_list(il_p);
+
 	return 0;
 }
