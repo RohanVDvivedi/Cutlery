@@ -49,12 +49,12 @@ char to_uppercase_char(char c)
 
 int compare_chars_ascending(char c1, char c2)
 {
-	return compare(c1, c2);
+	return compare_numbers(c1, c2);
 }
 
 int compare_chars_descending(char c1, char c2)
 {
-	return -compare(c1, c2);
+	return -compare_numbers(c1, c2);
 }
 
 cy_uint get_digits_required_to_represent_unsigned_long_long_int(unsigned int radix)
