@@ -510,16 +510,16 @@ int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_ind
 		}                                                                                                                      \
                                                                                                                                \
 		index = start_index;                                                                                                   \
-		while(!is_empty_arraylist(&(sort_queue[0])))                                                                           \
+		while(!is_empty_ ## container(&(sort_queue[0])))                                                                       \
 		{                                                                                                                      \
 			const contained_type* data = get_front_of_ ## container(&(sort_queue[0]));                                         \
 			set_from_front_in_ ## container(c, data, index++);                                                                 \
 			pop_front_from_ ## container(&(sort_queue[0]));                                                                    \
 		}                                                                                                                      \
-		while(!is_empty_arraylist(&(sort_queue[1])))                                                                           \
+		while(!is_empty_ ## container(&(sort_queue[1])))                                                                       \
 		{                                                                                                                      \
 			const contained_type* data = get_front_of_ ## container(&(sort_queue[1]));                                         \
-			set_from_front_in_ ## container(c, data, index++);                                                                \
+			set_from_front_in_ ## container(c, data, index++);                                                                 \
 			pop_front_from_ ## container(&(sort_queue[1]));                                                                    \
 		}                                                                                                                      \
 	}                                                                                                                          \
