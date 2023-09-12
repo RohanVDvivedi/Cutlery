@@ -457,8 +457,8 @@ int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_inde
 	heap_info hinfo;                                                                                                           \
 	cy_uint degree;                                                                                                            \
 	initialize_ ## container ## _with_memory(&sort_heap, get_capacity_ ## container(c), c->data_p);                            \
-	c->first_index = add_circularly(c->first_index, start_index, get_capacity_ ## container(c));                               \
-	c->element_count = total_elements;                                                                                         \
+	sort_heap.first_index = add_circularly(c->first_index, start_index, get_capacity_ ## container(c));                        \
+	sort_heap.element_count = total_elements;                                                                                  \
 	hinfo.type = MAX_HEAP;                                                                                                     \
 	hinfo.compare = compare;                                                                                                   \
 	degree = 2; /* default degree is 2, i.e. a binary heap */                                                                  \
