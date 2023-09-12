@@ -1,5 +1,7 @@
 #include<value_arraylist.h>
 
+#include<stdio.h>
+
 declarations_value_arraylist(int_list, int)
 #define EXPANSION_FACTOR 1.5
 definitions_value_arraylist(int_list, int)
@@ -50,6 +52,40 @@ int main()
 	push_back_to_int_list(il_p, &set_val);
 
 	print_int_list(il_p);
+
+	set_val = 0;
+	push_back_to_int_list(il_p, &set_val);
+
+	set_val = 1;
+	push_back_to_int_list(il_p, &set_val);
+
+	set_val = 2;
+	push_front_to_int_list(il_p, &set_val);
+
+	set_val = 9;
+	push_back_to_int_list(il_p, &set_val);
+
+	print_int_list(il_p);
+
+	heap_info hinfo = {MAX_HEAP, compare_ints};
+	cy_uint degree = 2;
+
+	heapify_int_list(il_p, &hinfo, degree);
+
+	print_int_list(il_p);
+
+	set_val = 8;
+	push_to_heap_int_list(il_p, &hinfo, degree, &set_val);
+
+	print_int_list(il_p);
+
+	printf("printing the popped contents of heap\n");
+	while(!is_empty_int_list(il_p))
+	{
+		const int* top = get_front_of_int_list(il_p);
+		printf("%d\n", *top);
+		pop_from_heap_int_list(il_p, &hinfo, degree);
+	}
 
 	deinitialize_int_list(il_p);
 	return 0;
