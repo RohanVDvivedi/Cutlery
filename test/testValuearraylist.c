@@ -138,8 +138,8 @@ int main()
 
 	print_int_list(il_p);
 
-#define USE_HEAP_SORT
-//#define USE_RADIX_SORT
+//#define USE_HEAP_SORT
+#define USE_RADIX_SORT
 //#define USE_MERGE_SORT
 
 #if defined USE_HEAP_SORT
