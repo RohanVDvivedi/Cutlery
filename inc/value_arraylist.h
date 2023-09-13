@@ -443,7 +443,7 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
 int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)\
 {                                                                                                                              \
-	if(start_index > last_index || last_index >= get_element_count_ ## container(&c))                                          \
+	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
 		return 0;                                                                                                              \
                                                                                                                                \
 	/* compute the number of elements to sort; 0 or 1 number of elements do not need sorting */                                \
@@ -458,7 +458,7 @@ int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_ind
 	limited_c.element_count = total_elements;                                                                                  \
                                                                                                                                \
 	/* generate an auxilary container */                                                                                       \
-	array aux_container;                                                                                                       \
+	container aux_container;                                                                                                   \
 	if(!initialize_ ## container ## _with_allocator(&aux_container, total_elements, mem_allocator))                            \
 		return 0;                                                                                                              \
 	aux_container.element_count = total_elements;                                                                              \
