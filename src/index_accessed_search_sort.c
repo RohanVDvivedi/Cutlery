@@ -1,5 +1,7 @@
 #include<index_accessed_search_sort.h>
 
+#include<cutlery_math.h>
+
 #include<array.h>
 #include<heap.h>
 #include<arraylist.h>
