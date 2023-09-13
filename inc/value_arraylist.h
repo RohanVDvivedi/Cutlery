@@ -443,7 +443,7 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
 int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)\
 {                                                                                                                              \
-	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))                                        \
+	if(start_index > last_index || last_index >= get_element_count_ ## container(&c))                                          \
 		return 0;                                                                                                              \
                                                                                                                                \
 	/* compute the number of elements to sort; 0 or 1 number of elements do not need sorting */                                \
@@ -514,9 +514,9 @@ int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_ind
 		}                                                                                                                      \
                                                                                                                                \
 		/* src becomes dest, and dest becomes src */                                                                           \
-		void* temp = src_iai_p;                                                                                                \
-		src_iai_p = dest_iai_p;                                                                                                \
-		dest_iai_p = temp;                                                                                                     \
+		void* temp = src_p;                                                                                                    \
+		src_p = dest_p;                                                                                                        \
+		dest_p = temp;                                                                                                         \
                                                                                                                                \
 		/* double the chunk size, for next iteration */                                                                        \
 		sort_chunk_size = sort_chunk_size * 2;                                                                                 \
@@ -524,12 +524,12 @@ int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_ind
                                                                                                                                \
 	/* at the end of every iteration the result is in src_p */                                                                 \
                                                                                                                                \
-	/* if the src_iai_p != &src_iai */                                                                                         \
+	/* if the src_p != &limited_c */                                                                                           \
 	/* then tranfer result to the original src */                                                                              \
                                                                                                                                \
 	if(src_p != &limited_c)                                                                                                    \
 	{                                                                                                                          \
-		/* then copy all elements (0 to total_elements) from src_iai_p to src_iai */                                           \
+		/* then copy all elements (0 to total_elements) from src_p to limited_c */                                             \
 		for(cy_uint i = 0; i < total_elements; i++)                                                                            \
 			set_from_front_in_ ## container(&limited_c, get_from_front_of_ ## container(src_p, i), i);                         \
 	}                                                                                                                          \
