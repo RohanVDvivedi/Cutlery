@@ -144,6 +144,12 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		src_iai_p = dest_iai_p;
 		dest_iai_p = temp;
 
+		// now the sorted chunk size is twice, so we need to multiple sort_chunk_size with 2
+		// we need to make sure that the multiplication does not overflow,
+		// if it does then this implies that the sort_chunk_size > maximum possible capacity of an index_accessed_interface, and hence > the total_elements
+		if(will_unsigned_mul_overflow(cy_uint, sort_chunk_size, 2))
+			break;
+
 		// double the chunk size, for next iteration
 		sort_chunk_size = sort_chunk_size * 2;
 	}
