@@ -146,6 +146,8 @@ int main()
 	heap_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, compare_ints);
 #elif defined USE_RADIX_SORT
 	radix_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, get_radix_sort_attr, il_p->mem_allocator);
+#elif defined USE_MERGE_SORT
+	merge_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, compare_ints, il_p->mem_allocator);
 #endif
 
 	print_int_list(il_p);
