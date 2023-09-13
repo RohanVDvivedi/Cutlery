@@ -535,7 +535,7 @@ int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_ind
 	}                                                                                                                          \
                                                                                                                                \
 	/* deinitialize auxilary container */                                                                                      \
-	deinitialize_array(&aux_container);                                                                                        \
+	deinitialize_ ## container(&aux_container);                                                                                \
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
