@@ -441,7 +441,104 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
-int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);\
+int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)\
+{                                                                                                                              \
+	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))                                        \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* compute the number of elements to sort; 0 or 1 number of elements do not need sorting */                                \
+	cy_uint total_elements = last_index - start_index + 1;                                                                     \
+	if(total_elements <= 1)                                                                                                    \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	/* generate a new container to access elements from 0, instead of start_index */                                           \
+	container limited_c;                                                                                                       \
+	initialize_ ## container ## _with_memory(&limited_c, get_capacity_ ## container(c), c->data_p);                            \
+	limited_c.first_index = add_circularly(c->first_index, start_index, get_capacity_ ## container(&limited_c));               \
+	limited_c.element_count = total_elements;                                                                                  \
+                                                                                                                               \
+	/* generate an auxilary container */                                                                                       \
+	array aux_container;                                                                                                       \
+	if(!initialize_ ## container ## _with_allocator(&aux_container, total_elements, mem_allocator))                            \
+		return 0;                                                                                                              \
+	aux_container.element_count = total_elements;                                                                              \
+                                                                                                                               \
+	/* we iteratively merge adjacent sorted chunks from src and store them in dest */                                          \
+	container* src_p = &limited_c;                                                                                             \
+	container* dest_p = &aux_container;                                                                                        \
+                                                                                                                               \
+	/* start with sorted chunk size equals 1, (a single element is always sorted) */                                           \
+	cy_uint sort_chunk_size = 1;                                                                                               \
+	while(sort_chunk_size <= total_elements)                                                                                   \
+	{                                                                                                                          \
+		/* in each iteration of the internal loop */                                                                           \
+		/* merge 2 adjacent sorted chunks of src array */                                                                      \
+		/* to form 1 chunk of twice the size in dest array */                                                                  \
+		cy_uint dest_index = 0;                                                                                                \
+		while(dest_index < total_elements)                                                                                     \
+		{                                                                                                                      \
+			/* start and last indices of chunk 1 */                                                                            \
+			cy_uint a_start = dest_index;                                                                                      \
+			cy_uint a_last = a_start + sort_chunk_size - 1;                                                                    \
+                                                                                                                               \
+			/* start and last indices of chunk 2 */                                                                            \
+			cy_uint b_start = a_last + 1;                                                                                      \
+			cy_uint b_last = b_start + sort_chunk_size - 1;                                                                    \
+                                                                                                                               \
+			/* *_start and *_last are both inclusive indices */                                                                \
+                                                                                                                               \
+			if(b_start > total_elements - 1)                                                                                   \
+			{                                                                                                                  \
+				if(a_last > total_elements - 1)                                                                                \
+					a_last = total_elements - 1;                                                                               \
+                                                                                                                               \
+				/* copy all elements of the a-section to the destination as is */                                              \
+				for(cy_uint a_i = a_start; a_i <= a_last; a_i++, dest_index++)                                                 \
+					set_from_front_in_ ## container(dest_p, get_from_front_of_ ## container(src_p, a_i), dest_index);          \
+                                                                                                                               \
+				break;                                                                                                         \
+			}                                                                                                                  \
+			else                                                                                                               \
+			{                                                                                                                  \
+				if(b_last > total_elements - 1)                                                                                \
+					b_last = total_elements - 1;                                                                               \
+                                                                                                                               \
+				while(dest_index <= b_last)                                                                                    \
+				{                                                                                                              \
+					if((b_start > b_last) || (a_start <= a_last && compare(get_from_front_of_ ## container(src_p, a_start), get_from_front_of_ ## container(src_p, b_start)) < 0))\
+						set_from_front_in_ ## container(dest_p, get_from_front_of_ ## container(src_p, a_start++), dest_index++);\
+					else                                                                                                       \
+						set_from_front_in_ ## container(dest_p, get_from_front_of_ ## container(src_p, b_start++), dest_index++);\
+				}                                                                                                              \
+			}                                                                                                                  \
+		}                                                                                                                      \
+                                                                                                                               \
+		/* src becomes dest, and dest becomes src */                                                                           \
+		void* temp = src_iai_p;                                                                                                \
+		src_iai_p = dest_iai_p;                                                                                                \
+		dest_iai_p = temp;                                                                                                     \
+                                                                                                                               \
+		/* double the chunk size, for next iteration */                                                                        \
+		sort_chunk_size = sort_chunk_size * 2;                                                                                 \
+	}                                                                                                                          \
+                                                                                                                               \
+	/* at the end of every iteration the result is in src_p */                                                                 \
+                                                                                                                               \
+	/* if the src_iai_p != &src_iai */                                                                                         \
+	/* then tranfer result to the original src */                                                                              \
+                                                                                                                               \
+	if(src_p != &limited_c)                                                                                                    \
+	{                                                                                                                          \
+		/* then copy all elements (0 to total_elements) from src_iai_p to src_iai */                                           \
+		for(cy_uint i = 0; i < total_elements; i++)                                                                            \
+			set_from_front_in_ ## container(&limited_c, get_from_front_of_ ## container(src_p, i), i);                         \
+	}                                                                                                                          \
+                                                                                                                               \
+	/* deinitialize auxilary container */                                                                                      \
+	deinitialize_array(&aux_container);                                                                                        \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))\
 {                                                                                                                              \
 	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
