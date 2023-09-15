@@ -178,6 +178,14 @@ int main()
 
 	print_int_list(il_p);
 
+	printf("failure removing more elements = %d\n", remove_elements_from_back_of_int_list(il_p, 1, 18));
+
+	print_int_list(il_p);
+
+	remove_elements_from_back_of_int_list(il_p, 0, get_element_count_int_list(il_p));
+
+	print_int_list(il_p);
+
 	deinitialize_int_list(il_p);
 
 	return 0;
