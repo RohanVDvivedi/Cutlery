@@ -302,8 +302,98 @@ int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint e
 int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint element_count);                                  \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
+/* the below internal function assumes that */                                                                                 \
+/* index is valid, and there are atleast non-zero number of element_count_to_remove number of elements after it */             \
+static void remove_elements_from_front_of_ ## container ## _INTERNAL(container* c, cy_uint index, cy_uint element_count_to_remove)\
+{                                                                                                                              \
+	/* corresponding actual index of element at index from front */                                                            \
+	cy_uint index_concerned = add_circularly(c->first_index, index, get_capacity_ ## container(c));                            \
+                                                                                                                               \
+	/* calculate the number of elements before and after the to-be removed elements */                                         \
+	cy_uint existing_elements_before_to_be_removed_ones = index;                                                               \
+	cy_uint existing_elements_after_to_be_removed_ones = c->element_count - (index + element_count_to_remove);                 \
+                                                                                                                               \
+	if(existing_elements_before_to_be_removed_ones <= existing_elements_after_to_be_removed_ones) /* move the front elements to the vacant positions */\
+	{                                                                                                                          \
+		/* move elements one by one */                                                                                         \
+		cy_uint elements_to_be_moved = existing_elements_before_to_be_removed_ones;                                            \
+		cy_uint index_to_move_from = index_concerned;                                                                          \
+		cy_uint index_to_move_to = add_circularly(index_concerned, element_count_to_remove, get_capacity_ ## container(c));    \
+		while(elements_to_be_moved > 0)                                                                                        \
+		{                                                                                                                      \
+			index_to_move_from = sub_circularly(index_to_move_from, 1, get_capacity_ ## container(c));                         \
+			index_to_move_to = sub_circularly(index_to_move_to, 1, get_capacity_ ## container(c));                             \
+			c->data_p[index_to_move_to] = c->data_p[index_to_move_from];                                                       \
+			elements_to_be_moved--;                                                                                            \
+		}                                                                                                                      \
+                                                                                                                               \
+		/* handling post the movement of the front elements */                                                                 \
+		/* decrement the element_count */                                                                                      \
+		c->element_count -= element_count_to_remove;                                                                           \
+                                                                                                                               \
+		/* if we had to remove all the elements then, reset the first_index */                                                 \
+		if(c->element_count == 0)                                                                                              \
+			c->first_index = 0;                                                                                                \
+		else                                                                                                                   \
+			/* move first_index forward by `element_count_to_remove` number of indices */                                      \
+			c->first_index = add_circularly(c->first_index, element_count_to_remove, get_capacity_ ## container(c));           \
+	}                                                                                                                          \
+	else /* move the back elements to the vacant positions */                                                                  \
+	{                                                                                                                          \
+		/* move elements one by one */                                                                                         \
+		cy_uint elements_to_be_moved = existing_elements_after_to_be_removed_ones;                                             \
+		cy_uint index_to_move_from = add_circularly(index_concerned, element_count_to_remove, get_capacity_ ## container(c));  \
+		cy_uint index_to_move_to = index_concerned;                                                                            \
+		while(elements_to_be_moved > 0)                                                                                        \
+		{                                                                                                                      \
+			c->data_p[index_to_move_to] = c->data_p[index_to_move_from];                                                       \
+			index_to_move_from = add_circularly(index_to_move_from, 1, get_capacity_ ## container(c));                         \
+			index_to_move_to = add_circularly(index_to_move_to, 1, get_capacity_ ## container(c));                             \
+			elements_to_be_moved--;                                                                                            \
+		}                                                                                                                      \
+                                                                                                                               \
+		/* handling post the movement of the back elements */                                                                  \
+		/* decrement the element_count */                                                                                      \
+		c->element_count -= element_count_to_remove;                                                                           \
+                                                                                                                               \
+		/* if we had to remove all the elements then, reset the first_index */                                                 \
+		if(c->element_count == 0)                                                                                              \
+			c->first_index = 0;                                                                                                \
+	}                                                                                                                          \
+}                                                                                                                              \
 int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                 \
+{                                                                                                                              \
+	/* if the arraylist is empty OR the index is out of range OR there aren't enough elements (at and) after index */          \
+	/* then we fail with 0 */                                                                                                  \
+	if(is_empty_ ## container(c) || (index >= c->element_count) || ((c->element_count - index) < element_count_to_remove))     \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* nothing to remove */                                                                                                    \
+	if(element_count_to_remove == 0)                                                                                           \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	remove_elements_from_front_of_ ## container ## _INTERNAL(c, index, element_count_to_remove);                               \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
 int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                  \
+{                                                                                                                              \
+	/* if the arraylist is empty OR the index is out of range OR there aren't enough elements (at and) after index */          \
+	/* then we fail with 0 */                                                                                                  \
+	if(is_empty_ ## container(c) || (index >= c->element_count) || ((c->element_count - index) < element_count_to_remove))     \
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* nothing to remove */                                                                                                    \
+	if(element_count_to_remove == 0)                                                                                           \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	/* compute corresponding front_index, to get the same result, as if done from front */                                     \
+	cy_uint front_index = c->element_count - index - element_count_to_remove;                                                  \
+                                                                                                                               \
+	remove_elements_from_front_of_ ## container ## _INTERNAL(c, front_index, element_count_to_remove);                         \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
                                                                                                                                \
 /* get index accessed interface for elements */                                                                                \
 index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c)                                 \
