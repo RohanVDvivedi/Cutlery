@@ -380,7 +380,7 @@ int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint ro
 	/* compute corresponding front_index, to get the same result, as if done from front */                                     \
 	cy_uint front_index = get_element_count_ ## container(c) - index;                                                          \
                                                                                                                                \
-	make_room_from_front_in_ ## container ## _INTERNAL(c, index, room_count_to_insert);                                        \
+	make_room_from_front_in_ ## container ## _INTERNAL(c, front_index, room_count_to_insert);                                  \
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
