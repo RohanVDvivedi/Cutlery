@@ -2,27 +2,29 @@
 
 COMPARATOR INTERFACE
  * build a comparator interface and make all of cutlery use it
- struct {
+ struct comparator_interface {
   const void* context;
   union {
-    int compare(const void* data1, const void* data2); // when context == NULL
-    int compare_with_context(const void* context, const void* data1, const void* data2);
+    int compare(const void* data1, const void* data2); // called when context == NULL
+    int compare_with_context(const void* context, const void* data1, const void* data2); // else
   };
  };
  * build a function to compare using comparator
  int compare_with_comparator(const void* comparator, const void* data1, const void* data2);
+ * build macros to initialize simple comparator and contexted comparator
 
 HASHER INTERFACE
  * build a hasher interface and make all of cutlery use it
- struct {
+ struct hasher_interface {
   const void* context;
   union {
-    cy_uint hash(const void* data);
-    cy_uint hash_with_context(const void* context, const void* data);
+    cy_uint hash(const void* data); // called when context == NULL
+    cy_uint hash_with_context(const void* context, const void* data); // else
   };
  };
  * build a function to hash using hasher
  cy_int hash_with_hasher(const void* hasher, const void* data);
+ * build macros to initialize simple hasher and contexted hasher
 
 2. interface tasks
 
