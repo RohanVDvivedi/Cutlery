@@ -159,6 +159,25 @@ int main()
 
 	print_int_list(il_p);
 
+	reserve_capacity_for_int_list(il_p, 27);
+	for(int i = 0; i < 24; i++)
+	{
+		if(i % 2)
+			push_back_to_int_list(il_p, &i);
+		else
+			push_front_to_int_list(il_p, &i);
+	}
+
+	print_int_list(il_p);
+
+	remove_elements_from_front_of_int_list(il_p, 3, 3);
+
+	print_int_list(il_p);
+
+	remove_elements_from_back_of_int_list(il_p, 3, 3);
+
+	print_int_list(il_p);
+
 	deinitialize_int_list(il_p);
 
 	return 0;
