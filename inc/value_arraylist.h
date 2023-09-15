@@ -361,7 +361,7 @@ static void remove_elements_from_front_of_ ## container ## _INTERNAL(container* 
 			c->first_index = 0;                                                                                                \
 	}                                                                                                                          \
 }                                                                                                                              \
-int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                 \
+int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove)                  \
 {                                                                                                                              \
 	/* if the arraylist is empty OR the index is out of range OR there aren't enough elements (at and) after index */          \
 	/* then we fail with 0 */                                                                                                  \
@@ -376,7 +376,7 @@ int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                  \
+int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove)                   \
 {                                                                                                                              \
 	/* if the arraylist is empty OR the index is out of range OR there aren't enough elements (at and) after index */          \
 	/* then we fail with 0 */                                                                                                  \
