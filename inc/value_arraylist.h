@@ -61,8 +61,8 @@ int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint r
 int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                           \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
-int remove_elements_from_front_of_ ## container(container* al, cy_uint index, cy_uint element_count_to_remove);                \
-int remove_elements_from_back_of_ ## container(container* al, cy_uint index, cy_uint element_count_to_remove);                 \
+int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                 \
+int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                  \
                                                                                                                                \
 /* get index accessed interface for elements */                                                                                \
 index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c);                                \
@@ -336,7 +336,7 @@ static void make_room_from_front_in_ ## container ## _INTERNAL(container* c, cy_
 	else /* make space by moving after elements */                                                                             \
 	{                                                                                                                          \
 		/* move after elements */                                                                                              \
-		cy_uint elements_to_be_moved = elements_after_NULLs;                                                                   \
+		cy_uint elements_to_be_moved = elements_after_new_rooms;                                                               \
 		cy_uint index_to_move_from = get_end_index(c->first_index, get_element_count_ ## container(c), get_capacity_ ## container(c));\
 		cy_uint index_to_move_to = add_circularly(index_to_move_from, room_count_to_insert, get_capacity_ ## container(c));    \
 		while(elements_to_be_moved)                                                                                            \
