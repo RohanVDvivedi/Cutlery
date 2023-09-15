@@ -1,14 +1,5 @@
 1. Tasks picked
 
-2. interface tasks
-
-ITERATOR INTERFACE
- * build an iterator interface as
- struct {
-    const void* ds_p;
-    const void* get_next(const void* ds_p, const void* data_xist);
- };
-
 COMPARATOR INTERFACE
  * build a comparator interface and make all of cutlery use it
  struct {
@@ -32,6 +23,15 @@ HASHER INTERFACE
  };
  * build a function to hash using hasher
  cy_int hash_with_hasher(const void* hasher, const void* data);
+
+2. interface tasks
+
+ITERATOR INTERFACE
+ * build an iterator interface as
+ struct {
+    const void* ds_p;
+    const void* get_next(const void* ds_p, const void* data_xist);
+ };
 
 3. Add new datastructure types tasks (*future)
 
