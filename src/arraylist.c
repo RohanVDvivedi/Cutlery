@@ -382,7 +382,7 @@ static void remove_elements_from_front_of_arraylist_INTERNAL(arraylist* al, cy_u
 		if(al->element_count == 0)
 			al->first_index = 0;
 		else
-			// move first_index forward by `element_count_to_remove` number of indices, and decrement the element_count
+			// move first_index forward by `element_count_to_remove` number of indices
 			al->first_index = add_circularly(al->first_index, element_count_to_remove, get_capacity_arraylist(al));
 	}
 	else // move the back elements to the vacant positions
