@@ -55,10 +55,10 @@ int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uin
 int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                    \
 int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                     \
                                                                                                                                \
-/* below functions will make room for room_count number of elements, at the given index, either from front or back */          \
+/* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
-int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                    \
-int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                     \
+int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                          \
+int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                           \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
 int remove_elements_from_front_of_ ## container(container* al, cy_uint index, cy_uint element_count_to_remove);                \
@@ -296,10 +296,40 @@ int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)       
 	return memory_swap(c->data_p + i1_concerned, c->data_p + i2_concerned, sizeof(contained_type));                            \
 }                                                                                                                              \
                                                                                                                                \
-/* below functions will make room for room_count number of elements, at the given index, either from front or back */          \
+/* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
-int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                    \
-int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                     \
+static void make_room_from_front_in_ ## container ## _INTERNAL(container* c, cy_uint index, cy_uint room_count_to_insert);     \
+int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert)                           \
+{                                                                                                                              \
+	/* fail if the index is not lesser than equal to element_count OR there isn't enough space to accomodate room_count_to_insert number of new elements */\
+	if(index > get_element_count_ ## container(c) || room_count_to_insert > (get_capacity_ ## container(c) - get_element_count_ ## container(c)))\
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* nothing to insert */                                                                                                    \
+	if(room_count_to_insert == 0)                                                                                              \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	make_room_from_front_in_ ## container ## _INTERNAL(c, index, room_count_to_insert);                                        \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
+int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert)                            \
+{                                                                                                                              \
+	/* fail if the index is not lesser than equal to element_count OR there isn't enough space to accomodate room_count_to_insert number of new elements */\
+	if(index > get_element_count_ ## container(c) || room_count_to_insert > (get_capacity_ ## container(c) - get_element_count ## container(c)))\
+		return 0;                                                                                                              \
+                                                                                                                               \
+	/* nothing to insert */                                                                                                    \
+	if(room_count_to_insert == 0)                                                                                              \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	/* compute corresponding front_index, to get the same result, as if done from front */                                     \
+	cy_uint front_index = get_element_count_ ## container(c) - index;                                                          \
+                                                                                                                               \
+	make_room_from_front_in_ ## container ## _INTERNAL(c, index, room_count_to_insert);                                        \
+                                                                                                                               \
+	return 1;                                                                                                                  \
+}                                                                                                                              \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
 /* the below internal function assumes that */                                                                                 \
