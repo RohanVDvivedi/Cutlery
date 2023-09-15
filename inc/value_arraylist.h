@@ -55,10 +55,10 @@ int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uin
 int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                    \
 int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                     \
                                                                                                                                \
-/* below functions will make room for element_count number of elements, at the given index, either from front or back */       \
+/* below functions will make room for room_count number of elements, at the given index, either from front or back */          \
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
-int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint element_count);                                 \
-int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint element_count);                                  \
+int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                    \
+int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                     \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
 int remove_elements_from_front_of_ ## container(container* al, cy_uint index, cy_uint element_count_to_remove);                \
@@ -296,10 +296,10 @@ int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)       
 	return memory_swap(c->data_p + i1_concerned, c->data_p + i2_concerned, sizeof(contained_type));                            \
 }                                                                                                                              \
                                                                                                                                \
-/* below functions will make room for element_count number of elements, at the given index, either from front or back */       \
+/* below functions will make room for room_count number of elements, at the given index, either from front or back */          \
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
-int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint element_count);                                 \
-int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint element_count);                                  \
+int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                    \
+int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count);                                     \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
 /* the below internal function assumes that */                                                                                 \
