@@ -303,7 +303,55 @@ int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)       
 /* and get_capacity - get_element_count >= room_count_to_insert */                                                             \
 static void make_room_from_front_in_ ## container ## _INTERNAL(container* c, cy_uint index, cy_uint room_count_to_insert)      \
 {                                                                                                                              \
- /* TODO */ \
+	cy_uint elements_before_new_rooms = index;                                                                                 \
+	cy_uint elements_after_new_rooms = get_element_count_ ## container(c) - index;                                             \
+                                                                                                                               \
+	if(get_element_count_ ## container(c) == 0) /* nothing to be moved */                                                      \
+	{                                                                                                                          \
+		c->first_index = 0;                                                                                                    \
+		c->element_count = room_count_to_insert;                                                                               \
+	}                                                                                                                          \
+	else if(elements_before_new_rooms <= elements_after_new_rooms) /* make space by moving before elements */                  \
+	{                                                                                                                          \
+		/* move before elements */                                                                                             \
+		cy_uint elements_to_be_moved = elements_before_new_rooms;                                                              \
+		cy_uint index_to_move_from = c->first_index;                                                                           \
+		cy_uint index_to_move_to = sub_circularly(index_to_move_from, room_count_to_insert, get_capacity_ ## container(c));    \
+		while(elements_to_be_moved)                                                                                            \
+		{                                                                                                                      \
+			c->data_p[index_to_move_to] = c->data_p[index_to_move_from];                                                       \
+			index_to_move_from = add_circularly(index_to_move_from, 1, get_capacity_ ## container(c));                         \
+			index_to_move_to = add_circularly(index_to_move_to, 1, get_capacity_ ## container(c));                             \
+			elements_to_be_moved--;                                                                                            \
+		}                                                                                                                      \
+                                                                                                                               \
+		/* now we only need to fix the first_index and element_count of the container */                                       \
+                                                                                                                               \
+		/* increment element_count */                                                                                          \
+		c->element_count += room_count_to_insert;                                                                              \
+                                                                                                                               \
+		/* decrement the first_index */                                                                                        \
+		c->first_index = sub_circularly(c->first_index, room_count_to_insert, get_capacity_ ## container(c));                  \
+	}                                                                                                                          \
+	else /* make space by moving after elements */                                                                             \
+	{                                                                                                                          \
+		/* move after elements */                                                                                              \
+		cy_uint elements_to_be_moved = elements_after_NULLs;                                                                   \
+		cy_uint index_to_move_from = get_end_index(c->first_index, get_element_count_ ## container(c), get_capacity_ ## container(c));\
+		cy_uint index_to_move_to = add_circularly(index_to_move_from, room_count_to_insert, get_capacity_ ## container(c));    \
+		while(elements_to_be_moved)                                                                                            \
+		{                                                                                                                      \
+			index_to_move_from = sub_circularly(index_to_move_from, 1, get_capacity_ ## container(c));                         \
+			index_to_move_to = sub_circularly(index_to_move_to, 1, get_capacity_ ## container(c));                             \
+			c->data_p[index_to_move_to] = c->data_p[index_to_move_from];                                                       \
+			elements_to_be_moved--;                                                                                            \
+		}                                                                                                                      \
+                                                                                                                               \
+		/* now we only need to fix the first_index and element_count of the container */                                       \
+                                                                                                                               \
+		/* increment element_count */                                                                                          \
+		c->element_count += room_count_to_insert;                                                                              \
+	}                                                                                                                          \
 }                                                                                                                              \
 int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert)                           \
 {                                                                                                                              \
