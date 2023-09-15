@@ -182,6 +182,24 @@ int main()
 
 	print_int_list(il_p);
 
+	if(make_room_from_front_in_int_list(il_p, 3, 3))
+	{
+		set_val = -1;
+		for(int i = 0; i < 3; i++)
+			set_from_front_in_int_list(il_p, &set_val, 3 + i);
+	}
+
+	print_int_list(il_p);
+
+	if(make_room_from_back_in_int_list(il_p, 3, 3))
+	{
+		set_val = -2;
+		for(int i = 0; i < 3; i++)
+			set_from_back_in_int_list(il_p, &set_val, 3 + i);
+	}
+
+	print_int_list(il_p);
+
 	remove_elements_from_back_of_int_list(il_p, 0, get_element_count_int_list(il_p));
 
 	print_int_list(il_p);
