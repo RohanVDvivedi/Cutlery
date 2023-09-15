@@ -298,6 +298,9 @@ int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)       
                                                                                                                                \
 /* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
+/* the below internal function assumes that */                                                                                 \
+/* index is valid [0 to element_count, both inclusive], and room_count_to_insert > 0 */                                        \
+/* and get_capacity - get_element_count >= room_count_to_insert */                                                             \
 static void make_room_from_front_in_ ## container ## _INTERNAL(container* c, cy_uint index, cy_uint room_count_to_insert)      \
 {                                                                                                                              \
  /* TODO */ \
