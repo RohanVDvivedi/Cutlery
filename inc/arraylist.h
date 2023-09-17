@@ -2,6 +2,7 @@
 #define ARRAYLIST_H
 
 #include<array.h>
+#include<comparator_interface.h>
 #include<index_accessed_search_sort.h>
 
 // the front and back of the arraylist is synonymous to head and tail of the linkedlist
@@ -102,7 +103,7 @@ int reserve_capacity_for_arraylist(arraylist* al, cy_uint atleast_capacity);
 
 // get the data from the arraylist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the arraylist that compares equal (i.e. compare function returns 0)
-const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* data1, const void* data2));
+const void* find_equals_in_arraylist(const arraylist* al, const void* data, const comparator_interface* comparator);
 
 // iterates over all the elements in the arraylist from front to back
 void for_each_in_arraylist(const arraylist* al, void (*operation)(void* data_p, cy_uint index, const void* additional_params), const void* additional_params);

@@ -598,13 +598,13 @@ int shrink_arraylist(arraylist* al)
 	return has_holder_shrunk;
 }
 
-const void* find_equals_in_arraylist(const arraylist* al, const void* data, int (*compare)(const void* data1, const void* data2))
+const void* find_equals_in_arraylist(const arraylist* al, const void* data, const comparator_interface* comparator)
 {
 	for(cy_uint i = 0; i < al->element_count; i++)
 	{
 		cy_uint al_index = add_circularly(al->first_index, i, get_capacity_arraylist(al));
 		const void* found = get_from_array(&(al->arraylist_holder), al_index);
-		if(0 == compare(found, data))
+		if(0 == compare_with_comparator(comparator, found, data))
 			return found;
 	}
 
