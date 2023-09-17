@@ -489,7 +489,7 @@ int swap_in_2_linkedlists(linkedlist* ll_1, const void* data_xist1, linkedlist* 
 	return 1;
 }
 
-const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2))
+const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, const comparator_interface* comparator)
 {
 	if(is_empty_linkedlist(ll))
 		return NULL;
@@ -497,7 +497,7 @@ const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, in
 	do
 	{
 		const void* data_at_node = get_data(node_p, ll);
-		if(compare(data_at_node, data) == 0)
+		if(compare_with_comparator(comparator, data_at_node, data) == 0)
 			return data_at_node;
 		node_p = node_p->next;
 	}
@@ -532,7 +532,7 @@ void radix_sort_linkedlist(linkedlist* ll, unsigned long long int (*get_sort_att
 	}
 }
 
-void bubble_sort_linkedlist(linkedlist* ll, int (*compare)(const void* data1, const void* data2))
+void bubble_sort_linkedlist(linkedlist* ll, const comparator_interface* comparator)
 {
 	// return, if the linkedlist has 0 or 1 nodes only
 	if(is_empty_linkedlist(ll) || get_head_of_linkedlist(ll) == get_tail_of_linkedlist(ll))
@@ -548,7 +548,7 @@ void bubble_sort_linkedlist(linkedlist* ll, int (*compare)(const void* data1, co
 		const void* next = get_next_of_in_linkedlist(ll, curr);
 		while(next != get_head_of_linkedlist(ll))
 		{
-			if(compare(curr, next) > 0)
+			if(compare_with_comparator(comparator, curr, next) > 0)
 			{
 				swaps_performed++;
 				swap_in_linkedlist(ll, curr, next);

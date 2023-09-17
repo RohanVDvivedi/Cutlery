@@ -1,6 +1,7 @@
 #ifndef singlylist_H
 #define singlylist_H
 
+#include<comparator_interface.h>
 #include<notifier_interface.h>
 #include<dstring.h>
 
@@ -71,14 +72,14 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 void remove_all_from_singlylist(singlylist* sl, notifier_interface* ni_p);
 
 // get the data from the singlylist, that equals data, based on the comparator provided
-// it will return the pointer to the data contained in the singlylist that compares equal (i.e. compare function returns 0)
-const void* find_equals_in_singlylist(const singlylist* sl, const void* data, int (*compare)(const void* data1, const void* data2));
+// it will return the pointer to the data contained in the singlylist that compares equal (i.e. comparator returns 0)
+const void* find_equals_in_singlylist(const singlylist* sl, const void* data, const comparator_interface* comparator);
 
 // radix sort all of the singlylist
 void radix_sort_singlylist(singlylist* sl, unsigned long long int (*get_sort_attribute)(const void* data));
 
 // bubble sort all of the singlylist
-void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, const void* data2));
+void bubble_sort_singlylist(singlylist* sl, const comparator_interface* comparator);
 
 // perform operation on all the elements of the linked list
 // the function is designed well, you may call free on your data, in the provided operation function

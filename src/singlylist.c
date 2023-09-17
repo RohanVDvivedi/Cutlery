@@ -303,7 +303,7 @@ void remove_all_from_singlylist(singlylist* sl, notifier_interface* ni_p)
 	sl->tail = NULL;
 }
 
-const void* find_equals_in_singlylist(const singlylist* sl, const void* data, int (*compare)(const void* data1, const void* data2))
+const void* find_equals_in_singlylist(const singlylist* sl, const void* data, const comparator_interface* comparator)
 {
 	if(is_empty_singlylist(sl))
 		return NULL;
@@ -313,7 +313,7 @@ const void* find_equals_in_singlylist(const singlylist* sl, const void* data, in
 	const slnode* node_p = sl->head;
 	do
 	{
-		if(compare(data, get_data(node_p, sl)) == 0)
+		if(compare_with_comparator(comparator, data, get_data(node_p, sl)) == 0)
 			return get_data(node_p, sl);
 		node_p = node_p->next;
 	}
@@ -368,7 +368,7 @@ static void swap_nodes_singlylist(slnode** node1_p_p, slnode** node2_p_p)
 	(*node2_p_p)->next = temp;
 }
 
-void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, const void* data2))
+void bubble_sort_singlylist(singlylist* sl, const comparator_interface* comparator)
 {
 	// return, if the singlylist has 0 or 1 nodes only
 	if(is_empty_singlylist(sl) || get_head_of_singlylist(sl) == get_tail_of_singlylist(sl))
@@ -385,7 +385,7 @@ void bubble_sort_singlylist(singlylist* sl, int (*compare)(const void* data1, co
 		while((*next) != sl->head)
 		{
 
-			if(compare(get_data(*curr, sl), get_data(*next, sl)) > 0)
+			if(compare_with_comparator(comparator, get_data(*curr, sl), get_data(*next, sl)) > 0)
 			{
 				slnode* curr_cached = (*curr);
 				slnode* next_cached = (*next);

@@ -1,6 +1,7 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include<comparator_interface.h>
 #include<notifier_interface.h>
 #include<dstring.h>
 
@@ -81,14 +82,14 @@ int swap_in_linkedlist(linkedlist* ll, const void* data_xist1, const void* data_
 int swap_in_2_linkedlists(linkedlist* ll_1, const void* data_xist1, linkedlist* ll_2, const void* data_xist2);
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
-// it will return the pointer to the data contained in the linkedlist that compares equal (i.e. compare function returns 0)
-const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, int (*compare)(const void* data1, const void* data2));
+// it will return the pointer to the data contained in the linkedlist that compares equal (i.e. comparator returns 0)
+const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, const comparator_interface* comparator);
 
 // radix sort all of the linkedlist
 void radix_sort_linkedlist(linkedlist* ll, unsigned long long int (*get_sort_attribute)(const void* data));
 
 // bubble sort all of the linkedlist
-void bubble_sort_linkedlist(linkedlist* ll, int (*compare)(const void* data1, const void* data2));
+void bubble_sort_linkedlist(linkedlist* ll, const comparator_interface* comparator);
 
 // perform operation on all the elements of the linked list
 // the function is designed well, you may call free on your data, in the provided operation function
