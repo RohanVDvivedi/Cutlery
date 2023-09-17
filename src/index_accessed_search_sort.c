@@ -52,7 +52,7 @@ static cy_uint get_element_count_iai_offsetted(const void* ds_p)
 
 // -----------------------------------------------------------------
 
-int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -65,14 +65,14 @@ int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 	for(cy_uint i = start_index; i < last_index; i++)
 	{
 		// if the adjacent of i is not correctly ordered, then fail with a 0
-		if(compare(iai_p->get_element(iai_p->ds_p, i), iai_p->get_element(iai_p->ds_p, i + 1)) > 0)
+		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, i), iai_p->get_element(iai_p->ds_p, i + 1)) > 0)
 			return 0;
 	}
 
 	return 1;
 }
 
-int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)
+int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -133,7 +133,7 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 
 				while(dest_index <= b_last)
 				{
-					if((b_start > b_last) || (a_start <= a_last && compare(src_iai_p->get_element(src_iai_p->ds_p, a_start), src_iai_p->get_element(src_iai_p->ds_p, b_start)) < 0))
+					if((b_start > b_last) || (a_start <= a_last && compare_with_comparator(comparator, src_iai_p->get_element(src_iai_p->ds_p, a_start), src_iai_p->get_element(src_iai_p->ds_p, b_start)) < 0))
 						dest_iai_p->set_element(dest_iai_p->ds_p, src_iai_p->get_element(src_iai_p->ds_p, a_start++), dest_index++);
 					else
 						dest_iai_p->set_element(dest_iai_p->ds_p, src_iai_p->get_element(src_iai_p->ds_p, b_start++), dest_index++);
@@ -174,7 +174,7 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)
+int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -186,7 +186,7 @@ int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 
 	// create a min heap, large enough to hold total_elements
 	heap sort_heap;
-	if(!initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, BINARY_HEAP_DEGREE, compare, NO_HEAP_NODE_OFFSET, mem_allocator))
+	if(!initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, BINARY_HEAP_DEGREE, comparator, NO_HEAP_NODE_OFFSET, mem_allocator))
 		return 0;
 
 	// push all the elements to be sorted to this sort heap
@@ -206,7 +206,7 @@ int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 	return 1;
 }
 
-int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	while(1)
 	{
@@ -226,7 +226,7 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		// position pivot element at its correct index
 		for(cy_uint i = start_index; i <= last_index; i++)
 		{
-			if(compare(iai_p->get_element(iai_p->ds_p, i), pivot) <= 0)
+			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, i), pivot) <= 0)
 				iai_p->swap_elements(iai_p->ds_p, all_greater_than_pivot_start_index++, i);
 		}
 
@@ -240,7 +240,7 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		{
 			// recurse for before part and loop for after part, in order to keep stack usage to minimum
 			if(size_of_part_before_pivot > 0)
-				quick_sort_iai(iai_p, start_index, pivot_index - 1, compare);
+				quick_sort_iai(iai_p, start_index, pivot_index - 1, comparator);
 
 			// no elements after pivot to loop for
 			if(size_of_part_after_pivot == 0)
@@ -252,7 +252,7 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		{
 			// recurse for after part and loop for before part, in order to keep stack usage to minimum
 			if(size_of_part_after_pivot > 0)
-				quick_sort_iai(iai_p, pivot_index + 1, last_index, compare);
+				quick_sort_iai(iai_p, pivot_index + 1, last_index, comparator);
 
 			// no elements before pivot to loop for
 			if(size_of_part_before_pivot == 0)
@@ -314,7 +314,7 @@ int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -334,7 +334,7 @@ int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uin
 		// loop over the entire array, from start_index to loop_until, swapping adjacent elements until loop_until has the rightfully designated element
 		for(cy_uint i = start_index; i < loop_until; i++)
 		{
-			if(compare(iai_p->get_element(iai_p->ds_p, i), iai_p->get_element(iai_p->ds_p, i + 1)) > 0)
+			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, i), iai_p->get_element(iai_p->ds_p, i + 1)) > 0)
 			{
 				iai_p->swap_elements(iai_p->ds_p, i, i + 1);
 				swaps_performed++;
@@ -348,7 +348,7 @@ int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uin
 	return 1;
 }
 
-int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -365,7 +365,7 @@ int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_
 		for(cy_uint j = i; j > start_index; j--)
 		{
 			// check if j-1 and j are rightly ordered, if not swap them
-			if(compare(iai_p->get_element(iai_p->ds_p, j - 1), iai_p->get_element(iai_p->ds_p, j)) > 0)
+			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, j - 1), iai_p->get_element(iai_p->ds_p, j)) > 0)
 				iai_p->swap_elements(iai_p->ds_p, j - 1, j);
 		}
 	}
@@ -373,7 +373,7 @@ int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_
 	return 1;
 }
 
-cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator, search_occurence occurence_type)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
@@ -385,7 +385,7 @@ cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint star
 		{
 			for(cy_uint i = start_index; i <= last_index; i++)
 			{
-				if(compare(iai_p->get_element(iai_p->ds_p, i), data_p) == 0)
+				if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, i), data_p) == 0)
 					return i;
 			}
 			break;
@@ -394,7 +394,7 @@ cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint star
 		{
 			for(cy_uint i = last_index; i != (start_index - 1); i--)
 			{
-				if(compare(iai_p->get_element(iai_p->ds_p, i), data_p) == 0)
+				if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, i), data_p) == 0)
 					return i;
 			}
 			break;
@@ -405,7 +405,7 @@ cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint star
 	return INVALID_INDEX;
 }
 
-cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type)
+cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator, search_occurence occurence_type)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
@@ -416,16 +416,16 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 		case FIRST_OCCURENCE :
 		{
 			// take care of conditions when we might go start_index - 1
-			if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) == 0)
+			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) == 0)
 				return start_index;
-			else if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
+			else if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 				return INVALID_INDEX;
 			break;
 		}
 		case LAST_OCCURENCE :
 		{
 			// take care of conditions when we might go start_index - 1
-			if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
+			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 				return INVALID_INDEX;
 			break;
 		}
@@ -442,9 +442,9 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
+		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 			h = m - 1;
-		else if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
+		else if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
 			l = m + 1;
 		else
 		{
@@ -468,7 +468,7 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 	return result_index;
 }
 
-cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
@@ -477,7 +477,7 @@ cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_u
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
 	// then there is no element that is lesser than it, so return INVALID_INDEX
-	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) >= 0)
+	if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) >= 0)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
@@ -491,7 +491,7 @@ cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_u
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
+		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
 		{
 			result_index = m;
 			l = m + 1;
@@ -503,7 +503,7 @@ cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_u
 	return result_index;
 }
 
-cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
@@ -512,7 +512,7 @@ cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* i
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than or equal to the element at the start_index
 	// then there is no element that is lesser than it, so return INVALID_INDEX
-	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
+	if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 		return INVALID_INDEX;
 
 	// binary search low and high range variables
@@ -526,7 +526,7 @@ cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* i
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
+		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 			h = m - 1;
 		else
 		{
@@ -538,7 +538,7 @@ cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* i
 	return result_index;
 }
 
-cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
@@ -547,7 +547,7 @@ cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index
 	// then its succeeding is the start_indexed element, so return start_index
-	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
+	if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -561,7 +561,7 @@ cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
+		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 		{
 			result_index = m;
 			h = m - 1;
@@ -573,7 +573,7 @@ cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_
 	return result_index;
 }
 
-cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
@@ -582,7 +582,7 @@ cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index
 	// then its succeeding is the start_indexed element, so return start_index
-	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) >= 0)
+	if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) >= 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -596,7 +596,7 @@ cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* 
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
+		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
 			l = m + 1;
 		else
 		{
@@ -608,7 +608,7 @@ cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* 
 	return result_index;
 }
 
-cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2))
+cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator)
 {
 	// check for valid start and last indexes
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
@@ -616,7 +616,7 @@ cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p
 
 	// take care of conditions when we might go start_index - 1
 	// if the element is lesser than the element at the start_index, then return start_index
-	if(compare(iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
+	if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
 		return start_index;
 
 	// binary search low and high range variables
@@ -642,7 +642,7 @@ cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p
 
 		// if the element at m in the array is greater,
 		// then update the result_index (since it could be the answer) and shorten the search range
-		if(compare(iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
+		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
 		{
 			result_index = m;
 			h = m - 1;

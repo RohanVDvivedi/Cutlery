@@ -142,7 +142,7 @@ int main()
 	hashmap hashmap_temp;
 	hashmap* hashmap_p = &hashmap_temp;
 
-	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, hash_function, cmp, offsetof(ts, embedded_nodes));
+	initialize_hashmap(hashmap_p, POLICY_USED, HASH_BUCKETS, &simple_hasher(hash_function), &simple_comparator(cmp), offsetof(ts, embedded_nodes));
 
 	print_ts_hashmap(hashmap_p);
 

@@ -1,6 +1,8 @@
 #ifndef HEAP_INFO_H
 #define HEAP_INFO_H
 
+#include<comparator_interface.h>
+
 typedef enum heap_type heap_type;
 enum heap_type
 {
@@ -17,8 +19,9 @@ struct heap_info
 	// type of heap, MIN_HEAP or MAX_HEAP
 	heap_type type;
 
-	// comparator function for the elements
-	int (*compare)(const void* data1, const void* data2);
+	// comparator for the elements
+	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
+	comparator_interface comparator;
 };
 
 int is_reordering_required(const void* parent, const void* child, const heap_info* heap_info_p);

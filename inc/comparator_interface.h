@@ -4,6 +4,7 @@
 /* 
 ** A comparator interface is an interface allowing you to compare 2 data (pointed to by data1 and data2 pointers)
 ** It allows you to compare with OR without a context
+** The compare function must returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
 */
 
 typedef struct comparator_interface comparator_interface;
@@ -13,6 +14,7 @@ struct comparator_interface
 	const void* context;
 
 	// the compare functions of the comparator
+	// The compare function must returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
 	union
 	{
 		// compare function to use when context == NULL

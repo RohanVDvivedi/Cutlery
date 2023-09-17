@@ -9,31 +9,31 @@
 #include<cutlery_node.h>
 #include<cutlery_stds.h>
 
-int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
+int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
-	hashmap_p->hash_function = hash_function;
-	hashmap_p->compare = compare;
+	hashmap_p->hasher = (*hasher);
+	hashmap_p->comparator = (*comparator);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
 	return initialize_array(&(hashmap_p->hashmap_holder), bucket_count);
 }
 
-int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
+int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
-	hashmap_p->hash_function = hash_function;
-	hashmap_p->compare = compare;
+	hashmap_p->hasher = (*hasher);
+	hashmap_p->comparator = (*comparator);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
 	return initialize_array_with_allocator(&(hashmap_p->hashmap_holder), bucket_count, mem_allocator);
 }
 
-int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* bucket_memory[])
+int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, const void* bucket_memory[])
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
-	hashmap_p->hash_function = hash_function;
-	hashmap_p->compare = compare;
+	hashmap_p->hasher = (*hasher);
+	hashmap_p->comparator = (*comparator);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
 	return initialize_array_with_memory(&(hashmap_p->hashmap_holder), bucket_count, bucket_memory);
@@ -67,7 +67,7 @@ int is_empty_hashmap(const hashmap* hashmap_p)
 // utility :-> gets plausible index after hashing and mod of the hash
 static cy_uint get_bucket_index(const hashmap* hashmap_p, const void* data)
 {
-	return hashmap_p->hash_function(data) % get_bucket_count_hashmap(hashmap_p);
+	return hash_with_hasher(&(hashmap_p->hasher), data) % get_bucket_count_hashmap(hashmap_p);
 }
 
 static int is_hashmap_with_ZERO_buckets(const hashmap* hashmap_p)
@@ -87,12 +87,12 @@ static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 		}
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			initialize_bst((bst*)ds_p, RED_BLACK_TREE, hashmap_p->compare, hashmap_p->node_offset);
+			initialize_bst((bst*)ds_p, RED_BLACK_TREE, &(hashmap_p->comparator), hashmap_p->node_offset);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		{
-			initialize_bst((bst*)ds_p, AVL_TREE, hashmap_p->compare, hashmap_p->node_offset);
+			initialize_bst((bst*)ds_p, AVL_TREE, &(hashmap_p->comparator), hashmap_p->node_offset);
 			break;
 		}
 		default :
@@ -142,7 +142,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 					break;
 
 				// data and the data_at_position_index compares equals :: the data we are looking for has been found
-				if(hashmap_p->compare(data, data_at_position_index) == 0)
+				if(compare_with_comparator(&(hashmap_p->comparator), data, data_at_position_index) == 0)
 				{
 					data_found = data_at_position_index;
 					break;
@@ -160,7 +160,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
-			return find_equals_in_linkedlist(&ll, data, hashmap_p->compare);
+			return find_equals_in_linkedlist(&ll, data, &(hashmap_p->comparator));
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
@@ -591,7 +591,7 @@ static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap
 			const void* next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, curr);
 
 			// we iterate over all the elements of the bucket, untill we reach the end or we find the element that equals data_xist
-			while(next != NULL && hashmap_p->compare(next, data_xist) != 0)
+			while(next != NULL && compare_with_comparator(&(hashmap_p->comparator), next, data_xist) != 0)
 			{
 				curr = next;
 				next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, curr);
@@ -608,7 +608,7 @@ static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap
 
 			// if there is no other element in the bucket, or if the next does not compare equal to data_xist
 			// then return NULL
-			if(next == NULL || hashmap_p->compare(next, data_xist) != 0)
+			if(next == NULL || compare_with_comparator(&(hashmap_p->comparator), next, data_xist) != 0)
 				return NULL;
 
 			return next;
@@ -700,8 +700,8 @@ void deinitialize_hashmap(hashmap* hashmap_p)
 {
 	deinitialize_array(&(hashmap_p->hashmap_holder));
 	hashmap_p->element_count = 0;
-	hashmap_p->hash_function = NULL;
-	hashmap_p->compare = NULL;
+	hashmap_p->hasher = simple_hasher(NULL);
+	hashmap_p->comparator = simple_comparator(NULL);
 	hashmap_p->node_offset = 0;
 }
 
@@ -770,7 +770,7 @@ int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 
 	// create a new hashmap indentical to the hashmap_p with new_bucket_count number of buckets
 	hashmap new_hashmap;
-	if(!initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset, hashmap_p->hashmap_holder.mem_allocator))
+	if(!initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, &(hashmap_p->hasher), &(hashmap_p->comparator), hashmap_p->node_offset, hashmap_p->hashmap_holder.mem_allocator))
 		return 0;
 
 	// we will use notifier_interface to remove all from hashmap_p and insert it into new_hashmap

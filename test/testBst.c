@@ -171,7 +171,7 @@ int main()
 
 	bst my_bst;
 	bst* bst_p = &my_bst;
-	initialize_bst(bst_p, TREE_TYPE_TO_USE, cmp, offsetof(ts, bst_embed_node));
+	initialize_bst(bst_p, TREE_TYPE_TO_USE, &simple_comparator(cmp), offsetof(ts, bst_embed_node));
 	print_ts_bst(bst_p);
 
 	print_all_using_iterator_in_both_directions(bst_p);

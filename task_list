@@ -1,30 +1,7 @@
 1. Tasks picked
 
-COMPARATOR INTERFACE
- * build a comparator interface and make all of cutlery use it
- struct comparator_interface {
-  const void* context;
-  union {
-    int compare(const void* data1, const void* data2); // called when context == NULL
-    int compare_with_context(const void* context, const void* data1, const void* data2); // else
-  };
- };
- * build a function to compare using comparator
- int compare_with_comparator(const void* comparator, const void* data1, const void* data2);
- * build macros to initialize simple comparator and contexted comparator
-
-HASHER INTERFACE
- * build a hasher interface and make all of cutlery use it
- struct hasher_interface {
-  const void* context;
-  union {
-    cy_uint hash(const void* data); // called when context == NULL
-    cy_uint hash_with_context(const void* context, const void* data); // else
-  };
- };
- * build a function to hash using hasher
- cy_int hash_with_hasher(const void* hasher, const void* data);
- * build macros to initialize simple hasher and contexted hasher
+ * use hasher interface in bloomfilter and count_min_sketch
+ * propogate hasher interface and comparator interface api to other projects
 
 2. interface tasks
 
@@ -42,7 +19,7 @@ RADIX_TREE tasks (NEW DATASTRUCTURE)
 struct trie_node
 {
     dstring partial_string;
-    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix of partial_string
+    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix until partial_string
     void* value;
     hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
 
@@ -72,16 +49,12 @@ struct binomialheap
 	// implementation_type can be FIBONACCI_FAST_HEAP or BINOMIAL_FAST_HEAP
 	binomialheap_implementation_type implementation_type;
 
-	// type stores MIN_HEAP or MAX_HEAP
-	heap_type type;
+	heap_info info;
 
 	// pointer to the least or greatest node, based on type
 	binomialheapnode* top_node;
 
 	linkedlist root_list;
-
-	// comparator
-	int (*compare)(const void* data1, const void* data2);
 };
 
  * implement leftist heap as leftistheap (* future)

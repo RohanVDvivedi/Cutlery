@@ -90,34 +90,34 @@ int is_free_floating_hpnode(const hpnode* node_p)
 	return node_p->heap_index == INVALID_INDEX;
 }
 
-int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
+int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, const comparator_interface* comparator, cy_uint node_offset)
 {
 	if(degree == 0)
 		return 0;
 
-	heap_p->info = (heap_info){.type = type, .compare = compare};
+	heap_p->info = (heap_info){.type = type, .comparator = (*comparator)};
 	heap_p->degree = degree;
 	heap_p->node_offset = node_offset;
 	return initialize_arraylist(&(heap_p->heap_holder), capacity);
 }
 
-int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
+int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator)
 {
 	if(degree == 0)
 		return 0;
 
-	heap_p->info = (heap_info){.type = type, .compare = compare};
+	heap_p->info = (heap_info){.type = type, .comparator = (*comparator)};
 	heap_p->degree = degree;
 	heap_p->node_offset = node_offset;
 	return initialize_arraylist_with_allocator(&(heap_p->heap_holder), capacity, mem_allocator);
 }
 
-int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* data_ps[])
+int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, const comparator_interface* comparator, cy_uint node_offset, const void* data_ps[])
 {
 	if(degree == 0)
 		return 0;
 
-	heap_p->info = (heap_info){.type = type, .compare = compare};
+	heap_p->info = (heap_info){.type = type, .comparator = (*comparator)};
 	heap_p->degree = degree;
 	heap_p->node_offset = node_offset;
 	return initialize_arraylist_with_memory(&(heap_p->heap_holder), capacity, data_ps);
