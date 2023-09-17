@@ -87,12 +87,12 @@ static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 		}
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			initialize_bst((bst*)ds_p, RED_BLACK_TREE, &simple_comparator(hashmap_p->compare), hashmap_p->node_offset);
+			initialize_bst((bst*)ds_p, RED_BLACK_TREE, &(hashmap_p->comparator), hashmap_p->node_offset);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		{
-			initialize_bst((bst*)ds_p, AVL_TREE, &simple_comparator(hashmap_p->compare), hashmap_p->node_offset);
+			initialize_bst((bst*)ds_p, AVL_TREE, &(hashmap_p->comparator), hashmap_p->node_offset);
 			break;
 		}
 		default :
@@ -160,7 +160,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
-			return find_equals_in_linkedlist(&ll, data, &simple_comparator(hashmap_p->compare));
+			return find_equals_in_linkedlist(&ll, data, &(hashmap_p->comparator));
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
@@ -701,7 +701,7 @@ void deinitialize_hashmap(hashmap* hashmap_p)
 	deinitialize_array(&(hashmap_p->hashmap_holder));
 	hashmap_p->element_count = 0;
 	hashmap_p->hasher = simple_hasher(NULL);
-	hashmap_p->compare = simple_comparator(NULL);
+	hashmap_p->comparator = simple_comparator(NULL);
 	hashmap_p->node_offset = 0;
 }
 
