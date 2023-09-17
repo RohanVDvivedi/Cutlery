@@ -6,6 +6,8 @@
 ** It allows you to hash with OR without a context
 */
 
+#include<cutlery_stds.h>
+
 typedef struct hasher_interface hasher_interface;
 struct hasher_interface
 {
@@ -16,15 +18,16 @@ struct hasher_interface
 	union
 	{
 		// hash function to use when context == NULL
-		int (*hash1)(const void* data);
+		cy_uint (*hash1)(const void* data);
 
 		// hash function to use when context != NULL
-		int (*hash2)(const void* context, const void* data);
+		cy_uint (*hash2)(const void* context, const void* data);
 	};
 };
 
 // you must use only this function, with the hasher, to avail the complete functionality of the hasher
-int hash_with_hasher(const hasher_interface* hasher, const void* data);
+// it returns the hash of the data
+cy_uint hash_with_hasher(const hasher_interface* hasher, const void* data);
 
 // You may use the macros below to initialize your custom hasher_interface
 #define simple_hasher(hash_function_p)               ((const hasher_interface){.context = NULL,      .hasher1 = hash_function_p})

@@ -24,6 +24,7 @@ struct comparator_interface
 };
 
 // you must use only this function, with the comparator, to avail the complete functionality of the comparator
+// it returns the result of the comparison
 int compare_with_comparator(const comparator_interface* comparator, const void* data1, const void* data2);
 
 // You may use the macros below to initialize your custom comparator_interface
