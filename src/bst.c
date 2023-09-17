@@ -9,10 +9,10 @@
 #include<cutlery_node.h>
 #include<cutlery_stds.h>
 
-void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
+void initialize_bst(bst* bst_p, bsttype type, const comparator_interface* comparator, cy_uint node_offset)
 {
 	bst_p->type = type;
-	bst_p->compare = compare;
+	bst_p->comparator = (*comparator);
 	bst_p->node_offset = node_offset;
 	bst_p->root = NULL;
 }
