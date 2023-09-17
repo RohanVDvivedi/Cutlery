@@ -9,31 +9,31 @@
 #include<cutlery_node.h>
 #include<cutlery_stds.h>
 
-int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset)
+int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
-	hashmap_p->hash_function = hash_function;
-	hashmap_p->compare = compare;
+	hashmap_p->hasher = (*hasher);
+	hashmap_p->comparator = (*comparator);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
 	return initialize_array(&(hashmap_p->hashmap_holder), bucket_count);
 }
 
-int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator)
+int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator)
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
-	hashmap_p->hash_function = hash_function;
-	hashmap_p->compare = compare;
+	hashmap_p->hasher = (*hasher);
+	hashmap_p->comparator = (*comparator);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
 	return initialize_array_with_allocator(&(hashmap_p->hashmap_holder), bucket_count, mem_allocator);
 }
 
-int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* bucket_memory[])
+int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, const void* bucket_memory[])
 {
 	hashmap_p->hashmap_policy = hashmap_policy;
-	hashmap_p->hash_function = hash_function;
-	hashmap_p->compare = compare;
+	hashmap_p->hasher = (*hasher);
+	hashmap_p->comparator = (*comparator);
 	hashmap_p->node_offset = node_offset;
 	hashmap_p->element_count = 0;
 	return initialize_array_with_memory(&(hashmap_p->hashmap_holder), bucket_count, bucket_memory);
@@ -67,7 +67,7 @@ int is_empty_hashmap(const hashmap* hashmap_p)
 // utility :-> gets plausible index after hashing and mod of the hash
 static cy_uint get_bucket_index(const hashmap* hashmap_p, const void* data)
 {
-	return hashmap_p->hash_function(data) % get_bucket_count_hashmap(hashmap_p);
+	return hash_with_hasher(&(hashmap_p->hasher), data) % get_bucket_count_hashmap(hashmap_p);
 }
 
 static int is_hashmap_with_ZERO_buckets(const hashmap* hashmap_p)
@@ -700,8 +700,8 @@ void deinitialize_hashmap(hashmap* hashmap_p)
 {
 	deinitialize_array(&(hashmap_p->hashmap_holder));
 	hashmap_p->element_count = 0;
-	hashmap_p->hash_function = NULL;
-	hashmap_p->compare = NULL;
+	hashmap_p->hasher = simple_hasher(NULL);
+	hashmap_p->compare = simple_comparator(NULL);
 	hashmap_p->node_offset = 0;
 }
 
@@ -770,7 +770,7 @@ int resize_hashmap(hashmap* hashmap_p, cy_uint new_bucket_count)
 
 	// create a new hashmap indentical to the hashmap_p with new_bucket_count number of buckets
 	hashmap new_hashmap;
-	if(!initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, hashmap_p->hash_function, hashmap_p->compare, hashmap_p->node_offset, hashmap_p->hashmap_holder.mem_allocator))
+	if(!initialize_hashmap_with_allocator(&new_hashmap, hashmap_p->hashmap_policy, new_bucket_count, &(hashmap_p->hasher), &(hashmap_p->comparator), hashmap_p->node_offset, hashmap_p->hashmap_holder.mem_allocator))
 		return 0;
 
 	// we will use notifier_interface to remove all from hashmap_p and insert it into new_hashmap
