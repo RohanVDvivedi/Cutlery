@@ -50,9 +50,9 @@ struct heap
 // initializes heap and it will depend on initialize_array to give necessary memory to manage internal element contents
 // the initialize_heap* functions may fail if the initial memory allocation fails
 // in case of a failure, the heap will still be initialized to capacity 0
-int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset);
-int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator);
-int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* data_ps[]);
+int initialize_heap(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, const comparator_interface* comparator, cy_uint node_offset);
+int initialize_heap_with_allocator(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator);
+int initialize_heap_with_memory(heap* heap_p, cy_uint capacity, heap_type type, cy_uint degree, const comparator_interface* comparator, cy_uint node_offset, const void* data_ps[]);
 
 // always initialize your hpnode before using it
 void initialize_hpnode(hpnode* node_p);

@@ -186,7 +186,7 @@ int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 
 	// create a min heap, large enough to hold total_elements
 	heap sort_heap;
-	if(!initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, BINARY_HEAP_DEGREE, compare, NO_HEAP_NODE_OFFSET, mem_allocator))
+	if(!initialize_heap_with_allocator(&sort_heap, total_elements, MIN_HEAP, BINARY_HEAP_DEGREE, &simple_comparator(compare), NO_HEAP_NODE_OFFSET, mem_allocator))
 		return 0;
 
 	// push all the elements to be sorted to this sort heap

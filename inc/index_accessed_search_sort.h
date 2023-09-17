@@ -8,6 +8,7 @@
 //                         INDEX_ACCESSED_INTERFACE
 //---------------------------------------------------------------------------
 
+#include<comparator_interface.h>
 #include<index_accessed_interface.h>
 
 // NOTE NOTE NOTE

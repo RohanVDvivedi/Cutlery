@@ -3,7 +3,7 @@
 #include<heap.h>
 #include<circular_buffer_array_util.h>
 
-int heap_sort_arraylist(arraylist* al, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))
+int heap_sort_arraylist(arraylist* al, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	if(start_index > last_index || last_index >= get_element_count_arraylist(al))
 		return 0;
@@ -15,7 +15,7 @@ int heap_sort_arraylist(arraylist* al, cy_uint start_index, cy_uint last_index, 
 
 	// create a max heap that points to the array_p's contents that need to be sorted
 	heap sort_heap;
-	initialize_heap_with_memory(&sort_heap, get_capacity_arraylist(al), MAX_HEAP, BINARY_HEAP_DEGREE, compare, NO_HEAP_NODE_OFFSET, al->arraylist_holder.data_p_p);
+	initialize_heap_with_memory(&sort_heap, get_capacity_arraylist(al), MAX_HEAP, BINARY_HEAP_DEGREE, comparator, NO_HEAP_NODE_OFFSET, al->arraylist_holder.data_p_p);
 	sort_heap.heap_holder.first_index = add_circularly(al->first_index, start_index, get_capacity_arraylist(al));
 	sort_heap.heap_holder.element_count = total_elements;
 
