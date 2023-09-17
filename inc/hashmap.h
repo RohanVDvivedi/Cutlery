@@ -2,6 +2,8 @@
 #define HASHMAP_H
 
 #include<array.h>
+#include<comparator_interface.h>
+#include<hasher_interface.h>
 #include<notifier_interface.h>
 
 typedef enum collision_resolution_policy collision_resolution_policy;
@@ -50,12 +52,12 @@ struct hashmap
 	// if it is using open addressing, this is the node_offset for instructing the linkedlist or binary search tree
 	cy_uint node_offset;
 
-	// hash function to hash the data
-	cy_uint (*hash_function)(const void* data);
+	// hasher for the elements
+	hasher_interface hasher;
 
-	// compare data and returns 0 if they are equal, else non-zero
+	// comparator for the elements
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
-	int (*compare)(const void* data1, const void* data2);
+	comparator_interface comparator;
 
 	// array storing pointer to all the of data in the hashmap
 	array hashmap_holder;
@@ -77,10 +79,9 @@ struct rbhnode
 // initializes hashmap and it will depend on initialize_array to give necessary memory to manage internal element contents
 // initialize_hashmap* function may fail with a 0, if the initial memory allocation fails
 // in case of a failure, the hashmap is initialized with 0 buckets, and hence is unusable for most purposes
-int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset);
-int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, memory_allocator mem_allocator);
-
-int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, cy_uint (*hash_function)(const void* key), int (*compare)(const void* data1, const void* data2), cy_uint node_offset, const void* bucket_memory[]);
+int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset);
+int initialize_hashmap_with_allocator(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator);
+int initialize_hashmap_with_memory(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, const void* bucket_memory[]);
 
 // always initialize your rbhnode before using it
 void initialize_rbhnode(rbhnode* node_p);
