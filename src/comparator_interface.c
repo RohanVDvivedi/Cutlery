@@ -1,5 +1,7 @@
 #include<comparator_interface.h>
 
+#include<cutlery_stds.h>
+
 int compare_with_comparator(const comparator_interface* comparator, const void* data1, const void* data2)
 {
 	if(comparator->context == NULL)

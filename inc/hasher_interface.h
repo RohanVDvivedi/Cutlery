@@ -18,10 +18,10 @@ struct hasher_interface
 	union
 	{
 		// hash function to use when context == NULL
-		cy_int (*hash1)(const void* data);
+		cy_uint (*hash1)(const void* data);
 
 		// hash function to use when context != NULL
-		cy_int (*hash2)(const void* context, const void* data);
+		cy_uint (*hash2)(const void* context, const void* data);
 	};
 };
 
