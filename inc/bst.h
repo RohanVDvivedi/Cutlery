@@ -3,6 +3,7 @@
 
 #include<dstring.h>
 #include<cutlery_stds.h>
+#include<comparator_interface.h>
 #include<notifier_interface.h>
 
 /*
@@ -50,9 +51,9 @@ struct bst
 	// the root node of the tree
 	bstnode* root;
 
-	// compares data
+	// comparator for the elements
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
-	int (*compare)(const void* data1, const void* data2);
+	comparator_interface comparator;
 };
 
 /*
@@ -60,7 +61,7 @@ struct bst
 */
 
 // initializes as if a new bst, may be to reuse
-void initialize_bst(bst* bst_p, bsttype type, int (*compare)(const void* data1, const void* data2), cy_uint node_offset);
+void initialize_bst(bst* bst_p, bsttype type, const comparator_interface* comparator, cy_uint node_offset);
 
 // always initialize your bstnode before using it
 void initialize_bstnode(bstnode* node_p);

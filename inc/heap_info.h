@@ -20,6 +20,7 @@ struct heap_info
 	heap_type type;
 
 	// comparator for the elements
+	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
 	comparator_interface comparator;
 };
 
