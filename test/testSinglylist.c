@@ -26,6 +26,8 @@ int compare_by_a_increasing(const void* a, const void* b)
 		return 0;
 }
 
+const comparator_interface compare_by_a_increasing_comparator = simple_comparator(compare_by_a_increasing);
+
 int compare_by_a_decreasing(const void* a, const void* b)
 {
 	if(((const ts*)a)->a < ((const ts*)b)->a)
@@ -35,6 +37,8 @@ int compare_by_a_decreasing(const void* a, const void* b)
 	else
 		return 0;
 }
+
+const comparator_interface compare_by_a_decreasing_comparator = simple_comparator(compare_by_a_decreasing);
 
 void print_ts(const void* tsv)
 {
@@ -73,6 +77,8 @@ int test_compare(const void* a, const void* b)
 		return (((ts*)a)->a) - (((ts*)b)->a);
 	}
 }
+
+const comparator_interface test_comparator = simple_comparator(test_compare);
 
 void print_ts_singlylist(singlylist* sl)
 {
@@ -122,7 +128,7 @@ int main()
 		printf("\nnext : ");print_ts(get_next_of_in_singlylist(sl, head_data));
 		printf("\n\n");
 
-		const ts* mid_data = find_equals_in_singlylist(sl, &((ts){3}), test_compare);
+		const ts* mid_data = find_equals_in_singlylist(sl, &((ts){3}), &test_comparator);
 		printf("\nnode : ");print_ts(mid_data);
 		printf("\nnext : ");print_ts(get_next_of_in_singlylist(sl, mid_data));
 		printf("\n\n");
@@ -152,27 +158,27 @@ int main()
 	print_ts_singlylist(sl);
 
 	printf("Searching for structure with a = 4\n");
-	print_ts(find_equals_in_singlylist(sl, &((ts){4}), test_compare));
+	print_ts(find_equals_in_singlylist(sl, &((ts){4}), &test_comparator));
 	printf("\n");
 
 	printf("Searching for structure with a = 1\n");
-	print_ts(find_equals_in_singlylist(sl, &((ts){1}), test_compare));
+	print_ts(find_equals_in_singlylist(sl, &((ts){1}), &test_comparator));
 	printf("\n");
 
 	printf("Searching for structure with a = 2\n");
-	print_ts(find_equals_in_singlylist(sl, &((ts){2}), test_compare));
+	print_ts(find_equals_in_singlylist(sl, &((ts){2}), &test_comparator));
 	printf("\n");
 
 	printf("Searching for structure with a = -1\n");
-	print_ts(find_equals_in_singlylist(sl, &((ts){-1}), test_compare));
+	print_ts(find_equals_in_singlylist(sl, &((ts){-1}), &test_comparator));
 	printf("\n");
 
 	printf("Searching for structure with a = 6\n");
-	print_ts(find_equals_in_singlylist(sl, &((ts){6}), test_compare));
+	print_ts(find_equals_in_singlylist(sl, &((ts){6}), &test_comparator));
 	printf("\n");
 
 	printf("Searching for structure with a = 5\n");
-	print_ts(find_equals_in_singlylist(sl, &((ts){5}), test_compare));
+	print_ts(find_equals_in_singlylist(sl, &((ts){5}), &test_comparator));
 	printf("\n\n");
 
 	printf("Testing get_from_head\n");
@@ -239,13 +245,13 @@ int main()
 	#ifdef USE_BUBBLE_SORT
 		// bubble sort linkedlist
 		printf("after bubble sort : \n");
-		bubble_sort_singlylist(sl, compare_by_a_increasing);
+		bubble_sort_singlylist(sl, &compare_by_a_increasing_comparator);
 		print_ts_singlylist(sl);
 	#endif
 
 	// bubble sort linkedlist
 	printf("after bubble sort (reverse) : \n");
-	bubble_sort_singlylist(sl, compare_by_a_decreasing);
+	bubble_sort_singlylist(sl, &compare_by_a_decreasing_comparator);
 	print_ts_singlylist(sl);
 
 	printf("\n\nremoving all from singlylist\n\n");
