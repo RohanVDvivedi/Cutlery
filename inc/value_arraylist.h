@@ -78,7 +78,7 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
 int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);\
-int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator;     \
+int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);    \
 int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const contained_type* data), memory_allocator mem_allocator);\
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
@@ -737,7 +737,7 @@ int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_inde
 	sort_heap.first_index = add_circularly(c->first_index, start_index, get_capacity_ ## container(c));                        \
 	sort_heap.element_count = total_elements;                                                                                  \
 	hinfo.type = MAX_HEAP;                                                                                                     \
-	hinfo.comparator = comparator;                                                                                                   \
+	hinfo.comparator = (*comparator);                                                                                          \
 	degree = 2; /* default degree is 2, i.e. a binary heap */                                                                  \
                                                                                                                                \
 	/* now max heapify all elements that we need to sort */                                                                    \
