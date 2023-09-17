@@ -142,7 +142,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 					break;
 
 				// data and the data_at_position_index compares equals :: the data we are looking for has been found
-				if(hashmap_p->compare(data, data_at_position_index) == 0)
+				if(compare_with_comparator(&(hashmap_p->comparator), data, data_at_position_index) == 0)
 				{
 					data_found = data_at_position_index;
 					break;
@@ -591,7 +591,7 @@ static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap
 			const void* next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, curr);
 
 			// we iterate over all the elements of the bucket, untill we reach the end or we find the element that equals data_xist
-			while(next != NULL && hashmap_p->compare(next, data_xist) != 0)
+			while(next != NULL && compare_with_comparator(&(hashmap_p->comparator), next, data_xist) != 0)
 			{
 				curr = next;
 				next = get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(hashmap_p, curr);
@@ -608,7 +608,7 @@ static const void* get_next_of_in_hashmap_ANY_THAT_EQUALS(const hashmap* hashmap
 
 			// if there is no other element in the bucket, or if the next does not compare equal to data_xist
 			// then return NULL
-			if(next == NULL || hashmap_p->compare(next, data_xist) != 0)
+			if(next == NULL || compare_with_comparator(&(hashmap_p->comparator), next, data_xist) != 0)
 				return NULL;
 
 			return next;
