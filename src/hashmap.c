@@ -160,7 +160,7 @@ const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data)
 			linkedlist ll; init_data_structure(hashmap_p, &ll);
 			
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
-			return find_equals_in_linkedlist(&ll, data, hashmap_p->compare);
+			return find_equals_in_linkedlist(&ll, data, &simple_comparator(hashmap_p->compare));
 		}
 		case ELEMENTS_AS_AVL_BST :
 		case ELEMENTS_AS_RED_BLACK_BST :
