@@ -1,7 +1,5 @@
 1. Tasks picked
 
- * use hasher interface in bloomfilter and count_min_sketch
-
 2. interface tasks
 
 ITERATOR INTERFACE
