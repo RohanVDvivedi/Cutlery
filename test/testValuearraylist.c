@@ -77,7 +77,7 @@ int main()
 
 	print_int_list(il_p);
 
-	heap_info hinfo = {MAX_HEAP, compare_ints};
+	heap_info hinfo = {MAX_HEAP, simple_comparator(compare_ints)};
 	cy_uint degree = 2;
 
 	heapify_int_list(il_p, &hinfo, degree);
@@ -144,13 +144,13 @@ int main()
 
 #if defined USE_HEAP_SORT
 	printf("sorting - HEAP_SORT\n\n");
-	heap_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, compare_ints);
+	heap_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, &simple_comparator(compare_ints));
 #elif defined USE_RADIX_SORT
 	printf("sorting - RADIX_SORT\n\n");
 	radix_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, get_radix_sort_attr, il_p->mem_allocator);
 #elif defined USE_MERGE_SORT
 	printf("sorting - MERGE_SORT\n\n");
-	merge_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, compare_ints, il_p->mem_allocator);
+	merge_sort_int_list(il_p, 0, get_element_count_int_list(il_p)-1, &simple_comparator(compare_ints), il_p->mem_allocator);
 #endif
 
 	print_int_list(il_p);
