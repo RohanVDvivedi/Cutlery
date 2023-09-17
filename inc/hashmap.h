@@ -36,11 +36,11 @@ enum collision_resolution_policy
 // inserting comparatively equal data is allowed
 // inserting same data (same address) is not allowed
 // hence hashmap does not gaurantee uniqueness for your data on its own
-// two data* (pointers) pointing to data that compare equals on the given compartor may exist in the hashmap
+// two data* (pointers) pointing to data that compare equals on the given comparator may exist in the hashmap
 
-// while designing the hash function please consider using all or some the attributes, that you are using in the comparator function
+// while designing the hash function (using the hasher) please consider using all or some the attributes, that you are using in the comparator function
 // the comparator function and the hashfunction must be based on using the same fields/attributes
-// i.e. attributes of your data used in calculation of your hash_function must be a subset of the attributes you use in your compare function
+// i.e. attributes of your data used in calculation of your hasher must be a subset of the attributes you use in your comparator
 // this ensures that all the data that compare equals reside/collide in the same bucket of the hashmap
 
 typedef struct hashmap hashmap;
@@ -97,7 +97,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data);
 **		NOTE FOR USING THE FIND FUNCTION BELOW
 **
 ** find_* function; returns the data from the hashmap, that equals the data given as parameter "data",
-** (when compared using the comparator function)
+** (when compared using the comparator)
 **
 ** the "data" you provide as parameter must have all the fields required for comparison 
 ** used in the given comparator function (as in "hashmap_p" struct).

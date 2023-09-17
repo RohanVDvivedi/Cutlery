@@ -12,13 +12,13 @@
 #include<index_accessed_interface.h>
 
 // NOTE NOTE NOTE
-// the sorting and searching is based on the compare function provided, 
-// which must be designed such that, const comparator_interface* comparator
+// the sorting and searching is based on the comparator provided, 
+// which must be designed such that, comparator returns following
 // if data1 > data2
-//    then compare > 0
+//    then return a value > 0
 // else if data1 < data2
-//    then compare < 0
-// else compare = 0 (i.e. data1 == data2)
+//    then return a value < 0
+// else return 0 (i.e. data1 == data2)
 // where both data1 and data2 are elements of the array
 
 
