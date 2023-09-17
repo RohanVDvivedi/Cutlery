@@ -1,5 +1,5 @@
-#ifndef INTERFACE_NOTIFIER_H
-#define INTERFACE_NOTIFIER_H
+#ifndef NOTIFIER_INTERFACE_H
+#define NOTIFIER_INTERFACE_H
 
 /*
 	The below interface is intentionally designed to handle elements, after a remove_all_from_* function call of any data structure.

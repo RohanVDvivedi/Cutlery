@@ -1,5 +1,5 @@
-#ifndef INTERFACE_COMPARATOR_H
-#define INTERFACE_COMPARATOR_H
+#ifndef COMPARATOR_INTERFACE_H
+#define COMPARATOR_INTERFACE_H
 
 /* 
 ** A comparator interface is an interface allowing you to compare 2 data (pointed to by data1 and data2 pointers)

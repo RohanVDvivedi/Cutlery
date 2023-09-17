@@ -1,5 +1,5 @@
-#ifndef INTERFACE_HASHER_H
-#define INTERFACE_HASHER_H
+#ifndef HASHER_INTERFACE_H
+#define HASHER_INTERFACE_H
 
 /* 
 ** A hasher interface is an interface allowing you to hash data (pointed to by data pointers)
