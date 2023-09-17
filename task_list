@@ -1,7 +1,6 @@
 1. Tasks picked
 
  * use hasher interface in bloomfilter and count_min_sketch
- * propogate hasher interface and comparator interface api to other projects
 
 2. interface tasks
 
