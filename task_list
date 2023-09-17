@@ -18,7 +18,7 @@ RADIX_TREE tasks (NEW DATASTRUCTURE)
 struct trie_node
 {
     dstring partial_string;
-    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix of partial_string
+    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix until partial_string
     void* value;
     hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
 
@@ -48,16 +48,12 @@ struct binomialheap
 	// implementation_type can be FIBONACCI_FAST_HEAP or BINOMIAL_FAST_HEAP
 	binomialheap_implementation_type implementation_type;
 
-	// type stores MIN_HEAP or MAX_HEAP
-	heap_type type;
+	heap_info info;
 
 	// pointer to the least or greatest node, based on type
 	binomialheapnode* top_node;
 
 	linkedlist root_list;
-
-	// comparator
-	int (*compare)(const void* data1, const void* data2);
 };
 
  * implement leftist heap as leftistheap (* future)
