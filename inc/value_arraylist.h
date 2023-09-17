@@ -77,8 +77,8 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
-int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);\
-int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));\
+int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);\
+int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator;     \
 int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const contained_type* data), memory_allocator mem_allocator);\
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
@@ -615,7 +615,7 @@ int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degre
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
-int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator)\
+int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator)\
 {                                                                                                                              \
 	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
 		return 0;                                                                                                              \
@@ -679,7 +679,7 @@ int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_ind
                                                                                                                                \
 				while(dest_index <= b_last)                                                                                    \
 				{                                                                                                              \
-					if((b_start > b_last) || (a_start <= a_last && compare(get_from_front_of_ ## container(src_p, a_start), get_from_front_of_ ## container(src_p, b_start)) < 0))\
+					if((b_start > b_last) || (a_start <= a_last && compare_with_comparator(comparator, get_from_front_of_ ## container(src_p, a_start), get_from_front_of_ ## container(src_p, b_start)) < 0))\
 						set_from_front_in_ ## container(dest_p, get_from_front_of_ ## container(src_p, a_start++), dest_index++);\
 					else                                                                                                       \
 						set_from_front_in_ ## container(dest_p, get_from_front_of_ ## container(src_p, b_start++), dest_index++);\
@@ -719,7 +719,7 @@ int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_ind
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2))\
+int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)     \
 {                                                                                                                              \
 	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
 		return 0;                                                                                                              \
@@ -737,7 +737,7 @@ int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_inde
 	sort_heap.first_index = add_circularly(c->first_index, start_index, get_capacity_ ## container(c));                        \
 	sort_heap.element_count = total_elements;                                                                                  \
 	hinfo.type = MAX_HEAP;                                                                                                     \
-	hinfo.compare = compare;                                                                                                   \
+	hinfo.comparator = comparator;                                                                                                   \
 	degree = 2; /* default degree is 2, i.e. a binary heap */                                                                  \
                                                                                                                                \
 	/* now max heapify all elements that we need to sort */                                                                    \
