@@ -1,20 +1,9 @@
 1. Tasks picked
 
+DSTRING tasks
+ * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
+
 2. Add new datastructure types tasks (*future)
-
-RADIX_TREE tasks (NEW DATASTRUCTURE)
- * implement a radix tree data structure i.e. a trie data structure that is defined as
-struct trie_node
-{
-    dstring partial_string;
-    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix until partial_string
-    void* value;
-    hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
-
-    // node for children hashmap, used by the parent, this will only be ununsed in root trie_node
-    rbhnode/bstnode/llnode children_embed_node;
-};
- * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap.
@@ -47,9 +36,6 @@ struct binomialheap
 
  * implement leftist heap as leftistheap (* future)
 
-DSTRING tasks
- * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
-
 BST tasks (NEW DATASTRUCTURE inclusion * future)
  * provide implementation for TREAP, AA_TREE etc in bst
  * add cy_uint subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
@@ -57,6 +43,20 @@ BST tasks (NEW DATASTRUCTURE inclusion * future)
    * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
 
 3. Competely new datastructure tasks (*future)
+
+RADIX_TREE tasks (NEW DATASTRUCTURE)
+ * implement a radix tree data structure i.e. a trie data structure that is defined as
+struct trie_node
+{
+    dstring partial_string;
+    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix until partial_string
+    void* value;
+    hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
+
+    // node for children hashmap, used by the parent, this will only be ununsed in root trie_node
+    rbhnode/bstnode/llnode children_embed_node;
+};
+ * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use value_arraylist for below functionality and implement their iterative approaches only
