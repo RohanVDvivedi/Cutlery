@@ -32,7 +32,7 @@ struct hpnode
 typedef struct heap heap;
 struct heap
 {
-	// stores whether, type = MIN_HEAP or MAX_HEAP AND int compare(const void*, const void*) function to be used
+	// stores whether, type = MIN_HEAP or MAX_HEAP AND the comparator to be used
 	heap_info info;
 
 	// this is the degree of this heap, it must be non zero

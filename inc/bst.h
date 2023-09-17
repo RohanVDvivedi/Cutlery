@@ -79,7 +79,7 @@ int is_empty_bst(const bst* bst_p);
 **
 ** the "data" you provide as parameter must have all the fields required for comparison 
 ** used in the given comparator function (as in "bst_p" struct).
-** i.e. it must have all the fields/attributes of the struct that are used in "bst_p->compare(,)".
+** i.e. it must have all the fields/attributes of the struct that are used by the comparator i.e. "bst_p->comparator".
 */
 
 // find data in bst_p (given in parameter), that compares equal to data (given in parameter)

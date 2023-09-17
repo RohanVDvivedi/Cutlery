@@ -101,7 +101,7 @@ int insert_in_hashmap(hashmap* hashmap_p, const void* data);
 **
 ** the "data" you provide as parameter must have all the fields required for comparison 
 ** used in the given comparator function (as in "hashmap_p" struct).
-** i.e. it must have all the fields/attributes of the struct that are used in "hashmap_p->compare(,)".
+** i.e. it must have all the fields/attributes of the struct that are used in comparator i.e. "hashmap_p->comparator"
 */
 // the parameter data provided must hash to the same value and must be comparatively equal to the data that you want to find
 const void* find_equals_in_hashmap(const hashmap* hashmap_p, const void* data);
