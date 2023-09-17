@@ -87,12 +87,12 @@ static void init_data_structure(const hashmap* hashmap_p, void* ds_p)
 		}
 		case ELEMENTS_AS_RED_BLACK_BST :
 		{
-			initialize_bst((bst*)ds_p, RED_BLACK_TREE, hashmap_p->compare, hashmap_p->node_offset);
+			initialize_bst((bst*)ds_p, RED_BLACK_TREE, &simple_comparator(hashmap_p->compare), hashmap_p->node_offset);
 			break;
 		}
 		case ELEMENTS_AS_AVL_BST :
 		{
-			initialize_bst((bst*)ds_p, AVL_TREE, hashmap_p->compare, hashmap_p->node_offset);
+			initialize_bst((bst*)ds_p, AVL_TREE, &simple_comparator(hashmap_p->compare), hashmap_p->node_offset);
 			break;
 		}
 		default :
