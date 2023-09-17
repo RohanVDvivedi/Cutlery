@@ -48,6 +48,8 @@ int test_compare(const void* a, const void* b)
 	}
 }
 
+const comparator_interface test_comparator = simple_comparator(test_compare);
+
 unsigned long long int get_radix_sort_attr(const void* a)
 {
 	return ((ts*)a)->a;
@@ -124,7 +126,7 @@ int main()
 	printf("Finding data where a = %d\n", to_find.a);
 	printf("Linear search : ");
 	index_accessed_interface array_iai = get_index_accessed_interface_for_array(array_p);
-	print_ts(get_from_array(array_p, linear_search_in_iai(&array_iai, 0, get_capacity_array(array_p) - 1, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE)));
+	print_ts(get_from_array(array_p, linear_search_in_iai(&array_iai, 0, get_capacity_array(array_p) - 1, ((void*)(&to_find)), &test_comparator, FIRST_OCCURENCE)));
 	printf("\n");
 
 
@@ -160,32 +162,32 @@ int main()
 	array_iai = get_index_accessed_interface_for_array(array_p);
 	index_accessed_interface* array_iai_p = &array_iai;
 
-	printf("printf if is_sorted(%u %u) = %d\n\n", start_index, end_index, is_sorted_iai(array_iai_p, start_index, end_index, test_compare));
+	printf("printf if is_sorted(%u %u) = %d\n\n", start_index, end_index, is_sorted_iai(array_iai_p, start_index, end_index, &test_comparator));
 
 #if defined MERGE_SORT
 	printf("Sorting %u to %u using MERGE_SORT\n\n", start_index, end_index);
-	merge_sort_iai(array_iai_p, start_index, end_index, test_compare, STD_C_mem_allocator);
+	merge_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
 #elif defined HEAP_SORT
 	printf("Sorting %u to %u using HEAP_SORT\n\n", start_index, end_index);
-	heap_sort_iai(array_iai_p, start_index, end_index, test_compare, STD_C_mem_allocator);
+	heap_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
 #elif defined HEAP_SORT_native
 	printf("Sorting %u to %u using HEAP_SORT_native\n\n", start_index, end_index);
 	arraylist temp_al;
 	if(!get_slice_as_arraylist_from_array(&temp_al, array_p, start_index, test_sort_size))
 		exit(-1);
-	heap_sort_arraylist(&temp_al, 0, test_sort_size-1, test_compare);
+	heap_sort_arraylist(&temp_al, 0, test_sort_size-1, &test_comparator);
 #elif defined QUICK_SORT
 	printf("Sorting %u to %u using QUICK_SORT\n\n", start_index, end_index);
-	quick_sort_iai(array_iai_p, start_index, end_index, test_compare);
+	quick_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
 #elif defined RADIX_SORT
 	printf("Sorting %u to %u using RADIX_SORT\n\n", start_index, end_index);
 	radix_sort_iai(array_iai_p, start_index, end_index, get_radix_sort_attr, STD_C_mem_allocator);
 #elif defined BUBBLE_SORT
 	printf("Sorting %u to %u using BUBBLE_SORT\n\n", start_index, end_index);
-	bubble_sort_iai(array_iai_p, start_index, end_index, test_compare);
+	bubble_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
 #elif defined INSERTION_SORT
 	printf("Sorting %u to %u using INSERTION_SORT\n\n", start_index, end_index);
-	insertion_sort_iai(array_iai_p, start_index, end_index, test_compare);
+	insertion_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
 #else
 	printf("No sort algorithm defined\n\n")
 	return 0;
@@ -193,9 +195,9 @@ int main()
 
 	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_ts_array(array_p);printf("\n\n");
 
-	printf("is_sorted(%u %u) = %d\n\n", start_index, end_index, is_sorted_iai(array_iai_p, start_index, end_index, test_compare));
+	printf("is_sorted(%u %u) = %d\n\n", start_index, end_index, is_sorted_iai(array_iai_p, start_index, end_index, &test_comparator));
 
-	printf("yet is_sorted(%u %u) = %d\n\n", 0, sort_array_size - 1, is_sorted_iai(array_iai_p, 0, sort_array_size - 1, test_compare));
+	printf("yet is_sorted(%u %u) = %d\n\n", 0, sort_array_size - 1, is_sorted_iai(array_iai_p, 0, sort_array_size - 1, &test_comparator));
 
 	printf("Executing Search of all\n\n");
 
@@ -206,7 +208,7 @@ int main()
 		printf("Finding data where a = %d\n", to_find.a);
 
 		printf("Linear search (First occurence) : ");
-		index = linear_search_in_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE);
+		index = linear_search_in_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator, FIRST_OCCURENCE);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -217,7 +219,7 @@ int main()
 		printf("\n");
 
 		printf("Binary search (First occurence) : ");
-		index = binary_search_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare, FIRST_OCCURENCE);
+		index = binary_search_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator, FIRST_OCCURENCE);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -228,7 +230,7 @@ int main()
 		printf("\n\n");
 
 		printf("Linear search (Last occurence) : ");
-		index = linear_search_in_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare, LAST_OCCURENCE);
+		index = linear_search_in_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator, LAST_OCCURENCE);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -239,7 +241,7 @@ int main()
 		printf("\n");
 
 		printf("Binary search (Last occurence) : ");
-		index = binary_search_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare, LAST_OCCURENCE);
+		index = binary_search_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator, LAST_OCCURENCE);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -250,7 +252,7 @@ int main()
 		printf("\n\n");
 
 		printf("Find preceding : ");
-		index = find_preceding_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		index = find_preceding_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -261,7 +263,7 @@ int main()
 		printf("\n\n");
 
 		printf("Find preceding or equals : ");
-		index = find_preceding_or_equals_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		index = find_preceding_or_equals_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -272,7 +274,7 @@ int main()
 		printf("\n\n");
 
 		printf("Find succeeding : ");
-		index = find_succeeding_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		index = find_succeeding_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -283,7 +285,7 @@ int main()
 		printf("\n\n");
 
 		printf("Find succeeding or equals : ");
-		index = find_succeeding_or_equals_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		index = find_succeeding_or_equals_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator);
 		if(index != INVALID_INDEX)
 		{
 			printf("%llu : ", index);
@@ -294,7 +296,7 @@ int main()
 		printf("\n\n");
 
 		printf("Find insertion index : ");
-		index = find_insertion_index_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), test_compare);
+		index = find_insertion_index_in_sorted_iai(array_iai_p, start_index, end_index, ((void*)(&to_find)), &test_comparator);
 		printf("%llu : ", index);
 		print_ts(get_from_array(array_p, index));
 		printf("\n\n");
