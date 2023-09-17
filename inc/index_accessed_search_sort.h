@@ -13,7 +13,7 @@
 
 // NOTE NOTE NOTE
 // the sorting and searching is based on the compare function provided, 
-// which must be designed such that, int (*compare)(const void* data1, const void* data2)
+// which must be designed such that, const comparator_interface* comparator
 // if data1 > data2
 //    then compare > 0
 // else if data1 < data2
@@ -28,7 +28,7 @@
 
 // below function returns true, only if the given indexed interface is sorted
 // it will return 0 (failure), if either it is unsorted, OR if the start_index and last_index are invalid
-int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 
 
@@ -47,14 +47,14 @@ int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 
 // sorting algorithm used => merge sort algorithm (iterative approach)
 // NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements
-int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);
+int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
 
 // sorting algorithm used => heap sort algorithm
 // NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements
-int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2), memory_allocator mem_allocator);
+int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
 
 // sorting algorithm used => quick sort algorithm
-int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 // sorting algorithm used => radix sort algorithm
 // all the elements will be ordered in increasing order of their value for get_sort_attribute()
@@ -62,10 +62,10 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);
 
 // sorting algorithm used => bubble sort algorithm
-int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 // sorting algorithm used => insertion sort algorithm
-int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, int (*compare)(const void* data1, const void* data2));
+int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 
 
@@ -84,16 +84,16 @@ int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_
 
 
 // performs linear search in the index accessed datastructure
-cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator, search_occurence occurence_type);
 
 // performs binary search in the sorted index accessed datastructure
-cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2), search_occurence occurence_type);
+cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator, search_occurence occurence_type);
 
 // performs binary search in the sorted index accessed datastructure
-cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
-cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_preceding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator);
+cy_uint find_preceding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator);
+cy_uint find_succeeding_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator);
+cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator);
 
 
 //-----------------------------------------------------------------------------------------------------------
@@ -102,6 +102,6 @@ cy_uint find_succeeding_or_equals_in_sorted_iai(const index_accessed_interface* 
 
 // performs binary search in sorted index accessed datastructure, to find an index at which the given element data can be inserted
 // it usually returns the index that is one more than the index of the largest element that is also lesser than or equal to the data (given as parameter)
-cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, int (*compare)(const void* data1, const void* data2));
+cy_uint find_insertion_index_in_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator);
 
 #endif
