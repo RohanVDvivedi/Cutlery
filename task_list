@@ -1,15 +1,6 @@
 1. Tasks picked
 
-2. interface tasks
-
-ITERATOR INTERFACE
- * build an iterator interface as
- struct {
-    const void* ds_p;
-    const void* get_next(const void* ds_p, const void* data_xist);
- };
-
-3. Add new datastructure types tasks (*future)
+2. Add new datastructure types tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * implement a radix tree data structure i.e. a trie data structure that is defined as
