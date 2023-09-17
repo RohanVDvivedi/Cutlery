@@ -50,7 +50,7 @@ static const bstnode* find_node(const bst* bst_p, const void* data, search_occur
 	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
+		int compared_data_with_current_node = compare_with_comparator(&(bst_p->comparator), data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node))
 		{
 			result = node_p;
@@ -82,7 +82,7 @@ static const bstnode* find_node_preceding(const bst* bst_p, const void* data)
 	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
+		int compared_data_with_current_node = compare_with_comparator(&(bst_p->comparator), data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node) || is_lesser(compared_data_with_current_node))
 			node_p = node_p->left;
 		else if(is_greater(compared_data_with_current_node))
@@ -100,7 +100,7 @@ static const bstnode* find_node_preceding_or_equals(const bst* bst_p, const void
 	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
+		int compared_data_with_current_node = compare_with_comparator(&(bst_p->comparator), data, get_data(node_p, bst_p));
 		if(is_lesser(compared_data_with_current_node))
 			node_p = node_p->left;
 		else if(is_equal(compared_data_with_current_node) || is_greater(compared_data_with_current_node))
@@ -118,7 +118,7 @@ static const bstnode* find_node_succeeding(const bst* bst_p, const void* data)
 	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
+		int compared_data_with_current_node = compare_with_comparator(&(bst_p->comparator), data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node) || is_greater(compared_data_with_current_node))
 			node_p = node_p->right;
 		else if(is_lesser(compared_data_with_current_node))
@@ -136,7 +136,7 @@ static const bstnode* find_node_succeeding_or_equals(const bst* bst_p, const voi
 	const bstnode* node_p = bst_p->root;
 	while(node_p != NULL)
 	{
-		int compared_data_with_current_node = bst_p->compare(data, get_data(node_p, bst_p));
+		int compared_data_with_current_node = compare_with_comparator(&(bst_p->comparator), data, get_data(node_p, bst_p));
 		if(is_equal(compared_data_with_current_node) || is_lesser(compared_data_with_current_node))
 		{
 			result = node_p;
@@ -253,8 +253,8 @@ static cy_uint find_all_in_range_recursive(const bst* bst_p, const bstnode* node
 
 	const void* data_p = get_data(node_p, bst_p);
 
-	int lower_bound_check = (lower_bound != NULL) ? (bst_p->compare(lower_bound, data_p) <= 0) : 1;
-	int upper_bound_check = (upper_bound != NULL) ? (bst_p->compare(upper_bound, data_p) >= 0) : 1;
+	int lower_bound_check = (lower_bound != NULL) ? (compare_with_comparator(&(bst_p->comparator), lower_bound, data_p) <= 0) : 1;
+	int upper_bound_check = (upper_bound != NULL) ? (compare_with_comparator(&(bst_p->comparator), upper_bound, data_p) >= 0) : 1;
 
 	switch(sort_dirctn)
 	{
@@ -307,7 +307,7 @@ cy_uint find_all_in_range_in_bst(const bst* bst_p, const void* lower_bound, cons
 {
 	// errror in providing values 
 	// if both of the lower and upper bounds are provided, then lower_bound must not be greater than upper bound
-	if(((lower_bound != NULL) && (upper_bound != NULL)) && (bst_p->compare(lower_bound, upper_bound) > 0))
+	if(((lower_bound != NULL) && (upper_bound != NULL)) && (compare_with_comparator(&(bst_p->comparator), lower_bound, upper_bound) > 0))
 		return 0;
 
 	int accumulator_stop = 0;
