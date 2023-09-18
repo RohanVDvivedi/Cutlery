@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * segregate value_arraylist's container struct definition from its declaration, and provide them as separate macros
+
 DSTRING tasks
  * implement boyer moore substring finding algorithm (and Aho corasick algorithm)
 
