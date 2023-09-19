@@ -2,9 +2,10 @@
 
 #include<stdio.h>
 
+data_definitions_value_arraylist(int_list, int)
 declarations_value_arraylist(int_list, int)
 #define EXPANSION_FACTOR 1.5
-definitions_value_arraylist(int_list, int)
+function_definitions_value_arraylist(int_list, int)
 
 int compare_ints(const void* a, const void* b)
 {

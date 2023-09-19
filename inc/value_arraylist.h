@@ -18,15 +18,8 @@
 */
 
 #define declarations_value_arraylist(container, contained_type)                                                                \
+/* container declaration */                                                                                                    \
 typedef struct container container;                                                                                            \
-struct container                                                                                                               \
-{                                                                                                                              \
-	contained_type* data_p;         /* array, each element being od container_type */                                          \
-	cy_uint first_index;            /* the index of the first element in the container */                                      \
-	cy_uint element_count;          /* number of elements in the container */                                                  \
-	cy_uint capacity_in_bytes;      /* capacity in bytes pointed by the holder */                                              \
-	memory_allocator mem_allocator; /* allocator for the container */                                                          \
-};                                                                                                                             \
                                                                                                                                \
 /* initialization functions */                                                                                                 \
 int initialize_ ## container(container* c, cy_uint capacity);                                                                  \
@@ -95,7 +88,20 @@ void sprint_ ## container(dstring* append_str, const container* c, void (*sprint
 
 // comment break, there must be a newline above this comment
 
-#define definitions_value_arraylist(container, contained_type)                                                                 \
+#define data_definitions_value_arraylist(container, contained_type)                                                            \
+typedef struct container container;                                                                                            \
+struct container                                                                                                               \
+{                                                                                                                              \
+	contained_type* data_p;         /* array, each element being od container_type */                                          \
+	cy_uint first_index;            /* the index of the first element in the container */                                      \
+	cy_uint element_count;          /* number of elements in the container */                                                  \
+	cy_uint capacity_in_bytes;      /* capacity in bytes pointed by the holder */                                              \
+	memory_allocator mem_allocator; /* allocator for the container */                                                          \
+};                                                                                                                             \
+
+// comment break, there must be a newline above this comment
+
+#define function_definitions_value_arraylist(container, contained_type)                                                        \
                                                                                                                                \
 /* global constant setting the max capacity of this container built */                                                         \
 static const cy_uint MAX_ ## container ## _CAPACITY = (CY_UINT_MAX / sizeof(contained_type));                                  \
