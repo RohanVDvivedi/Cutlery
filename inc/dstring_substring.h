@@ -31,13 +31,10 @@ cy_uint contains_dstring_NAIVE(const dstring* str, const dstring* sub_str);
 // Naive implementation O(m*n)
 
 cy_uint contains_dstring_KMP(const dstring* str, const dstring* sub_str, const cy_uint* suffix_prefix_match_length);
-// KMP (Knuth–Morris–Pratt) O(n)
+// KMP (Knuth–Morris–Pratt) O(m+n)
 
 cy_uint contains_dstring_RK(const dstring* str, const dstring* sub_str);
 // RK (Rabin Karp) (best case O(m+n) and worst case O(m*n))
-
-cy_uint contains_dstring_BM(const dstring* str, const dstring* sub_str);
-// BM (Booyer Moore)
 
 
 
