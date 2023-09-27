@@ -82,6 +82,10 @@ int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_
 // the search_occurence parameter suggests whether we are looking for first or the last occurence (parameter occurence_type) that compares equal
 // This functions return INVALID_INDEX, if the such a `comparable` element is not found, or the indexes provided are invalid
 
+// Be sure that in all the function following this comment that
+// your data_p, always becomes the second parameter of the comparator function tat you provide
+// This allows you greater flexibility while comparing different types
+
 
 // performs linear search in the index accessed datastructure
 cy_uint linear_search_in_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const void* data_p, const comparator_interface* comparator, search_occurence occurence_type);
