@@ -263,9 +263,9 @@ int memory_compare(const void* data1_start, const void* data2_start, cy_uint siz
 
 int memory_swap(void* data1_start, void* data2_start, cy_uint size)
 {
-	// if they are the same memory locations, or if the size if 0, then swap can not be performed
+	// if they are the same memory locations, or if the size if 0, then swap is NO-OP
 	if(data1_start == data2_start || size == 0)
-		return 0;
+		return 1;
 
 	// compute the end of data1 and data2 byte address
 	void* data1_end = data1_start + size;

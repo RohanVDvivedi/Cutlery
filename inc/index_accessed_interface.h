@@ -24,6 +24,7 @@ struct index_accessed_interface
 	int (*set_element)(void* ds_p, const void* data_p, cy_uint index);
 
 	// swap elements at indices i1 and i2
+	// this function must default to returning 1, if i1 and i2 are the same and are not out of bounds
 	int (*swap_elements)(void* ds_p, cy_uint i1, cy_uint i2);
 
 	// returns the number of elements in the data structure;
