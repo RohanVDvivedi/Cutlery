@@ -54,6 +54,7 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
 
 // sorting algorithm used => quick sort algorithm
+// uses swap_elements -> fails with 0, if the swap_elements returns 0
 int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 // sorting algorithm used => radix sort algorithm
@@ -62,9 +63,11 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);
 
 // sorting algorithm used => bubble sort algorithm
+// uses swap_elements -> fails with 0, if the swap_elements returns 0
 int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 // sorting algorithm used => insertion sort algorithm
+// uses swap_elements -> fails with 0, if the swap_elements returns 0
 int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 
