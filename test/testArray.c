@@ -164,36 +164,38 @@ int main()
 
 	printf("printf if is_sorted(%u %u) = %d\n\n", start_index, end_index, is_sorted_iai(array_iai_p, start_index, end_index, &test_comparator));
 
+	int sort_result = 0;
+
 #if defined MERGE_SORT
 	printf("Sorting %u to %u using MERGE_SORT\n\n", start_index, end_index);
-	merge_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
+	sort_result = merge_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
 #elif defined HEAP_SORT
 	printf("Sorting %u to %u using HEAP_SORT\n\n", start_index, end_index);
-	heap_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
+	sort_result = heap_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
 #elif defined HEAP_SORT_native
 	printf("Sorting %u to %u using HEAP_SORT_native\n\n", start_index, end_index);
 	arraylist temp_al;
 	if(!get_slice_as_arraylist_from_array(&temp_al, array_p, start_index, test_sort_size))
 		exit(-1);
-	heap_sort_arraylist(&temp_al, 0, test_sort_size-1, &test_comparator);
+	sort_result = heap_sort_arraylist(&temp_al, 0, test_sort_size-1, &test_comparator);
 #elif defined QUICK_SORT
 	printf("Sorting %u to %u using QUICK_SORT\n\n", start_index, end_index);
-	quick_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
+	sort_result = quick_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
 #elif defined RADIX_SORT
 	printf("Sorting %u to %u using RADIX_SORT\n\n", start_index, end_index);
-	radix_sort_iai(array_iai_p, start_index, end_index, get_radix_sort_attr, STD_C_mem_allocator);
+	sort_result = radix_sort_iai(array_iai_p, start_index, end_index, get_radix_sort_attr, STD_C_mem_allocator);
 #elif defined BUBBLE_SORT
 	printf("Sorting %u to %u using BUBBLE_SORT\n\n", start_index, end_index);
-	bubble_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
+	sort_result = bubble_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
 #elif defined INSERTION_SORT
 	printf("Sorting %u to %u using INSERTION_SORT\n\n", start_index, end_index);
-	insertion_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
+	sort_result = insertion_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
 #else
 	printf("No sort algorithm defined\n\n")
 	return 0;
 #endif
 
-	printf("Array sorted %d <-> %d\n\n", start_index, end_index);print_ts_array(array_p);printf("\n\n");
+	printf("Array sorted %d <-> %d -> %d\n\n", start_index, end_index, sort_result);print_ts_array(array_p);printf("\n\n");
 
 	printf("is_sorted(%u %u) = %d\n\n", start_index, end_index, is_sorted_iai(array_iai_p, start_index, end_index, &test_comparator));
 
