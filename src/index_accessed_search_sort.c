@@ -227,7 +227,11 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		for(cy_uint i = start_index; i <= last_index; i++)
 		{
 			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, i), pivot) <= 0)
-				iai_p->swap_elements(iai_p->ds_p, all_greater_than_pivot_start_index++, i);
+			{
+				int swapped = iai_p->swap_elements(iai_p->ds_p, all_greater_than_pivot_start_index++, i);
+				if(!swapped)
+					return 0;
+			}
 		}
 
 		// index of the pivot element
@@ -240,7 +244,11 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		{
 			// recurse for before part and loop for after part, in order to keep stack usage to minimum
 			if(size_of_part_before_pivot > 0)
-				quick_sort_iai(iai_p, start_index, pivot_index - 1, comparator);
+			{
+				int sorted = quick_sort_iai(iai_p, start_index, pivot_index - 1, comparator);
+				if(!sorted)
+					return 0;
+			}
 
 			// no elements after pivot to loop for
 			if(size_of_part_after_pivot == 0)
@@ -252,7 +260,11 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		{
 			// recurse for after part and loop for before part, in order to keep stack usage to minimum
 			if(size_of_part_after_pivot > 0)
-				quick_sort_iai(iai_p, pivot_index + 1, last_index, comparator);
+			{
+				int sorted = quick_sort_iai(iai_p, pivot_index + 1, last_index, comparator);
+				if(!sorted)
+					return 0;
+			}
 
 			// no elements before pivot to loop for
 			if(size_of_part_before_pivot == 0)
@@ -261,6 +273,8 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 			last_index = pivot_index - 1;
 		}
 	}
+
+	return 1;
 }
 
 int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator)
@@ -325,7 +339,7 @@ int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uin
 		return 1;
 
 	// do while there are any swaps performed in the previous iteration
-	cy_uint swaps_performed;
+	int swaps_performed = 0;
 	cy_uint loop_until = last_index; // this is the earliest index from the right that does not have its designated sorted element
 	do
 	{
@@ -336,14 +350,16 @@ int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uin
 		{
 			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, i), iai_p->get_element(iai_p->ds_p, i + 1)) > 0)
 			{
-				iai_p->swap_elements(iai_p->ds_p, i, i + 1);
-				swaps_performed++;
+				int swapped = iai_p->swap_elements(iai_p->ds_p, i, i + 1);
+				if(!swapped)
+					return 0;
+				swaps_performed = 1;
 			}
 		}
 
 		loop_until -= 1;
 	}
-	while(swaps_performed > 0);
+	while(swaps_performed != 0);
 
 	return 1;
 }
@@ -366,7 +382,11 @@ int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_
 		{
 			// check if j-1 and j are rightly ordered, if not swap them
 			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, j - 1), iai_p->get_element(iai_p->ds_p, j)) > 0)
-				iai_p->swap_elements(iai_p->ds_p, j - 1, j);
+			{
+				int swapped = iai_p->swap_elements(iai_p->ds_p, j - 1, j);
+				if(!swapped)
+					return 0;
+			}
 		}
 	}
 
