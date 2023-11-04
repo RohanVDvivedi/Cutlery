@@ -1,4 +1,5 @@
 1. Tasks picked
+ * add get_bits and set_bits to set n bits (copying byte by byte) from/to an unsigned long long int
 
 2. Add new datastructure types tasks (*future)
 
