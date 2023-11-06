@@ -13,6 +13,14 @@ void set_bit(char* bitmap, cy_uint index);
 
 void reset_bit(char* bitmap, cy_uint index);
 
+// gets bits from the bitmap as a single unsigned long long int
+// number of bits in start_index to last_index must not exceed sizeof(unsigned long long int) * CHAR_BIT
+unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint last_index);
+
+// sets bits from value in to bitmap from start_index to last_index
+// number of bits in start_index to last_index must not exceed sizeof(unsigned long long int) * CHAR_BIT
+int set_bits(const char* bitmap, cy_uint start_index, cy_uint last_index, unsigned long long int value);
+
 void set_all_bits(char* bitmap, cy_uint size);
 
 void reset_all_bits(char* bitmap, cy_uint size);
