@@ -44,7 +44,7 @@ unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint
 	return res;
 }
 
-int set_bits(const char* bitmap, cy_uint start_index, cy_uint last_index, unsigned long long int value)
+int set_bits(char* bitmap, cy_uint start_index, cy_uint last_index, unsigned long long int value)
 {
 	// fail if the indices are not valid
 	if(start_index > last_index)
@@ -56,7 +56,35 @@ int set_bits(const char* bitmap, cy_uint start_index, cy_uint last_index, unsign
 	// end index to copy to
 	cy_uint end_index = last_index + 1;
 
-	// TODO
+	// copy first bits, bit by bit while the copy from index is not 8 bit aligned
+	for(; (i < end_index) && ((i % CHAR_BIT) > 0); i++, j++)
+	{
+		// get bit value of jth bit in value
+		int bit_value = (value >> j) & 1;
+
+		// if it is 1, set the ith bit
+		if(bit_value == 1)
+			bitmap[i / CHAR_BIT] |= ('\x1' << (i % CHAR_BIT));
+		else // else reset the ith bit
+			bitmap[i / CHAR_BIT] &= ~('\x1' << (i % CHAR_BIT));
+	}
+
+	// copy middle whole bytes, byte by byte
+	for(; (i < UINT_ALIGN_DOWN(end_index, CHAR_BIT)); i+=CHAR_BIT, j+=CHAR_BIT)
+		bitmap[i] = ((value >> j) & '\xff');
+
+	// copy remaining trailing bits, bit by bit
+	for(; i < end_index; i++, j++)
+	{
+		// get bit value of jth bit in value
+		int bit_value = (value >> j) & 1;
+
+		// if it is 1, set the ith bit
+		if(bit_value == 1)
+			bitmap[i / CHAR_BIT] |= ('\x1' << (i % CHAR_BIT));
+		else // else reset the ith bit
+			bitmap[i / CHAR_BIT] &= ~('\x1' << (i % CHAR_BIT));
+	}
 
 	return 1;
 }
