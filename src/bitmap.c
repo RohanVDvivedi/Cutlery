@@ -15,6 +15,37 @@ void reset_bit(char* bitmap, cy_uint index)
 	bitmap[index / CHAR_BIT] &= ~('\x1' << (index % CHAR_BIT));
 }
 
+unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint last_index)
+{
+	unsigned long long int res = 0;
+
+	// fail if the indices are not valid
+	if(start_index > last_index)
+		return res;
+
+	cy_uint i = start_index;
+	cy_uint j = 0;
+
+	// end index to copy from
+	cy_uint end_index = last_index + 1;
+
+	// copy first bits while the copy from index is not 8 bit aligned
+	for(; (i < end_index) && ((i % CHAR_BIT) > 0); i++, j++)
+		res = res | (((bitmap[i / CHAR_BIT] >> (i % CHAR_BIT)) & 1ULL) << j);
+
+	// copy middle bytes, byte by byte
+	for(; (i < UINT_ALIGN_DOWN(end_index, CHAR_BIT)); i+=CHAR_BIT, j+=CHAR_BIT)
+		res = res | ((bitmap[i / CHAR_BIT] & 0xffULL) << j);
+
+	// copy remaining trailing bits
+	for(; i < end_index; i++, j++)
+		res = res | (((bitmap[i / CHAR_BIT] >> (i % CHAR_BIT)) & 1ULL) << j);
+
+	return res;
+}
+
+int set_bits(const char* bitmap, cy_uint start_index, cy_uint last_index, unsigned long long int value);
+
 void set_all_bits(char* bitmap, cy_uint size)
 {
 	// number of whole bytes in the bitmap
