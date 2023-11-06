@@ -71,7 +71,7 @@ int set_bits(char* bitmap, cy_uint start_index, cy_uint last_index, unsigned lon
 
 	// copy middle whole bytes, byte by byte
 	for(; (i < UINT_ALIGN_DOWN(end_index, CHAR_BIT)); i+=CHAR_BIT, j+=CHAR_BIT)
-		bitmap[i] = ((value >> j) & '\xff');
+		bitmap[i / CHAR_BIT] = ((value >> j) & '\xff');
 
 	// copy remaining trailing bits, bit by bit
 	for(; i < end_index; i++, j++)
