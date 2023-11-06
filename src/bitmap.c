@@ -18,7 +18,7 @@ void reset_bit(char* bitmap, cy_uint index)
 unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint last_index)
 {
 	// fail if the indices are not valid
-	if(start_index > last_index)
+	if(start_index > last_index || (last_index - start_index + 1) > (sizeof(unsigned long long int) * CHAR_BIT))
 		return 0;
 
 	unsigned long long int res = 0;
@@ -47,7 +47,7 @@ unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint
 int set_bits(char* bitmap, cy_uint start_index, cy_uint last_index, unsigned long long int value)
 {
 	// fail if the indices are not valid
-	if(start_index > last_index)
+	if(start_index > last_index || (last_index - start_index + 1) > (sizeof(unsigned long long int) * CHAR_BIT))
 		return 0;
 
 	cy_uint i = start_index;
