@@ -18,6 +18,7 @@ void reset_bit(char* bitmap, cy_uint index);
 unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint last_index);
 
 // sets bits from value in to bitmap from start_index to last_index both inclusive
+// this set is not like the set/reset bit api, if the ith bit of valu is x, then it will make start_index + ith bit of bimap as x, it is literal set function
 // number of bits in start_index to last_index must not exceed sizeof(unsigned long long int) * CHAR_BIT
 int set_bits(const char* bitmap, cy_uint start_index, cy_uint last_index, unsigned long long int value);
 
