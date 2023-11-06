@@ -73,5 +73,22 @@ int main()
 	print_bitmap(bitmap, bitmap_complete_size);
 	set_all_bits(bitmap, 40);
 
+	print_bitmap(bitmap, bitmap_complete_size);
+
+	// set pattern
+	{
+		printf("setting pattern \"Rohn\" in ascii in bits 4 to 35\n");
+		const char* str = "Rohn";
+		set_bits(bitmap, 4, 35, *((unsigned long long int*)str));
+	}
+
+	print_bitmap(bitmap, bitmap_complete_size);
+
+	// get pattern
+	{
+		unsigned long long int value = get_bits(bitmap, 4, 35);
+		printf("pattern read \"%.*s\"\n", 4, (const char*)(&value));
+	}
+
 	return 0;
 }
