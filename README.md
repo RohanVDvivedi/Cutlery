@@ -1,7 +1,7 @@
 # Cutlery
-A C (standard C99) library that provides configurable data structures, serving as a backpack for any systems programming project.
+A C (standard C99) library that provides configurable (and intrusive (data structures), where necessary) data structures, serving as a backpack for any systems programming project.
 
-It manages pointers to your structures, and not your structures. i.e. if you insert an element to it, then that particular element and not its copy gets inserted. This is unlike c++ STL containers. Thus, it is inherently slow compared to C++ STL containers for smaller structures.
+It manages pointers to your structures, and not your structures. i.e. if you insert an element to it, then that particular element and not its copy gets inserted. This is unlike c++ STL containers.
 
 Almost all the containers like Singlylist, Linkedlist, Bst, Hashmap (and even Heap) use intrusive nodes for management of the container.
 
@@ -9,10 +9,10 @@ The above 2 statements slides in another feature, references to the objects insi
 
 
 **Note**
- * *This library is currently pivoting to a barebone implementation, i.e. to compile using any c (C99) compiler, even with -nostdlibs.*
- * *It uses embedded nodes (intrusive nodes) to implement hashmap, heap (if you need certain features), bst (binary search tree), linkedlist and singlylist.*
+ * *This library can be used with a baremetal projects (with minor modifications), all you will need is a C compiler.*
+ * *It uses embedded nodes (intrusive nodes) to implement hashmap, heap (if you need certain features), bst (binary search tree), linkedlist, singlylist, etc - which is perfect for cache locality and for systems programming.*
  * *It is meant to be used for (but usage is not limited to) very low level systems programming, with minimal environment, without any of stdlib c, posix libs or 3rd party library support.*
- * *It can most certainly be used for high level systems software and application software, you may find me using it extensively in most of my C/C++ projects on GITHUB.*
+ * *It can most certainly be used for high and low level systems software and application software, you may find me using it extensively in most of my C projects on GITHUB.*
 
 ## Setup instructions
 **Install dependencies :**
