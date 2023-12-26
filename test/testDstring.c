@@ -152,6 +152,7 @@ int main()
 	{
 		char* temp[] = {
 			"AFFA",
+			"APPAPA",
 			"BBCBBD",
 			"ABCXXXABC",
 			"ABCABCABC",
