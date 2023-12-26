@@ -23,12 +23,13 @@ void get_prefix_suffix_match_lengths(const dstring* sub_str, cy_uint* suffix_pre
 				}
 				else
 				{
-					prefix_length_old = suffix_prefix_match_length[prefix_length_old];
+					// only after ensure that prefix_length_old == 0, can not contribute, we break
 					if(prefix_length_old == 0)
 					{
 						suffix_prefix_match_length[string_length] = 0;
 						break;
 					}
+					prefix_length_old = suffix_prefix_match_length[prefix_length_old];
 				}
 			}
 		}
