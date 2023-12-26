@@ -23,7 +23,7 @@ void get_prefix_suffix_match_lengths(const dstring* sub_str, cy_uint* suffix_pre
 				}
 				else
 				{
-					// only after ensure that prefix_length_old == 0, can not contribute, we break
+					// only after ensuring that prefix_length_old == 0 could not contribute, we break
 					if(prefix_length_old == 0)
 					{
 						suffix_prefix_match_length[string_length] = 0;
