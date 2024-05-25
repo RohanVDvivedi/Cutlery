@@ -5,6 +5,7 @@
 MICROCONTROLLER
  * Build an allocator, that can be used for embedded systems, that can be initialized with a memory block
    * you may also build this in a separate file
+   * build a stack/arena allocator and allow freeing only the last element, just these would help us a Llooottt
  * Build a simple stream interface in cutlery, this would allow you to build logic to read and write from microcontroller interfaces like SPI, UART, I2C, Ethernet, etc
  * Make JSONParser, HTTPParser and ConnMan, to then use cutlery stream instead
  * Make all libraries use cutlery alocator interface
