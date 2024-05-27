@@ -43,8 +43,8 @@ enum memory_allocator_initialization
 **		it must return a pointer that is multiple of "new_alignment", and can safely hold atleast "new_size" number of bytes
 **		and these "new_size" number of bytes must be initialized according to "initialization" enum memory_allocator_initialization parameter
 **
-** 		The returned memory pointer must point to atleast new_size number of bytes (unless new_size is NULL or (a pointer to) 0)
-**			the actual size is returned in the new_size parameter
+** 		The returned memory pointer must point to atleast new_size number of bytes (unless new_size is NULL or (a pointer to) 0, i.e. a deallocate call)
+**			the actual size is returned in the new_size parameter, on an error new_size is left unmodified
 **		The returned memory pointer may or may not point to the same old_memory
 **			and Cutlery algorithms and datastructures will not make any such assumptions about implementation details of the memory allocator provided to them
 **
@@ -115,7 +115,7 @@ typedef const struct memory_allocator* memory_allocator;
 // final deallocate / free call to the memory allocator
 #define deallocate(mem_allocator, old_memory, old_size)				mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, NULL, 0, DONT_CARE)
 
-// aligned allocation functions of the above mcros
+// aligned allocation functions of the above macros
 #define aligned_allocate(mem_allocator, new_size, new_alignment)	mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, new_alignment, DONT_CARE)
 #define aligned_zallocate(mem_allocator, new_size, new_alignment) 	mem_allocator->allocator_function(mem_allocator->allocator_context, NULL, 0, new_size, new_alignment, ZERO)
 #define aligned_reallocate(mem_allocator, old_memory, old_size, new_size, new_alignment) 	mem_allocator->allocator_function(mem_allocator->allocator_context, old_memory, old_size, new_size, new_alignment, PRESERVE)
