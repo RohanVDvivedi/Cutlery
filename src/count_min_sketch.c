@@ -100,7 +100,7 @@ static cy_uint increment_frequency_by_1(cy_uint frequency)
 
 
 // returns frequency of a certain data element, and the bucket numbers concerned for each of the hash_functions
-// the bucket_indices must point to hash_functions_count number of cy_uints
+// the bucket_indices (if not NULL) must point to hash_functions_count number of cy_uints
 // where bucket_indices[h] is the index of the bucket number concerned for the given data for the h-th hash_function
 static cy_uint get_frequency_and_concerned_bucket_indices_from_count_min_sketch(const count_min_sketch* cms_p, const void* data, cy_uint data_size, cy_uint* bucket_indices)
 {
@@ -117,9 +117,13 @@ static cy_uint get_frequency_and_concerned_bucket_indices_from_count_min_sketch(
 
 		cy_uint bucket_no = hash_function(data, data_size) % bucket_count;
 
-		bucket_indices[h] = get_accessor_from_indices((const cy_uint []){bucket_no, h}, (const cy_uint []){bucket_count, hash_functions_count}, 2);
+		cy_uint bucket_accessor = get_accessor_from_indices((const cy_uint []){bucket_no, h}, (const cy_uint []){bucket_count, hash_functions_count}, 2);
 
-		result = min(result, cms_p->frequencies[bucket_indices[h]]);
+		// populate bucket_indices if provided
+		if(bucket_indices != NULL)
+			bucket_indices[h] = bucket_accessor;
+
+		result = min(result, cms_p->frequencies[bucket_accessor]);
 	}
 
 	return result;
@@ -128,6 +132,7 @@ static cy_uint get_frequency_and_concerned_bucket_indices_from_count_min_sketch(
 cy_uint increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const void* data, cy_uint data_size)
 {
 	cy_uint hash_functions_count = get_hash_function_count_count_min_sketch(cms_p);
+	cy_uint bucket_count = get_bucket_count_per_hash_function_count_min_sketch(cms_p);
 
 	// we calculate the current max_frequency (of data)
 	// and additionally we cache all the buckets we touched in bucket_indices array
@@ -139,15 +144,33 @@ cy_uint increment_frequency_in_count_min_sketch(count_min_sketch* cms_p, const v
 	// get the frequency and the concerned bucket_nos
 	cy_uint frequency = get_frequency_and_concerned_bucket_indices_from_count_min_sketch(cms_p, data, data_size, bucket_indices);
 
-	// we iterate over all the hash functions, and increment frequency if it matches the max frequency
-	for(cy_uint h = 0; (h < hash_functions_count); h++)
+	if(bucket_indices != NULL)
 	{
-		if(cms_p->frequencies[bucket_indices[h]] == frequency)
-			cms_p->frequencies[bucket_indices[h]] = increment_frequency_by_1(cms_p->frequencies[bucket_indices[h]]);
-	}
+		// we iterate over all the hash functions, and increment frequency if it matches the max frequency
+		for(cy_uint h = 0; (h < hash_functions_count); h++)
+		{
+			if(cms_p->frequencies[bucket_indices[h]] == frequency)
+				cms_p->frequencies[bucket_indices[h]] = increment_frequency_by_1(cms_p->frequencies[bucket_indices[h]]);
+		}
 
-	// deallocate bucket_indices
-	deallocate(STD_C_mem_allocator, bucket_indices, bucket_indices_size);
+		// deallocate bucket_indices
+		deallocate(STD_C_mem_allocator, bucket_indices, bucket_indices_size);
+	}
+	else
+	{
+		// we iterate over all the hash functions, and increment frequency if it matches the max frequency
+		for(cy_uint h = 0; (h < hash_functions_count); h++)
+		{
+			data_hash_func hash_function = get_from_array(&(cms_p->data_hash_functions), h);
+
+			cy_uint bucket_no = hash_function(data, data_size) % bucket_count;
+
+			cy_uint bucket_accessor = get_accessor_from_indices((const cy_uint []){bucket_no, h}, (const cy_uint []){bucket_count, hash_functions_count}, 2);
+
+			if(cms_p->frequencies[bucket_accessor] == frequency)
+				cms_p->frequencies[bucket_accessor] = increment_frequency_by_1(cms_p->frequencies[bucket_accessor]);
+		}
+	}
 
 	return increment_frequency_by_1(frequency);
 }
