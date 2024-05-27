@@ -19,6 +19,10 @@ cy_uint levenshtein_distance(const dstring* str0, const dstring* str1)
 	cy_uint dp_bytes = sizeof(cy_uint) * dp_dims[0] * dp_dims[1];
 	cy_uint* dp = aligned_allocate(DSTRING_mem_alloc, &dp_bytes, _Alignof(cy_uint));
 
+	// on failure, return a CY_UINT_MAX
+	if(dp == NULL)
+		return CY_UINT_MAX;
+
 	for(cy_uint i = 0; i < dp_dims[1]; i++)
 	{
 		for(cy_uint j = 0; j < dp_dims[0]; j++)
@@ -66,6 +70,10 @@ cy_uint length_of_longest_common_subsequence(const dstring* str0, const dstring*
 	cy_uint dp_dims[] = {str0_len + 1, str1_len + 1};
 	cy_uint dp_bytes = sizeof(cy_uint) * dp_dims[0] * dp_dims[1];
 	cy_uint* dp = aligned_allocate(DSTRING_mem_alloc, &dp_bytes, _Alignof(cy_uint));
+
+	// on failure, return a CY_UINT_MAX
+	if(dp == NULL)
+		return CY_UINT_MAX;
 
 	for(cy_uint i = 0; i < dp_dims[1]; i++)
 	{
