@@ -2,10 +2,6 @@
 
 2. Add new datastructure types tasks (*future)
 
- * all calls to *allocate() to the memory_allocator, must check that the returned pointer is not NULL, when the new_capacity is greater than 0
-   * such buggy code is found in dpipe resize, count_min_sketch (if you couldn't allocate for bucket_indices, then fall back to re computing the bucket indices) and dstring_diff
-   * grep all allocate() calls and fix them all
-
 MICROCONTROLLER
  * Build an allocator, that can be used for embedded systems, that can be initialized with a memory block
    * you may also build this in a separate file
