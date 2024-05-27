@@ -56,9 +56,9 @@ enum dpipe_operation_type
 **	which will always be lesser than or equal to data_size
 */
 
-void initialize_dpipe(dpipe* pipe, cy_uint capacity);
-void initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_allocator buffer_allocator);
-void initialize_dpipe_with_memory(dpipe* pipe, cy_uint capacity, void* buffer);
+int initialize_dpipe(dpipe* pipe, cy_uint capacity);
+int initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_allocator buffer_allocator);
+int initialize_dpipe_with_memory(dpipe* pipe, cy_uint capacity, void* buffer);
 
 // write bytes to dpipe ==> push_back_to_dpipe
 cy_uint write_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type);

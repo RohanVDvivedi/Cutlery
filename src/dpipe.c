@@ -4,12 +4,12 @@
 #include<cutlery_stds.h>
 #include<circular_buffer_array_util.h>
 
-void initialize_dpipe(dpipe* pipe, cy_uint capacity)
+int initialize_dpipe(dpipe* pipe, cy_uint capacity)
 {
-	initialize_dpipe_with_allocator(pipe, capacity, STD_C_mem_allocator);
+	return initialize_dpipe_with_allocator(pipe, capacity, STD_C_mem_allocator);
 }
 
-void initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_allocator buffer_allocator)
+int initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_allocator buffer_allocator)
 {
 	pipe->is_closed = 0;
 	pipe->buffer_capacity = capacity;
@@ -17,9 +17,12 @@ void initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_alloc
 	pipe->byte_count = 0;
 	pipe->buffer_allocator = buffer_allocator;
 	pipe->buffer = (pipe->buffer_capacity == 0) ? NULL : allocate(pipe->buffer_allocator, &(pipe->buffer_capacity));
+	if(pipe->buffer == NULL && pipe->buffer_capacity != 0)
+		return 0;
+	return 1;
 }
 
-void initialize_dpipe_with_memory(dpipe* pipe, cy_uint capacity, void* buffer)
+int initialize_dpipe_with_memory(dpipe* pipe, cy_uint capacity, void* buffer)
 {
 	pipe->is_closed = 0;
 	pipe->buffer_capacity = capacity;
@@ -27,6 +30,7 @@ void initialize_dpipe_with_memory(dpipe* pipe, cy_uint capacity, void* buffer)
 	pipe->byte_count = 0;
 	pipe->buffer_allocator = NULL;
 	pipe->buffer = buffer;
+	return 1;
 }
 
 cy_uint write_to_dpipe(dpipe* pipe, const void* data, cy_uint data_size, dpipe_operation_type op_type)
