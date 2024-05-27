@@ -331,7 +331,13 @@ int resize_dpipe(dpipe* pipe, cy_uint new_capacity)
 	// if the byte count is 0, then resize must be successfull
 	if(pipe->byte_count == 0)
 	{
-		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
+		void* new_buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
+		// if the allocation failed, then fail this call
+		if(new_buffer == NULL && new_capacity != 0)
+			return 0;
+
+		// make assignments to new attributes
+		pipe->buffer = new_buffer;
 		pipe->buffer_capacity = new_capacity;
 		pipe->first_byte = 0;
 		return 1;
@@ -352,7 +358,13 @@ int resize_dpipe(dpipe* pipe, cy_uint new_capacity)
 			}
 
 			// shrink the dpipe
-			pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
+			void* new_buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
+			// if the allocation failed, then fail this call
+			if(new_buffer == NULL && new_capacity != 0)
+				return 0;
+
+			// make assignments to new attributes
+			pipe->buffer = new_buffer;
 			pipe->buffer_capacity = new_capacity;
 			return 1;
 		}
@@ -360,7 +372,14 @@ int resize_dpipe(dpipe* pipe, cy_uint new_capacity)
 	}
 	else // expanding
 	{
-		pipe->buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
+		void* new_buffer = reallocate(pipe->buffer_allocator, pipe->buffer, ((cy_uint)pipe->buffer_capacity), &new_capacity);
+		// if the allocation failed, then fail this call
+		if(new_buffer == NULL && new_capacity != 0)
+			return 0;
+
+		// make pipe->buffer point to the newly allocated new_buffer, first
+		// as a garbage pointer is not good for the system
+		pipe->buffer = new_buffer;
 
 		// if there is not wound around then resize is complete
 		if(pipe->first_byte <= last_byte_offset)
