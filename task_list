@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * if initialize function fails due to failure to allocate memory, then initialize the datastructure as a 0 capacity structure, and return 0 -> case unhandled in especially dpipe
+
 2. Add new datastructure types tasks (*future)
 
 MICROCONTROLLER
