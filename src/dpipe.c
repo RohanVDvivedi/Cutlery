@@ -18,7 +18,10 @@ int initialize_dpipe_with_allocator(dpipe* pipe, cy_uint capacity, memory_alloca
 	pipe->buffer_allocator = buffer_allocator;
 	pipe->buffer = (pipe->buffer_capacity == 0) ? NULL : allocate(pipe->buffer_allocator, &(pipe->buffer_capacity));
 	if(pipe->buffer == NULL && pipe->buffer_capacity != 0)
+	{
+		pipe->buffer_capacity = 0;
 		return 0;
+	}
 	return 1;
 }
 
