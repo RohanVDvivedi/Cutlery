@@ -2,14 +2,18 @@
 
 2. Add new datastructure types tasks (*future)
 
-MICROCONTROLLER
- * Build an allocator, that can be used for embedded systems, that can be initialized with a memory block
-   * you may also build this in a separate file
-   * build a stack/arena allocator and allow freeing only the last element, just these would help us a Llooottt
- * Build a simple stream interface in cutlery, this would allow you to build logic to read and write from microcontroller interfaces like SPI, UART, I2C, Ethernet, etc
- * Make JSONParser, HTTPParser and ConnMan, to then use cutlery stream instead
- * Make all libraries use cutlery alocator interface
- * Above changes will allow porting HTTPParser and JSONParser to microcontrollers
+STREAM
+ * copy stream from connman and move it to Cutlery, make the code safe to use and take in allocators
+ * build a writable stream, that inserts data concatenating into a dstring
+
+ALLOCATOR
+ * implement a arena/stack allocaor
+   * allocating with a fixed alignment (size will always be multiple of alignment) from the end
+   * deallocating elements only at the end
+   * and destroying the arena when it is no longer in use
+   * need to stor only the block pointer, and allocated size for this allocator
+ * implement a generic memory allocator
+ * Make compute libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap.
