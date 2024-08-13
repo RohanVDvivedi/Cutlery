@@ -58,18 +58,8 @@ BST tasks (NEW DATASTRUCTURE inclusion * future)
 3. Competely new datastructure tasks (*future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
- * implement a radix tree data structure i.e. a trie data structure that is defined as
-struct trie_node
-{
-    dstring partial_string;
-    cy_uint prefix_count; // total number of strings in the complete trie data structure that have the prefix until partial_string
-    void* value;
-    hashmap children; <K,V> => <trie_node.partial_string[0],trie_node>;
-
-    // node for children hashmap, used by the parent, this will only be ununsed in root trie_node
-    rbhnode/bstnode/llnode children_embed_node;
-};
- * implement insert, search and remove operation to be noted a trie_node can not be deleted as long as it has either of value or any of the children
+ * radix tree, skip list, will never be part of part of Cutlery, as these data structures need additional nodes to be allocated for insertions, and if these allcations fails we can do nothing but panic and exit
+   * additioonally they can be implemented with primitives from Cutlery
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use value_arraylist for below functionality and implement their iterative approaches only
