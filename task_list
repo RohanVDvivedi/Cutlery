@@ -3,7 +3,7 @@
 2. Add new datastructure types tasks (*future)
 
 STREAM
- * copy stream from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
+ * copy stream, stream_util and file_descriptor stream from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
  * make it work with custom allocators, and pre-allocated memory for internal dpipes -> ensure that failures to resize are handled properly and do as desired by the most generic system, i.e. fail or silently suffer with low performance if possible
  * refactor stream api, to use cy_uint instead of size_t, and refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application
  * build a writable stream, that inserts data concatenating into a dstring -> copy this from ConnMan
@@ -15,8 +15,8 @@ ALLOCATOR
    * deallocating elements only at the end
    * and destroying the arena when it is no longer in use
    * need to stor only the block pointer, and allocated size for this allocator
- * implement a generic memory allocator
- * Make compute libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
+ * implement a generic memory allocator with fixed alignment (1 byte - 4 byte - 8 byte) for microcontrollers
+ * Make compute-only libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap.
