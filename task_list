@@ -3,11 +3,11 @@
 2. Add new datastructure types tasks (*future)
 
 STREAM
- * copy stream, stream_util and file_descriptor stream from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
- * make it work with custom allocators, and pre-allocated memory for internal dpipes -> ensure that failures to resize are handled properly and do as desired by the most generic system, i.e. fail or silently suffer with low performance if possible
- * refactor stream api, to use cy_uint instead of size_t, and refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application
- * build a writable stream, that inserts data concatenating into a dstring -> copy this from ConnMan
- * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures
+ * copy stream and stream_util from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
+ * make it work with custom allocators, and pre-allocated memory for internal dpipes
+ * refactor stream api, to use cy_uint instead of size_t, and refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application accordingly
+ * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
+ * copy stream_to_read_until_dstring, stream_to_write_to_dstring and stream_for_file_descriptor from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
 
 ALLOCATOR
  * implement a arena/stack allocaor
