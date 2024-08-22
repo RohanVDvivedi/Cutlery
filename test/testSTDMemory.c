@@ -134,5 +134,49 @@ int main()
 		printf("\n\n");
 	}
 
+	{
+		{
+			char c1 = '\xff';
+			char c2 = '\x01';
+			printf("memory_compare(%hhx::%hhd, %hhx::%hhd) = %d\n", c1, c1, c2, c2, memory_compare(&c1, &c2, 1));
+		}
+
+		{
+			char c1 = '\x01';
+			char c2 = '\xff';
+			printf("memory_compare(%hhx::%hhd, %hhx::%hhd) = %d\n", c1, c1, c2, c2, memory_compare(&c1, &c2, 1));
+		}
+
+		{
+			char c1 = '\xef';
+			char c2 = '\xee';
+			printf("memory_compare(%hhx::%hhd, %hhx::%hhd) = %d\n", c1, c1, c2, c2, memory_compare(&c1, &c2, 1));
+		}
+
+		{
+			char c1 = '\xee';
+			char c2 = '\xef';
+			printf("memory_compare(%hhx::%hhd, %hhx::%hhd) = %d\n", c1, c1, c2, c2, memory_compare(&c1, &c2, 1));
+		}
+
+		{
+			char c1 = '\x21';
+			char c2 = '\x22';
+			printf("memory_compare(%hhx::%hhd, %hhx::%hhd) = %d\n", c1, c1, c2, c2, memory_compare(&c1, &c2, 1));
+		}
+
+		{
+			char c1 = '\x22';
+			char c2 = '\x21';
+			printf("memory_compare(%hhx::%hhd, %hhx::%hhd) = %d\n", c1, c1, c2, c2, memory_compare(&c1, &c2, 1));
+		}
+
+		{
+			char c1 = '\x32';
+			char c2 = '\x32';
+			printf("memory_compare(%hhx::%hhd, %hhx::%hhd) = %d\n", c1, c1, c2, c2, memory_compare(&c1, &c2, 1));
+		}
+	}
+
 	return 0;
 }
