@@ -136,6 +136,7 @@ int memory_set(void* dest_start, char byte_value, cy_uint size);
 		1 if data1[0:(size-1)] > data2[0:(size-1)]
 		-1 if data1[0:(size-1)] < data2[0:(size-1)]
 		0 if data1[0:(size-1)] == data2[0:(size-1)]
+	NOTE:: data1 and data2 are processed as unsigned char arrays
 */
 int memory_compare(const void* data1, const void* data2, cy_uint size);
 

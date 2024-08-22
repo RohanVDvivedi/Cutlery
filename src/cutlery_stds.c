@@ -190,8 +190,9 @@ int memory_compare(const void* data1_start, const void* data2_start, cy_uint siz
 		return 0;
 
 	// initalize our iterators for forward compare
-	const char* data1 = data1_start;
-	const char* data2 = data2_start;
+	// note the data is processed as unsigned characters
+	const unsigned char* data1 = data1_start;
+	const unsigned char* data2 = data2_start;
 
 	// check if int compare is possible, and requires atleast 3 iterations (atleast 2 int copy iterations)
 	if( (size >= 3 * int_size) &&
@@ -239,13 +240,13 @@ int memory_compare(const void* data1_start, const void* data2_start, cy_uint siz
 					break;
 			}
 
-			data1 = (char*)data1_int;
-			data2 = (char*)data2_int;
+			data1 = (unsigned char*)data1_int;
+			data2 = (unsigned char*)data2_int;
 		}
 	}
 
 	// finish up remaining with an old fashioned byte-by-byte compare loop
-	while( data1 != ((char*)(data1_end)) )
+	while( data1 != ((unsigned char*)(data1_end)) )
 	{
 		if((*data1) > (*data2))
 			return 1;
