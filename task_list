@@ -4,7 +4,6 @@
 
 BUG FIX
  * memory_compare to compare unsigned bytes and chars. add this as comment, also here make data1 and data2 pointers unsigned instead of type casting.
- * write test cases for comparing and testing memory compare.
 
 STREAM
  * copy stream and stream_util from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
