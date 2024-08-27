@@ -6,7 +6,7 @@
 
 /*
 	stream provides you with a wrapper over your io ports and devices
-	use it only if your sizeof(cy_uint) >= 2, as this prevents unchecked overflows
+	it will also club smaller reads into larger reads, and smaller writes into larger writes
 */
 
 typedef struct stream stream;
@@ -19,6 +19,7 @@ struct stream
 
 	// this is the maximum compile time constant number of bytes that can exist at any moment in the unread_data dpipe
 	// this value must be >= 128, and atmost 2048 for optimum performance
+	// please ensure that this value fits the cy_uint integer type
 	#define MAX_UNREAD_BYTES_COUNT 1024
 
 	// this pipe stores all data that has been written to the stream
