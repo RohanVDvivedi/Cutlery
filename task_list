@@ -4,9 +4,8 @@
 
 STREAM
  * fix overflows in cy_uint calculations for the capacities inside stream
- * copy stream_util from ConnMan, make the code safe to use and take in allocators
- * make it work with custom allocators, and pre-allocated memory for internal dpipes
- * refactor stream api, to use cy_uint instead of size_t, and refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application accordingly
+ * copy stream_util from ConnMan
+ * refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application accordingly
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
  * copy stream_to_read_until_dstring, stream_to_write_to_dstring and stream_for_file_descriptor from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
 
