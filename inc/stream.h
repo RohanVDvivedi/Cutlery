@@ -4,6 +4,11 @@
 #include<cutlery_stds.h>
 #include<dpipe.h>
 
+/*
+	stream provides you with a wrapper over your io ports and devices
+	use it only if your sizeof(cy_uint) >= 2, as this prevents unchecked overflows
+*/
+
 typedef struct stream stream;
 struct stream
 {

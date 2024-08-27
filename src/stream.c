@@ -91,8 +91,8 @@ cy_uint read_from_stream(stream* strm, void* data, cy_uint data_size, int* error
 	{
 		bytes_read = read_from_dpipe(&(strm->unread_data), data, data_size, PARTIAL_ALLOWED);
 
-		// shrink unread_data dpipe if it is larger than 4 times what it is required
-		if(get_capacity_dpipe(&(strm->unread_data)) > 3 * get_bytes_readable_in_dpipe(&(strm->unread_data)))
+		// shrink unread_data dpipe if it is larger than 2 times what it is required
+		if((get_capacity_dpipe(&(strm->unread_data)) / 2) > get_bytes_readable_in_dpipe(&(strm->unread_data)))
 			resize_dpipe(&(strm->unread_data), get_bytes_readable_in_dpipe(&(strm->unread_data))); // we do not care if this call fails
 
 		// there can be no failure, reading data from unread_data
@@ -146,6 +146,11 @@ cy_uint read_from_stream(stream* strm, void* data, cy_uint data_size, int* error
 		// if an error occurred, then register it as the last one
 		if(*error)
 			strm->last_error = (*error);
+
+		// shrink unread_data dpipe if it is larger than 2 times what it is required
+		// this may happen, if the read_from_stream_context returned far lesser than what we expected
+		if((get_capacity_dpipe(&(strm->unread_data)) / 2) > get_bytes_readable_in_dpipe(&(strm->unread_data)))
+			resize_dpipe(&(strm->unread_data), get_bytes_readable_in_dpipe(&(strm->unread_data))); // we do not care if this call fails
 
 		return bytes_read;
 	}
