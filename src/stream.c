@@ -2,7 +2,7 @@
 
 #include<cutlery_math.h>
 
-int initialize_stream(stream* strm, 
+int initialize_stream(stream* strm,
 						void* stream_context,
 						cy_uint (*read_from_stream_context)(void* stream_context, void* data, cy_uint data_size, int* error),
 						cy_uint (*write_to_stream_context)(void* stream_context, const void* data, cy_uint data_size, int* error),
@@ -19,6 +19,33 @@ int initialize_stream(stream* strm,
 		deinitialize_dpipe(&(strm->unread_data));
 		return 0;
 	}
+	strm->max_unflushed_bytes_count = max_unflushed_bytes_count;
+	strm->read_from_stream_context = read_from_stream_context;
+	strm->end_of_stream_received = 0;
+	strm->write_to_stream_context = write_to_stream_context;
+	strm->close_stream_context = close_stream_context;
+	strm->destroy_stream_context = destroy_stream_context;
+	strm->post_flush_callback_stream_context = post_flush_callback_stream_context;
+	strm->last_error = 0;
+	return 1;
+}
+
+int initialize_stream_with_initialized_dpipes(
+						stream* strm,
+						void* stream_context,
+						dpipe unread_data_dpipe,
+						dpipe unflushed_data_dpipe,
+						cy_uint (*read_from_stream_context)(void* stream_context, void* data, cy_uint data_size, int* error),
+						cy_uint (*write_to_stream_context)(void* stream_context, const void* data, cy_uint data_size, int* error),
+						void (*close_stream_context)(void* stream_context, int* error),
+						void (*destroy_stream_context)(void* stream_context),
+						void (*post_flush_callback_stream_context)(void* stream_context, int* error),
+						cy_uint max_unflushed_bytes_count
+					)
+{
+	strm->stream_context = stream_context;
+	strm->unread_data = unread_data_dpipe;
+	strm->unflushed_data = unread_data_dpipe;
 	strm->max_unflushed_bytes_count = max_unflushed_bytes_count;
 	strm->read_from_stream_context = read_from_stream_context;
 	strm->end_of_stream_received = 0;

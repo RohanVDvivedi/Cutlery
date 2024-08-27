@@ -50,8 +50,26 @@ struct stream
 
 // this function may fail only of the underlying dpipe-s could not be initialized
 int initialize_stream(
-						stream* strm, 
+						stream* strm,
 						void* stream_context,
+						cy_uint (*read_from_stream_context)(void* stream_context, void* data, cy_uint data_size, int* error),
+						cy_uint (*write_to_stream_context)(void* stream_context, const void* data, cy_uint data_size, int* error),
+						void (*close_stream_context)(void* stream_context, int* error),
+						void (*destroy_stream_context)(void* stream_context),
+						void (*post_flush_callback_stream_context)(void* stream_context, int* error),
+						cy_uint max_unflushed_bytes_count
+					);
+
+// initializes stream, using the above params, but with the dpipes provided
+// after a success from this function, the ownership of the dpipes unread_data_dpipe and unflushed_data_dpipe are transferred and you no longer own them
+// i.e. you may no longer call any functions on them
+// and they will be destroyed when this stream is deinitialized
+// this is done to allow easy initialization of stream with complex memory allocation strategies, as you will initialize the necessary dpipes, you can do this as you please
+int initialize_stream_with_initialized_dpipes(
+						stream* strm,
+						void* stream_context,
+						dpipe unread_data_dpipe,
+						dpipe unflushed_data_dpipe,
 						cy_uint (*read_from_stream_context)(void* stream_context, void* data, cy_uint data_size, int* error),
 						cy_uint (*write_to_stream_context)(void* stream_context, const void* data, cy_uint data_size, int* error),
 						void (*close_stream_context)(void* stream_context, int* error),
