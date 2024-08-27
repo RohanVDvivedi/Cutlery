@@ -109,7 +109,7 @@ cy_uint read_from_stream(stream* strm, void* data, cy_uint data_size, int* error
 	if(data_size < 128)
 	{
 		// the below macro must be greater than or equal to 128
-		#define data_cache_read_capacity 1024
+		#define data_cache_read_capacity MAX_UNREAD_BYTES_COUNT
 
 		// if unread data does not have enough space, then expand it
 		if(get_bytes_writable_in_dpipe(&(strm->unread_data)) < data_cache_read_capacity &&
@@ -178,8 +178,17 @@ void unread_from_stream(stream* strm, const void* data, cy_uint data_size, int* 
 		return ;
 	}
 
+	// stream allows atmost of MAX_UNREAD_BYTES_COUNT bytes of unread data to exist in unread buffers
+	// ensure that byte count of the unread_data does not overflow and the byte_count of the unread_data does not cross MAX_UNREAD_BYTES_COUNT
+	if((will_unsigned_sum_overflow(cy_uint, get_bytes_readable_in_dpipe(&(strm->unread_data)), data_size)) ||
+		(get_bytes_readable_in_dpipe(&(strm->unread_data)) + data_size > MAX_UNREAD_BYTES_COUNT))
+	{
+		(*error) = FAILED_TO_APPEND_TO_UNREAD_BUFFER_IN_STREAM;
+		return ;
+	}
+
 	if(get_bytes_writable_in_dpipe(&(strm->unread_data)) < data_size &&
-		!resize_dpipe(&(strm->unread_data), get_capacity_dpipe(&(strm->unread_data)) + data_size + 1024) && // allocate excess of 1024 bytes if possible
+		!resize_dpipe(&(strm->unread_data), min((get_bytes_readable_in_dpipe(&(strm->unread_data)) + data_size) * 2, MAX_UNREAD_BYTES_COUNT)) && // allocating in excess, double the required capacity
 		!resize_dpipe(&(strm->unread_data), get_bytes_readable_in_dpipe(&(strm->unread_data)) + data_size))	// else try to allocate exact
 	{
 		// this is a case when there is not enough memory in the unread_data buffer and the expansion failed
@@ -243,7 +252,8 @@ cy_uint write_to_stream(stream* strm, const void* data, cy_uint data_size, int* 
 		return 0;
 
 	// if the total unflushed_data_bytes count is lesser than max_unflushed_bytes_count, then just push these new data to unflushed_data pipe
-	if(data_size + get_bytes_readable_in_dpipe(&(strm->unflushed_data)) <= strm->max_unflushed_bytes_count)
+	if((!will_unsigned_sum_overflow(cy_uint, data_size, get_bytes_readable_in_dpipe(&(strm->unflushed_data)))) &&
+		(data_size + get_bytes_readable_in_dpipe(&(strm->unflushed_data)) <= strm->max_unflushed_bytes_count))
 	{
 		// attempt a resize, if the unflushed_data buffer could not hold all of the new data
 		// it may fail to create adequate space because

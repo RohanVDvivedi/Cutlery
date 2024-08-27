@@ -12,6 +12,10 @@ struct stream
 	// this pipe stores data that was unread_to_stream
 	dpipe unread_data;
 
+	// this is the maximum compile time constant number of bytes that can exist at any moment in the unread_data dpipe
+	// this value must be >= 128, and atmost 2048 for optimum performance
+	#define MAX_UNREAD_BYTES_COUNT 1024
+
 	// this pipe stores all data that has been written to the stream
 	// but has not been flushed yet, using the write_to_stream_context function call
 	dpipe unflushed_data;
