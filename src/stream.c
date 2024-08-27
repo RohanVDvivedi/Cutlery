@@ -205,6 +205,7 @@ void unread_from_stream(stream* strm, const void* data, cy_uint data_size, int* 
 		if(!will_unsigned_mul_overflow(cy_uint, required_unread_data_capacity, 2))
 			attempted_unread_data_capacity = min(attempted_unread_data_capacity, required_unread_data_capacity * 2);
 
+		// alocate for double the required capacity OR allocate exact
 		if(!resize_dpipe(&(strm->unread_data), attempted_unread_data_capacity) && !resize_dpipe(&(strm->unread_data), required_unread_data_capacity))
 		{
 			// this is a case when there is not enough memory in the unread_data buffer and the expansion failed
@@ -284,6 +285,7 @@ cy_uint write_to_stream(stream* strm, const void* data, cy_uint data_size, int* 
 		if(!will_unsigned_mul_overflow(cy_uint, required_unflushed_data_capacity, 2))
 			attempted_unflushed_data_capacity = min(attempted_unflushed_data_capacity, required_unflushed_data_capacity * 2);
 
+		// alocate for double the required capacity OR allocate exact
 		if(!resize_dpipe(&(strm->unflushed_data), attempted_unflushed_data_capacity) && !resize_dpipe(&(strm->unflushed_data), required_unflushed_data_capacity))
 			goto FALLBACK;
 	}
