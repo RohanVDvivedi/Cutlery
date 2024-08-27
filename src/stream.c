@@ -183,23 +183,35 @@ void unread_from_stream(stream* strm, const void* data, cy_uint data_size, int* 
 		return ;
 	}
 
+	// calculate the required_unread_data_capacity, if it overflows then fail
+	if(will_unsigned_sum_overflow(cy_uint, get_bytes_readable_in_dpipe(&(strm->unread_data)), data_size))
+	{
+		(*error) = FAILED_TO_APPEND_TO_UNREAD_BUFFER_IN_STREAM;
+		return ;
+	}
+	cy_uint required_unread_data_capacity = get_bytes_readable_in_dpipe(&(strm->unread_data)) + data_size;
+
 	// stream allows atmost of MAX_UNREAD_BYTES_COUNT bytes of unread data to exist in unread buffers
-	// ensure that byte count of the unread_data does not overflow and the byte_count of the unread_data does not cross MAX_UNREAD_BYTES_COUNT
-	if((will_unsigned_sum_overflow(cy_uint, get_bytes_readable_in_dpipe(&(strm->unread_data)), data_size)) ||
-		(get_bytes_readable_in_dpipe(&(strm->unread_data)) + data_size > MAX_UNREAD_BYTES_COUNT))
+	if(required_unread_data_capacity > MAX_UNREAD_BYTES_COUNT)
 	{
 		(*error) = FAILED_TO_APPEND_TO_UNREAD_BUFFER_IN_STREAM;
 		return ;
 	}
 
-	if(get_bytes_writable_in_dpipe(&(strm->unread_data)) < data_size &&
-		!resize_dpipe(&(strm->unread_data), min((get_bytes_readable_in_dpipe(&(strm->unread_data)) + data_size) * 2, MAX_UNREAD_BYTES_COUNT)) && // allocating in excess, double the required capacity
-		!resize_dpipe(&(strm->unread_data), get_bytes_readable_in_dpipe(&(strm->unread_data)) + data_size))	// else try to allocate exact
+	if(get_bytes_writable_in_dpipe(&(strm->unread_data)) < data_size)
 	{
-		// this is a case when there is not enough memory in the unread_data buffer and the expansion failed
-		// so we return an error
-		(*error) = FAILED_TO_APPEND_TO_UNREAD_BUFFER_IN_STREAM;
-		return ;
+		// first attempt to expand by almost doubling unread_data capacity
+		cy_uint attempted_unread_data_capacity = MAX_UNREAD_BYTES_COUNT;
+		if(!will_unsigned_mul_overflow(cy_uint, required_unread_data_capacity, 2))
+			attempted_unread_data_capacity = min(attempted_unread_data_capacity, required_unread_data_capacity * 2);
+
+		if(!resize_dpipe(&(strm->unread_data), attempted_unread_data_capacity) && !resize_dpipe(&(strm->unread_data), required_unread_data_capacity))
+		{
+			// this is a case when there is not enough memory in the unread_data buffer and the expansion failed
+			// so we return an error
+			(*error) = FAILED_TO_APPEND_TO_UNREAD_BUFFER_IN_STREAM;
+			return ;
+		}
 	}
 
 	// just push the data to unread_data pipe, this must succeed
@@ -256,30 +268,31 @@ cy_uint write_to_stream(stream* strm, const void* data, cy_uint data_size, int* 
 	if(data_size == 0)
 		return 0;
 
-	// if the total unflushed_data_bytes count is lesser than max_unflushed_bytes_count, then just push these new data to unflushed_data pipe
-	if((!will_unsigned_sum_overflow(cy_uint, data_size, get_bytes_readable_in_dpipe(&(strm->unflushed_data)))) &&
-		(data_size + get_bytes_readable_in_dpipe(&(strm->unflushed_data)) <= strm->max_unflushed_bytes_count))
-	{
-		// attempt a resize, if the unflushed_data buffer could not hold all of the new data
-		// it may fail to create adequate space because
-		// 1. the unflushed_data is already at max capacity of max_unflushed_bytes_count
-		// 2. memory allocation failure
-		// we still have a fall back of write through to the stream_context, hence need not worry
-		if((get_bytes_writable_in_dpipe(&(strm->unflushed_data)) < data_size) &&
-			!resize_dpipe(&(strm->unflushed_data), min((get_bytes_readable_in_dpipe(&(strm->unflushed_data)) + data_size) * 2, strm->max_unflushed_bytes_count)) && // allocating in excess, double the required capacity
-			!resize_dpipe(&(strm->unflushed_data), get_bytes_readable_in_dpipe(&(strm->unflushed_data)) + data_size))			// else allocating exact, which we know is <= max_unflushed_bytes_count
-		{
-			// if we could not make enough space in the unflushed_data dpipe, then we need to use FALLBACK
-			goto FALLBACK;
-		}
+	// calculate the required_unflushed_data_capacity, if it overflows goto fallback
+	if(will_unsigned_sum_overflow(cy_uint, get_bytes_readable_in_dpipe(&(strm->unflushed_data)), data_size))
+		goto FALLBACK;
+	cy_uint required_unflushed_data_capacity = get_bytes_readable_in_dpipe(&(strm->unflushed_data)) + data_size;
 
+	// if the required_unflushed_data_capacity > strm->max_unflushed_bytes_count, then we can not push the data to unflushed_data, so goto fallback
+	if(required_unflushed_data_capacity > strm->max_unflushed_bytes_count)
+		goto FALLBACK;
+
+	if(get_bytes_writable_in_dpipe(&(strm->unflushed_data)) < data_size)
+	{
+		// first attempt to expand by almost doubling unflushed_data capacity
+		cy_uint attempted_unflushed_data_capacity = strm->max_unflushed_bytes_count;
+		if(!will_unsigned_mul_overflow(cy_uint, required_unflushed_data_capacity, 2))
+			attempted_unflushed_data_capacity = min(attempted_unflushed_data_capacity, required_unflushed_data_capacity * 2);
+
+		if(!resize_dpipe(&(strm->unflushed_data), attempted_unflushed_data_capacity) && !resize_dpipe(&(strm->unflushed_data), required_unflushed_data_capacity))
+			goto FALLBACK;
+	}
+
+	//DEFAULT_HAPPY_CASE:; // if we come here, then we are sure that we can push the data to unflushed_data
+	{
 		cy_uint bytes_written = write_to_dpipe(&(strm->unflushed_data), data, data_size, ALL_OR_NONE);
 
-		// if the unflushed_data dpipe accepted the bytes, then we can exit with success
-		if(bytes_written != 0)
-			return bytes_written;
-
-		// On a failure to push data to the unflushed_data dpipe, we fallback to force write-through below
+		return bytes_written;
 	}
 
 	// else, we fallback to flush not just the unflushed_data, but also the new data that has arrived
