@@ -60,8 +60,6 @@ int initialize_stream(
 						cy_uint max_unflushed_bytes_count
 					);
 
-#define DEFAULT_MAX_UNFLUSHED_BYTES_COUNT 4096
-
 int is_readable_stream(stream* strm);
 
 int is_writable_stream(stream* strm);
