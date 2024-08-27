@@ -3,6 +3,7 @@
 2. Add new datastructure types tasks (*future)
 
 STREAM
+ * fix overflows in cy_uint calculations for the capacities inside stream
  * copy stream and stream_util from ConnMan and move it to Cutlery, make the code safe to use and take in allocators
  * make it work with custom allocators, and pre-allocated memory for internal dpipes
  * refactor stream api, to use cy_uint instead of size_t, and refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application accordingly
