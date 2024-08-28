@@ -59,7 +59,7 @@ int compare_chars_descending(char c1, char c2)
 
 cy_uint get_digits_required_to_represent_unsigned_long_long_int(unsigned int radix)
 {
-	unsigned long long int MAX_VAL = -1;
+	unsigned long long int MAX_VAL = UNSIGNED_MAX_VALUE_OF(unsigned long long int);
 	cy_uint res = 0;
 	while(MAX_VAL > 0)
 	{
