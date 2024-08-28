@@ -43,8 +43,11 @@ dstring read_until_dstring_from_stream(stream* rs, const dstring* until_str, con
 // on an error, you must not and you need not call deinit_dstring on the return value
 dstring read_until_any_end_chars_from_stream(stream* rs, int (*is_end_char)(int is_end_of_stream, char c, const void* cntxt), const void* cntxt, int* last_byte, cy_uint max_bytes_to_read, int* error);
 
+// In the above functions, all max_bytes_to_read, get_char_count_dstring(str_to_skip) and max_whitespaces_to_skip must be atmost MAX_UNREAD_BYTES_COUNT bytes
+// -----
+
 // below are utility functions to directly use dstrings for writing and unreading bytes to stream
-void unread_dstring_from_stream(stream* rs, const dstring* str, int* error);
+void unread_dstring_from_stream(stream* rs, const dstring* str, int* error); // get_char_count_dstring(str) must be atmost MAX_UNREAD_BYTES_COUNT
 cy_uint write_dstring_to_stream(stream* ws, const dstring* str, int* error);
 
 #endif
