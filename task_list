@@ -4,7 +4,6 @@
 
 STREAM
  * stream_util, unreads a lot of data, so caching and unreads both share the same space in the unread_data dpipe, making things fail -> figure out a way for this
- * stream_to_write_to_dstring, stream_to_read_from_dstring
  * refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application accordingly
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
 
