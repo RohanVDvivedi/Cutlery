@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 #include<stream_for_file_descriptor.h>
 #include<stream_for_dstring.h>
@@ -55,19 +56,25 @@ int main()
 
 		for(int i = 0; i < 100; i++)
 		{
-			write_to_stream_formatted(&s2, &error, "%d\n", i);
+			write_to_stream_formatted(&s2, &error, "%d,", i);
 			if(error)
 				break;
 			flush_all_from_stream(&s2, &error);
 			if(error)
 				break;
 		}
+		if(!error)
+			write_to_stream_formatted(&s2, &error, "\n");
+		if(!error)
+			flush_all_from_stream(&s2, &error);
 
 		if(error)
 		{
 			printf("error : %d\n", error);
 			exit(-1);
 		}
+
+		printf(printf_dstring_format, printf_dstring_params(&s1));
 
 		#define data_capacity 10
 		char data[data_capacity];

@@ -10,7 +10,7 @@ static cy_uint read_from_dstring(void* stream_context, void* data, cy_uint data_
 	cy_uint str_size = get_char_count_dstring(str);
 
 	cy_uint bytes_to_read = min(str_size, data_size);
-	memory_move(data, str_data, data_size);
+	memory_move(data, str_data, bytes_to_read);
 
 	// now discard those bytes_to_read from the prefix of the str
 	if(discard_chars_from_front_dstring(str, bytes_to_read))
