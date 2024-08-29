@@ -36,11 +36,70 @@ int main()
 			flush_all_from_stream(&stdout, &error);
 
 		if(error)
+		{
 			printf("error : %d\n", error);
+			exit(-1);
+		}
 
 		close_stream(&s2, &error);
 		deinitialize_stream(&s2);
 	}
+
+	{
+		dstring s1;
+		init_empty_dstring(&s1, 0);
+		stream s2;
+		initialize_dstring_stream(&s2, &s1);
+
+		int error = 0;
+
+		for(int i = 0; i < 100; i++)
+		{
+			write_to_stream_formatted(&s2, &error, "%d\n", i);
+			if(error)
+				break;
+			flush_all_from_stream(&s2, &error);
+			if(error)
+				break;
+		}
+
+		if(error)
+		{
+			printf("error : %d\n", error);
+			exit(-1);
+		}
+
+		#define data_capacity 10
+		char data[data_capacity];
+		cy_uint bytes_read = 0;
+
+		while(1)
+		{
+			bytes_read = read_from_stream(&s2, data, data_capacity, &error);
+			if(error || bytes_read == 0)
+				break;
+			write_to_stream_formatted(&stdout, &error, printf_dstring_format, bytes_read, data);
+			if(error)
+				break;
+		}
+		if(!error)
+			flush_all_from_stream(&stdout, &error);
+
+		if(error)
+		{
+			printf("error : %d\n", error);
+			exit(-1);
+		}
+
+		close_stream(&s2, &error);
+		deinitialize_stream(&s2);
+			
+
+		deinit_dstring(&s1);
+	}
+
+	deinitialize_stream(&stdin);
+	deinitialize_stream(&stdout);
 
 	return 0;
 }
