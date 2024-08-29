@@ -29,6 +29,7 @@ struct stream
 	// this is the threshold of maximum unflushed_data that can exist in the unflushed_data pipe
 	// beyond which a flush will be called, from the write call
 	cy_uint max_unflushed_bytes_count;
+	#define DEFAULT_MAX_UNFLUSHED_BYTES_COUNT 4096
 
 	// returns bytes read from data, (atmost data_size number of bytes will be touched i.e. returned)
 	// on error return 0 bytes read and set the value of (non-zero) error
