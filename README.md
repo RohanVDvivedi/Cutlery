@@ -48,6 +48,7 @@ The above 2 statements slides in another feature, references to the objects insi
    * `#include<count_min_sketch.h>`
    * `#include<memory_allocator_interface.h>`
    * `#include<dstring_base64.h>`
+   * `#include<stream.h>`
 
 ## Instructions for uninstalling library
 

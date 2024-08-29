@@ -7,7 +7,7 @@ DOWNLOAD_DIR:=/usr/local
 # we may download all the public headers
 
 # list of public api headers (only these headers will be installed)
-PUBLIC_HEADERS:=cutlery_stds.h cutlery_math.h array.h arraylist.h arraylist_sort.h index_accessed_search_sort.h index_accessed_interface.h heap.h heap_info.h linkedlist.h singlylist.h bst.h hashmap.h comparator_interface.h hasher_interface.h notifier_interface.h dstring.h dstring_substring.h dstring_diff.h dstring_char.h dstring_base64.h dstring_index_accessed_interface.h dpipe.h bitmap.h union_find.h bloom_filter.h count_min_sketch.h memory_allocator_interface.h multi_dim_array_util.h probabilistic_data_structure_util.h n-ary_tree_as_array_util.h circular_buffer_array_util.h value_arraylist.h
+PUBLIC_HEADERS:=cutlery_stds.h cutlery_math.h array.h arraylist.h arraylist_sort.h index_accessed_search_sort.h index_accessed_interface.h heap.h heap_info.h linkedlist.h singlylist.h bst.h hashmap.h comparator_interface.h hasher_interface.h notifier_interface.h dstring.h dstring_substring.h dstring_diff.h dstring_char.h dstring_base64.h dstring_index_accessed_interface.h dpipe.h stream.h stream_for_dstring.h stream_for_file_descriptor.h stream_to_read_until_dstring.h bitmap.h union_find.h bloom_filter.h count_min_sketch.h memory_allocator_interface.h multi_dim_array_util.h probabilistic_data_structure_util.h n-ary_tree_as_array_util.h circular_buffer_array_util.h value_arraylist.h
 # the library, which we will create
 LIBRARY:=lib${PROJECT_NAME}.a
 # the binary, which will use the created library
