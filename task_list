@@ -16,6 +16,7 @@ ALLOCATOR
    * need to stor only the block pointer, and allocated size for this allocator
  * implement a generic memory allocator with fixed alignment (1 byte - 4 byte - 8 byte) for microcontrollers
  * Make compute-only libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
+ * reafactor stream_to_read_until_dstring to use cutlery allocators
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based binomial heap and fibonacci heap.
