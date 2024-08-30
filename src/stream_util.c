@@ -116,8 +116,9 @@ cy_uint skip_whitespaces_from_stream(stream* rs, cy_uint max_whitespaces_to_skip
 	{
 		char byte;
 		cy_uint byte_read = read_from_stream(rs, &byte, 1, error);
-
-		if(byte_read == 0 || (*error))
+		if((*error))
+			return 0;
+		if(byte_read == 0)
 			break;
 
 		if(is_whitespace_char(byte))
@@ -126,7 +127,7 @@ cy_uint skip_whitespaces_from_stream(stream* rs, cy_uint max_whitespaces_to_skip
 		{
 			unread_from_stream(rs, &byte, 1, error);
 			if((*error))
-				bytes_read++;
+				return 0;
 			break;
 		}
 	}
@@ -145,15 +146,16 @@ cy_uint skip_dstring_from_stream(stream* rs, const dstring* str_to_skip, int* er
 	{
 		char byte;
 		cy_uint byte_read = read_from_stream(rs, &byte, 1, error);
-
-		if(byte_read == 0 || (*error))
+		if((*error))
+			return 0;
+		if(byte_read == 0)
 			break;
 
 		if(byte != str_data[match_size])
 		{
 			unread_from_stream(rs, &byte, 1, error);
 			if((*error))
-				return match_size + 1;
+				return 0;
 			break;
 		}
 	}
@@ -163,7 +165,7 @@ cy_uint skip_dstring_from_stream(stream* rs, const dstring* str_to_skip, int* er
 	{
 		unread_from_stream(rs, str_data, match_size, error);
 		if((*error))
-			return match_size;
+			return 0;
 		return 0;
 	}
 
@@ -193,8 +195,12 @@ dstring read_until_dstring_from_stream(stream* rs, const dstring* until_str, con
 	{
 		char byte;
 		cy_uint byte_read = read_from_stream(rs, &byte, 1, error);
-
-		if(byte_read == 0 || (*error))
+		if((*error))
+		{
+			deinit_dstring(&res);
+			return res;
+		}
+		if(byte_read == 0)
 			break;
 
 		// append the character we just read to the res
@@ -223,23 +229,17 @@ dstring read_until_dstring_from_stream(stream* rs, const dstring* until_str, con
 		}
 	}
 
-	if((*error))
-	{
-		deinit_dstring(&res);
-		return res;
-	}
-
 	// if we couldn't match with until_str
 	if(match_length < until_str_size)
 	{
 		unread_dstring_from_stream(rs, &res, error);
-		if(!(*error))
+		if((*error))
 		{
-			make_dstring_empty(&res);
-			shrink_dstring(&res);
-		}
-		else
 			deinit_dstring(&res);
+			return res;
+		}
+		make_dstring_empty(&res);
+		shrink_dstring(&res);
 	}
 
 	return res;
@@ -258,64 +258,49 @@ dstring read_until_any_end_chars_from_stream(stream* rs, int (*is_end_char)(int 
 
 	(*last_byte) = 257;
 
-	while(!end_encountered)
+	while(!end_encountered && get_char_count_dstring(&res) < max_bytes_to_read)
 	{
 		char byte;
 		cy_uint byte_read = read_from_stream(rs, &byte, 1, error);
-
-		// if not an error, then set last_byte
-		if(!(*error))
+		if((*error))
 		{
-			if(byte_read == 0)
-				(*last_byte) = 256;
-			else
-				(*last_byte) = byte;
+			deinit_dstring(&res);
+			return res;
 		}
+
+		// set last_byte
+		if(byte_read == 0)
+			(*last_byte) = 256;
+		else
+			(*last_byte) = byte;
 
 		// if the current byte read is an end character, then set end_encountered
-		if((!(*error)) && is_end_char(byte_read == 0, byte, cntxt))
+		if(is_end_char(byte_read == 0, byte, cntxt))
 			end_encountered = 1;
 
-		if(byte_read == 0 || (*error))
+		// no need to concatenate the byte, if it was an end of stream
+		if(byte_read == 0)
 			break;
 
-		// append the character we just read to the res, only if number of bytes in res
-		if(get_char_count_dstring(&res) < max_bytes_to_read)
+		// append the character we just read to the res
+		if(!concatenate_char(&res, byte))
 		{
-			if(!concatenate_char(&res, byte))
-			{
-				(*error) = ALLOCATION_FAILURE_IN_STREAM;
-				deinit_dstring(&res);
-				return res;
-			}
+			(*error) = ALLOCATION_FAILURE_IN_STREAM;
+			deinit_dstring(&res);
+			return res;
 		}
-		else
-		{
-			unread_from_stream(rs, &byte, 1, error);
-			// since we were not suppossed to read the last byte (due to size constraints on res)
-			// any end_encountered is nullified
-			end_encountered = 0;
-			break;
-		}
-	}
-
-	if((*error))
-	{
-		deinit_dstring(&res);
-		return res;
 	}
 
 	if(!end_encountered)
 	{
 		unread_dstring_from_stream(rs, &res, error);
-		if(!(*error))
+		if((*error))
 		{
-			make_dstring_empty(&res);
-			shrink_dstring(&res);
-			(*last_byte) = 257;
-		}
-		else
 			deinit_dstring(&res);
+			return res;
+		}
+		make_dstring_empty(&res);
+		shrink_dstring(&res);
 	}
 
 	return res;
