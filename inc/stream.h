@@ -22,6 +22,10 @@ struct stream
 	// please ensure that this value fits the cy_uint integer type
 	#define MAX_UNREAD_BYTES_COUNT 1024
 
+	// out of these MAX_UNREAD_BYTES_COUNT unread_data bytes,
+	// and you may only accumulate no more than (MAX_UNREAD_BYTES_COUNT/2) as bytes to unread
+	// the rest is used for bulk reading
+
 	// this pipe stores all data that has been written to the stream
 	// but has not been flushed yet, using the write_to_stream_context function call
 	dpipe unflushed_data;
@@ -99,6 +103,8 @@ cy_uint read_from_stream(stream* rs, void* data, cy_uint data_size, int* error);
 
 // unreads to stream's internal buffer, the contents can be re-read on a read_from_stream call
 // an error is thrown, then the unread call has failed
+// you must use this function very wisely, and only unread bytes that you actually read, and unreads must never accumulate more than (MAX_UNREAD_BYTES_COUNT/2) bytes
+// if you every need to totally accumulate more than (MAX_UNREAD_BYTES_COUNT/2) bytes then use an external buffer
 void unread_from_stream(stream* rs, const void* data, cy_uint data_size, int* error);
 
 // return value of this function suggests, the number of bytes from data_size, that were either

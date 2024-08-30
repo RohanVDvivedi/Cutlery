@@ -105,11 +105,10 @@ cy_uint read_from_stream(stream* strm, void* data, cy_uint data_size, int* error
 
 	// if you have reached here, then the unread_data is empty and end_of_stream_received == 0
 
-	// if data_size to be read is lesser than 128 bytes then, we attempt to make a read for a kilo byte from the stream context and then cache remaining bytes
-	if(data_size < 128)
+	// if data_size to be read is lesser than (MAX_UNREAD_BYTES_COUNT/2) bytes then, we attempt to make a read for a kilo byte from the stream context and then cache remaining bytes
+	if(data_size < (MAX_UNREAD_BYTES_COUNT/2))
 	{
-		// the below macro must be greater than or equal to 128
-		#define data_cache_read_capacity MAX_UNREAD_BYTES_COUNT
+		#define data_cache_read_capacity (MAX_UNREAD_BYTES_COUNT/2)
 
 		// if unread data does not have enough space, then expand it
 		if(get_bytes_writable_in_dpipe(&(strm->unread_data)) < data_cache_read_capacity &&
