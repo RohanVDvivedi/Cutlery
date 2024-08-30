@@ -85,8 +85,13 @@ cy_uint read_unsigned_long_long_int_from_stream(stream* rs, unsigned int radix, 
 	{
 		char byte;
 		cy_uint byte_read = read_from_stream(rs, &byte, 1, error);
+		if((*error))
+		{
+			(*data) = 0;
+			return 0;
+		}
 
-		if(byte_read == 0 || (*error))
+		if(byte_read == 0)
 			break;
 
 		unsigned int digit = get_digit_from_char(byte, radix);
@@ -101,7 +106,10 @@ cy_uint read_unsigned_long_long_int_from_stream(stream* rs, unsigned int radix, 
 		{
 			unread_from_stream(rs, &byte, 1, error);
 			if((*error))
-				bytes_read++;
+			{
+				(*data) = 0;
+				return 0;
+			}
 			break;
 		}
 	}
