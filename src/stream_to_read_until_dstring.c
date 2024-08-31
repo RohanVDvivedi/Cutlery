@@ -1,4 +1,4 @@
-#include<read_until_dstring_stream.h>
+#include<stream_to_read_until_dstring.h>
 
 #include<stdlib.h>
 
