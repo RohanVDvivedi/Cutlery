@@ -3,7 +3,7 @@
 2. Add new datastructure types tasks (*future)
 
 STREAM
- * refactor ConnMan, HTTPparser, JSONparser, Serc and serc-template-application accordingly
+ * refactor HTTPparser, JSONparser, Serc and serc-template-application accordingly
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
 
 ALLOCATOR
