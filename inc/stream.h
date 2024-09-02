@@ -18,7 +18,7 @@ struct stream
 	dpipe unread_data;
 
 	// this is the maximum compile time constant number of bytes that can exist at any moment in the unread_data dpipe
-	// this value must be >= 128, and atmost 2048 for optimum performance
+	// this value must be >= 200, and atmost 2048 for optimum performance
 	// please ensure that this value fits the cy_uint integer type
 	#define MAX_UNREAD_BYTES_COUNT 1024
 
