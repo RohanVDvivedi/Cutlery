@@ -16,35 +16,47 @@ ALLOCATOR
  * reafactor stream_to_read_until_dstring to use cutlery allocators
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
- * implement a node based binomial heap and fibonacci heap.
- * it will use binomialheap node as a struct
-struct binomialheapnode
+ * implement a node based intrusive fibonacci heap. (binomial heap will not be supported, strict constraints of binomial heap will give us no benefit)
+struct fibheapnode
 {
-	// parent of this node
-	binomialheapnode* parent;
+	// must be the first element of this node, so that children and root_list can use the same node_offset as the fibheap.node_offset
+	llnode sibling_links;
+
+	// parent of this node, NULL if it exists in the rootlist
+	void* parent;
 
 	// number of children
 	cy_uint degree;
 
+	// the below bit will be set if the node lost a child since it was merged with its parent, this bit will be cleared as soon as it gets added to rootlist
+	int lost_child_marker;
+
 	// linkedlist of its children
 	linkedlist children;
 };
- * binomialheapnode will have utility functions to detach-from-parent, swap position-with-parent, link-parent-and-child etc since these fucntions can be used both with fibonacci heap and binomial heap
- * we will also have the main data structure struct as
-struct binomialheap
+struct fibheap
 {
-	// implementation_type can be FIBONACCI_FAST_HEAP or BINOMIAL_FAST_HEAP
-	binomialheap_implementation_type implementation_type;
-
 	heap_info info;
 
-	// pointer to the least or greatest node, based on type
-	binomialheapnode* top_node;
+	cy_uint node_offset;
 
+	// pointer to the top of the priority_queue, this node must be present in the root_list
+	void* top_node;
+
+	// linkedlist of its roots
 	linkedlist root_list;
 };
-
- * implement leftist heap as leftistheap (* future)
+ * initialize_fibheap -> makes a new empty fibheap
+ * merge_fibheap -> merge root lists of the other fibheap, update the top_node
+ * get_top_of_fibheap -> returns the top element
+ * pop_from_fibheap -> removes top element, and adds all its children to the root_list, update the top_node
+ * push_to_fibheap -> inserts the element to the rootlist and updates the top_node
+ * remove_from_fibheap -> removes node from fibheap and pushes all its children to the root_list, update the top_node
+ * heapify_at -> removes node or any of its children from the tree and puts them back into the root_list, if they pass is_reordering_required test, updates top_node
+ * internal functions
+   * move_node_to_root_list -> does as suggested, and updates top_node, it will also increments the lost_child_marker of its parent, NOP if its parent is NULL
+   * find_new_top_node given the linkedlist -> iterates over root_list and finds the new top_node
+   * restore_structure -> creates a hashmap <ELEMENTS_AS_LINKED_LIST with same node_offset> degree -> root node, of fixed size = 32, and then keep on merging nodes with same degree and promoting the parent, then remove all of them into the root_list of fibheap, while keeping track of the top_node
 
 BST tasks (NEW DATASTRUCTURE inclusion * future)
  * provide implementation for TREAP, AA_TREE etc in bst
@@ -56,7 +68,8 @@ BST tasks (NEW DATASTRUCTURE inclusion * future)
 
 RADIX_TREE tasks (NEW DATASTRUCTURE)
  * radix tree, skip list, will never be part of part of Cutlery, as these data structures need additional nodes to be allocated for insertions, and if these allcations fails we can do nothing but panic and exit
-   * additioonally they can be implemented with primitives from Cutlery
+   * additionally they can be implemented with primitives from Cutlery, hence the decission
+ * leftist heap will not be supported due to its insignificance in the industry
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use value_arraylist for below functionality and implement their iterative approaches only
