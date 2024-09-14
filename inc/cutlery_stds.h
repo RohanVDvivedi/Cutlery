@@ -190,4 +190,7 @@ int memory_reverse_chunks(void* data, cy_uint size, cy_uint chunk_size);
 */
 int memory_right_rotate(void* data, cy_uint size, cy_uint right_rotate_amount);
 
+// simple reverse of right rotate
+int memory_left_rotate(void* data, cy_uint size, cy_uint left_rotate_amount);
+
 #endif

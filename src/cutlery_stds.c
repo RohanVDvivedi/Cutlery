@@ -401,3 +401,24 @@ int memory_right_rotate(void* data, cy_uint size, cy_uint right_rotate_amount)
 
 	return 1;
 }
+
+int memory_left_rotate(void* data, cy_uint size, cy_uint left_rotate_amount)
+{
+	// right rotating data of 0 or 1 bytes is always a no-operation
+	if(size <= 1)
+		return 1;
+
+	// compute the last data byte address that needs to be moved
+	void* data_end = data + size;
+
+	// this conditions may arise if we happen to be at edge of the memory
+	if(data >= data_end)
+		return 0;
+
+	// rotations of amount that is multiple of size is a no-operation
+	left_rotate_amount = left_rotate_amount % size;
+	if(left_rotate_amount == 0)
+		return 1;
+
+	return memory_right_rotate(data, size, size - left_rotate_amount);
+}
