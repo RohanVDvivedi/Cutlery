@@ -184,6 +184,9 @@ int memory_reverse_chunks(void* data, cy_uint size, cy_uint chunk_size);
 		after right rotate operation
 		data -> 03 04 00 01 02
 		i.e. every byte moves circularly to the right by right_rotate_amount
+
+		i.e. to right rotate an array of ints by right_rotate_amount_in_ints
+		memory_right_rotate(data, sizeof(data), right_rotate_amount_in_ints * sizeof(int));
 */
 int memory_right_rotate(void* data, cy_uint size, cy_uint right_rotate_amount);
 
