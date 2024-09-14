@@ -1,17 +1,5 @@
 1. Tasks picked
 
- * add function to reverse bytes memory_reverse(void* data, cy_uint data_size, cy_uint chunk_size) -> return success directly if data_size <= 1
-  // fails if data_size is not multiple of chunk_size
- * add function to right_rotate bytes 
- 		memory_right_rotate(void* data, cy_uint data_size, cy_uint right_rotate_amount)
- 			return success if data_size <= 1
- 			right_rotate_amount = right_rotate_amount % data_size;
- 			if(right_rotate_amount == 0)
- 				return 1;
- 			memory_reverse(data, data_size);
- 			memory_reverse(data, right_rotate_amount);
- 			memory_reverse(data + right_rotate_amount, data_size - right_rotate_amount);
-
 2. Add new datastructure types tasks (*future)
 
 STREAM
