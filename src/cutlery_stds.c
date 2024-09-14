@@ -341,3 +341,43 @@ int memory_swap(void* data1_start, void* data2_start, cy_uint size)
 
 	return 1;
 }
+
+int memory_reverse_chunks(void* data, cy_uint size, cy_uint chunk_size)
+{
+	// chunk size must never be 0
+	if(chunk_size == 0)
+		return 0;
+
+	// if the size is zero, then there are no chunks to reverse
+	if(size == 0)
+		return 1;
+
+	// compute the last data byte address that needs to be moved
+	void* data_end = data + size;
+
+	// this conditions may arise if we happen to be at edge of the memory
+	if(data >= data_end)
+		return 0;
+
+	// size must be multiple of chunk_size
+	if(size % chunk_size != 0)
+		return 0;
+
+	// total chunks in data
+	cy_uint total_chunks = size / chunk_size;
+
+	// if there are 0 or 1 chunks then reversing has no effect
+	if(total_chunks <= 1)
+		return 1;
+
+	// start swapping chunks from first to back, meeting in the middle
+	for(cy_uint chunk_i = 0; chunk_i < (total_chunks / 2); chunk_i++)
+		memory_swap(data + (chunk_i * chunk_size), data + ((total_chunks - 1 - chunk_i) * chunk_size), chunk_size);
+
+	return 1;
+}
+
+int memory_right_rotate(void* data, cy_uint size, cy_uint right_rotate_amount)
+{
+
+}
