@@ -155,4 +155,33 @@ int memory_compare(const void* data1, const void* data2, cy_uint size);
 */
 int memory_swap(void* data1, void* data2, cy_uint size);
 
+/*
+	this is a cutlery specific function to reverse contents of the data in chunks of chunk_size
+	return :
+		1 if success
+		0 if size is not nultiple of chunk_size
+	example :
+		data -> 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14, size = 15, chunk_size 3
+		after reverse operation
+		data -> 12 13 14 09 10 11 06 07 08 03 04 05 00 01 02
+		data in the chunk remains in the same order, but the chunks are reversed
+*/
+int memory_reverse_chunks(void* data, cy_uint size, cy_uint chunk_size);
+
+// to reverse all bytes in the data use the below macro
+#define memory_reverse(data, data_size) memory_reverse_chunks(data, data_size, 1)
+
+/*
+	this is a cutlery specific function to right rotate a circular array of contiguous bytes
+	return :
+		1 if success
+		0 for failure
+	example :
+		data -> 00 01 02 03 04, size = 5, right_rotate_amount = 2
+		after right rotate operation
+		data -> 03 04 00 01 02
+		i.e. every byte moves circularly to the right by right_rotate_amount
+*/
+int memory_right_rotate(void* data, cy_uint size, cy_uint right_rotate_amount);
+
 #endif
