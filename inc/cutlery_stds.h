@@ -165,6 +165,9 @@ int memory_swap(void* data1, void* data2, cy_uint size);
 		after reverse operation
 		data -> 12 13 14 09 10 11 06 07 08 03 04 05 00 01 02
 		data in the chunk remains in the same order, but the chunks are reversed
+
+	i.e. an array of ints can be reversed as follows
+	memory_reverse_chunks(data, sizeof(data), sizeof(int));
 */
 int memory_reverse_chunks(void* data, cy_uint size, cy_uint chunk_size);
 

@@ -178,5 +178,19 @@ int main()
 		}
 	}
 
+	printf("\n\n");
+
+	printf("memory_reverse_chunks : \n");
+	int data[13] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+	printf("before data : ");
+	for(int i = 0; i < sizeof(data)/sizeof(int); i++)
+		printf("%d ", data[i]);
+	printf("\n");
+	memory_reverse_chunks(data, sizeof(data), sizeof(int));
+	printf("after data : ");
+	for(int i = 0; i < sizeof(data)/sizeof(int); i++)
+		printf("%d ", data[i]);
+	printf("\n");
+
 	return 0;
 }
