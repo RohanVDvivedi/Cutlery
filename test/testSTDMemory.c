@@ -197,7 +197,7 @@ int main()
 	printf("\n\n");
 
 	{
-		for(cy_uint right_rotate_amount = 0; right_rotate_amount < 26; right_rotate_amount++)
+		for(cy_uint right_rotate_amount = 0; right_rotate_amount <= 14; right_rotate_amount++)
 		{
 			printf("memory_right_rotate(%"PRIu_cy_uint") : \n", right_rotate_amount);
 			unsigned long long int data[13] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -206,6 +206,25 @@ int main()
 				printf("%llx ", data[i]);
 			printf("\n");
 			memory_right_rotate(data, sizeof(data), sizeof(data[0]) * right_rotate_amount);
+			printf("after data  : ");
+			for(int i = 0; i < sizeof(data)/sizeof(data[0]); i++)
+				printf("%llx ", data[i]);
+			printf("\n\n");
+		}
+	}
+
+	printf("\n\n");
+
+	{
+		for(cy_uint left_rotate_amount = 0; left_rotate_amount <= 14; left_rotate_amount++)
+		{
+			printf("memory_left_rotate(%"PRIu_cy_uint") : \n", left_rotate_amount);
+			unsigned long long int data[13] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+			printf("before data : ");
+			for(int i = 0; i < sizeof(data)/sizeof(data[0]); i++)
+				printf("%llx ", data[i]);
+			printf("\n");
+			memory_left_rotate(data, sizeof(data), sizeof(data[0]) * left_rotate_amount);
 			printf("after data  : ");
 			for(int i = 0; i < sizeof(data)/sizeof(data[0]); i++)
 				printf("%llx ", data[i]);
