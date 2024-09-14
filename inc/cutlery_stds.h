@@ -169,7 +169,7 @@ int memory_swap(void* data1, void* data2, cy_uint size);
 int memory_reverse_chunks(void* data, cy_uint size, cy_uint chunk_size);
 
 // to reverse all bytes in the data use the below macro
-#define memory_reverse(data, data_size) memory_reverse_chunks(data, data_size, 1)
+#define memory_reverse(data, data_size) memory_reverse_chunks((data), (data_size), 1)
 
 /*
 	this is a cutlery specific function to right rotate a circular array of contiguous bytes

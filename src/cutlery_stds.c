@@ -379,5 +379,25 @@ int memory_reverse_chunks(void* data, cy_uint size, cy_uint chunk_size)
 
 int memory_right_rotate(void* data, cy_uint size, cy_uint right_rotate_amount)
 {
+	// right rotating data of 0 or 1 bytes is always a no-operation
+	if(size <= 1)
+		return 1;
 
+	// compute the last data byte address that needs to be moved
+	void* data_end = data + size;
+
+	// this conditions may arise if we happen to be at edge of the memory
+	if(data >= data_end)
+		return 0;
+
+	// rotations of amount that is multiple of size is a no-operation
+	right_rotate_amount = right_rotate_amount % size;
+	if(right_rotate_amount == 0)
+		return 1;
+
+	memory_reverse(data, size);
+	memory_reverse(data, right_rotate_amount);
+	memory_reverse(data + right_rotate_amount, size - right_rotate_amount);
+
+	return 1;
 }
