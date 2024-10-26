@@ -10,8 +10,8 @@
 #endif
 
 // below macros must be used only for unsigned integers
-// returns greatest multiple of alignemnt lesser than or equal to x
-#define UINT_ALIGN_DOWN(x, alignment) (((x) / (alignment)) * alignment)
+// returns greatest multiple of alignment lesser than or equal to x
+#define UINT_ALIGN_DOWN(x, alignment) (((x) / (alignment)) * (alignment))
 // returns least multiple of alignment greater than or equal to x
 #define UINT_ALIGN_UP(x, alignment)   (UINT_ALIGN_DOWN(x, alignment) + ( ((x)%(alignment)) ? (alignment) : 0 ))
 
