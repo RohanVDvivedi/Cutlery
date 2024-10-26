@@ -6,12 +6,53 @@ STREAM
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
 
 ALLOCATOR
- * implement a arena/stack allocaor
-   * allocating with a fixed alignment (size will always be multiple of alignment) from the end
-   * deallocating elements only at the end
-   * and destroying the arena when it is no longer in use
-   * need to stor only the block pointer, and allocated size for this allocator
- * implement a generic memory allocator with fixed alignment (1 byte - 4 byte - 8 byte) for microcontrollers
+ * uc_allocator -> a microcontroller based allocator
+   * struct uc_allocator_context
+   {
+   		void* memory;
+   		cy_uint memory_size;
+   		cy_uint block_alignment; // == LCM(_Alignof(any_block), _Alignof(free_block))
+   		any_block* first_block; // this may not be same as memory
+   		linked_list all_blocks; // contains all the blocks, the position of the block here controls its size
+   														// only a block present in all_blocks should be inserted in free_blocks
+   														// and a block whose size could change (due to splitting or coalescing) must be removed from the free_blocks, before you do it
+   														// all blocks must be present in all_blocks but only free blocks are present in free_blocks
+   		bst free_blocks;	// compared by get_block_size
+   }
+   * struct any_block
+   {
+   		int is_free:1;
+   		int is_marked:1; // -> for mark and sweep GC
+   		llnode ab_node;		// intrusive node for all_blocks
+   }
+   * struct free_block
+   {
+   		any_block any;		// even a free block is any block
+   		bst_node fb_node;	// intrusive node for free_blocks
+   }
+   * internal api
+     * cy_uint get_block_size(any_block* b); // total size of the block
+     * any_block* get_next_block(any_block* b);
+     * any_block* get_prev_block(any_block* b);
+     * any_block* allocate_block(cy_uint size); // returns block with atleast size as block size, and always aligned to uc_allocator_context->block_alignment
+       * disintegrates any block with later part of the block being free
+       * find block b that is free and is atleast size in size
+       * remove b from free_blocks, reset its is_free bit, marking it allocated
+       * get s = size of b
+       * if s - size >= sizeof(free_block), then b2 = UINT_ALIGN_UP(b + size, uc_allocator_context->block_alignment)
+         * s2 = (b + s - b2), if s2 > sizeof(free_block), then make a new free block, insert it in all_blocks and then in free_blocks
+     * int deallocate_block(any_block* b);
+       * mark it free
+       * initialize_bstnode(&(((free_block*)b)->fb_node));
+       * insert it in free_blocks
+       * check if the next_block is free, if free remove both from free_blocks and the next_block from all_blocks, then insert it back in free_blocks
+     	 * check if the prev block is free, if free remove both from free_blocks and it from the all_blocks, then insert it back in free_blocks
+     * usable memory of the block is at position (void*)(((any_block*)b)+1)
+   * external api
+     * to allocate with alignment requirements A and size requirements S
+       * allocate block B of size = sizeof(any_block) + (A-1) + sizeof(void*) + S
+       * return pointer p = UINT_ALIGN_UP(((cy_uint)B) + sizeof(any_block) + sizeof(void*), A)
+       * and then do memory_move(p - sizeof(void*), &B, sizeof(void*)), to store the pointer to the block that was allocated
  * Make compute-only libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
  * reafactor stream_to_read_until_dstring to use cutlery allocators
 
