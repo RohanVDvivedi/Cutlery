@@ -35,6 +35,7 @@ ALLOCATOR
      * any_block* get_next_block(any_block* b);
      * any_block* get_prev_block(any_block* b);
      * any_block* allocate_block(cy_uint size); // returns block with atleast size as block size, and always aligned to uc_allocator_context->block_alignment
+       * size = max(size, sizeof(free_block)) // only allocate blocks of size free_block or more
        * disintegrates any block with later part of the block being free
        * find block b that is free and is atleast size in size
        * remove b from free_blocks, reset its is_free bit, marking it allocated
