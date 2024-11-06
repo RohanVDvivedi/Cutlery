@@ -234,5 +234,23 @@ int main()
 
 	printf("\n\n");
 
+	{
+		#define BYTES_SIZE 10
+		char bytes[BYTES_SIZE];
+
+		printf("memory = %p, %d\n", bytes, BYTES_SIZE);
+
+		printf("%p is contained %d\n", bytes-5, memory_contains(bytes, BYTES_SIZE, bytes-5));
+		printf("%p is contained %d\n", bytes-1, memory_contains(bytes, BYTES_SIZE, bytes-1));
+		printf("%p is contained %d\n", bytes+5, memory_contains(bytes, BYTES_SIZE, bytes+5));
+		printf("%p is contained %d\n", bytes+10, memory_contains(bytes, BYTES_SIZE, bytes+10));
+		printf("%p is contained %d\n", bytes+15, memory_contains(bytes, BYTES_SIZE, bytes+15));
+
+		printf("memory = %p, %d\n", bytes, 0);
+		printf("%p is contained %d\n", bytes, memory_contains(bytes, 0, bytes));
+	}
+
+	printf("\n\n");
+
 	return 0;
 }
