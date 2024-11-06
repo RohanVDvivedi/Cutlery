@@ -422,3 +422,16 @@ int memory_left_rotate(void* data, cy_uint size, cy_uint left_rotate_amount)
 
 	return memory_right_rotate(data, size, size - left_rotate_amount);
 }
+
+int memory_contains(const void* data, cy_uint size, const void* ptr)
+{
+	// no bytes are contained if the memory is 0 bytes in size
+	if(size == 0)
+		return 0;
+
+	// grab pointer to the last byte, you couldn't do this if size = 0
+	const void* data_last = data + size - 1;
+
+	// test inclusivity
+	return (data <= ptr) && (ptr <= data_last);
+}

@@ -193,4 +193,8 @@ int memory_right_rotate(void* data, cy_uint size, cy_uint right_rotate_amount);
 // simple reverse of right rotate
 int memory_left_rotate(void* data, cy_uint size, cy_uint left_rotate_amount);
 
+// returns true if the byte at ptr is contained within the memory of size `size` pointed by the pointer data
+// returns false if size = 0
+int memory_contains(const void* data, cy_uint size, const void* ptr);
+
 #endif
