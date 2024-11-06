@@ -197,4 +197,8 @@ int memory_left_rotate(void* data, cy_uint size, cy_uint left_rotate_amount);
 // returns false if size = 0
 int memory_contains(const void* data, cy_uint size, const void* ptr);
 
+// utility function to get first aligned pointer in the region pointer by data of size = `size`
+// returns NULL, if no such pointer is found
+const void* memory_get_first_aigned_in_region(const void* data, cy_uint size, cy_uint alignment);
+
 #endif

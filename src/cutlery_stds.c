@@ -435,3 +435,28 @@ int memory_contains(const void* data, cy_uint size, const void* ptr)
 	// test inclusivity
 	return (data <= ptr) && (ptr <= data_last);
 }
+
+const void* memory_get_first_aigned_in_region(const void* data, cy_uint size, cy_uint alignment)
+{
+	// no bytes are contained if size = 0
+	if(size == 0)
+		return NULL;
+
+	// grab unsigned value of the pointer
+	const cy_uint data_ptr_val = data;
+
+	// if aligning the data pointer up will make it overflow, then we can not do anything
+	if(will_UINT_ALIGN_UP_overflow(cy_uint, data_ptr_val, alignment))
+		return NULL;
+
+	// grab the result, we are sure that we can safely UINT_ALIGN_UP, (atleast in the integral range of cy_uint)
+	const cy_uint result_ptr_val = UINT_ALIGN_UP(data_ptr_val, alignment);
+
+	// the the result_ptr_val is not in the desired range then fail
+	// we know for sure that size != 0
+	if(result_ptr_val < data_ptr_val || (data_ptr_val + size - 1) < result_ptr_val)
+		return NULL;
+
+	const void* result = result_ptr_val;
+	return result;
+}
