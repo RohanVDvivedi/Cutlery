@@ -1,5 +1,8 @@
 1. Tasks picked
 
+* add a function to test of will_UINT_ALIGN_UP_overflow
+* add a new utility function that takes data and size, and returns first pointer position in the memory region that is aligned to align bytes, else returns NULL
+
 2. Add new datastructure types tasks (*future)
 
 STREAM
@@ -43,7 +46,6 @@ ALLOCATOR
        * if s - size >= sizeof(free_block), then b2 = UINT_ALIGN_UP(b + size, uc_allocator_context->block_alignment)
          * ensure that b2 and b2 + sizeof(free_block) - 1, (possible first and last byte of the split block) are both contained in memory region b + size, s - size
          * s2 = (b + s - b2), if s2 > sizeof(free_block), then make a new free block, insert it in all_blocks and then in free_blocks
-     * add a new utility function that takes data and size, and returns first pointer position in the memory region that is aligned to align bytes, else returns NULL
      * int deallocate_block(any_block* b);
        * mark it free
        * initialize_bstnode(&(((free_block*)b)->fb_node));
