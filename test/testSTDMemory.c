@@ -252,5 +252,26 @@ int main()
 
 	printf("\n\n");
 
+	{
+		#define BYTES_SIZE 10
+		char bytes[BYTES_SIZE];
+		printf("memory = %p, %d\n", bytes, BYTES_SIZE);
+		printf("2 -> %p\n", memory_get_first_aigned_in_region(bytes, BYTES_SIZE, 2));
+		printf("5 -> %p\n", memory_get_first_aigned_in_region(bytes, BYTES_SIZE, 5));
+		printf("12 -> %p\n", memory_get_first_aigned_in_region(bytes, BYTES_SIZE, 12));
+		printf("24 -> %p\n", memory_get_first_aigned_in_region(bytes, BYTES_SIZE, 24));
+
+		char* b = (char* )(-1) - 9;
+		int b_size = 10;
+		printf("memory = %p, %d\n", b, b_size);
+		printf("2 -> %p\n", memory_get_first_aigned_in_region(b, b_size, 2));
+		printf("5 -> %p\n", memory_get_first_aigned_in_region(b, b_size, 5));
+		printf("12 -> %p\n", memory_get_first_aigned_in_region(b, b_size, 12));
+		printf("16 -> %p\n", memory_get_first_aigned_in_region(b, b_size, 16));
+		printf("24 -> %p\n", memory_get_first_aigned_in_region(b, b_size, 24));
+	}
+
+	printf("\n\n");
+
 	return 0;
 }

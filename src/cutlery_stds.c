@@ -1,7 +1,5 @@
 #include<cutlery_stds.h>
 
-#include<stdio.h>
-
 static const cy_uint int_size = (sizeof(int)); // we assume that int is always 2^n bytes in size, i.e. 1,2,4,8 etc
 static const cy_uint int_bits_size = (sizeof(int) * CHAR_BIT); // CHAR_BIT must be 8
 static const cy_uint int_alignment_bit_mask = (-(sizeof(int)));	// 0b 111...111 000...000 where 0s represent alignment
