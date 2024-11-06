@@ -1,8 +1,5 @@
 1. Tasks picked
 
-* add a function to test of will_UINT_ALIGN_UP_overflow
-* add a new utility function that takes data and size, and returns first pointer position in the memory region that is aligned to align bytes, else returns NULL
-
 2. Add new datastructure types tasks (*future)
 
 STREAM
