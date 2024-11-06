@@ -25,4 +25,6 @@
 	((((A) < 0) && ((B) > 0) && ((B) > (SIGNED_MIN_VALUE_OF(type_of_A_n_B) / (A)))) || \
 	(((A) > 0) && ((B) < 0) && ((B) < (SIGNED_MIN_VALUE_OF(type_of_A_n_B) / (A)))))
 
+#define will_UINT_ALIGN_UP_overflow(x, alignment)   will_unsigned_sum_overflow(UINT_ALIGN_DOWN(x, alignment), ( ((x)%(alignment)) ? (alignment) : 0 ))
+
 #endif
