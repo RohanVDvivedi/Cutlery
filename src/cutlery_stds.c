@@ -436,6 +436,8 @@ int memory_contains(const void* data, cy_uint size, const void* ptr)
 	return (data <= ptr) && (ptr <= data_last);
 }
 
+#include<cutlery_math.h>
+
 const void* memory_get_first_aigned_in_region(const void* data, cy_uint size, cy_uint alignment)
 {
 	// no bytes are contained if size = 0
@@ -443,7 +445,7 @@ const void* memory_get_first_aigned_in_region(const void* data, cy_uint size, cy
 		return NULL;
 
 	// grab unsigned value of the pointer
-	const cy_uint data_ptr_val = data;
+	const cy_uint data_ptr_val = (cy_uint) data;
 
 	// if aligning the data pointer up will make it overflow, then we can not do anything
 	if(will_UINT_ALIGN_UP_overflow(cy_uint, data_ptr_val, alignment))
@@ -457,6 +459,6 @@ const void* memory_get_first_aigned_in_region(const void* data, cy_uint size, cy
 	if(result_ptr_val < data_ptr_val || (data_ptr_val + size - 1) < result_ptr_val)
 		return NULL;
 
-	const void* result = result_ptr_val;
+	const void* result = (const void*) result_ptr_val;
 	return result;
 }
