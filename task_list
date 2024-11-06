@@ -40,9 +40,9 @@ ALLOCATOR
        * find block b that is free and is atleast size in size
        * remove b from free_blocks, reset its is_free bit, marking it allocated
        * get s = size of b
-       * if s - size >= sizeof(free_block), then b2 = UINT_ALIGN_UP(b + size, uc_allocator_context->block_alignment)
-         * ensure that b2 and b2 + sizeof(free_block) - 1, (possible first and last byte of the split block) are both contained in memory region b + size, s - size
-         * s2 = (b + s - b2), if s2 > sizeof(free_block), then make a new free block, insert it in all_blocks and then in free_blocks
+       * if s - size >= sizeof(free_block), then calculate b2 using memory_get_first_aigned_in_region(b + size, s - size, uc_allocator_context->block_alignment)
+         * if b2 != NULL and s2 = (b + s - b2), if s2 > sizeof(free_block), then make a new free block at b2, insert it in all_blocks and then in free_blocks
+         * for testing print reasons of what fails block split
      * int deallocate_block(any_block* b);
        * mark it free
        * initialize_bstnode(&(((free_block*)b)->fb_node));
