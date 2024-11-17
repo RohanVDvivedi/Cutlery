@@ -7,29 +7,6 @@ STREAM
 
 ALLOCATOR
  * uc_allocator -> an allocators for microcontrollers
-   * struct uc_allocator_context
-   {
-   		void* memory;
-   		cy_uint memory_size;
-   		cy_uint block_alignment; // == LCM(_Alignof(any_block), _Alignof(free_block))
-   		any_block* first_block; // this may not be same as memory
-   		linked_list all_blocks; // contains all the blocks, the position of the block here controls its size
-   														// only a block present in all_blocks should be inserted in free_blocks
-   														// and a block whose size could change (due to splitting or coalescing) must be removed from the free_blocks, before you do it
-   														// all blocks must be present in all_blocks but only free blocks are present in free_blocks
-   		bst free_blocks;	// compared by get_block_size
-   }
-   * struct any_block
-   {
-   		int is_free:1;
-   		int is_marked:1; // -> for mark and sweep GC
-   		llnode ab_node;		// intrusive node for all_blocks
-   }
-   * struct free_block
-   {
-   		any_block any;		// even a free block is any block
-   		bst_node fb_node;	// intrusive node for free_blocks
-   }
    * internal api
      * cy_uint get_block_size(any_block* b); // total size of the block
      * any_block* get_next_block(any_block* b);
