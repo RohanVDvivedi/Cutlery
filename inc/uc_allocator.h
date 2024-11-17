@@ -48,4 +48,21 @@ struct uc_allocator_context
 	// all blocks must be present in all_blocks but only free blocks are present in free_blocks
 };
 
+// fails if alignment and size constraints do not allow initializing a uc_allocator at the desired memory block
+int initialize_uc_allocator_context(uc_allocator_context* ucac_p, void* memory, cy_uint memory_size);
+
+// functions to be used externally to iterate over all the blocks
+any_block* get_head_block_for_uc_allocator(uc_allocator_context* ucac_p);
+any_block* get_next_block_for_uc_allocator(uc_allocator_context* ucac_p, any_block* b); // next of tail is NULL
+
+// get block size for any block, allocated or not
+// this will always be the complete size of the block, including the any_block/free_block prefix structs
+cy_uint get_block_size_for_uc_allocator_block(uc_allocator_context* ucac_p, any_block* b);
+
+// returns some any_block or NULL, if a non-NULL is returned it is atleast size bytes big
+// again this size includes the any_block/free_block prefix structs
+// alignement of this block as expected is same as that of free_block `REMEBER, it was free prior to allocation?`
+any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_uint size);
+void deallocate_block_uc_allocator(any_block* b);
+
 #endif
