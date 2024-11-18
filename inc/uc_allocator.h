@@ -72,6 +72,6 @@ cy_uint get_block_size_for_uc_allocator_block(const uc_allocator_context* ucac_p
 // alignement of this block as expected is same as that of free_block `REMEBER, it was free prior to allocation?`
 // the return value is a const pointer because you are only allowed to touch memory that is after the prefix any_block struct
 const any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_uint size);
-void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, any_block* b);
+void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, const any_block* b);
 
 #endif

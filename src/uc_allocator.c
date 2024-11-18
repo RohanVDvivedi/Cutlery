@@ -125,9 +125,9 @@ const any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_ui
 	return b;
 }
 
-void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, any_block* _b)
+void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, const any_block* _b)
 {
-	void* b = _b;
+	void* b = (void*) _b;
 
 	// mark it free
 	((any_block*)b)->is_free = 1;
