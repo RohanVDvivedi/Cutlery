@@ -39,7 +39,7 @@ void print_ucac()
 int main()
 {
 	// allocate some memory for the allocator
-	cy_uint memory_size = 1024;
+	cy_uint memory_size = 128;
 	void* memory = malloc(memory_size);
 
 	cy_uint offset = 3;
