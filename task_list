@@ -7,22 +7,6 @@ STREAM
 
 ALLOCATOR
  * uc_allocator -> an allocators for microcontrollers
-   * internal api
-     * any_block* allocate_block(cy_uint size); // returns block with atleast size as block size, and always aligned to uc_allocator_context->block_alignment
-       * size = max(size, sizeof(free_block)) // only allocate blocks of size free_block or more
-       * disintegrates any block with later part of the block being free
-       * find block b that is free and is atleast size in size
-       * remove b from free_blocks, reset its is_free bit, marking it allocated
-       * get s = size of b
-       * if s - size >= sizeof(free_block), then calculate b2 using memory_get_first_aigned_in_region(b + size, s - size, uc_allocator_context->block_alignment)
-         * if b2 != NULL and s2 = (b + s - b2), if s2 > sizeof(free_block), then make a new free block at b2, insert it in all_blocks and then in free_blocks
-         * for testing print reasons of what fails block split
-     * int deallocate_block(any_block* b);
-       * mark it free
-       * initialize_bstnode(&(((free_block*)b)->fb_node));
-       * insert it in free_blocks
-       * check if the next_block is free, if free remove both from free_blocks and the next_block from all_blocks, then insert it back in free_blocks
-     	 * check if the prev block is free, if free remove both from free_blocks and it from the all_blocks, then insert it back in free_blocks
    * external api
      * to allocate with alignment requirements A and size requirements S
        * allocate block B of size = sizeof(any_block) + (A-1) + sizeof(void*) + S
