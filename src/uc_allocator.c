@@ -125,4 +125,68 @@ const any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_ui
 	return b;
 }
 
-void deallocate_block_uc_allocator(any_block* b);
+void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, any_block* _b)
+{
+	void* b = _b;
+
+	// mark it free
+	((any_block*)b)->is_free = 1;
+
+	// initialize its fb_node
+	initialize_bstnode(&(((free_block*)b)->fb_node));
+
+	// insert it in free_blocks
+	insert_in_bst(&(ucac_p->free_blocks), b);
+
+	// find the next one and try to merge with it
+	{
+		// if it is tail skip
+		if(b == get_tail_of_linkedlist(&(ucac_p->all_blocks)))
+			goto SKIP_MERGE_WITH_NEXT;
+
+		// grab b_next the next of b
+		void* b_next = (void*) get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
+
+		// if it is allocated then skip
+		if(((any_block*)b_next)->is_free == 0)
+			goto SKIP_MERGE_WITH_NEXT;
+
+		// remove them both from the free_blocks temporarily
+		remove_from_bst(&(ucac_p->free_blocks), b);
+		remove_from_bst(&(ucac_p->free_blocks), b_next);
+
+		// remove b_next from the all_blocks
+		remove_from_linkedlist(&(ucac_p->all_blocks), b_next);
+
+		// insert b back into free_blocks
+		insert_in_bst(&(ucac_p->free_blocks), b);
+	}
+	SKIP_MERGE_WITH_NEXT:;
+
+	// Probably, we merged the next of b with b, if so, the next is destroyed, but the reference b still lives as a bigger block
+
+	// find the prev one and try to merge with it
+	{
+		// if it is head skip
+		if(b == get_head_of_linkedlist(&(ucac_p->all_blocks)))
+			goto SKIP_MERGE_WITH_PREV;
+
+		// grab b_prev the prev of b
+		void* b_prev = (void*) get_prev_of_in_linkedlist(&(ucac_p->all_blocks), b);
+
+		// if it is allocated then skip
+		if(((any_block*)b_prev)->is_free == 0)
+			goto SKIP_MERGE_WITH_PREV;
+
+		// remove them both from the free_blocks temporarily
+		remove_from_bst(&(ucac_p->free_blocks), b);
+		remove_from_bst(&(ucac_p->free_blocks), b_prev);
+
+		// remove b from the all_blocks
+		remove_from_linkedlist(&(ucac_p->all_blocks), b);
+
+		// insert b back into free_blocks
+		insert_in_bst(&(ucac_p->free_blocks), b_prev);
+	}
+	SKIP_MERGE_WITH_PREV:;
+}
