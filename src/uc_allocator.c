@@ -16,7 +16,24 @@ static void initialize_free_block(free_block* b)
 }
 
 // if it returns NULL, then the alignment or space constraints do not allow this
-static free_block* carve_out_free_block_in_memory_region(void* memory, cy_uint size);
+static free_block* carve_out_free_block_in_memory_region(void* memory, cy_uint memory_size)
+{
+	// find first pointer in memory region that has right alignment
+	void* b = (void*) memory_get_first_aigned_in_region(memory, memory_size, _Alignof(free_block));
+	if(b == NULL)
+		return NULL;
+
+	// ensure that there are enough byte to atleast hold a free_block
+	cy_uint b_size = (memory + memory_size - b);
+	if(b_size < sizeof(free_block))
+		return NULL;
+
+	// initialize it
+	initialize_free_block(b);
+
+	// return it
+	return b;
+}
 
 // function to be used for contexted comparator for free_blocks bst
 static int compare_by_sizes_for_free_blocks_bst(const uc_allocator_context* ucac_p, const free_block* b1, const free_block* b2);
