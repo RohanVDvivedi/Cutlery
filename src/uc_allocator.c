@@ -54,3 +54,20 @@ cy_uint get_block_size_for_uc_allocator_block(const uc_allocator_context* ucac_p
 	const void* b_next = get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
 	return b_next - ((const void*)b);
 }
+
+int initialize_uc_allocator_context(uc_allocator_context* ucac_p, void* memory, cy_uint memory_size)
+{
+	ucac_p->memory = memory;
+	ucac_p->memory_size = memory_size;
+	initialize_linkedlist(&(ucac_p->all_blocks), offsetof(any_block, ab_node));
+	initialize_bst(&(ucac_p->free_blocks), RED_BLACK_TREE, &contexted_comparator(ucac_p, ((int (*)(const void*, const void*, const void*))compare_by_sizes_for_free_blocks_bst)), offsetof(free_block, fb_node));
+
+	// carve out the first and the only free block from the memory region provided
+	free_block* b = carve_out_free_block_in_memory_region(memory, memory_size);
+	if(b == NULL)
+		return 0;
+
+	insert_head_in_linkedlist(&(ucac_p->all_blocks), b);
+	insert_in_bst(&(ucac_p->free_blocks), b);
+	return 1;
+}
