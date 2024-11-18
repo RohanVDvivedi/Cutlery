@@ -127,7 +127,18 @@ int main()
 
 	print_ucac();
 
-	b3 = allocate_with_logging(310);
+	b4 = allocate_with_logging(310);
+
+	print_ucac();
+
+	b5 = allocate_with_logging(96);
+	b6 = allocate_with_logging(152);
+	b7 = allocate_with_logging(304);
+
+	print_ucac();
+
+	deallocate_with_logging(b7);
+	deallocate_with_logging(b5);
 
 	print_ucac();
 
