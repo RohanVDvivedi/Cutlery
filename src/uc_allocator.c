@@ -5,6 +5,7 @@ static void initialize_any_block(any_block* b, int is_free)
 {
 	b->is_free = is_free;
 	b->is_marked = 0;
+	b->is_temporary = 0;
 	initialize_llnode(&(b->ab_node));
 }
 
@@ -45,6 +46,10 @@ static int compare_by_sizes_for_free_blocks_bst(const uc_allocator_context* ucac
 
 cy_uint get_block_size_for_uc_allocator_block(const uc_allocator_context* ucac_p, const any_block* b)
 {
+	// a temporary block's size is present in the block itself
+	if(b->is_temporary)
+		return b->temporary_block_size;
+
 	// if it is the tail block it extends until the end of the memory
 	const void* all_blocks_tail = get_tail_of_linkedlist(&(ucac_p->all_blocks));
 	if(all_blocks_tail == b)
@@ -87,3 +92,37 @@ const any_block* get_next_block_for_uc_allocator(const uc_allocator_context* uca
 	// else return the next
 	return get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
 }
+
+const any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_uint size)
+{
+	// can not allocate lesser than free_block worth of memory
+	size = max(size, sizeof(free_block));
+
+	void* b = (void*) find_succeeding_or_equals_in_bst(&(ucac_p->free_blocks), &((any_block){.is_temporary = 1, .temporary_block_size = size}));
+	if(b == NULL)
+		return NULL;
+
+	// remove it from free_blocks
+	remove_from_bst(&(ucac_p->free_blocks), b);
+
+	// mark it not free
+	((any_block*)b)->is_free = 0;
+
+	// perform a split if possible
+	{
+		cy_uint b_size = get_block_size_for_uc_allocator_block(ucac_p, b);
+		if(b_size - size >= sizeof(free_block))
+		{
+			free_block* cb = carve_out_free_block_in_memory_region(b + size, b_size - size);
+			if(cb != NULL)
+			{
+				insert_after_in_linkedlist(&(ucac_p->all_blocks), b, cb);
+				insert_in_bst(&(ucac_p->free_blocks), cb);
+			}
+		}
+	}
+
+	return b;
+}
+
+void deallocate_block_uc_allocator(any_block* b);

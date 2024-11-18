@@ -19,7 +19,14 @@ struct any_block
 	int is_free : 1;
 	int is_marked : 1; // bit left here for GC implementations to utilize, lft untouched by the allocator
 
-	llnode ab_node; // intrusive llnode for all_blocks linkedlist inside the uc_allocator context
+	int is_temporary : 1;
+
+	union
+	{
+		llnode ab_node; // intrusive llnode for all_blocks linkedlist inside the uc_allocator context
+
+		cy_uint temporary_block_size; // valid only if is_temporary is set
+	};
 };
 
 // prefix of every free block
@@ -63,7 +70,8 @@ cy_uint get_block_size_for_uc_allocator_block(const uc_allocator_context* ucac_p
 // returns some any_block or NULL, if a non-NULL is returned it is atleast size bytes big
 // again this size includes the any_block/free_block prefix structs
 // alignement of this block as expected is same as that of free_block `REMEBER, it was free prior to allocation?`
-any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_uint size);
+// the return value is a const pointer because you are only allowed to touch memory that is after the prefix any_block struct
+const any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_uint size);
 void deallocate_block_uc_allocator(any_block* b);
 
 #endif
