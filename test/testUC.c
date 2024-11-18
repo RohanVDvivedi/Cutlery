@@ -15,8 +15,8 @@ void print_ucac()
 {
 	printf("memory = %p, memory_size = %"PRIu_cy_uint"\n", ucac_p->memory, ucac_p->memory_size);
 
-	printf("any_block_info size = %"PRIu_cy_uint" alignment = %"PRIu_cy_uint"\n", sizeof(any_block), _Alignof(any_block));
-	printf("free_block_info size = %"PRIu_cy_uint" alignment = %"PRIu_cy_uint"\n", sizeof(free_block), _Alignof(free_block));
+	printf("any_block_info size = %"PRIu_cy_uint" alignment = %"PRIu_cy_uint"\n", (cy_uint)(sizeof(any_block)), (cy_uint)(_Alignof(any_block)));
+	printf("free_block_info size = %"PRIu_cy_uint" alignment = %"PRIu_cy_uint"\n", (cy_uint)(sizeof(free_block)), (cy_uint)(_Alignof(free_block)));
 
 	dstring str;
 	init_empty_dstring(&str, 0);
@@ -36,10 +36,26 @@ void print_ucac()
 	deinit_dstring(&str);
 }
 
+const void* allocate_with_logging(cy_uint size)
+{
+	const void* b = allocate_block_uc_allocator(ucac_p, size);
+	if(b == NULL)
+		printf("failed allocation for size %"PRIu_cy_uint"\n", size);
+	else
+		printf("success allocation of %p for size %"PRIu_cy_uint", (actual size = %"PRIu_cy_uint")\n", b, size, get_block_size_for_uc_allocator_block(ucac_p, b));
+	return b;
+}
+
+void deallocate_with_logging(const void* b)
+{
+	printf("deallocation of %p of size = %"PRIu_cy_uint"\n", b, get_block_size_for_uc_allocator_block(ucac_p, b));
+	deallocate_block_uc_allocator(ucac_p, b);
+}
+
 int main()
 {
 	// allocate some memory for the allocator
-	cy_uint memory_size = 128;
+	cy_uint memory_size = 1024;
 	void* memory = malloc(memory_size);
 
 	cy_uint offset = 3;
@@ -58,6 +74,49 @@ int main()
 
 	print_ucac();
 
+	const void* b0 = allocate_with_logging(100);
+	const void* b1 = allocate_with_logging(250);
+	const void* b2 = allocate_with_logging(120);
+	const void* b3 = allocate_with_logging(540);
+	const void* b4 = allocate_with_logging(70);
+	const void* b5 = allocate_with_logging(130);
+
+	print_ucac();
+
+	deallocate_with_logging(b1);
+	deallocate_with_logging(b4);
+
+	print_ucac();
+
+	const void* b6 = allocate_with_logging(60);
+	const void* b7 = allocate_with_logging(300);
+
+	print_ucac();
+
+	deallocate_with_logging(b5);
+
+	print_ucac();
+
+	const void* b8 = allocate_with_logging(150);
+
+	print_ucac();
+
+	deallocate_with_logging(b2);
+	deallocate_with_logging(b6);
+
+	print_ucac();
+
+	deallocate_with_logging(b0);
+
+	print_ucac();
+
+	deallocate_with_logging(b8);
+
+	print_ucac();
+
+	deallocate_with_logging(b7);
+
+	print_ucac();
 
 	free(memory - offset);
 
