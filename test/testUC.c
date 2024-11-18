@@ -118,6 +118,19 @@ int main()
 
 	print_ucac();
 
+	b0 = allocate_with_logging(300);
+	b1 = allocate_with_logging(400);
+	b2 = allocate_with_logging(150);
+	b3 = allocate_with_logging(60);
+	deallocate_with_logging(b0);
+	deallocate_with_logging(b2);
+
+	print_ucac();
+
+	b3 = allocate_with_logging(310);
+
+	print_ucac();
+
 	free(memory - offset);
 
 	return 0;
