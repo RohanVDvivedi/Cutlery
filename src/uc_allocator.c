@@ -42,3 +42,15 @@ static int compare_by_sizes_for_free_blocks_bst(const uc_allocator_context* ucac
 	cy_uint b2_size = get_block_size_for_uc_allocator_block(ucac_p, (const any_block*)b2);
 	return compare_numbers(b1_size, b2_size);
 }
+
+cy_uint get_block_size_for_uc_allocator_block(const uc_allocator_context* ucac_p, const any_block* b)
+{
+	// if it is the tail block it extends until the end of the memory
+	const void* all_blocks_tail = get_tail_of_linkedlist(&(ucac_p->all_blocks));
+	if(all_blocks_tail == b)
+		return ucac_p->memory + ucac_p->memory_size - ((const void*)b);
+
+	// else it extends until the next block in the all_blocks linkedlist
+	const void* b_next = get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
+	return b_next - ((const void*)b);
+}
