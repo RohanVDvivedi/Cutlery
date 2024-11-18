@@ -8,9 +8,6 @@ STREAM
 ALLOCATOR
  * uc_allocator -> an allocators for microcontrollers
    * internal api
-     * cy_uint get_block_size(any_block* b); // total size of the block
-     * any_block* get_next_block(any_block* b);
-     * any_block* get_prev_block(any_block* b);
      * any_block* allocate_block(cy_uint size); // returns block with atleast size as block size, and always aligned to uc_allocator_context->block_alignment
        * size = max(size, sizeof(free_block)) // only allocate blocks of size free_block or more
        * disintegrates any block with later part of the block being free
@@ -26,7 +23,6 @@ ALLOCATOR
        * insert it in free_blocks
        * check if the next_block is free, if free remove both from free_blocks and the next_block from all_blocks, then insert it back in free_blocks
      	 * check if the prev block is free, if free remove both from free_blocks and it from the all_blocks, then insert it back in free_blocks
-     * usable memory of the block is at position (void*)(((any_block*)b)+1)
    * external api
      * to allocate with alignment requirements A and size requirements S
        * allocate block B of size = sizeof(any_block) + (A-1) + sizeof(void*) + S
