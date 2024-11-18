@@ -36,4 +36,9 @@ static free_block* carve_out_free_block_in_memory_region(void* memory, cy_uint m
 }
 
 // function to be used for contexted comparator for free_blocks bst
-static int compare_by_sizes_for_free_blocks_bst(const uc_allocator_context* ucac_p, const free_block* b1, const free_block* b2);
+static int compare_by_sizes_for_free_blocks_bst(const uc_allocator_context* ucac_p, const free_block* b1, const free_block* b2)
+{
+	cy_uint b1_size = get_block_size_for_uc_allocator_block(ucac_p, (const any_block*)b1);
+	cy_uint b2_size = get_block_size_for_uc_allocator_block(ucac_p, (const any_block*)b2);
+	return compare_numbers(b1_size, b2_size);
+}
