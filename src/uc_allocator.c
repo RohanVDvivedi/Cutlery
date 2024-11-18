@@ -71,3 +71,19 @@ int initialize_uc_allocator_context(uc_allocator_context* ucac_p, void* memory, 
 	insert_in_bst(&(ucac_p->free_blocks), b);
 	return 1;
 }
+
+const any_block* get_head_block_for_uc_allocator(const uc_allocator_context* ucac_p)
+{
+	return get_head_of_linkedlist(&(ucac_p->all_blocks));
+}
+
+const any_block* get_next_block_for_uc_allocator(const uc_allocator_context* ucac_p, const any_block* b)
+{
+	// if it is tail return NULL
+	const void* all_blocks_tail = get_tail_of_linkedlist(&(ucac_p->all_blocks));
+	if(all_blocks_tail == b)
+		return NULL;
+
+	// else return the next
+	return get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
+}

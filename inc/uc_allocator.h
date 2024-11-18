@@ -52,8 +52,9 @@ struct uc_allocator_context
 int initialize_uc_allocator_context(uc_allocator_context* ucac_p, void* memory, cy_uint memory_size);
 
 // functions to be used externally to iterate over all the blocks
-any_block* get_head_block_for_uc_allocator(const uc_allocator_context* ucac_p);
-any_block* get_next_block_for_uc_allocator(const uc_allocator_context* ucac_p, const any_block* b); // next of tail is NULL
+// they return const, because you are not generally allowed to modify them, unless it is the is_marked bit - which is of no use in the near future
+const any_block* get_head_block_for_uc_allocator(const uc_allocator_context* ucac_p);
+const any_block* get_next_block_for_uc_allocator(const uc_allocator_context* ucac_p, const any_block* b); // next of tail is NULL
 
 // get block size for any block, allocated or not
 // this will always be the complete size of the block, including the any_block/free_block prefix structs
