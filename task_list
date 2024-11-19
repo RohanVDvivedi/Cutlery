@@ -6,12 +6,6 @@ STREAM
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
 
 ALLOCATOR
- * uc_allocator -> an allocators for microcontrollers
-   * external api
-     * to allocate with alignment requirements A and size requirements S
-       * allocate block B of size = sizeof(any_block) + (A-1) + sizeof(void*) + S
-       * return pointer p = UINT_ALIGN_UP(((cy_uint)B) + sizeof(any_block) + sizeof(void*), A)
-       * and then do memory_move(p - sizeof(void*), &B, sizeof(void*)), to store the pointer to the block that was allocated
  * Make compute-only libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
  * reafactor stream_to_read_until_dstring to use cutlery allocators
 
