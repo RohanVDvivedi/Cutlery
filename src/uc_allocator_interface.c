@@ -39,11 +39,31 @@ static void* uc_allocator_function(void* allocator_context, void* old_memory, cy
 		return old_memory;
 	}
 
+	// new_alignment = 0, implies new_alignment = 1, i.e. no alignment constraints
+	if(new_alignment == 0)
+		new_alignment = 1;
+
 	// perform new allocation, adjust new pointer and set the new_size to be returned
 	void* new_memory = NULL;
 	if((*new_size) > 0)
 	{
-		// TODO
+		// calculate the new block size
+		cy_uint new_block_size = sizeof(any_block) + (new_alignment - 1) + sizeof(void*) + (*new_size);
+
+		// allocate new block
+		any_block* new_block = (any_block*) allocate_block_uc_allocator(ucac_p, new_block_size);
+		if(new_block == NULL) // fail if allocation fails
+			return NULL;
+
+		// calculate the new)memory pointer
+		new_memory = ((void*)new_block) + sizeof(any_block) + sizeof(void*);
+		new_memory = (void*)(UINT_ALIGN_UP(((cy_uint)new_memory), new_alignment));
+
+		// write new_block pointer value to the prior bytes of the new_memory
+		memory_move(new_memory - sizeof(void*), &new_block, sizeof(void*));
+
+		// calculate new_size
+		(*new_size) = get_block_size_for_uc_allocator_block(ucac_p, new_block) - (new_memory - ((void*)new_block));
 	}
 
 	// initialize new allocation
