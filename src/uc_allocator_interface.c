@@ -30,7 +30,7 @@ static void* uc_allocator_function(void* allocator_context, void* old_memory, cy
 		old_size = 0;
 
 	// if old_size is equal to new_size, then return old_memory
-	if(old_size == (*new_size))
+	if((new_size != NULL) && old_size == (*new_size))
 	{
 		// PRESERVE and DONT_CARE are already handled
 		// but need to handle ZERO initialization
@@ -43,9 +43,9 @@ static void* uc_allocator_function(void* allocator_context, void* old_memory, cy
 	if(new_alignment == 0)
 		new_alignment = 1;
 
-	// perform new allocation, adjust new pointer and set the new_size to be returned
+	// perform new allocation, adjust new pointer and set the new_size to be returned, and initialize the new allocation
 	void* new_memory = NULL;
-	if((*new_size) > 0)
+	if(new_size != NULL && (*new_size) > 0)
 	{
 		// calculate the new block size
 		cy_uint new_block_size = sizeof(any_block) + (new_alignment - 1) + sizeof(void*) + (*new_size);
@@ -64,25 +64,25 @@ static void* uc_allocator_function(void* allocator_context, void* old_memory, cy
 
 		// calculate new_size
 		(*new_size) = get_block_size_for_uc_allocator_block(ucac_p, new_block) - (new_memory - ((void*)new_block));
-	}
 
-	// initialize new allocation
-	switch(initialization)
-	{
-		default :
-		case DONT_CARE :
+		// initialize new allocation
+		switch(initialization)
 		{
-			break;
-		}
-		case ZERO :
-		{
-			memory_set(new_memory, 0, (*new_size));
-			break;
-		}
-		case PRESERVE :
-		{
-			memory_move(new_memory, old_memory, min((*new_size), old_size));
-			break;
+			default :
+			case DONT_CARE :
+			{
+				break;
+			}
+			case ZERO :
+			{
+				memory_set(new_memory, 0, (*new_size));
+				break;
+			}
+			case PRESERVE :
+			{
+				memory_move(new_memory, old_memory, min((*new_size), old_size));
+				break;
+			}
 		}
 	}
 
