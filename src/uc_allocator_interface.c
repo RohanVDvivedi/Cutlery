@@ -87,7 +87,8 @@ static void* uc_allocator_function(void* allocator_context, void* old_memory, cy
 	}
 
 	// free old allocation
-	deallocate_block_uc_allocator(ucac_p, old_block);
+	if(old_block != NULL)
+		deallocate_block_uc_allocator(ucac_p, old_block);
 
 	return new_memory;
 }
