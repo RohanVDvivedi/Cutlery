@@ -147,8 +147,8 @@ void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, const any_block
 		// grab b_next the next of b
 		void* b_next = (void*) get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
 
-		// if it is allocated then skip
-		if(((any_block*)b_next)->is_free == 0)
+		// if it is allocated (not free) then skip
+		if(!(((any_block*)b_next)->is_free))
 			goto SKIP_MERGE_WITH_NEXT;
 
 		// remove them both from the free_blocks temporarily
@@ -174,8 +174,8 @@ void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, const any_block
 		// grab b_prev the prev of b
 		void* b_prev = (void*) get_prev_of_in_linkedlist(&(ucac_p->all_blocks), b);
 
-		// if it is allocated then skip
-		if(((any_block*)b_prev)->is_free == 0)
+		// if it is allocated (not free) then skip
+		if(!(((any_block*)b_prev)->is_free))
 			goto SKIP_MERGE_WITH_PREV;
 
 		// remove them both from the free_blocks temporarily
