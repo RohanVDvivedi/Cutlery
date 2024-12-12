@@ -153,7 +153,6 @@ int main()
 
 //#define MERGE_SORT
 //#define HEAP_SORT
-//#define HEAP_SORT_native
 //#define QUICK_SORT
 #define RADIX_SORT
 //#define BUBBLE_SORT
@@ -173,12 +172,6 @@ int main()
 	#define HEAP_DEGREE CY_UINT_C(3)
 	printf("Sorting %u to %u using HEAP_SORT with degree = %"PRIu_cy_uint"\n\n", start_index, end_index, HEAP_DEGREE);
 	sort_result = heap_sort_iai(array_iai_p, start_index, end_index, &test_comparator, HEAP_DEGREE);
-#elif defined HEAP_SORT_native
-	printf("Sorting %u to %u using HEAP_SORT_native\n\n", start_index, end_index);
-	arraylist temp_al;
-	if(!get_slice_as_arraylist_from_array(&temp_al, array_p, start_index, test_sort_size))
-		exit(-1);
-	sort_result = heap_sort_arraylist(&temp_al, 0, test_sort_size-1, &test_comparator);
 #elif defined QUICK_SORT
 	printf("Sorting %u to %u using QUICK_SORT\n\n", start_index, end_index);
 	sort_result = quick_sort_iai(array_iai_p, start_index, end_index, &test_comparator);
