@@ -190,6 +190,7 @@ static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_
 	// use this macro to access the iai_p
 	#define GET_ACTUAL_INDEX(relative_index) ((relative_index) + start_index)
 
+	// there is max_heap in the name of this function
 	heap_info max_heap_info = (heap_info){.type = MAX_HEAP, .comparator = (*comparator)};
 
 	// we can not bubble down the last node
