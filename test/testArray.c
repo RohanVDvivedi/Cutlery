@@ -170,8 +170,9 @@ int main()
 	printf("Sorting %u to %u using MERGE_SORT\n\n", start_index, end_index);
 	sort_result = merge_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
 #elif defined HEAP_SORT
-	printf("Sorting %u to %u using HEAP_SORT\n\n", start_index, end_index);
-	sort_result = heap_sort_iai(array_iai_p, start_index, end_index, &test_comparator, STD_C_mem_allocator);
+	#define HEAP_DEGREE CY_UINT_C(3)
+	printf("Sorting %u to %u using HEAP_SORT with degree = %"PRIu_cy_uint"\n\n", start_index, end_index, HEAP_DEGREE);
+	sort_result = heap_sort_iai(array_iai_p, start_index, end_index, &test_comparator, HEAP_DEGREE);
 #elif defined HEAP_SORT_native
 	printf("Sorting %u to %u using HEAP_SORT_native\n\n", start_index, end_index);
 	arraylist temp_al;
