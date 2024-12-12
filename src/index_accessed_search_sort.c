@@ -174,11 +174,15 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-static int bubble_down_for_heap_sort(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree, cy_uint index);
+static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree, cy_uint index);
 
 int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
+		return 0;
+
+	// degree has to be atleast 1, 2 for binary heap
+	if(degree == 0)
 		return 0;
 
 	// compute the number of elements to sort; 0 or 1 number of elements do not need sorting
@@ -186,7 +190,28 @@ int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 	if(total_elements <= 1)
 		return 1;
 
-	// sort TODO
+	// heapify
+	// bubble_down from (start_index-1, last_index] in reverse
+	for(cy_uint i = last_index; i != (start_index-1); i--)
+	{
+		if(!bubble_down_for_max_heap_for_heap_sort(iai_p, start_index, last_index, comparator, degree, i))
+			return 0;
+	}
+
+	// again iterate in reverse for i being, (start_index, last_index] putting the elements at their ith correct index
+	// pick the heap's max element and swap it with ith element
+	for(cy_uint i = last_index; i != start_index; i--)
+	{
+		// swap ith element with the top of the heap, putting the ith element at its right index
+		int swapped = iai_p->swap_elements(iai_p->ds_p, start_index, i);
+		if(!swapped)
+			return 0;
+
+		// now start_index is not at its correct position for the max heap in range [start_index, i-1]
+		// bubble down the start_index
+		if(!bubble_down_for_max_heap_for_heap_sort(iai_p, start_index, i-1, comparator, degree, start_index))
+			return 0;
+	}
 
 	return 1;
 }
