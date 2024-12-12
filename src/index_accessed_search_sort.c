@@ -215,7 +215,7 @@ static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_
 		if(new_parent_index == index)
 			break;
 
-		int swapped = iai_p->swap_elements(iai_p->ds_p, new_parent_index, index);
+		int swapped = iai_p->swap_elements(iai_p->ds_p, GET_ACTUAL_INDEX(new_parent_index), GET_ACTUAL_INDEX(index));
 		if(!swapped)
 			return 0;
 
