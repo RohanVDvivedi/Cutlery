@@ -50,10 +50,9 @@ int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 // uses set_element -> the set_element is expected to succeed with indices valid and within bounds
 int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
 
-// sorting algorithm used => heap sort algorithm
-// NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements
-// uses set_element -> the set_element is expected to succeed with indices valid and within bounds
-int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
+// sorting algorithm used => heap sort algorithm, degree specifie the degree of the heap being used, for most cases 2 is fine
+// uses swap_elements -> fails with 0, if the swap_elements returns 0
+int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree);
 
 // sorting algorithm used => quick sort algorithm
 // uses swap_elements -> fails with 0, if the swap_elements returns 0
