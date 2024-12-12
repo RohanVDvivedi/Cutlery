@@ -174,10 +174,55 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
+#include<n-ary_tree_as_array_util.h>
 #include<heap_info.h>
 
 // fails and returns 0, only if swap fails, on success returns 1
-static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree, cy_uint index);
+static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree, cy_uint index)
+{
+	cy_uint element_count = last_index - start_index + 1;
+	if(element_count <= 1)
+		return 1;
+
+	// make this index provided relative to the start_index
+	index -= start_index;
+
+	// use this macro to access the iai_p
+	#define GET_ACTUAL_INDEX(relative_index) ((relative_index) + start_index)
+
+	heap_info max_heap_info = (heap_info){.type = MAX_HEAP, .comparator = (*comparator)};
+
+	// we can not bubble down the last node
+	while(can_have_any_children_N(index, degree) && index < element_count)
+	{
+		// if no reordering is required then the element at the index position remains as the parent
+		cy_uint new_parent_index = index;
+
+		// iterate over all the children of the parent at index
+		// find the one that if made the new parent, will not require reordering with any of its siblings
+		for(cy_uint i = 0, child_index = get_index_of_ith_child_N(index, 0, degree); i < degree && child_index < element_count; i++, child_index++)
+		{
+			if(is_reordering_required( 
+				iai_p->get_element(iai_p->ds_p, GET_ACTUAL_INDEX(new_parent_index)), 
+				iai_p->get_element(iai_p->ds_p, GET_ACTUAL_INDEX(child_index)), 
+				&max_heap_info))
+				new_parent_index = child_index;
+		}
+
+		// if this condition becomes true, then the index stays the parent of all its siblings, hence no reordering required
+		// and if no reordering was required, exit the loop
+		if(new_parent_index == index)
+			break;
+
+		int swapped = iai_p->swap_elements(iai_p->ds_p, new_parent_index, index);
+		if(!swapped)
+			return 0;
+
+		index = new_parent_index;
+	}
+
+	return 1;
+}
 
 int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree)
 {
