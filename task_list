@@ -1,14 +1,5 @@
 1. Tasks picked
 
- * re implement heap sort iai, to work with only performing swaps on the passed container and work inplace
- * directly return 1, for 0 or 1 elements and 0 for negative elements
- * we only need a bubble_down_binary_map_heap_for_heap_sort(comparator, index_accessed_interface, cy_uint first_index, cy_uint last_index, cy_uint index);
- * first max heapify using the very same function, calling it on all elements from last_index to first_index
- * then for each iteration i = last_index to first_index
- 		swap(first_index, i)
- 		bubble_down_binary_map_heap_for_heap_sort(comparator, index_accessed_interface, first_index, i-1, first_index);
-
-
 2. Add new datastructure types tasks (*future)
 
 STREAM
