@@ -118,8 +118,6 @@ void remove_all_from_arraylist(arraylist* al);
 
 void deinitialize_arraylist(arraylist* al);
 
-#include<arraylist_sort.h>
-
 // NOTE:: DO NOT MODIFY THE ARRAYLIST DURING THE ACTIVE LIFE TIME OF THE INDEX_ACCESSED_INTERFACE OF THAT ARRAYLIST
 
 index_accessed_interface get_index_accessed_interface_for_front_of_arraylist(arraylist* al);
