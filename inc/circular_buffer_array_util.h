@@ -58,15 +58,15 @@ static inline cy_uint sub_circularly(cy_uint i1, cy_uint i2, cy_uint buffer_capa
 **	first_index and element_count will have meanings as their (so obvious) names depict in the respective functions
 */
 
-#define get_circular_next(i, buffer_capacity) add_circularly(i, 1, buffer_capacity)
-#define get_circular_prev(i, buffer_capacity) sub_circularly(i, 1, buffer_capacity)
+#define get_circular_next(i, buffer_capacity) add_circularly((i), 1, (buffer_capacity))
+#define get_circular_prev(i, buffer_capacity) sub_circularly((i), 1, (buffer_capacity))
 
 // only for the get_last_index function, element_count > 0, which is obvious since there is no last index-ed element, if the element_count = 0
 #define get_last_index(first_index, element_count, buffer_capacity) \
-			add_circularly(first_index, element_count - 1, buffer_capacity)
+			add_circularly((first_index), (element_count) - 1, (buffer_capacity))
 
 #define get_end_index(first_index, element_count, buffer_capacity) \
-			add_circularly(first_index, element_count, buffer_capacity)
+			add_circularly((first_index), (element_count), (buffer_capacity))
 
 /*
 	This file is used by following data structures

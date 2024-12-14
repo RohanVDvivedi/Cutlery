@@ -5,7 +5,7 @@
 #include<memory_allocator_interface.h>
 #include<multi_dim_array_util.h>
 
-#define min3(a,b,c) min(a,(min(b,c)))
+#define min3(a,b,c) min((a),(min((b),(c))))
 
 cy_uint levenshtein_distance(const dstring* str0, const dstring* str1)
 {
@@ -57,7 +57,7 @@ cy_uint levenshtein_distance(const dstring* str0, const dstring* str1)
 	return result;
 }
 
-#define max3(a, b, c) max(a, (max(b, c)))
+#define max3(a,b,c) max((a),(max((b),(c))))
 
 cy_uint length_of_longest_common_subsequence(const dstring* str0, const dstring* str1)
 {

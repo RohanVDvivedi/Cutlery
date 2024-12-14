@@ -43,7 +43,7 @@ static cy_uint get_element_count_iai_offsetted(const void* ds_p)
 
 #define get_index_accessed_interface_ofsetted(iai_p, offset) \
 											(index_accessed_interface){ \
-												.ds_p = &((iai_offsetted){.iai_p = iai_p, .offset_index = offset }),\
+												.ds_p = &((iai_offsetted){.iai_p = (iai_p), .offset_index = (offset)}),\
 												.get_element = get_element_iai_offsetted,\
 												.set_element = set_element_iai_offsetted,\
 												.swap_elements = swap_elements_iai_offsetted,\

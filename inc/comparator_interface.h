@@ -30,7 +30,7 @@ struct comparator_interface
 int compare_with_comparator(const comparator_interface* comparator, const void* data1, const void* data2);
 
 // You may use the macros below to initialize your custom comparator_interface
-#define simple_comparator(compare_function_p)               ((const comparator_interface){.context = NULL,      .compare1 = compare_function_p})
-#define contexted_comparator(context_p, compare_function_p) ((const comparator_interface){.context = context_p, .compare2 = compare_function_p})
+#define simple_comparator(compare_function_p)               ((const comparator_interface){.context = NULL,        .compare1 = (compare_function_p)})
+#define contexted_comparator(context_p, compare_function_p) ((const comparator_interface){.context = (context_p), .compare2 = (compare_function_p)})
 
 #endif
