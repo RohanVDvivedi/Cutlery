@@ -1,20 +1,5 @@
 #include<bitmap.h>
 
-int get_bit(const char* bitmap, cy_uint index)
-{
-	return (bitmap[index / CHAR_BIT] >> (index % CHAR_BIT)) & '\x1';
-}
-
-void set_bit(char* bitmap, cy_uint index)
-{
-	bitmap[index / CHAR_BIT] |= ('\x1' << (index % CHAR_BIT));
-}
-
-void reset_bit(char* bitmap, cy_uint index)
-{
-	bitmap[index / CHAR_BIT] &= ~('\x1' << (index % CHAR_BIT));
-}
-
 unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint last_index)
 {
 	// fail if the indices are not valid
@@ -129,14 +114,6 @@ void sprint_bitmap(dstring* append_str, const char* bitmap, cy_uint size, unsign
 		snprintf_dstring(append_str, "%d", get_bit(bitmap, i));
 	}
 	snprintf_dstring(append_str, "\n");
-}
-
-cy_uint bitmap_size_in_bytes(cy_uint size)
-{
-	// (size / CHAR_BIT)     => gives us the number of complete bytes of data
-	// (size % CHAR_BIT) > 0 => gives us 1 or 0 based on whether there is any partial byte with leser than CHAR_BIT bits
-	return (size / CHAR_BIT) + ((size % CHAR_BIT) > 0);				// -- version 1
-	// return (size + CHAR_BIT - 1) / CHAR_BIT;						// -- version 2 -- not overflow safe
 }
 
 #include<string.h>

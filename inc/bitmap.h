@@ -7,11 +7,20 @@
 // cy_uint size  => size of the bitmap in number of bits
 // cy_uint index => bit location in the bitmap (starting with 0)
 
-int get_bit(const char* bitmap, cy_uint index);
+static inline int get_bit(const char* bitmap, cy_uint index)
+{
+	return (bitmap[index / CHAR_BIT] >> (index % CHAR_BIT)) & '\x1';
+}
 
-void set_bit(char* bitmap, cy_uint index);
+static inline void set_bit(char* bitmap, cy_uint index)
+{
+	bitmap[index / CHAR_BIT] |= ('\x1' << (index % CHAR_BIT));
+}
 
-void reset_bit(char* bitmap, cy_uint index);
+static inline void reset_bit(char* bitmap, cy_uint index)
+{
+	bitmap[index / CHAR_BIT] &= ~('\x1' << (index % CHAR_BIT));
+}
 
 // gets bits from the bitmap between indices, start_index to last_index both inclusive, as a single unsigned long long int
 // number of bits in start_index to last_index must not exceed sizeof(unsigned long long int) * CHAR_BIT
@@ -28,7 +37,13 @@ void reset_all_bits(char* bitmap, cy_uint size);
 
 void sprint_bitmap(dstring* append_str, const char* bitmap, cy_uint size, unsigned int tabs);
 
-cy_uint bitmap_size_in_bytes(cy_uint size);
+static inline cy_uint bitmap_size_in_bytes(cy_uint size)
+{
+	// (size / CHAR_BIT)     => gives us the number of complete bytes of data
+	// (size % CHAR_BIT) > 0 => gives us 1 or 0 based on whether there is any partial byte with leser than CHAR_BIT bits
+	return (size / CHAR_BIT) + ((size % CHAR_BIT) > 0);				// -- version 1
+	// return (size + CHAR_BIT - 1) / CHAR_BIT;						// -- version 2 -- not overflow safe
+}
 
 // start_index => bit location in the bitmap to start checking from
 // returns a least index of the bit set to 1, that is between start_index and size-1
