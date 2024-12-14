@@ -27,7 +27,13 @@ struct hasher_interface
 
 // you must use only this function, with the hasher, to avail the complete functionality of the hasher
 // it returns the hash of the data
-cy_uint hash_with_hasher(const hasher_interface* hasher, const void* data);
+static inline cy_uint hash_with_hasher(const hasher_interface* hasher, const void* data)
+{
+	if(hasher->context == NULL)
+		return hasher->hash1(data);
+	else
+		return hasher->hash2(hasher->context, data);
+}
 
 // You may use the macros below to initialize your custom hasher_interface
 #define simple_hasher(hash_function_p)               ((const hasher_interface){.context = NULL,        .hash1 = (hash_function_p)})

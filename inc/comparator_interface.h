@@ -25,9 +25,17 @@ struct comparator_interface
 	};
 };
 
+#include<cutlery_stds.h> // for using NULL
+
 // you must use only this function, with the comparator, to avail the complete functionality of the comparator
 // it returns the result of the comparison
-int compare_with_comparator(const comparator_interface* comparator, const void* data1, const void* data2);
+static inline int compare_with_comparator(const comparator_interface* comparator, const void* data1, const void* data2)
+{
+	if(comparator->context == NULL)
+		return comparator->compare1(data1, data2);
+	else
+		return comparator->compare2(comparator->context, data1, data2);
+}
 
 // You may use the macros below to initialize your custom comparator_interface
 #define simple_comparator(compare_function_p)               ((const comparator_interface){.context = NULL,        .compare1 = (compare_function_p)})
