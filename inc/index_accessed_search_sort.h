@@ -82,13 +82,13 @@ int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_
 
 // These functions return an index to the element in the index_accessed datastructure,
 // that compares `comparable` (This means differently for different functions) to the data provided
-// The data provided as parameter for equality checking may or may not be pointing to the element, already existing in the data structure
+// The "data_p" provided as parameter for equality checking may or may not be pointing to the element, already existing in the data structure
 // The check is only performed for all indices from start_index to last_index both inclusive
 // the search_occurence parameter suggests whether we are looking for first or the last occurence (parameter occurence_type) that compares equal
 // This functions return INVALID_INDEX, if the such a `comparable` element is not found, or the indexes provided are invalid
 
 // Be sure that in all the function following this comment that
-// your data_p, always becomes the second parameter of the comparator function tat you provide
+// your "data_p", always becomes the second parameter of the comparator function that you provide
 // This allows you greater flexibility while comparing different types
 
 
