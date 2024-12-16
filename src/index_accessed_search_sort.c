@@ -490,23 +490,26 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return INVALID_INDEX;
 
-	switch(occurence_type)
 	{
-		case FIRST_OCCURENCE :
+		int cmp_start_index_with_data_p = compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p);
+		switch(occurence_type)
 		{
-			// take care of conditions when we might go start_index - 1
-			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) == 0)
-				return start_index;
-			else if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
-				return INVALID_INDEX;
-			break;
-		}
-		case LAST_OCCURENCE :
-		{
-			// take care of conditions when we might go start_index - 1
-			if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, start_index), data_p) > 0)
-				return INVALID_INDEX;
-			break;
+			case FIRST_OCCURENCE :
+			{
+				// take care of conditions when we might go start_index - 1
+				if(cmp_start_index_with_data_p == 0)
+					return start_index;
+				else if(cmp_start_index_with_data_p > 0)
+					return INVALID_INDEX;
+				break;
+			}
+			case LAST_OCCURENCE :
+			{
+				// take care of conditions when we might go start_index - 1
+				if(cmp_start_index_with_data_p > 0)
+					return INVALID_INDEX;
+				break;
+			}
 		}
 	}
 
@@ -521,9 +524,10 @@ cy_uint binary_search_in_sorted_iai(const index_accessed_interface* iai_p, cy_ui
 	while(l <= h)
 	{
 		cy_uint m = l + ((h - l) / 2);
-		if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) > 0)
+		int cmp_m_with_data_p = compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p);
+		if(cmp_m_with_data_p > 0)
 			h = m - 1;
-		else if(compare_with_comparator(comparator, iai_p->get_element(iai_p->ds_p, m), data_p) < 0)
+		else if(cmp_m_with_data_p < 0)
 			l = m + 1;
 		else
 		{
