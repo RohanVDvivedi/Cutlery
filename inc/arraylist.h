@@ -103,6 +103,7 @@ int reserve_capacity_for_arraylist(arraylist* al, cy_uint atleast_capacity);
 
 // get the data from the arraylist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the arraylist that compares equal (i.e. compare function returns 0)
+// "data" becomes the second parameter of the comparator
 const void* find_equals_in_arraylist(const arraylist* al, const void* data, const comparator_interface* comparator);
 
 // iterates over all the elements in the arraylist from front to back

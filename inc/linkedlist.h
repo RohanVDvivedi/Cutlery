@@ -83,6 +83,7 @@ int swap_in_2_linkedlists(linkedlist* ll_1, const void* data_xist1, linkedlist* 
 
 // get the data from the linkedlist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the linkedlist that compares equal (i.e. comparator returns 0)
+// "data" becomes the second parameter of the comparator
 const void* find_equals_in_linkedlist(const linkedlist* ll, const void* data, const comparator_interface* comparator);
 
 // radix sort all of the linkedlist

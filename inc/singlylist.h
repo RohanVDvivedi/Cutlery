@@ -73,6 +73,7 @@ void remove_all_from_singlylist(singlylist* sl, notifier_interface* ni_p);
 
 // get the data from the singlylist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the singlylist that compares equal (i.e. comparator returns 0)
+// "data" becomes the second parameter of the comparator
 const void* find_equals_in_singlylist(const singlylist* sl, const void* data, const comparator_interface* comparator);
 
 // radix sort all of the singlylist

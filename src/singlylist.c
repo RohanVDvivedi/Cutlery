@@ -313,7 +313,7 @@ const void* find_equals_in_singlylist(const singlylist* sl, const void* data, co
 	const slnode* node_p = sl->head;
 	do
 	{
-		if(compare_with_comparator(comparator, data, get_data(node_p, sl)) == 0)
+		if(compare_with_comparator(comparator, get_data(node_p, sl), data) == 0)
 			return get_data(node_p, sl);
 		node_p = node_p->next;
 	}
