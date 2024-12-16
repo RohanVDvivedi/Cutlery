@@ -8,7 +8,7 @@
 	that wants to be and can be randomly accessed.
 
 	implementing this interface allows you to
-	search and sort the underlying data structure using the "indexed_search_sort.h" functions.
+	search and sort the underlying data structure using the "index_accessed_search_sort.h" functions.
 */
 
 typedef struct index_accessed_interface index_accessed_interface;
