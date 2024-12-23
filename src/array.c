@@ -73,7 +73,17 @@ int swap_in_array(array* array_p, cy_uint i1, cy_uint i2)
 	// make sure that i1 and i2 are not out of range
 	if(i1 >= get_capacity_array(array_p) || i2 >= get_capacity_array(array_p))
 		return 0;
-	return memory_swap(array_p->data_p_p + i1, array_p->data_p_p + i2, sizeof(void*));
+
+	// if i1 == i2, swap is NOP
+	if(i1 == i2)
+		return 1;
+
+	// perform swap for the i1 and i2 with a temp variable
+	void* temp = array_p->data_p_p[i1];
+	array_p->data_p_p[i1] = array_p->data_p_p[i2];
+	array_p->data_p_p[i2] = temp;
+
+	return 1;
 }
 
 void remove_all_from_array(array* array_p)
