@@ -121,7 +121,7 @@ int main()
 				printf("\nInitial : \n");
 				printf("data1 :");
 				print_memory(memory_data1 + i, MEMORY_OPERATION_SIZE);
-				printf("data2:");
+				printf("data2 :");
 				print_memory(memory_data2 + j, MEMORY_OPERATION_SIZE);
 
 				int result = memory_compare(memory_data1 + i, memory_data2 + j, MEMORY_OPERATION_SIZE);
@@ -131,6 +131,26 @@ int main()
 				printf("\n");
 			}
 		}
+		printf("\n\n");
+	}
+
+	{
+		#define SWAP_BUFFER_SIZE 18
+		char memory_data1[SWAP_BUFFER_SIZE] = "Rohan V Dvivedi**";
+		char memory_data2[SWAP_BUFFER_SIZE] = "Devashree Joshi++";
+		printf("TEST MEM swap for %p %p\n\n", memory_data1, memory_data2);
+		printf("\nInitial : \n");
+		printf("data1 :");
+		printf("%s\n", memory_data1);
+		printf("data2 :");
+		printf("%s\n", memory_data2);
+		printf("\n");
+		memory_swap(memory_data1, memory_data2, SWAP_BUFFER_SIZE);
+		printf("\nLater : \n");
+		printf("data1 :");
+		printf("%s\n", memory_data1);
+		printf("data2 :");
+		printf("%s\n", memory_data2);
 		printf("\n\n");
 	}
 
