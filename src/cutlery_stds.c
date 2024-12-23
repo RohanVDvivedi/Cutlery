@@ -292,9 +292,10 @@ int memory_swap(void* data1_start, void* data2_start, cy_uint size)
 		// perform a byte-by-byte swap until the addresses are int aligned
 		while( ( ((cy_uint)data1) & ~int_alignment_bit_mask ) )
 		{
-			(*data1) ^= (*data2);
-			(*data2) ^= (*data1);
-			(*data1) ^= (*data2);
+			const char temp = (*data1);
+			(*data1) = (*data2);
+			(*data2) = temp;
+
 			data1++;
 			data2++;
 		}
@@ -315,9 +316,10 @@ int memory_swap(void* data1_start, void* data2_start, cy_uint size)
 			// int-by-int compare loop
 			while( data1_int != data1_end_int )
 			{
-				(*data1_int) ^= (*data2_int);
-				(*data2_int) ^= (*data1_int);
-				(*data1_int) ^= (*data2_int);
+				const int temp = (*data1_int);
+				(*data1_int) = (*data2_int);
+				(*data2_int) = temp;
+
 				data1_int++;
 				data2_int++;
 			}
@@ -330,9 +332,10 @@ int memory_swap(void* data1_start, void* data2_start, cy_uint size)
 	// finish up remaining with an old fashioned byte-by-byte compare loop
 	while( data1 != ((char*)(data1_end)) )
 	{
-		(*data1) ^= (*data2);
-		(*data2) ^= (*data1);
-		(*data1) ^= (*data2);
+		const char temp = (*data1);
+		(*data1) = (*data2);
+		(*data2) = temp;
+
 		data1++;
 		data2++;
 	}
