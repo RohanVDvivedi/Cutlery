@@ -290,7 +290,7 @@ int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2)      
 	if(i1_concerned == i2_concerned)                                                                                           \
 		return 1;                                                                                                              \
                                                                                                                                \
-	contained_type temp = c->data_p[i1_concerned];                                                                             \
+	const contained_type temp = c->data_p[i1_concerned];                                                                       \
 	c->data_p[i1_concerned] = c->data_p[i2_concerned];                                                                         \
 	c->data_p[i2_concerned] = temp;                                                                                            \
                                                                                                                                \
@@ -310,7 +310,7 @@ int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)       
 	if(i1_concerned == i2_concerned)                                                                                           \
 		return 1;                                                                                                              \
                                                                                                                                \
-	contained_type temp = c->data_p[i1_concerned];                                                                             \
+	const contained_type temp = c->data_p[i1_concerned];                                                                       \
 	c->data_p[i1_concerned] = c->data_p[i2_concerned];                                                                         \
 	c->data_p[i2_concerned] = temp;                                                                                            \
                                                                                                                                \

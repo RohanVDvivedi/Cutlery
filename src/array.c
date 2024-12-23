@@ -79,7 +79,7 @@ int swap_in_array(array* array_p, cy_uint i1, cy_uint i2)
 		return 1;
 
 	// perform swap for the i1 and i2 with a temp variable
-	void* temp = array_p->data_p_p[i1];
+	const void* temp = array_p->data_p_p[i1];
 	array_p->data_p_p[i1] = array_p->data_p_p[i2];
 	array_p->data_p_p[i2] = temp;
 
