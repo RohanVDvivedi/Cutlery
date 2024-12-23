@@ -287,7 +287,14 @@ int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2)      
 	cy_uint i1_concerned = add_circularly(c->first_index, i1, get_capacity_ ## container(c));                                  \
 	cy_uint i2_concerned = add_circularly(c->first_index, i2, get_capacity_ ## container(c));                                  \
                                                                                                                                \
-	return memory_swap(c->data_p + i1_concerned, c->data_p + i2_concerned, sizeof(contained_type));                            \
+	if(i1_concerned == i2_concerned)                                                                                           \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	contained_type temp = c->data_p[i1_concerned];                                                                             \
+	c->data_p[i1_concerned] = c->data_p[i2_concerned];                                                                         \
+	c->data_p[i2_concerned] = temp;                                                                                            \
+                                                                                                                               \
+	return 1;                                                                                                                  \
 }                                                                                                                              \
 int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)                                                      \
 {                                                                                                                              \
@@ -299,7 +306,15 @@ int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)       
 	cy_uint i1_concerned = sub_circularly(last_index, i1, get_capacity_ ## container(c));                                      \
 	cy_uint i2_concerned = sub_circularly(last_index, i2, get_capacity_ ## container(c));                                      \
                                                                                                                                \
-	return memory_swap(c->data_p + i1_concerned, c->data_p + i2_concerned, sizeof(contained_type));                            \
+                                                                                                                               \
+	if(i1_concerned == i2_concerned)                                                                                           \
+		return 1;                                                                                                              \
+                                                                                                                               \
+	contained_type temp = c->data_p[i1_concerned];                                                                             \
+	c->data_p[i1_concerned] = c->data_p[i2_concerned];                                                                         \
+	c->data_p[i2_concerned] = temp;                                                                                            \
+                                                                                                                               \
+	return 1;                                                                                                                  \
 }                                                                                                                              \
                                                                                                                                \
 /* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
