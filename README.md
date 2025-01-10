@@ -46,6 +46,7 @@ The above 2 statements slides in another feature, references to the objects insi
    * `#include<union_find.h>`
    * `#include<bloom_filter.h>`
    * `#include<count_min_sketch.h>`
+   * `#include<uc_allocator_interface.h>`
    * `#include<memory_allocator_interface.h>`
    * `#include<dstring_base64.h>`
    * `#include<stream.h>`
