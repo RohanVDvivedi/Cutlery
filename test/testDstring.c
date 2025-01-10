@@ -227,7 +227,7 @@ int main()
 			},
 			{
 				"rohan",
-				"krina",
+				"haseena",
 			},
 		};
 
