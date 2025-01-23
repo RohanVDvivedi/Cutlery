@@ -12,7 +12,8 @@
 #include<dstring.h>
 
 /*
-	value_arraylist is a header that will build a cache friendly container for you
+	value_arraylist is a header that will build a cache friendly value-copied container for you
+	when you insert an element into it we shallow copy your struct and store that instead, this is unlike the principles and usage of other Cutlery data structures.
 	it is suppossed to be used with only small ephemeral structs and primitive types,
 	that have no immovable attributes like (synchronization primitives like) mutex, conditional variables or semaphores
 */
@@ -92,7 +93,7 @@ void sprint_ ## container(dstring* append_str, const container* c, void (*sprint
 typedef struct container container;                                                                                            \
 struct container                                                                                                               \
 {                                                                                                                              \
-	contained_type* data_p;         /* array, each element being od container_type */                                          \
+	contained_type* data_p;         /* array, each element being of container_type */                                          \
 	cy_uint first_index;            /* the index of the first element in the container */                                      \
 	cy_uint element_count;          /* number of elements in the container */                                                  \
 	cy_uint capacity_in_bytes;      /* capacity in bytes pointed by the holder */                                              \

@@ -5,7 +5,7 @@ It manages pointers to your structures, and not your structures. i.e. if you ins
 
 Almost all the containers like Singlylist, Linkedlist, Bst, Hashmap (and even Heap) use intrusive nodes for management of the container.
 
-The above 2 statements slides in another feature, references to the objects inside the containers, are never invalid, unless you explicitly remove it from the container. Additionally, This library forces you to preallocate all your structs before-hand, or allocate only when you need it.
+The above 2 statements slides in another feature, references to the objects inside the containers, are never invalid, unless you explicitly remove it from the container (this is not the case with value_arraylist). Additionally, This library forces you to preallocate all your structs before-hand, or allocate only when you need it.
 
 
 **Note**
