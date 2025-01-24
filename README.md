@@ -5,8 +5,9 @@ It manages pointers to your structures, and not your structures. i.e. if you ins
 
 Almost all the containers like Singlylist, Linkedlist, Bst, Hashmap (and even Heap) use intrusive nodes for management of the container.
 
-The above 2 statements slides in another feature, references to the objects inside the containers, are never invalid, unless you explicitly remove it from the container (this is not the case with value_arraylist). Additionally, This library forces you to preallocate all your structs before-hand, or allocate only when you need it.
+The above 2 statements slides in another feature, references/iterators to the objects inside the containers, are never invalid, unless you explicitly remove it from the container (this is not the case with value_arraylist). Additionally, This library forces you to preallocate all your structs before-hand, or allocate only when you need it.
 
+***(in Cutlery's intrusive data structures like linkedlist, bst, singlylist, head, and hashmap, the pointers to the nodes themselves are iterators, with get_next/prev_\* function flavours in their corresponding data structures in Cutlery)***
 
 **Note**
  * *This library can be used with a baremetal projects (with minor modifications), all you will need is a C compiler.*
