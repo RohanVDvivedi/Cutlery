@@ -795,7 +795,7 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 		double new_bucket_count_as_double = ((double)expand_factor) * get_bucket_count_hashmap(hashmap_p);
 		if(new_bucket_count_as_double > MAX_ARRAY_CAPACITY)
 			new_bucket_count = MAX_ARRAY_CAPACITY;
-		else //
+		else
 			new_bucket_count = new_bucket_count_as_double;
 	}
 
