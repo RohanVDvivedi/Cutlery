@@ -5,16 +5,25 @@
 
 // this is the factor and the constant amount, by which the capacity of data_p_p will be expanded or shrunk
 #define EXPANSION_FACTR 1.5
-#define EXPANSION_CONST 2
+#define EXPANSION_CONST 2.0
 
 // new_capacity of data_p_p = (old_capacity of data_p_p * EXPANSION_FACTR) + EXPANSION_CONST
 // the below function will calculate the next capacity (on expansion) for the given array, if it's current capacity is current_capacity
 cy_uint get_new_expansion_capacity_for_array(cy_uint current_capacity)
 {
-	cy_uint new_capacity = (current_capacity * EXPANSION_FACTR) + EXPANSION_CONST;
+	// double calculation, we could possibly overflow
+	double new_capacity = (current_capacity * ((double)EXPANSION_FACTR)) + ((double)EXPANSION_CONST);
 
-	// on over flow return max capacity
-	return (new_capacity < current_capacity) ? MAX_ARRAY_CAPACITY : new_capacity;
+	// in the above calculation there could be errors due to loss of precission, because of only 53 bits provided for double's mantissa digits (that too only on cy_uint being more than 53 significant bits wide, so possible only on 64 bit integers)
+	// but it is assumed that because of expansion factor being 1.5, the maximum lost precission is the maximum number representable by 11 bits (the bits lost), which is going to be lesser than the half of the current_capacity
+	// effectively still making the output larger (although not correct)
+
+	// on overflow return max capacity
+	// here we are comparing with the truncated double of MAX_ARRAY_CAPACITY is is surely lesser than (or equal to) the actual MAX_ARRAY_CAPACITY
+	if(new_capacity > MAX_ARRAY_CAPACITY)
+		return MAX_ARRAY_CAPACITY;
+
+	return new_capacity;
 }
 
 int initialize_array(array* array_p, cy_uint capacity)
