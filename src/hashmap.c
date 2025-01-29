@@ -791,7 +791,6 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 
 	// calculate new capacity
 	cy_uint new_capacity;
-
 	{
 		double new_capacity_as_double = ((double)expand_factor) * get_bucket_count_hashmap(hashmap_p);
 		if(new_capacity_as_double > MAX_ARRAY_CAPACITY)
