@@ -834,9 +834,15 @@ int expand_ ## container(container* c)                                          
 {                                                                                                                              \
 	/* compute new capacity */                                                                                                 \
 	cy_uint capacity = get_capacity_ ## container(c);                                                                          \
-	cy_uint new_capacity = capacity * EXPANSION_FACTOR + 2;                                                                    \
-	if(new_capacity <= capacity || new_capacity > MAX_ ## container ## _CAPACITY)                                              \
-		new_capacity = MAX_ ## container ## _CAPACITY;                                                                         \
+                                                                                                                               \
+	cy_uint new_capacity;                                                                                                      \
+	{                                                                                                                          \
+		double new_capacity_as_double = (capacity * ((double)EXPANSION_FACTOR)) + ((double)2.0);                               \
+		if(new_capacity_as_double > MAX_ ## container ## _CAPACITY)                                                            \
+			new_capacity = MAX_ ## container ## _CAPACITY;                                                                     \
+		else                                                                                                                   \
+			new_capacity = new_capacity_as_double;                                                                             \
+	}                                                                                                                          \
                                                                                                                                \
 	/* must be greater than old capacity  */                                                                                   \
 	if(new_capacity <= capacity)                                                                                               \
