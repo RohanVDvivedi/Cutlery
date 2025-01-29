@@ -939,7 +939,7 @@ static int reserve_capacity_for_ ## container ## _holder(container* c, cy_uint a
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-static void linearlize_ ## container ## _upon_expansion(container* c, cy_uint old_capacity)                                    \
+static void linearize_ ## container ## _upon_expansion(container* c, cy_uint old_capacity)                                     \
 {                                                                                                                              \
 	/* element_count remains the same, it is indifferent to re-linearizing the data in this function */                        \
 	cy_uint element_count = get_element_count_ ## container(c);                                                                \
@@ -1002,7 +1002,7 @@ int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)  
                                                                                                                                \
 	/* move data if necessary conditions meet */                                                                               \
 	if(data_movement_will_be_required && has_holder_expanded)                                                                  \
-		linearlize_ ## container ## _upon_expansion(c, old_capacity);                                                          \
+		linearize_ ## container ## _upon_expansion(c, old_capacity);                                                           \
                                                                                                                                \
 	return has_holder_expanded;                                                                                                \
 }                                                                                                                              \
