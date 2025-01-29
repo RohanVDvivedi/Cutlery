@@ -789,14 +789,14 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor)
 	if(expand_factor <= 1.0)
 		return 0;
 
-	// calculate new capacity
-	cy_uint new_capacity;
+	// calculate new bucket_count
+	cy_uint new_bucket_count;
 	{
-		double new_capacity_as_double = ((double)expand_factor) * get_bucket_count_hashmap(hashmap_p);
-		if(new_capacity_as_double > MAX_ARRAY_CAPACITY)
-			new_capacity = MAX_ARRAY_CAPACITY;
-		else
-			new_capacity = new_capacity_as_double;
+		double new_bucket_count_as_double = ((double)expand_factor) * get_bucket_count_hashmap(hashmap_p);
+		if(new_bucket_count_as_double > MAX_ARRAY_CAPACITY)
+			new_bucket_count = MAX_ARRAY_CAPACITY;
+		else //
+			new_bucket_count = new_bucket_count_as_double;
 	}
 
 	// if new_bucket_count is not greater than the current bucket_count, then this is no longer an expansion
