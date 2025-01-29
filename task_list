@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * fix expansion factor in and new capacity calculation in array, hashmap and value_arraylist
+
 2. Add new datastructure types tasks (*future)
 
 STREAM
