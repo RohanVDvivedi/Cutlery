@@ -3,7 +3,7 @@
 
 /*
 	This is a binary search tree based best fit arena memory allocator for microcontrollers.
-	But unlike arena memory allocators, you can free blocks of memory.
+	But unlike arena memory allocators, you can free blocks, before you destroy the arena completely.
 */
 
 #include<cutlery_stds.h>
@@ -17,7 +17,7 @@ typedef struct any_block any_block;
 struct any_block
 {
 	int is_free : 1;
-	int is_marked : 1; // bit left here for GC implementations to utilize, lft untouched by the allocator
+	int is_marked : 1; // bit left here for GC implementations to utilize, left untouched by the allocator
 
 	int is_temporary : 1;
 
@@ -26,6 +26,7 @@ struct any_block
 		llnode ab_node; // intrusive llnode for all_blocks linkedlist inside the uc_allocator context
 
 		cy_uint temporary_block_size; // valid only if is_temporary is set
+		// temporary blocks are used as local variable to find the next larger or equal sized block from the free_blocks bst
 	};
 };
 
@@ -67,10 +68,11 @@ const any_block* get_next_block_for_uc_allocator(const uc_allocator_context* uca
 // this will always be the complete size of the block, including the any_block/free_block prefix structs
 cy_uint get_block_size_for_uc_allocator_block(const uc_allocator_context* ucac_p, const any_block* b);
 
-// returns some any_block or NULL, if a non-NULL is returned it is atleast size bytes big
-// again this size includes the any_block/free_block prefix structs
-// alignement of this block as expected is same as that of free_block `REMEBER, it was free prior to allocation?`
-// the return value is a const pointer because you are only allowed to touch memory that is after the prefix any_block struct
+// returns some any_block or NULL, if a non-NULL is returned, then it is atleast 'size' bytes big
+// again this 'size' includes the any_block/free_block prefix structs
+// alignment of this block as expected to be same as that of free_block `REMEBER, it was free prior to allocation.`
+// the return value is a const pointer because you are only allowed to touch memory that is after the prefix of any_block struct
+// i.e. you are allowed to use the memory only after the first sizeof(any_block) bytes of memory
 const any_block* allocate_block_uc_allocator(uc_allocator_context* ucac_p, cy_uint size);
 void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, const any_block* b);
 
