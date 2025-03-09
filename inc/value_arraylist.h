@@ -27,51 +27,51 @@
 typedef struct container container;                                                                                            \
                                                                                                                                \
 /* initialization functions */                                                                                                 \
-pref_spec int initialize_ ## container(container* c, cy_uint capacity);                                                                  \
-pref_spec int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator);               \
-pref_spec int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p);                          \
+pref_spec int initialize_ ## container(container* c, cy_uint capacity);                                                        \
+pref_spec int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator);     \
+pref_spec int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p);                \
                                                                                                                                \
 /* basic container oprations to get capacity and element_count */                                                              \
-pref_spec cy_uint get_capacity_ ## container(const container* c);                                                                        \
-pref_spec cy_uint get_element_count_ ## container(const container* c);                                                                   \
+pref_spec cy_uint get_capacity_ ## container(const container* c);                                                              \
+pref_spec cy_uint get_element_count_ ## container(const container* c);                                                         \
                                                                                                                                \
 /* check is_empty and is_full */                                                                                               \
-pref_spec int is_empty_ ## container(const container* c);                                                                                \
-pref_spec int is_full_ ## container(const container* c);                                                                                 \
+pref_spec int is_empty_ ## container(const container* c);                                                                      \
+pref_spec int is_full_ ## container(const container* c);                                                                       \
                                                                                                                                \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
-pref_spec int push_front_to_ ## container(container* c, const contained_type* v);                                                        \
-pref_spec int push_back_to_ ## container(container* c, const contained_type* v);                                                         \
-pref_spec int pop_front_from_ ## container(container* c);                                                                                \
-pref_spec int pop_back_from_ ## container(container* c);                                                                                 \
-pref_spec const contained_type* get_front_of_ ## container(const container* c);                                                          \
-pref_spec const contained_type* get_back_of_ ## container(const container* c);                                                           \
-pref_spec const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index);                                      \
-pref_spec const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index);                                       \
-pref_spec int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index);                                     \
-pref_spec int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index);                                      \
-pref_spec int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                    \
-pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                                     \
+pref_spec int push_front_to_ ## container(container* c, const contained_type* v);                                              \
+pref_spec int push_back_to_ ## container(container* c, const contained_type* v);                                               \
+pref_spec int pop_front_from_ ## container(container* c);                                                                      \
+pref_spec int pop_back_from_ ## container(container* c);                                                                       \
+pref_spec const contained_type* get_front_of_ ## container(const container* c);                                                \
+pref_spec const contained_type* get_back_of_ ## container(const container* c);                                                 \
+pref_spec const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index);                            \
+pref_spec const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index);                             \
+pref_spec int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index);                           \
+pref_spec int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index);                            \
+pref_spec int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                          \
+pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                           \
                                                                                                                                \
 /* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
-pref_spec int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                          \
-pref_spec int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                           \
+pref_spec int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                \
+pref_spec int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                 \
                                                                                                                                \
 /* bulk remove functions */                                                                                                    \
-pref_spec int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                 \
-pref_spec int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);                  \
+pref_spec int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);       \
+pref_spec int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove);        \
                                                                                                                                \
 /* get index accessed interface for elements */                                                                                \
-pref_spec index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c);                                \
-pref_spec index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c);                                 \
+pref_spec index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c);                      \
+pref_spec index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c);                       \
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
-pref_spec void heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                                    \
-pref_spec void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index);                                  \
-pref_spec int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v);                       \
-pref_spec int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                               \
-pref_spec int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index);                             \
+pref_spec void heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                          \
+pref_spec void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index);                        \
+pref_spec int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v);             \
+pref_spec int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree);                                     \
+pref_spec int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index);                   \
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
@@ -80,13 +80,13 @@ pref_spec int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint
 pref_spec int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const contained_type* data), memory_allocator mem_allocator);\
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
-pref_spec int expand_ ## container(container* c);                                                                                        \
-pref_spec int shrink_ ## container(container* c);                                                                                        \
-pref_spec int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity);                                                \
+pref_spec int expand_ ## container(container* c);                                                                              \
+pref_spec int shrink_ ## container(container* c);                                                                              \
+pref_spec int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity);                                      \
                                                                                                                                \
 /* deinitialization function */                                                                                                \
-pref_spec void remove_all_from_ ## container(container* c);                                                                              \
-pref_spec void deinitialize_ ## container(container* c);                                                                                 \
+pref_spec void remove_all_from_ ## container(container* c);                                                                    \
+pref_spec void deinitialize_ ## container(container* c);                                                                       \
                                                                                                                                \
 /* sprint function */                                                                                                          \
 pref_spec void sprint_ ## container(dstring* append_str, const container* c, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs);\
@@ -106,17 +106,17 @@ struct container                                                                
 
 // comment break, there must be a newline above this comment
 
-#define function_definitions_value_arraylist(container, contained_type, pref_spec)                                                        \
+#define function_definitions_value_arraylist(container, contained_type, pref_spec)                                             \
                                                                                                                                \
 /* global constant setting the max capacity of this container built */                                                         \
 static const cy_uint MAX_ ## container ## _CAPACITY = (CY_UINT_MAX / sizeof(contained_type));                                  \
                                                                                                                                \
 /* initialization functions */                                                                                                 \
-pref_spec int initialize_ ## container(container* c, cy_uint capacity)                                                                   \
+pref_spec int initialize_ ## container(container* c, cy_uint capacity)                                                         \
 {                                                                                                                              \
 	return initialize_ ## container ## _with_allocator(c, capacity, STD_C_mem_allocator);                                      \
 }                                                                                                                              \
-pref_spec int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator)                \
+pref_spec int initialize_ ## container ## _with_allocator(container* c, cy_uint capacity, memory_allocator mem_allocator)      \
 {                                                                                                                              \
 	/* check to ensure max capacity */                                                                                         \
 	if(capacity > MAX_ ## container ## _CAPACITY)                                                                              \
@@ -135,7 +135,7 @@ pref_spec int initialize_ ## container ## _with_allocator(container* c, cy_uint 
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p)                           \
+pref_spec int initialize_ ## container ## _with_memory(container* c, cy_uint capacity, contained_type* data_p)                 \
 {                                                                                                                              \
 	/* check to ensure max capacity */                                                                                         \
 	if(capacity > MAX_ ## container ## _CAPACITY)                                                                              \
@@ -151,27 +151,27 @@ pref_spec int initialize_ ## container ## _with_memory(container* c, cy_uint cap
 }                                                                                                                              \
                                                                                                                                \
 /* basic container oprations to get capacity and element_count */                                                              \
-pref_spec cy_uint get_capacity_ ## container (const container* c)                                                                        \
+pref_spec cy_uint get_capacity_ ## container (const container* c)                                                              \
 {                                                                                                                              \
 	return (c->capacity_in_bytes / sizeof(contained_type));                                                                    \
 }                                                                                                                              \
-pref_spec cy_uint get_element_count_ ## container (const container* c)                                                                   \
+pref_spec cy_uint get_element_count_ ## container (const container* c)                                                         \
 {                                                                                                                              \
 	return c->element_count;                                                                                                   \
 }                                                                                                                              \
                                                                                                                                \
 /* check is_empty and is_full */                                                                                               \
-pref_spec int is_empty_ ## container(const container* c)                                                                                 \
+pref_spec int is_empty_ ## container(const container* c)                                                                       \
 {                                                                                                                              \
 	return get_element_count_ ## container(c) == 0;                                                                            \
 }                                                                                                                              \
-pref_spec int is_full_ ## container(const container* c)                                                                                  \
+pref_spec int is_full_ ## container(const container* c)                                                                        \
 {                                                                                                                              \
 	return get_element_count_ ## container(c) == get_capacity_ ## container(c);                                                \
 }                                                                                                                              \
                                                                                                                                \
 /* arraylist like functionality for basic stack, queue and array like operations */                                            \
-pref_spec int push_front_to_ ## container(container* c, const contained_type* v)                                                         \
+pref_spec int push_front_to_ ## container(container* c, const contained_type* v)                                               \
 {                                                                                                                              \
 	if(is_full_ ## container(c))                                                                                               \
 		return 0;                                                                                                              \
@@ -187,7 +187,7 @@ pref_spec int push_front_to_ ## container(container* c, const contained_type* v)
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int push_back_to_ ## container(container* c, const contained_type* v)                                                          \
+pref_spec int push_back_to_ ## container(container* c, const contained_type* v)                                                \
 {                                                                                                                              \
 	if(is_full_ ## container(c))                                                                                               \
 		return 0;                                                                                                              \
@@ -203,7 +203,7 @@ pref_spec int push_back_to_ ## container(container* c, const contained_type* v) 
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int pop_front_from_ ## container(container* c)                                                                                 \
+pref_spec int pop_front_from_ ## container(container* c)                                                                       \
 {                                                                                                                              \
 	if(is_empty_ ## container(c))                                                                                              \
 		return 0;                                                                                                              \
@@ -216,7 +216,7 @@ pref_spec int pop_front_from_ ## container(container* c)                        
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int pop_back_from_ ## container(container* c)                                                                                  \
+pref_spec int pop_back_from_ ## container(container* c)                                                                        \
 {                                                                                                                              \
 	if(is_empty_ ## container(c))                                                                                              \
 		return 0;                                                                                                              \
@@ -228,21 +228,21 @@ pref_spec int pop_back_from_ ## container(container* c)                         
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec const contained_type* get_front_of_ ## container(const container* c)                                                           \
+pref_spec const contained_type* get_front_of_ ## container(const container* c)                                                 \
 {                                                                                                                              \
 	if(is_empty_ ## container(c))                                                                                              \
 		return NULL;                                                                                                           \
                                                                                                                                \
 	return c->data_p + c->first_index;                                                                                         \
 }                                                                                                                              \
-pref_spec const contained_type* get_back_of_ ## container(const container* c)                                                            \
+pref_spec const contained_type* get_back_of_ ## container(const container* c)                                                  \
 {                                                                                                                              \
 	if(is_empty_ ## container(c))                                                                                              \
 		return NULL;                                                                                                           \
                                                                                                                                \
 	return c->data_p +  get_last_index(c->first_index, c->element_count, get_capacity_ ## container(c));                       \
 }                                                                                                                              \
-pref_spec const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index)                                       \
+pref_spec const contained_type* get_from_front_of_ ## container(const container* c, cy_uint index)                             \
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return NULL;                                                                                                           \
@@ -251,7 +251,7 @@ pref_spec const contained_type* get_from_front_of_ ## container(const container*
                                                                                                                                \
 	return c->data_p + index_concerned;                                                                                        \
 }                                                                                                                              \
-pref_spec const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index)                                        \
+pref_spec const contained_type* get_from_back_of_ ## container(const container* c, cy_uint index)                              \
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return NULL;                                                                                                           \
@@ -261,7 +261,7 @@ pref_spec const contained_type* get_from_back_of_ ## container(const container* 
                                                                                                                                \
 	return c->data_p + index_concerned;                                                                                        \
 }                                                                                                                              \
-pref_spec int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index)                                      \
+pref_spec int set_from_front_in_ ## container(container* c, const contained_type* v, cy_uint index)                            \
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return 0;                                                                                                              \
@@ -272,7 +272,7 @@ pref_spec int set_from_front_in_ ## container(container* c, const contained_type
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index)                                       \
+pref_spec int set_from_back_in_ ## container(container* c, const contained_type* v, cy_uint index)                             \
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 		return 0;                                                                                                              \
@@ -284,7 +284,7 @@ pref_spec int set_from_back_in_ ## container(container* c, const contained_type*
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2)                                                     \
+pref_spec int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2)                                           \
 {                                                                                                                              \
 	if(i1 >= get_element_count_ ## container(c) || i2 >= get_element_count_ ## container(c))                                   \
 		return 0;                                                                                                              \
@@ -301,7 +301,7 @@ pref_spec int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)                                                      \
+pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2)                                            \
 {                                                                                                                              \
 	if(i1 >= get_element_count_ ## container(c) || i2 >= get_element_count_ ## container(c))                                   \
 		return 0;                                                                                                              \
@@ -379,7 +379,7 @@ static inline void make_room_from_front_in_ ## container ## _INTERNAL(container*
 		c->element_count += room_count_to_insert;                                                                              \
 	}                                                                                                                          \
 }                                                                                                                              \
-pref_spec int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert)                           \
+pref_spec int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert)                 \
 {                                                                                                                              \
 	/* fail if the index is not lesser than equal to element_count OR there isn't enough space to accomodate room_count_to_insert number of new elements */\
 	if(index > get_element_count_ ## container(c) || room_count_to_insert > (get_capacity_ ## container(c) - get_element_count_ ## container(c)))\
@@ -393,7 +393,7 @@ pref_spec int make_room_from_front_in_ ## container(container* c, cy_uint index,
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert)                            \
+pref_spec int make_room_from_back_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert)                  \
 {                                                                                                                              \
 	/* fail if the index is not lesser than equal to element_count OR there isn't enough space to accomodate room_count_to_insert number of new elements */\
 	if(index > get_element_count_ ## container(c) || room_count_to_insert > (get_capacity_ ## container(c) - get_element_count_ ## container(c)))\
@@ -471,7 +471,7 @@ static inline void remove_elements_from_front_of_ ## container ## _INTERNAL(cont
 			c->first_index = 0;                                                                                                \
 	}                                                                                                                          \
 }                                                                                                                              \
-pref_spec int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove)                  \
+pref_spec int remove_elements_from_front_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove)        \
 {                                                                                                                              \
 	/* if the arraylist is empty OR the index is out of range OR there aren't enough elements (at and) after index */          \
 	/* then we fail with 0 */                                                                                                  \
@@ -486,7 +486,7 @@ pref_spec int remove_elements_from_front_of_ ## container(container* c, cy_uint 
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove)                   \
+pref_spec int remove_elements_from_back_of_ ## container(container* c, cy_uint index, cy_uint element_count_to_remove)         \
 {                                                                                                                              \
 	/* if the arraylist is empty OR the index is out of range OR there aren't enough elements (at and) after index */          \
 	/* then we fail with 0 */                                                                                                  \
@@ -506,7 +506,7 @@ pref_spec int remove_elements_from_back_of_ ## container(container* c, cy_uint i
 }                                                                                                                              \
                                                                                                                                \
 /* get index accessed interface for elements */                                                                                \
-pref_spec index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c)                                 \
+pref_spec index_accessed_interface get_index_accessed_interface_for_front_of_ ## container(container* c)                       \
 {                                                                                                                              \
 	return (index_accessed_interface) {                                                                                        \
 		.ds_p = c,                                                                                                             \
@@ -516,7 +516,7 @@ pref_spec index_accessed_interface get_index_accessed_interface_for_front_of_ ##
 		.get_element_count = ((cy_uint (*)(const void*))(get_element_count_ ## container)),                                    \
 	};                                                                                                                         \
 }                                                                                                                              \
-pref_spec index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c)                                  \
+pref_spec index_accessed_interface get_index_accessed_interface_for_back_of_ ## container(container* c)                        \
 {                                                                                                                              \
 	return (index_accessed_interface) {                                                                                        \
 		.ds_p = c,                                                                                                             \
@@ -528,7 +528,7 @@ pref_spec index_accessed_interface get_index_accessed_interface_for_back_of_ ## 
 }                                                                                                                              \
                                                                                                                                \
 /* heap like access functions (top of heap is same as get_front_of_ function) */                                               \
-static inline void bubble_up_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                             \
+static inline void bubble_up_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                      \
 {                                                                                                                              \
 	/* exit at index 0, or the index is out of range */                                                                        \
 	while(has_parent_N(index) && index < get_element_count_ ## container(c))                                                   \
@@ -544,7 +544,7 @@ static inline void bubble_up_ ## container(container* c, heap_info* hinfo, cy_ui
 		index = parent_index;                                                                                                  \
 	}                                                                                                                          \
 }                                                                                                                              \
-static inline void bubble_down_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                           \
+static inline void bubble_down_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                    \
 {                                                                                                                              \
 	/* we can not bubble down the last node */                                                                                 \
 	while(can_have_any_children_N(index, degree) && index < get_element_count_ ## container(c))                                \
@@ -570,7 +570,7 @@ static inline void bubble_down_ ## container(container* c, heap_info* hinfo, cy_
 		index = new_parent_index;                                                                                              \
 	}                                                                                                                          \
 }                                                                                                                              \
-pref_spec void heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree)                                                     \
+pref_spec void heapify_ ## container(container* c, heap_info* hinfo, cy_uint degree)                                           \
 {                                                                                                                              \
 	/* heapify_all is not required, if the element_count is 0 OR 1 */                                                          \
 	if(get_element_count_ ## container(c) <= 1)                                                                                \
@@ -581,7 +581,7 @@ pref_spec void heapify_ ## container(container* c, heap_info* hinfo, cy_uint deg
 	for(cy_uint index = get_parent_index_N(get_element_count_ ## container(c) - 1, degree); index != -1; index--)              \
 		bubble_down_ ## container(c, hinfo, degree, index);                                                                    \
 }                                                                                                                              \
-pref_spec void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                                   \
+pref_spec void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                         \
 {                                                                                                                              \
 	/* return if index is out-of-bounds */                                                                                     \
 	if(index >= get_element_count_ ## container(c))                                                                            \
@@ -595,7 +595,7 @@ pref_spec void heapify_at_ ## container(container* c, heap_info* hinfo, cy_uint 
 	else if(can_have_any_children_N(index, degree))                                                                            \
 		bubble_down_ ## container(c, hinfo, degree, index);                                                                    \
 }                                                                                                                              \
-pref_spec int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v)                        \
+pref_spec int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, const contained_type* v)              \
 {                                                                                                                              \
 	/* fail, if push back fails */                                                                                             \
 	if(!push_back_to_ ## container(c, v))                                                                                      \
@@ -606,7 +606,7 @@ pref_spec int push_to_heap_ ## container(container* c, heap_info* hinfo, cy_uint
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree)                                                \
+pref_spec int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree)                                      \
 {                                                                                                                              \
 	/* can not pop, if there are no elements in the heap */                                                                    \
 	if(is_empty_ ## container(c))                                                                                              \
@@ -615,7 +615,7 @@ pref_spec int pop_from_heap_ ## container(container* c, heap_info* hinfo, cy_uin
 	/* remove the 0th element from the heap */                                                                                 \
 	return remove_from_heap_ ## container(c, hinfo, degree, 0);                                                                \
 }                                                                                                                              \
-pref_spec int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                              \
+pref_spec int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_uint degree, cy_uint index)                    \
 {                                                                                                                              \
 	/* an element can be removed, only if heap is not empty, and the index provided is within bounds */                        \
 	if(is_empty_ ## container(c) || index >= get_element_count_ ## container(c))                                               \
@@ -745,7 +745,7 @@ pref_spec int merge_sort_ ## container(container* c, cy_uint start_index, cy_uin
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)     \
+pref_spec int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)\
 {                                                                                                                              \
 	if(start_index > last_index || last_index >= get_element_count_ ## container(c))                                           \
 		return 0;                                                                                                              \
@@ -834,7 +834,7 @@ pref_spec int radix_sort_ ## container(container* c, cy_uint start_index, cy_uin
 }                                                                                                                              \
                                                                                                                                \
 /* functions to increase decrease capacity of the container */                                                                 \
-pref_spec int expand_ ## container(container* c)                                                                                         \
+pref_spec int expand_ ## container(container* c)                                                                               \
 {                                                                                                                              \
 	/* compute new capacity */                                                                                                 \
 	cy_uint capacity = get_capacity_ ## container(c);                                                                          \
@@ -854,7 +854,7 @@ pref_spec int expand_ ## container(container* c)                                
                                                                                                                                \
 	return reserve_capacity_for_ ## container(c, new_capacity);                                                                \
 }                                                                                                                              \
-static inline int shrink_ ## container ## _holder(container* c, cy_uint new_capacity)                                                 \
+static inline int shrink_ ## container ## _holder(container* c, cy_uint new_capacity)                                          \
 {                                                                                                                              \
 	/* can not shrink if the allocator is NULL */                                                                              \
 	if(c->mem_allocator == NULL)                                                                                               \
@@ -886,7 +886,7 @@ static inline int shrink_ ## container ## _holder(container* c, cy_uint new_capa
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-pref_spec int shrink_ ## container(container* c)                                                                                         \
+pref_spec int shrink_ ## container(container* c)                                                                               \
 {                                                                                                                              \
 	int has_holder_shrunk = 0;                                                                                                 \
                                                                                                                                \
@@ -908,7 +908,7 @@ pref_spec int shrink_ ## container(container* c)                                
                                                                                                                                \
 	return has_holder_shrunk;                                                                                                  \
 }                                                                                                                              \
-static inline int reserve_capacity_for_ ## container ## _holder(container* c, cy_uint atleast_capacity)                               \
+static inline int reserve_capacity_for_ ## container ## _holder(container* c, cy_uint atleast_capacity)                        \
 {                                                                                                                              \
 	/* can not expand if the allocator is NULL */                                                                              \
 	if(c->mem_allocator == NULL)                                                                                               \
@@ -943,7 +943,7 @@ static inline int reserve_capacity_for_ ## container ## _holder(container* c, cy
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
-static inline void linearize_ ## container ## _upon_expansion(container* c, cy_uint old_capacity)                                     \
+static inline void linearize_ ## container ## _upon_expansion(container* c, cy_uint old_capacity)                              \
 {                                                                                                                              \
 	/* element_count remains the same, it is indifferent to re-linearizing the data in this function */                        \
 	cy_uint element_count = get_element_count_ ## container(c);                                                                \
@@ -990,7 +990,7 @@ static inline void linearize_ ## container ## _upon_expansion(container* c, cy_u
 			memory_move(c->data_p, c->data_p + tail_elements_to_relocate, tail_elements_to_shift * sizeof(contained_type));    \
 	}                                                                                                                          \
 }                                                                                                                              \
-pref_spec int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)                                                 \
+pref_spec int reserve_capacity_for_ ## container(container* c, cy_uint atleast_capacity)                                       \
 {                                                                                                                              \
 	int data_movement_will_be_required = 1;                                                                                    \
                                                                                                                                \
@@ -1012,12 +1012,12 @@ pref_spec int reserve_capacity_for_ ## container(container* c, cy_uint atleast_c
 }                                                                                                                              \
                                                                                                                                \
 /* deinitialization function */                                                                                                \
-pref_spec void remove_all_from_ ## container(container* c)                                                                               \
+pref_spec void remove_all_from_ ## container(container* c)                                                                     \
 {                                                                                                                              \
 	c->first_index = 0;                                                                                                        \
 	c->element_count = 0;                                                                                                      \
 }                                                                                                                              \
-pref_spec void deinitialize_ ## container(container* c)                                                                                  \
+pref_spec void deinitialize_ ## container(container* c)                                                                        \
 {                                                                                                                              \
 	if(c->mem_allocator != NULL && c->data_p != NULL && c->capacity_in_bytes > 0)                                              \
 		deallocate(c->mem_allocator, c->data_p, c->capacity_in_bytes);                                                         \
