@@ -8,5 +8,5 @@ then
 	echo -n "Rohan Vipulkumar Dvivedi" | base64 -w 0 | ./a.out --decode
 	echo ""
 else
-	gcc $1.c -lcutlery #&& sudo valgrind -v ./a.out
+	gcc $1.c -lcutlery && sudo valgrind -v ./a.out
 fi
