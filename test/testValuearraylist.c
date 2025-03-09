@@ -3,9 +3,9 @@
 #include<stdio.h>
 
 data_definitions_value_arraylist(int_list, int)
-declarations_value_arraylist(int_list, int, )
+declarations_value_arraylist(int_list, int, static inline) // last parameter can be empty
 #define EXPANSION_FACTOR 1.5
-function_definitions_value_arraylist(int_list, int, )
+function_definitions_value_arraylist(int_list, int, static inline) // last parameter can be empty
 
 int compare_ints(const void* a, const void* b)
 {
