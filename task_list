@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * add pref_spec to value_arraylist template to allow inlining and static functions
+
 2. Add new datastructure types tasks (*future)
 
 STREAM
