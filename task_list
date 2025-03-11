@@ -1,5 +1,8 @@
 1. Tasks picked
 
+ * utility to construct a utf8 code point from a bytes buffer and a size
+	api : unsigned long long int get_next_utf8_code_point(const char* data, cy_uint data_size, cy_uint* bytes_consumed); // return value has to only fit unsigned 32-bit integer
+
 2. Add new datastructure types tasks (*future)
 
 STREAM
@@ -8,7 +11,7 @@ STREAM
 ALLOCATOR
  * throughly test uc_allocator
  * Make compute-only libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
- * reafactor stream_to_read_until_dstring to use cutlery allocators
+ * refactor stream_to_read_until_dstring to use cutlery allocators
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based intrusive fibonacci heap. (binomial heap will not be supported, strict constraints of binomial heap will give us no benefit)
