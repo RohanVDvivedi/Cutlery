@@ -1,10 +1,10 @@
 1. Tasks picked
 
+2. Add new datastructure types tasks (*future)
+
  * utility to construct a utf8 code point from a bytes buffer and a size
 	api : unsigned long long int get_next_utf8_code_point(const char* data, cy_uint data_size, cy_uint* bytes_consumed); // return value has to only fit unsigned 32-bit integer
 	there is error in encoding if no bytes are consumed, if so try again with more bytes
-
-2. Add new datastructure types tasks (*future)
 
 STREAM
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
