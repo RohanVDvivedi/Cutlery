@@ -7,8 +7,8 @@
 fail_build_on(((sizeof(long) * CHAR_BIT) - 1) < 21)
 
 // error values returned by the utf8 decoding function
-#define ENCODING_ERROR -1
-#define TOO_FEW_BYTES -2
+#define UTF8_ENCODING_ERROR -1
+#define UTF8_TOO_FEW_BYTES -2
 
 // number lesser than (1L << 21)
 int is_valid_utf8_code_point(long code_point);
