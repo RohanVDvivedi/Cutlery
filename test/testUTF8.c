@@ -42,7 +42,62 @@ int main()
 			exit(-1);
 		}
 	}
-
 	printf("all possible encoding and decoding of the utf8 passed\n");
+
+	char utf8_string[25] = {0x41, 0xC3, 0xA9, 0xCE, 0xBB, 0xF0, 0x90, 0x8D, 0x88, 0x5A, 0xC3, 0xB1, 0xE4, 0xB8, 0x96, 0xF0, 0x9F, 0x92, 0xA1, 0xF0, 0x90, 0x8D, 0x88, 0xCE, 0xBB};
+	long code_points[10] = {0x41, 0xE9, 0x3BB, 0x10348, 0x5A, 0xF1, 0x4E16, 0x1F4A1, 0x10348, 0x3BB};
+
+	// test encoding
+	{
+		char buffer[100];
+		cy_uint buffer_capacity = 100;
+		cy_uint buffer_size = 0;
+		for(cy_uint i = 0; i < sizeof(code_points) / sizeof(code_points[0]); i++)
+		{
+			cy_uint bytes_consumed;
+			int error = utf8_encode_code_point(buffer + buffer_size, buffer_capacity - buffer_size, code_points[i], &bytes_consumed);
+			if(error != 1)
+			{
+				printf("there was an error(%d) encoding the test code points at %"PRIu_cy_uint"-th code point\n", error, i);
+				exit(-1);
+			}
+			buffer_size += bytes_consumed;
+		}
+
+		if(buffer_size != sizeof(utf8_string))
+		{
+			printf("error in encoding, after encoding size does not match with result\n");
+			exit(-1);
+		}
+		printf("encoding result comparison = %d -> must be 0\n", memory_compare(buffer, utf8_string, buffer_size));
+	}
+	printf("encoding works\n");
+
+	// test decoding
+	{
+		long buf_code_points[100];
+		cy_uint buf_code_points_size = 0;
+		for(cy_uint i = 0; i < sizeof(utf8_string);)
+		{
+			cy_uint bytes_consumed;
+			buf_code_points[buf_code_points_size] = utf8_decode_code_point(utf8_string + i, sizeof(utf8_string) - i, &bytes_consumed);
+			if(buf_code_points[buf_code_points_size] < 0)
+			{
+				printf("there was an error(%ld) decoding the test code points at %"PRIu_cy_uint" in utf8_string\n", buf_code_points[buf_code_points_size], i);
+				exit(-1);
+			}
+			buf_code_points_size++;
+			i += bytes_consumed;
+		}
+
+		if(buf_code_points_size != sizeof(code_points) / sizeof(code_points[0]))
+		{
+			printf("error in decoding, after decoding number of code points produced does not match with result\n");
+			exit(-1);
+		}
+		printf("decoding result comparison = %d -> must be 0\n", memory_compare(buf_code_points, code_points, buf_code_points_size * sizeof(long)));
+	}
+	printf("decoding works\n");
+
 	return 0;
 }
