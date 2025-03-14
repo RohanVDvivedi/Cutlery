@@ -8,17 +8,23 @@ int main()
 	for(long code_point = 0; code_point < (1L << 21); code_point++)
 	{
 		char buffer[10];
-		cy_uint buffer_size;
+		cy_uint buffer_size = 10;
 
 		cy_uint bytes_consumed1;
 		int error1 = utf8_encode_code_point(buffer, buffer_size, code_point, &bytes_consumed1);
+
+		printf("%ld -> ", code_point);
+		for(cy_uint i = 0; i < bytes_consumed1; i++)
+			printf("%hhx ", buffer[i]);
+		printf("\n");
 
 		cy_uint bytes_consumed2;
 		long r_code_point = utf8_decode_code_point(buffer, buffer_size, &bytes_consumed2);
 
 		if(bytes_consumed1 != bytes_consumed2)
 		{
-			printf("unequal bytes consumed on encoding and decoding for %ld\n", code_point);
+			printf("unequal bytes consumed on encoding(%"PRIu_cy_uint") and decoding(%"PRIu_cy_uint") for %ld\n", bytes_consumed1, bytes_consumed2, code_point);
+			printf("code points do not match after encoding and decoding %ld != %ld\n", code_point, r_code_point);
 			exit(-1);
 		}
 
