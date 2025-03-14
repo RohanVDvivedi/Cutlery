@@ -58,7 +58,7 @@ long utf8_decode_code_point(const char* data, cy_uint data_size, cy_uint* bytes_
 		return UTF8_ENCODING_ERROR;
 	}
 
-	if((*bytes_consumed) < data_size)
+	if((*bytes_consumed) > data_size)
 	{
 		(*bytes_consumed) = 0;
 		return UTF8_TOO_FEW_BYTES;

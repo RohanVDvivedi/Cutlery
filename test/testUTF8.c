@@ -13,10 +13,10 @@ int main()
 		cy_uint bytes_consumed1;
 		int error1 = utf8_encode_code_point(buffer, buffer_size, code_point, &bytes_consumed1);
 
-		printf("%ld -> ", code_point);
+		/*printf("%ld -> ", code_point);
 		for(cy_uint i = 0; i < bytes_consumed1; i++)
 			printf("%hhx ", buffer[i]);
-		printf("\n");
+		printf("\n");*/
 
 		cy_uint bytes_consumed2;
 		long r_code_point = utf8_decode_code_point(buffer, buffer_size, &bytes_consumed2);
@@ -34,5 +34,7 @@ int main()
 			exit(-1);
 		}
 	}
+
+	printf("all possible encoding and decoding of the utf8 passed\n");
 	return 0;
 }
