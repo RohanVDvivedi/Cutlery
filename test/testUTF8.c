@@ -15,6 +15,12 @@ int main()
 		cy_uint bytes_consumed1;
 		int error1 = utf8_encode_code_point(buffer, buffer_size, code_point, &bytes_consumed1);
 
+		if(error1 != 1)
+		{
+			printf("there is an error(%d) right at the encoding for %ld\n", error1, code_point);
+			exit(-1);
+		}
+
 		/*printf("%ld -> ", code_point);
 		for(cy_uint i = 0; i < bytes_consumed1; i++)
 			printf("%hhx ", buffer[i]);
