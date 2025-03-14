@@ -74,6 +74,13 @@ long utf8_decode_code_point(const char* data, cy_uint data_size, cy_uint* bytes_
 		code_point = (code_point << 6) | (data[i] & (0x3f));
 	}
 
+	// if the code point was represented with more bytes then necessary then fail it
+	if((*bytes_consumed) != whole_bytes_required_for_encoding_utf8_code_point(code_point))
+	{
+		(*bytes_consumed) = 0;
+		return UTF8_ENCODING_ERROR;
+	}
+
 	return code_point;
 }
 
