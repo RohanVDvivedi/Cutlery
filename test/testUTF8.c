@@ -9,6 +9,8 @@ int main()
 	{
 		char buffer[10];
 		cy_uint buffer_size = 10;
+		for(cy_uint i = 0; i < buffer_size; i++)
+			buffer[i] = rand();
 
 		cy_uint bytes_consumed1;
 		int error1 = utf8_encode_code_point(buffer, buffer_size, code_point, &bytes_consumed1);
