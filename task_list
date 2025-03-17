@@ -5,9 +5,6 @@ ALLOCATOR
 
 2. Add new datastructure types tasks (*future)
 
-STREAM
- * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
-
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based intrusive fibonacci heap. (binomial heap will not be supported, strict constraints of binomial heap will give us no benefit)
 struct fibheapnode
