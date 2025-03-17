@@ -1,12 +1,12 @@
 1. Tasks picked
 
+ALLOCATOR
+ * refactor stream_to_read_until_dstring and stream_for_file_descriptor to use cutlery allocators
+
 2. Add new datastructure types tasks (*future)
 
 STREAM
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
-
-ALLOCATOR
- * refactor stream_to_read_until_dstring to use cutlery allocators
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based intrusive fibonacci heap. (binomial heap will not be supported, strict constraints of binomial heap will give us no benefit)
