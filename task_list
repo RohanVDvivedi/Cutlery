@@ -6,7 +6,6 @@ STREAM
  * all sprint_* functions to be updated to serialize_* functions for all Cutlery data-structures, each of which return -1 for failure and 0 forsuccess
 
 ALLOCATOR
- * Make compute-only libraries like HTTPparser, JSONparser, Cutlery (itself), TupleStore and TupleIndexer use cutlery allocator interface
  * refactor stream_to_read_until_dstring to use cutlery allocators
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
