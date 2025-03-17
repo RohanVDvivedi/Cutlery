@@ -15,6 +15,10 @@ The above 2 statements slides in another feature, references/iterators to the ob
  * *It is meant to be used for (but usage is not limited to) very low level systems programming, with minimal environment, without any of stdlib c, posix libs or 3rd party library support.*
  * *It can most certainly be used for high and low level systems software and application software, you may find me using it extensively in most of my C projects on GITHUB.*
 
+**Exclusions**
+ * radix tree, skip list, will never be part of part of Cutlery, as these data structures need additional nodes to be allocated for insertions, and if these allcations fails we can do nothing but panic and exit as the datastructire will be left in inconsistent state due to partial insert. Additionally they can be implemented with primitives from Cutlery, hence the decission
+ * leftist heap will not be supported due to its insignificance in the community. Why would anyone prefer it over N-ary heap or fibinacci heap?
+
 ## Setup instructions
 **Install dependencies :**
  * This project does not have any dependencies.

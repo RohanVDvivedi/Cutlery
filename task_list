@@ -59,11 +59,6 @@ BST tasks (NEW DATASTRUCTURE inclusion * future)
 
 3. Competely new datastructure tasks (*future)
 
-RADIX_TREE tasks (NEW DATASTRUCTURE)
- * radix tree, skip list, will never be part of part of Cutlery, as these data structures need additional nodes to be allocated for insertions, and if these allcations fails we can do nothing but panic and exit as the datastructire will be left in inconsistent state due to partial insert
-   * additionally they can be implemented with primitives from Cutlery, hence the decission
- * leftist heap will not be supported due to its insignificance in the industry
-
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use value_arraylist for below functionality and implement their iterative approaches only
  * access methods must be insert, update, find_range
