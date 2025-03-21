@@ -1,7 +1,7 @@
 1. Tasks picked
 
 ALLOCATOR
- * refactor stream_to_read_until_dstring and stream_for_file_descriptor to use cutlery allocators
+ * refactor stream_to_read_until_dstring to use cutlery allocators
 
 2. Add new datastructure types tasks (*future)
 
