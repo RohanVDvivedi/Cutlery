@@ -1,7 +1,7 @@
-#include<array.h>
+#include<cutlery/array.h>
 
-#include<cutlery_stds.h>
-#include<cutlery_math.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/cutlery_math.h>
 
 // this is the factor and the constant amount, by which the capacity of data_p_p will be expanded or shrunk
 #define EXPANSION_FACTR 1.5

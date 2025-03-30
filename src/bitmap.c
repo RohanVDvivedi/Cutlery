@@ -1,4 +1,4 @@
-#include<bitmap.h>
+#include<cutlery/bitmap.h>
 
 unsigned long long int get_bits(const char* bitmap, cy_uint start_index, cy_uint last_index)
 {

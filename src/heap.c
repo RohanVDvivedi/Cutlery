@@ -1,9 +1,9 @@
-#include<heap.h>
+#include<cutlery/heap.h>
 
-#include<cutlery_node.h>
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_node.h>
+#include<cutlery/cutlery_stds.h>
 
-#include<n-ary_tree_as_array_util.h>
+#include<cutlery/n-ary_tree_as_array_util.h>
 
 // utility : interchanges data elements at indices i1 and i2
 static void inter_change_elements_for_indexes(heap* heap_p, cy_uint i1, cy_uint i2)

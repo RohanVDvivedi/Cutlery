@@ -1,4 +1,4 @@
-#include<dstring_index_accessed_interface.h>
+#include<cutlery/dstring_index_accessed_interface.h>
 
 static const char* get_char_at_from_dstring(const dstring* str_p, cy_uint index)
 {
@@ -45,7 +45,7 @@ index_accessed_interface get_index_accessed_interface_for_dstring(dstring* str_p
 	};
 }
 
-#include<dstring_char.h>
+#include<cutlery/dstring_char.h>
 
 int compare_chars_ascending_at(const void* c1, const void* c2)
 {

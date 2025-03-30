@@ -1,8 +1,8 @@
-#include<dstring.h>
+#include<cutlery/dstring.h>
 
-#include<cutlery_stds.h>
-#include<cutlery_math.h>
-#include<memory_allocator_interface.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/cutlery_math.h>
+#include<cutlery/memory_allocator_interface.h>
 
 // default memory allocator for dstring is the STD_C memory allocator
 memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;

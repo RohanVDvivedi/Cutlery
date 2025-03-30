@@ -1,8 +1,8 @@
-#include<bst_core.h>
-#include<bst_nonbalancing.h>
-#include<bst_util.h>
+#include<cutlery/bst_core.h>
+#include<cutlery/bst_nonbalancing.h>
+#include<cutlery/bst_util.h>
 
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 void insert_node_in_non_self_balancing_tree(bst* bst_p, bstnode* node_p)
 {

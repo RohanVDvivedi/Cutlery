@@ -1,9 +1,9 @@
-#include<bst_core.h>
-#include<bst_rotations.h>
-#include<bst_redblack.h>
-#include<bst_util.h>
+#include<cutlery/bst_core.h>
+#include<cutlery/bst_rotations.h>
+#include<cutlery/bst_redblack.h>
+#include<cutlery/bst_util.h>
 
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 // below 2 values can not be 0
 // because node_property of 0 implies a node that does not exist in any bst :: (i.e. a new node that passes is_new_bstnode as true)

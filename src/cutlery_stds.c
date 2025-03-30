@@ -1,4 +1,4 @@
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 static const cy_uint int_size = (sizeof(int)); // we assume that int is always 2^n bytes in size, i.e. 1,2,4,8 etc
 static const cy_uint int_bits_size = (sizeof(int) * CHAR_BIT); // CHAR_BIT must be 8
@@ -437,7 +437,7 @@ int memory_contains(const void* data, cy_uint size, const void* ptr)
 	return (data <= ptr) && (ptr <= data_last);
 }
 
-#include<cutlery_math.h>
+#include<cutlery/cutlery_math.h>
 
 const void* memory_get_first_aigned_in_region(const void* data, cy_uint size, cy_uint alignment)
 {

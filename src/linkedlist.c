@@ -1,7 +1,7 @@
-#include<linkedlist.h>
+#include<cutlery/linkedlist.h>
 
-#include<cutlery_node.h>
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_node.h>
+#include<cutlery/cutlery_stds.h>
 
 // to check if a node is a free floating node
 int is_free_floating_llnode(const llnode* node_p)

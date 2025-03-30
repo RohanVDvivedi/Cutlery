@@ -37,24 +37,24 @@ The above 2 statements slides in another feature, references/iterators to the ob
 ## Using The library
  * add `-lcutlery` linker flag, while compiling your application
  * do not forget to include appropriate public api headers as and when needed. this includes
-   * `#include<cutlery_stds.h>`
-   * `#include<array.h>`
-   * `#include<arraylist.h>`
-   * `#include<heap.h>`
-   * `#include<linkedlist.h>`
-   * `#include<singlylist.h>`
-   * `#include<bst.h>`
-   * `#include<hashmap.h>`
-   * `#include<dstring.h>`
-   * `#include<dpipe.h>`
-   * `#include<bitmap.h>`
-   * `#include<union_find.h>`
-   * `#include<bloom_filter.h>`
-   * `#include<count_min_sketch.h>`
-   * `#include<uc_allocator_interface.h>`
-   * `#include<memory_allocator_interface.h>`
-   * `#include<dstring_base64.h>`
-   * `#include<stream.h>`
+   * `#include<cutlery/cutlery_stds.h>`
+   * `#include<cutlery/array.h>`
+   * `#include<cutlery/arraylist.h>`
+   * `#include<cutlery/heap.h>`
+   * `#include<cutlery/linkedlist.h>`
+   * `#include<cutlery/singlylist.h>`
+   * `#include<cutlery/bst.h>`
+   * `#include<cutlery/hashmap.h>`
+   * `#include<cutlery/dstring.h>`
+   * `#include<cutlery/dpipe.h>`
+   * `#include<cutlery/bitmap.h>`
+   * `#include<cutlery/union_find.h>`
+   * `#include<cutlery/bloom_filter.h>`
+   * `#include<cutlery/count_min_sketch.h>`
+   * `#include<cutlery/uc_allocator_interface.h>`
+   * `#include<cutlery/memory_allocator_interface.h>`
+   * `#include<cutlery/dstring_base64.h>`
+   * `#include<cutlery/stream.h>`
 
 ## Instructions for uninstalling library
 

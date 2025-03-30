@@ -1,10 +1,10 @@
-#include<count_min_sketch.h>
+#include<cutlery/count_min_sketch.h>
 
-#include<multi_dim_array_util.h>
+#include<cutlery/multi_dim_array_util.h>
 
-#include<dstring.h>
-#include<cutlery_math.h>
-#include<memory_allocator_interface.h>
+#include<cutlery/dstring.h>
+#include<cutlery/cutlery_math.h>
+#include<cutlery/memory_allocator_interface.h>
 
 int initialize_count_min_sketch(count_min_sketch* cms_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[])
 {

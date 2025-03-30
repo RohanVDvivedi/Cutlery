@@ -1,4 +1,4 @@
-#include<multi_dim_array_util.h>
+#include<cutlery/multi_dim_array_util.h>
 
 cy_uint get_element_count_in_multi_dim_array(const cy_uint* dims, cy_uint dims_count)
 {

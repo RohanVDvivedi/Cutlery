@@ -1,7 +1,7 @@
-#include<bst_rotations.h>
-#include<bst_util.h>
+#include<cutlery/bst_rotations.h>
+#include<cutlery/bst_util.h>
 
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 /*
 **      A                               B

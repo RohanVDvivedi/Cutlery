@@ -1,11 +1,11 @@
-#include<bloom_filter.h>
+#include<cutlery/bloom_filter.h>
 
-#include<bitmap.h>
-#include<multi_dim_array_util.h>
+#include<cutlery/bitmap.h>
+#include<cutlery/multi_dim_array_util.h>
 
-#include<dstring.h>
-#include<cutlery_math.h>
-#include<memory_allocator_interface.h>
+#include<cutlery/dstring.h>
+#include<cutlery/cutlery_math.h>
+#include<cutlery/memory_allocator_interface.h>
 
 int initialize_bloom_filter(bloom_filter* bf_p, cy_uint bucket_count, cy_uint hash_functions_count, const data_hash_func data_hash_functions[])
 {

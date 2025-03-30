@@ -1,8 +1,8 @@
-#include<stream_util.h>
+#include<cutlery/stream_util.h>
 
-#include<dstring.h>
-#include<cutlery_stds.h>
-#include<cutlery_math.h>
+#include<cutlery/dstring.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/cutlery_math.h>
 
 cy_uint write_to_stream_formatted(stream* ws, int* error, const char* cstr_format, ...)
 {

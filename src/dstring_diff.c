@@ -1,9 +1,9 @@
-#include<dstring_diff.h>
+#include<cutlery/dstring_diff.h>
 
-#include<cutlery_stds.h>
-#include<cutlery_math.h>
-#include<memory_allocator_interface.h>
-#include<multi_dim_array_util.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/cutlery_math.h>
+#include<cutlery/memory_allocator_interface.h>
+#include<cutlery/multi_dim_array_util.h>
 
 #define min3(a,b,c) min((a),(min((b),(c))))
 

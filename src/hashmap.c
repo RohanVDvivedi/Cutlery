@@ -1,13 +1,13 @@
-#include<hashmap.h>
+#include<cutlery/hashmap.h>
 
-#include<linkedlist.h>
-#include<bst.h>
-#include<circular_buffer_array_util.h>
+#include<cutlery/linkedlist.h>
+#include<cutlery/bst.h>
+#include<cutlery/circular_buffer_array_util.h>
 
-#include<dstring.h>
+#include<cutlery/dstring.h>
 
-#include<cutlery_node.h>
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_node.h>
+#include<cutlery/cutlery_stds.h>
 
 int initialize_hashmap(hashmap* hashmap_p, collision_resolution_policy hashmap_policy, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset)
 {

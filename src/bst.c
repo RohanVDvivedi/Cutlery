@@ -1,13 +1,13 @@
-#include<bst.h>
+#include<cutlery/bst.h>
 
-#include<bst_core.h>
-#include<bst_nonbalancing.h>
-#include<bst_avl.h>
-#include<bst_redblack.h>
-#include<bst_util.h>
+#include<cutlery/bst_core.h>
+#include<cutlery/bst_nonbalancing.h>
+#include<cutlery/bst_avl.h>
+#include<cutlery/bst_redblack.h>
+#include<cutlery/bst_util.h>
 
-#include<cutlery_node.h>
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_node.h>
+#include<cutlery/cutlery_stds.h>
 
 void initialize_bst(bst* bst_p, bsttype type, const comparator_interface* comparator, cy_uint node_offset)
 {
@@ -377,7 +377,7 @@ int remove_from_bst(bst* bst_p, const void* data)
 }
 
 // only the below function needs this header file
-#include<singlylist.h>
+#include<cutlery/singlylist.h>
 
 void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p)
 {

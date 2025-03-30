@@ -1,6 +1,6 @@
-#include<dstring_base64.h>
+#include<cutlery/dstring_base64.h>
 
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 // maximum packet count that we can process
 #define MAX_PACKET_COUNT (CY_UINT_MAX / 4)

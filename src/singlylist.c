@@ -1,7 +1,7 @@
-#include<singlylist.h>
+#include<cutlery/singlylist.h>
 
-#include<cutlery_node.h>
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_node.h>
+#include<cutlery/cutlery_stds.h>
 
 void initialize_singlylist(singlylist* sl, cy_uint node_offset)
 {

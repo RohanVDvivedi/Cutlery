@@ -1,9 +1,9 @@
-#include<arraylist.h>
+#include<cutlery/arraylist.h>
 
-#include<cutlery_math.h>
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_math.h>
+#include<cutlery/cutlery_stds.h>
 
-#include<circular_buffer_array_util.h>
+#include<cutlery/circular_buffer_array_util.h>
 
 int initialize_arraylist(arraylist* al, cy_uint capacity)
 {

@@ -1,10 +1,10 @@
-#include<bst_core.h>
-#include<bst_rotations.h>
-#include<bst_avl.h>
-#include<bst_util.h>
+#include<cutlery/bst_core.h>
+#include<cutlery/bst_rotations.h>
+#include<cutlery/bst_avl.h>
+#include<cutlery/bst_util.h>
 
-#include<cutlery_stds.h>
-#include<cutlery_math.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/cutlery_math.h>
 
 // gets max height including all nodes from itself to leaf, including itself and the leaf node, in an avl tree
 static cy_uint get_max_height(bstnode* node_p)

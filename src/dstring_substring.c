@@ -1,6 +1,6 @@
-#include<dstring_substring.h>
+#include<cutlery/dstring_substring.h>
 
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 void get_prefix_suffix_match_lengths(const dstring* sub_str, cy_uint* suffix_prefix_match_length)
 {

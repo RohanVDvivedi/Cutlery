@@ -1,11 +1,11 @@
-#include<stream_for_file_descriptor.h>
+#include<cutlery/stream_for_file_descriptor.h>
 
 #include<stdlib.h>
 #include<unistd.h>
 #include<errno.h>
 #include<limits.h>
 
-#include<cutlery_math.h>
+#include<cutlery/cutlery_math.h>
 
 // must always be lesser than or equal to SSIZE_MAX
 #define MAX_IO_SIZE (SSIZE_MAX >> 4)

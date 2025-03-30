@@ -1,8 +1,8 @@
-#include<dpipe.h>
+#include<cutlery/dpipe.h>
 
-#include<cutlery_math.h>
-#include<cutlery_stds.h>
-#include<circular_buffer_array_util.h>
+#include<cutlery/cutlery_math.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/circular_buffer_array_util.h>
 
 int initialize_dpipe(dpipe* pipe, cy_uint capacity)
 {

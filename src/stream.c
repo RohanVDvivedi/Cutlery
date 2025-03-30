@@ -1,6 +1,6 @@
-#include<stream.h>
+#include<cutlery/stream.h>
 
-#include<cutlery_math.h>
+#include<cutlery/cutlery_math.h>
 
 int initialize_stream(stream* strm,
 						void* stream_context,

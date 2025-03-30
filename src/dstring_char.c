@@ -1,4 +1,4 @@
-#include<dstring_char.h>
+#include<cutlery/dstring_char.h>
 
 static inline int is_char_in_range(char c, char lte, char gte)
 {
@@ -45,7 +45,7 @@ char to_uppercase_char(char c)
 	return c;
 }
 
-#include<cutlery_math.h>
+#include<cutlery/cutlery_math.h>
 
 int compare_chars_ascending(char c1, char c2)
 {

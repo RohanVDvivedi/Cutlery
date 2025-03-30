@@ -1,7 +1,7 @@
-#include<stream_for_dstring.h>
+#include<cutlery/stream_for_dstring.h>
 
-#include<cutlery_stds.h>
-#include<cutlery_math.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/cutlery_math.h>
 
 static cy_uint read_from_dstring(void* stream_context, void* data, cy_uint data_size, int* error)
 {

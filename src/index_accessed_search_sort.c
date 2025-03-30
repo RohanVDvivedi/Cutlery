@@ -1,12 +1,12 @@
-#include<index_accessed_search_sort.h>
+#include<cutlery/index_accessed_search_sort.h>
 
-#include<cutlery_math.h>
+#include<cutlery/cutlery_math.h>
 
-#include<array.h>
-#include<heap.h>
-#include<arraylist.h>
+#include<cutlery/array.h>
+#include<cutlery/heap.h>
+#include<cutlery/arraylist.h>
 
-#include<memory_allocator_interface.h>
+#include<cutlery/memory_allocator_interface.h>
 
 // below is a utility required only by the merge sort functionality
 
@@ -174,8 +174,8 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-#include<n-ary_tree_as_array_util.h>
-#include<heap_info.h>
+#include<cutlery/n-ary_tree_as_array_util.h>
+#include<cutlery/heap_info.h>
 
 // fails and returns 0, only if swap fails, on success returns 1
 static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree, cy_uint index)
