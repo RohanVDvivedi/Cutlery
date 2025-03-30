@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#include<uc_allocator_interface.h>
+#include<cutlery/uc_allocator_interface.h>
 
 memory_allocator uca;
 uc_allocator_context* ucac_p = NULL;

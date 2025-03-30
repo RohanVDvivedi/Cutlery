@@ -1,9 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#include<cutlery_stds.h>
-#include<array.h>
-#include<arraylist.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/array.h>
+#include<cutlery/arraylist.h>
 
 typedef struct teststruct ts;
 struct teststruct

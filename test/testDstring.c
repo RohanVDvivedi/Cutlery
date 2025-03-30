@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<dstring.h>
+#include<cutlery/dstring.h>
 
-#include<index_accessed_search_sort.h>
+#include<cutlery/index_accessed_search_sort.h>
 
 int main()
 {

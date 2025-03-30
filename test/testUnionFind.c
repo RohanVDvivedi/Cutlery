@@ -1,6 +1,6 @@
-#include<union_find.h>
+#include<cutlery/union_find.h>
 
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 #include<stdio.h>
 

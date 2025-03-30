@@ -1,9 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#include<stream_for_file_descriptor.h>
-#include<stream_for_dstring.h>
-#include<stream_util.h>
+#include<cutlery/stream_for_file_descriptor.h>
+#include<cutlery/stream_for_dstring.h>
+#include<cutlery/stream_util.h>
 
 int main()
 {

@@ -1,6 +1,6 @@
 #include<stdio.h>
-#include<cutlery_stds.h>
-#include<linkedlist.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/linkedlist.h>
 
 typedef struct teststruct ts;
 struct teststruct

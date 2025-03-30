@@ -1,9 +1,9 @@
 #include<stdio.h>
-#include<cutlery_stds.h>
-#include<hashmap.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/hashmap.h>
 
-#include<linkedlist.h>
-#include<bst.h>
+#include<cutlery/linkedlist.h>
+#include<cutlery/bst.h>
 
 //#define TEST_ROBINHOOD_HASHING
 //#define TEST_ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD

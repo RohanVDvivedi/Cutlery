@@ -1,6 +1,6 @@
 #include<stdio.h>
-#include<cutlery_stds.h>
-#include<bst.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/bst.h>
 
 typedef struct teststruct ts;
 struct teststruct

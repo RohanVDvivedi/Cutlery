@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-#include<bitmap.h>
+#include<cutlery/bitmap.h>
 
 void print_bitmap(const char* bitmap, unsigned int bitmap_complete_size)
 {

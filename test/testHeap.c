@@ -1,8 +1,8 @@
 #include<stdio.h>
-#include<cutlery_stds.h>
-#include<heap.h>
+#include<cutlery/cutlery_stds.h>
+#include<cutlery/heap.h>
 
-#include<cutlery_stds.h>
+#include<cutlery/cutlery_stds.h>
 
 typedef struct teststruct ts;
 struct teststruct
