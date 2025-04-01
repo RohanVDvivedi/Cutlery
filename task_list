@@ -65,6 +65,7 @@ struct fibheap
 BST order statistics
  * add another node_offset_to_order_statistics (to be set to NO_ORDER_STATISTICS_BST_NODE_OFFSET = INVALID_INDEX if not in use)
    * to point to a orderstat_bstnode{cy_uint subtree_size;} -> storing the number of nodes rooted at the given node
+   * you do not need this node to use the simple bst without order statistics
  * to provide functionality to get_index_of_element_in_bst, get_element_at_index_in_bst OR get_element_count in bst and get_subtree_element_count (internal function).
  * changes only required to subtree_size in bst_rotations.* and bst_core.* source files, whre if a node_offset_to_order_statistics is provided then invalidating the subtree_size by writing 0 to it and iteratively recomputing the subtree_size until you reach the root of the bst
  * add a note that the orderstat_bstnode gives away no information about the inclusion of the node in the bst, i.e. this node does not convey if the element is in the bst
