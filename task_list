@@ -48,9 +48,6 @@ struct fibheap
    * find_new_top_node given the linkedlist -> iterates over root_list and finds the new top_node
    * restore_structure -> creates a hashmap <ELEMENTS_AS_LINKED_LIST with same node_offset> degree -> root node, of fixed size = 32, and then keep on merging nodes with same degree and promoting the parent, then remove all of them into the root_list of fibheap, while keeping track of the top_node
 
-BST tasks (NEW DATASTRUCTURE inclusion * future)
- * provide implementation for TREAP, AA_TREE etc in bst
-
 BST order statistics
  * add another node_offset_to_order_statistics (to be set to NO_ORDER_STATISTICS_BST_NODE_OFFSET = INVALID_INDEX if not in use)
    * to point to a orderstat_bstnode{cy_uint subtree_size;} -> storing the number of nodes rooted at the given node
