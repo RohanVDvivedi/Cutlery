@@ -17,6 +17,7 @@ deferred_callback_stack
  };
  #define NEW_DEFERRED_CALLBACK(recource_p_v, callback_v) (&((deferred_callback){resource_p_v, callback_v, {NULL}}))
  * to be used when you need to pile up calls and call then in reverse order like the defer functionality of the golang
+ * file close, stream close, deinitialize calls, tcp connection close, free calls to large data structures, mutex unlocks, etc, can leverage this functionality, the resources what live and die within a function call
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based intrusive fibonacci heap. (binomial heap will not be supported, strict constraints of binomial heap will give us no benefit)
