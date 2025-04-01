@@ -50,9 +50,13 @@ struct fibheap
 
 BST tasks (NEW DATASTRUCTURE inclusion * future)
  * provide implementation for TREAP, AA_TREE etc in bst
- * add cy_uint subtree_size (==0 if node is not in any bst) giving the number of nodes in sub tree rooted at the given node 
-   * to provide functionality to get_index_of_element_in_bst, get_element_at_index_in_bst OR get_element_count in bst and get_subtree_element_count (internal function).
-   * changes only required to subtree_size in bst_rotations.* and bst_core.* source files.
+
+BST order statistics
+ * add another node_offset_to_order_statistics (to be set to NO_ORDER_STATISTICS_BST_NODE_OFFSET = INVALID_INDEX if not in use)
+   * to point to a orderstat_bstnode{cy_uint subtree_size;} -> storing the number of nodes rooted at the given node
+ * to provide functionality to get_index_of_element_in_bst, get_element_at_index_in_bst OR get_element_count in bst and get_subtree_element_count (internal function).
+ * changes only required to subtree_size in bst_rotations.* and bst_core.* source files, whre if a node_offset_to_order_statistics is provided then invalidating the subtree_size by writing 0 to it and iteratively recomputing the subtree_size until you reach the root of the bst
+ * add a note that order statistics bst increases complexity of the bst, making it (log(n))^2 for inserts and deletes, and that the orderstat_bstnode gives away no information about the inclusion of the node in the bst
 
 3. Competely new datastructure tasks (*future)
 
