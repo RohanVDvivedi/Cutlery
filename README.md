@@ -53,6 +53,7 @@ The above 2 statements slides in another feature, references/iterators to the ob
    * `#include<cutlery/uc_allocator_interface.h>`
    * `#include<cutlery/memory_allocator_interface.h>`
    * `#include<cutlery/dstring_base64.h>`
+   * `#include<cutlery/dstring_utf8.h>`
    * `#include<cutlery/stream.h>`
 
 ## Instructions for uninstalling library
