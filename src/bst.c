@@ -15,6 +15,16 @@ void initialize_bst(bst* bst_p, bsttype type, const comparator_interface* compar
 	bst_p->comparator = (*comparator);
 	bst_p->node_offset = node_offset;
 	bst_p->root = NULL;
+	bst_p->order_stat_node_offset = NO_ORDER_STAT_BST_NODE_OFFSET;
+}
+
+void initialize_order_stat_bst(bst* bst_p, bsttype type, const comparator_interface* comparator, cy_uint node_offset, cy_uint order_stat_node_offset)
+{
+	bst_p->type = type;
+	bst_p->comparator = (*comparator);
+	bst_p->node_offset = node_offset;
+	bst_p->root = NULL;
+	bst_p->order_stat_node_offset = order_stat_node_offset;
 }
 
 void initialize_bstnode(bstnode* node_p)

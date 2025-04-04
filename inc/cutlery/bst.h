@@ -77,6 +77,7 @@ struct bst
 
 // initializes as if a new bst, may be to reuse
 void initialize_bst(bst* bst_p, bsttype type, const comparator_interface* comparator, cy_uint node_offset);
+void initialize_order_stat_bst(bst* bst_p, bsttype type, const comparator_interface* comparator, cy_uint node_offset, cy_uint order_stat_node_offset);
 
 // always initialize your bstnode before using it
 void initialize_bstnode(bstnode* node_p);
