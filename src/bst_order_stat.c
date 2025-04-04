@@ -44,7 +44,7 @@ cy_uint recompute_subtree_size(const bst* bst_p, bstnode* node_p)
 	while(curr_p != NULL)
 	{
 		cy_uint subtree_size = get_subtree_size_internal(bst_p, curr_p);
-		cy_uint computed_subtree_size = get_subtree_size_internal(bst_p, curr_p) + 1 + get_subtree_size_internal(bst_p, curr_p);
+		cy_uint computed_subtree_size = get_subtree_size_internal(bst_p, curr_p->left) + 1 + get_subtree_size_internal(bst_p, curr_p->right);
 
 		if(subtree_size == computed_subtree_size)
 			break;
