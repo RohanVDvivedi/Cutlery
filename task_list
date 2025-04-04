@@ -1,29 +1,5 @@
 1. Tasks picked
 
-BST order statistics
- * add another node_offset_to_order_statistics (to be set to NO_ORDER_STATISTICS_BST_NODE_OFFSET = INVALID_INDEX if not in use)
-   * to point to a orderstat_bstnode{cy_uint subtree_size;} -> storing the number of nodes rooted at the given node
-   * you do not need this node to use the simple bst without order statistics
- * to provide functionality to get_index_of_element_in_bst, get_element_at_index_in_bst OR get_element_count in bst and get_subtree_element_count (internal function).
- * changes only required to subtree_size in bst_rotations.* and bst_core.* source files, whre if a node_offset_to_order_statistics is provided then invalidating the subtree_size by writing 0 to it and iteratively recomputing the subtree_size until you reach the root of the bst
- * add a note that the orderstat_bstnode gives away no information about the inclusion of the node in the bst, i.e. this node does not convey if the element is in the bst
- * need two functions in bst_order_statistics module
-   cy_uint get_subtree_size(const bst*, const void* data); -> returns 0, if data == NULL, else directly reads from the orderstat_bstnode
-   cy_uint recompute_subtree_size(const bst*, void* data); -> returns 0, if data == NULL, else first makes data->subtree_size = 0,
-     then
-     const void* curr = data;
-     while(curr != NULL){
-     		cy_uint subtree_size = get_subtree_size(curr->left) + 1 + get_subtree_size(curr->right);
-     		if(curr->subtree_size == subtree_size)
-     			break;
-     		curr->subtree_size = subtree_size;
-     		curr = curr->parent;
-     }
-     return get_subtree_size(data)
-  * now call above functions in bst_core->insert/delete bst_rotations->rotate and swap functions when you feel that the operations would mess up the order statistics
-  * design get_index_of_element_in_bst, get_element_at_index_in_bst and get_element_count in bst functions these functions will return invalid index directly if the NO_ORDER_STATISTICS_BST_NODE_OFFSET was passed
-
-
 ALLOCATOR
  * refactor stream_to_read_until_dstring to use cutlery allocators
 
