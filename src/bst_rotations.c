@@ -40,7 +40,7 @@ int left_rotate_tree(bst* bst_p, bstnode* A)
 	B->left = A;
 	A->parent = B;
 
-	// fix order statistics of the nodes
+	// fix order statistics of the nodes after modifications to the tree structure
 	recompute_subtree_size(bst_p, A);
 	recompute_subtree_size(bst_p, B);
 
@@ -83,7 +83,7 @@ int right_rotate_tree(bst* bst_p, bstnode* A)
 	B->right = A;
 	A->parent = B;
 
-	// fix order statistics of the nodes
+	// fix order statistics of the nodes after modifications to the tree structure
 	recompute_subtree_size(bst_p, A);
 	recompute_subtree_size(bst_p, B);
 
@@ -217,7 +217,7 @@ void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
 		*B = A_;
 	}
 
-	// fix order statistics of the nodes
+	// fix order statistics of the nodes after modifications to the tree structure
 	recompute_subtree_size(bst_p, A);
 	recompute_subtree_size(bst_p, B);
 }
