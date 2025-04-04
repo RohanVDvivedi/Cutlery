@@ -1,5 +1,29 @@
 1. Tasks picked
 
+BST order statistics
+ * add another node_offset_to_order_statistics (to be set to NO_ORDER_STATISTICS_BST_NODE_OFFSET = INVALID_INDEX if not in use)
+   * to point to a orderstat_bstnode{cy_uint subtree_size;} -> storing the number of nodes rooted at the given node
+   * you do not need this node to use the simple bst without order statistics
+ * to provide functionality to get_index_of_element_in_bst, get_element_at_index_in_bst OR get_element_count in bst and get_subtree_element_count (internal function).
+ * changes only required to subtree_size in bst_rotations.* and bst_core.* source files, whre if a node_offset_to_order_statistics is provided then invalidating the subtree_size by writing 0 to it and iteratively recomputing the subtree_size until you reach the root of the bst
+ * add a note that the orderstat_bstnode gives away no information about the inclusion of the node in the bst, i.e. this node does not convey if the element is in the bst
+ * need two functions in bst_order_statistics module
+   cy_uint get_subtree_size(const bst*, const void* data); -> returns 0, if data == NULL, else directly reads from the orderstat_bstnode
+   cy_uint recompute_subtree_size(const bst*, void* data); -> returns 0, if data == NULL, else first makes data->subtree_size = 0,
+     then
+     const void* curr = data;
+     while(curr != NULL){
+     		cy_uint subtree_size = get_subtree_size(curr->left) + 1 + get_subtree_size(curr->right);
+     		if(curr->subtree_size == subtree_size)
+     			break;
+     		curr->subtree_size = subtree_size;
+     		curr = curr->parent;
+     }
+     return get_subtree_size(data)
+  * now call above functions in bst_core->insert/delete bst_rotations->rotate and swap functions when you feel that the operations would mess up the order statistics
+  * design get_index_of_element_in_bst, get_element_at_index_in_bst and get_element_count in bst functions these functions will return invalid index directly if the NO_ORDER_STATISTICS_BST_NODE_OFFSET was passed
+
+
 ALLOCATOR
  * refactor stream_to_read_until_dstring to use cutlery allocators
 
@@ -61,29 +85,6 @@ struct fibheap
    * move_node_to_root_list -> does as suggested, and updates top_node, it will also increments the lost_child_marker of its parent, NOP if its parent is NULL
    * find_new_top_node given the linkedlist -> iterates over root_list and finds the new top_node
    * restore_structure -> creates a hashmap <ELEMENTS_AS_LINKED_LIST with same node_offset> degree -> root node, of fixed size = 32, and then keep on merging nodes with same degree and promoting the parent, then remove all of them into the root_list of fibheap, while keeping track of the top_node
-
-BST order statistics
- * add another node_offset_to_order_statistics (to be set to NO_ORDER_STATISTICS_BST_NODE_OFFSET = INVALID_INDEX if not in use)
-   * to point to a orderstat_bstnode{cy_uint subtree_size;} -> storing the number of nodes rooted at the given node
-   * you do not need this node to use the simple bst without order statistics
- * to provide functionality to get_index_of_element_in_bst, get_element_at_index_in_bst OR get_element_count in bst and get_subtree_element_count (internal function).
- * changes only required to subtree_size in bst_rotations.* and bst_core.* source files, whre if a node_offset_to_order_statistics is provided then invalidating the subtree_size by writing 0 to it and iteratively recomputing the subtree_size until you reach the root of the bst
- * add a note that the orderstat_bstnode gives away no information about the inclusion of the node in the bst, i.e. this node does not convey if the element is in the bst
- * need two functions in bst_order_statistics module
-   cy_uint get_subtree_size(const bst*, const void* data); -> returns 0, if data == NULL, else directly reads from the orderstat_bstnode
-   cy_uint recompute_subtree_size(const bst*, void* data); -> returns 0, if data == NULL, else first makes data->subtree_size = 0,
-     then
-     const void* curr = data;
-     while(curr != NULL){
-     		cy_uint subtree_size = get_subtree_size(curr->left) + 1 + get_subtree_size(curr->right);
-     		if(curr->subtree_size == subtree_size)
-     			break;
-     		curr->subtree_size = subtree_size;
-     		curr = curr->parent;
-     }
-     return get_subtree_size(data)
-  * now call above functions in bst_core->insert/delete bst_rotations->rotate and swap functions when you feel that the operations would mess up the order statistics
-  * design get_index_of_element_in_bst, get_element_at_index_in_bst and get_element_count in bst functions these functions will return invalid index directly if the NO_ORDER_STATISTICS_BST_NODE_OFFSET was passed
 
 3. Competely new datastructure tasks (*future)
 
