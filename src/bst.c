@@ -475,8 +475,26 @@ const void* get_element_at_index_in_bst(const bst* bst_p, cy_uint index)
 	if(index >= get_element_count_bst(bst_p))
 		return NULL;
 
-	// TODO
-	return NULL;
+	const bstnode* node_p = bst_p->root;
+	cy_uint preceeding_element_count = get_subtree_size(bst_p, node_p->left);
+
+	while(preceeding_element_count == index)
+	{
+		if(preceeding_element_count < index)
+		{
+			preceeding_element_count -= get_subtree_size(bst_p, node_p->left);
+			node_p = node_p->left;
+
+		}
+		else
+		{
+			preceeding_element_count++;
+			node_p = node_p->right;
+		}
+		preceeding_element_count += get_subtree_size(bst_p, node_p->left);
+	}
+
+	return get_data(node_p, bst_p);
 }
 
 cy_uint get_element_count_bst(const bst* bst_p)
