@@ -1,5 +1,6 @@
 #include<cutlery/bst_rotations.h>
 #include<cutlery/bst_util.h>
+#include<cutlery/bst_order_stat.h>
 
 #include<cutlery/cutlery_stds.h>
 
@@ -39,6 +40,10 @@ int left_rotate_tree(bst* bst_p, bstnode* A)
 	B->left = A;
 	A->parent = B;
 
+	// fix order statistics of the nodes
+	recompute_subtree_size(bst_p, A);
+	recompute_subtree_size(bst_p, B);
+
 	return 1;
 }
 
@@ -77,6 +82,10 @@ int right_rotate_tree(bst* bst_p, bstnode* A)
 
 	B->right = A;
 	A->parent = B;
+
+	// fix order statistics of the nodes
+	recompute_subtree_size(bst_p, A);
+	recompute_subtree_size(bst_p, B);
 
 	return 1;
 }
@@ -207,4 +216,8 @@ void exchange_positions_in_bst(bst* bst_p, bstnode* A, bstnode* B)
 		*A = B_;
 		*B = A_;
 	}
+
+	// fix order statistics of the nodes
+	recompute_subtree_size(bst_p, A);
+	recompute_subtree_size(bst_p, B);
 }
