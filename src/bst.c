@@ -429,6 +429,11 @@ void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p)
 	}
 }
 
+int is_order_stat_bst(const bst* bst_p)
+{
+	return bst_p->order_stat_node_offset != NO_ORDER_STAT_BST_NODE_OFFSET;
+}
+
 static void for_each_node_pre_order(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
 {
 	if(node_p == NULL)
