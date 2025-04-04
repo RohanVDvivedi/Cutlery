@@ -31,6 +31,7 @@ void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 
 void print_ts_bst(bst* bst_p)
 {
+	printf("ELEMENT_COUNT : %"PRIu_cy_uint"\n", get_element_count_bst(bst_p));
 	dstring str;
 	init_dstring(&str, "", 0);
 	sprint_bst(&str, bst_p, sprint_ts, 0);
@@ -61,10 +62,29 @@ int main()
 	}
 	print_ts_bst(bst_p);
 
-	printf("REMOVING EVERY 3rd FROM 0 to %d\n", TEST_COUNT);
-	for(int i = 0; i < TEST_COUNT; i+=3)
-		remove_from_bst(bst_p, &(tests[i]));
+	printf("PRINTING AT ALL INDICES\n");
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		const ts* tsv = get_element_at_index_in_bst(bst_p, i);
+		int i2 = get_index_of_element_in_bst(bst_p, tsv);
+		printf("%d %d %d\n", i, tsv->key, i2);
+	}
+
+	printf("REMOVING EVERY N mod 3 != 0 FROM 0 to %d\n", TEST_COUNT);
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		if(i % 3 != 0)
+			remove_from_bst(bst_p, &(tests[i]));
+	}
 	print_ts_bst(bst_p);
+
+	printf("PRINTING AT ALL INDICES\n");
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		const ts* tsv = get_element_at_index_in_bst(bst_p, i);
+		int i2 = get_index_of_element_in_bst(bst_p, tsv);
+		printf("%d %d %d\n", i, tsv->key, i2);
+	}
 
 	return 0;
 }
