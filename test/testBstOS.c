@@ -71,6 +71,7 @@ int main()
 		if(i != tsv->key || tsv->key != i2)
 			printf("there is a bug here\n");
 	}
+	printf("\n");
 
 	printf("REMOVING EVERY N mod 3 != 0 FROM 0 to %d\n", TEST_COUNT);
 	for(int i = 0; i < TEST_COUNT; i++)
@@ -91,6 +92,47 @@ int main()
 		if(i != i2)
 			printf("there is a bug here\n");
 	}
+	printf("\n");
+
+	printf("INSERTING ALL AGAIN FROM 0 to %d\n", TEST_COUNT);
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		tests[i] = (ts){.key = i};
+		insert_in_bst(bst_p, &(tests[i]));
+	}
+	print_ts_bst(bst_p);
+
+	printf("PRINTING AT ALL INDICES\n");
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		const ts* tsv = get_element_at_index_in_bst(bst_p, i);
+		int i2 = get_index_of_element_in_bst(bst_p, tsv);
+		printf("%d %d %d\n", i, tsv->key, i2);
+		if(i != tsv->key || tsv->key != i2)
+			printf("there is a bug here\n");
+	}
+	printf("\n");
+
+	printf("REMOVING EVERY N mod 5 != 0 FROM 0 to %d\n", TEST_COUNT);
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		if(i % 5 != 0)
+			remove_from_bst(bst_p, &(tests[i]));
+	}
+	print_ts_bst(bst_p);
+
+	printf("PRINTING AT ALL INDICES\n");
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		const ts* tsv = get_element_at_index_in_bst(bst_p, i);
+		if(tsv == NULL)
+			break;
+		int i2 = get_index_of_element_in_bst(bst_p, tsv);
+		printf("%d %d %d\n", i, tsv->key, i2);
+		if(i != i2)
+			printf("there is a bug here\n");
+	}
+	printf("\n");
 
 	return 0;
 }
