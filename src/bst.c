@@ -450,6 +450,11 @@ cy_uint get_index_of_element_in_bst(const bst* bst_p, const void* data)
 	if(!is_order_stat_bst(bst_p))
 		return INVALID_INDEX;
 
+	const bstnode* node_p = get_node(data);
+
+	if(is_free_floating_bstnode(node_p))	// a free floating bst node can not have a index in the bst
+		return INVALID_INDEX;
+
 	// TODO
 	return 0;
 }
@@ -457,6 +462,9 @@ cy_uint get_index_of_element_in_bst(const bst* bst_p, const void* data)
 const void* get_element_at_index_in_bst(const bst* bst_p, cy_uint index)
 {
 	if(!is_order_stat_bst(bst_p))
+		return NULL;
+
+	if(index >= get_element_count_bst(bst_p))
 		return NULL;
 
 	// TODO
