@@ -39,6 +39,17 @@ struct bstnode
 	cy_uint node_property;
 };
 
+typedef struct order_stat_bstnode order_stat_bstnode;
+struct order_stat_bstnode
+{
+	// this represents the number of nodes in the bst that are contained in the tree rooted at this node
+	cy_uint subtree_size;
+};
+
+// you can use bst, without embedded a order_stat_bstnode
+// pass this as the order_stat_node_offset when you are not using the embedded node
+#define NO_ORDER_STAT_BST_NODE_OFFSET INVALID_INDEX
+
 struct bst
 {
 	// the type of balancing algorithm to use for the binary search tree
@@ -54,6 +65,10 @@ struct bst
 	// comparator for the elements
 	// it returns 0 if they are same, >0 if data1 is greater than data2 else it must return <0 value
 	comparator_interface comparator;
+
+	// node_offset to store the offset of order_stat_bstnode inside order statistics bst
+	// set it to NO_ORDER_STAT_BST_NODE_OFFSET, when using a non - order-statistics bst node
+	cy_uint order_stat_node_offset;
 };
 
 /*
@@ -155,6 +170,23 @@ int remove_from_bst(bst* bst_p, const void* data);
 // removes all the elements from the bst and reinitializes their embedded bstnode
 // after this if a notifier_interface if specified (i.e. not NULL), then it is notified
 void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p);
+
+// the three functions given below can only be used for an order statistics bst
+int is_order_stat_bst(const bst* bst_p);
+
+/*
+	order statistics bst functions start
+*/
+
+cy_uint get_index_of_element_in_bst(const bst* bst_p, const void* data);
+
+const void* get_element_at_index_in_bst(const bst* bst_p, cy_uint index);
+
+cy_uint get_element_count_bst(const bst* bst_p);
+
+/*
+	order statistics bst functions end
+*/
 
 // traversals possible in the tree
 typedef enum bsttraversal bsttraversal;
