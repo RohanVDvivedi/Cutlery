@@ -1,6 +1,7 @@
 #include<cutlery/bst_core.h>
 #include<cutlery/bst_rotations.h>		// used only for interchange positions of nodes, no rotations performed
 #include<cutlery/bst_util.h>
+#include<cutlery/bst_order_stat.h>
 
 #include<cutlery/cutlery_node.h>
 #include<cutlery/cutlery_stds.h>
@@ -60,6 +61,9 @@ void insert_node_in_bst(bst* bst_p, bstnode* node_p)
 	// install the new node_p
 	*insertion_point = node_p;
 	node_p->parent = node_p_parent;
+
+	// fix order statistics of the nodes after modifications to the tree structure
+	recompute_subtree_size(bst_p, node_p);
 }
 
 // the below function only detaches the node that has to be removed, it does not unintialize it
@@ -95,4 +99,7 @@ void remove_node_from_bst(bst* bst_p, bstnode* node_p)
 
 	if(none_or_1_child != NULL)
 		none_or_1_child->parent = parent_node;
+
+	// fix order statistics of the nodes after modifications to the tree structure
+	recompute_subtree_size(bst_p, parent_node);
 }
