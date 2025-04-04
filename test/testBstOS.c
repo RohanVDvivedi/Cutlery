@@ -42,6 +42,7 @@ void print_ts_bst(bst* bst_p)
 #define TREE_TYPE_TO_USE 	/*NON_SELF_BALANCING*/ AVL_TREE /*RED_BLACK_TREE*/
 
 #define TEST_COUNT 100
+ts tests[TEST_COUNT] = {};
 
 int main()
 {
@@ -53,12 +54,16 @@ int main()
 	print_ts_bst(bst_p);
 
 	printf("INSERTING ALL FROM 0 to %d\n", TEST_COUNT);
-	ts tests[TEST_COUNT] = {};
 	for(int i = 0; i < TEST_COUNT; i++)
 	{
 		tests[i] = (ts){.key = i};
 		insert_in_bst(bst_p, &(tests[i]));
 	}
+	print_ts_bst(bst_p);
+
+	printf("REMOVING EVERY 3rd FROM 0 to %d\n", TEST_COUNT);
+	for(int i = 0; i < TEST_COUNT; i+=3)
+		remove_from_bst(bst_p, &(tests[i]));
 	print_ts_bst(bst_p);
 
 	return 0;
