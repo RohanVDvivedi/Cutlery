@@ -4,6 +4,9 @@
 
 static cy_uint get_subtree_size_internal(const bst* bst_p, const bstnode* node_p)
 {
+	if(node_p == NULL)
+		return 0;
+
 	const void* data = get_data(node_p, bst_p);
 	const order_stat_bstnode* osb = data + bst_p->order_stat_node_offset;
 	return osb->subtree_size;

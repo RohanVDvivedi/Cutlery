@@ -26,7 +26,7 @@ void print_ts(const void* tsv)
 void sprint_ts(dstring* append_str, const void* tsv, unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs + 1);
-	snprintf_dstring("%d ==> %"PRIu_cy_uint"", ((ts*)tsv)->key, ((ts*)tsv)->os_bst_embed_node.subtree_size);
+	snprintf_dstring(append_str, "%d ==> %"PRIu_cy_uint"", ((ts*)tsv)->key, ((ts*)tsv)->os_bst_embed_node.subtree_size);
 }
 
 void print_ts_bst(bst* bst_p)
@@ -41,6 +41,8 @@ void print_ts_bst(bst* bst_p)
 
 #define TREE_TYPE_TO_USE 	/*NON_SELF_BALANCING*/ AVL_TREE /*RED_BLACK_TREE*/
 
+#define TEST_COUNT 100
+
 int main()
 {
 	printf("INITIALIZING BALANCED ORDER STATISTIC BINARY SEARCH TREE\n");
@@ -48,6 +50,15 @@ int main()
 	bst my_bst;
 	bst* bst_p = &my_bst;
 	initialize_order_stat_bst(bst_p, TREE_TYPE_TO_USE, &simple_comparator(cmp), offsetof(ts, bst_embed_node), offsetof(ts, os_bst_embed_node));
+	print_ts_bst(bst_p);
+
+	printf("INSERTING ALL FROM 0 to %d\n", TEST_COUNT);
+	ts tests[TEST_COUNT] = {};
+	for(int i = 0; i < TEST_COUNT; i++)
+	{
+		tests[i] = (ts){.key = i};
+		insert_in_bst(bst_p, &(tests[i]));
+	}
 	print_ts_bst(bst_p);
 
 	return 0;
