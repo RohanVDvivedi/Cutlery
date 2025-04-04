@@ -96,10 +96,7 @@ int main()
 
 	printf("INSERTING ALL AGAIN FROM 0 to %d\n", TEST_COUNT);
 	for(int i = 0; i < TEST_COUNT; i++)
-	{
-		tests[i] = (ts){.key = i};
 		insert_in_bst(bst_p, &(tests[i]));
-	}
 	print_ts_bst(bst_p);
 
 	printf("PRINTING AT ALL INDICES\n");
