@@ -68,6 +68,8 @@ int main()
 		const ts* tsv = get_element_at_index_in_bst(bst_p, i);
 		int i2 = get_index_of_element_in_bst(bst_p, tsv);
 		printf("%d %d %d\n", i, tsv->key, i2);
+		if(i != tsv->key || tsv->key != i2)
+			printf("there is a bug here\n");
 	}
 
 	printf("REMOVING EVERY N mod 3 != 0 FROM 0 to %d\n", TEST_COUNT);
@@ -82,8 +84,12 @@ int main()
 	for(int i = 0; i < TEST_COUNT; i++)
 	{
 		const ts* tsv = get_element_at_index_in_bst(bst_p, i);
+		if(tsv == NULL)
+			break;
 		int i2 = get_index_of_element_in_bst(bst_p, tsv);
 		printf("%d %d %d\n", i, tsv->key, i2);
+		if(i != i2)
+			printf("there is a bug here\n");
 	}
 
 	return 0;
