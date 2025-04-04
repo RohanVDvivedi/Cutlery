@@ -450,13 +450,21 @@ cy_uint get_index_of_element_in_bst(const bst* bst_p, const void* data)
 	if(!is_order_stat_bst(bst_p))
 		return INVALID_INDEX;
 
-	const bstnode* node_p = get_node(data);
+	const bstnode* node_p = get_node(data, bst_p);
 
 	if(is_free_floating_bstnode(node_p))	// a free floating bst node can not have a index in the bst
 		return INVALID_INDEX;
 
-	// TODO
-	return 0;
+	cy_uint preceeding_element_count = get_subtree_size(bst_p, node_p->left);
+
+	while(node_p != NULL)
+	{
+		if(is_right_of_its_parent(node_p)) // this implies that there is some parent
+			preceeding_element_count += get_subtree_size(bst_p, node_p->parent->left) + 1; // +1 for the parent itself preceeding the node
+		node_p = node_p->parent;
+	}
+
+	return preceeding_element_count;
 }
 
 const void* get_element_at_index_in_bst(const bst* bst_p, cy_uint index)
