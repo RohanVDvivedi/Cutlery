@@ -5,6 +5,7 @@
 #include<cutlery/bst_avl.h>
 #include<cutlery/bst_redblack.h>
 #include<cutlery/bst_util.h>
+#include<cutlery/bst_order_stat.h>
 
 #include<cutlery/cutlery_node.h>
 #include<cutlery/cutlery_stds.h>
@@ -442,6 +443,32 @@ void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p)
 int is_order_stat_bst(const bst* bst_p)
 {
 	return bst_p->order_stat_node_offset != NO_ORDER_STAT_BST_NODE_OFFSET;
+}
+
+cy_uint get_index_of_element_in_bst(const bst* bst_p, const void* data)
+{
+	if(!is_order_stat_bst(bst_p))
+		return INVALID_INDEX;
+
+	// TODO
+	return 0;
+}
+
+const void* get_element_at_index_in_bst(const bst* bst_p, cy_uint index)
+{
+	if(!is_order_stat_bst(bst_p))
+		return NULL;
+
+	// TODO
+	return NULL;
+}
+
+cy_uint get_element_count_bst(const bst* bst_p)
+{
+	if(!is_order_stat_bst(bst_p))
+		return INVALID_INDEX;
+
+	return get_subtree_size(bst_p, bst_p->root);
 }
 
 static void for_each_node_pre_order(const bst* bst_p, const bstnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
