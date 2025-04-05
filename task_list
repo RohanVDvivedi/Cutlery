@@ -1,5 +1,29 @@
 1. Tasks picked
 
+* defer
+	typedef struct deferred_callback deferred_callback;
+	struct deferred_callback
+	{
+		void (*deferred_callback_func)(void* resource_p);
+		void* resource_p;
+	};
+
+  #define NEW_DEFERED_CALLS(CAPACITY) \
+  deferred_callback __dc[CAPACITY] = {}; \
+  cy_uint __dc_size = 0;
+
+  #define DEFER(deferred_callback_func_v, resource_p_v) \
+  __dc[__dc_size++] = (deferred_callback){deferred_callback_func_v, resource_p_v};
+
+  #define CALL_ALL_DEFERRED() \
+  while(__dc_size > 0) \
+  { \
+  	deferred_callback dc = __dc[--__dc_size]; \
+  	dc.deferred_callback_func(dc.resource_p); \
+  }
+
+  stream close function without int* error as param
+
 ALLOCATOR
  * refactor stream_to_read_until_dstring to use cutlery allocators
 
