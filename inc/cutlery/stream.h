@@ -117,6 +117,7 @@ void flush_all_from_stream(stream* ws, int* error);
 // to close the stream
 // you must close the stream even on an error, i.e. if it was initialized then you must close it
 void close_stream(stream* strm, int* error);
+void close_stream_error_disregard(stream* strm);
 
 void deinitialize_stream(stream* strm);
 

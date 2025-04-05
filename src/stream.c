@@ -372,6 +372,12 @@ void close_stream(stream* strm, int* error)
 		strm->last_error = (*error);
 }
 
+void close_stream_error_disregard(stream* strm)
+{
+	int error = 0;
+	close_stream(strm, &error);
+}
+
 void deinitialize_stream(stream* strm)
 {
 	deinitialize_dpipe(&(strm->unread_data));
