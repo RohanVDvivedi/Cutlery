@@ -9,16 +9,16 @@
 	};
 
   #define NEW_DEFERED_CALLS(CAPACITY) \
-  deferred_callback __dc[CAPACITY] = {}; \
-  cy_uint __dc_size = 0;
+  deferred_callback deferrence_callbacks[CAPACITY] = {}; \
+  cy_uint deferrence_callbacks_size = 0;
 
   #define DEFER(deferred_callback_func_v, resource_p_v) \
-  __dc[__dc_size++] = (deferred_callback){deferred_callback_func_v, resource_p_v};
+  deferrence_callbacks[deferrence_callbacks_size++] = (deferred_callback){deferred_callback_func_v, resource_p_v};
 
   #define CALL_ALL_DEFERRED() \
-  while(__dc_size > 0) \
+  while(deferrence_callbacks_size > 0) \
   { \
-  	deferred_callback dc = __dc[--__dc_size]; \
+  	deferred_callback dc = deferrence_callbacks[--deferrence_callbacks_size]; \
   	dc.deferred_callback_func(dc.resource_p); \
   }
 
