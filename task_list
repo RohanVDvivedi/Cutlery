@@ -5,20 +5,6 @@ ALLOCATOR
 
 2. Add new datastructure types tasks (*future)
 
-deferred_callback_stack
- * implemented as a singly list, called as deferred_callback_stack
- * deferred_callback is pushed to its head by a defer_callback(deferred_callback* )
- * call_all_from_deferred_callback_stack() calls all from the stack head first
- * struct deferred_callback
- {
- 		void* resource_p;
- 		void (*callback)(void* resource_p);
- 		slnode n;
- };
- #define NEW_DEFERRED_CALLBACK(recource_p_v, callback_v) (&((deferred_callback){resource_p_v, callback_v, {NULL}}))
- * to be used when you need to pile up calls and call then in reverse order like the defer functionality of the golang
- * file close, stream close, deinitialize calls, tcp connection close, free calls to large data structures, mutex unlocks, etc, can leverage this functionality, the resources what live and die within a function call
-
 HEAP tasks (NEW DATASTRUCTURE inclusion)
  * implement a node based intrusive fibonacci heap. (binomial heap will not be supported, strict constraints of binomial heap will give us no benefit)
 struct fibheapnode
