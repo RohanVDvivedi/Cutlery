@@ -15,7 +15,7 @@ deferred_callback deferrence_callbacks[CAPACITY] = {}; \
 cy_uint deferrence_callbacks_size = 0;
 
 #define DEFER(deferred_callback_func_v, resource_p_v) \
-deferrence_callbacks[deferrence_callbacks_size++] = (deferred_callback){deferred_callback_func_v, resource_p_v};
+deferrence_callbacks[deferrence_callbacks_size++] = (deferred_callback){(void (*)(void*))deferred_callback_func_v, resource_p_v};
 
 #define CALL_ALL_DEFERRED() \
 while(deferrence_callbacks_size > 0) \
