@@ -9,7 +9,7 @@ void callback_print(void* str)
 
 int main()
 {
-	NEW_DEFERED_CALLS(10);
+	NEW_DEFERRED_CALLS(10);
 
 	DEFER(callback_print, "Hello");
 

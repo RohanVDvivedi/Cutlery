@@ -10,7 +10,7 @@ struct deferred_callback
 	void* resource_p;
 };
 
-#define NEW_DEFERED_CALLS(CAPACITY) \
+#define NEW_DEFERRED_CALLS(CAPACITY) \
 deferred_callback deferrence_callbacks[CAPACITY] = {}; \
 cy_uint deferrence_callbacks_size = 0;
 
