@@ -484,7 +484,6 @@ const void* get_element_at_index_in_bst(const bst* bst_p, cy_uint index)
 		{
 			preceeding_element_count -= get_subtree_size(bst_p, node_p->left);
 			node_p = node_p->left;
-
 		}
 		else
 		{
