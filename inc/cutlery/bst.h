@@ -177,8 +177,11 @@ int is_order_stat_bst(const bst* bst_p);
 
 /*
 	order statistics bst functions start
+
+	below functions would fail if the bst is not an order stat bst
 */
 
+// the below function would fail if the provided data is free_floating_bstnode or a new_node, does not exist in the bst_p
 cy_uint get_index_of_element_in_bst(const bst* bst_p, const void* data);
 
 const void* get_element_at_index_in_bst(const bst* bst_p, cy_uint index);
