@@ -1,10 +1,5 @@
 1. Tasks picked
 
-* test defer
-
-ALLOCATOR
- * refactor stream_to_read_until_dstring to use cutlery allocators
-
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
