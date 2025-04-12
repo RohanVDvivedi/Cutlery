@@ -118,7 +118,7 @@ int memory_move(void* dest, const void* src, cy_uint size);
 	this is the function to be used in place of memset std library function
 	features :
 		* it sets size number of bytes at the dest pointer with the given byte_value
-		* it sets processor accessible word side if and when possible
+		* it sets processor accessible word size if and when possible
 		  * this function copies unsigned int instead of unsigned char where ever possible
 	return :
 		1 if success or a memory_set was not required
@@ -142,9 +142,8 @@ int memory_compare(const void* data1, const void* data2, cy_uint size);
 
 /*
 	this is cutlery specific memory swap implementation
-	there is not std library replacement for this function
+	there is no std library replacement for this function
 	this function swaps size number of bytes at the given memory locations
-	it uses XOR-style in-place (no additional memory) for this swap
 	it fails with a 0 if the memory locations are overlapping
 	features :
 		* it swaps processor accessible word size if and when possible
