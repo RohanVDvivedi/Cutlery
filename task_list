@@ -1,5 +1,7 @@
 1. Tasks picked
 
+ * for merge_sort in value_arraylist and index_accessed_search_sort, you need to iterate until sorted_chunk_size < total_elements
+
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
