@@ -96,8 +96,8 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	index_accessed_interface* dest_iai_p = &aux_array_iface;
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
-	cy_uint sort_chunk_size = 1;
-	while(sort_chunk_size <= total_elements)
+	cy_uint sorted_chunk_size = 1;
+	while(sorted_chunk_size <= total_elements)
 	{
 		// in each iteration of the internal loop
 		// merge 2 adjacent sorted chunks of src array
@@ -107,11 +107,11 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		{
 			// start and last indices of chunk 1
 			cy_uint a_start = dest_index;
-			cy_uint a_last = a_start + sort_chunk_size - 1;
+			cy_uint a_last = a_start + sorted_chunk_size - 1;
 
 			// start and last indices of chunk 2
 			cy_uint b_start = a_last + 1;
-			cy_uint b_last = b_start + sort_chunk_size - 1;
+			cy_uint b_last = b_start + sorted_chunk_size - 1;
 
 			// *_start and *_last are both inclusive indices
 
@@ -146,14 +146,14 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		src_iai_p = dest_iai_p;
 		dest_iai_p = temp;
 
-		// now the sorted chunk size is twice, so we need to multiple sort_chunk_size with 2
+		// now the sorted chunk size is twice, so we need to multiple sorted_chunk_size with 2
 		// we need to make sure that the multiplication does not overflow,
-		// if it does then this implies that the sort_chunk_size > maximum possible capacity of an index_accessed_interface, and hence > the total_elements
-		if(will_unsigned_mul_overflow(cy_uint, sort_chunk_size, 2))
+		// if it does then this implies that the sorted_chunk_size > maximum possible capacity of an index_accessed_interface, and hence > the total_elements
+		if(will_unsigned_mul_overflow(cy_uint, sorted_chunk_size, 2))
 			break;
 
 		// double the chunk size, for next iteration
-		sort_chunk_size = sort_chunk_size * 2;
+		sorted_chunk_size = sorted_chunk_size * 2;
 	}
 
 	// at the end of every iteration the result is in src_iai_p
