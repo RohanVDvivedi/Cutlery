@@ -1,8 +1,5 @@
 1. Tasks picked
 
-* convert all notifier_interface parameters to const ni_p
-* the struct of notifier interface itself must not be modified by the cutlery library
-
 2. Add new datastructure types tasks (*future)
 
 HEAP tasks (NEW DATASTRUCTURE inclusion)
