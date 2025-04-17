@@ -669,6 +669,7 @@ pref_spec int merge_sort_ ## container(container* c, cy_uint start_index, cy_uin
                                                                                                                                \
 	/* start with sorted chunk size equals 1, (a single element is always sorted) */                                           \
     /* this variable implies this is the chunk_size in the source container that is sorted, there can be more than 1 such chunks if sorted_chunk_size < total_elements*/\
+    /* this variable is meant to be always a power of 2 */                                                                     \
 	cy_uint sorted_chunk_size = 1;                                                                                             \
 	while(sorted_chunk_size < total_elements) /* loop while sorted_chunk_size < total_elements in the container */             \
 	{                                                                                                                          \
