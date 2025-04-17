@@ -98,7 +98,7 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	// this variable implies this is the chunk_size in the source container that is sorted, there can be more than 1 such chunks if sorted_chunk_size < total_elements
 	cy_uint sorted_chunk_size = 1;
-	while(sorted_chunk_size <= total_elements) // loop while sorted_chunk_size < total_elements in the container
+	while(sorted_chunk_size < total_elements) // loop while sorted_chunk_size < total_elements in the container
 	{
 		// in each iteration of the internal loop
 		// merge 2 adjacent sorted chunks of src array
