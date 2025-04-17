@@ -390,7 +390,7 @@ int remove_from_bst(bst* bst_p, const void* data)
 // only the below function needs this header file
 #include<cutlery/singlylist.h>
 
-void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p)
+void remove_all_from_bst(bst* bst_p, const notifier_interface* ni_p)
 {
 	// stack data that needs to be removed, linked with their parent pointers of the nodes
 	singlylist unremoved_stack;

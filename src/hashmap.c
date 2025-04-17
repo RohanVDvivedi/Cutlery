@@ -633,7 +633,7 @@ const void* get_next_of_in_hashmap(const hashmap* hashmap_p, const void* data_xi
 	}
 }
 
-void remove_all_from_hashmap(hashmap* hashmap_p, notifier_interface* ni_p)
+void remove_all_from_hashmap(hashmap* hashmap_p, const notifier_interface* ni_p)
 {
 	// iterate over all the buckets in the hashmap_p and removing all the elements
 	switch(hashmap_p->hashmap_policy)

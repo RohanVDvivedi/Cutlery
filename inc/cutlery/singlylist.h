@@ -69,7 +69,7 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 
 // removes all the elements from the singlylist and reinitializes their embedded slnode
 // after this if a notifier_interface if specified (i.e. not NULL), then it is notified
-void remove_all_from_singlylist(singlylist* sl, notifier_interface* ni_p);
+void remove_all_from_singlylist(singlylist* sl, const notifier_interface* ni_p);
 
 // get the data from the singlylist, that equals data, based on the comparator provided
 // it will return the pointer to the data contained in the singlylist that compares equal (i.e. comparator returns 0)

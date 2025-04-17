@@ -73,7 +73,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data);
 
 // removes all the elements from the linkedlist and reinitializes their embedded llnode
 // after this if a notifier_interface if specified (i.e. not NULL), then it is notified
-void remove_all_from_linkedlist(linkedlist* ll, notifier_interface* ni_p);
+void remove_all_from_linkedlist(linkedlist* ll, const notifier_interface* ni_p);
 
 // swap positions of the 2 elements in a given linkedlist
 int swap_in_linkedlist(linkedlist* ll, const void* data_xist1, const void* data_xist2);

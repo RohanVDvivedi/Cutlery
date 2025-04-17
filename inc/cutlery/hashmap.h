@@ -148,7 +148,7 @@ int expand_hashmap(hashmap* hashmap_p, float expand_factor);
 // after this if a notifier_interface if specified (i.e. not NULL), then it is notified
 // after a call to this function the hashmap contains 0 elements (get_element_count() == 0)
 // it does not affect the bucket_count of the hashmap
-void remove_all_from_hashmap(hashmap* hashmap_p, notifier_interface* ni_p);
+void remove_all_from_hashmap(hashmap* hashmap_p, const notifier_interface* ni_p);
 
 // frees all the data being held by the hashmap
 // the same hashmap can be reused by calling initialize_hashmap function, after it is deinitialized

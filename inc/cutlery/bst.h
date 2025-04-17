@@ -170,7 +170,7 @@ int remove_from_bst(bst* bst_p, const void* data);
 
 // removes all the elements from the bst and reinitializes their embedded bstnode
 // after this if a notifier_interface if specified (i.e. not NULL), then it is notified
-void remove_all_from_bst(bst* bst_p, notifier_interface* ni_p);
+void remove_all_from_bst(bst* bst_p, const notifier_interface* ni_p);
 
 // the three functions given below can only be used for an order statistics bst
 int is_order_stat_bst(const bst* bst_p);

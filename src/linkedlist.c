@@ -346,7 +346,7 @@ int remove_from_linkedlist(linkedlist* ll, const void* data)
 	return 1;
 }
 
-void remove_all_from_linkedlist(linkedlist* ll, notifier_interface* ni_p)
+void remove_all_from_linkedlist(linkedlist* ll, const notifier_interface* ni_p)
 {
 	if(is_empty_linkedlist(ll))
 		return;
