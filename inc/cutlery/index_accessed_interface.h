@@ -34,4 +34,9 @@ struct index_accessed_interface
 	cy_uint (*get_element_count)(const void* ds_p);
 };
 
+/*
+	Even for disk based access, get_element and get_element_count are expected to not fail
+	Because get_element_count() can be cached right before its use in index_accessed_search_sort.c, and you must crash if even your read via the get_element() fails
+*/
+
 #endif
