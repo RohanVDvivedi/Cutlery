@@ -21,10 +21,13 @@ struct index_accessed_interface
 	const void* (*get_element)(const void* ds_p, cy_uint index);
 
 	// set element at index
+	// fail -> 0, success -> 1
+	// ideally this function should not fail, but you may need to return 0, if your data is on disk and the write call fails
 	int (*set_element)(void* ds_p, const void* data_p, cy_uint index);
 
 	// swap elements at indices i1 and i2
-	// this function must default to returning 1, if i1 and i2 are the same and are not out of bounds
+	// fail -> 0, success -> 1
+	// ideally this function should not fail, but you may need to return 0, if your data is on disk and the write call fails
 	int (*swap_elements)(void* ds_p, cy_uint i1, cy_uint i2);
 
 	// returns the number of elements in the data structure;
