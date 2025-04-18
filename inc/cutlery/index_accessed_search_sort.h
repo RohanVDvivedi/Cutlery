@@ -28,7 +28,7 @@
 
 // below function returns true, only if the given indexed interface is sorted
 // it will return 0 (failure), if either it is unsorted, OR if the start_index and last_index are invalid
-int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
+int is_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 
 
@@ -48,29 +48,29 @@ int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 // sorting algorithm used => merge sort algorithm (iterative approach)
 // NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements
 // uses set_element -> the set_element is expected to succeed with indices valid and within bounds
-int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
+int merge_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
 
 // sorting algorithm used => heap sort algorithm, degree specifie the degree of the heap being used, for most cases 2 is fine
 // uses swap_elements -> fails with 0, if the swap_elements returns 0
-int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree);
+int heap_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree);
 
 // sorting algorithm used => quick sort algorithm
 // uses swap_elements -> fails with 0, if the swap_elements returns 0
-int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
+int quick_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 // sorting algorithm used => radix sort algorithm
 // all the elements will be ordered in increasing order of their value for get_sort_attribute()
 // NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements
 // uses set_element -> the set_element is expected to succeed with indices valid and within bounds
-int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);
+int radix_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);
 
 // sorting algorithm used => bubble sort algorithm
 // uses swap_elements -> fails with 0, if the swap_elements returns 0
-int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
+int bubble_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 // sorting algorithm used => insertion sort algorithm
 // uses swap_elements -> fails with 0, if the swap_elements returns 0
-int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
+int insertion_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);
 
 
 

@@ -13,7 +13,7 @@
 typedef struct iai_offsetted iai_offsetted;
 struct iai_offsetted
 {
-	index_accessed_interface* iai_p;
+	const index_accessed_interface* iai_p;
 	cy_uint offset_index;
 };
 
@@ -42,7 +42,7 @@ static cy_uint get_element_count_iai_offsetted(const void* ds_p)
 }
 
 #define get_index_accessed_interface_ofsetted(iai_p, offset) \
-											(index_accessed_interface){ \
+											(const index_accessed_interface){ \
 												.ds_p = &((iai_offsetted){.iai_p = (iai_p), .offset_index = (offset)}),\
 												.get_element = get_element_iai_offsetted,\
 												.set_element = set_element_iai_offsetted,\
@@ -52,7 +52,7 @@ static cy_uint get_element_count_iai_offsetted(const void* ds_p)
 
 // -----------------------------------------------------------------
 
-int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
+int is_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -72,7 +72,7 @@ int is_sorted_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 	return 1;
 }
 
-int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator)
+int merge_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -83,17 +83,17 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		return 1;
 
 	// generate a new index_accessed_interface to access elements from 0, instead of start_index
-	index_accessed_interface src_iai = get_index_accessed_interface_ofsetted(iai_p, start_index);
+	const index_accessed_interface src_iai = get_index_accessed_interface_ofsetted(iai_p, start_index);
 
 	// generate an auxilary array
 	array aux_array;
 	if(!initialize_array_with_allocator(&aux_array, total_elements, mem_allocator))
 		return 0;
-	index_accessed_interface aux_array_iface = get_index_accessed_interface_for_array(&aux_array);
+	const index_accessed_interface aux_array_iface = get_index_accessed_interface_for_array(&aux_array);
 
 	// we iteratively merge adjacent sorted chunks from src and store them in dest
-	index_accessed_interface* src_iai_p = &src_iai;
-	index_accessed_interface* dest_iai_p = &aux_array_iface;
+	const index_accessed_interface* src_iai_p = &src_iai;
+	const index_accessed_interface* dest_iai_p = &aux_array_iface;
 
 	// start with sorted chunk size equals 1, (a single element is always sorted)
 	// this variable implies this is the chunk_size in the source container that is sorted, there can be more than 1 such chunks if sorted_chunk_size < total_elements
@@ -144,7 +144,7 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 		}
 
 		// src becomes dest, and dest becomes src
-		void* temp = src_iai_p;
+		const void* temp = src_iai_p;
 		src_iai_p = dest_iai_p;
 		dest_iai_p = temp;
 
@@ -180,7 +180,7 @@ int merge_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 #include<cutlery/heap_info.h>
 
 // fails and returns 0, only if swap fails, on success returns 1
-static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree, cy_uint index)
+static int bubble_down_for_max_heap_for_heap_sort(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree, cy_uint index)
 {
 	cy_uint element_count = last_index - start_index + 1;
 	if(element_count <= 1)
@@ -227,7 +227,7 @@ static int bubble_down_for_max_heap_for_heap_sort(index_accessed_interface* iai_
 	return 1;
 }
 
-int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree)
+int heap_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, cy_uint degree)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -267,7 +267,7 @@ int heap_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint 
 	return 1;
 }
 
-int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
+int quick_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	while(1)
 	{
@@ -338,7 +338,7 @@ int quick_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator)
+int radix_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator)
 {
 	if(mem_allocator == NULL || start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -389,7 +389,7 @@ int radix_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint
 	return 1;
 }
 
-int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
+int bubble_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
@@ -425,7 +425,7 @@ int bubble_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uin
 	return 1;
 }
 
-int insertion_sort_iai(index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
+int insertion_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator)
 {
 	if(start_index > last_index || last_index >= iai_p->get_element_count(iai_p->ds_p))
 		return 0;
