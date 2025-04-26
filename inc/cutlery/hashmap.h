@@ -9,26 +9,26 @@
 typedef enum collision_resolution_policy collision_resolution_policy;
 enum collision_resolution_policy
 {
-	// each element of the hashmap, is itself a bucket
+	// each bucket of the hashmap, is itself an element
 	// collision is handled using Robinhood hashing,
 	// worst case search is O(n)
 	ROBINHOOD_HASHING = 0,
 
-	// each element of the hashmap is a linkedlist of buckets
+	// each bucket of the hashmap is a linkedlist of elements
 	// each insert is done at the head of each of this linkedlist
 	// worst case search is O(n)
 	ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD = 1,
 
-	// each element of the hashmap is a linkedlist of buckets
+	// each bucket of the hashmap is a linkedlist of elements
 	// each insert is done at the head of each of this linkedlist
 	// worst case search is O(n)
 	ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL = 2,
 
-	// each element of the hashmap is a red black binary search tree of buckets
+	// each bucket of the hashmap is a red black binary search tree of elements
 	// worst case search is O(log(n))
 	ELEMENTS_AS_RED_BLACK_BST = 3,
 
-	// each element of the hashmap is a avl binary search tree of buckets
+	// each bucket of the hashmap is an avl binary search tree of elements
 	// worst case search is O(log(n))
 	ELEMENTS_AS_AVL_BST = 4
 };
