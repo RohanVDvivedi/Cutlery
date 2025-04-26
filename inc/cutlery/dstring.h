@@ -6,8 +6,8 @@
 typedef enum dstring_type dstring_type;
 enum dstring_type
 {
-	LARGE_DSTR = 0b11,	// dstring that is allocated at byte_array (using size bytes_occipied from bytes_occupied)
-	SHORT_DSTR = 0b00,  // dstring that is stored in the dstring struct itself after type_n_SS_size (does not require allocation)
+	LARGE_DSTR = 0b11,  // dstring that is allocated at byte_array (using size as bytes_occupied, allocating bytes_allocated number of bytes)
+	SHORT_DSTR = 0b00,  // dstring that is stored in the dstring struct itself (short string optimization) after type_n_SS_size (does not require allocation)
 	POINT_DSTR = 0b01,  // dstring that uses byte_array and bytes_occupied, but points to another dstring's allocation (does not manage its own memory)
 };
 
