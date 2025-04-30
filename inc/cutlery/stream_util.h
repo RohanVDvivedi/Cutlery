@@ -50,4 +50,9 @@ dstring read_until_any_end_chars_from_stream(stream* rs, int (*is_end_char)(int 
 void unread_dstring_from_stream(stream* rs, const dstring* str, int* error); // get_char_count_dstring(str) must be atmost MAX_UNREAD_BYTES_COUNT
 cy_uint write_dstring_to_stream(stream* ws, const dstring* str, int* error);
 
+// below function allows you to read a fixed length dstring from the stream
+// if an EOF is encountered, it is not considered as an error, and incomplete dstring is returned
+// on an error, you must not and you need not call deinit_dstring on the return value
+dstring read_dstring_from_stream(stream* rs, cy_uint max_bytes_to_read, int* error);
+
 #endif

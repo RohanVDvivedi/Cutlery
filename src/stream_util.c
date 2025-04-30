@@ -323,3 +323,35 @@ cy_uint write_dstring_to_stream(stream* ws, const dstring* str, int* error)
 {
 	return write_to_stream(ws, get_byte_array_dstring(str), get_char_count_dstring(str), error);
 }
+
+dstring read_dstring_from_stream(stream* rs, cy_uint max_bytes_to_read, int* error)
+{
+	dstring res;
+	if(!init_empty_dstring(&res, max_bytes_to_read))
+	{
+		(*error) = ALLOCATION_FAILURE_IN_STREAM;
+		return res;
+	}
+
+	// no stream read calls required, if we need to read just a 0 byte dstring
+	if(max_bytes_to_read == 0)
+		return res;
+
+	while(get_char_count_dstring(&res) < max_bytes_to_read)
+	{
+		cy_uint bytes_read_this_iteration = read_from_stream(rs, get_byte_array_dstring(&res) + get_char_count_dstring(&res), max_bytes_to_read - get_char_count_dstring(&res), error);
+		if(*error)
+		{
+			deinit_dstring(&res);
+			return res;
+		}
+
+		if(bytes_read_this_iteration == 0) // END OF STREAM, so break out
+			break;
+
+		// incrementing the res's char count
+		increment_char_count_dstring(&res, bytes_read_this_iteration);
+	}
+
+	return res;
+}
