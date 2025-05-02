@@ -14,17 +14,28 @@ enum dstring_type
 typedef struct dstring dstring;
 struct dstring
 {
-	// type of dstring and bytes_occupied by the short string
-	unsigned char type_n_SS_size;
+	union
+	{
+		struct
+		{
+			// type of dstring and bytes_occupied by the short string
+			unsigned char type_n_SS_size;
 
-	// number of bytes in the byte_array
-	cy_uint bytes_occupied;
+			// number of bytes in the byte_array
+			cy_uint bytes_occupied;
 
-	// maxumum number of bytes at byte_array
-	cy_uint bytes_allocated;
+			// maxumum number of bytes at byte_array
+			cy_uint bytes_allocated;
 
-	// non null terminating string
-	char* byte_array;
+			// non null terminating string
+			char* byte_array;
+		};
+		struct
+		{
+			unsigned char type_n_SS_size_DUMMY;
+			char short_string_bytes[];
+		};
+	};
 };
 
 // BASE METHODS START
