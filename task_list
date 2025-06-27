@@ -37,6 +37,7 @@
   	comparator_interface comparator;
   };
 
+ * using pheap (LFU, PRIORITIZED) OR linkedlist (LRU, MRU) and hashmap build a cache supporting LRU, LFU and MRU with fixed number of buckets
 
 3. Competely new datastructure tasks (*future)
 
