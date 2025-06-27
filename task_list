@@ -6,6 +6,7 @@
     * initialize_pheap
     * initialize_phpnode
     * is_free_floating_phpnode
+    * is_empty_pheap
     * push_to_pheap
     * pop_from_pheap
     * get_top_of_pheap
