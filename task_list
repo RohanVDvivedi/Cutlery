@@ -16,6 +16,8 @@
     * meld_skew_heap
     * meld_leftist_heap
     * get_meld_function_for_pheap -> returns any of the above 2 functions
+    * disconnect_phpnode_from_parent_phpnode
+    * swap_chidren_for_phpnode
   * enum pheaptype {
   	SKEW_HEAP,
   	LEFTIST_HEAP,
