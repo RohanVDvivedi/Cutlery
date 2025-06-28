@@ -33,7 +33,15 @@ int is_empty_pheap(const pheap* pheap_p)
 
 int push_to_pheap(pheap* pheap_p, const void* data);
 
-int pop_from_pheap(pheap* pheap_p);
+int pop_from_pheap(pheap* pheap_p)
+{
+	// can not pop, if there are no elements in the pheap
+	if(is_empty_pheap(pheap_p))
+		return 0;
+
+	// remove the top of the pheap tree
+	return remove_from_pheap(pheap_p, get_data(pheap_p->root, pheap_p));
+}
 
 const void* get_top_of_pheap(const pheap* pheap_p)
 {
