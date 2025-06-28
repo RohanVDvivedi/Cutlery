@@ -110,6 +110,21 @@ void remove_all_from_pheap(pheap* pheap_p, const notifier_interface* ni_p)
 	}
 }
 
-void for_each_in_pheap(const pheap* pheap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
+static void for_each_node_post_order(const pheap* pheap_p, const phpnode* node_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
+{
+	if(node_p == NULL)
+		return;
+	for_each_node_post_order(pheap_p, node_p->left, operation, additional_params);
+	for_each_node_post_order(pheap_p, node_p->right, operation, additional_params);
+	operation(get_data(node_p, pheap_p), additional_params);
+}
+
+void for_each_in_pheap(const pheap* pheap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
+{
+	if(is_empty_pheap(pheap_p))
+		return;
+
+	for_each_node_post_order(pheap_p, pheap_p->root, operation, additional_params);
+}
 
 void sprint_pheap(dstring* append_str, const pheap* pheap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs);
