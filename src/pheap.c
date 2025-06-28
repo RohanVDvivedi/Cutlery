@@ -9,7 +9,7 @@
 	INTERNAL FUNCTIONS THESE ARE THE ONLY ONES THAT RELY ON THE PHEAPTYPE OF THE PHEAP
 */
 
-void swap_chidren_for_phpnode(phpnode* node_p)
+static void swap_chidren_for_phpnode(phpnode* node_p)
 {
 	void* temp = node_p->left;
 	node_p->left = node_p->right;
@@ -17,12 +17,49 @@ void swap_chidren_for_phpnode(phpnode* node_p)
 }
 
 // this function will mostly be used by LEFTIST pheap
-cy_uint get_node_property_for_phpnode(const phpnode* node_p)
+static cy_uint get_node_property_for_phpnode(const phpnode* node_p)
 {
 	if(node_p == NULL) // NULL is 0 elements from the NULL, so its node_property is 0 for a LEFTIST pheap, for SKEW returning anything works
 		return 0;
 
 	return node_p->node_property;
+}
+
+// the below 3 meld function does not modify the pheap_p in any way and only uses it for pheap_p->info, pheap_p->type and the pheap_p->node_offset
+
+// not to be used except in meld() function
+static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
+{
+	// TODO
+	return NULL;
+}
+
+// not to be used except in meld() function
+static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
+{
+	// TODO
+	return NULL;
+}
+
+// can be used by other functions
+static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
+{
+	switch(pheap_p->type)
+	{
+		case SKEW :
+			return meld_for_skew_pheap(pheap_p, a, b);
+		case LEFTIST :
+			return meld_for_leftist_pheap(pheap_p, a, b);
+		default :
+			return NULL;
+	}
+}
+
+void TO_BE_REMOVED()
+{
+	swap_chidren_for_phpnode(NULL);
+	get_node_property_for_phpnode(NULL);
+	meld(NULL, NULL, NULL);
 }
 
 /*
