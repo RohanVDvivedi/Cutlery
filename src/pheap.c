@@ -102,6 +102,29 @@ static void sever_phpnode_from_tree(const pheap* pheap_p, phpnode* node_p)
 	}
 }
 
+// the below function does not modify the pheap_p in any way and only uses it for pheap_p->type
+// it severs only the connection between parent and child
+// this function assumes that child->parent = parent, and they they both are not NULL
+static void sever_phpnode_connection(const pheap* pheap_p, phpnode* parent, phpnode* child)
+{
+	if(is_left_of_its_parent(child))
+		parent->left = NULL;
+	else
+		parent->right = NULL;
+	child->parent = NULL;
+
+	switch(pheap_p->type)
+	{
+		case LEFTIST :
+		{
+			restore_leftist_heap_node_properties_up_until_root(parent);
+			return;
+		}
+		default :
+			return;
+	}
+}
+
 // the below 3 meld function does not modify the pheap_p in any way and only uses it for pheap_p->info, pheap_p->type and the pheap_p->node_offset
 
 // not to be used except in meld() function
