@@ -1,5 +1,7 @@
 #include<cutlery/pheap.h>
 
+#include<cutlery/cutlery_node.h>
+
 void initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const comparator_interface* comparator, cy_uint node_offset)
 {
 	pheap_p->info = (heap_info){.type = type, .comparator = (*comparator)};;
@@ -33,7 +35,15 @@ int push_to_pheap(pheap* pheap_p, const void* data);
 
 int pop_from_pheap(pheap* pheap_p);
 
-const void* get_top_of_pheap(const pheap* pheap_p);
+const void* get_top_of_pheap(const pheap* pheap_p)
+{
+	// there is no top element, if there are no elements in the pheap
+	if(is_empty_pheap(pheap_p))
+		return NULL;
+
+	// return root of the tree
+	return get_data(pheap_p->root, pheap_p);
+}
 
 void heapify_for_in_pheap(pheap* pheap_p, const void* data);
 
