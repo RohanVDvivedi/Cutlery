@@ -24,7 +24,10 @@ int is_free_floating_phpnode(const phpnode* node_p)
 	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->node_property == 0));
 }
 
-int is_empty_pheap(const pheap* pheap_p);
+int is_empty_pheap(const pheap* pheap_p)
+{
+	return (pheap_p->root == NULL);
+}
 
 int push_to_pheap(pheap* pheap_p, const void* data);
 
