@@ -12,6 +12,7 @@
     * meld_leftist_pheap -> takes only 2 php node pointers
     * meld_pheap -> takes pheap object in context as read only and calls the respective functions
     * disconnect_phpnode_from_parent_phpnode
+  * write tests, and compare ouputs for all 3 heaps for all operations after a get
 
  * build a cache data structure that has the following attributes
  struct cache {
