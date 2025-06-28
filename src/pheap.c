@@ -57,26 +57,27 @@ static void restore_leftist_heap_node_properties_up_until_root(phpnode* node_p)
 }
 
 // the below function does not modify the pheap_p in any way and only uses it for pheap_p->info, pheap_p->type and the pheap_p->node_offset
-static void disconnect_phpnode_from_parent_phpnode(const pheap* pheap_p, phpnode* node_p)
+static void disconnect_phpnode_from_its_children(const pheap* pheap_p, phpnode* node_p)
 {
-	phpnode* parent = node_p->parent;
+	// sever the left child. if exists
+	if(node_p->left != NULL)
+	{
+		node_p->left->parent = NULL;
+		node_p->left = NULL;
+	}
 
-	// if there is no parent to disconnect it from, then return
-	if(parent == NULL)
-		return;
-
-	// sever the parent and child linkage
-	if(is_left_of_its_parent(node_p))
-		parent->left = NULL;
-	else
-		parent->right = NULL;
-	node_p->parent = NULL;
+	// sever the right child, if exists
+	if(node_p->right != NULL)
+	{
+		node_p->right->parent = NULL;
+		node_p->right = NULL;
+	}
 
 	switch(pheap_p->type)
 	{
-		case LEFTIST : // node_property has to be restored for parent containing tree, only for the LEFTIST pheap
+		case LEFTIST :
 		{
-			restore_leftist_heap_node_properties_up_until_root(parent);
+			restore_leftist_heap_node_properties_up_until_root(node_p);
 			return;
 		}
 		default :
@@ -116,7 +117,7 @@ static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
 
 void TO_BE_REMOVED()
 {
-	disconnect_phpnode_from_parent_phpnode(NULL, NULL);
+	disconnect_phpnode_from_its_children(NULL, NULL);
 	meld(NULL, NULL, NULL);
 }
 
