@@ -26,8 +26,38 @@ static cy_uint get_node_property_for_phpnode(const phpnode* node_p)
 	return node_p->node_property;
 }
 
+// below function needs to be called only on some node_p in the leftist pheap, when you suspect the node_property of leftist heap is violated
+// this includes leftist heap property of being left deep OR incorrectly set node_property
+static void restore_leftist_heap_node_properties_up_until_root(phpnode* node_p)
+{
+	// iterate over all the node from parent to the original root, in the original tree
+	for(phpnode* temp = node_p; temp != NULL; temp = temp->parent)
+	{
+		cy_uint left_child_node_property = get_node_property_for_phpnode(temp->left);
+		cy_uint right_child_node_property = get_node_property_for_phpnode(temp->right);
+
+		if(left_child_node_property < right_child_node_property) // we must reinstate the tree property of left_tree_node_property >= right_tree_node_property
+		{
+			swap_chidren_for_phpnode(temp);
+
+			// fix the local variables, even though it is not necessary to be done
+			left_child_node_property = get_node_property_for_phpnode(temp->left);
+			right_child_node_property = get_node_property_for_phpnode(temp->right);
+		}
+
+		cy_uint new_node_property = min(left_child_node_property, right_child_node_property) + 1;
+
+		// if the node_property does not need fixing, then break out
+		if(new_node_property == get_node_property_for_phpnode(temp))
+			break;
+
+		// else set it
+		temp->node_property = new_node_property;
+	}
+}
+
 // the below function does not modify the pheap_p in any way and only uses it for pheap_p->info, pheap_p->type and the pheap_p->node_offset
-void disconnect_phpnode_from_parent_phpnode(const pheap* pheap_p, phpnode* node_p)
+static void disconnect_phpnode_from_parent_phpnode(const pheap* pheap_p, phpnode* node_p)
 {
 	phpnode* parent = node_p->parent;
 
@@ -46,30 +76,7 @@ void disconnect_phpnode_from_parent_phpnode(const pheap* pheap_p, phpnode* node_
 	{
 		case LEFTIST : // node_property has to be restored for parent containing tree, only for the LEFTIST pheap
 		{
-			// iterate over all the node from parent to the original root, in the original tree
-			for(phpnode* temp = parent; temp != NULL; temp = temp->parent)
-			{
-				cy_uint left_child_node_property = get_node_property_for_phpnode(temp->left);
-				cy_uint right_child_node_property = get_node_property_for_phpnode(temp->right);
-
-				if(left_child_node_property < right_child_node_property) // we must reinstate the tree property of left_tree_node_property >= right_tree_node_property
-				{
-					swap_chidren_for_phpnode(temp);
-
-					// fix the local variables, even though it is not necessary to be done
-					left_child_node_property = get_node_property_for_phpnode(temp->left);
-					right_child_node_property = get_node_property_for_phpnode(temp->right);
-				}
-
-				cy_uint new_node_property = min(left_child_node_property, right_child_node_property) + 1;
-
-				// if the node_property does not need fixing, then break out
-				if(new_node_property == get_node_property_for_phpnode(temp))
-					break;
-
-				// else set it
-				temp->node_property = new_node_property;
-			}
+			restore_leftist_heap_node_properties_up_until_root(parent);
 			return;
 		}
 		default :
@@ -109,6 +116,7 @@ static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
 
 void TO_BE_REMOVED()
 {
+	disconnect_phpnode_from_parent_phpnode(NULL, NULL);
 	meld(NULL, NULL, NULL);
 }
 
