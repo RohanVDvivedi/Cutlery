@@ -1,6 +1,9 @@
 #include<cutlery/pheap.h>
 
 #include<cutlery/cutlery_node.h>
+#include<cutlery/cutlery_stds.h>
+
+#include<cutlery/bst_util.h>
 
 void initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const comparator_interface* comparator, cy_uint node_offset)
 {
@@ -127,4 +130,74 @@ void for_each_in_pheap(const pheap* pheap_p, void (*operation)(const void* data,
 	for_each_node_post_order(pheap_p, pheap_p->root, operation, additional_params);
 }
 
-void sprint_pheap(dstring* append_str, const pheap* pheap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs);
+static void print_node(dstring* append_str, const pheap* pheap_p, const phpnode* node_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
+{
+	if(node_p != NULL)
+	{
+		sprint_chars(append_str, '\t', tabs++);
+		if(is_root_node(node_p))
+			snprintf_dstring(append_str, "node ROOT  : [%p]\n", node_p);
+		else if(is_leaf_node(node_p))
+			snprintf_dstring(append_str, "node LEAF  : [%p]\n", node_p);
+		else if(is_internal_node(node_p))
+			snprintf_dstring(append_str, "node INTER : [%p]\n", node_p);
+
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "data :\n");
+		sprint_element(append_str, get_data(node_p, pheap_p), tabs + 1);
+		snprintf_dstring(append_str, " (%" PRIu_cy_uint ")\n", node_p->node_property);
+
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "parent : [%p]\n", node_p->parent);
+
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "left  :  [%p]\n", node_p->left);
+			
+		sprint_chars(append_str, '\t', tabs);
+		snprintf_dstring(append_str, "right :  [%p]\n\n", node_p->right);
+	}
+}
+
+static void print_tree(dstring* append_str, const pheap* pheap_p, const phpnode* node_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
+{
+	if(node_p != NULL)
+	{
+		print_tree(append_str, pheap_p, node_p->left, sprint_element, tabs);
+		print_node(append_str, pheap_p, node_p, sprint_element, tabs);
+		print_tree(append_str, pheap_p, node_p->right, sprint_element, tabs);
+	}
+}
+
+void sprint_pheap(dstring* append_str, const pheap* pheap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
+{
+	sprint_chars(append_str, '\t', tabs++);
+	switch(pheap_p->info.type)
+	{
+		case MIN_HEAP :
+		{snprintf_dstring(append_str, "pheap (MIN_HEAP) :\n");break;}
+		case MAX_HEAP :
+		{snprintf_dstring(append_str, "pheap (MAX_HEAP) :\n");break;}
+	}
+
+	sprint_chars(append_str, '\t', tabs++);
+	switch(pheap_p->type)
+	{
+		case SKEW :
+		{snprintf_dstring(append_str, "pheap (SKEW_HEAP) :\n");break;}
+		case LEFTIST :
+		{snprintf_dstring(append_str, "pheap (LEFTIST_HEAP) :\n");break;}
+	}
+
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "node_offset : [%" PRIu_cy_uint "]\n", pheap_p->node_offset);
+	sprint_chars(append_str, '\t', tabs); snprintf_dstring(append_str, "root : [%p]\n", pheap_p->root);
+
+	print_tree(append_str, pheap_p, pheap_p->root, sprint_element, tabs + 1);
+
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "top : ");
+	if(get_top_of_pheap(pheap_p) != NULL)
+		sprint_element(append_str, get_top_of_pheap(pheap_p), 0);
+	else
+		snprintf_dstring(append_str, "NULL");
+	snprintf_dstring(append_str, "\n");
+}
