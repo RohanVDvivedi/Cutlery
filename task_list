@@ -9,7 +9,6 @@
   * internal static function only for
     * meld_skew_pheap
     * meld_leftist_pheap
-    * disconnect_phpnode_from_parent_phpnode
   * write tests, and compare ouputs for all 3 heaps for all operations after a get
 
  * build a cache data structure that has the following attributes
