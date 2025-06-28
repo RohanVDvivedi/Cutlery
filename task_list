@@ -7,7 +7,6 @@
     * heapify_for_in_pheap
     * remove_from_pheap
   * internal static function only for
-    * swap_chidren_for_phpnode
     * restore_leftist_heap_node_property_for_phpnode
     * meld_skew_heap
     * meld_leftist_heap
