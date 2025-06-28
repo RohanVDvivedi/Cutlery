@@ -2,6 +2,8 @@
 #define PHEAP_H
 
 #include<cutlery/heap_info.h>
+#include<cutlery/dstring.h>
+#include<cutlery/notifier_interface.h>
 
 typedef enum pheaptype pheaptype;
 enum pheaptype
@@ -30,11 +32,11 @@ struct phpnode
 typedef struct pheap pheap;
 struct pheap
 {
-	// the type of merge algorithm to use for the heap
-	pheaptype type;
-
 	// stores whether, type = MIN_HEAP or MAX_HEAP AND the comparator to be used
 	heap_info info;
+
+	// the type of merge algorithm to use for the heap, possible values SKEW and LEFTIST
+	pheaptype type;
 
 	// defines address to data with respect to bstnode
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
@@ -43,5 +45,49 @@ struct pheap
 	// the root node of the tree
 	phpnode* root;
 };
+
+/*
+*	note : you can only insert a new node, and remove an existing node
+*/
+
+// initializes as if a new pheap, may be to reuse
+int initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const comparator_interface* comparator, cy_uint node_offset);
+
+// always initialize your phpnode before using it
+int initialize_phpnode(phpnode* node_p);
+
+// a free floating phpnode is the one, that is not referenced in any pheap, i.e a node that can be inserted to any pheap
+int is_free_floating_phpnode(const phpnode* node_p);
+
+int is_empty_pheap(const pheap* pheap_p);
+
+// insert a new element t pheap
+// returns 0, and fails if phpnode of data is not a new node
+int push_to_pheap(pheap* pheap_p, const void* data);
+
+// pop the top element from pheap
+// returns 0 only if the pheap_p is empty
+int pop_from_pheap(pheap* pheap_p);
+
+// returns the top of the pheap
+const void* get_top_of_pheap(const pheap* pheap_p);
+
+// if you modify the value of data, such that the heap property is violated then this functions fixes it's position in the tree, pushing it up or down the tree
+// i.e. if you changed the attributes of the data, which changed its comparison ourput with respect to other elements in the heap, then you need to call this function immediately
+void heapify_for_in_pheap(pheap* pheap_p, const void* data);
+
+// removes a specific element from the heap
+// returns 0, and fails if phpnode of data is a new node
+int remove_from_pheap(pheap* pheap_p, const void* data);
+
+// removes all the elements from the bst and reinitializes their embedded phpnode
+// after this if a notifier_interface if specified (i.e. not NULL), then it is notified
+void remove_all_from_pheap(pheap* pheap_p, const notifier_interface* ni_p);
+
+// perform given operation on all the elements of the pheap
+void for_each_in_bst(const pheap* pheap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
+
+// print complete pheap
+void sprint_bst(dstring* append_str, const pheap* pheap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs);
 
 #endif
