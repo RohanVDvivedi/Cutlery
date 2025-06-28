@@ -57,7 +57,58 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data);
 
 int remove_from_pheap(pheap* pheap_p, const void* data);
 
-void remove_all_from_pheap(pheap* pheap_p, const notifier_interface* ni_p);
+// only the below function needs this header file
+#include<cutlery/singlylist.h>
+
+void remove_all_from_pheap(pheap* pheap_p, const notifier_interface* ni_p)
+{
+	// stack data that needs to be removed, linked with their parent pointers of the nodes
+	singlylist unremoved_stack;
+	initialize_singlylist(&unremoved_stack, pheap_p->node_offset + offsetof(phpnode, parent));
+
+	// insert first element of the stack
+	if(pheap_p->root != NULL)
+	{
+		pheap_p->root->parent = NULL; // this is equivalent to initializing slnode for unremoved stack
+		insert_head_in_singlylist(&unremoved_stack, get_data(pheap_p->root, pheap_p));
+
+		// root now points to nothing
+		pheap_p->root = NULL;
+	}
+
+	while(!is_empty_singlylist(&unremoved_stack))
+	{
+		// remove an element from the stack
+		const void* data_p = get_head_of_singlylist(&unremoved_stack);
+		remove_head_from_singlylist(&unremoved_stack);
+
+		// get its node
+		// since we just remove it from the unremoved_stack, it s parent is suppossed to be NULL
+		phpnode* node_p = get_node(data_p, pheap_p);
+
+		// if node_p has right node, then insert it to unremoved_stack
+		if(node_p->right != NULL)
+		{
+			node_p->right->parent = NULL; // this is equivalent to initializing slnode for unremoved stack
+			insert_head_in_singlylist(&unremoved_stack, get_data(node_p->right, pheap_p));
+		}
+
+		// if node_p has left node, then insert it to unremoved_stack
+		if(node_p->left != NULL)
+		{
+			node_p->left->parent = NULL; // this is equivalent to initializing slnode for unremoved stack
+			insert_head_in_singlylist(&unremoved_stack, get_data(node_p->left, pheap_p));
+		}
+
+		// re initialize phpnode of data_p
+		// its parent was already NULL, the below call will reset its left, right and node_property to NULLs and 0s
+		initialize_phpnode(node_p);
+
+		// notify the notifier_interface ni_p (if any)
+		if(ni_p != NULL)
+			ni_p->notify(ni_p->resource_p, data_p);
+	}
+}
 
 void for_each_in_pheap(const pheap* pheap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
 
