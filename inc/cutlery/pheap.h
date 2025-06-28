@@ -1,6 +1,8 @@
 #ifndef PHEAP_H
 #define PHEAP_H
 
+#include<cutlery/heap_info.h>
+
 typedef enum pheaptype pheaptype;
 enum pheaptype
 {
