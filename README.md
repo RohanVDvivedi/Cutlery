@@ -40,6 +40,7 @@ The above 2 statements slides in another feature, references/iterators to the ob
    * `#include<cutlery/array.h>`
    * `#include<cutlery/arraylist.h>`
    * `#include<cutlery/heap.h>`
+   * `#include<cutlery/pheap.h>`
    * `#include<cutlery/linkedlist.h>`
    * `#include<cutlery/singlylist.h>`
    * `#include<cutlery/bst.h>`
