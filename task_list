@@ -13,7 +13,28 @@
     * disconnect_phpnode_from_parent_phpnode
     * swap_chidren_for_phpnode
 
- * using pheap (LFU, PRIORITIZED) OR linkedlist (LRU, MRU) and hashmap build a cache supporting LRU, LFU and MRU with fixed number of buckets
+ * build a cache data structure that has the following attributes
+ struct cache {
+  cy_uint max_capacity;
+  cy_uint cur_capacity;
+  cy_uint get_caoacity(const void* data); // this could be returning 1 OR the size of the element being inserted, cache only ensures that curr_capacity < max_capacity, else you need to evict soemthing first
+  void* map; // can be hashmap or bst
+  {
+    insert_in_map()
+    get_from_map()
+    remove_from_map()
+  }
+  void* evictor; // can be heap, pheap, linkedlist or any kind of data structure
+  {
+    bump_usage()
+    insert_in_evictor()
+    remove_from_evictor()
+  }
+ }
+ insert_in_cache()
+ evict_from_cache()
+ remove_from_cache()
+ get_from_cache()
 
 3. Competely new datastructure tasks (*future)
 
