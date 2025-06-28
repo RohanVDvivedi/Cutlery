@@ -38,7 +38,7 @@ struct pheap
 	// the type of merge algorithm to use for the heap, possible values SKEW and LEFTIST
 	pheaptype type;
 
-	// defines address to data with respect to bstnode
+	// defines address to data with respect to phpnode
 	// this is how we reach node addresses from provided user's structure data addresses and viceversa
 	cy_uint node_offset;
 
@@ -80,14 +80,14 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data);
 // returns 0, and fails if phpnode of data is a new node
 int remove_from_pheap(pheap* pheap_p, const void* data);
 
-// removes all the elements from the bst and reinitializes their embedded phpnode
+// removes all the elements from the pheap and reinitializes their embedded phpnode
 // after this if a notifier_interface if specified (i.e. not NULL), then it is notified
 void remove_all_from_pheap(pheap* pheap_p, const notifier_interface* ni_p);
 
 // perform given operation on all the elements of the pheap
-void for_each_in_bst(const pheap* pheap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
+void for_each_in_pheap(const pheap* pheap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params);
 
 // print complete pheap
-void sprint_bst(dstring* append_str, const pheap* pheap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs);
+void sprint_pheap(dstring* append_str, const pheap* pheap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs);
 
 #endif
