@@ -9,6 +9,13 @@
 	INTERNAL FUNCTIONS THESE ARE THE ONLY ONES THAT RELY ON THE PHEAPTYPE OF THE PHEAP
 */
 
+void swap_chidren_for_phpnode(phpnode* node_p)
+{
+	void* temp = node_p->left;
+	node_p->left = node_p->right;
+	node_p->right = temp;
+}
+
 /*
 	INTERNAL FUNCTIONS END
 */
