@@ -3,16 +3,9 @@
  * Pheap
   * implement with policies SKEW_HEAP and LEFTIST_HEAP
   * api
-    * initialize_pheap
-    * initialize_phpnode
-    * is_free_floating_phpnode
-    * is_empty_pheap
     * push_to_pheap
-    * pop_from_pheap
-    * get_top_of_pheap
     * heapify_for_in_pheap
     * remove_from_pheap
-    * remove_all_from_pheap
   * internal static function only for
     * meld_skew_heap
     * meld_leftist_heap
