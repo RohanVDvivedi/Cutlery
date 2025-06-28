@@ -5,6 +5,10 @@
 #include<cutlery/dstring.h>
 #include<cutlery/notifier_interface.h>
 
+/*
+** 	pheap is short for pointer based binary heap, it is an intrusive data structure, like bst, supporting policies like SHEW heap and LEFTIST heap for balancing
+*/
+
 typedef enum pheaptype pheaptype;
 enum pheaptype
 {
