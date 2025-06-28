@@ -56,8 +56,9 @@ static void restore_leftist_heap_node_properties_up_until_root(phpnode* node_p)
 	}
 }
 
-// the below function does not modify the pheap_p in any way and only uses it for pheap_p->info, pheap_p->type and the pheap_p->node_offset
-static void disconnect_phpnode_from_its_children(const pheap* pheap_p, phpnode* node_p)
+// the below function does not modify the pheap_p in any way and only uses it for pheap_p->type
+// it severs all the three connection ->parent, ->left and ->right for the node_p, singling it out
+static void sever_phpnode_from_tree(const pheap* pheap_p, phpnode* node_p)
 {
 	// sever the left child. if exists
 	if(node_p->left != NULL)
@@ -73,11 +74,27 @@ static void disconnect_phpnode_from_its_children(const pheap* pheap_p, phpnode* 
 		node_p->right = NULL;
 	}
 
+	// cache parent pointer for future use
+	phpnode* parent = node_p->parent;
+
+	if(node_p->parent != NULL)
+	{
+		if(is_left_of_its_parent(node_p))
+			node_p->parent->left = NULL;
+		else
+			node_p->parent->right = NULL;
+		node_p->parent = NULL;
+	}
+
+	// now the node_p is itself a single node tree whose node_property is definitely 1 for all trees
+	node_p->node_property = 1;
+
 	switch(pheap_p->type)
 	{
 		case LEFTIST :
 		{
-			restore_leftist_heap_node_properties_up_until_root(node_p);
+			if(parent != NULL) // if the parent exists then, its node_property may be violated in the tree so fix it
+				restore_leftist_heap_node_properties_up_until_root(parent);
 			return;
 		}
 		default :
@@ -117,7 +134,7 @@ static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
 
 void TO_BE_REMOVED()
 {
-	disconnect_phpnode_from_its_children(NULL, NULL);
+	sever_phpnode_from_tree(NULL, NULL);
 	meld(NULL, NULL, NULL);
 }
 
