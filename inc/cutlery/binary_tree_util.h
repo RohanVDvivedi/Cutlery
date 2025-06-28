@@ -2,6 +2,11 @@
 #define BINARY_TREE_UTIL_H
 
 /*
+** used for getting specific properties of a node for a generic node based binary tree
+**	used in bst and pheap (skew or leftist heaps)
+*/
+
+/*
 *	MACROS TO DEFINE THE TYPE OF NODE
 */
 
