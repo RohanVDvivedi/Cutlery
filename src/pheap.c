@@ -5,6 +5,14 @@
 
 #include<cutlery/binary_tree_util.h>
 
+/*
+	INTERNAL FUNCTIONS THESE ARE THE ONLY ONES THAT RELY ON THE PHEAPTYPE OF THE PHEAP
+*/
+
+/*
+	INTERNAL FUNCTIONS END
+*/
+
 void initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const comparator_interface* comparator, cy_uint node_offset)
 {
 	pheap_p->info = (heap_info){.type = type, .comparator = (*comparator)};;
