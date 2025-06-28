@@ -16,6 +16,15 @@ void swap_chidren_for_phpnode(phpnode* node_p)
 	node_p->right = temp;
 }
 
+// this function will mostly be used by LEFTIST pheap
+cy_uint get_node_property_for_phpnode(const phpnode* node_p)
+{
+	if(node_p == NULL) // NULL is 0 elements from the NULL, so its node_property is 0 for a LEFTIST pheap, for SKEW returning anything works
+		return 0;
+
+	return node_p->node_property;
+}
+
 /*
 	INTERNAL FUNCTIONS END
 */
