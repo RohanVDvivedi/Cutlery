@@ -19,23 +19,6 @@
     * get_meld_function_for_pheap -> returns any of the above 2 functions
     * disconnect_phpnode_from_parent_phpnode
     * swap_chidren_for_phpnode
-  * enum pheaptype {
-  	SKEW_HEAP,
-  	LEFTIST_HEAP,
-  }
-  * struct phpnode {
-  	phpnode* parent;
-  	phpnode* left;
-  	phpnode* right;
-  	cy_uint node_property;
-  }
-  * struct pheap {
-  	pheaptype type;
-  	heap_info info;
-  	cy_uint node_offset;
-  	phpnode* root;
-  	comparator_interface comparator;
-  };
 
  * using pheap (LFU, PRIORITIZED) OR linkedlist (LRU, MRU) and hashmap build a cache supporting LRU, LFU and MRU with fixed number of buckets
 
