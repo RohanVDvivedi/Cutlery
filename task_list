@@ -8,9 +8,8 @@
     * remove_from_pheap
   * internal static function only for
     * restore_leftist_heap_node_property_for_phpnode
-    * meld_skew_pheap -> takes only 2 php node pointers
-    * meld_leftist_pheap -> takes only 2 php node pointers
-    * meld_pheap -> takes pheap object in context as read only and calls the respective functions
+    * meld_skew_pheap
+    * meld_leftist_pheap
     * disconnect_phpnode_from_parent_phpnode
   * write tests, and compare ouputs for all 3 heaps for all operations after a get
 
