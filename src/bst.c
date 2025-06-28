@@ -4,8 +4,9 @@
 #include<cutlery/bst_nonbalancing.h>
 #include<cutlery/bst_avl.h>
 #include<cutlery/bst_redblack.h>
-#include<cutlery/bst_util.h>
 #include<cutlery/bst_order_stat.h>
+
+#include<cutlery/binary_tree_util.h>
 
 #include<cutlery/cutlery_node.h>
 #include<cutlery/cutlery_stds.h>

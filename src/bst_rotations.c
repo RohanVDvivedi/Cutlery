@@ -1,5 +1,7 @@
 #include<cutlery/bst_rotations.h>
-#include<cutlery/bst_util.h>
+
+#include<cutlery/binary_tree_util.h>
+
 #include<cutlery/bst_order_stat.h>
 
 #include<cutlery/cutlery_stds.h>

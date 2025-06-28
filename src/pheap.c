@@ -3,7 +3,7 @@
 #include<cutlery/cutlery_node.h>
 #include<cutlery/cutlery_stds.h>
 
-#include<cutlery/bst_util.h>
+#include<cutlery/binary_tree_util.h>
 
 void initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const comparator_interface* comparator, cy_uint node_offset)
 {

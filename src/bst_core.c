@@ -1,6 +1,8 @@
 #include<cutlery/bst_core.h>
 #include<cutlery/bst_rotations.h>		// used only for interchange positions of nodes, no rotations performed
-#include<cutlery/bst_util.h>
+
+#include<cutlery/binary_tree_util.h>
+
 #include<cutlery/bst_order_stat.h>
 
 #include<cutlery/cutlery_node.h>

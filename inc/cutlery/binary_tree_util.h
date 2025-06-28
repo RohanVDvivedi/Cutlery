@@ -1,5 +1,5 @@
-#ifndef BST_UTIL_H
-#define BST_UTIL_H
+#ifndef BINARY_TREE_UTIL_H
+#define BINARY_TREE_UTIL_H
 
 /*
 *	MACROS TO DEFINE THE TYPE OF NODE

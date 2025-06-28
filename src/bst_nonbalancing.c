@@ -1,6 +1,7 @@
 #include<cutlery/bst_core.h>
 #include<cutlery/bst_nonbalancing.h>
-#include<cutlery/bst_util.h>
+
+#include<cutlery/binary_tree_util.h>
 
 #include<cutlery/cutlery_stds.h>
 
