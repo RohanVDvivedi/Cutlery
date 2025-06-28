@@ -8,9 +8,21 @@ void initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const co
 	pheap_p->root = NULL;
 }
 
-void initialize_phpnode(phpnode* node_p);
+void initialize_phpnode(phpnode* node_p)
+{
+	node_p->parent = NULL;
+	node_p->left = NULL;
+	node_p->right = NULL;
 
-int is_free_floating_phpnode(const phpnode* node_p);
+	// node property of the node that is not linked to any pheap is 0
+	node_p->node_property = 0;
+}
+
+int is_free_floating_phpnode(const phpnode* node_p)
+{
+	// note: node_property of a new_phpnode is 0
+	return ((node_p->parent == NULL) && (node_p->left == NULL) && (node_p->right == NULL) && (node_p->node_property == 0));
+}
 
 int is_empty_pheap(const pheap* pheap_p);
 
