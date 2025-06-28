@@ -7,11 +7,12 @@
     * heapify_for_in_pheap
     * remove_from_pheap
   * internal static function only for
+    * swap_chidren_for_phpnode
+    * restore_leftist_heap_node_property_for_phpnode
     * meld_skew_heap
     * meld_leftist_heap
     * get_meld_function_for_pheap -> returns any of the above 2 functions
     * disconnect_phpnode_from_parent_phpnode
-    * swap_chidren_for_phpnode
 
  * build a cache data structure that has the following attributes
  struct cache {
