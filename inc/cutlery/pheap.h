@@ -55,10 +55,10 @@ struct pheap
 */
 
 // initializes as if a new pheap, may be to reuse
-int initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const comparator_interface* comparator, cy_uint node_offset);
+void initialize_pheap(pheap* pheap_p, heap_type type, pheaptype policy, const comparator_interface* comparator, cy_uint node_offset);
 
 // always initialize your phpnode before using it
-int initialize_phpnode(phpnode* node_p);
+void initialize_phpnode(phpnode* node_p);
 
 // a free floating phpnode is the one, that is not referenced in any pheap, i.e a node that can be inserted to any pheap
 int is_free_floating_phpnode(const phpnode* node_p);
