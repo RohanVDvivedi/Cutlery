@@ -59,13 +59,44 @@ static void restore_leftist_pheap_node_property_up_until_root(phpnode* node_p)
 // the below 3 meld function does not modify the pheap_p in any way and only uses it for pheap_p->info, pheap_p->type and the pheap_p->node_offset
 
 // not to be used except in meld() function
+// remember the parent pointer of the returned phpnode must be reassigned to a correct value
 static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
 {
-	// TODO
+	// if a is null return b
+	if(a == NULL)
+		return b;
+
+	// if b is null return a
+	if(b == NULL)
+		return a;
+
+	// we need to make one of them parent of the other
+	phpnode* parent = a;
+	phpnode* child = b;
+	// make sure this assignment of parent and child satisfies the heap property, else if reordering is required then reverse it
+	{
+		const void* data_a = get_data(a, pheap_p);
+		const void* data_b = get_data(b, pheap_p);
+		if(is_reordering_required(data_a, data_b, &(pheap_p->info)))
+		{
+			parent = b;
+			child = a;
+		}
+	}
+
+	parent->right = meld_for_skew_pheap(pheap_p, parent->right, child);
+
+	// make sure the parent pointers are correct, for the right child of the parent
+	parent->right->parent = parent;
+
+	// force swap the children, so that the next meld happens at a different child
+	swap_chidren_for_phpnode(parent);
+
 	return NULL;
 }
 
 // not to be used except in meld() function
+// remember the parent pointer of the returned phpnode must be reassigned to a correct value
 static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
 {
 	// TODO
@@ -73,6 +104,7 @@ static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode
 }
 
 // can be used by other functions
+// remember the parent pointer of the returned phpnode must be reassigned to a correct value
 static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
 {
 	switch(pheap_p->type)
