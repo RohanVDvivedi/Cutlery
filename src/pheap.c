@@ -295,11 +295,11 @@ int heapify_for_in_pheap(pheap* pheap_p, const void* data)
 	else
 	{
 		phpnode* children_to_meld[2];
-		cy_uint chidlren_to_meld_count = 0;
+		cy_uint children_to_meld_count = 0;
 
 		if(node_p->left != NULL && is_reordering_required(data, get_data(node_p->left, pheap_p), &(pheap_p->info)))
 		{
-			children_to_meld[chidlren_to_meld_count++] = node_p->left;
+			children_to_meld[children_to_meld_count++] = node_p->left;
 
 			// disconnect left child from node_p
 			node_p->left->parent = NULL;
@@ -308,7 +308,7 @@ int heapify_for_in_pheap(pheap* pheap_p, const void* data)
 
 		if(node_p->right != NULL && is_reordering_required(data, get_data(node_p->right, pheap_p), &(pheap_p->info)))
 		{
-			children_to_meld[chidlren_to_meld_count++] = node_p->right;
+			children_to_meld[children_to_meld_count++] = node_p->right;
 
 			// disconnect right child from node_p
 			node_p->right->parent = NULL;
@@ -316,7 +316,7 @@ int heapify_for_in_pheap(pheap* pheap_p, const void* data)
 		}
 
 		// if no melding required early exit
-		if(chidlren_to_meld_count == 0)
+		if(children_to_meld_count == 0)
 			return 1;
 
 		// if LEFTIST, restore node_property for node_p
@@ -324,7 +324,7 @@ int heapify_for_in_pheap(pheap* pheap_p, const void* data)
 			restore_leftist_pheap_node_property_up_until_root(node_p);
 
 		// meld for all entries in children_to_meld
-		for(cy_uint i = 0; i < chidlren_to_meld_count; i++)
+		for(cy_uint i = 0; i < children_to_meld_count; i++)
 		{
 			pheap_p->root = meld(pheap_p, pheap_p->root, children_to_meld[i]);
 			if(pheap_p->root != NULL)
