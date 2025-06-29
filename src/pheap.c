@@ -28,7 +28,7 @@ static cy_uint get_node_property_for_phpnode(const phpnode* node_p)
 
 // below function needs to be called only on some node_p in the leftist pheap, when you suspect the node_property of leftist heap is violated
 // this includes leftist heap property of being left deep OR incorrectly set node_property
-static void restore_leftist_heap_node_properties_up_until_root(phpnode* node_p)
+static void restore_leftist_pheap_node_property_up_until_root(phpnode* node_p)
 {
 	// iterate over all the node from parent to the original root, in the original tree
 	for(phpnode* temp = node_p; temp != NULL; temp = temp->parent)
@@ -53,75 +53,6 @@ static void restore_leftist_heap_node_properties_up_until_root(phpnode* node_p)
 
 		// else set it
 		temp->node_property = new_node_property;
-	}
-}
-
-// the below function does not modify the pheap_p in any way and only uses it for pheap_p->type
-// it severs all the three connection ->parent, ->left and ->right for the node_p, singling it out
-static void sever_phpnode_from_tree(const pheap* pheap_p, phpnode* node_p)
-{
-	// sever the left child. if exists
-	if(node_p->left != NULL)
-	{
-		node_p->left->parent = NULL;
-		node_p->left = NULL;
-	}
-
-	// sever the right child, if exists
-	if(node_p->right != NULL)
-	{
-		node_p->right->parent = NULL;
-		node_p->right = NULL;
-	}
-
-	// cache parent pointer for future use
-	phpnode* parent = node_p->parent;
-
-	if(node_p->parent != NULL)
-	{
-		if(is_left_of_its_parent(node_p))
-			node_p->parent->left = NULL;
-		else
-			node_p->parent->right = NULL;
-		node_p->parent = NULL;
-	}
-
-	// now the node_p is itself a single node tree whose node_property is definitely 1 for all trees
-	node_p->node_property = 1;
-
-	switch(pheap_p->type)
-	{
-		case LEFTIST :
-		{
-			if(parent != NULL) // if the parent exists then, its node_property may be violated in the tree so fix it
-				restore_leftist_heap_node_properties_up_until_root(parent);
-			return;
-		}
-		default :
-			return;
-	}
-}
-
-// the below function does not modify the pheap_p in any way and only uses it for pheap_p->type
-// it severs only the connection between parent and child
-// this function assumes that child->parent = parent, and they they both are not NULL
-static void sever_phpnode_connection(const pheap* pheap_p, phpnode* parent, phpnode* child)
-{
-	if(is_left_of_its_parent(child))
-		parent->left = NULL;
-	else
-		parent->right = NULL;
-	child->parent = NULL;
-
-	switch(pheap_p->type)
-	{
-		case LEFTIST :
-		{
-			restore_leftist_heap_node_properties_up_until_root(parent);
-			return;
-		}
-		default :
-			return;
 	}
 }
 
@@ -157,7 +88,7 @@ static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
 
 void TO_BE_REMOVED()
 {
-	sever_phpnode_from_tree(NULL, NULL);
+	restore_leftist_pheap_node_property_up_until_root(NULL);
 	meld(NULL, NULL, NULL);
 }
 
