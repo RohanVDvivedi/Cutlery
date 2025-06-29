@@ -262,7 +262,54 @@ const void* get_top_of_pheap(const pheap* pheap_p)
 	return get_data(pheap_p->root, pheap_p);
 }
 
-void heapify_for_in_pheap(pheap* pheap_p, const void* data);
+void heapify_for_in_pheap(pheap* pheap_p, const void* data)
+{
+	phpnode* node_p = get_node(data, pheap_p);
+
+	if(is_free_floating_phpnode(node_p))	// for attempting to heapify_for the node, it must be present in the pheap, i.e. must not be a free floating node
+		return 0;
+
+	// if the heapify is needed for he parent, the children need not be touched
+	if(node_p->parent != NULL && is_reordering_required(get_data(node_p->parent), data, &(pheap_p->info)))
+	{
+		// disconnect node_p from its parent
+
+		// if LEFTIST, restore node_property for the parent
+
+		// meld root with node_p
+
+		return;
+	}
+	else
+	{
+		phpnode* children_to_meld[2];
+		cy_uint chidlren_to_meld_count = 0;
+
+		if(node_p->left != NULL && is_reordering_required(data, get_data(node_p->left), &(pheap_p->info)))
+		{
+			children_to_meld[chidlren_to_meld_count++] = node_p->left;
+
+			// disconnect left child from node_p
+		}
+
+		if(node_p->right != NULL && is_reordering_required(data, get_data(node_p->right), &(pheap_p->info)))
+		{
+			children_to_meld[chidlren_to_meld_count++] = node_p->right;
+
+			// disconnect right child from node_p
+		}
+
+		// if no melding required early exit
+		if(chidlren_to_meld_count == 0)
+			return;
+
+		// if LEFTIST, restore node_property for node_p
+
+		// meld for all entries in children_to_meld
+
+		return;
+	}
+}
 
 int remove_from_pheap(pheap* pheap_p, const void* data)
 {
