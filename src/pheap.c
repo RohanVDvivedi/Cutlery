@@ -166,7 +166,6 @@ static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
 void TO_BE_REMOVED()
 {
 	restore_leftist_pheap_node_property_up_until_root(NULL);
-	meld(NULL, NULL, NULL);
 }
 
 /*
@@ -204,7 +203,22 @@ int is_empty_pheap(const pheap* pheap_p)
 
 int push_to_pheap(pheap* pheap_p, const void* data)
 {
+	phpnode* node_p = get_node(data, pheap_p);
 
+	if(!is_free_floating_phpnode(node_p))	// insert only a free floating node, i.e. a node that does not exist in any pheap
+		return 0;
+
+	// make the new node a tree of itself
+	node_p->node_property = 1;
+
+	// merge root with this new node
+	pheap_p->root = meld(pheap_p, pheap_p->root, node_p);
+
+	// reset the parent pointer of the root node
+	if(pheap_p->root != NULL)
+		pheap_p->root->parent = NULL;
+
+	return 1;
 }
 
 int pop_from_pheap(pheap* pheap_p)
