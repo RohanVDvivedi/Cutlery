@@ -83,7 +83,8 @@ const void* get_top_of_pheap(const pheap* pheap_p);
 
 // if you modify the value of data, such that the heap property is violated then this functions fixes it's position in the tree, pushing it up or down the tree
 // i.e. if you changed the attributes of the data, which changed its comparison ourput with respect to other elements in the heap, then you need to call this function immediately
-void heapify_for_in_pheap(pheap* pheap_p, const void* data);
+// fails with 0, only if you provided data that is a free_floating node
+int heapify_for_in_pheap(pheap* pheap_p, const void* data);
 
 // removes a specific element from the heap
 // returns 0, and fails if phpnode of data is a new node

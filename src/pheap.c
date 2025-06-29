@@ -262,7 +262,7 @@ const void* get_top_of_pheap(const pheap* pheap_p)
 	return get_data(pheap_p->root, pheap_p);
 }
 
-void heapify_for_in_pheap(pheap* pheap_p, const void* data)
+int heapify_for_in_pheap(pheap* pheap_p, const void* data)
 {
 	phpnode* node_p = get_node(data, pheap_p);
 
@@ -270,7 +270,7 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 		return 0;
 
 	// if the heapify is needed for he parent, the children need not be touched
-	if(node_p->parent != NULL && is_reordering_required(get_data(node_p->parent), data, &(pheap_p->info)))
+	if(node_p->parent != NULL && is_reordering_required(get_data(node_p->parent, pheap_p), data, &(pheap_p->info)))
 	{
 		phpnode* parent = node_p->parent;
 
@@ -290,34 +290,34 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 		if(pheap_p->root != NULL)
 			pheap_p->root->parent = NULL;
 
-		return;
+		return 1;
 	}
 	else
 	{
 		phpnode* children_to_meld[2];
 		cy_uint chidlren_to_meld_count = 0;
 
-		if(node_p->left != NULL && is_reordering_required(data, get_data(node_p->left), &(pheap_p->info)))
+		if(node_p->left != NULL && is_reordering_required(data, get_data(node_p->left, pheap_p), &(pheap_p->info)))
 		{
 			children_to_meld[chidlren_to_meld_count++] = node_p->left;
 
 			// disconnect left child from node_p
 			node_p->left->parent = NULL;
-			node_p->left = NULL
+			node_p->left = NULL;
 		}
 
-		if(node_p->right != NULL && is_reordering_required(data, get_data(node_p->right), &(pheap_p->info)))
+		if(node_p->right != NULL && is_reordering_required(data, get_data(node_p->right, pheap_p), &(pheap_p->info)))
 		{
 			children_to_meld[chidlren_to_meld_count++] = node_p->right;
 
 			// disconnect right child from node_p
 			node_p->right->parent = NULL;
-			node_p->right = NULL
+			node_p->right = NULL;
 		}
 
 		// if no melding required early exit
 		if(chidlren_to_meld_count == 0)
-			return;
+			return 1;
 
 		// if LEFTIST, restore node_property for node_p
 		if(pheap_p->type == LEFTIST)
@@ -331,7 +331,7 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 				pheap_p->root->parent = NULL;
 		}
 
-		return;
+		return 1;
 	}
 }
 
