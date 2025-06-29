@@ -272,11 +272,18 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 	// if the heapify is needed for he parent, the children need not be touched
 	if(node_p->parent != NULL && is_reordering_required(get_data(node_p->parent), data, &(pheap_p->info)))
 	{
+		phpnode* parent = node_p->parent;
+
 		// disconnect node_p from its parent
 
 		// if LEFTIST, restore node_property for the parent
+		if(pheap_p->type == LEFTIST)
+			restore_leftist_pheap_node_property_up_until_root(parent);
 
 		// meld root with node_p
+		pheap_p->root = meld(pheap_p, pheap_p->root, node_p);
+		if(pheap_p->root != NULL)
+			pheap_p->root->parent = NULL;
 
 		return;
 	}
@@ -304,8 +311,16 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 			return;
 
 		// if LEFTIST, restore node_property for node_p
+		if(pheap_p->type == LEFTIST)
+			restore_leftist_pheap_node_property_up_until_root(node_p);
 
 		// meld for all entries in children_to_meld
+		for(cy_uint i = 0; i < chidlren_to_meld_count; i++)
+		{
+			pheap_p->root = meld(pheap_p, pheap_p->root, children_to_meld[i]);
+			if(pheap_p->root != NULL)
+				pheap_p->root->parent = NULL;
+		}
 
 		return;
 	}
