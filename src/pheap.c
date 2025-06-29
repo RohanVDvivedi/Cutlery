@@ -122,7 +122,7 @@ static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode
 		}
 	}
 
-	parent->right = meld_for_skew_pheap(pheap_p, parent->right, child);
+	parent->right = meld_for_leftist_pheap(pheap_p, parent->right, child);
 
 	// make sure the parent pointers are correct, for the right child of the parent
 	if(parent->right != NULL)
