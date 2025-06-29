@@ -92,15 +92,58 @@ static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b
 	// force swap the children, so that the next meld happens at a different child
 	swap_chidren_for_phpnode(parent);
 
-	return NULL;
+	return parent;
 }
 
 // not to be used except in meld() function
 // remember the parent pointer of the returned phpnode must be reassigned to a correct value
 static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
 {
-	// TODO
-	return NULL;
+	// if a is null return b
+	if(a == NULL)
+		return b;
+
+	// if b is null return a
+	if(b == NULL)
+		return a;
+
+	// we need to make one of them parent of the other
+	phpnode* parent = a;
+	phpnode* child = b;
+	// make sure this assignment of parent and child satisfies the heap property, else if reordering is required then reverse it
+	{
+		const void* data_a = get_data(a, pheap_p);
+		const void* data_b = get_data(b, pheap_p);
+		if(is_reordering_required(data_a, data_b, &(pheap_p->info)))
+		{
+			parent = b;
+			child = a;
+		}
+	}
+
+	parent->right = meld_for_skew_pheap(pheap_p, parent->right, child);
+
+	// make sure the parent pointers are correct, for the right child of the parent
+	parent->right->parent = parent;
+
+	// restore the leftist heap node property of being deeper on the left child
+	{
+		cy_uint left_child_node_property = get_node_property_for_phpnode(parent->left);
+		cy_uint right_child_node_property = get_node_property_for_phpnode(parent->right);
+
+		if(left_child_node_property < right_child_node_property) // we must reinstate the tree property of left_tree_node_property >= right_tree_node_property
+		{
+			swap_chidren_for_phpnode(parent);
+
+			// fix the local variables, even though it is not necessary to be done
+			left_child_node_property = get_node_property_for_phpnode(parent->left);
+			right_child_node_property = get_node_property_for_phpnode(parent->right);
+		}
+
+		parent->node_property = min(left_child_node_property, right_child_node_property) + 1;
+	}
+
+	return parent;
 }
 
 // can be used by other functions
