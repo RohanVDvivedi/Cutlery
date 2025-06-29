@@ -1,15 +1,7 @@
 1. Tasks picked
 
  * Pheap
-  * implement with policies SKEW_HEAP and LEFTIST_HEAP
-  * api
-    * push_to_pheap
-    * heapify_for_in_pheap
-    * remove_from_pheap
-  * internal static function only for
-    * meld_skew_pheap
-    * meld_leftist_pheap
-  * write tests, and compare ouputs for all 3 heaps for all operations after a get
+  * write tests, and compare ouputs for all 2 pheaps for all operations after a get
 
  * build a cache data structure that has the following attributes
  struct cache {
