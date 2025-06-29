@@ -87,7 +87,8 @@ static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b
 	parent->right = meld_for_skew_pheap(pheap_p, parent->right, child);
 
 	// make sure the parent pointers are correct, for the right child of the parent
-	parent->right->parent = parent;
+	if(parent->right != NULL)
+		parent->right->parent = parent;
 
 	// force swap the children, so that the next meld happens at a different child
 	swap_chidren_for_phpnode(parent);
@@ -124,7 +125,8 @@ static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode
 	parent->right = meld_for_skew_pheap(pheap_p, parent->right, child);
 
 	// make sure the parent pointers are correct, for the right child of the parent
-	parent->right->parent = parent;
+	if(parent->right != NULL)
+		parent->right->parent = parent;
 
 	// restore the leftist heap node property of being deeper on the left child
 	{
@@ -200,7 +202,10 @@ int is_empty_pheap(const pheap* pheap_p)
 	return (pheap_p->root == NULL);
 }
 
-int push_to_pheap(pheap* pheap_p, const void* data);
+int push_to_pheap(pheap* pheap_p, const void* data)
+{
+
+}
 
 int pop_from_pheap(pheap* pheap_p)
 {
