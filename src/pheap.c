@@ -196,6 +196,32 @@ int is_empty_pheap(const pheap* pheap_p)
 	return (pheap_p->root == NULL);
 }
 
+int merge_pheaps(pheap* dest, pheap* src)
+{
+	if(dest->info.type != src->info.type)
+		return 0;
+
+	if(dest->info.comparator.context != src->info.comparator.context)
+		return 0;
+
+	if(dest->info.comparator.compare1 != src->info.comparator.compare1) // this ensures that even if the comparator uses compare2, they will checked for equality
+		return 0;
+
+	if(dest->type != src->type)
+		return 0;
+
+	if(dest->node_offset != src->node_offset)
+		return 0;
+
+	dest->root = meld(dest, dest->root, src->root);
+	src->root = NULL;
+
+	if(dest->root != NULL)
+		dest->root->parent = NULL;
+
+	return 1;
+}
+
 int push_to_pheap(pheap* pheap_p, const void* data)
 {
 	phpnode* node_p = get_node(data, pheap_p);

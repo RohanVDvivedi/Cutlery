@@ -65,6 +65,11 @@ int is_free_floating_phpnode(const phpnode* node_p);
 
 int is_empty_pheap(const pheap* pheap_p);
 
+// merged pheaps to make the dest pheap contain all elements of dest and src, as of prior to this call
+// after this call dest contains all the elements and src is empty
+// this call fails if the pheaps are not of same type (SKEW or LEFTIST) and (MIN_HEAP or MAX_HEAP)
+int merge_pheaps(pheap* dest, pheap* src);
+
 // insert a new element t pheap
 // returns 0, and fails if phpnode of data is not a new node
 int push_to_pheap(pheap* pheap_p, const void* data);
