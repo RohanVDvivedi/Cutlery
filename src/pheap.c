@@ -10,7 +10,7 @@
 	INTERNAL FUNCTIONS THESE ARE THE ONLY ONES THAT RELY ON THE PHEAPTYPE OF THE PHEAP
 */
 
-static void swap_chidren_for_phpnode(phpnode* node_p)
+static void swap_children_for_phpnode(phpnode* node_p)
 {
 	void* temp = node_p->left;
 	node_p->left = node_p->right;
@@ -38,7 +38,7 @@ static void restore_leftist_pheap_node_property_up_until_root(phpnode* node_p)
 
 		if(left_child_node_property < right_child_node_property) // we must reinstate the tree property of left_tree_node_property >= right_tree_node_property
 		{
-			swap_chidren_for_phpnode(temp);
+			swap_children_for_phpnode(temp);
 
 			// fix the local variables, even though it is not necessary to be done
 			left_child_node_property = get_node_property_for_phpnode(temp->left);
@@ -91,7 +91,7 @@ static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b
 		parent->right->parent = parent;
 
 	// force swap the children, so that the next meld happens at a different child
-	swap_chidren_for_phpnode(parent);
+	swap_children_for_phpnode(parent);
 
 	return parent;
 }
@@ -135,7 +135,7 @@ static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode
 
 		if(left_child_node_property < right_child_node_property) // we must reinstate the tree property of left_tree_node_property >= right_tree_node_property
 		{
-			swap_chidren_for_phpnode(parent);
+			swap_children_for_phpnode(parent);
 
 			// fix the local variables, even though it is not necessary to be done
 			left_child_node_property = get_node_property_for_phpnode(parent->left);
