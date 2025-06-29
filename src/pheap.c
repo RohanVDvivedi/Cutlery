@@ -163,11 +163,6 @@ static phpnode* meld(const pheap* pheap_p, phpnode* a, phpnode* b)
 	}
 }
 
-void TO_BE_REMOVED()
-{
-	restore_leftist_pheap_node_property_up_until_root(NULL);
-}
-
 /*
 	INTERNAL FUNCTIONS END
 */
