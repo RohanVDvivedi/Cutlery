@@ -250,7 +250,7 @@ int remove_from_pheap(pheap* pheap_p, const void* data)
 	if(is_free_floating_phpnode(node_p))	// for attempting to remove the node, it must be present in the pheap, i.e. must not be a free floating node
 		return 0;
 
-	// actual removal happends here
+	// actual removal happens here
 	{
 		// meld left and right child of node_p into only_child
 		phpnode* only_child = meld(pheap_p, node_p->left, node_p->right);
