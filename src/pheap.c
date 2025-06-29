@@ -275,6 +275,11 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 		phpnode* parent = node_p->parent;
 
 		// disconnect node_p from its parent
+		if(is_left_of_its_parent(node_p))
+			parent->left = NULL;
+		else
+			parent->right = NULL;
+		node_p->parent = NULL;
 
 		// if LEFTIST, restore node_property for the parent
 		if(pheap_p->type == LEFTIST)
@@ -297,6 +302,8 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 			children_to_meld[chidlren_to_meld_count++] = node_p->left;
 
 			// disconnect left child from node_p
+			node_p->left->parent = NULL;
+			node_p->left = NULL
 		}
 
 		if(node_p->right != NULL && is_reordering_required(data, get_data(node_p->right), &(pheap_p->info)))
@@ -304,6 +311,8 @@ void heapify_for_in_pheap(pheap* pheap_p, const void* data)
 			children_to_meld[chidlren_to_meld_count++] = node_p->right;
 
 			// disconnect right child from node_p
+			node_p->right->parent = NULL;
+			node_p->right = NULL
 		}
 
 		// if no melding required early exit
