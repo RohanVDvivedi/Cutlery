@@ -243,7 +243,27 @@ const void* get_top_of_pheap(const pheap* pheap_p)
 
 void heapify_for_in_pheap(pheap* pheap_p, const void* data);
 
-int remove_from_pheap(pheap* pheap_p, const void* data);
+int remove_from_pheap(pheap* pheap_p, const void* data)
+{
+	phpnode* node_p = get_node(data, pheap_p);
+
+	if(is_free_floating_phpnode(node_p))	// for attempting to remove the node, it must be present in the pheap, i.e. must not be a free floating node
+		return 0;
+
+	// actual removal happends here
+	{
+		// meld left and right child of node_p into it's left child
+
+		// connect left child to node_p's parent's corresponding child
+
+		// if it is a leftist pheap, then we need to fix the node_property of the parent of node_p
+	}
+
+	// NULL all references of the removed node
+	initialize_phpnode(node_p);	// you must reinitialize the node before final removal
+
+	return 1;
+}
 
 // only the below function needs this header file
 #include<cutlery/singlylist.h>
