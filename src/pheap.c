@@ -252,11 +252,33 @@ int remove_from_pheap(pheap* pheap_p, const void* data)
 
 	// actual removal happends here
 	{
-		// meld left and right child of node_p into it's left child
+		// meld left and right child of node_p into only_child
+		phpnode* only_child = meld(pheap_p, node_p->left, node_p->right);
+		if(only_child != NULL)
+			only_child->parent = NULL;
 
-		// connect left child to node_p's parent's corresponding child
+		// connect only_child to node_p's parent
+		phpnode* parent = node_p->parent;
+		if(parent != NULL)
+		{
+			if(is_left_of_its_parent(node_p))
+				parent->left = only_child;
+			else
+				parent->right = only_child;
+		}
+		else
+			pheap_p->root = only_child;
+		if(only_child != NULL)
+			only_child->parent = parent;
 
-		// if it is a leftist pheap, then we need to fix the node_property of the parent of node_p
+		// now node_p is disconnected from the tree, but with it's left, right and parent pointers still intact
+
+		// if it is a leftist pheap, then we need to fix the node_property of the parent, because it now has a new child
+		if(pheap_p->type == LEFTIST)
+		{
+			if(parent != NULL)
+				restore_leftist_pheap_node_property_up_until_root(parent);
+		}
 	}
 
 	// NULL all references of the removed node
