@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include<cutlery/cutlery_stds.h>
 #include<cutlery/pheap.h>
 
@@ -46,6 +47,9 @@ void print_ts_pheap(const pheap* pheap_p)
 
 element elements[TEST_SIZE];
 
+#define T1 MIN_HEAP // MAX_HEAP
+#define T2 SKEW // LEFTIST
+
 int main()
 {
 	for(int i = 0; i < TEST_SIZE; i++)
@@ -57,7 +61,7 @@ int main()
 	pheap pheap_temp;
 	pheap* pheap_p = &pheap_temp;
 
-	initialize_pheap(pheap_p, MIN_HEAP, SKEW, &simple_comparator(&cmp), offsetof(element, embed_node));
+	initialize_pheap(pheap_p, T1, T2, &simple_comparator(&cmp), offsetof(element, embed_node));
 
 	print_ts_pheap(pheap_p);
 
@@ -106,6 +110,39 @@ int main()
 	// 200 to 299 in descending order
 	for(int i = 299; i >= 200; i--)
 		push_to_pheap(pheap_p, elements + i);
+
+	for(int i = 0; i < TEST_SIZE; i++)
+	{
+		const element* e = get_top_of_pheap(pheap_p);
+		int popped = pop_from_pheap(pheap_p);
+		if(T1 == MIN_HEAP)
+		{
+			if(e->key != (i/3))
+			{
+				printf("ERROR IN PHEAP\n");
+				exit(-1);
+			}
+		}
+		else
+		{
+			if(e->key != ((599-i)/3))
+			{
+				printf("ERROR IN PHEAP\n");
+				exit(-1);
+			}
+		}
+		if(!popped)
+		{
+			printf("ELEMENT NOT POPPED\n");
+			exit(-1);
+		}
+	}
+
+	if(!is_empty_pheap(pheap_p))
+	{
+		printf("PHEAP STILL NOT EMPTY\n");
+		exit(-1);
+	}
 
 	return 0;
 }
