@@ -42,7 +42,7 @@ void print_ts_pheap(const pheap* pheap_p)
 	printf("\n");
 }
 
-#define TEST_SIZE 400
+#define TEST_SIZE 600
 
 element elements[TEST_SIZE];
 
@@ -61,7 +61,50 @@ int main()
 
 	print_ts_pheap(pheap_p);
 
-	for(int i = 0; i < TEST_SIZE / 100; i++)
+	// 0 to 99 in ascending order
+	for(int i = 0; i <= 99; i++)
+		push_to_pheap(pheap_p, elements + i);
+
+	// 300 to 399 in descending order
+	for(int i = 399; i >= 300; i--)
+		push_to_pheap(pheap_p, elements + i);
+
+	// 100 to 199 random inserts
+	{
+		int seen[100]= {};
+		int seen_count = 0;
+		while(seen_count < 100)
+		{
+			int i = ((unsigned int)rand()) % 100;
+			if(seen[i])
+				continue;
+			seen[i] = 1;
+			seen_count++;
+			push_to_pheap(pheap_p, elements + i + 100);
+		}
+	}
+
+	// 400 to 499 in ascending order
+	for(int i = 400; i <= 499; i++)
+		push_to_pheap(pheap_p, elements + i);
+
+	// 500 to 599 random inserts
+	{
+		int seen[100] = {};
+		int seen_count = 0;
+		while(seen_count < 100)
+		{
+			int i = ((unsigned int)rand()) % 100;
+			if(seen[i])
+				continue;
+			seen[i] = 1;
+			seen_count++;
+			push_to_pheap(pheap_p, elements + i + 500);
+		}
+	}
+
+	// 200 to 299 in descending order
+	for(int i = 299; i >= 200; i--)
 		push_to_pheap(pheap_p, elements + i);
 
 	return 0;
