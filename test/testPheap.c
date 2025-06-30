@@ -123,7 +123,7 @@ int main()
 	initialize_phpnode(&(e2.embed_node));
 	push_to_pheap(pheap_p, &e2);
 
-	e1.key == 2000;
+	e1.key = 2000;
 	heapify_for_in_pheap(pheap_p, &e1);
 
 	e2.key = -2000;
