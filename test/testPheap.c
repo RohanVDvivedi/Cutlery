@@ -148,7 +148,7 @@ int main()
 		{
 			if(e->key != (i/3))
 			{
-				printf("ERROR IN PHEAP\n");
+				printf("ERROR IN PHEAP, value = %d, expected = %d\n", e->key, (i/3));
 				exit(-1);
 			}
 		}
@@ -156,7 +156,7 @@ int main()
 		{
 			if(e->key != ((599-i)/3))
 			{
-				printf("ERROR IN PHEAP\n");
+				printf("ERROR IN PHEAP, value = %d, expected = %d\n", e->key, (i/3));
 				exit(-1);
 			}
 		}
