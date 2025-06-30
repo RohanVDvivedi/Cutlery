@@ -113,6 +113,33 @@ int main()
 
 	print_ts_pheap(pheap_p);
 
+	element e1;
+	e1.key = 100;
+	initialize_phpnode(&(e1.embed_node));
+	push_to_pheap(pheap_p, &e1);
+
+	element e2;
+	e2.key = 101;
+	initialize_phpnode(&(e2.embed_node));
+	push_to_pheap(pheap_p, &e2);
+
+	e1.key == 2000;
+	heapify_for_in_pheap(pheap_p, &e1);
+
+	e2.key = -2000;
+	heapify_for_in_pheap(pheap_p, &e2);
+
+	{
+		const element* e = get_top_of_pheap(pheap_p);
+		int popped = pop_from_pheap(pheap_p);
+		printf("first pop = %d\n", e->key);
+		if(!popped)
+		{
+			printf("ELEMENT NOT POPPED\n");
+			exit(-1);
+		}
+	}
+
 	for(int i = 0; i < TEST_SIZE; i++)
 	{
 		const element* e = get_top_of_pheap(pheap_p);
@@ -133,6 +160,17 @@ int main()
 				exit(-1);
 			}
 		}
+		if(!popped)
+		{
+			printf("ELEMENT NOT POPPED\n");
+			exit(-1);
+		}
+	}
+
+	{
+		const element* e = get_top_of_pheap(pheap_p);
+		int popped = pop_from_pheap(pheap_p);
+		printf("last pop = %d\n", e->key);
 		if(!popped)
 		{
 			printf("ELEMENT NOT POPPED\n");
