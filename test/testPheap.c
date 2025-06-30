@@ -111,6 +111,8 @@ int main()
 	for(int i = 299; i >= 200; i--)
 		push_to_pheap(pheap_p, elements + i);
 
+	print_ts_pheap(pheap_p);
+
 	for(int i = 0; i < TEST_SIZE; i++)
 	{
 		const element* e = get_top_of_pheap(pheap_p);
@@ -137,6 +139,8 @@ int main()
 			exit(-1);
 		}
 	}
+
+	print_ts_pheap(pheap_p);
 
 	if(!is_empty_pheap(pheap_p))
 	{
