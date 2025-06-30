@@ -114,12 +114,12 @@ int main()
 	print_ts_pheap(pheap_p);
 
 	element e1;
-	e1.key = 19;
+	e1.key = 3;
 	initialize_phpnode(&(e1.embed_node));
 	push_to_pheap(pheap_p, &e1);
 
 	element e2;
-	e2.key = 21;
+	e2.key = 160;
 	initialize_phpnode(&(e2.embed_node));
 	push_to_pheap(pheap_p, &e2);
 
