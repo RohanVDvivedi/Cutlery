@@ -47,8 +47,8 @@ void print_ts_pheap(const pheap* pheap_p)
 
 element elements[TEST_SIZE];
 
-#define T1 MIN_HEAP // MAX_HEAP
-#define T2 SKEW // LEFTIST
+#define T1 MIN_HEAP /*MAX_HEAP*/
+#define T2 SKEW /*LEFTIST*/
 
 int main()
 {
@@ -144,5 +144,6 @@ int main()
 		exit(-1);
 	}
 
+	printf("TESTS PASSED SUCCESSFULLY\n");
 	return 0;
 }
