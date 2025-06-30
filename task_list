@@ -1,8 +1,5 @@
 1. Tasks picked
 
- * Pheap
-  * write tests, and compare ouputs for all 2 pheaps for all operations after a get
-
  * build a cache data structure that has the following attributes
  struct cache {
   cy_uint max_capacity;
