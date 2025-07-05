@@ -55,6 +55,10 @@ int insert_in_cachemap(cachemap* cachemap_p, const void* data)
 			return 0;
 	}
 
+	// if there is an element in cache that equals the data, then fail the insert
+	if(find_equals_in_cachemap(cachemap_p, data) != NULL)
+		return 0;
+
 	// it unconditonally must exist in hash map
 	if(!insert_in_hashmap(&(cachemap_p->map), data))
 		return 0;
