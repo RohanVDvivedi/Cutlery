@@ -53,7 +53,21 @@ const void* find_equals_in_cachemap(const cachemap* cachemap_p, const void* data
 	return find_equals_in_hashmap(&(cachemap_p->map), data);
 }
 
-int remove_from_cachemap(cachemap* cachemap_p, const void* data);
+int remove_from_cachemap(cachemap* cachemap_p, const void* data)
+{
+	{
+		// if it is a free floating cchnode, i.e. it is not in cachemap, then we can not remove it
+		cchnode* node_p = get_node(data, cachemap_p);
+		if(is_free_floating_cchnode(node_p))
+			return 0;
+	}
+
+	// remove it from the lru
+	remove_from_linkedlist(&(cachemap_p->lru), data);
+
+	// remove it from the map
+	return remove_from_hashmap(&(cachemap_p->map),data);
+}
 
 const void* get_evictable_element_from_cachemap(const cachemap* cachemap_p)
 {
