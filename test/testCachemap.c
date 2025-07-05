@@ -100,6 +100,17 @@ int main()
 
 	print_ts_cachemap(cachemap_p);
 
+	// evict top 3 elements from lru
+	for(int i = 0; i < 3; i++)
+	{
+		const ts* e = get_evictable_element_from_cachemap(cachemap_p);
+		res = remove_from_cachemap(cachemap_p, e);
+		printf("evicted %d for \n", res);
+		print_ts(e);
+		printf("\n");
+		print_ts_cachemap(cachemap_p);
+	}
+
 	printf("is_empty = %d\n", is_empty_cachemap(cachemap_p));
 	print_ts_cachemap(cachemap_p);
 
