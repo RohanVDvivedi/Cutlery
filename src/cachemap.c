@@ -97,7 +97,14 @@ int resize_cachemap(cachemap* cachemap_p, cy_uint new_bucket_count)
 	return resize_hashmap(&(cachemap_p->map), new_bucket_count);
 }
 
-void remove_all_from_cachemap(cachemap* cachemap_p, const notifier_interface* ni_p);
+void remove_all_from_cachemap(cachemap* cachemap_p, const notifier_interface* ni_p)
+{
+	// remove all first from lru
+	remove_all_from_lru(&(cachemap_p->lru), NULL);
+
+	// then remove all from the map, pass here ni_p so that any one waiting could be notified of the removal
+	remove_all_from_hashmap(&(cachemap_p->map), ni_p);
+}
 
 void deinitialize_cachemap(cachemap* cachemap_p)
 {
