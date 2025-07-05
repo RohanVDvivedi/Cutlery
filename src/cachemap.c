@@ -36,6 +36,11 @@ void initialize_cchnode(cchnode* node_p)
 	initialize_llnode(&(node_p->lru_embed_node));
 }
 
+int is_free_floating_cchnode(const cchnode* node_p)
+{
+	return is_free_floating_bstnode(&(node_p->map_embed_node)) && is_free_floating_llnode(&(node_p->lru_embed_node));
+}
+
 int insert_in_cachemap(cachemap* cachemap_p, const void* data);
 
 const void* find_equals_in_cachemap(const cachemap* cachemap_p, const void* data);

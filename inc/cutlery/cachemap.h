@@ -46,6 +46,9 @@ int initialize_cachemap_with_memory(cachemap* cachemap_p, const void* pinning_co
 // always initialize your cchnode before using it
 void initialize_cchnode(cchnode* node_p);
 
+// a free floating cchnode is the one, that is not referenced in any cachemap, i.e a node that can be inserted to any cachemap
+int is_free_floating_cchnode(const cchnode* node_p);
+
 // place a new data in the cachemap, fails with return 0, if the element already exists in the cachemap
 // it will also fail insertion if an element that compares equal is present in the cache
 int insert_in_cachemap(cachemap* cachemap_p, const void* data);
