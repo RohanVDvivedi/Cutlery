@@ -159,6 +159,16 @@ void sprint_cachemap(dstring* append_str, const cachemap* cachemap_p, void (*spr
 {
 	sprint_chars(append_str, '\t', tabs++);
 	snprintf_dstring(append_str, "cachemap\n");
+
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "node_offset : %" PRIu_cy_uint "\n", cachemap_p->node_offset);
+
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "element_count : %" PRIu_cy_uint "\n", get_element_count_cachemap(cachemap_p));
+
+	sprint_chars(append_str, '\t', tabs);
+	snprintf_dstring(append_str, "bucket_count : %" PRIu_cy_uint "\n", get_bucket_count_cachemap(cachemap_p));
+
 	sprint_hashmap(append_str, &(cachemap_p->map), sprint_element, tabs);
 	sprint_linkedlist(append_str, &(cachemap_p->lru), sprint_element, tabs);
 }
