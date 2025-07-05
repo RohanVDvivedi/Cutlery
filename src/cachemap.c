@@ -1,9 +1,12 @@
 #include<cutlery/cachemap.h>
 
+#include<cutlery/cutlery_node.h>
+
 int initialize_cachemap(cachemap* cachemap_p, const void* pinning_context, int (*is_pinned)(const void* pinning_context, const void* data), cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset)
 {
 	cachemap_p->pinning_context = pinning_context;
 	cachemap_p->is_pinned = is_pinned;
+	cachemap_p->node_offset = node_offset;
 	if(!initialize_hashmap(&(cachemap_p->map), ELEMENTS_AS_RED_BLACK_BST, bucket_count, hasher, comparator, node_offset + offsetof(cchnode, map_embed_node)))
 		return 0;
 	initialize_linkedlist(&(cachemap_p->lru), node_offset + offsetof(cchnode, lru_embed_node));
@@ -14,6 +17,7 @@ int initialize_cachemap_with_allocator(cachemap* cachemap_p, const void* pinning
 {
 	cachemap_p->pinning_context = pinning_context;
 	cachemap_p->is_pinned = is_pinned;
+	cachemap_p->node_offset = node_offset;
 	if(!initialize_hashmap_with_allocator(&(cachemap_p->map), ELEMENTS_AS_RED_BLACK_BST, bucket_count, hasher, comparator, node_offset + offsetof(cchnode, map_embed_node), mem_allocator))
 		return 0;
 	initialize_linkedlist(&(cachemap_p->lru), node_offset + offsetof(cchnode, lru_embed_node));
@@ -24,6 +28,7 @@ int initialize_cachemap_with_memory(cachemap* cachemap_p, const void* pinning_co
 {
 	cachemap_p->pinning_context = pinning_context;
 	cachemap_p->is_pinned = is_pinned;
+	cachemap_p->node_offset = node_offset;
 	if(!initialize_hashmap_with_memory(&(cachemap_p->map), ELEMENTS_AS_RED_BLACK_BST, bucket_count, hasher, comparator, node_offset + offsetof(cchnode, map_embed_node), bucket_memory))
 		return 0;
 	initialize_linkedlist(&(cachemap_p->lru), node_offset + offsetof(cchnode, lru_embed_node));
@@ -53,7 +58,24 @@ const void* get_evictable_element_from_cachemap(const cachemap* cachemap_p)
 	return get_head_of_linkedlist(&(cachemap_p->lru));
 }
 
-void bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
+int bump_element_in_cachemap(cachemap* cachemap_p, const void* data)
+{
+	{
+		// if it is a free floating cchnode, i.e. it is not in cachemap, then we can not bump it
+		cchnode* node_p = get_node(data, cachemap_p);
+		if(is_free_floating_cchnode(node_p))
+			return 0;
+	}
+
+	// remove it from the lru
+	remove_from_linkedlist(&(cachemap_p->lru), data);
+
+	// insert it back at the tail, forcing unused elements towards the head, only if it is not pinned
+	if(!cachemap_p->is_pinned(cachemap_p->pinning_context, data))
+		insert_tail_in_linkedlist(&(cachemap_p->lru), data);
+
+	return 1;
+}
 
 cy_uint get_bucket_count_cachemap(const cachemap* cachemap_p)
 {

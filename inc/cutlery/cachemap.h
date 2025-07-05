@@ -31,6 +31,10 @@ struct cachemap
 	const void* pinning_context;
 	int (*is_pinned)(const void* pinning_context, const void* data);
 
+	// defines address to data with respect to cchnode
+	// this is how we reach node addresses from provided user's structure data addresses and viceversa
+	cy_uint node_offset;
+
 	// actual map, storing all elements
 	hashmap map;
 
@@ -69,7 +73,7 @@ const void* get_evictable_element_from_cachemap(const cachemap* cachemap_p);
 // the insert in lru may mot occur if the element is pinned
 // this function must also be called after un-pinning the element, to insert it back in the lru
 // it must also be called after a successfull find, if you want that element to stay longer in the caches
-void bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
+int bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
 
 // returns bucket_count of the cachemap
 cy_uint get_bucket_count_cachemap(const cachemap* cachemap_p);
