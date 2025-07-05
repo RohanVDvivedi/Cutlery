@@ -9,6 +9,8 @@
 	MRU -> too specific use case, only works for multiple scan over scan of objects
 	LFU -> saturating counters, O(log(n)) access due to use of heap, and inabilit to evict highly used objects from past
 	priority based -> too much complexity, and no temporal locality used
+
+	This is a very simple cachemap implementation, which is also a directive on how this library can be used to make more complex datastructures
 */
 
 typedef struct cchnde cchnode;
