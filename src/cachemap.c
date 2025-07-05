@@ -159,8 +159,8 @@ void sprint_cachemap(dstring* append_str, const cachemap* cachemap_p, void (*spr
 {
 	sprint_chars(append_str, '\t', tabs++);
 	snprintf_dstring(append_str, "cachemap\n");
-	sprint_hashmap(append_str, &(cachemap_p->map), sprint_element, tabs+1);
-	sprint_linkedlist(append_str, &(cachemap_p->lru), sprint_element, tabs+1);
+	sprint_hashmap(append_str, &(cachemap_p->map), sprint_element, tabs);
+	sprint_linkedlist(append_str, &(cachemap_p->lru), sprint_element, tabs);
 }
 
 void for_each_in_cachemap(const cachemap* cachemap_p, void (*operation)(const void* data, const void* additional_params), const void* additional_params)
