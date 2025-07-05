@@ -117,7 +117,10 @@ int main()
 		print_ts_cachemap(cachemap_p);
 	}
 
-	remove_from_cachemap(cachemap_p, eleven);
+	res = remove_from_cachemap(cachemap_p, eleven);
+	printf("remove eleven = %d\n", res);
+	res = remove_from_cachemap(cachemap_p, eleven);
+	printf("remove eleven again = %d\n", res);
 
 	print_ts_cachemap(cachemap_p);
 
