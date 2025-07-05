@@ -119,6 +119,10 @@ int main()
 
 	remove_from_cachemap(cachemap_p, eleven);
 
+	print_ts_cachemap(cachemap_p);
+
+	resize_cachemap(cachemap_p, 5);
+
 	printf("is_empty = %d\n", is_empty_cachemap(cachemap_p));
 	print_ts_cachemap(cachemap_p);
 
