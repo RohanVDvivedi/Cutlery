@@ -48,7 +48,10 @@ int is_free_floating_cchnode(const cchnode* node_p)
 
 int insert_in_cachemap(cachemap* cachemap_p, const void* data);
 
-const void* find_equals_in_cachemap(const cachemap* cachemap_p, const void* data);
+const void* find_equals_in_cachemap(const cachemap* cachemap_p, const void* data)
+{
+	return find_equals_in_hashmap(&(cachemap_p->map), data);
+}
 
 int remove_from_cachemap(cachemap* cachemap_p, const void* data);
 
