@@ -158,7 +158,7 @@ void deinitialize_cachemap(cachemap* cachemap_p)
 void sprint_cachemap(dstring* append_str, const cachemap* cachemap_p, void (*sprint_element)(dstring* append_str, const void* data, unsigned int tabs), unsigned int tabs)
 {
 	sprint_chars(append_str, '\t', tabs++);
-	snprintf_dstring(append_str, "cachemap ");
+	snprintf_dstring(append_str, "cachemap\n");
 	sprint_hashmap(append_str, &(cachemap_p->map), sprint_element, tabs+1);
 	sprint_linkedlist(append_str, &(cachemap_p->lru), sprint_element, tabs+1);
 }

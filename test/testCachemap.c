@@ -53,11 +53,34 @@ void print_ts_cachemap(const cachemap* cachemap_p)
 	printf("\n");
 }
 
+#define INIT_EMBED_NODE {}
+
 int main()
 {
 	cachemap cachemap_temp;
 	cachemap* cachemap_p = &cachemap_temp;
 	initialize_cachemap(cachemap_p, NULL, NEVER_PINNED, 10, &simple_hasher(hash_function), &simple_comparator(cmp), offsetof(ts, embed_node));
+
+	print_ts_cachemap(cachemap_p);
+
+	insert_in_hashmap(cachemap_p, &((ts){1, "one", INIT_EMBED_NODE}));
+
+	print_ts_cachemap(cachemap_p);
+
+	insert_in_hashmap(cachemap_p, &((ts){3, "three", INIT_EMBED_NODE}));
+
+	print_ts_cachemap(cachemap_p);
+
+	insert_in_hashmap(cachemap_p, &((ts){5, "five", INIT_EMBED_NODE}));
+
+	print_ts_cachemap(cachemap_p);
+
+	insert_in_hashmap(cachemap_p, &((ts){7, "seven", INIT_EMBED_NODE}));
+
+	print_ts_cachemap(cachemap_p);
+
+	int res = insert_in_hashmap(cachemap_p, &((ts){3, "three", INIT_EMBED_NODE}));
+	printf("duplicate insert = %d\n", res);
 
 	print_ts_cachemap(cachemap_p);
 
