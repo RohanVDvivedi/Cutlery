@@ -61,6 +61,7 @@ int main()
 	cachemap* cachemap_p = &cachemap_temp;
 	initialize_cachemap(cachemap_p, NULL, NEVER_PINNED, 10, &simple_hasher(hash_function), &simple_comparator(cmp), offsetof(ts, embed_node));
 
+	printf("is_empty = %d\n", is_empty_cachemap(cachemap_p));
 	print_ts_cachemap(cachemap_p);
 
 	insert_in_cachemap(cachemap_p, &((ts){1, "one", INIT_EMBED_NODE}));
@@ -82,10 +83,29 @@ int main()
 	int res = insert_in_cachemap(cachemap_p, &((ts){3, "three", INIT_EMBED_NODE}));
 	printf("duplicate insert = %d\n", res);
 
+	printf("is_empty = %d\n", is_empty_cachemap(cachemap_p));
+	print_ts_cachemap(cachemap_p);
+
+	const ts* five = find_equals_in_cachemap(cachemap_p, &((ts){5}));
+	bump_element_in_cachemap(cachemap_p, five);
+
+	print_ts_cachemap(cachemap_p);
+
+	insert_in_cachemap(cachemap_p, &((ts){9, "nine", INIT_EMBED_NODE}));
+
+	print_ts_cachemap(cachemap_p);
+
+	const ts* seven = find_equals_in_cachemap(cachemap_p, &((ts){7}));
+	bump_element_in_cachemap(cachemap_p, five);
+
+	print_ts_cachemap(cachemap_p);
+
+	printf("is_empty = %d\n", is_empty_cachemap(cachemap_p));
 	print_ts_cachemap(cachemap_p);
 
 	remove_all_from_cachemap(cachemap_p, &((notifier_interface){NULL, on_remove_all_println_ts_with_node}));
 
+	printf("is_empty = %d\n", is_empty_cachemap(cachemap_p));
 	print_ts_cachemap(cachemap_p);
 
 	return 0;
