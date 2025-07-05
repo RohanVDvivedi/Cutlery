@@ -45,6 +45,7 @@ The above 2 statements slides in another feature, references/iterators to the ob
    * `#include<cutlery/singlylist.h>`
    * `#include<cutlery/bst.h>`
    * `#include<cutlery/hashmap.h>`
+   * `#include<cutlery/cachemap.h>`
    * `#include<cutlery/dstring.h>`
    * `#include<cutlery/dpipe.h>`
    * `#include<cutlery/bitmap.h>`
