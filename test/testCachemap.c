@@ -95,8 +95,14 @@ int main()
 
 	print_ts_cachemap(cachemap_p);
 
+	ts* eleven = &((ts){11, "eleven", INIT_EMBED_NODE});
+	insert_in_cachemap(cachemap_p, eleven);
+	bump_element_in_cachemap(cachemap_p, eleven);
+
+	print_ts_cachemap(cachemap_p);
+
 	const ts* seven = find_equals_in_cachemap(cachemap_p, &((ts){7}));
-	bump_element_in_cachemap(cachemap_p, five);
+	bump_element_in_cachemap(cachemap_p, seven);
 
 	print_ts_cachemap(cachemap_p);
 
@@ -110,6 +116,8 @@ int main()
 		printf("\n");
 		print_ts_cachemap(cachemap_p);
 	}
+
+	remove_from_cachemap(cachemap_p, eleven);
 
 	printf("is_empty = %d\n", is_empty_cachemap(cachemap_p));
 	print_ts_cachemap(cachemap_p);
