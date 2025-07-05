@@ -63,23 +63,23 @@ int main()
 
 	print_ts_cachemap(cachemap_p);
 
-	insert_in_hashmap(cachemap_p, &((ts){1, "one", INIT_EMBED_NODE}));
+	insert_in_cachemap(cachemap_p, &((ts){1, "one", INIT_EMBED_NODE}));
 
 	print_ts_cachemap(cachemap_p);
 
-	insert_in_hashmap(cachemap_p, &((ts){3, "three", INIT_EMBED_NODE}));
+	insert_in_cachemap(cachemap_p, &((ts){3, "three", INIT_EMBED_NODE}));
 
 	print_ts_cachemap(cachemap_p);
 
-	insert_in_hashmap(cachemap_p, &((ts){5, "five", INIT_EMBED_NODE}));
+	insert_in_cachemap(cachemap_p, &((ts){5, "five", INIT_EMBED_NODE}));
 
 	print_ts_cachemap(cachemap_p);
 
-	insert_in_hashmap(cachemap_p, &((ts){7, "seven", INIT_EMBED_NODE}));
+	insert_in_cachemap(cachemap_p, &((ts){7, "seven", INIT_EMBED_NODE}));
 
 	print_ts_cachemap(cachemap_p);
 
-	int res = insert_in_hashmap(cachemap_p, &((ts){3, "three", INIT_EMBED_NODE}));
+	int res = insert_in_cachemap(cachemap_p, &((ts){3, "three", INIT_EMBED_NODE}));
 	printf("duplicate insert = %d\n", res);
 
 	print_ts_cachemap(cachemap_p);
