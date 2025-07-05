@@ -47,7 +47,11 @@ const void* find_equals_in_cachemap(const cachemap* cachemap_p, const void* data
 
 int remove_from_cachemap(cachemap* cachemap_p, const void* data);
 
-const void* get_evictable_element_from_cachemap(const cachemap* cachemap_p);
+const void* get_evictable_element_from_cachemap(const cachemap* cachemap_p)
+{
+	// always force evicting from head of lru
+	return get_head_of_linkedlist(&(cachemap_p->lru));
+}
 
 void bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
 
