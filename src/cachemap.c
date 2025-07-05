@@ -57,7 +57,7 @@ int remove_from_cachemap(cachemap* cachemap_p, const void* data)
 {
 	{
 		// if it is a free floating cchnode, i.e. it is not in cachemap, then we can not remove it
-		cchnode* node_p = get_node(data, cachemap_p);
+		const cchnode* node_p = get_node(data, cachemap_p);
 		if(is_free_floating_cchnode(node_p))
 			return 0;
 	}
@@ -79,7 +79,7 @@ int bump_element_in_cachemap(cachemap* cachemap_p, const void* data)
 {
 	{
 		// if it is a free floating cchnode, i.e. it is not in cachemap, then we can not bump it
-		cchnode* node_p = get_node(data, cachemap_p);
+		const cchnode* node_p = get_node(data, cachemap_p);
 		if(is_free_floating_cchnode(node_p))
 			return 0;
 	}
