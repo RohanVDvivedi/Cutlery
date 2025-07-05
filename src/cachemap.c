@@ -2,6 +2,11 @@
 
 #include<cutlery/cutlery_node.h>
 
+int NEVER_PINNED(const void* pinning_context, const void* data)
+{
+	return 0;
+}
+
 int initialize_cachemap(cachemap* cachemap_p, const void* pinning_context, int (*is_pinned)(const void* pinning_context, const void* data), cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset)
 {
 	cachemap_p->pinning_context = pinning_context;

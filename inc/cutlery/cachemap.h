@@ -42,6 +42,9 @@ struct cachemap
 	linkedlist lru;
 };
 
+// use the below function as callback when you prefer to not use pinning functionality
+int NEVER_PINNED(const void* pinning_context, const void* data);
+
 // intialize cachemap
 int initialize_cachemap(cachemap* cachemap_p, const void* pinning_context, int (*is_pinned)(const void* pinning_context, const void* data), cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset);
 int initialize_cachemap_with_allocator(cachemap* cachemap_p, const void* pinning_context, int (*is_pinned)(const void* pinning_context, const void* data), cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator);
