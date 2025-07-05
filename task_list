@@ -1,34 +1,5 @@
 Tasks picked
 
-* struct cachemap{
-	cy_uint node_offset;
-	const void* context_for_is_pinned;
-	int (*is_pinned)(const void* context_for_is_pinned, const void* data);
-	hashmap map; // red-black bast based hashmap
-	linkedlist lru;
-  }
-  * add a NEVER_PINNED simple callback
-  struct cchnode{
-  	bstnode map_embed_node;
-  	llnode lru_embed_node;
-  }
-  * insert to lru happens only if is_pinned returns 0
-  * pinned elements never get evicted
-  * api
-    * initialize_cachemap
-    * initialize_cachemap_with_allocator
-    * initialize_cachemap_with_memory
-    * insert
-    * remove
-    * find
-    * get_evictable_element
-    * bump // bump to be called time you finish access to the element, and you want the element to be least likely to be evicted
-    * remove_all
-    * get_element_count
-    * get_bucket_count
-    * resize_cache_map
-    * for_each
-
 Competely new datastructure tasks (*future)
 
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
