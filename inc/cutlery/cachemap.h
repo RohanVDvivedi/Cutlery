@@ -28,7 +28,7 @@ struct cachemap
 	// callback to check if a element of the cachemap is pinned
 	// a pinned element can not be selected for eviction
 	const void* pinning_context;
-	int is_pinned(const void* pinning_context, const void* data);
+	int (*is_pinned)(const void* pinning_context, const void* data);
 
 	// actual map, storing all elements
 	hashmap map;
@@ -38,9 +38,9 @@ struct cachemap
 };
 
 // intialize cachemap
-int initialize_cachemap(cachemap* cachemap_p, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset);
-int initialize_cachemap_with_allocator(cachemap* cachemap_p, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator);
-int initialize_cachemap_with_memory(cachemap* cachemap_p, cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, const void* bucket_memory[]);
+int initialize_cachemap(cachemap* cachemap_p, const void* pinning_context, int (*is_pinned)(const void* pinning_context, const void* data), cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset);
+int initialize_cachemap_with_allocator(cachemap* cachemap_p, const void* pinning_context, int (*is_pinned)(const void* pinning_context, const void* data), cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, memory_allocator mem_allocator);
+int initialize_cachemap_with_memory(cachemap* cachemap_p, const void* pinning_context, int (*is_pinned)(const void* pinning_context, const void* data), cy_uint bucket_count, const hasher_interface* hasher, const comparator_interface* comparator, cy_uint node_offset, const void* bucket_memory[]);
 
 // always initialize your cchnode before using it
 void initialize_cchnode(cchnode* node_p);
@@ -53,6 +53,7 @@ int is_free_floating_cchnode(const cchnode* node_p);
 int insert_in_cachemap(cachemap* cachemap_p, const void* data);
 
 // the parameter data provided must hash to the same value and must be comparatively equal to the data that you want to find
+// if you want this element of the cachemap, to stay in the cache longer and avoid being an eviction victim, bump it, after a non-NULL return from this function
 const void* find_equals_in_cachemap(const cachemap* cachemap_p, const void* data);
 
 // returns 1 if the element exists in the cachemap and is removed
