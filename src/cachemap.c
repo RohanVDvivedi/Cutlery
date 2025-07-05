@@ -46,7 +46,25 @@ int is_free_floating_cchnode(const cchnode* node_p)
 	return is_free_floating_bstnode(&(node_p->map_embed_node)) && is_free_floating_llnode(&(node_p->lru_embed_node));
 }
 
-int insert_in_cachemap(cachemap* cachemap_p, const void* data);
+int insert_in_cachemap(cachemap* cachemap_p, const void* data)
+{
+	{
+		// if it is not a free floating cchnode, i.e. it is in soem cachemap, then we can not insert it
+		const cchnode* node_p = get_node(data, cachemap_p);
+		if(!is_free_floating_cchnode(node_p))
+			return 0;
+	}
+
+	// it unconditonally must exist in hash map
+	if(!insert_in_hashmap(&(cachemap_p->map), data))
+		return 0;
+
+	// insert it back at the tail in lru, forcing unused elements towards the head, only if it is not pinned
+	if(!cachemap_p->is_pinned(cachemap_p->pinning_context, data))
+		insert_tail_in_linkedlist(&(cachemap_p->lru), data);
+
+	return 1;
+}
 
 const void* find_equals_in_cachemap(const cachemap* cachemap_p, const void* data)
 {
