@@ -7,7 +7,7 @@ Almost all the containers like Singlylist, Linkedlist, Bst, Hashmap, Pheap, (and
 
 The above 2 statements slides in another feature, references/iterators to the objects inside the containers, are never invalid, unless you explicitly remove it from the container (this is not the case with value_arraylist). Additionally, This library forces you to preallocate all your structs before-hand, or allocate only when you need it.
 
-***(in Cutlery's intrusive data structures like linkedlist, bst, singlylist, and hashmap, the pointers to your data themselves are iterators, with get_next/prev_\* function flavours for their corresponding data structures in Cutlery)***
+***(in Cutlery's intrusive data structures like linkedlist, bst, pheap, singlylist, and hashmap, the pointers to your data themselves are iterators, with get_next/prev_\* function flavours for their corresponding data structures in Cutlery)***
 
 **Note**
  * *This library can be used with a baremetal projects (with minor modifications), all you will need is a C compiler.*
