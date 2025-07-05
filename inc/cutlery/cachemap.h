@@ -65,7 +65,8 @@ const void* get_evictable_element_from_cachemap(const cachemap* cachemap_p);
 // bump an element in the cachemap, it will position the element back in the lru to avoid it from being the least recently used element
 // the insert in lru may mot occur if the element is pinned
 // this function must also be called after un-pinning the element, to insert it back in the lru
-int bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
+// it must also be called after a successfull find, if you want that element to stay longer in the caches
+void bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
 
 // returns bucket_count of the cachemap
 cy_uint get_bucket_count_cachemap(const cachemap* cachemap_p);

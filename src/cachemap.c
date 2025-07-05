@@ -44,7 +44,7 @@ int remove_from_cachemap(cachemap* cachemap_p, const void* data);
 
 const void* get_evictable_element_from_cachemap(const cachemap* cachemap_p);
 
-int bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
+void bump_element_in_cachemap(cachemap* cachemap_p, const void* data);
 
 cy_uint get_bucket_count_cachemap(const cachemap* cachemap_p)
 {
