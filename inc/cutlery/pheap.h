@@ -70,7 +70,7 @@ int is_empty_pheap(const pheap* pheap_p);
 // this call fails if the pheaps are not of same type (SKEW or LEFTIST) and (MIN_HEAP or MAX_HEAP)
 int merge_pheaps(pheap* dest, pheap* src);
 
-// insert a new element t pheap
+// insert a new element in pheap
 // returns 0, and fails if phpnode of data is not a new node
 int push_to_pheap(pheap* pheap_p, const void* data);
 
