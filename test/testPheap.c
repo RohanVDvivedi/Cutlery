@@ -50,6 +50,26 @@ element elements[TEST_SIZE];
 #define T1 MIN_HEAP /*MAX_HEAP*/
 #define T2 SKEW /*LEFTIST*/
 
+void print_tabs(int t)
+{
+	while(t)
+	{
+		printf("  ");
+		t--;
+	}
+}
+
+void print_tree_level_wise(const phpnode* node_p, int t)
+{
+	if(node_p == NULL)
+		return;
+	const element* temp = ((const void*)node_p) - offsetof(element, embed_node);
+	print_tabs(t);
+	printf("%d\n", temp->key);
+	print_tree_level_wise(temp->embed_node.left, t+1);
+	print_tree_level_wise(temp->embed_node.right, t+1);
+}
+
 int main()
 {
 	for(int i = 0; i < TEST_SIZE; i++)
@@ -128,6 +148,8 @@ int main()
 
 	e2.key = -2000;
 	heapify_for_in_pheap(pheap_p, &e2);
+
+	print_tree_level_wise(pheap_p->root, 0);
 
 	{
 		const element* e = get_top_of_pheap(pheap_p);
