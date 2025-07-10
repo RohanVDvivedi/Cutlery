@@ -1,5 +1,7 @@
 Tasks picked
 
+ * iterative version of meld for skew and leftist pheaps
+
  * implement a custom optimized version of function ffs() for bitmap, to not rely on the string.h
 
 Competely new datastructure tasks (*future)
