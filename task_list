@@ -1,6 +1,8 @@
 Tasks picked
 
- * implement a custom optimized version of function ffs() for bitmap, to not rely on the string.h
+ * implement a custom optimized version of function static int ffs(int bit_int) for bitmap, to not rely on the string.h
+ * use this function where ever it is called in bitmap.c
+ * test all calls of those identified bitmap function in c_tool
 
 Competely new datastructure tasks (*future)
 
