@@ -99,6 +99,8 @@ static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b
 }
 */
 
+// not to be used except in meld() function
+// remember the parent pointer of the returned phpnode must be reassigned to a correct value
 // iterative version of the above function, a bit complex and asymmetric but avoids stack overflow
 static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
 {
@@ -195,6 +197,8 @@ static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b
 
 // not to be used except in meld() function
 // remember the parent pointer of the returned phpnode must be reassigned to a correct value
+/*
+// This is a recursive version, find the iterative version below
 static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
 {
 	// if a is null return b
@@ -243,6 +247,117 @@ static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode
 	}
 
 	return parent;
+}
+*/
+
+// not to be used except in meld() function
+// remember the parent pointer of the returned phpnode must be reassigned to a correct value
+// iterative version of the above function, a bit complex and asymmetric but avoids stack overflow
+static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode* b)
+{
+	// if a is null return b
+	if(a == NULL)
+		return b;
+
+	// if b is null return a
+	if(b == NULL)
+		return a;
+
+	// after this block of code a and b pointer should not be trusted
+	phpnode* result = NULL; // this is to be returned
+	phpnode* fix_tree_from = NULL; // you need to fix the tree from this node, up until the result
+	{
+		// we tend to keep this asymetric, i.e. a always points to the original tree, while b will be the one that gets merged into
+		phpnode* parent_a = NULL;
+
+		while(a != NULL || b != NULL)
+		{
+			if(b == NULL)
+			{
+				fix_tree_from = parent_a;
+
+				// nothing needs to be done, the remaining a is already connected to the parent_a
+				break;
+			}
+			else if(a == NULL)
+			{
+				fix_tree_from = parent_a;
+
+				// link b and parent_a
+				if(parent_a != NULL)
+					parent_a->right = b;
+				b->parent = parent_a;
+
+				break;
+			}
+			else
+			{
+				// get a flag suggesting if a can be a parent of b
+				int a_can_not_be_parent_of_b = 0;
+				{
+					const void* data_a = get_data(a, pheap_p);
+					const void* data_b = get_data(b, pheap_p);
+					a_can_not_be_parent_of_b = is_reordering_required(data_a, data_b, &(pheap_p->info));
+				}
+
+				if(a_can_not_be_parent_of_b) // then we need to make parent_a link with b and make a a dangling child
+				{
+					// if no root node was set, then b possibly could become the root of the merged tree
+					if(result == NULL)
+						result = b;
+
+					if(parent_a != NULL)
+						parent_a->right = b;
+					b->parent = parent_a;
+
+					// no need to do this
+					a->parent = NULL;
+
+					// swap a and b, so the local variable a always points to the right child of parent_a
+					{
+						phpnode * const temp = a;
+						a = b;
+						b = temp;
+					}
+				}
+				else // else we juse move forward the side of the 'a' tree towards its right
+				{
+					// if no root node was set, then a possibly could become the root of the merged tree
+					if(result == NULL)
+						result = a;
+
+					parent_a = a;
+					a = a->right;
+				}
+			}
+		}
+	}
+
+	// fix the tree, for skew heap it will be swapping all the nodes that we touched
+	{
+		for(phpnode* temp = fix_tree_from; temp != NULL; temp = temp->parent)
+		{
+			{
+				cy_uint left_child_node_property = get_node_property_for_phpnode(temp->left);
+				cy_uint right_child_node_property = get_node_property_for_phpnode(temp->right);
+
+				if(left_child_node_property < right_child_node_property) // we must reinstate the tree property of left_tree_node_property >= right_tree_node_property
+				{
+					swap_children_for_phpnode(temp);
+
+					// fix the local variables, even though it is not necessary to be done
+					left_child_node_property = get_node_property_for_phpnode(temp->left);
+					right_child_node_property = get_node_property_for_phpnode(temp->right);
+				}
+
+				temp->node_property = min(left_child_node_property, right_child_node_property) + 1;
+			}
+			if(temp == result) // result is the root of the merged tree, we may not swap beyond that point
+				break;
+		}
+	}
+
+	return result;
 }
 
 // can be used by other functions
