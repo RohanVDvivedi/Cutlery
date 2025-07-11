@@ -8,12 +8,12 @@
 memory_allocator DSTRING_mem_alloc = &STD_C_memory_allocator;
 
 // accessor for dstring attribute type_n_SS_size
-#define get_dstr_type(type_n_SS_size)		((type_n_SS_size) & 0x3)
-#define get_dstr_SS_size(type_n_SS_size)	(((type_n_SS_size) >> 2) & 0x3f)
+#define get_dstr_type(type_n_SS_size)		((type_n_SS_size) & 0x3) // pick the last 2 bits for type
+#define get_dstr_SS_size(type_n_SS_size)	((type_n_SS_size) >> 2)  // pick the remaining bytes for short dstring's size
 
-#define set_dstr_SS_size(type_n_SS_size, SS_size)	(type_n_SS_size) = ((((SS_size) << 2) & 0xfc) | ((type_n_SS_size) & 0x3))
+#define set_dstr_SS_size(type_n_SS_size, SS_size)	(type_n_SS_size) = (((SS_size) << 2) | ((type_n_SS_size) & 0x3))
 
-#define SS_data_offset		((cy_uint)((&(((dstring*)0)->type_n_SS_size))+sizeof(unsigned char)))
+#define SS_data_offset		(offsetof(dstring, short_string_bytes))
 #define SS_capacity			(sizeof(dstring)-SS_data_offset)
 
 // BASE METHODS START

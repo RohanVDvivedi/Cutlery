@@ -33,6 +33,9 @@
 // macro that can be used to fail a build is a certain compile time expression is true
 #define fail_build_on(compile_time_expr) extern char CAT(__cutlery_build_failed__,__LINE__)[1 - (2 * (!!(compile_time_expr)))];
 
+// Cutlery can technically work with non-8 CHAR_BIT architectures, but with some dstring modules removed, like the utf8 and base64, so this conditional failure will force you to do that after readin this comment
+fail_build_on((CHAR_BIT != 8))
+
 // Appropriately typedef cy_uint, depending on the size of void* on your system
 // cy_uint is a cutlery's drop in replacement for size_t
 // cy_uint is capable to hold indexes, sizes, capacities and element counts of (structures <where applicable> and ) C arrays of all valid C structures
