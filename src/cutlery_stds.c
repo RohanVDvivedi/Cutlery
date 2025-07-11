@@ -1,12 +1,10 @@
 #include<cutlery/cutlery_stds.h>
 
 static const cy_uint int_size = (sizeof(int)); // we assume that int is always 2^n bytes in size, i.e. 1,2,4,8 etc
-static const cy_uint int_bits_size = (sizeof(int) * CHAR_BIT); // CHAR_BIT must be 8
 static const cy_uint int_alignment_bit_mask = (-(sizeof(int)));	// 0b 111...111 000...000 where 0s represent alignment
 
 // on a 32 bit int system
 // int_size = 4
-// int_bits_size = 32
 // int_alignment_bis_mask = 0xfffffffc (i.e. 2's complement of 4 OR binary representation of -4)
 
 int memory_move(void* dest_start, const void* src_start, cy_uint size)
@@ -149,8 +147,8 @@ int memory_set(void* dest_start, char byte_value, cy_uint size)
 
 			// generate the int_value that we could copy to the int locations int-by-int
 			int int_value = 0;
-			for(unsigned int i = 0; i < int_bits_size; i += CHAR_BIT)
-				int_value |= ( (((int)byte_value) & 0xff) << i );
+			for(unsigned int i = 0; i < int_size; i += 1)
+				((char*)(&int_value))[i] = byte_value;
 
 			// additonal bytes that you might have to copy after completing the int copy
 			cy_uint additional_bytes = ((cy_uint)(dest_end)) & ~int_alignment_bit_mask;

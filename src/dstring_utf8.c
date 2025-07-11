@@ -1,5 +1,8 @@
 #include<cutlery/dstring_utf8.h>
 
+// utf8 is defined for 8-byte strings so ensure that
+fail_build_on((CHAR_BIT != 8));
+
 int is_valid_utf8_code_point(long code_point)
 {
 	return (code_point < (1L << 21));

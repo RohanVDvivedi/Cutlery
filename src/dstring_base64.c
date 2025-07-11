@@ -2,6 +2,9 @@
 
 #include<cutlery/cutlery_stds.h>
 
+// base64 is defined for 8-byte strings so ensure that
+fail_build_on((CHAR_BIT != 8));
+
 // maximum packet count that we can process
 #define MAX_PACKET_COUNT (CY_UINT_MAX / 4)
 
