@@ -116,7 +116,23 @@ void sprint_bitmap(dstring* append_str, const char* bitmap, cy_uint size, unsign
 	snprintf_dstring(append_str, "\n");
 }
 
-#include<string.h>
+// this function is a looping replica of std library's ffs, it has been implemented only to avoid reliance on std c library
+// using ffs would have been a better choice performance wise
+// returns position (1-indexed) position of the least significant set bit, just like the std library's ffs
+// returns 0 if no bit is set
+int ffs_cutlery(int v)
+{
+	if(v == 0)
+		return 0;
+
+	for(int b = 0; b < sizeof(int) * CHAR_BIT; b++)
+	{
+		if((v >> b) & 1)
+			return (b + 1); // returns 1-indexed position of the bit
+	}
+
+	return 0;
+}
 
 cy_uint find_first_set(const char* bitmap, cy_uint start_index, cy_uint size)
 {
@@ -128,7 +144,7 @@ cy_uint find_first_set(const char* bitmap, cy_uint start_index, cy_uint size)
 		if(bitmap[byte_index])
 		{
 			// ffs functions returns value between 1 <-> CHAR_BIT (both inclusive) and 0 if not bit is set
-			cy_uint bit_index = (byte_index * CHAR_BIT) + (ffs(bitmap[byte_index]) - 1);
+			cy_uint bit_index = (byte_index * CHAR_BIT) + (ffs_cutlery(bitmap[byte_index]) - 1);
 
 			// bit index valid only if it is between returnable bounds
 			if(start_index <= bit_index && bit_index < size)
