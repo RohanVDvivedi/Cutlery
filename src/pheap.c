@@ -121,7 +121,7 @@ static phpnode* meld_for_skew_pheap(const pheap* pheap_p, phpnode* a, phpnode* b
 
 		while(a != NULL || b != NULL)
 		{
-			if(b == NULL)
+			if(b == NULL) // this branch is never taken, as we only make a move forward to it's right and never b, so b can not be NULL
 			{
 				fix_tree_from = parent_a;
 
@@ -272,7 +272,7 @@ static phpnode* meld_for_leftist_pheap(const pheap* pheap_p, phpnode* a, phpnode
 
 		while(a != NULL || b != NULL)
 		{
-			if(b == NULL)
+			if(b == NULL) // this branch is never taken, as we only make a move forward to it's right and never b, so b can not be NULL
 			{
 				fix_tree_from = parent_a;
 
