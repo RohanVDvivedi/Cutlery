@@ -1,5 +1,33 @@
 Competely new datastructure tasks (*future)
 
+POSSIBILITY FOR PATRICIA TRIE
+ * interior and embedded node:
+struct ptnode
+{
+	int is_embedded; // if it is surrounded and inside a user's struct
+	dstring sub_part; // first byte of this POINT_DSTR dstring is the key of the children hashmap
+	hashmap children; // hashmap to point to children that hold the rest of the contents of the sstring
+	bstnode child_embed_node; // used to link elements for the children hashmap
+};
+ * we also need a function that returns key for the user's struct as a POINT_DSTR dstring
+ * this way we can make an intrusive trie
+ * for inserts we can first attempt an blank insert counting the number of internal node we need to allocate, then allocate those node and try the insert again
+   * preallocated nodes can be linked using the parent pointers of the child_embed_node to save us from making a collection for these empty interior node elements
+ * upon deletes we will have to fix the sub_part attribute of all elements from root to the node itself and make them point to one of the other children of the parent (as they have the same prefix this can be done)
+ * all sub_part attributes of the children of a parent live at the same offset, but we must be vary of duplicates and this data structure will not allow duplicates, because ptnode is not just internal node but also the struct that gets embedded into other data structures
+ * think again if you really want this in this library?
+
+POSSIBILITY FOR SKIPLIST
+ * embedded node:
+struct skpnode
+{
+	cy_uint levels_count; // integer always greater than or equal to 1, this is the number of elements in the levels array of pointers to other skpnode
+	skpnode* levels[]; // levels[i] points to the next element on the ith level, 0 being the lowest level and points to immediately succeeding element
+};
+ * levels_count is decided at runtime during first initialize_skpnode function call, which now needs an allocator for your struct, or you can create this node your self
+ * no malloc calls will be made for skpnode node or it's levels array internally and levels_count is decided and allocated by the user. OR we would need to specialize initialize and deinitialize skpnode functions calls
+ * think again if you really want this in this library?
+
 RANGE QUERY ON INT/UINT ARRAY DATASTRUCTURE tasks
  * use value_arraylist for below functionality and implement their iterative approaches only
  * access methods must be insert, update, find_range
