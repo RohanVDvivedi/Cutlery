@@ -45,7 +45,7 @@ int initialize_stream_with_initialized_dpipes(
 {
 	strm->stream_context = stream_context;
 	strm->unread_data = unread_data_dpipe;
-	strm->unflushed_data = unread_data_dpipe;
+	strm->unflushed_data = unflushed_data_dpipe;
 	strm->max_unflushed_bytes_count = max_unflushed_bytes_count;
 	strm->read_from_stream_context = read_from_stream_context;
 	strm->end_of_stream_received = 0;

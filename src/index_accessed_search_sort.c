@@ -32,7 +32,7 @@ static int set_element_iai_offsetted(void* ds_p, const void* data_p, cy_uint ind
 static int swap_elements_iai_offsetted(void* ds_p, cy_uint i1, cy_uint i2)
 {
 	iai_offsetted* io_p = ds_p;
-	return io_p->iai_p->swap_elements(io_p->iai_p->ds_p, io_p->offset_index + i1, io_p->offset_index + i1);
+	return io_p->iai_p->swap_elements(io_p->iai_p->ds_p, io_p->offset_index + i1, io_p->offset_index + i2);
 }
 
 static cy_uint get_element_count_iai_offsetted(const void* ds_p)
