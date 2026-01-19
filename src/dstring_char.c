@@ -69,12 +69,12 @@ cy_uint get_digits_required_to_represent_unsigned_long_long_int(unsigned int rad
 	return res;
 }
 
-unsigned int get_digit_from_char(char c, unsigned int radix)
+int get_digit_from_char(char c, unsigned int radix)
 {
 	if(radix < 2 || radix > 36)
 		return -1;
 
-	unsigned int digit = -1;
+	int digit = -1;
 	if(is_char_in_range(c, '0', '9'))
 		digit = c - '0';
 	else if(is_char_in_range(c, 'a', 'z'))
