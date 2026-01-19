@@ -23,7 +23,7 @@ BIN_DIR:=./bin
 # compiler
 CC:=gcc
 # compiler flags
-CFLAGS:=-Wall -Werror -Wextra -O3 -I${INC_DIR}
+CFLAGS:=-Wall -Werror -O3 -I${INC_DIR}
 # linker flags, this will used to compile the binary
 LFLAGS:=-L${LIB_DIR} -l${PROJECT_NAME}
 # Archiver
