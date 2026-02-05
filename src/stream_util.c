@@ -35,7 +35,7 @@ cy_uint write_to_stream_formatted(stream* ws, int* error, const char* cstr_forma
 
 cy_uint read_unsigned_long_long_int_from_stream(stream* rs, unsigned int radix, unsigned long long int* data, int* error)
 {
-	if((radix != BINARY) && (radix != OCTAL) && (radix != DECIMAL) && (radix != HEXADECIMAL))
+	if((radix != RADIX_BINARY) && (radix != RADIX_OCTAL) && (radix != RADIX_DECIMAL) && (radix != RADIX_HEXADECIMAL))
 	{
 		(*error) = -1;
 		return 0;
@@ -56,22 +56,22 @@ cy_uint read_unsigned_long_long_int_from_stream(stream* rs, unsigned int radix, 
 	cy_uint max_bytes_to_read = 0;
 	switch(radix)
 	{
-		case BINARY :
+		case RADIX_BINARY :
 		{
 			max_bytes_to_read = max_bytes_to_read_BINARY;
 			break;
 		}
-		case OCTAL :
+		case RADIX_OCTAL :
 		{
 			max_bytes_to_read = max_bytes_to_read_OCTAL;
 			break;
 		}
-		case DECIMAL :
+		case RADIX_DECIMAL :
 		{
 			max_bytes_to_read = max_bytes_to_read_DECIMAL;
 			break;
 		}
-		case HEXADECIMAL :
+		case RADIX_HEXADECIMAL :
 		{
 			max_bytes_to_read = max_bytes_to_read_HEXADECIMAL;
 			break;
