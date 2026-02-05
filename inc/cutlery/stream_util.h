@@ -13,10 +13,10 @@
 cy_uint write_to_stream_formatted(stream* ws, int* error, const char* cstr_format, ...);
 
 // supported radix for below functions are only
-#define BINARY 		2
-#define OCTAL 		8
-#define DECIMAL 	10
-#define HEXADECIMAL 16
+#define RADIX_BINARY 		2
+#define RADIX_OCTAL 		8
+#define RADIX_DECIMAL 		10
+#define RADIX_HEXADECIMAL 	16
 
 cy_uint read_unsigned_long_long_int_from_stream(stream* rs, unsigned int radix, unsigned long long int* data, int* error);
 
