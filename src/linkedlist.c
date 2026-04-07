@@ -573,14 +573,8 @@ void for_each_in_linkedlist(const linkedlist* ll, void (*operation)(const void* 
 {
 	if(is_empty_linkedlist(ll))
 		return;
-	const llnode* node_p = ll->head;
-	do
-	{
-		llnode* next = node_p->next;
-		operation(get_data(node_p, ll), additional_params);
-		node_p = next;
-	}
-	while(node_p != ll->head);
+	for(const void* e = get_head_of_linkedlist(ll); e != NULL; e = get_next_of_in_linkedlist(ll, e))
+		operation(e, additional_params);
 }
 
 static void sprint_linkedlist_wrapper(dstring* append_str, const linkedlist* ll, const llnode* node_p, void (*sprint_element)(dstring* append_str, const void* data_p, unsigned int tabs), unsigned int tabs)
