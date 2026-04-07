@@ -504,11 +504,6 @@ static const void* get_next_of_in_hashmap_ANY_IN_SAME_BUCKET(const hashmap* hash
 
 			ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), bucket_index);
 
-			// tail node of the linkedlist (it being a circular doubly linkedlist), will have its next reference pointing to head of the linkedlist
-			// hence we check for tail, and if data_xist is tail node, we return NULL
-			if(data_xist == get_tail_of_linkedlist(&ll))
-				return NULL;
-
 			return get_next_of_in_linkedlist(&ll, data_xist);
 		}
 		case ELEMENTS_AS_AVL_BST :

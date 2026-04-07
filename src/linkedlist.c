@@ -554,7 +554,7 @@ void bubble_sort_linkedlist(linkedlist* ll, const comparator_interface* comparat
 
 		const void* curr = get_head_of_linkedlist(ll);
 		const void* next = get_next_of_in_linkedlist(ll, curr);
-		while(next != get_head_of_linkedlist(ll))
+		while(next != NULL) // if next is NULL, curr will surely be the tail
 		{
 			if(compare_with_comparator(comparator, curr, next) > 0)
 			{
