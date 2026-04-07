@@ -50,14 +50,14 @@ cy_uint get_block_size_for_uc_allocator_block(const uc_allocator_context* ucac_p
 	if(b->is_temporary)
 		return b->temporary_block_size;
 
-	// if it is the tail block it extends until the end of the memory
-	const void* all_blocks_tail = get_tail_of_linkedlist(&(ucac_p->all_blocks));
-	if(all_blocks_tail == b)
-		return ucac_p->memory + ucac_p->memory_size - ((const void*)b);
-
-	// else it extends until the next block in the all_blocks linkedlist
+	// getch its next block in the all_blocks linkedlist
 	const void* b_next = get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
-	return b_next - ((const void*)b);
+
+	// it extends until the next block
+	if(b_next != NULL)
+		return b_next - ((const void*)b);
+	else // else until the end of the memory
+		return ucac_p->memory + ucac_p->memory_size - ((const void*)b);
 }
 
 int initialize_uc_allocator_context(uc_allocator_context* ucac_p, void* memory, cy_uint memory_size)
@@ -84,12 +84,6 @@ const any_block* get_head_block_for_uc_allocator(const uc_allocator_context* uca
 
 const any_block* get_next_block_for_uc_allocator(const uc_allocator_context* ucac_p, const any_block* b)
 {
-	// if it is tail return NULL
-	const void* all_blocks_tail = get_tail_of_linkedlist(&(ucac_p->all_blocks));
-	if(all_blocks_tail == b)
-		return NULL;
-
-	// else return the next
 	return get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
 }
 
@@ -140,12 +134,12 @@ void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, const any_block
 
 	// find the next one and try to merge with it
 	{
-		// if it is tail skip
-		if(b == get_tail_of_linkedlist(&(ucac_p->all_blocks)))
-			goto SKIP_MERGE_WITH_NEXT;
-
 		// grab b_next the next of b
 		void* b_next = (void*) get_next_of_in_linkedlist(&(ucac_p->all_blocks), b);
+
+		// if it is tail skip
+		if(b_next == NULL)
+			goto SKIP_MERGE_WITH_NEXT;
 
 		// if it is allocated (not free) then skip
 		if(!(((any_block*)b_next)->is_free))
@@ -167,12 +161,12 @@ void deallocate_block_uc_allocator(uc_allocator_context* ucac_p, const any_block
 
 	// find the prev one and try to merge with it
 	{
-		// if it is head skip
-		if(b == get_head_of_linkedlist(&(ucac_p->all_blocks)))
-			goto SKIP_MERGE_WITH_PREV;
-
 		// grab b_prev the prev of b
 		void* b_prev = (void*) get_prev_of_in_linkedlist(&(ucac_p->all_blocks), b);
+
+		// if it is head skip
+		if(b_prev == NULL)
+			goto SKIP_MERGE_WITH_PREV;
 
 		// if it is allocated (not free) then skip
 		if(!(((any_block*)b_prev)->is_free))
