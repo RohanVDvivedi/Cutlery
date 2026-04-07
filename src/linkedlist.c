@@ -84,6 +84,10 @@ const void* get_next_of_in_linkedlist(const linkedlist* ll, const void* data_xis
 	if(is_free_floating_llnode(node_xist))
 		return NULL;
 
+	// if it is tail, it's next is NULL
+	if(data_xist == get_tail_of_linkedlist(ll))
+		return NULL;
+
 	return get_data(node_xist->next, ll);
 }
 
@@ -93,6 +97,10 @@ const void* get_prev_of_in_linkedlist(const linkedlist* ll, const void* data_xis
 
 	// node_xist must not a free floating node
 	if(is_free_floating_llnode(node_xist))
+		return NULL;
+
+	// if it is head, it's prev is NULL
+	if(data_xist == get_head_of_linkedlist(ll))
 		return NULL;
 
 	return get_data(node_xist->prev, ll);

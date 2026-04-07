@@ -48,6 +48,7 @@ const void* get_from_tail_of_linkedlist(const linkedlist* ll, cy_uint index);
 
 // get next or previous element's data of a given data element of the linkedlist
 // data_xist must be a valid data pointer existing in the linkedlist
+// even though this is a circular linkedlist, next of tail element will return NULL, and prev of head will return NULL
 const void* get_next_of_in_linkedlist(const linkedlist* ll, const void* data_xist);
 const void* get_prev_of_in_linkedlist(const linkedlist* ll, const void* data_xist);
 
