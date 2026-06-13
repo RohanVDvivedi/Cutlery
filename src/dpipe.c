@@ -405,7 +405,7 @@ int resize_dpipe(dpipe* pipe, cy_uint new_capacity)
 		}
 		else // move part of buffer tail to the end of the buffer
 		{
-			cy_uint new_bytes_available_post_head = pipe->buffer_capacity - new_capacity;
+			cy_uint new_bytes_available_post_head = new_capacity - pipe->buffer_capacity;
 
 			cy_uint buffer_tail_bytes_to_move = min(buffer_tail_bytes, new_bytes_available_post_head);
 

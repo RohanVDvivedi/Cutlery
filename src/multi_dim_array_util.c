@@ -2,7 +2,7 @@
 
 cy_uint get_element_count_in_multi_dim_array(const cy_uint* dims, cy_uint dims_count)
 {
-	cy_uint element_count = 0;
+	cy_uint element_count = 1;
 	for(cy_uint dim = 0; dim < dims_count; dim++)
 		element_count *= dims[dim];
 	return element_count;
