@@ -136,6 +136,16 @@ int ffs_cutlery(int v)
 
 cy_uint find_first_set(const char* bitmap, cy_uint start_index, cy_uint size)
 {
+	// process the preceeding partial bits in the partial byte
+	while((start_index < size) && (start_index % CHAR_BIT) != 0)
+	{
+		if(get_bit(bitmap, start_index))
+			return start_index;
+
+		// advance start_index after every iteration
+		start_index++;
+	}
+
 	cy_uint byte_index = start_index / CHAR_BIT;
 	cy_uint bytes_in_bitmap = bitmap_size_in_bytes(size);
 
