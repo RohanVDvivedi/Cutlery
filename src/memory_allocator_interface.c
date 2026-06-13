@@ -18,7 +18,7 @@ void* STD_C_mem_allocator_function(void* allocator_context, void* old_memory, cy
 	void* new_memory = NULL;
 
 	// fail allocation if the new_size demanded is greater than the maximum size allowed by the allocator
-	if((*new_size) > SIZE_MAX)
+	if(new_size != NULL && (*new_size) > SIZE_MAX)
 		return NULL;
 
 	if(new_size != NULL && (*new_size) > 0)	// a new memory allocation is required
