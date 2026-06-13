@@ -846,9 +846,6 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 	sprint_chars(append_str, '\t', tabs);
 	snprintf_dstring(append_str, "bucket_count : %" PRIu_cy_uint "\n", get_bucket_count_hashmap(hashmap_p));
 
-	linkedlist ll; init_data_structure(hashmap_p, &ll);
-	bst bstt; init_data_structure(hashmap_p, &bstt);
-
 	// iterate over all the buckets in the hashmap_p
 	for(cy_uint index = 0; index < get_bucket_count_hashmap(hashmap_p); index++)
 	{
@@ -871,6 +868,7 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 				case ELEMENTS_AS_LINKEDLIST_INSERT_AT_HEAD :
 				case ELEMENTS_AS_LINKEDLIST_INSERT_AT_TAIL :
 				{
+					linkedlist ll; init_data_structure(hashmap_p, &ll);
 					ll.head = (llnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 					sprint_linkedlist(append_str, &ll, sprint_element, tabs + 2);
 					break;
@@ -878,6 +876,7 @@ void sprint_hashmap(dstring* append_str, const hashmap* hashmap_p, void (*sprint
 				case ELEMENTS_AS_AVL_BST :
 				case ELEMENTS_AS_RED_BLACK_BST :
 				{
+					bst bstt; init_data_structure(hashmap_p, &bstt);
 					bstt.root = (bstnode*) get_from_array(&(hashmap_p->hashmap_holder), index);
 					sprint_bst(append_str, &bstt, sprint_element, tabs + 2);
 					break;
