@@ -131,7 +131,7 @@ int main()
 		{
 			printf("contains_dstring : %s\n", temp[i]);
 
-			const dstring* temp_dstr = &get_dstring_pointing_to_literal_cstring(temp[i]);
+			const dstring* temp_dstr = &get_dstring_pointing_to_cstring(temp[i]);
 
 			printf("NAIVE : %" PRIu_cy_uint "\n", contains_dstring_NAIVE(&str, temp_dstr));
 
