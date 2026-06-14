@@ -25,6 +25,7 @@ int main()
 		index_accessed_interface iai = get_index_accessed_interface_for_dstring(&copy_to_be_sorted);
 		quick_sort_iai(&iai, 0, get_char_count_dstring(&copy_to_be_sorted) - 1, &simple_comparator(compare_chars_ascending_at));
 		printf("soted str : \"" printf_dstring_format "\"\n\n", printf_dstring_params(&copy_to_be_sorted));
+		deinit_dstring(&copy_to_be_sorted);
 	}
 
 	{
