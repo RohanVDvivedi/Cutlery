@@ -263,13 +263,17 @@ const void* remove_next_of_from_singlylist(singlylist* sl, const void* data_xist
 	}
 	else
 	{
-		// unlink to be to_be_removed from the chain
-		node_xist->next = to_be_removed->next;
-
 		// if to be removed was the tail, then
 		// removing it makes node_xist (which is rightly the previous to it) the tail node
 		if(sl->tail == to_be_removed)
 			sl->tail = node_xist;
+
+		// iterate head forward if it was head that needed to be removed
+		if(sl->head == to_be_removed)
+			sl->head = sl->head->next;
+
+		// unlink to be to_be_removed from the chain
+		node_xist->next = to_be_removed->next;
 	}
 
 	initialize_slnode(to_be_removed);

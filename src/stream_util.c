@@ -19,6 +19,7 @@ cy_uint write_to_stream_formatted(stream* ws, int* error, const char* cstr_forma
 	int dstringify_success = vsnprintf_dstring(&str, cstr_format, var_args);
 	if(!dstringify_success)
 	{
+		va_end(var_args);
 		(*error) = ALLOCATION_FAILURE_IN_STREAM;
 		deinit_dstring(&str);
 		return 0;
