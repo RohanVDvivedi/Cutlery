@@ -16,10 +16,10 @@
 typedef struct any_block any_block;
 struct any_block
 {
-	int is_free : 1;
-	int is_marked : 1; // bit left here for GC implementations to utilize, left untouched by the allocator
+	unsigned int is_free : 1;
+	unsigned int is_marked : 1; // bit left here for GC implementations to utilize, left untouched by the allocator
 
-	int is_temporary : 1;
+	unsigned int is_temporary : 1;
 
 	union
 	{
