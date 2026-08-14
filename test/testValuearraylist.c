@@ -50,7 +50,7 @@ void peek_and_print(const int_list* il_p)
 			{
 				if(j != 0)
 					printf(", ");
-				printf("%d", data[index + j]);
+				printf("%d", data[j]);
 			}
 			printf(")\n");
 			index += count;
