@@ -53,6 +53,9 @@ pref_spec int set_from_back_in_ ## container(container* c, const contained_type*
 pref_spec int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                          \
 pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                           \
                                                                                                                                \
+/* returns pointer to count number of elements, that are contiguously after the element at given_index */                      \
+pref_spec const contained_type* peek_all_contiguous_from_fornt_in_ ## container(const container* c, cy_uint index, cy_uint* peeked_count);\
+                                                                                                                               \
 /* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
 pref_spec int make_room_from_front_in_ ## container(container* c, cy_uint index, cy_uint room_count_to_insert);                \
@@ -321,6 +324,26 @@ pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint 
                                                                                                                                \
 	return 1;                                                                                                                  \
 }                                                                                                                              \
+                                                                                                                               \
+pref_spec const contained_type* peek_all_contiguous_from_fornt_in_ ## container(const container* c, cy_uint index, cy_uint* peeked_count)\
+{                                                                                                                              \
+	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
+	{                                                                                                                          \
+		(*peeked_count) = 0;                                                                                                   \
+		return NULL;                                                                                                           \
+	}                                                                                                                          \
+                                                                                                                               \
+	cy_uint elements_logically_after = c->element_count - index;                                                               \
+                                                                                                                               \
+	cy_uint index_concerned = add_circularly(c->first_index, index, get_capacity_ ## container(c));                            \
+                                                                                                                               \
+	cy_uint elements_physically_after = get_capacity_ ## container(c) - index_concerned;                                       \
+                                                                                                                               \
+	(*peeked_count) = min(elements_logically_after, elements_physically_after);                                                \
+                                                                                                                               \
+	return c->data_p + index_concerned;                                                                                        \
+}                                                                                                                              \
+                                                                                                                               \
                                                                                                                                \
 /* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
