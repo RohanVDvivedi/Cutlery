@@ -35,6 +35,30 @@ void print_int_list(const int_list* il_p)
 	deinit_dstring(&append_str);
 }
 
+void peek_and_print(const int_list* il_p)
+{
+	const int* data = NULL;
+	cy_uint index = 0;
+	do
+	{
+		cy_uint count;
+		data = peek_all_contiguous_from_fornt_in_int_list(il_p, index, &count);
+		if(data != NULL)
+		{
+			printf("(");
+			for(cy_uint j = 0; j < count; j++)
+			{
+				if(j != 0)
+					printf(", ");
+				printf("%d", data[index + j]);
+			}
+			printf(")\n");
+			index += count;
+		}
+	}while(data != NULL);
+	printf("\n");
+}
+
 int main()
 {
 	int_list il;
@@ -45,6 +69,7 @@ int main()
 
 	set_val = 5;
 	push_back_to_int_list(il_p, &set_val);
+	peek_and_print(il_p);
 
 	set_val = 4;
 	push_front_to_int_list(il_p, &set_val);
@@ -59,6 +84,7 @@ int main()
 	push_back_to_int_list(il_p, &set_val);
 
 	print_int_list(il_p);
+	peek_and_print(il_p);
 
 	set_val = 0;
 	push_back_to_int_list(il_p, &set_val);
@@ -73,6 +99,7 @@ int main()
 	push_back_to_int_list(il_p, &set_val);
 
 	print_int_list(il_p);
+	peek_and_print(il_p);
 
 	expand_int_list(il_p);
 
@@ -200,6 +227,7 @@ int main()
 	}
 
 	print_int_list(il_p);
+	peek_and_print(il_p);
 
 	if(make_room_from_front_in_int_list(il_p, get_element_count_int_list(il_p), 3))
 	{
@@ -209,10 +237,12 @@ int main()
 	}
 
 	print_int_list(il_p);
+	peek_and_print(il_p);
 
 	remove_elements_from_back_of_int_list(il_p, 0, get_element_count_int_list(il_p));
 
 	print_int_list(il_p);
+	peek_and_print(il_p);
 
 	deinitialize_int_list(il_p);
 
