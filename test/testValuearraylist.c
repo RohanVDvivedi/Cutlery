@@ -42,7 +42,7 @@ void peek_and_print(const int_list* il_p)
 	do
 	{
 		cy_uint count;
-		data = peek_all_contiguous_from_fornt_in_int_list(il_p, index, &count);
+		data = peek_all_contiguous_from_front_in_int_list(il_p, index, &count);
 		if(data != NULL)
 		{
 			printf("(");

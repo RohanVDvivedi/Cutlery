@@ -54,7 +54,7 @@ pref_spec int swap_from_front_in_ ## container(container* c, cy_uint i1, cy_uint
 pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint i2);                                           \
                                                                                                                                \
 /* returns pointer to count number of elements, that are contiguously after the element at given_index */                      \
-pref_spec const contained_type* peek_all_contiguous_from_fornt_in_ ## container(const container* c, cy_uint index, cy_uint* peeked_count);\
+pref_spec const contained_type* peek_all_contiguous_from_front_in_ ## container(const container* c, cy_uint index, cy_uint* peeked_count);\
                                                                                                                                \
 /* below functions will make room for room_count_to_insert number of elements, at the given index, either from front or back */\
 /* the vacant indices, from front or back will contain garbage data, and hence must be initialized before use */               \
@@ -325,7 +325,7 @@ pref_spec int swap_from_back_in_ ## container(container* c, cy_uint i1, cy_uint 
 	return 1;                                                                                                                  \
 }                                                                                                                              \
                                                                                                                                \
-pref_spec const contained_type* peek_all_contiguous_from_fornt_in_ ## container(const container* c, cy_uint index, cy_uint* peeked_count)\
+pref_spec const contained_type* peek_all_contiguous_from_front_in_ ## container(const container* c, cy_uint index, cy_uint* peeked_count)\
 {                                                                                                                              \
 	if(is_empty_ ## container(c) || index >= c->element_count)                                                                 \
 	{                                                                                                                          \
