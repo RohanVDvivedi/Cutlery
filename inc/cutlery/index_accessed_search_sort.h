@@ -46,7 +46,7 @@ int is_sorted_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy
 
 
 // sorting algorithm used => merge sort algorithm (iterative approach)
-// NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements
+// NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements, it also fails if the memory allocation fails
 // uses set_element -> the set_element is expected to succeed with indices valid and within bounds
 int merge_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);
 
@@ -60,7 +60,7 @@ int quick_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, c
 
 // sorting algorithm used => radix sort algorithm
 // all the elements will be ordered in increasing order of their value for get_sort_attribute()
-// NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements
+// NOTE:: only use this function with array and arraylist - like containers that store pointers to the elements, it also fails if the memory allocation fails
 // uses set_element -> the set_element is expected to succeed with indices valid and within bounds
 int radix_sort_iai(const index_accessed_interface* iai_p, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const void* data), memory_allocator mem_allocator);
 
