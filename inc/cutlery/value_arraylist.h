@@ -78,6 +78,7 @@ pref_spec int remove_from_heap_ ## container(container* c, heap_info* hinfo, cy_
                                                                                                                                \
 /* container specific sorting functions */                                                                                     \
 /* (use these when index_accessed_search_sort sorting functions are restricted to only be used with arraylist) */              \
+/* merge_sort and radix_sort, also do fail if memory allocation fails */                                                       \
 pref_spec int merge_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator, memory_allocator mem_allocator);\
 pref_spec int heap_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, const comparator_interface* comparator);    \
 pref_spec int radix_sort_ ## container(container* c, cy_uint start_index, cy_uint last_index, unsigned long long int (*get_sort_attribute)(const contained_type* data), memory_allocator mem_allocator);\
